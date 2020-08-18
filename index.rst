@@ -16,6 +16,10 @@ Run GPU accelerated containers using Docker and Kubernetes.
    :maxdepth: 2
    :caption: NVIDIA Container Toolkit for Docker:
 
+   container-toolkit/overview.rst
+   container-toolkit/install.rst
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Kubernetes with GPUs:
