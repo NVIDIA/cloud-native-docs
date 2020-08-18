@@ -1,9 +1,9 @@
 Installing on CentOS 8 
-+++++++++++++++++++++++
+-----------------------
 The following steps can be used to setup the NVIDIA Container Toolkit on CentOS 8.
 
 Setting up Docker on CentOS 8
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++
 Setup the official Docker CE repository:
 
 .. code-block:: bash
@@ -67,7 +67,7 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 
 
 Setting up NVIDIA Container Toolkit
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++++++++
 
 Setup the ``stable`` repository and the GPG key:
 

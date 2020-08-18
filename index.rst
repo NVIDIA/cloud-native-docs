@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 NVIDIA Cloud Native Technologies
-============================================================
+================================
 Run GPU accelerated containers using Docker and Kubernetes. 
 
 .. toctree::
@@ -14,7 +14,7 @@ Run GPU accelerated containers using Docker and Kubernetes.
 
 .. toctree::
    :maxdepth: 2
-   :caption: NVIDIA Container Toolkit for Docker:
+   :caption: NVIDIA Container Toolkit:
 
    container-toolkit/overview.rst
    container-toolkit/install.rst

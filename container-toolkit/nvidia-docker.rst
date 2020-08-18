@@ -1,6 +1,6 @@
-Installing Docker Engine
+Installing Docker CE
 ------------------------
-For installing Docker Engine, follow the official `instructions <https://docs.docker.com/engine/install/>`_ for your supported Linux distribution.
+For installing Docker CE, follow the official `instructions <https://docs.docker.com/engine/install/>`_ for your supported Linux distribution.
 
 .. Ubuntu instructions
 

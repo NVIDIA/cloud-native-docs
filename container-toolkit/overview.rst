@@ -1,9 +1,9 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
-*****************************************
-NVIDIA Container Toolkit
-*****************************************
+**************
+Overview
+**************
 The NVIDIA Container Toolkit allows users to build and run GPU accelerated containers. 
 The toolkit includes a container runtime `library <https://github.com/NVIDIA/libnvidia-container>`_ 
 and utilities to automatically configure containers to leverage NVIDIA GPUs.
