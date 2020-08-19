@@ -10,8 +10,8 @@ For installing Docker CE, follow the official `instructions <https://docs.docker
 
 .. include:: distro/centos8.rst
 
+.. RHEL 7 instructions
 
-
-
+.. include:: distro/rhel7.rst
 
 
