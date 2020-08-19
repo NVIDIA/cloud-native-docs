@@ -45,4 +45,5 @@ The :ref:`user-guide` provides information on the configuration options availabl
 License
 =======
 The NVIDIA Container Toolkit (and all included components) is licensed under `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`_ and 
-contributions are accepted with a DCO.
+contributions are accepted with a DCO. See the `contributing <https://github.com/NVIDIA/nvidia-docker/blob/master/CONTRIBUTING.md>`_ document for 
+more information.

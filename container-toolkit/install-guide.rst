@@ -72,9 +72,15 @@ Supported container runtimes are listed below:
 +----------------------+-----------------+---------+-----------------+
 | RHEL/CentOS 8 podman |       X         |         |                 |
 +----------------------+-----------------+---------+-----------------+
+| CentOS 8 Docker      |       X         |         |                 |
++----------------------+-----------------+---------+-----------------+
 | RHEL/CentOS 7 Docker |       X         |         |                 |
 +----------------------+-----------------+---------+-----------------+
 
+.. note::
+    On Red Hat Enterprise Linux (RHEL) 8, Docker is no longer a supported container runtime. See 
+    `Building, Running and Managing Containers <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index>`_ 
+    for more information on the container tools available on the distribution.
 
 Pre-Requisites
 ==============

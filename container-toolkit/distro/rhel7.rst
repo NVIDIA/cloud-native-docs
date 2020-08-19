@@ -1,31 +1,25 @@
-Installing on CentOS 8 
------------------------
-The following steps can be used to setup the NVIDIA Container Toolkit on CentOS 8.
+Installing on RHEL 7
+--------------------
+The following steps can be used to setup the NVIDIA Container Toolkit on RHEL 7.
 
-Setting up Docker on CentOS 8
+Setting up Docker on RHEL 7
 +++++++++++++++++++++++++++++
-Setup the official Docker CE repository:
 
-.. code-block:: bash
+RHEL includes Docker in the ``Extras`` repository. To install Docker on RHEL 7, first enable this repository:
 
-   sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-   sudo dnf repolist -v
+.. code:: bash
 
-Since CentOS 8 does not support specific versions of ``containerd.io`` packages that are required for newer versions 
-of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce`` 
-packages.
+   sudo subscription-manager repos --enable rhel-7-server-extras-rpms
 
-Install the ``containerd.io`` package:
+Docker can then be installed using ``yum``
 
-.. code-block:: bash
-   
-   sudo dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+.. code::bash
 
-And now install the latest ``docker-ce`` package:
+   sudo yum install docker -y   
 
-.. code-block:: bash
+.. seealso:: 
 
-   sudo dnf install docker-ce -y
+   More information is available in the KB `article <https://access.redhat.com/solutions/3727511>`_. 
 
 Ensure the Docker service is running with the following command:
 
@@ -33,17 +27,15 @@ Ensure the Docker service is running with the following command:
 
    sudo systemctl start docker && sudo systemctl enable docker
 
+
 And finally, test your Docker installation by running the ``hello-world`` container:
 
 .. code-block:: bash
 
-   sudo docker run --rm hello-world
-   Unable to find image 'hello-world:latest' locally
-   latest: Pulling from library/hello-world
-   0e03bdcc26d7: Pull complete
-   Digest: sha256:7f0a9f93b4aa3022c3a4c147a449bf11e0941a1fd0bf4a8e6c9408b2600777c5
-   Status: Downloaded newer image for hello-world:latest
+   sudo docker -v
+   Docker version 1.13.1, build 64e9980/1.13.1
 
+   sudo docker run --rm hello-world
    Hello from Docker!
    This message shows that your installation appears to be working correctly.
 
@@ -77,14 +69,17 @@ Setup the ``stable`` repository and the GPG key:
    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 
-Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
+On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
 .. code-block:: bash
 
-   sudo dnf repolist -v
-   sudo dnf clean expire-cache --refresh
+   sudo yum clean expire-cache
 
-   sudo dnf install -y nvidia-docker2
+   sudo yum install nvidia-container-toolkit -y
+
+.. note::
+
+   On POWER (``ppc64le``) platforms, the following package should be used: ``nvidia-container-hook`` instead of ``nvidia-container-toolkit``
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
@@ -96,8 +91,8 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. code-block:: bash
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
-
+   sudo docker run --rm -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda:11.0-base nvidia-smi
+   
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |
    |-------------------------------+----------------------+----------------------+
@@ -105,8 +100,8 @@ At this point, a working setup can be tested by running a base CUDA container:
    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
    |                               |                      |               MIG M. |
    |===============================+======================+======================|
-   |   0  Tesla T4            On   | 00000000:00:1E.0 Off |                    0 |
-   | N/A   34C    P8     9W /  70W |      0MiB / 15109MiB |      0%      Default |
+   |   0  Tesla T4            Off  | 00000000:00:1E.0 Off |                    0 |
+   | N/A   43C    P0    20W /  70W |      0MiB / 15109MiB |      0%      Default |
    |                               |                      |                  N/A |
    +-------------------------------+----------------------+----------------------+
 
@@ -117,3 +112,11 @@ At this point, a working setup can be tested by running a base CUDA container:
    |=============================================================================|
    |  No running processes found                                                 |
    +-----------------------------------------------------------------------------+
+
+.. note::
+   
+   Depending on how your RHEL 7 system is configured with SELinux, you may have to use `--security-opt=label=disable` on 
+   the Docker command line to share parts of the host OS that can not be relabeled. Without this option, you may observe this 
+   error when running GPU containers: ``Failed to initialize NVML: Insufficient Permissions``. However, using this option disables 
+   SELinux separation in the container and the container is executed in an unconfined type. Review the SELinux policies 
+   on your system.
