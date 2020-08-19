@@ -20,13 +20,13 @@ containers with these engines.
 
 Installation Guide
 ===================
-The installation guide shows how to install NVIDIA Container Toolkit on different Linux distributions and platforms.
+The :ref:`install-guide` shows how to install NVIDIA Container Toolkit on different Linux distributions and platforms.
 
 ----
 
 User Guide
 ==========
-The user guide provides information on the configuration options available for running GPU containers.
+The :ref:`user-guide` provides information on the configuration options available for running GPU containers.
 
 ----
 

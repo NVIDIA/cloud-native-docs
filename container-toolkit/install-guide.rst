@@ -1,6 +1,8 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
+.. _install-guide:
+
 *****************************************
 Installation Guide
 *****************************************

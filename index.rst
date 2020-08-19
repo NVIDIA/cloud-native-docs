@@ -17,7 +17,8 @@ Run GPU accelerated containers using Docker and Kubernetes.
    :caption: NVIDIA Container Toolkit:
 
    container-toolkit/overview.rst
-   container-toolkit/install.rst
+   container-toolkit/install-guide.rst
+   container-toolkit/user-guide.rst
 
 
 .. toctree::
@@ -26,8 +27,8 @@ Run GPU accelerated containers using Docker and Kubernetes.
 
    kubernetes/dcgme2e
 
-Indices and tables
-==================
-
-* :ref:`genindex`
+.. Indices and tables
+.. ==================
+..
+.. * :ref:`genindex`
 
