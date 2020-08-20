@@ -115,7 +115,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. note::
    
-   Depending on how your RHEL 7 system is configured with SELinux, you may have to use `--security-opt=label=disable` on 
+   Depending on how your RHEL 7 system is configured with SELinux, you may have to use ``--security-opt=label=disable`` on 
    the Docker command line to share parts of the host OS that can not be relabeled. Without this option, you may observe this 
    error when running GPU containers: ``Failed to initialize NVML: Insufficient Permissions``. However, using this option disables 
    SELinux separation in the container and the container is executed in an unconfined type. Review the SELinux policies 

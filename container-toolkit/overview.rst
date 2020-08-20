@@ -13,7 +13,7 @@ and utilities to automatically configure containers to leverage NVIDIA GPUs.
 
 
 The NVIDIA Container Toolkit supports different container engines in the ecosystem - `Docker <https://docs.docker.com/get-started/overview/>`_, 
-`LXC <https://linuxcontainers.org>`_, `Podman <http://podman.io/>`_ etc. Follow the getting started guide for running GPU 
+`LXC <https://linuxcontainers.org>`_, `Podman <http://podman.io/>`_ etc. Follow the :ref:`user-guide` for running GPU 
 containers with these engines.
 
 ----
