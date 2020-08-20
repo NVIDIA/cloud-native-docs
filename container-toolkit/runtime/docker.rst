@@ -138,7 +138,7 @@ Some examples of the usage are shown below:
 
 #. Alternatively, you can also use ``NVIDIA_VISIBLE_DEVICES``
 
-  .. code::bash
+  .. code:: bash
 
       docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=1,2 nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
       uuid
@@ -147,7 +147,7 @@ Some examples of the usage are shown below:
 
 #. Query the GPU UUID using ``nvidia-smi`` and then specify that to the container
   
-  .. code::bash
+  .. code:: bash
   
       nvidia-smi -i 3 --query-gpu=uuid --format=csv
       uuid
@@ -205,3 +205,82 @@ The supported driver capabilities are provided below:
 
     * - ``display`` 
       - required for leveraging X11 display.
+
+For example, specify the ``compute`` and ``utility`` capabilities, allowing usage of CUDA and NVML
+
+   .. code:: bash
+
+        docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 -e NVIDIA_DRIVER_CAPABILITIES=compute,utility nvidia/cuda nvidia-smi
+
+        docker run --rm --gpus 'all,"capabilities=compute,utility"' nvidia/cuda:11.0-base nvidia-smi
+
+Constraints
+```````````
+The NVIDIA runtime also provides the ability to define constraints on the configurations supported by the container.
+
+``NVIDIA_REQUIRE_*``
+""""""""""""""""""""
+This variable is a logical expression to define constraints on the software versions or GPU architectures on the container. 
+
+The supported constraints are provided below:
+
+.. list-table::
+    :widths: 20 80 
+    :header-rows: 1
+
+    * - Constraint
+      - Description
+
+    * - ``cuda``
+      - constraint on the CUDA driver version.
+
+    * - ``driver``
+      - constraint on the driver version.
+
+    * - ``arch``
+      - constraint on the compute architectures of the selected GPUs.
+
+    * - ``brand``
+      - constraint on the brand of the selected GPUs (e.g. GeForce, Tesla, GRID).
+
+Multiple constraints can be expressed in a single environment variable: space-separated constraints are ORed, 
+comma-separated constraints are ANDed.
+Multiple environment variables of the form ``NVIDIA_REQUIRE_*`` are ANDed together.
+
+For example, the following constraints can be specified to the container image for constraining the supported CUDA and 
+driver versions:
+
+.. code:: bash
+
+  NVIDIA_REQUIRE_CUDA "cuda>=11.0 driver>=450"
+
+``NVIDIA_DISABLE_REQUIRE``
+""""""""""""""""""""""""""
+
+Single switch to disable all the constraints of the form ``NVIDIA_REQUIRE_*``.
+
+``NVIDIA_REQUIRE_CUDA``
+"""""""""""""""""""""""
+
+The version of the CUDA toolkit used by the container. It is an instance of the 
+generic ``NVIDIA_REQUIRE_*`` case and it is set by official CUDA images. If the version of the NVIDIA driver 
+is insufficient to run this version of CUDA, the container will not be started. This variable 
+can be specified in the form ``major.minor``
+
+The possible values for this variable: ``cuda>=7.5``, ``cuda>=8.0``, ``cuda>=9.0`` and so on.
+
+Dockerfiles
+````````````
+
+Capabilities and GPU enumeration can be set in images via environment variables. If the environment variables are 
+set inside the Dockerfile, you don't need to set them on the ``docker run`` command-line.
+
+For instance, if you are creating your own custom CUDA container, you should use the following:
+
+.. code:: bash
+
+  ENV NVIDIA_VISIBLE_DEVICES all
+  ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+
+These environment variables are already set in the NVIDIA provided CUDA images.
+

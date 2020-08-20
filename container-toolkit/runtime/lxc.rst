@@ -1,9 +1,9 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
-.. _user-guide:
+.. _lxc:
 
-*****************************************
-User Guide
-*****************************************
-User guide content goes here
+LXC
+----
+
+LXC user guide content goes here.
