@@ -2,10 +2,8 @@
 .. Author: pramarao
 
 *****************************************
-NVIDIA GPU Operator
-*****************************************
 Overview
-=========
+*****************************************
 
 .. image:: graphics/nvidia-gpu-operator-image.jpg
    :width: 600
@@ -39,3 +37,24 @@ Platform Support
 ---------------
 
 The :ref:`operator-platform-support` describes the supported platform configurations.
+
+Licenses and Contributing
+=========================
+
+The NVIDIA GPU Operator is is licensed under `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`_ and 
+contributions are accepted with a DCO. See the `contributing <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ document for 
+more information on how to contribute and the release artifacts.
+
+The NVIDIA GPU Operator includes components governed by the following NVIDIA End User License Agreements. By installing and using the GPU Operator, 
+you accept the terms and conditions of these licenses. 
+
+* NVIDIA Driver 
+  The license for the NVIDIA datacenter drivers is available at this `link <https://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us>`_.
+
+* NVIDIA Data Center GPU Manager (DCGM)
+  The license for the NVIDIA DCGM is available on the product `page <https://www.developer.vidia.com/dcgm>`_.
+
+
+Since the underlying images may include components licensed under open-source licenses such as GPL, 
+the sources for these components are archived on the CUDA opensource `index <https://developer.download.nvidia.com/compute/cuda/opensource/>`_.
+
