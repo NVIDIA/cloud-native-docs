@@ -286,7 +286,7 @@ Once you’ve located which the version of the chart to use, inspect the chart s
 
 .. code-block:: bash
 
-   helm inspect values stable/prometheus > /tmp/prometheus.values
+   helm inspect values stable/prometheus-operator > /tmp/prometheus.values
 
 
 Next, we’ll need to edit the values file to change the port at which the Prometheus server service is available. In the ``prometheus`` instance 
@@ -398,7 +398,7 @@ You can view the services setup as part of the operator and ``dcgm-exporter``:
    prometheus    prometheus-operator-1596522858-kube-state-metrics         ClusterIP   10.111.154.46    <none>        8080/TCP                       18m
    prometheus    prometheus-operator-1596522858-prometheus-node-exporter   ClusterIP   10.105.62.113    <none>        9100/TCP                       18m
 
-You can observe that the Prometheus server is available at port 3090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:3090``. 
+You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``. 
 It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL`` 
 in the event bar to determine if the GPU metrics are visible:
 
@@ -424,14 +424,11 @@ First, modify the spec to change the service type:
 
 .. code-block:: bash
 
-   $ cat << EOF | tee grafana-patch.yaml
-   > spec:
-   >   type: NodePort
-   >   nodePort: 32322
-   > EOF
+   cat << EOF | tee grafana-patch.yaml
    spec:
-   type: NodePort
-   nodePort: 32322
+     type: NodePort
+     nodePort: 32322
+   EOF   
 
 And now use ``kubectl patch``:
 
