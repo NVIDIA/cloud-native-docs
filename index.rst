@@ -20,6 +20,14 @@ Run GPU accelerated containers using Docker and Kubernetes.
    container-toolkit/install-guide.rst
    container-toolkit/user-guide.rst
 
+.. toctree::
+   :maxdepth: 2
+   :caption: NVIDIA GPU Operator:
+
+   gpu-operator/overview.rst
+   gpu-operator/getting-started.rst
+   gpu-operator/platform-support.rst
+   gpu-operator/release-notes.rst
 
 .. toctree::
    :maxdepth: 2
