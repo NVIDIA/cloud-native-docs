@@ -34,7 +34,7 @@ Release Notes
 Refer to :ref:`operator-release-notes` for information about releases.
 
 Platform Support
----------------
+------------------
 
 The :ref:`operator-platform-support` describes the supported platform configurations.
 
