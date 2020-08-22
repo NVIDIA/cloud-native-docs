@@ -7,6 +7,3 @@ test:
   stage: test
   script:
   - make html
-  artifacts:
-  paths:
-  - _build/html
