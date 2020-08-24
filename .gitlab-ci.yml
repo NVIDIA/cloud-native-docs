@@ -7,3 +7,4 @@ build:
   stage: build
   script:
   - make html
+  - cp -r _build/html/* /opt/build/html/
