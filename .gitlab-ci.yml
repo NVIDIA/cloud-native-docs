@@ -1,9 +1,9 @@
 image: sphinxdoc/sphinx:latest
 
 stages:
-- test
+- build
 
-test:
-  stage: test
+build:
+  stage: build
   script:
   - make html
