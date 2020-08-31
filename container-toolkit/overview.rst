@@ -18,6 +18,12 @@ containers with these engines.
 
 ----
 
+Architecture
+============
+The :ref:`arch-overview` describes the technical architecture of NVIDIA Container Toolkit and the packaging of the software.
+
+----
+
 Installation Guide
 ===================
 The :ref:`install-guide` shows how to install NVIDIA Container Toolkit on different Linux distributions and platforms.

@@ -9,4 +9,5 @@ Use the `spinhxdoc` Docker container for building the documentation:
 ```console
 docker run -it --rm -v <path-to-local-workspace>/cnt-docs:/docs sphinxdoc/sphinx make html
 ```
+
 The resulting HTML pages are located in the `_build/html` directory.
