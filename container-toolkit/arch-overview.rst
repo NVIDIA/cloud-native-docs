@@ -20,8 +20,8 @@ The following diagram represents the flow through the various components:
 .. image:: graphics/nvidia-docker-arch.png
    :width: 800
 
-The packaging of the NVIDIA Container Toolkit is also reflective of these dependencies. It is recommended that users 
-install the ``nvidia-docker2`` top-level package for their version of Docker. The package dependencies can be seen below:
+The packaging of the NVIDIA Container Toolkit is also reflective of these dependencies. If you start with the top-level 
+``nvidia-docker2`` package for Docker, the package dependencies can be seen below:
 
 .. code-block:: bash
 
@@ -33,11 +33,15 @@ install the ``nvidia-docker2`` top-level package for their version of Docker. Th
 
     ├─ nvidia-container-runtime
     │    └─ nvidia-container-toolkit (<< 2.0.0)
+
     ├─ nvidia-container-toolkit
     │    └─ libnvidia-container-tools (<< 2.0.0)
+    
     ├─ libnvidia-container-tools
     │    └─ libnvidia-container1 (>= 1.2.0~rc.3)
     └─ libnvidia-container1
+
+Let's take a brief look at each of the components in the software hierarchy (and corresponding packages).
 
 ``libnvidia-container``
 =======================
@@ -94,11 +98,11 @@ It also lets you set an environment variable on the host (``NV_GPU``) to specify
 Recommended Install Packages
 =============================
 
-Given this hierarchy of components it's easy to see that if you only install ``nvidia-container-toolkit`` (which is recommended for Docker 19.03+), then you will not get 
+Given this hierarchy of components it's easy to see that if you only install ``nvidia-container-toolkit``, then you will not get 
 ``nvidia-container-runtime`` installed as part of it, and thus ``--runtime=nvidia`` will not be available to you. With Docker 19.03+, this is fine because Docker directly 
 invokes ``nvidia-container-toolkit`` when you pass it the ``--gpus`` option instead of relying on the ``nvidia-container-runtime`` as a proxy.
 
-However, if you want to use Kubernetes with Docker 19.03, you actually need to continue using ``nvidia-docker2`` because Kubernetes doesn't support passing GPU information 
+However, if you want to use Kubernetes with Docker 19.03+, you actually need to continue using ``nvidia-docker2`` because Kubernetes doesn't support passing GPU information 
 down to docker through the ``--gpus`` flag yet. It still relies on ``nvidia-container-runtime`` to pass GPU information down the runtime stack via a set of environment variables.
 
 The same container runtime stack is used regardless of whether ``nvidia-docker2`` or ``nvidia-container-toolkit`` is used. Using ``nvidia-docker2`` will install a thin runtime 
