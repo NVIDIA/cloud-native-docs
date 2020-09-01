@@ -11,7 +11,7 @@ Docker-CE on Ubuntu can be setup using Docker's official convenience script:
    curl https://get.docker.com | sh
    sudo systemctl start docker && sudo systemctl enable docker
 
-:: seealso:: 
+.. seealso:: 
    
    Follow the official `instructions <https://docs.docker.com/engine/install/ubuntu/>`_ for more details and `post-install actions <https://docs.docker.com/engine/install/linux-postinstall/>`_.
 

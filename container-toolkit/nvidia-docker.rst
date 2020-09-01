@@ -1,6 +1,7 @@
 Installing Docker CE
 ------------------------
-For installing Docker CE, follow the official `instructions <https://docs.docker.com/engine/install/>`_ for your supported Linux distribution.
+For installing Docker CE, follow the official `instructions <https://docs.docker.com/engine/install/>`_ for your supported Linux distribution. 
+For convenience, the documentation below includes instructions on installing Docker for various Linux distributions.
 
 .. Ubuntu instructions
 
@@ -14,4 +15,11 @@ For installing Docker CE, follow the official `instructions <https://docs.docker
 
 .. include:: distro/rhel7.rst
 
+.. SUSE 15 instructions
+
+.. include:: distro/suse15.rst
+
+.. Amazon Linux instructions
+
+.. include:: distro/amazon-linux.rst
 
