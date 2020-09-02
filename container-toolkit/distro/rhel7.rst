@@ -28,14 +28,19 @@ Ensure the Docker service is running with the following command:
    sudo systemctl start docker && sudo systemctl enable docker
 
 
-And finally, test your Docker installation by running the ``hello-world`` container:
+And finally, test your Docker installation. We can query the version info: 
 
 .. code-block:: bash
 
    sudo docker -v
    Docker version 1.13.1, build 64e9980/1.13.1
 
+And run the ``hello-world`` container:
+
+.. code-block::bash 
+
    sudo docker run --rm hello-world
+
    Hello from Docker!
    This message shows that your installation appears to be working correctly.
 
@@ -66,6 +71,7 @@ Setup the ``stable`` repository and the GPG key:
 .. code-block:: bash
 
    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+   
    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 

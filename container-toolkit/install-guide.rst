@@ -93,6 +93,23 @@ mechanisms are also available (e.g. by downloading ``.run`` installers from NVID
 For instructions on using your package manager to install drivers from the official CUDA network repository, follow 
 the steps in this `guide <https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html>`_. 
 
+Platform Requirements
+-----------------------
+The list of prerequisites for running NVIDIA Container Toolkit is described below: 
+
+#. GNU/Linux x86_64 with kernel version > 3.10
+#. Docker >= 19.03 (recommended, but some distributions may include older versions of Docker. The minimum supported version is 1.12)
+#. NVIDIA GPU with Architecture > Fermi (or compute capability 2.1) 
+#. `NVIDIA drivers <http://www.nvidia.com/object/unix.html>`_ ~= 361.93 (untested on older versions)
+
+.. note::
+
+    Your driver version might limit your CUDA capabilities. Newer NVIDIA drivers are backwards-compatible with CUDA Toolkit versions, but each 
+    new version of CUDA requires a minimum driver version. Running a CUDA container requires a machine with at least one CUDA-capable GPU and 
+    a driver compatible with the CUDA toolkit version you are using. The machine running the CUDA container only requires the NVIDIA driver, 
+    the CUDA toolkit doesn't have to be installed. The `CUDA release notes <https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#cuda-major-component-versions>`_ 
+    includes a table of the minimum driver and CUDA Toolkit versions.
+
 ----
 
 Docker

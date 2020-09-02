@@ -29,6 +29,7 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 .. code-block:: bash
 
    sudo docker run --rm hello-world
+
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
    0e03bdcc26d7: Pull complete
@@ -65,6 +66,7 @@ Setup the ``stable`` repository and the GPG key:
 .. code-block:: bash
 
    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+
    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
@@ -72,6 +74,7 @@ Install the ``nvidia-docker2`` package (and dependencies) after updating the pac
 .. code-block:: bash
 
    sudo yum clean expire-cache
+   
    sudo yum install nvidia-docker2 -y
 
 Restart the Docker daemon to complete the installation after setting the default runtime:

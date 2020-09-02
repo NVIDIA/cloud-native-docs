@@ -65,7 +65,7 @@ The preferred method to deploy the GPU Operator is using ``helm``.
    ./get_helm.sh
 
 Install GPU Operator
---------------------
+======================
 
 Add the NVIDIA Helm repository:
 

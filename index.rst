@@ -5,7 +5,9 @@
 
 NVIDIA Cloud Native Technologies
 ================================
-Run GPU accelerated containers using Docker and Kubernetes. 
+This documentation repository contains the product documentation for the 
+NVIDIA Container Toolkit (``nvidia-docker2``), the NVIDIA GPU Operator and 
+the NVIDIA Device Plugin for Kubernetes.
 
 .. toctree::
    :hidden:
@@ -17,6 +19,8 @@ Run GPU accelerated containers using Docker and Kubernetes.
    :caption: NVIDIA Container Toolkit:
 
    container-toolkit/overview.rst
+   container-toolkit/concepts.rst
+   container-toolkit/arch-overview.rst
    container-toolkit/install-guide.rst
    container-toolkit/user-guide.rst
 

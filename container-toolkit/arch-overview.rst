@@ -43,8 +43,11 @@ The packaging of the NVIDIA Container Toolkit is also reflective of these depend
 
 Let's take a brief look at each of the components in the software hierarchy (and corresponding packages).
 
+Components and Packages
+========================
+
 ``libnvidia-container``
-=======================
+````````````````````````
 
 This component provides a library and a simple CLI utility to automatically configure GNU/Linux containers leveraging NVIDIA GPUs.
 The implementation relies on kernel primitives and is designed to be agnostic of the container runtime. 
@@ -53,7 +56,7 @@ The implementation relies on kernel primitives and is designed to be agnostic of
 inject NVIDIA GPU support into their containers.
 
 ``nvidia-container-toolkit``
-============================
+`````````````````````````````
 
 This component includes a script that implements the interface required by a ``runC`` ``prestart`` hook. This script is invoked by ``runC`` 
 after a container has been created, but before it has been started, and is given access to the ``config.json`` associated with the container 
@@ -65,7 +68,7 @@ Note that the previous name of this component was ``nvidia-container-runtime-hoo
 ``nvidia-container-toolkit`` on the system. 
 
 ``nvidia-container-runtime``
-============================
+`````````````````````````````
 
 This component used to be a complete fork of ``runC`` with NVIDIA specific code injected into it. Since 2019, it is a thin wrapper around the native 
 ``runC`` installed on the host system. ``nvidia-container-runtime`` takes a ``runC`` spec as input, injects the ``nvidia-container-toolkit`` script as 
@@ -88,7 +91,7 @@ When the package is installed, the Docker ``daemon.json`` is updated to point to
 
 
 ``nvidia-docker2``
-===================
+```````````````````
 
 This package is the only docker-specific package of the hierarchy. It takes the script associated with the ``nvidia-container-runtime`` and installs it 
 into docker's ``/etc/docker/daemon.json`` file. This then allows you to run (for example) ``docker run --runtime=nvidia ...`` to automatically add GPU support to your containers. 
@@ -108,4 +111,5 @@ down to docker through the ``--gpus`` flag yet. It still relies on ``nvidia-cont
 The same container runtime stack is used regardless of whether ``nvidia-docker2`` or ``nvidia-container-toolkit`` is used. Using ``nvidia-docker2`` will install a thin runtime 
 that can proxy GPU information down to ``nvidia-container-toolkit`` via environment variables instead of relying on the ``--gpus`` flag to have Docker do it directly. 
 
-For purposes of simplicity, continuing to use ``nvidia-docker2`` as the install package is recommended. See the :ref:`install-guide` for more information.
+For purposes of simplicity (and backwards compatibility), it is recommended to continue using ``nvidia-docker2`` as the top-level install package. 
+See the :ref:`install-guide` for more information on installing ``nvidia-docker2`` on various Linux distributions.

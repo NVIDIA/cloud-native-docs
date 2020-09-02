@@ -12,6 +12,7 @@ First, set up the repository:
 .. code-block:: bash
 
    sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo
+
    sudo zypper refresh
 
 Install the ``docker`` package:
@@ -31,6 +32,7 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 .. code-block:: bash
 
    sudo docker run --rm hello-world
+
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
    0e03bdcc26d7: Pull complete
@@ -67,6 +69,7 @@ Setup the ``stable`` repository and the GPG key:
 .. code-block:: bash
 
    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+
    sudo zypper ar https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo
 
 .. note:: 
@@ -79,6 +82,7 @@ Install the ``nvidia-docker2`` package (and dependencies) after updating the pac
 .. code-block:: bash
 
    sudo zypper refresh
+   
    sudo zypper install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:

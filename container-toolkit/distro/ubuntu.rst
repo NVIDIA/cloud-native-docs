@@ -9,6 +9,7 @@ Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 .. code-block:: bash
 
    curl https://get.docker.com | sh
+
    sudo systemctl start docker && sudo systemctl enable docker
 
 .. seealso:: 
@@ -23,7 +24,9 @@ Setup the ``stable`` repository and the GPG key:
 .. code-block:: bash
 
     distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+
     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
@@ -31,6 +34,7 @@ Install the ``nvidia-docker2`` package (and dependencies) after updating the pac
 .. code-block:: bash
 
    sudo apt-get update
+   
    sudo apt-get install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
