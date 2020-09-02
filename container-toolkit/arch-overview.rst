@@ -113,3 +113,28 @@ that can proxy GPU information down to ``nvidia-container-toolkit`` via environm
 
 For purposes of simplicity (and backwards compatibility), it is recommended to continue using ``nvidia-docker2`` as the top-level install package. 
 See the :ref:`install-guide` for more information on installing ``nvidia-docker2`` on various Linux distributions.
+
+Package Repository
+```````````````````
+
+The packages for the various components listed above are available in the ``gh-pages`` branch of the GitHub repos of these projects. This is particularly 
+useful for air-gapped deployments that may want to get access to the actual packages (``.deb`` and ``.rpm``) to support offline installs. 
+
+For the different components:
+
+#. ``nvidia-docker2`` 
+
+   * ``https://github.com/NVIDIA/nvidia-docker/tree/gh-pages/``
+
+#. ``nvidia-container-toolkit``
+
+   * ``https://github.com/NVIDIA/nvidia-container-runtime/tree/gh-pages/``
+
+#. ``libnvidia-container``
+
+   * ``https://github.com/NVIDIA/libnvidia-container/tree/gh-pages/``
+
+
+Releases of the software are also hosted on ``experimental`` branch of the repository and are graduated to ``stable`` after test/validation. To get access to the latest 
+``experimental`` features of the NVIDIA Container Toolkit, you may need to add the ``experimental`` branch to the ``apt`` or ``yum`` repository listing. The installation instructions 
+include information on how to add these repository listings for the package manager.

@@ -29,6 +29,13 @@ Setup the ``stable`` repository and the GPG key:
 
     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
+.. note::
+
+   To get access to ``experimental`` features such as `CUDA on WSL <https://docs.nvidia.com/cuda/wsl-user-guide/index.html>`_ or the 
+   new `MIG capability <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_ on A100, 
+   you may want to add the ``experimental`` branch to the repository listing: 
+   ``curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list``
+
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
 .. code-block:: bash
