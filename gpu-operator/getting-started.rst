@@ -78,7 +78,7 @@ Now setup the operator using the Helm chart:
 
 .. code-block:: bash
 
-   helm install --devel nvidia/gpu-operator --wait --generate-name
+   helm install nvidia/gpu-operator --wait --generate-name
 
 .. note::
 
@@ -424,3 +424,25 @@ The password credentials for the login are available in the ``prometheus.values`
 .. image:: ../kubernetes/graphics/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
+Uninstalling GPU Operator
+===========================
+
+To uninstall the operator, first obtain the name using the following command:
+
+.. code-block:: bash
+
+   helm ls
+
+Now delete the operator:
+
+.. code-block:: bash
+
+   helm delete <gpu-operator-name>
+
+You should now see all the pods being deleted:
+
+.. code-block:: bash
+
+   kubectl get pods -n gpu-operator-resources
+   
+   No resources found.
