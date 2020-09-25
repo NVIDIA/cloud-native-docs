@@ -81,11 +81,12 @@ html_theme_path = ["_themes", ]
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
+html_logo = "assets/NVLogo_H_B&W.png"
 html_theme_options = {
     'canonical_url': 'https://docs.nvidia.com/deeplearning/sdk/dali-developer-guide/',
     'collapse_navigation': False,
     'display_version': False,
-    'logo_only': False,
+    'logo_only': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -96,13 +97,19 @@ html_static_path = []
 
 # Download favicon and set it (the variable `html_favicon`) for this project.
 # It must be relative path.
-favicon_rel_path = "nvidia.ico"
+favicon_rel_path = "assets/nvidia.ico"
 html_favicon = favicon_rel_path
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_js_files = [
+    'js/google-analytics/google-analytics-tracker.js',
+    'js/google-analytics/google-analytics-write.js',
+    '//assets.adobedtm.com/b92787824f2e0e9b68dc2e993f9bd995339fe417/satelliteLib-7ba51e58dc61bcb0e9311aadd02a0108ab24cc6c.js',
+]
 
 def setup(app):
     count_unique_visitor_script = os.getenv("ADD_NVIDIA_VISITS_COUNTING_SCRIPT")
