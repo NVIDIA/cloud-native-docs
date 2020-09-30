@@ -39,6 +39,12 @@ the NVIDIA Device Plugin for Kubernetes.
 
    kubernetes/dcgme2e
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Driver Containers:
+
+   driver-containers/overview.rst
+
 .. Indices and tables
 .. ==================
 ..

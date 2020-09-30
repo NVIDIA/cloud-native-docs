@@ -109,6 +109,11 @@ Check the status of the pods to ensure all the containers are running:
    kube-system              kube-proxy-kj5qb                                                  1/1     Running     0          9m4s
    kube-system              kube-scheduler-ip-172-31-80-124                                   1/1     Running     0          9m18s
 
+Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
+
+.. image:: graphics/gpu-operator-demo.gif
+   :width: 800
+
 Running Sample GPU Applications
 --------------------------------
 
