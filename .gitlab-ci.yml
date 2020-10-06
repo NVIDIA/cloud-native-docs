@@ -1,10 +1,36 @@
-image: sphinxdoc/sphinx:latest
+image: docker:19.03.12
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
 
 stages:
-- build
+- build_image
+- build_docs
 
-build:
-  stage: build
+services:
+  - docker:19.03.12-dind
+
+before_script:
+    - export IMAGE_NAME=cnt-sphinxdoc-"${CI_PIPELINE_ID}" && echo "${IMAGE_NAME}"
+    - docker info
+    - docker login -u doc-builder-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+
+build_image:
+  stage: build_image
   script:
-  - make html
-  - cp -r _build/html/* /opt/build/html/
+    - docker build --pull --tag "${CI_REGISTRY}"/"${IMAGE_NAME}" --file Dockerfile .
+    - docker push "${CI_REGISTRY}"/"${IMAGE_NAME}"
+
+build_docs:
+  stage: build_docs
+  script:
+  - export PROJECT_PATH="${CI_BUILDS_DIR}"/"${CI_CONCURRENT_ID}"/"${CI_PROJECT_NAME}"
+  - export DOC_MOUNT_PATH=/docs
+  - export DOC_BUILD_PATH="${DOC_MOUNT_PATH}/_build/html/"                    && echo "${DOC_BUILD_PATH}"
+  - export DOC_STAGE_PATH=/opt/build/html/"${CI_PIPELINE_ID}"                 && echo "${DOC_STAGE_PATH}"
+  - export CONTAINER_NAME="${CI_PROJECT_NAME}.${CI_JOB_ID}.${CI_JOB_NAME}"    && echo "${CONTAINER_NAME}"
+  - docker run --name "${CONTAINER_NAME}" -v "${CI_PROJECT_DIR}":"${DOC_MOUNT_PATH}" "${CI_REGISTRY}"/"${IMAGE_NAME}"
+  - docker cp "${CONTAINER_NAME}:${DOC_BUILD_PATH}" "${DOC_STAGE_PATH}"
+  - docker rm -f ${CONTAINER_NAME}
+  - docker rmi "${CI_REGISTRY}"/"${IMAGE_NAME}"
