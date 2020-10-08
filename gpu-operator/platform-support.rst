@@ -10,7 +10,7 @@ This documents provides an overview of the GPUs and system platform configuratio
 
 GPUs
 ----
-Pascal+ GPUs are supported (incl. Tesla V100 and T4)
+Pascal+ GPUs are supported (incl. NVIDIA A100, T4 and V100)
 
 Container Platforms
 -------------------
@@ -26,11 +26,27 @@ The following Kubernetes platforms are supported:
    may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift. See the prerequisites 
    for enabling monitoring in Kubernetes releases before v1.16.
 
+The following table includes the support matrix of the GPU Operator releases and supported container platforms:
+
++--------------------------+---------------+------------------------+----------------+
+| GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
++==========================+===============+========================+================+
+| 1.2.0                    | v1.13+        | Not supported*         | Supported      |
++--------------------------+---------------+------------------------+----------------+
+| 1.1.7                    | v1.13+        | 4.1, 4.2, 4.3, and 4.4 | Supported      |
++--------------------------+---------------+------------------------+----------------+
+| 1.1.0                    | v1.13+        | Not supported          | Not supported  |
++--------------------------+---------------+------------------------+----------------+
+| 1.0.0                    | v1.13+        | Not supported          | Not supported  |
++--------------------------+---------------+------------------------+----------------+
+
+\* Work in progress 
+
 Linux distributions
 -------------------
 The following Linux distributions are supported:
 
-* Ubuntu 18.04.z LTS
+* Ubuntu 18.04.z, 20.04.z LTS
 * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift
 * CentOS 8 (HVM only, PV not supported)
 
@@ -52,13 +68,3 @@ The GPU Operator has been validated in the following scenarios:
 .. note::
    The GPU Operator deploys the NVIDIA driver as a container. In this environment, running on desktop environments (e.g. workstations with GPUs and display) is not 
    supported.
-
-Software Versions
-------------------
-The GPU operator has been validated with the following NVIDIA components:
-
-* NVIDIA Container Toolkit ``1.0.5``
-* NVIDIA Kubernetes Device Plugin ``1.0.0-beta4``
-* NVIDIA Tesla Driver 440 (Current release is ``440.64.00``. See driver release notes)
-* NVIDIA DCGM ``1.7.2``
-

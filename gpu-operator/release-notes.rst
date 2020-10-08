@@ -10,8 +10,65 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.2.0
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+
+| Component                | Version       |
++==========================+===============+
+| NVIDIA Driver            | 450.80.02     |
++--------------------------+---------------+
+| NVIDIA Container Toolkit | 1.3.0         |
++--------------------------+---------------+
+| NVIDIA K8s Device Plugin | 0.7.0         |
++--------------------------+---------------+
+| NVIDIA DCGM-Exporter     | 2.1.0-rc.2    |
++--------------------------+---------------+
+| Node Feature Discovery   | 0.6.0         |
++--------------------------+---------------+
+
+New features
+-------------
+* Added support for Ubuntu 20.04.z LTS. 
+* Added support for the NVIDIA A100 GPU (and appropriate updates to the underlying components of the operator).
+
+Improvements 
+-------------
+* Updated Node Feature Discovery (NFD) to 0.6.0.
+* Container images are now hosted (and mirrored) on both `DockerHub <https://hub.docker.com/u/nvidiadocker.io>`_ and `NGC <https://ngc.nvidia.com/catalog/containers/nvidia:gpu-operator>`_. 
+
+Fixed issues
+------------
+* Fixed an issue where the GPU operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.
+* Fixed a race condition where some of the NVIDIA pods would start out of order resulting in some pods in ``RunContainerError`` state.
+* Fixed an issue in the driver container where the container would fail to install on systems with the ``linux-gke`` kernel due to not finding the kernel headers.
+
+Known Limitations
+------------------
+See the Known Limitations at the bottom of this page. 
+
+----
+
 1.1.0
 =====
+
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+
+| Component                | Version       |
++==========================+===============+
+| NVIDIA Driver            | 440.64.00     |
++--------------------------+---------------+
+| NVIDIA Container Toolkit | 1.0.5         |
++--------------------------+---------------+
+| NVIDIA K8s Device Plugin | 1.0.0-beta4   |
++--------------------------+---------------+
+| NVIDIA DCGM-Exporter     | 1.7.2         |
++--------------------------+---------------+
+| Node Feature Discovery   | 0.5.0         |
++--------------------------+---------------+
+
 New features
 -------------
 * DCGM is now deployed as part of the GPU Operator on OpenShift 4.3.
@@ -41,10 +98,12 @@ New features
 
 Fixed Issues 
 -------------
-* The driver container now sets up the required dependencies on i2c and ipmi_msghandler modules.
+* The driver container now sets up the required dependencies on ``i2c`` and ``ipmi_msghandler`` modules.
 * Fixed an issue with the validation steps (for the driver and device plugin) taking considerable time. Node provisioning times are now improved by 5x.
 * The SRO custom resource definition is setup as part of the operator.
 * Fixed an issue with the clean up of driver mount files when deleting the operator from the cluster. This issue used to require a reboot of the node, which is no longer required.
+
+----
 
 Known Limitations
 ------------------
@@ -52,7 +111,7 @@ Known Limitations
 
 .. code:: bash
 
-   sudo systemctl restart docker
+  $ sudo systemctl restart docker
 
 * GPU Operator will fail on nodes already setup with NVIDIA components (driver, runtime, device plugin). Support for better error handling will be added in a future release.
 * The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
