@@ -31,6 +31,7 @@ author = u'NVIDIA Corporation'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 copybutton_prompt_text = "$ "
+copybutton_only_copy_prompt_lines = False
 extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.extlinks',
