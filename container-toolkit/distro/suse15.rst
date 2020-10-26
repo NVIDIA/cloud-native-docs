@@ -9,29 +9,29 @@ To install the latest Docker 19.03 CE release on SUSE 15 (OpenSUSE Leap or SLES)
 
 First, set up the repository: 
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo
-
-   sudo zypper refresh
+   $ sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo \
+      && sudo zypper refresh
 
 Install the ``docker`` package:
 
-.. code-block:: bash
+.. code-block:: console
    
-   sudo zypper install docker
+   $ sudo zypper install docker
 
 Ensure the Docker service is running with the following command:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ sudo systemctl start docker \
+      && sudo systemctl enable docker
 
 And finally, test your Docker installation by running the ``hello-world`` container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm hello-world
+   $ sudo docker run --rm hello-world
 
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
@@ -66,36 +66,42 @@ Setting up NVIDIA Container Toolkit
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
-
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-
-   sudo zypper ar https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo
-
 .. note:: 
    
-   You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` in the above command
+   You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` in the command below
+
+
+.. code-block:: console
+
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && sudo zypper ar https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo
 
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo zypper refresh
-   
-   sudo zypper install -y nvidia-docker2
+   $ sudo zypper refresh
+
+.. code-block:: console
+
+   $ sudo zypper install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |

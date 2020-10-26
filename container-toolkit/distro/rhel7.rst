@@ -9,13 +9,13 @@ RHEL includes Docker in the ``Extras`` repository. To install Docker on RHEL 7, 
 
 .. code:: bash
 
-   sudo subscription-manager repos --enable rhel-7-server-extras-rpms
+   $ sudo subscription-manager repos --enable rhel-7-server-extras-rpms
 
 Docker can then be installed using ``yum``
 
 .. code::bash
 
-   sudo yum install docker -y   
+   $ sudo yum install docker -y   
 
 .. seealso:: 
 
@@ -23,23 +23,33 @@ Docker can then be installed using ``yum``
 
 Ensure the Docker service is running with the following command:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ sudo systemctl start docker \
+      && sudo systemctl enable docker
 
 
 And finally, test your Docker installation. We can query the version info: 
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker -v
+   $ sudo docker -v
+
+You should see an output like below:
+
+.. code-block:: console
+
    Docker version 1.13.1, build 64e9980/1.13.1
 
 And run the ``hello-world`` container:
 
 .. code-block::bash 
 
-   sudo docker run --rm hello-world
+   $ sudo docker run --rm hello-world
+
+Giving you the following result:
+
+.. code-block:: console
 
    Hello from Docker!
    This message shows that your installation appears to be working correctly.
@@ -68,20 +78,21 @@ Setting up NVIDIA Container Toolkit
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-   
-   curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 
 On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo yum clean expire-cache
+   $ sudo yum clean expire-cache
 
-   sudo yum install nvidia-container-toolkit -y
+.. code-block:: console
+
+   $ sudo yum install nvidia-container-toolkit -y
 
 .. note::
 
@@ -89,16 +100,20 @@ On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) a
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda:11.0-base nvidia-smi
    
+This should result in a console output shown below:
+
+.. code-block:: console
+
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |
    |-------------------------------+----------------------+----------------------+

@@ -6,11 +6,11 @@ Setting up Docker
 +++++++++++++++++
 Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 
-.. code-block:: bash
+.. code-block:: console
 
-   curl https://get.docker.com | sh
-
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ curl https://get.docker.com | sh \
+     && sudo systemctl start docker \
+     && sudo systemctl enable docker
 
 .. seealso:: 
    
@@ -21,13 +21,11 @@ Setting up NVIDIA Container Toolkit
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-
-    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-
-    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
 .. note::
 
@@ -35,29 +33,35 @@ Setup the ``stable`` repository and the GPG key:
    new `MIG capability <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_ on A100, 
    you may want to add the ``experimental`` branch to the repository listing: 
 
-   .. code-block:: bash
+   .. code-block:: console
    
-      curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
+      $ curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo apt-get update
+   $ sudo apt-get update
    
-   sudo apt-get install -y nvidia-docker2
+.. code-block:: console
+
+   $ sudo apt-get install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |

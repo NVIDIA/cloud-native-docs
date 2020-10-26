@@ -6,11 +6,15 @@ Setting up Docker on CentOS 8
 +++++++++++++++++++++++++++++
 Setup the official Docker CE repository:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+   $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
-   sudo dnf repolist -v
+Now you can observe the packages available from the `docker-ce` repo:
+
+.. code-block:: console
+
+   $ sudo dnf repolist -v
 
 Since CentOS 8 does not support specific versions of ``containerd.io`` packages that are required for newer versions 
 of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce`` 
@@ -18,27 +22,32 @@ packages.
 
 Install the ``containerd.io`` package:
 
-.. code-block:: bash
+.. code-block:: console
    
-   sudo dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+   $ sudo dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
 
 And now install the latest ``docker-ce`` package:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo dnf install docker-ce -y
+   $ sudo dnf install docker-ce -y
 
 Ensure the Docker service is running with the following command:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ sudo systemctl start docker \
+      && sudo systemctl enable docker
 
 And finally, test your Docker installation by running the ``hello-world`` container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm hello-world
+   $ sudo docker run --rm hello-world
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
@@ -73,34 +82,37 @@ Setting up NVIDIA Container Toolkit
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-
-   curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo dnf repolist -v
-   
-   sudo dnf clean expire-cache --refresh
+   $ sudo dnf clean expire-cache --refresh
 
-   sudo dnf install -y nvidia-docker2
+.. code-block:: console
+
+   $ sudo dnf install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |

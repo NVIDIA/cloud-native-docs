@@ -8,27 +8,32 @@ Amazon Linux is available on Amazon EC2 instances. For full install instructions
 
 After launching the official Amazon Linux EC2 image, update the installed packages and install the most recent Docker CE packages: 
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo yum update -y
+   $ sudo yum update -y
 
 Install the ``docker`` package:
 
-.. code-block:: bash
+.. code-block:: console
    
-   sudo amazon-linux-extras install docker
+   $ sudo amazon-linux-extras install docker
 
 Ensure the Docker service is running with the following command:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ sudo systemctl start docker \
+      && sudo systemctl enable docker
 
 And finally, test your Docker installation by running the ``hello-world`` container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm hello-world
+   $ sudo docker run --rm hello-world
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
@@ -63,31 +68,36 @@ Setting up NVIDIA Container Toolkit
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-
-   curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo yum clean expire-cache
+   $ sudo yum clean expire-cache
+
+.. code-block::bash
    
-   sudo yum install nvidia-docker2 -y
+   $ sudo yum install nvidia-docker2 -y
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |
