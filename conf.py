@@ -79,6 +79,7 @@ napoleon_custom_sections = ['Supported backends']
 #html_theme = 'alabaster'
 html_theme = "sphinx_rtd_theme"
 html_theme_path = ["_themes", ]
+html_show_sourcelink = False
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -86,7 +87,7 @@ html_theme_path = ["_themes", ]
 #
 html_logo = "assets/NVLogo_H_B&W.png"
 html_theme_options = {
-    'canonical_url': 'https://docs.nvidia.com/deeplearning/sdk/dali-developer-guide/',
+    'canonical_url': 'https://docs.nvidia.com/datacenter/cloud-native',
     'collapse_navigation': False,
     'display_version': False,
     'logo_only': True,

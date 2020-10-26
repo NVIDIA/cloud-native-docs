@@ -10,7 +10,11 @@ This documents provides an overview of the GPUs and system platform configuratio
 
 GPUs
 ----
-Pascal+ GPUs are supported (incl. NVIDIA A100, T4 and V100)
+Pascal+ GPUs are supported (incl. NVIDIA A100, T4 and V100). 
+
+.. note:: 
+
+   The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported. 
 
 Container Platforms
 -------------------
@@ -31,7 +35,9 @@ The following table includes the support matrix of the GPU Operator releases and
 +--------------------------+---------------+------------------------+----------------+
 | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
 +==========================+===============+========================+================+
-| 1.2.0                    | v1.13+        | Not supported*         | Supported      |
+| 1.3.0                    | v1.13+        | 4.5 and 4.6            | Supported      |
++--------------------------+---------------+------------------------+----------------+
+| 1.2.0                    | v1.13+        | Not supported          | Supported      |
 +--------------------------+---------------+------------------------+----------------+
 | 1.1.7                    | v1.13+        | 4.1, 4.2, 4.3, and 4.4 | Supported      |
 +--------------------------+---------------+------------------------+----------------+
@@ -40,7 +46,6 @@ The following table includes the support matrix of the GPU Operator releases and
 | 1.0.0                    | v1.13+        | Not supported          | Not supported  |
 +--------------------------+---------------+------------------------+----------------+
 
-\* Work in progress 
 
 Linux distributions
 -------------------
@@ -48,11 +53,11 @@ The following Linux distributions are supported:
 
 * Ubuntu 18.04.z, 20.04.z LTS
 * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift
-* CentOS 8 (HVM only, PV not supported)
+.. * CentOS 8 (HVM only, PV not supported)
 
 In addition, the following container management tools are supported:
 
-* Helm v3 (v3.1.z)
+* Helm v3 (v3)
 * Docker CE 19.03.z
 
 .. note::

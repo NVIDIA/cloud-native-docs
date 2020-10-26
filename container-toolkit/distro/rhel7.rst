@@ -7,13 +7,13 @@ Setting up Docker on RHEL 7
 
 RHEL includes Docker in the ``Extras`` repository. To install Docker on RHEL 7, first enable this repository:
 
-.. code:: bash
+.. code:: console
 
    $ sudo subscription-manager repos --enable rhel-7-server-extras-rpms
 
 Docker can then be installed using ``yum``
 
-.. code::bash
+.. code:: console
 
    $ sudo yum install docker -y   
 
@@ -43,7 +43,7 @@ You should see an output like below:
 
 And run the ``hello-world`` container:
 
-.. code-block::bash 
+.. code-block:: console 
 
    $ sudo docker run --rm hello-world
 

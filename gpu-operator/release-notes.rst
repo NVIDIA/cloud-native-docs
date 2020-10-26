@@ -10,6 +10,49 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.3.0
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+
+| Component                | Version       |
++==========================+===============+
+| NVIDIA Driver            | 450.80.02     |
++--------------------------+---------------+
+| NVIDIA Container Toolkit | 1.3.0         |
++--------------------------+---------------+
+| NVIDIA K8s Device Plugin | 0.7.0         |
++--------------------------+---------------+
+| NVIDIA DCGM-Exporter     | 2.1.0         |
++--------------------------+---------------+
+| Node Feature Discovery   | 0.6.0         |
++--------------------------+---------------+
+| GPU Feature Discovery    | 0.2.2         |
++--------------------------+---------------+
+
+New features
+-------------
+* Integrated `GPU Feature Discovery <https://github.com/NVIDIA/gpu-feature-discovery>`_ to automatically generate labels for GPUs leveraging NFD.
+* Added support for Red Hat OpenShift 4.5+.
+
+Improvements 
+-------------
+* Updated DCGM-Exporter to ``2.1.0`` and added profiling metrics by default.
+* Added further capabilities to configure tolerations, node affinity, node selectors, pod security context, resource requirements through the ``ClusterPolicy``.
+* Optimized the footprint of the validation containers images - the image sizes are now down to ~200MB.
+* Validation images are now configurable for air-gapped installations.
+
+Fixed issues
+------------
+* Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue 
+  where the NVIDIA container toolkit would be setup as the default runtime, causing the driver container initialization to fail.
+
+Known Limitations
+------------------
+See the Known Limitations at the bottom of this page. 
+
+----
+
 1.2.0
 =====
 This release of the GPU Operator includes the following components:

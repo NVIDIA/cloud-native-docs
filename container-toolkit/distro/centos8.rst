@@ -10,6 +10,16 @@ Setup the official Docker CE repository:
 
    $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
+.. note:: 
+
+   If you're on a cloud instance such as EC2, then the official `CentOS images <https://wiki.centos.org/Cloud/AWS>`_ may not include 
+   tools such as ``iptables`` which are required for a successful Docker installation. Try this command to get a more functional VM, 
+   before proceeding with the remaining steps outlined in this document.
+
+   .. code-block:: console
+
+      $ sudo dnf install -y tar bzip2 make automake gcc gcc-c++ vim pciutils elfutils-libelf-devel libglvnd-devel iptables
+
 Now you can observe the packages available from the `docker-ce` repo:
 
 .. code-block:: console
@@ -24,7 +34,7 @@ Install the ``containerd.io`` package:
 
 .. code-block:: console
    
-   $ sudo dnf install https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+   $ sudo dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
 
 And now install the latest ``docker-ce`` package:
 
@@ -36,8 +46,8 @@ Ensure the Docker service is running with the following command:
 
 .. code-block:: console
 
-   $ sudo systemctl start docker \
-      && sudo systemctl enable docker
+   $ sudo systemctl enable docker \
+      && sudo systemctl start docker
 
 And finally, test your Docker installation by running the ``hello-world`` container:
 

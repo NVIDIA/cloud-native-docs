@@ -58,37 +58,61 @@ Install Helm
 
 The preferred method to deploy the GPU Operator is using ``helm``.
 
-.. code-block:: bash
+.. code-block:: console
 
-   $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-   $ chmod 700 get_helm.sh
-   $ ./get_helm.sh
+   $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+      && chmod 700 get_helm.sh \
+      && ./get_helm.sh
 
 Install GPU Operator
 ======================
 
 Add the NVIDIA Helm repository:
 
-.. code-block:: bash
+.. code-block:: console
 
-   $ helm repo add nvidia https://nvidia.github.io/gpu-operator
-   $ helm repo update
+   $ helm repo add nvidia https://nvidia.github.io/gpu-operator \
+      && helm repo update
 
 Now setup the operator using the Helm chart:
-
-.. code-block:: bash
-
-   $ helm install nvidia/gpu-operator --wait --generate-name
 
 .. note::
 
    If NFD is already running in the cluster prior to the deployment of the operator, use the ``--set nfd.enabled=false`` Helm chart variable
 
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+      nvidia/gpu-operator
+
+.. note::
+
+   If you want to use custom driver container images (for e.g. using 455.28), then you would need to build a new driver container image. Follow these steps:
+
+   - Modify the Dockerfile (for e.g. by specifying the driver version in the Ubuntu 20.04 container `here <https://gitlab.com/nvidia/container-images/driver/-/blob/master/ubuntu20.04/Dockerfile#L27>`_)
+   - Build the container (e.g. ``docker build --pull -t nvidia/driver:455.28-ubuntu20.04 --file Dockerfile .``). Ensure that the driver container is tagged as shown in the example 
+     by using the ``driver:<version>-<os>`` schema. 
+   - Specify the new driver image and repository by overriding the defaults in the Helm install command. For example: 
+
+      .. code-block:: console
+
+         $ helm install --wait --generate-name \
+            nvidia/gpu-operator \
+            --set driver.repository=docker.io/nvidia \
+            --set driver.version="455.28"
+
+   Note that these instructions are provided for reference and evaluation purposes. Not using the standard releases of the GPU Operator from NVIDIA would mean limited 
+   support for such custom configurations.
+
+
+
 Check the status of the pods to ensure all the containers are running:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -A
+
+.. code-block:: console
    
    NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
    default                  gpu-operator-1597953523-node-feature-discovery-master-5bcfgvtzn   1/1     Running     0          2m18s
@@ -113,7 +137,7 @@ Check the status of the pods to ensure all the containers are running:
 Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
 
 .. image:: graphics/gpu-operator-demo.gif
-   :width: 900
+   :width: 1440
 
 Running Sample GPU Applications
 --------------------------------
@@ -122,24 +146,28 @@ In this example, let's try running a TensorFlow Jupyter notebook.
 
 First, deploy the pods:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl apply -f https://nvidia.github.io/gpu-operator/notebook-example.yml
 
 Check to determine if the pod has successfully started:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pod tf-notebook
+
+.. code-block:: console
    
    NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
    default                  tf-notebook                                                       1/1     Running     0          3m45s
 
 Since the example also includes a service, let's obtain the external port at which the notebook is accessible:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get svc -A
+
+.. code-block:: console
    
    NAMESPACE                NAME                                                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
    default                  tf-notebook                                             NodePort    10.106.229.20   <none>        80:30001/TCP             4m41s
@@ -147,9 +175,11 @@ Since the example also includes a service, let's obtain the external port at whi
 
 And the token for the Jupyter notebook:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl logs tf-notebook
+
+.. code-block:: console
 
    [I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
    [I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf
@@ -185,19 +215,19 @@ chart allows you to get a full cluster monitoring solution up and running by ins
 
 First, add the ``helm`` repo:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm repo add stable https://kubernetes-charts.storage.googleapis.com
 
 Now, search for the available ``prometheus`` charts:
 
-.. code-block:: bash
+.. code-block:: console
    
    $ helm search repo prometheus
 
 Once you’ve located which the version of the chart to use, inspect the chart so we can modify the settings:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm inspect values stable/prometheus-operator > /tmp/prometheus.values
 
@@ -206,7 +236,7 @@ Next, we’ll need to edit the values file to change the port at which the Prome
 section of the chart, change the service type from ``ClusterIP`` to ``NodePort``. This will allow the Prometheus server to be accessible at your 
 machine ip address at port 30090 as ``http://<machine-ip>:30090/``
 
-.. code-block:: bash
+.. code-block:: console
 
    From:
     ## List of IP addresses at which the Prometheus server service is available
@@ -249,7 +279,7 @@ machine ip address at port 30090 as ``http://<machine-ip>:30090/``
 
 Modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` settings to ``false`` below:
 
-.. code-block:: bash
+.. code-block:: console
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
@@ -259,7 +289,7 @@ Modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` settings t
 
 Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in the Helm chart:
 
-.. code-block:: bash
+.. code-block:: console
 
     ## AdditionalScrapeConfigs allows specifying additional Prometheus scrape configurations. Scrape configurations
     ## are appended to the configurations generated by the Prometheus Operator. Job configurations must have the form
@@ -290,9 +320,12 @@ Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in
 
 Finally, we can deploy the Prometheus and Grafana pods using the ``prometheus-operator`` via Helm:
 
-.. code-block:: bash
+.. code-block:: console
 
-   $ helm install stable/prometheus-operator --create-namespace --namespace prometheus --values /tmp/prometheus.values --generate-name
+   $ helm install stable/prometheus-operator \
+      --create-namespace --namespace prometheus \
+      --values /tmp/prometheus.values \
+      --generate-name
 
 .. code-block:: console
 
@@ -310,9 +343,11 @@ Finally, we can deploy the Prometheus and Grafana pods using the ``prometheus-op
 
 Now you can see the Prometheus and Grafana pods:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -A
+
+.. code-block:: console
    
    NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
    default                  gpu-operator-1597965115-node-feature-discovery-master-fbf9rczx5   1/1     Running     1          6h57m
@@ -343,9 +378,11 @@ Now you can see the Prometheus and Grafana pods:
 
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
-.. code-block:: bash
+.. code-block:: console
    
    $ kubectl get svc -A
+
+.. code-block:: console
    
    NAMESPACE                NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
    default                  gpu-operator-1597965115-node-feature-discovery-master     ClusterIP   10.110.46.7      <none>        8080/TCP                       6h57m
@@ -394,7 +431,7 @@ object to expose a ``NodePort`` instead.
 
 First, modify the spec to change the service type:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ cat << EOF | tee grafana-patch.yaml
    spec:
@@ -404,17 +441,21 @@ First, modify the spec to change the service type:
 
 And now use ``kubectl patch``:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl patch svc prometheus-operator-1597990146-grafana -n prometheus --patch "$(cat grafana-patch.yaml)"
+
+.. code-block:: console
 
    service/prometheus-operator-1597990146-grafana patched
 
 You can verify that the service is now exposed at an externally accessible port:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get svc -A
+
+.. code-block:: console
 
    NAMESPACE     NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
    <snip>
@@ -423,7 +464,7 @@ You can verify that the service is now exposed at an externally accessible port:
 Open your browser to ``http://<machine-ip-address>:32258`` and view the Grafana login page. Access Grafana home using the ``admin`` username. 
 The password credentials for the login are available in the ``prometheus.values`` file we edited in the earlier section of the doc:
 
-.. code-block:: bash
+.. code-block:: console
 
    ## Deploy default dashboards.
    ##
@@ -439,21 +480,23 @@ Uninstalling GPU Operator
 
 To uninstall the operator, first obtain the name using the following command:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm ls
 
 Now uninstall the operator:
 
-.. code-block:: bash
+.. code-block:: console
 
-   helm delete <gpu-operator-name>
+   $ helm delete <gpu-operator-name>
 
 You should now see all the pods being deleted:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -n gpu-operator-resources
+
+.. code-block:: console
    
    No resources found.
 
