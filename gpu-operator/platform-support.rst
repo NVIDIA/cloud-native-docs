@@ -57,7 +57,7 @@ The following Linux distributions are supported:
 
 In addition, the following container management tools are supported:
 
-* Helm v3 (v3)
+* Helm v3
 * Docker CE 19.03.z
 
 .. note::

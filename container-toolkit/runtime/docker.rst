@@ -7,7 +7,15 @@ Docker
 -------
 
 The NVIDIA Container Toolkit provides different options for enumerating GPUs and the capabilities that are supported 
-for CUDA containers. 
+for CUDA containers. This user guide demonstrates the following features of the NVIDIA Container Toolkit:
+
+* Registering the NVIDIA runtime as a custom runtime to Docker
+* Using environment variables to enable the following:
+
+  * Enumerating GPUs and controlling which GPUs are visible to the container
+  * Controlling which features of the driver are visible to the container using `capabilities`
+  * Controlling the behavior of the runtime using constraints 
+
 
 Adding the NVIDIA Runtime
 ++++++++++++++++++++++++++
@@ -20,25 +28,31 @@ You might need to merge the new argument with your existing configuration. Three
 
 Systemd drop-in file
 `````````````````````
-.. code:: bash
+.. code-block:: console
 
-    sudo mkdir -p /etc/systemd/system/docker.service.d
-    sudo tee /etc/systemd/system/docker.service.d/override.conf <<EOF
+    $ sudo mkdir -p /etc/systemd/system/docker.service.d
+
+.. code-block:: console
+
+    $ sudo tee /etc/systemd/system/docker.service.d/override.conf <<EOF
     [Service]
     ExecStart=
     ExecStart=/usr/bin/dockerd --host=fd:// --add-runtime=nvidia=/usr/bin/nvidia-container-runtime
     EOF
-    sudo systemctl daemon-reload
-    sudo systemctl restart docker
+
+.. code-block:: console
+
+    $ sudo systemctl daemon-reload \
+      && sudo systemctl restart docker
 
 Daemon configuration file
 `````````````````````````
 
 The ``nvidia`` runtime can also be registered with Docker using the ``daemon.json`` configuration file:
 
-.. code:: bash
+.. code-block:: console
 
-    sudo tee /etc/docker/daemon.json <<EOF
+    $ sudo tee /etc/docker/daemon.json <<EOF
     {
         "runtimes": {
             "nvidia": {
@@ -48,11 +62,14 @@ The ``nvidia`` runtime can also be registered with Docker using the ``daemon.jso
         }
     }
     EOF
+  
+.. code-block:: console
+
     sudo pkill -SIGHUP dockerd
 
 You can optionally reconfigure the default runtime by adding the following to ``/etc/docker/daemon.json``:
 
-.. code:: bash
+.. code-block:: console
 
     "default-runtime": "nvidia"
 
@@ -63,7 +80,7 @@ Use ``dockerd`` to add the ``nvidia`` runtime:
 
 .. code:: bash
 
-    sudo dockerd --add-runtime=nvidia=/usr/bin/nvidia-container-runtime [...]
+    $ sudo dockerd --add-runtime=nvidia=/usr/bin/nvidia-container-runtime [...]
 
 Environment variables (OCI spec)
 ++++++++++++++++++++++++++++++++
@@ -112,45 +129,54 @@ Some examples of the usage are shown below:
 
 #. Starting a GPU enabled CUDA container; using ``--gpus``
 
-   .. code:: bash
+   .. code-block:: console
 
-        docker run --rm --gpus all nvidia/cuda nvidia-smi
+        $ docker run --rm --gpus all nvidia/cuda nvidia-smi
 
 #. Using ``NVIDIA_VISIBLE_DEVICES`` and specify the nvidia runtime
 
-   .. code:: bash
+   .. code-block:: console
 
-      docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
+      $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
     
 #. Start a GPU enabled container on two GPUs
 
-   .. code:: bash
+   .. code-block:: console
 
-      docker run --rm --gpus 2 nvidia/cuda nvidia-smi
+      $ docker run --rm --gpus 2 nvidia/cuda nvidia-smi
 
 #. Starting a GPU enabled container on specific GPUs
 
-  .. code:: bash
+   .. code-block:: console
     
-      docker run --gpus '"device=1,2"' nvidia/cuda nvidia-smi --query-gpu=uuid --format-csv
+      $ docker run --gpus '"device=1,2"' nvidia/cuda nvidia-smi --query-gpu=uuid --format-csv
+
+   .. code-block:: console
+
       uuid
       GPU-ad2367dd-a40e-6b86-6fc3-c44a2cc92c7e
       GPU-16a23983-e73e-0945-2095-cdeb50696982
 
 #. Alternatively, you can also use ``NVIDIA_VISIBLE_DEVICES``
 
-  .. code:: bash
+   .. code-block:: console
 
-      docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=1,2 nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
+      $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=1,2 nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
+
+   .. code-block:: console
+
       uuid
       GPU-ad2367dd-a40e-6b86-6fc3-c44a2cc92c7e
       GPU-16a23983-e73e-0945-2095-cdeb50696982
 
 #. Query the GPU UUID using ``nvidia-smi`` and then specify that to the container
   
-  .. code:: bash
+   .. code-block:: console
   
-      nvidia-smi -i 3 --query-gpu=uuid --format=csv
+      $ nvidia-smi -i 3 --query-gpu=uuid --format=csv
+
+   .. code-block:: console
+
       uuid
       GPU-18a3e86f-4c0e-cd9f-59c3-55488c4b0c24
       
@@ -209,11 +235,13 @@ The supported driver capabilities are provided below:
 
 For example, specify the ``compute`` and ``utility`` capabilities, allowing usage of CUDA and NVML
 
-   .. code:: bash
+   .. code-block:: console
 
-        docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 -e NVIDIA_DRIVER_CAPABILITIES=compute,utility nvidia/cuda nvidia-smi
+        $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 -e NVIDIA_DRIVER_CAPABILITIES=compute,utility nvidia/cuda nvidia-smi
 
-        docker run --rm --gpus 'all,"capabilities=compute,utility"' nvidia/cuda:11.0-base nvidia-smi
+   .. code-block:: console 
+
+        $ docker run --rm --gpus 'all,"capabilities=compute,utility"' nvidia/cuda:11.0-base nvidia-smi
 
 Constraints
 ```````````
@@ -251,7 +279,7 @@ Multiple environment variables of the form ``NVIDIA_REQUIRE_*`` are ANDed togeth
 For example, the following constraints can be specified to the container image for constraining the supported CUDA and 
 driver versions:
 
-.. code:: bash
+.. code-block:: console
 
   NVIDIA_REQUIRE_CUDA "cuda>=11.0 driver>=450"
 
@@ -278,7 +306,7 @@ set inside the Dockerfile, you don't need to set them on the ``docker run`` comm
 
 For instance, if you are creating your own custom CUDA container, you should use the following:
 
-.. code:: bash
+.. code-block:: console
 
   ENV NVIDIA_VISIBLE_DEVICES all
   ENV NVIDIA_DRIVER_CAPABILITIES compute,utility

@@ -22,7 +22,7 @@ in this document).
 
 NVIDIA Drivers
 ==============
-This section provides a summary of the steps for installing the driver using the ``apt`` package manager on Ubuntu 18.04 LTS.
+This section provides a summary of the steps for installing the driver using the ``apt`` package manager on Ubuntu LTS.
 
 .. note::
 
@@ -32,32 +32,32 @@ This section provides a summary of the steps for installing the driver using the
 
 Install the kernel headers and development packages for the currently running kernel:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo apt-get install linux-headers-$(uname -r)
+   $ sudo apt-get install linux-headers-$(uname -r)
 
 Setup the CUDA network repository and ensure packages on the CUDA network repository have priority over the Canonical repository:
 
-.. code-block:: bash
+.. code-block:: console
 
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g')
-   wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/cuda-$distribution.pin
-   sudo mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g') \
+      && wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/cuda-$distribution.pin \
+      && sudo mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600
 
 Install the CUDA repository GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub
-   echo "deb http://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list
+   $ sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub \
+      && echo "deb http://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list
 
 Update the ``apt`` repository cache and install the driver using the ``cuda-drivers`` meta-package. Use the ``--no-install-recommends`` option for a lean driver install 
 without any dependencies on X packages. This is particularly useful for headless installations on cloud instances:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo apt-get update
-   sudo apt-get -y install cuda-drivers
+   $ sudo apt-get update \
+      && sudo apt-get -y install cuda-drivers
 
 ----
 
@@ -65,10 +65,13 @@ Install Docker
 ==============
 Use the official Docker script to install the latest release of Docker:
 
-.. code-block:: bash
+.. code-block:: console
 
-   curl https://get.docker.com | sh
-   sudo systemctl start docker && sudo systemctl enable docker
+   $ curl https://get.docker.com | sh
+
+.. code-block:: console
+
+   $ sudo systemctl start docker && sudo systemctl enable docker
 
 ----
 
@@ -78,24 +81,24 @@ To run GPU accelerated containers in Docker, NVIDIA Container Toolkit for Docker
 
 Setup the ``stable`` repository and the GPG key:
 
-.. code-block:: bash
+.. code-block:: console
 
-   distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-   curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-   curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
 Install the NVIDIA runtime packages (and their dependencies) after updating the package listing:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo apt-get update
-   sudo apt-get install -y nvidia-docker2
+   $ sudo apt-get update \
+      && sudo apt-get install -y nvidia-docker2
 
 Since Kubernetes does not support the ``--gpus`` option with Docker yet, the ``nvidia`` runtime should be setup as the 
 default container runtime for Docker on the GPU node. This can be done by adding the ``default-runtime`` line into the Docker daemon 
 config file, which is usually located on the system at ``/etc/docker/daemon.json``:
 
-.. code-block:: bash
+.. code-block:: console
 
    {
       "default-runtime": "nvidia",
@@ -109,15 +112,19 @@ config file, which is usually located on the system at ``/etc/docker/daemon.json
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo systemctl restart docker
+   $ sudo systemctl restart docker
 
 At this point, a working setup can be tested by running a base CUDA container:
 
-.. code-block:: bash
+.. code-block:: console
 
-   sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+You should observe an output as shown below:
+
+.. code-block:: console
 
    +-----------------------------------------------------------------------------+
    | NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |
@@ -154,22 +161,22 @@ and allows pods to be run on GPUs.
 
 The preferred method to deploy the device plugin is as a daemonset using ``helm``. First, install Helm:
 
-.. code-block:: bash
+.. code-block:: console
 
-   $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && \
-   chmod 700 get_helm.sh && \
-   ./get_helm.sh
+   $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+      && chmod 700 get_helm.sh \
+      && ./get_helm.sh
 
 Add the ``nvidia-device-plugin`` ``helm`` repository:
 
-.. code-block:: bash
+.. code-block:: console
 
-   $ helm repo add nvdp https://nvidia.github.io/k8s-device-plugin && \
-     helm repo update
+   $ helm repo add nvdp https://nvidia.github.io/k8s-device-plugin \
+      && helm repo update
 
 Deploy the device plugin:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm install --generate-name nvdp/nvidia-device-plugin
 
@@ -177,7 +184,7 @@ For more user configurable options while deploying the daemonset, refer to the `
 
 At this point, all the pods should be deployed:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -A
 
@@ -197,13 +204,9 @@ At this point, all the pods should be deployed:
 
 To test whether CUDA jobs can be deployed, run a sample CUDA ``vectorAdd`` application:
 
-.. code-block:: bash
-
-   $ curl -fsSL -o gpu-pod.yaml https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/tests/gpu-pod.yaml
-
 The pod spec is shown for reference below, which requests 1 GPU:
 
-.. code-block:: bash
+.. code-block:: console
 
    apiVersion: v1
    kind: Pod
@@ -213,21 +216,20 @@ The pod spec is shown for reference below, which requests 1 GPU:
    restartPolicy: OnFailure
    containers:
       - name: cuda-vector-add
-         # https://github.com/kubernetes/kubernetes/blob/v1.7.11/test/images/nvidia-cuda/Dockerfile
-         image: "k8s.gcr.io/cuda-vector-add:v0.1"
+         image: "nvidia/samples:vectoradd-cuda10.2"
          resources:
          limits:
             nvidia.com/gpu: 1
 
-Now, deploy the application:
+Save this podspec as ``gpu-pod.yaml``. Now, deploy the application:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl apply -f gpu-pod.yaml
 
 Check the logs to ensure the app completed successfully: 
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods gpu-operator-test
 
@@ -238,7 +240,7 @@ Check the logs to ensure the app completed successfully:
 
 And check the logs of the ``gpu-operator-test`` pod: 
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl logs gpu-operator-test
 
@@ -284,7 +286,7 @@ chart allows you to get a full cluster monitoring solution up and running by ins
 
 First, add the ``helm`` repo:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm repo add prometheus-community \
       https://prometheus-community.github.io/helm-charts
@@ -292,13 +294,13 @@ First, add the ``helm`` repo:
 
 Now, search for the available ``prometheus`` charts:
 
-.. code-block:: bash
+.. code-block:: console
    
    $ helm search repo kube-prometheus
 
 Once you’ve located which the version of the chart to use, inspect the chart so we can modify the settings:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm inspect values prometheus-community/kube-prometheus-stack > /tmp/kube-prometheus-stack.values
 
@@ -307,7 +309,7 @@ Next, we’ll need to edit the values file to change the port at which the Prome
 section of the chart, change the service type from ``ClusterIP`` to ``NodePort``. This will allow the Prometheus server to be accessible at your 
 machine ip address at port 30090 as ``http://<machine-ip>:30090/``
 
-.. code-block:: bash
+.. code-block:: console
 
    From:
     ## Port to expose on each node
@@ -339,7 +341,7 @@ machine ip address at port 30090 as ``http://<machine-ip>:30090/``
 
 Also, modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` settings to ``false`` below:
 
-.. code-block:: bash
+.. code-block:: console
 
     ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
     ## prometheus resource to be created with selectors based on values in the helm deployment,
@@ -350,7 +352,7 @@ Also, modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` sett
 
 Finally, we can deploy the Prometheus and Grafana pods using the ``kube-prometheus-stack`` via Helm:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm install prometheus-community/kube-prometheus-stack \
       --create-namespace --namespace prometheus \
@@ -372,7 +374,7 @@ Finally, we can deploy the Prometheus and Grafana pods using the ``kube-promethe
 
 At this point, you should see all the pods deployed and running:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -A
 
@@ -398,7 +400,7 @@ At this point, you should see all the pods deployed and running:
 
 And also observe the services:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get svc -A
 
@@ -427,24 +429,24 @@ Setting up DCGM
 ----------------
 Now, we will deploy ``dcgm-exporter`` to gather GPU telemetry. First, lets setup the Helm repo:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm repo add gpu-helm-charts \
-   https://nvidia.github.io/gpu-monitoring-tools/helm-charts
+      https://nvidia.github.io/gpu-monitoring-tools/helm-charts
 
 And then update the Helm repo:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm repo update
 
 Install the ``dcgm-exporter`` chart:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm repo update
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm install \
       --generate-name \
@@ -452,7 +454,7 @@ Install the ``dcgm-exporter`` chart:
 
 Now, you can observe the ``dcgm-exporter`` pod:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get pods -A
 
@@ -479,7 +481,7 @@ Now, you can observe the ``dcgm-exporter`` pod:
 
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
-.. code-block:: bash
+.. code-block:: console
    
    $ kubectl get svc -A
 
@@ -528,7 +530,7 @@ object to expose a ``NodePort`` instead.
 
 First, modify the spec to change the service type:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ cat << EOF | tee grafana-patch.yaml
    spec:
@@ -538,7 +540,7 @@ First, modify the spec to change the service type:
 
 And now use ``kubectl patch``:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl patch svc kube-prometheus-stack-1603211794-grafana \
       -n prometheus \
@@ -550,7 +552,7 @@ And now use ``kubectl patch``:
 
 You can verify that the service is now exposed at an externally accessible port:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl get svc -A
 
@@ -582,7 +584,7 @@ First, it can be observed that the Grafana service is available at port 80. We w
 we will forward from port 32322 on our local machine to port 80 on the service (which in turn will forward to port 3000 that the Grafana pod is listening at, as 
 shown below): 
 
-.. code-block:: bash
+.. code-block:: console
 
    $ kubectl port-forward svc/kube-prometheus-stack-1603211794-grafana -n prometheus 32322:80
 
@@ -637,7 +639,7 @@ In this section, let's run a more complicated application and view the GPU metri
 We can use the standard *DeepStream Intelligent Video Analytics* `Demo <https://ngc.nvidia.com/catalog/helm-charts/nvidia:video-analytics-demo>`_ available on the NGC registry. 
 For our example, let's use the Helm chart to use the WebUI:
 
-.. code-block:: bash
+.. code-block:: console
 
    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/video-analytics-demo-0.1.4.tgz && \
       helm install video-analytics-demo-0.1.4.tgz --generate-name

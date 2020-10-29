@@ -12,16 +12,20 @@ Version 1.0 of ``nvidia-docker`` must be cleanly removed before continuing. You 
 
 On Ubuntu distributions:
 
-.. code-block:: bash
+.. code-block:: console
 
-    docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
+    $ docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
+
+ .. code-block:: console
     
-    sudo apt-get purge nvidia-docker
+    $ sudo apt-get purge nvidia-docker
 
 On CentOS distributions:
 
-.. code-block:: bash
+.. code-block:: console
 
-    docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
+    $ docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
+
+ .. code-block:: console
     
-    sudo yum remove nvidia-docker
+    $ sudo yum remove nvidia-docker

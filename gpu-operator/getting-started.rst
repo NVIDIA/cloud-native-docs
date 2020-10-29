@@ -34,7 +34,7 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 Red Hat OpenShift 4
 ====================
 
-For installing the GPU Operator on clusters with Red Hat OpenShift 4.1, 4.2 and 4.3 using RHCOS worker nodes, 
+For installing the GPU Operator on clusters with Red Hat OpenShift 4.5 and 4.6 using RHCOS worker nodes, 
 follow the `user guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_.
 
 ----
@@ -505,6 +505,6 @@ and will be addressed in a future release of the operator.
 
 Run the following command:
 
-.. code:: bash
+.. code-block:: console
 
   $ sudo systemctl restart docker

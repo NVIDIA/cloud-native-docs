@@ -37,7 +37,7 @@ Configuration
 
 You will need to update the NVIDIA Container Toolkit config file (``/etc/nvidia-container-runtime/config.toml``) so that the ``root`` directive points to the driver container as shown below:
 
-.. code-block:: bash
+.. code-block:: console
 
   disable-require = false
   #swarm-resource = "DOCKER_RESOURCE_GPU"
@@ -67,59 +67,61 @@ Follow the `guide <https://docs.nvidia.com/datacenter/cloud-native/container-too
 
 Now modify the configuration to update the ``root`` directive:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
+  $ sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
 
 Disable the Nouveau driver modules:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo tee /etc/modules-load.d/ipmi.conf <<< "ipmi_msghandler"
-  sudo tee /etc/modprobe.d/blacklist-nouveau.conf <<< "blacklist nouveau"
-  sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <<< "options nouveau modeset=0"
+  $ sudo tee /etc/modules-load.d/ipmi.conf <<< "ipmi_msghandler" \
+    && sudo tee /etc/modprobe.d/blacklist-nouveau.conf <<< "blacklist nouveau" \
+    && sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <<< "options nouveau modeset=0"
 
 If using an AWS kernel, ensure that the ``i2c_core`` kernel module is enabled:
 
-.. code-block:: bash
+.. code-block:: console
 
-  # If you are running with an AWS kernel
-  sudo tee /etc/modules-load.d/ipmi.conf <<< "i2c_core"
+  $ sudo tee /etc/modules-load.d/ipmi.conf <<< "i2c_core"
 
 Update the ``initramfs``:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo update-initramfs -u
+  $ sudo update-initramfs -u
 
-  # Optionally, if the kernel is not up to date
-  # sudo apt-get dist-upgrade
+Optionally, if the kernel is not up to date
+
+.. code-block:: console
+  
+  $ sudo apt-get dist-upgrade
 
 Reboot your system (or VM) if required:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo reboot
+  $ sudo reboot
 
 Run the driver container:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo docker run --name nvidia-driver -d --privileged --pid=host \ 
-  -v /run/nvidia:/run/nvidia:shared \ 
-  -v /var/log:/var/log \ 
-  --restart=unless-stopped \
-  nvidia/driver:440.64.00-ubuntu18.04
+  $ sudo docker run --name nvidia-driver -d --privileged --pid=host \ 
+    -v /run/nvidia:/run/nvidia:shared \ 
+    -v /var/log:/var/log \ 
+    --restart=unless-stopped \
+    nvidia/driver:450.80.02-ubuntu18.04
 
 Once the driver container is running, try running a GPU container:
 
-.. code-block:: bash
+.. code-block:: console
 
-  sudo docker run --gpus all nvidia/cuda:10.2-base nvidia-smi
+  $ sudo docker run --gpus all nvidia/cuda:11.0-base nvidia-smi
 
 
 .. image:: graphics/driver-container-demo.gif
-   :width: 800
+   :width: 1440
 
 Container Images
 =================

@@ -98,8 +98,8 @@ into docker's ``/etc/docker/daemon.json`` file. This then allows you to run (for
 It also installs a wrapper script around the native docker CLI called ``nvidia-docker`` which lets you invoke docker without needing to specify ``--runtime=nvidia`` every single time. 
 It also lets you set an environment variable on the host (``NV_GPU``) to specify which GPUs should be injected into a container.
 
-Recommended Install Packages
-=============================
+Which package should I use then?
+=================================
 
 Given this hierarchy of components it's easy to see that if you only install ``nvidia-container-toolkit``, then you will not get 
 ``nvidia-container-runtime`` installed as part of it, and thus ``--runtime=nvidia`` will not be available to you. With Docker 19.03+, this is fine because Docker directly 
@@ -111,7 +111,8 @@ down to docker through the ``--gpus`` flag yet. It still relies on ``nvidia-cont
 The same container runtime stack is used regardless of whether ``nvidia-docker2`` or ``nvidia-container-toolkit`` is used. Using ``nvidia-docker2`` will install a thin runtime 
 that can proxy GPU information down to ``nvidia-container-toolkit`` via environment variables instead of relying on the ``--gpus`` flag to have Docker do it directly. 
 
-For purposes of simplicity (and backwards compatibility), it is recommended to continue using ``nvidia-docker2`` as the top-level install package. 
+For purposes of simplicity (and backwards compatibility), it is recommended to continue using ``nvidia-docker2`` as the top-level install package.
+
 See the :ref:`install-guide` for more information on installing ``nvidia-docker2`` on various Linux distributions.
 
 Package Repository
