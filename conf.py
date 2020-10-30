@@ -87,7 +87,7 @@ html_show_sourcelink = False
 #
 html_logo = "assets/NVLogo_H_B&W.png"
 html_theme_options = {
-    'canonical_url': 'https://docs.nvidia.com/datacenter/cloud-native',
+    'canonical_url': 'https://docs.nvidia.com/datacenter/cloud-native/',
     'collapse_navigation': False,
     'display_version': False,
     'logo_only': True,
