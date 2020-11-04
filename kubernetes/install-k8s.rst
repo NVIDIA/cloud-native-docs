@@ -45,7 +45,7 @@ Now, setup networking with Calico:
 
 .. code-block:: console
 
-   $ sudo kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   $ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
 Untaint the control plane, so it can be used to schedule GPU pods in our simplistic single-node cluster:
 

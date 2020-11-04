@@ -211,15 +211,16 @@ The pod spec is shown for reference below, which requests 1 GPU:
    apiVersion: v1
    kind: Pod
    metadata:
-   name: gpu-operator-test
+     name: gpu-operator-test
    spec:
    restartPolicy: OnFailure
    containers:
-      - name: cuda-vector-add
-         image: "nvidia/samples:vectoradd-cuda10.2"
-         resources:
+   - name: cuda-vector-add
+      image: "nvidia/samples:vectoradd-cuda10.2"
+      resources:
          limits:
             nvidia.com/gpu: 1
+
 
 Save this podspec as ``gpu-pod.yaml``. Now, deploy the application:
 
@@ -275,155 +276,7 @@ GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be 
 scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
 
-The rest of this section walks through how to setup Prometheus, Grafana using Operators and then deploy ``dcgm-exporter``.
-
-Setting up Prometheus
----------------------
-Implementing a Prometheus stack can be complicated but can be managed by taking advantage of the ``Helm`` package manager and 
-the `Prometheus Operator <https://github.com/coreos/prometheus-operator>`_ and `kube-prometheus <https://github.com/coreos/kube-prometheus>`_ projects. 
-The Operator uses standard configurations and dashboards for Prometheus and Grafana and the Helm `prometheus-operator <https://github.com/helm/charts/tree/master/stable/prometheus-operator>`_ 
-chart allows you to get a full cluster monitoring solution up and running by installing Prometheus Operator and the rest of the components listed above.
-
-First, add the ``helm`` repo:
-
-.. code-block:: console
-
-   $ helm repo add prometheus-community \
-      https://prometheus-community.github.io/helm-charts
-
-
-Now, search for the available ``prometheus`` charts:
-
-.. code-block:: console
-   
-   $ helm search repo kube-prometheus
-
-Once you’ve located which the version of the chart to use, inspect the chart so we can modify the settings:
-
-.. code-block:: console
-
-   $ helm inspect values prometheus-community/kube-prometheus-stack > /tmp/kube-prometheus-stack.values
-
-
-Next, we’ll need to edit the values file to change the port at which the Prometheus server service is available. In the ``prometheus`` instance 
-section of the chart, change the service type from ``ClusterIP`` to ``NodePort``. This will allow the Prometheus server to be accessible at your 
-machine ip address at port 30090 as ``http://<machine-ip>:30090/``
-
-.. code-block:: console
-
-   From:
-    ## Port to expose on each node
-    ## Only used if service.type is 'NodePort'
-    ##
-    nodePort: 30090
-
-    ## Loadbalancer IP
-    ## Only use if service.type is "loadbalancer"
-    loadBalancerIP: ""
-    loadBalancerSourceRanges: []
-    ## Service type
-    ##
-    type: ClusterIP
-
-   To:
-    ## Port to expose on each node
-    ## Only used if service.type is 'NodePort'
-    ##
-    nodePort: 30090
-
-    ## Loadbalancer IP
-    ## Only use if service.type is "loadbalancer"
-    loadBalancerIP: ""
-    loadBalancerSourceRanges: []
-    ## Service type
-    ##
-    type: NodePort
-
-Also, modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` settings to ``false`` below:
-
-.. code-block:: console
-
-    ## If true, a nil or {} value for prometheus.prometheusSpec.serviceMonitorSelector will cause the
-    ## prometheus resource to be created with selectors based on values in the helm deployment,
-    ## which will also match the servicemonitors created
-    ##
-    serviceMonitorSelectorNilUsesHelmValues: false
-
-
-Finally, we can deploy the Prometheus and Grafana pods using the ``kube-prometheus-stack`` via Helm:
-
-.. code-block:: console
-
-   $ helm install prometheus-community/kube-prometheus-stack \
-      --create-namespace --namespace prometheus \
-      --generate-name \
-      --values /tmp/kube-prometheus-stack.values
-
-.. code-block:: console
-
-   NAME: kube-prometheus-stack-1603211794
-   LAST DEPLOYED: Tue Oct 20 16:36:39 2020
-   NAMESPACE: prometheus
-   STATUS: deployed
-   REVISION: 1
-   NOTES:
-   kube-prometheus-stack has been installed. Check its status by running:
-   kubectl --namespace prometheus get pods -l "release=kube-prometheus-stack-1603211794"
-
-   Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
-
-At this point, you should see all the pods deployed and running:
-
-.. code-block:: console
-
-   $ kubectl get pods -A
-
-.. code-block:: console
-
-   NAMESPACE     NAME                                                              READY   STATUS      RESTARTS   AGE
-   kube-system   calico-kube-controllers-8f59968d4-g28x8                           1/1     Running     1          21m
-   kube-system   calico-node-zfnfk                                                 1/1     Running     1          21m
-   kube-system   coredns-f9fd979d6-p7djj                                           1/1     Running     1          21m
-   kube-system   coredns-f9fd979d6-qhhgq                                           1/1     Running     1          21m
-   kube-system   etcd-ip-172-31-92-253                                             1/1     Running     1          22m
-   kube-system   kube-apiserver-ip-172-31-92-253                                   1/1     Running     2          22m
-   kube-system   kube-controller-manager-ip-172-31-92-253                          1/1     Running     1          22m
-   kube-system   kube-proxy-mh528                                                  1/1     Running     1          21m
-   kube-system   kube-scheduler-ip-172-31-92-253                                   1/1     Running     1          22m
-   kube-system   nvidia-device-plugin-1603211071-7hlk6                             1/1     Running     0          14m
-   prometheus    alertmanager-kube-prometheus-stack-1603-alertmanager-0            2/2     Running     0          2m
-   prometheus    kube-prometheus-stack-1603-operator-6b95bcdc79-wmbkn              2/2     Running     0          2m4s
-   prometheus    kube-prometheus-stack-1603211794-grafana-67ff56c449-tlmxc         2/2     Running     0          2m4s
-   prometheus    kube-prometheus-stack-1603211794-kube-state-metrics-877df67c49f   1/1     Running     0          2m4s
-   prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter-b5fl9   1/1     Running     0          2m4s
-   prometheus    prometheus-kube-prometheus-stack-1603-prometheus-0                3/3     Running     1          2m
-
-And also observe the services:
-
-.. code-block:: console
-
-   $ kubectl get svc -A
-
-.. code-block:: console
-
-   NAMESPACE     NAME                                                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                        AGE
-   default       kubernetes                                                  ClusterIP   10.96.0.1       <none>        443/TCP                        24m
-   kube-system   kube-dns                                                    ClusterIP   10.96.0.10      <none>        53/UDP,53/TCP,9153/TCP         24m
-   kube-system   kube-prometheus-stack-1603-coredns                          ClusterIP   None            <none>        9153/TCP                       4m24s
-   kube-system   kube-prometheus-stack-1603-kube-controller-manager          ClusterIP   None            <none>        10252/TCP                      4m24s
-   kube-system   kube-prometheus-stack-1603-kube-etcd                        ClusterIP   None            <none>        2379/TCP                       4m24s
-   kube-system   kube-prometheus-stack-1603-kube-proxy                       ClusterIP   None            <none>        10249/TCP                      4m24s
-   kube-system   kube-prometheus-stack-1603-kube-scheduler                   ClusterIP   None            <none>        10251/TCP                      4m24s
-   kube-system   kube-prometheus-stack-1603-kubelet                          ClusterIP   None            <none>        10250/TCP,10255/TCP,4194/TCP   4m20s
-   prometheus    alertmanager-operated                                       ClusterIP   None            <none>        9093/TCP,9094/TCP,9094/UDP     4m20s
-   prometheus    kube-prometheus-stack-1603-alertmanager                     ClusterIP   10.100.20.237   <none>        9093/TCP                       4m24s
-   prometheus    kube-prometheus-stack-1603-operator                         ClusterIP   10.111.1.27     <none>        8080/TCP,443/TCP               4m24s
-   prometheus    kube-prometheus-stack-1603-prometheus                       NodePort    10.99.188.46    <none>        9090:30090/TCP                 4m24s
-   prometheus    kube-prometheus-stack-1603211794-grafana                    ClusterIP   10.109.219.60   <none>        80/TCP                         4m24s
-   prometheus    kube-prometheus-stack-1603211794-kube-state-metrics         ClusterIP   10.103.250.41   <none>        8080/TCP                       4m24s
-   prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter   ClusterIP   10.108.225.36   <none>        9100/TCP                       4m24s
-   prometheus    prometheus-operated                                         ClusterIP   None            <none>        9090/TCP                       4m20s
-
+The rest of this section walks through how to deploy ``dcgm-exporter`` and then setup Prometheus, Grafana using Operators.
 
 Setting up DCGM
 ----------------
@@ -444,15 +297,36 @@ Install the ``dcgm-exporter`` chart:
 
 .. code-block:: console
 
-   $ helm repo update
-
-.. code-block:: console
-
    $ helm install \
       --generate-name \
       gpu-helm-charts/dcgm-exporter
 
 Now, you can observe the ``dcgm-exporter`` pod:
+
+.. code-block:: console
+
+   $ kubectl get pods -A
+
+.. code-block:: console
+
+   NAMESPACE     NAME                                                              READY   STATUS      RESTARTS   AGE
+   default       dcgm-exporter-2-1603213075-w27mx                                  1/1     Running     0          2m18s
+   kube-system   calico-kube-controllers-8f59968d4-g28x8                           1/1     Running     1          43m
+   kube-system   calico-node-zfnfk                                                 1/1     Running     1          43m
+   kube-system   coredns-f9fd979d6-p7djj                                           1/1     Running     1          43m
+   kube-system   coredns-f9fd979d6-qhhgq                                           1/1     Running     1          43m
+   kube-system   etcd-ip-172-31-92-253                                             1/1     Running     1          43m
+   kube-system   kube-apiserver-ip-172-31-92-253                                   1/1     Running     2          43m
+   kube-system   kube-controller-manager-ip-172-31-92-253                          1/1     Running     1          43m
+   kube-system   kube-proxy-mh528                                                  1/1     Running     1          43m
+   kube-system   kube-scheduler-ip-172-31-92-253                                   1/1     Running     1          43m
+   kube-system   nvidia-device-plugin-1603211071-7hlk6                             1/1     Running     0          35m
+
+.. Shared content for kube-prometheus
+
+.. include:: ../kubernetes/kube-prometheus.rst
+
+Now you can see the Prometheus and Grafana pods:
 
 .. code-block:: console
 

@@ -33,7 +33,7 @@ This release of the GPU Operator includes the following components:
 New features
 -------------
 * Integrated `GPU Feature Discovery <https://github.com/NVIDIA/gpu-feature-discovery>`_ to automatically generate labels for GPUs leveraging NFD.
-* Added support for Red Hat OpenShift 4.4+. The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog 
+* Added support for Red Hat OpenShift 4.4+ (i.e. 4.4.29+, 4.5 and 4.6). The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog 
   `listing <https://catalog.redhat.com/software/operators/nvidia/gpu-operator/5ea882962937381642a232cd>`_ for more information.
 
 Improvements 
