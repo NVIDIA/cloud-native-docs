@@ -4,13 +4,13 @@ This is the documentation repository for software under the NVIDIA Cloud Native 
 
 ## Building Documentation
 
-Use the `Dockerfile` in the repository to generate the custom doc build container. The `Dockerfile` is based off the official `spinhxdoc` container and includes some customizations 
-(e.g. the `sphinx-copybutton`).
+Use the `Dockerfile` in the repository (under the ``docker`` directory) to generate the custom doc build container. The `Dockerfile` is based 
+off the official `spinhxdoc` container and includes some customizations (e.g. the `sphinx-copybutton`).
 
 ```console
 docker build --pull \
     --tag cnt-doc-builder \
-    --file Dockerfile .
+    --file docker/Dockerfile .
 ```
 The docs can then be built using the custom doc build container `cnt-doc-builder` from the previous step:
 
@@ -21,4 +21,4 @@ docker run -it --rm \
     make html
 ```
 
-The resulting HTML pages are located in the `_build/html` directory.
+The resulting HTML pages are located in the `_build/html` sub-directory of your ``<path-to-local-workspace>/cnt-docs`` directory.

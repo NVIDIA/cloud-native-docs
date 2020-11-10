@@ -7,6 +7,7 @@ variables:
 stages:
 - build_image
 - build_docs
+- stage_docs
 
 services:
   - docker:19.03.12-dind
@@ -19,7 +20,7 @@ before_script:
 build_image:
   stage: build_image
   script:
-    - docker build --pull --tag "${CI_REGISTRY}"/"${IMAGE_NAME}" --file Dockerfile .
+    - docker build --pull --tag "${CI_REGISTRY}"/"${IMAGE_NAME}" --file docker/Dockerfile .
     - docker push "${CI_REGISTRY}"/"${IMAGE_NAME}"
 
 build_docs:
@@ -34,5 +35,9 @@ build_docs:
   - docker cp "${CONTAINER_NAME}:${DOC_BUILD_PATH}" "${DOC_STAGE_PATH}"
   - docker rm -f ${CONTAINER_NAME}
   - docker rmi "${CI_REGISTRY}"/"${IMAGE_NAME}"
+
+stage_docs:
+  stage: stage_docs
+  script:
   - export STAGING_URL="http://${CI_RUNNER_DESCRIPTION}/html/${CI_PIPELINE_ID}"
-  - echo "Looks like everything was built OK. See the docs at ${STAGING_URL}"
+  - echo "Looks like everything was built OK. See the staged docs at ${STAGING_URL}"

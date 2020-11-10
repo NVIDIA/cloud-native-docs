@@ -4,6 +4,7 @@
 *****************************************
 Integrating GPU Telemetry into Kubernetes
 *****************************************
+
 Understanding GPU usage provides important insights for IT administrators managing a data center. 
 Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation, 
 diagnose anomalies, and increase overall data center efficiency. As GPUs become more mainstream in 
@@ -147,9 +148,13 @@ You should observe an output as shown below:
    +-----------------------------------------------------------------------------+
 
 ----
+
+Install Kubernetes
+===================
+
 .. Shared content for K8s
 
-.. include:: install-k8s.rst
+Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes cluster.
 
 ----
 
@@ -213,11 +218,11 @@ The pod spec is shown for reference below, which requests 1 GPU:
    metadata:
      name: gpu-operator-test
    spec:
-   restartPolicy: OnFailure
-   containers:
-   - name: cuda-vector-add
-      image: "nvidia/samples:vectoradd-cuda10.2"
-      resources:
+     restartPolicy: OnFailure
+     containers:
+     - name: cuda-vector-add
+       image: "nvidia/samples:vectoradd-cuda10.2"
+       resources:
          limits:
             nvidia.com/gpu: 1
 

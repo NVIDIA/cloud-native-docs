@@ -47,14 +47,16 @@ For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting
 
 ----
 
-The rest of this document includes instructions for installing the GPU Operator on Ubuntu 18.04 LTS and CentOS 8. 
+The rest of this document includes instructions for installing the GPU Operator supported Linux distributions. 
 
+Install Kubernetes
+===================
 .. Shared content for K8s
 
-.. include:: ../kubernetes/install-k8s.rst
+Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes cluster.
 
 Install Helm
--------------
+=============
 
 The preferred method to deploy the GPU Operator is using ``helm``.
 

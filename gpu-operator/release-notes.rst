@@ -153,7 +153,7 @@ Known Limitations
 ------------------
 * After the removal of the GPU Operator, a restart of the Docker daemon is required as the default container runtime is setup to be the NVIDIA runtime. Run the following command:
 
-.. code:: bash
+.. code-block:: console
 
   $ sudo systemctl restart docker
 
