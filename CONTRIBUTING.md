@@ -5,6 +5,8 @@ patches are accepted and merged, we require that these relatively simple guideli
 * Adhere to the documentation style guidelines
 * Sign your work
 
+Also, read an [overview](https://developers.google.com/tech-writing/overview) on Technical Writing from Google on authoring good technical content! 
+
 ## Documentation style guidelines
 
 This documentation is authored using [reStructuredText](http://docutils.sourceforge.net/rst.html) as a markup language and uses the 
