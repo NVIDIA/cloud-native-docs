@@ -47,6 +47,13 @@ the NVIDIA Device Plugin for Kubernetes.
 
    driver-containers/overview.rst
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Playground:
+
+   playground/dind.rst
+   playground/x-arch.rst
+
 .. Indices and tables
 .. ==================
 ..
