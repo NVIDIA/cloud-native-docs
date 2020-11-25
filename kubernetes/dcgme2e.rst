@@ -389,7 +389,7 @@ You can observe that the Prometheus server is available at port 30090 on the nod
 It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL`` 
 in the event bar to determine if the GPU metrics are visible:
 
-.. image:: graphics/001-dcgm-e2e-prom-screenshot.png
+.. image:: graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
    :width: 800
 
 Using Grafana 
@@ -452,7 +452,7 @@ The password credentials for the login are available in the ``prometheus.values`
 
    adminPassword: prom-operator 
 
-.. image:: graphics/002-dcgm-e2e-grafana-screenshot.png
+.. image:: graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
 Port Forwarding
@@ -484,29 +484,29 @@ DCGM Dashboard in Grafana
 -------------------------
 To add a dashboard for DCGM, you can use a standard dashboard that NVIDIA has made available, which can also be customized. 
 
-.. image:: graphics/003-dcgm-e2e-grafana-home-screenshot.png
+.. image:: graphics/dcgm-e2e/003-dcgm-e2e-grafana-home-screenshot.png
    :width: 800
 
 To access the dashboard, navigate from the Grafana home page to Dashboards -> Manage -> Import:
 
-.. image:: graphics/004-dcgm-e2e-grafana-manage-screenshot.png
+.. image:: graphics/dcgm-e2e/004-dcgm-e2e-grafana-manage-screenshot.png
    :width: 800
 
-.. image:: graphics/005-dcgm-e2e-grafana-import-screenshot.png
+.. image:: graphics/dcgm-e2e/005-dcgm-e2e-grafana-import-screenshot.png
    :width: 800
 
 Import the NVIDIA dashboard from ``https://grafana.com/grafana/dashboards/12239``
 and choose *Prometheus* as the data source in the drop down: 
 
-.. image:: graphics/006-dcgm-e2e-grafana-import-screenshot.png
+.. image:: graphics/dcgm-e2e/006-dcgm-e2e-grafana-import-screenshot.png
    :width: 800
 
-.. image:: graphics/007-dcgm-e2e-grafana-import-screenshot.png
+.. image:: graphics/dcgm-e2e/007-dcgm-e2e-grafana-import-screenshot.png
    :width: 800
 
 The GPU dashboard will now be available on Grafana for visualizing metrics:
 
-.. image:: graphics/008-dcgm-e2e-grafana-dashboard-screenshot.png
+.. image:: graphics/dcgm-e2e/008-dcgm-e2e-grafana-dashboard-screenshot.png
    :width: 800
 
 
@@ -548,10 +548,10 @@ The demo can be viewed in the browser by pointing to the address following the i
 The GPU metrics are also visible either in the Grafana dashboard or the Prometheus dashboard as can be seen in the following screenshots showing 
 GPU utilization, memory allocated as the application is running on the GPU:
 
-.. image:: graphics/010-dcgm-e2e-deepstream-screenshot.png
+.. image:: graphics/dcgm-e2e/010-dcgm-e2e-deepstream-screenshot.png
    :width: 800
 
-.. image:: graphics/011-dcgm-e2e-prom-dashboard-metrics-screenshot.png
+.. image:: graphics/dcgm-e2e/011-dcgm-e2e-prom-dashboard-metrics-screenshot.png
    :width: 800
 
 

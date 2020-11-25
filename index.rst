@@ -39,6 +39,7 @@ the NVIDIA Device Plugin for Kubernetes.
 
    kubernetes/install-k8s.rst
    kubernetes/mig-k8s.rst
+   kubernetes/anthos-gpus-guide.rst
    kubernetes/dcgme2e
 
 .. toctree::
