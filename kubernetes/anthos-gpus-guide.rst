@@ -3,14 +3,16 @@
 
 .. _anthos-gpus-guide:
 
-####################################################
+#########################################
 NVIDIA GPUs with Google Cloud Anthos
-####################################################
+#########################################
 
 **********
 Changelog
 **********
 
+* 11/30/2020 (author: PR/DF):
+   * Added information on Anthos bare-metal
 * 11/25/2020 (author: PR): 
    * Migrated docs to new format
 * 8/14/2020 (author: PR): 
@@ -30,22 +32,445 @@ available on `Amazon Web Services (AWS) <https://cloud.google.com/anthos/docs/gk
 Support for Anthos on Microsoft Azure is in preview. For more information on Anthos, 
 see the `product overview <https://cloud.google.com/anthos>`_.
 
-Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, 
-Infiniband adapters and other devices through the `device plugin framework <https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/>`_. 
-However, configuring and managing nodes with these hardware resources requires 
-configuration of multiple software components such as drivers, container runtimes 
-or other libraries which are difficult and prone to errors. The `NVIDIA GPU Operator <https://github.com/NVIDIA/gpu-operator>`_
-uses the operator framework within Kubernetes to automate the management of all NVIDIA 
-software components needed to provision GPUs.
+Systems with NVIDIA GPUs can be deployed in various configurations for use with Google Cloud Anthos. 
+The purpose of this document is to provide users with steps on getting started with using 
+NVIDIA GPUs with Anthos in these various configurations. 
 
-Anthos uses the NVIDIA GPU Operator to configure GPU nodes in the Kubernetes cluster 
-so that the nodes can be used to schedule CUDA applications. The GPU Operator itself is 
-deployed using Helm. The purpose of this document is to provide users with steps on getting 
-started with using NVIDIA GPUs with Anthos.
+***************************
+Deployment Configurations
+***************************
 
-*********************
-Prerequisites
-*********************
+Anthos can be deployed in different configurations. Depending on your deployment, choose one of the sections below 
+to get started with NVIDIA GPUs in Google Cloud Anthos:
+
+#. :ref:`Anthos with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
+#. :ref:`Anthos with VMware vSphere and NVIDIA GPU accelerated servers<anthos-virt>`
+
+.. _anthos-dgx-bm:
+
+***********************************************************************
+Anthos bare-metal with NVIDIA DGX Systems and GPU-Accelerated Servers
+***********************************************************************
+
+Anthos on bare metal with DGX A100 or NVIDIA GPU-accelerated servers systems enables a consistent development and operational experience across deployments, 
+while reducing expensive overhead and improving developer productivity. Refer to the Anthos `documentation <https://cloud.google.com/anthos/gke/docs>`_ for 
+more information on Anthos cluster environments.
+
+Installation Flow
+===================
+
+The basic steps described in this document follows this workflow:
+
+#. Configure nodes
+
+   * Ensure each node (including the control plane) meets the pre-requisites, including time synchronization, correct versions of Docker and other conditions.
+
+#. Configure networking (Optional)
+
+   * Ensure network connectivity between control plane and nodes - ideally the control plane and the nodes in the cluster are in the same network subnet.
+
+#. Configure an admin workstation and set up Anthos to create the cluster
+
+   * Set up the cluster using Anthos on bare-metal 
+
+#. Install NVIDIA components on GPU nodes
+
+   * Set up the NVIDIA software components on the GPU nodes to ensure that your cluster can run CUDA applications.
+
+At the end of the installation flow, you should have a user cluster with GPU-enabled nodes that you can use to deploy applications.
+
+Configure Nodes
+================
+
+* Ensure ``apparmor`` is stopped:
+
+   .. code-block:: console
+
+      $ apt-get install -y apparmor-utils policycoreutils
+
+   .. code-block:: console
+
+      $ systemctl enable apparmor \
+         && systemctl start apparmor \
+         && systemctl stop apparmor
+
+* Synchronize the time on each node:
+
+   * Check the current time
+   
+      .. code-block:: console
+
+         $ timedatectl
+
+      .. code-block:: console
+
+                        Local time: Fri 2020-11-20 10:38:06 PST
+                    Universal time: Fri 2020-11-20 18:38:06 UTC
+                          RTC time: Fri 2020-11-20 18:38:08
+                         Time zone: US/Pacific (PST, -0800)
+         System clock synchronized: no
+                       NTP service: active
+                   RTC in local TZ: no      
+
+   * Configure the NTP server in ``/etc/systemd/timesyncd.conf``:
+
+      .. code-block:: console
+
+         NTP=time.google.com
+   
+   * Adjust the system clock:
+   
+      .. code-block:: console
+      
+         $ timedatectl set-local-rtc 0 --adjust-system-clock
+
+   * Restart the service
+
+      .. code-block:: console
+
+         $ systemctl restart systemd-timesyncd.service
+
+   * Verify the synchronization with the time server
+
+      .. code-block:: console
+
+         $ timedatectl
+
+      .. code-block:: console
+
+                        Local time: Fri 2020-11-20 11:03:22 PST
+                    Universal time: Fri 2020-11-20 19:03:22 UTC
+                          RTC time: Fri 2020-11-20 19:03:22
+                         Time zone: US/Pacific (PST, -0800)
+         System clock synchronized: yes
+                       NTP service: active
+                   RTC in local TZ: no         
+
+Configure Networking (Optional)
+---------------------------------
+
+.. note::
+
+   The following steps are provided as a reference for configuring the network so that the control plane and the 
+   nodes are on the same subnet by using tunnels and DNAT. If the nodes in your cluster are on the same subnet, 
+   then you may skip this step.
+
+* Ensure you can ``nslookup`` on *hostname*
+
+   .. code-block:: console
+
+      $ systemctl restart systemd-resolved \
+         && ping us.archive.ubuntu.com
+
+   .. code-block:: console
+   
+      ping: us.archive.ubuntu.com: Temporary failure in name resolution
+
+* Check the nameserver in ``resolve.conf``
+
+   .. code-block:: console
+
+      $ cat <<EOF > /etc/resolv.conf
+      nameserver 8.8.8.8
+      EOF
+
+* And re-test ``ping``
+
+   .. code-block:: console
+
+      $ ping us.archive.ubuntu.com
+
+      PING us.archive.ubuntu.com (91.189.91.38) 56(84) bytes of data.
+      64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=1 ttl=49 time=73.4 ms
+      64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=2 ttl=49 time=73.3 ms
+      64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=3 ttl=49 time=73.4 ms
+
+Control Plane
+^^^^^^^^^^^^^^^
+
+On the admin workstation, setup tunneling:
+
+.. code-block:: console
+
+   $ ip tunnel add tun0 mode ipip local 10.117.29.41 remote 10.110.20.149
+
+.. code-block:: console
+
+   $ ip addr add 192.168.200.1/24 dev tun0
+
+.. code-block:: console
+
+   $ ip link set tun0 up
+
+If you have a firewall that disables outgoing traffic, open the traffic for the ports below:
+
+.. code-block:: console
+
+   $ iptables -t nat -I PREROUTING  -p udp -d 192.168.210.1  --dport 6081 -j DNAT --to-destination 10.117.29.41
+
+.. code-block:: console
+
+   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 9990 -j DNAT --to-destination 10.117.29.41
+
+.. code-block:: console
+
+   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 443 -j DNAT --to-destination 10.0.0.8:6443
+
+GPU Node
+^^^^^^^^^^
+
+Establish connectivity with the control plane:
+
+.. code-block:: console
+
+   $ ip tunnel add tun1 mode ipip local 10.33.254.106  remote 10.117.29.41
+
+.. code-block:: console
+
+   $ ip addr add 192.168.210.2/24 dev tun1
+
+.. code-block:: console
+
+   $ ip link set tun1 up 
+
+.. code-block:: console
+
+   $ ip route add 10.0.0.8/32 via 192.168.210.1
+
+If you have a firewall that disables outgoing traffic, open traffic for the ports below:
+
+.. code-block:: console
+
+   $ ip tunnel add tun3 mode ipip local 10.33.254.106  remote 10.117.29.98 
+
+.. code-block:: console
+
+   $ ip addr add 192.168.220.2/24 dev tun3
+
+.. code-block:: console
+   
+   $ ip link set tun3 up 
+
+Setup DNAT:
+
+.. code-block:: console
+
+   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.41  --dport 6081 -j DNAT --to-destination 192.168.210.1 
+
+.. code-block:: console
+
+   $ iptables -t nat -I OUTPUT -p tcp -d 10.117.29.41  --dport 9990 -j DNAT --to-destination 192.168.210.1 
+
+.. code-block:: console
+
+   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.98  --dport 6081 -j DNAT --to-destination 192.168.220.1 
+
+.. code-block:: console
+
+   $ iptables -t nat -I OUTPUT -p tcp -d 10.96.0.1 -j DNAT --to-destination 192.168.210.1
+
+.. code-block:: console
+
+   $ iptables -t nat -I POSTROUTING -o tun1 -j MASQUERADE
+
+.. code-block:: console
+
+   $ iptables -t nat -I POSTROUTING -o tun3 -j MASQUERADE
+
+
+Install Docker
+----------------
+
+Follow these steps to install Docker. On DGX systems, Docker may already be installed using the ``docker-ce`` package. 
+In this case, use ``docker.io`` as the base installation package for Docker to ensure a successful cluster setup with 
+Anthos. 
+
+* Stop services using docker:
+
+   .. code-block:: console
+
+      $ systemctl stop kubelet \
+         && systemctl stop docker \
+         && systemctl stop containerd \
+         && systemctl stop containerd.io
+
+* Purge the existing packages of Docker and ``nvidia-docker2`` if any:
+
+   .. code-block:: console
+
+      $ systemctl stop run-docker-netns-default.mount \
+         && systemctl stop docker.haproxy
+
+   .. code-block:: console
+
+      $ dpkg -r nv-docker-options \
+         && dpkg --purge nv-docker-options \
+         && dpkg -r nvidia-docker2 \
+         && dpkg --purge nvidia-docker2 \
+         && dpkg -r docker-ce \
+         && dpkg --purge docker-ce \
+         && dpkg -r docker-ce-cli \
+         && dpkg -r containerd \
+         && dpkg --purge containerd \
+         && dpkg -r containerd.io \
+         && dpkg --purge
+
+* Re-install Docker
+
+   .. code-block:: console
+
+      $ apt-get update \
+         && apt-get install -y apt-transport-https \
+            ca-certificates \
+            curl \
+            software-properties-common \
+            inetutils-traceroute \
+            conntrack
+   
+   .. code-block:: console
+
+      $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+   .. code-block:: console
+
+      $ add-apt-repository \
+         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+         $(lsb_release -cs) stable"
+
+   .. code-block:: console
+
+      $ apt-get update \
+         && apt-get install -y docker.io
+
+   .. code-block:: console
+
+      $ systemctl enable docker \
+         && systemctl start docker
+
+Install ``nvidia-docker2`` on GPU Nodes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   This step should be performed on the GPU nodes only
+
+For DGX systems, re-install ``nvidia-docker2`` from the DGX repositories: 
+
+.. code-block:: console
+
+   $ apt-get install -y nvidia-docker2
+
+Since Kubernetes does not support the ``--gpus`` option with Docker yet, the ``nvidia`` runtime should 
+be setup as the default container runtime for Docker on the GPU node. This can be done by adding the 
+``default-runtime`` line into the Docker daemon config file, which is usually located on the system 
+at ``/etc/docker/daemon.json``:
+
+.. code-block:: console
+
+   {
+      "default-runtime": "nvidia",
+      "runtimes": {
+           "nvidia": {
+               "path": "/usr/bin/nvidia-container-runtime",
+               "runtimeArgs": []
+         }
+      }
+   }
+
+Restart the Docker daemon to complete the installation after setting the default runtime:
+
+.. code-block:: console
+
+   $ sudo systemctl restart docker
+
+For non-DGX systems, refer to the NVIDIA Container Toolkit `installation guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker>`_ 
+to setup ``nvidia-docker2``.
+
+Configure Admin Workstation
+=============================
+
+Configure the admin workstation prior to setting up the cluster. 
+
+Download the Google Cloud SDK:
+
+.. code-block:: console
+
+   $ wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-314.0.0-linux-x86_64.tar.gz \
+      && tar -xf google-cloud-sdk-314.0.0-linux-x86_64.tar.gz 
+
+.. code-block:: console
+
+   $ google-cloud-sdk/install.sh
+
+Install the Anthos authentication components:
+
+   $ gcloud components install anthos-auth
+
+See the `Anthos installtion overview <https://cloud.google.com/anthos/gke/docs/on-prem/how-to/install-overview-basic>`_ 
+for detailed instructions for installing Anthos in an on-premise environment and setup your cluster. 
+
+Setup NVIDIA Software on GPU Nodes
+====================================
+
+Once the Anthos cluster has been set up, you can proceed to deploy the NVIDIA software components on the GPU nodes.
+
+NVIDIA Drivers 
+---------------
+
+.. note:: 
+
+   DGX systems include the NVIDIA drivers. This step can be skipped.
+
+For complete instructions on setting up NVIDIA drivers, visit the quickstart 
+guide at https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html.
+The guide covers a number of pre-installation requirements and steps on supported Linux 
+distributions for a successful install of the driver. 
+
+NVIDIA Device Plugin
+----------------------
+
+To use GPUs in Kubernetes, the `NVIDIA Device Plugin <https://github.com/NVIDIA/k8s-device-plugin/>`_ is required. 
+The NVIDIA Device Plugin is a daemonset that automatically enumerates the number of GPUs on each node of the cluster 
+and allows pods to be run on GPUs.
+
+The preferred method to deploy the device plugin is as a daemonset using ``helm``. 
+
+Add the ``nvidia-device-plugin`` ``helm`` repository:
+
+.. code-block:: console
+
+   $ helm repo add nvdp https://nvidia.github.io/k8s-device-plugin \
+      && helm repo update
+
+Deploy the device plugin:
+
+.. code-block:: console
+
+   $ helm install --generate-name nvdp/nvidia-device-plugin
+
+For more user configurable options while deploying the daemonset, refer to the `documentation <https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm>`_ 
+
+Node Feature Discovery
+-----------------------
+
+For detecting the hardware configuration and system configuration, we will deploy the `Node Feature Discovery <https://github.com/kubernetes-sigs/node-feature-discovery>`_ 
+add-on:
+
+.. code-block:: console
+
+   $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/v0.6.0/nfd-master.yaml.template
+
+.. code-block:: console
+
+   $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/v0.6.0/nfd-worker-daemonset.yaml.template
+
+See the `documentation <https://kubernetes-sigs.github.io/node-feature-discovery>`_ for more information on NFD.
+
+.. _anthos-virt: 
+
+****************************************************************
+Anthos with VMware vSphere and NVIDIA GPU accelerated servers
+****************************************************************
 
 Anthos running on-premise has requirements for which vSphere versions are supported along with network and storage requirements. 
 Please see the Anthos version compatibility matrix for more information: 
@@ -55,9 +480,22 @@ This guide assumes that the user already has an installed Anthos on-premise clus
 `https://cloud.google.com/anthos/gke/docs/on-prem/how-to/install-overview-basic <https://cloud.google.com/anthos/gke/docs/on-prem/how-to/install-overview-basic>`_ 
 for detailed instructions for installing Anthos in an on-premise environment.
 
-*******************************
+Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, 
+Infiniband adapters and other devices through the `device plugin framework <https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/>`_. 
+However, configuring and managing nodes with these hardware resources requires 
+configuration of multiple software components such as drivers, container runtimes 
+or other libraries which are difficult and prone to errors. The `NVIDIA GPU Operator <https://github.com/NVIDIA/gpu-operator>`_
+uses the operator framework within Kubernetes to automate the management of all NVIDIA 
+software components needed to provision GPUs.
+
+In the VMware vSphere configuration, Anthos uses the NVIDIA GPU Operator to configure GPU nodes in the Kubernetes cluster 
+so that the nodes can be used to schedule CUDA applications. The GPU Operator itself is 
+deployed using Helm. The rest of this section provides users with steps on getting 
+started.
+
+
 Configuring PCIe Passthrough
-*******************************
+==============================
 
 For the GPU to be accessible to the VM, first you must enable `PCI Passthrough <https://kb.vmware.com/s/article/1010789>`_ 
 on the ESXi host. This can be done from the vSphere client. This will require a reboot 
@@ -92,12 +530,11 @@ If you have only 1 ESXi host, then you can reboot without migrating the VMs, tho
 
 Once the server has rebooted. Make sure to remove maintenance mode (if it was used) or restart the VMs that needed to be stopped (when only a single ESXi host is used).
 
-*******************************
 Adding GPUs to a Node
-*******************************
+=======================
 
 Creating a Node Pool for the GPU Node
-=======================================
+---------------------------------------
 
 .. note::
    This is an optional step.
@@ -135,7 +572,7 @@ After adding the node pool to your configuration, use the ``gkectl`` update comm
    Done updating the user cluster
 
 Add GPUs to Nodes in vSphere
-=============================
+-------------------------------
 
 Select an existing user-cluster node to add a GPU to (if you created a node pool 
 with the previous step then you would choose a node from that pool). Make sure that 
@@ -205,7 +642,7 @@ Running GPU Applications
 ==========================
 
 Jupyter Notebooks
-------------------
+-------------------
 
 This section of the guide walks through how to run a sample Jupyter notebook on the Kubernetes cluster.
 
@@ -351,7 +788,7 @@ This section of the guide walks through how to run a sample Jupyter notebook on 
       [I 19:21:58.132 NotebookApp] Saving file at /tensorflow-tutorials/classification.ipynb
  
 Uninstall and Cleanup
-==========================
+=======================
 
 You can remove the ``tf-notebook`` and service with the following commands:
 

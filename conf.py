@@ -35,7 +35,8 @@ copybutton_only_copy_prompt_lines = False
 extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.extlinks',
-    'sphinx_copybutton',    
+    'sphinx_copybutton',
+    'sphinx.ext.autosectionlabel',    
 ]
 
 # Add any paths that contain templates here, relative to this directory.

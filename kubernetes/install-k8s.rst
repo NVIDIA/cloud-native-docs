@@ -7,22 +7,93 @@
 Install Kubernetes
 ####################
 
-For simplicity, this document will walk through the steps for installing a single node Kubernetes cluster (where we untaint the control plane 
-so it can run GPU pods). These instructions use `kubeadm <https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>`_ 
-but there are many other ways to install Kubernetes.
+*************
+Introduction
+*************
 
-************
+Kubernetes is an open-source platform for automating deployment, scaling and managing containerized applications. Kubernetes includes support 
+for GPUs and enhancements to Kubernetes so users can easily configure and use GPU resources for accelerating workloads such as deep learning. 
+This document describes two methods for installing upstream Kubernetes with NVIDIA supported components, such as drivers, plugins and runtime - 
+a method using `DeepOps <https://github.com/NVIDIA/deepops>`_ and a method using `Kubeadm <https://kubernetes.io/docs/reference/setup-tools/kubeadm/>`_. 
+
+To set up orchestration and scheduling in your cluster, it is highly recommended that you use DeepOps. DeepOps is a modular collection of ansible scripts 
+which automate the deployment of Kubernetes, Slurm, or a hybrid combination of the two across your nodes. It also installs the necessary GPU drivers, 
+NVIDIA Container Toolkit for Docker (``nvidia-docker2``), and various other dependencies for GPU-accelerated work. Encapsulating best practices for NVIDIA GPUs, 
+it can be customized or run as individual components, as needed.
+
+With ``kubeadm``, this document will walk through the steps for installing a single node Kubernetes cluster (where we untaint the control plane 
+so it can run GPU pods), but the cluster can be scaled easily with additional nodes.
+
+***************************************
+Installing Kubernetes Using DeepOps
+***************************************
+
+Use DeepOps to automate deployment, especially for a cluster of many worker nodes. Use the following procedure to install Kubernetes using DeepOps:
+
+#. Pick a provisioning node to deploy from.
+   This is where the DeepOps Ansible scripts run from and is often a development laptop that has a connection to the target cluster. On this provisioning node, 
+   clone the DeepOps repository with the following command:
+
+   .. code-block:: console
+
+      $ git clone https://github.com/NVIDIA/deepops.git
+
+#. Optionally, check out a recent release tag with the following command:
+
+   .. code-block:: console
+
+      $ cd deepops \
+         && git checkout tags/20.10
+
+   If you do not explicitly use a release tag, then the latest development code is used, and not an official release.
+
+#. Follow the instructions in the `DeepOps Kubernetes Deployment Guide <https://github.com/NVIDIA/deepops/blob/master/docs/kubernetes-cluster.md>`_ to install Kubernetes.
+
+*****************************************
+Installing Kubernetes Using Kubeadm
+*****************************************
+
+.. note::
+
+   The method described in this section is an alternative to using DeepOps. If you have deployed using DeepOps, then skip this section.
+
+For a less scripted approach, especially for smaller clusters or where there is a desire to learn the components that make up a Kubernetes cluster, use Kubeadm.
+
+A Kubernetes cluster is composed of master nodes and worker nodes. The master nodes run the control plane components of Kubernetes which allows your 
+cluster to function properly. These components include the API Server (front-end to the ``kubectl`` CLI), **etcd** (stores the cluster state) and others.
+
+Use CPU-only (GPU-free) master nodes, which run the control plane components: Scheduler, API-server, and Controller Manager. Control plane components can 
+have some impact on your CPU intensive tasks and conversely, CPU or HDD/SSD intensive components can have an impact on your control plane components.
+
+Before You Begin
+==================
+
+Before proceeding to install the components, check that all Kubernetes `prerequisites <https://kubernetes.io/docs/setup/independent/install-kubeadm/#before-you-begin>`_ 
+have been satisfied. These prerequisites include:
+
+* Check network adapters and required ports
+* Disable swap on the nodes so that kubelet can work correctly
+* Install a supported container runtime such as Docker, containerd or CRI-O
+
+Depending on your Linux distribution, refer to the steps below:
+
+* :ref:`Ubuntu LTS<ubuntu-k8s>`
+* :ref:`CentOS 8<centos8-k8s>`
+
+
+.. _ubuntu-k8s:
+
 Ubuntu LTS
-************
+============
 This section provides steps for setting up K8s on Ubuntu 18.04 and 20.04 LTS distributions.
 
 Install Docker
-=================
+----------------
 
 Follow the steps in this `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installing-on-ubuntu-and-debian>`_ to install Docker on Ubuntu.
 
 Install Kubernetes components
-===============================
+-------------------------------
 
 First, install some dependencies:
 
@@ -62,7 +133,7 @@ Finish the configuration setup with Kubeadm:
       && sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 Configure networking
-=====================
+-----------------------
 
 Now, setup networking with Calico:
 
@@ -78,9 +149,10 @@ Untaint the control plane, so it can be used to schedule GPU pods in our simplis
 
 Your cluster should now be ready to schedule containerized applications.
 
-**********
+.. _centos8-k8s:
+
 CentOS 8
-**********
+==========
 Follow the steps in this section for setting up K8s on CentOS 8.
 
 .. note::
@@ -107,12 +179,12 @@ Follow the steps in this section for setting up K8s on CentOS 8.
          $ sudo reboot
 
 Install Docker
-=================
+----------------
 
 Follow the steps in this `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-docker-on-centos-8>`_ to install Docker on CentOS 8.
 
 Configuring the system
-========================
+------------------------
 
 For the remaining part of this section, we will follow the general steps for using `kubeadm <https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>`_.
 Also, for convenience, let's enter into an interactive ``sudo`` session since most of the remaining commands require root privileges: 
@@ -122,7 +194,7 @@ Also, for convenience, let's enter into an interactive ``sudo`` session since mo
    $ sudo -i
 
 Disabling SELinux
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: console
 
@@ -130,7 +202,7 @@ Disabling SELinux
       && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 
 Bridged traffic and iptables
-------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As mentioned in the ``kubedadm`` documentation, ensure that the ``br_netfilter`` module is loaded: 
 
@@ -154,7 +226,7 @@ and restart the ``sysctl`` config:
    $ sysctl --system
 
 Firewall and required ports
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The network plugin requires certain ports to be open on the control plane and worker nodes. See this 
 `table <https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#check-required-ports>`_ for more information on 
@@ -206,7 +278,7 @@ Optionally, before we install the Kubernetes control plane, test your container 
    $ docker run busybox ping google.com
 
 Disable swap
----------------
+^^^^^^^^^^^^^^
 
 For performance, disable swap on your system:
 
@@ -215,7 +287,7 @@ For performance, disable swap on your system:
    $ swapoff -a
 
 Install Kubernetes components
-===============================
+-------------------------------
 
 Add the network repository listing to the package manager configuration:
 
@@ -253,7 +325,7 @@ Now use ``kubeadm`` to initialize the control plane:
 At this point, feel free to exit from the interactive ``sudo`` session that we started with. 
 
 Configure directories
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 To start using the cluster, run the following as a regular user:
 
@@ -288,7 +360,7 @@ At this point, your cluster would look like below:
 
 
 Configure networking
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 For the purposes of this document, we will use Calico as a network plugin to configure networking in our Kubernetes cluster. Due to an 
 `issue <https://github.com/projectcalico/calico/issues/2322>`_ with Calico and iptables on CentOS, let's modify the configuration before deploying the plugin.
