@@ -23,7 +23,7 @@ The following Kubernetes platforms are supported:
 * Kubernetes v1.13+
 * Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
-* Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
+* Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-gpus-guide.html>`_ for getting started.
 
 .. note::
    Note that the Kubernetes community supports only the last three minor releases as of v1.17. Older releases 

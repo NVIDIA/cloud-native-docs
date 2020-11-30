@@ -46,6 +46,32 @@ to get started with NVIDIA GPUs in Google Cloud Anthos:
 #. :ref:`Anthos with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
 #. :ref:`Anthos with VMware vSphere and NVIDIA GPU accelerated servers<anthos-virt>`
 
+*********************
+Supported Platforms
+*********************
+
+GPUs
+=====
+
+The following GPUs are supported:
+
+* NVIDIA A100, T4 and V100
+
+DGX Systems
+============
+
+The following NVIDIA DGX systems are supported:
+
+* DGX A100
+* DGX-2
+
+Linux Distributions
+=====================
+
+The following Linux distributions are supported:
+
+* Ubuntu 18.04.z, 20.04.z LTS
+
 .. _anthos-dgx-bm:
 
 ***********************************************************************
@@ -67,13 +93,13 @@ The basic steps described in this document follows this workflow:
 
 #. Configure networking (Optional)
 
-   * Ensure network connectivity between control plane and nodes - ideally the control plane and the nodes in the cluster are in the same network subnet.
+   * Ensure network connectivity between control plane and nodes - ideally the VIPs, control plane and the nodes in the cluster are in the same network subnet.
 
 #. Configure an admin workstation and set up Anthos to create the cluster
 
    * Set up the cluster using Anthos on bare-metal 
 
-#. Install NVIDIA components on GPU nodes
+#. Setup NVIDIA software on GPU nodes
 
    * Set up the NVIDIA software components on the GPU nodes to ensure that your cluster can run CUDA applications.
 
@@ -81,6 +107,11 @@ At the end of the installation flow, you should have a user cluster with GPU-ena
 
 Configure Nodes
 ================
+
+These steps are required on each node in the cluster (including the control plane). 
+
+Time Synchronization
+----------------------
 
 * Ensure ``apparmor`` is stopped:
 
@@ -144,16 +175,10 @@ Configure Nodes
                          Time zone: US/Pacific (PST, -0800)
          System clock synchronized: yes
                        NTP service: active
-                   RTC in local TZ: no         
+                   RTC in local TZ: no 
 
-Configure Networking (Optional)
----------------------------------
-
-.. note::
-
-   The following steps are provided as a reference for configuring the network so that the control plane and the 
-   nodes are on the same subnet by using tunnels and DNAT. If the nodes in your cluster are on the same subnet, 
-   then you may skip this step.
+Test Network Connectivity
+---------------------------
 
 * Ensure you can ``nslookup`` on *hostname*
 
@@ -184,98 +209,6 @@ Configure Networking (Optional)
       64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=1 ttl=49 time=73.4 ms
       64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=2 ttl=49 time=73.3 ms
       64 bytes from banjo.canonical.com (91.189.91.38): icmp_seq=3 ttl=49 time=73.4 ms
-
-Control Plane
-^^^^^^^^^^^^^^^
-
-On the admin workstation, setup tunneling:
-
-.. code-block:: console
-
-   $ ip tunnel add tun0 mode ipip local 10.117.29.41 remote 10.110.20.149
-
-.. code-block:: console
-
-   $ ip addr add 192.168.200.1/24 dev tun0
-
-.. code-block:: console
-
-   $ ip link set tun0 up
-
-If you have a firewall that disables outgoing traffic, open the traffic for the ports below:
-
-.. code-block:: console
-
-   $ iptables -t nat -I PREROUTING  -p udp -d 192.168.210.1  --dport 6081 -j DNAT --to-destination 10.117.29.41
-
-.. code-block:: console
-
-   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 9990 -j DNAT --to-destination 10.117.29.41
-
-.. code-block:: console
-
-   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 443 -j DNAT --to-destination 10.0.0.8:6443
-
-GPU Node
-^^^^^^^^^^
-
-Establish connectivity with the control plane:
-
-.. code-block:: console
-
-   $ ip tunnel add tun1 mode ipip local 10.33.254.106  remote 10.117.29.41
-
-.. code-block:: console
-
-   $ ip addr add 192.168.210.2/24 dev tun1
-
-.. code-block:: console
-
-   $ ip link set tun1 up 
-
-.. code-block:: console
-
-   $ ip route add 10.0.0.8/32 via 192.168.210.1
-
-If you have a firewall that disables outgoing traffic, open traffic for the ports below:
-
-.. code-block:: console
-
-   $ ip tunnel add tun3 mode ipip local 10.33.254.106  remote 10.117.29.98 
-
-.. code-block:: console
-
-   $ ip addr add 192.168.220.2/24 dev tun3
-
-.. code-block:: console
-   
-   $ ip link set tun3 up 
-
-Setup DNAT:
-
-.. code-block:: console
-
-   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.41  --dport 6081 -j DNAT --to-destination 192.168.210.1 
-
-.. code-block:: console
-
-   $ iptables -t nat -I OUTPUT -p tcp -d 10.117.29.41  --dport 9990 -j DNAT --to-destination 192.168.210.1 
-
-.. code-block:: console
-
-   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.98  --dport 6081 -j DNAT --to-destination 192.168.220.1 
-
-.. code-block:: console
-
-   $ iptables -t nat -I OUTPUT -p tcp -d 10.96.0.1 -j DNAT --to-destination 192.168.210.1
-
-.. code-block:: console
-
-   $ iptables -t nat -I POSTROUTING -o tun1 -j MASQUERADE
-
-.. code-block:: console
-
-   $ iptables -t nat -I POSTROUTING -o tun3 -j MASQUERADE
 
 
 Install Docker
@@ -386,6 +319,129 @@ Restart the Docker daemon to complete the installation after setting the default
 For non-DGX systems, refer to the NVIDIA Container Toolkit `installation guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker>`_ 
 to setup ``nvidia-docker2``.
 
+Configure Networking (Optional)
+=================================
+
+.. note::
+
+   The following steps are provided as a reference for configuring the network so that the control plane and the 
+   nodes are on the same subnet by using tunnels and DNAT. If the nodes in your cluster are on the same subnet, 
+   then you may skip this step. 
+
+   In the example below:
+
+   * The control plane is at ``10.117.29.41``
+   * The GPU node or admin workstation is at ``10.110.20.149``
+   * The control plane VIP is ``10.0.0.8``
+
+   If the machines are on a different subnet than each other or the control plane VIP then tunnel routes 
+   can be used to establish connectivity.
+
+   There are two scenarios to consider:
+
+   #. If the machines are on the same subnet, but the VIP is on a different subnet, then add the correct 
+      IP route (using ``ip route add 10.0.0.8 via <contro-plane-ip>`` from the GPU node or admin-workstation
+   
+   #. If the machines and VIP are on different subnets, then a tunnel is also needed to enable the above 
+      route command to succeed where ``<control-plane-ip>`` is the control plane tunnel ``192.168.210.1``.
+
+
+Control Plane
+---------------
+
+Setup tunneling:
+
+.. code-block:: console
+
+   $ ip tunnel add tun0 mode ipip local 10.117.29.41 remote 10.110.20.149
+
+.. code-block:: console
+
+   $ ip addr add 192.168.200.1/24 dev tun0
+
+.. code-block:: console
+
+   $ ip link set tun0 up
+
+Update DNAT to support the control plane VIP over the tunnel:
+
+.. code-block:: console
+
+   $ iptables -t nat -I PREROUTING  -p udp -d 192.168.210.1  --dport 6081 -j DNAT --to-destination 10.117.29.41
+
+.. comment out this part 
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 9990 -j DNAT --to-destination 10.117.29.41
+..
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I PREROUTING  -p tcp -d 192.168.210.1  --dport 443 -j DNAT --to-destination 10.0.0.8:6443
+
+GPU Node or Admin Workstation
+--------------------------------
+
+Establish connectivity with the control plane:
+
+.. code-block:: console
+
+   $ ip tunnel add tun1 mode ipip local 10.110.20.149  remote 10.117.29.41
+
+.. code-block:: console
+
+   $ ip addr add 192.168.210.2/24 dev tun1
+
+.. code-block:: console
+
+   $ ip link set tun1 up 
+
+.. code-block:: console
+
+   $ ip route add 10.0.0.8/32 via 192.168.210.1
+
+.. comment out this part
+.. If you have a firewall that disables outgoing traffic, open traffic for the ports below:
+..
+.. .. code-block:: console
+..
+..   $ ip tunnel add tun3 mode ipip local 10.110.20.149  remote 10.117.29.98 
+..
+.. .. code-block:: console
+..
+..   $ ip addr add 192.168.220.2/24 dev tun3
+..
+.. .. code-block:: console
+..   
+..   $ ip link set tun3 up 
+
+Setup DNAT:
+
+.. code-block:: console
+
+   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.41  --dport 6081 -j DNAT --to-destination 192.168.210.1 
+
+.. comment out this part
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I OUTPUT -p tcp -d 10.117.29.41  --dport 9990 -j DNAT --to-destination 192.168.210.1 
+..
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I OUTPUT -p udp -d 10.117.29.98  --dport 6081 -j DNAT --to-destination 192.168.220.1 
+..
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I OUTPUT -p tcp -d 10.96.0.1 -j DNAT --to-destination 192.168.210.1
+..
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I POSTROUTING -o tun1 -j MASQUERADE
+..
+.. .. code-block:: console
+..
+..   $ iptables -t nat -I POSTROUTING -o tun3 -j MASQUERADE
+
+
 Configure Admin Workstation
 =============================
 
@@ -448,7 +504,8 @@ Deploy the device plugin:
 
    $ helm install --generate-name nvdp/nvidia-device-plugin
 
-For more user configurable options while deploying the daemonset, refer to the `documentation <https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm>`_ 
+For more user configurable options while deploying the daemonset, refer to the device plugin 
+`README <https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm>`_ 
 
 Node Feature Discovery
 -----------------------
@@ -464,7 +521,7 @@ add-on:
 
    $ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/v0.6.0/nfd-worker-daemonset.yaml.template
 
-See the `documentation <https://kubernetes-sigs.github.io/node-feature-discovery>`_ for more information on NFD.
+See the `NFD documentation <https://kubernetes-sigs.github.io/node-feature-discovery>`_ for more information on NFD.
 
 .. _anthos-virt: 
 
