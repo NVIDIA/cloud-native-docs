@@ -23,7 +23,7 @@ The following Kubernetes platforms are supported:
 * Kubernetes v1.13+
 * Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
-* Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-gpus-guide.html>`_ for getting started.
+* Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
 
 .. note::
    Note that the Kubernetes community supports only the last three minor releases as of v1.17. Older releases 
@@ -35,6 +35,8 @@ The following table includes the support matrix of the GPU Operator releases and
 +--------------------------+---------------+------------------------+----------------+
 | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
 +==========================+===============+========================+================+
+| 1.4.0                    | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
++--------------------------+---------------+------------------------+----------------+
 | 1.3.0                    | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
 +--------------------------+---------------+------------------------+----------------+
 | 1.2.0                    | v1.13+        | Not supported          | Supported      |
@@ -53,15 +55,16 @@ The following Linux distributions are supported:
 
 * Ubuntu 18.04.z, 20.04.z LTS
 * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift
-.. * CentOS 8 (HVM only, PV not supported)
+* CentOS 7 and 8
 
 In addition, the following container management tools are supported:
 
 * Helm v3
 * Docker CE 19.03.z
+* containerd 1.4+
 
-.. note::
-   Note that the GA has been validated with the 4.15 LTS kernel. When using the HWE kernel (e.g. v5.3), there are additional prerequisites before deploying the operator.
+.. .. note::
+..   Note that the GA has been validated with the 4.15 LTS kernel. When using the HWE kernel (e.g. v5.3), there are additional prerequisites before deploying the operator.
 
 Deployment Scenarios
 --------------------

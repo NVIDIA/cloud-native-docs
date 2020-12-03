@@ -7,7 +7,7 @@ NVIDIA Cloud Native Technologies
 ================================
 This documentation repository contains the product documentation for the 
 NVIDIA Container Toolkit (``nvidia-docker2``), the NVIDIA GPU Operator and 
-the NVIDIA Device Plugin for Kubernetes.
+using NVIDIA GPUs with Kubernetes.
 
 .. toctree::
    :hidden:
@@ -39,7 +39,7 @@ the NVIDIA Device Plugin for Kubernetes.
 
    kubernetes/install-k8s.rst
    kubernetes/mig-k8s.rst
-   kubernetes/anthos-gpus-guide.rst
+   kubernetes/anthos-guide.rst
    kubernetes/dcgme2e
 
 .. toctree::

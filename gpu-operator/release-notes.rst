@@ -10,6 +10,53 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.4.0
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+
+| Component                | Version       |
++==========================+===============+
+| NVIDIA Driver            | 450.80.02     |
++--------------------------+---------------+
+| NVIDIA Container Toolkit | 1.4.0         |
++--------------------------+---------------+
+| NVIDIA K8s Device Plugin | 0.7.1         |
++--------------------------+---------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         |
++--------------------------+---------------+
+| Node Feature Discovery   | 0.6.0         |
++--------------------------+---------------+
+| GPU Feature Discovery    | 0.2.2         |
++--------------------------+---------------+
+
+New features
+-------------
+* Added support for CentOS 7 and 8.
+* Added support for airgapped enterprise environments.
+* Added support for ``containerd`` as a container runtime under Kubernetes.
+
+Improvements 
+-------------
+* Updated DCGM-Exporter to ``2.1.2``, which uses DCGM 2.0.13.
+* Added the ability to pass arguments to the NVIDIA device plugin to enable ``migStrategy`` and ``deviceListStrategy`` flags 
+  that allow addtional configuration of the plugin.
+* Added more resiliency to ``dcgm-exporter``- ``dcgm-exporter`` would not check whether GPUs support profiling metrics and would result in a ``CrashLoopBackOff`` 
+  state at launch in these configurations.
+
+Fixed issues
+------------
+* Fixed the issue where the removal of the GPU Operator from the cluster required a restart of the Docker daemon (since the Operator 
+  sets the ``nvidia`` as the default runtime). 
+* Fixed volume mounts for ``dcgm-exporter`` under the GPU Operator to allow pod<->device metrics attribution.
+* Fixed an issue where the GFD and ``dcgm-exporter`` container images were artificially limited to R450+ (CUDA 11.0+) drivers.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.3.0
 =====
 This release of the GPU Operator includes the following components:
@@ -149,14 +196,13 @@ Fixed Issues
 
 ----
 
+.. _operator-known-limitations:
+
 Known Limitations
 ------------------
-* After the removal of the GPU Operator, a restart of the Docker daemon is required as the default container runtime is setup to be the NVIDIA runtime. Run the following command:
-
-.. code-block:: console
-
-  $ sudo systemctl restart docker
-
+* The GPU Operator does not include `NVIDIA Fabric Manager <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_ and 
+  thus does not yet support systems that use the NVSwitch fabric (e.g. HGX, DGX-2 or DGX A100).
 * GPU Operator will fail on nodes already setup with NVIDIA components (driver, runtime, device plugin). Support for better error handling will be added in a future release.
+* The GPU Operator currently does not handle node reboots. If a node is rebooted, in some cases, the driver container may not start up 
+  successfully. A workaround for this issue would be to uninstall and re-install the operator using the Helm chart.
 * The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
-* This release of the operator does not support accessing images from private registries, which may be required for air-gapped deployments.

@@ -1,7 +1,7 @@
 .. Date: November 13 2020
 .. Author: pramarao
 
-.. _anthos-gpus-guide:
+.. _anthos-guide:
 
 #########################################
 NVIDIA GPUs with Google Cloud Anthos
@@ -71,6 +71,15 @@ Linux Distributions
 The following Linux distributions are supported:
 
 * Ubuntu 18.04.z, 20.04.z LTS
+
+*****************
+Getting Support
+*****************
+
+For support issues related to using GPUs with Anthos, please `open a ticket <https://github.com/NVIDIA/gpu-operator/issues/new>`_ 
+on the NVIDIA GPU Operator GitHub project. Your feedback is appreciated. 
+
+DGX customers can visit the `NVIDIA DGX Systems Support Portal <https://www.nvidia.com/en-us/data-center/dgx-systems/support/>`_.
 
 .. _anthos-dgx-bm:
 
@@ -890,9 +899,3 @@ This section outlines some known issues with using Google Cloud Anthos with NVID
 
    .. image:: graphics/anthos/virt/image17.png
       :width: 800
-
-Getting Support
-================
-
-For support issues related to using GPUs with Anthos, please `open a ticket <https://github.com/NVIDIA/gpu-operator/issues/new>`_ 
-on the NVIDIA GPU Operator GitHub project. Your feedback is appreciated.

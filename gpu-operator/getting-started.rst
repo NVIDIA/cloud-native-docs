@@ -43,7 +43,7 @@ Google Cloud Anthos
 ====================
 
 For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started 
-`document <https://docs.nvidia.com/datacenter/kubernetes/anthos-gpus-guide/>`_.
+`document <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_.
 
 ----
 
@@ -205,7 +205,7 @@ You can observe that the Prometheus server is available at port 30090 on the nod
 It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL`` 
 in the event bar to determine if the GPU metrics are visible:
 
-.. image:: ../kubernetes/graphics/001-dcgm-e2e-prom-screenshot.png
+.. image:: ../kubernetes/graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
    :width: 800
 
 Using Grafana 
@@ -266,23 +266,17 @@ The password credentials for the login are available in the ``prometheus.values`
 
    adminPassword: prom-operator 
 
-.. image:: ../kubernetes/graphics/002-dcgm-e2e-grafana-screenshot.png
+.. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
 Uninstalling GPU Operator
 ===========================
 
-To uninstall the operator, first obtain the name using the following command:
+To uninstall the operator:
 
 .. code-block:: console
 
-   $ helm ls
-
-Now uninstall the operator:
-
-.. code-block:: console
-
-   $ helm delete <gpu-operator-name>
+   $ helm delete $(helm list | grep gpu-operator | awk '{print $1}')
 
 You should now see all the pods being deleted:
 
@@ -293,12 +287,3 @@ You should now see all the pods being deleted:
 .. code-block:: console
    
    No resources found.
-
-After the removal of the GPU Operator, a restart of the Docker daemon is required as the default container runtime is setup to be the NVIDIA runtime. This is a known limitation 
-and will be addressed in a future release of the operator. 
-
-Run the following command:
-
-.. code-block:: console
-
-  $ sudo systemctl restart docker
