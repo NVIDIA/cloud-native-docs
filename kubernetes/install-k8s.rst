@@ -78,7 +78,7 @@ have been satisfied. These prerequisites include:
 Depending on your Linux distribution, refer to the steps below:
 
 * :ref:`Ubuntu LTS<ubuntu-k8s>`
-* :ref:`CentOS 8<centos8-k8s>`
+* :ref:`CentOS<centos-k8s>`
 
 
 .. _ubuntu-k8s:
@@ -149,28 +149,50 @@ Untaint the control plane, so it can be used to schedule GPU pods in our simplis
 
 Your cluster should now be ready to schedule containerized applications.
 
-.. _centos8-k8s:
+.. _centos-k8s:
 
-CentOS 8
+CentOS 
 ==========
-Follow the steps in this section for setting up K8s on CentOS 8.
+Follow the steps in this section for setting up K8s on CentOS 7/8.
 
 .. note::
 
-   If you're using CentOS 8 on a cloud IaaS platform such as EC2, then you may need to do some additional setup as listed here:
+   If you're using CentOS 7/8 on a cloud IaaS platform such as EC2, then you may need to do some additional setup as listed here:
 
    #. Choose an official CentOS image for your EC2 region: `https://wiki.centos.org/Cloud/AWS <https://wiki.centos.org/Cloud/AWS>`_
    #. Install some of the prerequisites:
 
+      On CentOS 8:
+
       .. code-block:: console
 
-         $ sudo dnf install -y tar bzip2 make automake gcc gcc-c++ pciutils elfutils-libelf-devel libglvnd-devel iptables firewalld vim bind-utils wget
+         $ sudo dnf install -y tar bzip2 make automake gcc gcc-c++ \
+            pciutils elfutils-libelf-devel libglvnd-devel \
+            iptables firewalld bind-utils \
+            vim wget
+      
+      On CentOS 7:
+
+      .. code-block:: console
+
+         $ sudo yum install -y tar bzip2 make automake gcc gcc-c++ \
+            pciutils elfutils-libelf-devel libglvnd-devel \
+            iptables firewalld bind-utils \
+            vim wget      
 
    #. Update the running kernel to ensure you're running the latest updates
+
+      On CentOS 8:
 
       .. code-block:: console
 
          $ sudo dnf update -y
+
+      On CentOS 7:
+      
+      .. code-block:: console
+
+         $ sudo yum update -y
 
    #. Reboot your VM 
 
@@ -178,10 +200,30 @@ Follow the steps in this section for setting up K8s on CentOS 8.
 
          $ sudo reboot
 
+Disable Nouveau
+-----------------
+
+For a successful install of the NVIDIA driver, the Nouveau drivers must first be disabled. 
+
+Create a file at ``/etc/modprobe.d/blacklist-nouveau.conf`` with the following contents:
+
+.. code-block:: console
+
+   blacklist nouveau
+   options nouveau modeset=0
+
+Regenerate the kernel initramfs:
+
+.. code-block:: console
+
+   $ sudo dracut --force
+
+Reboot the system before proceeding with the rest of this guide.
+
 Install Docker
 ----------------
 
-Follow the steps in this `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-docker-on-centos-8>`_ to install Docker on CentOS 8.
+Follow the steps in this `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-docker-on-centos-7-8>`_ to install Docker on CentOS 7/8.
 
 Configuring the system
 ------------------------
@@ -258,11 +300,21 @@ Now open the ports:
 
 Its also required to add the ``docker0`` interface to the public zone and allow for ``docker0`` ingress and egress:
 
+On CentOS 8:
+
 .. code-block:: console
 
    $ nmcli connection modify docker0 connection.zone public \
       && firewall-cmd --zone=public --add-masquerade --permanent \
       && firewall-cmd --zone=public --add-port=443/tcp
+
+On CentOS 7:
+
+.. code-block:: console
+
+   $ firewall-cmd --zone=public --add-masquerade --permanent \
+      && firewall-cmd --zone=public --add-port=443/tcp
+
 
 Reload the ``firewalld`` configuration and ``dockerd`` for the settings to take effect:
 
@@ -305,9 +357,17 @@ Add the network repository listing to the package manager configuration:
 
 Install the components:
 
+On CentOS 8:
+
 .. code-block:: console
 
    $ dnf install -y kubelet kubectl kubeadm
+
+On CentOS 7:
+
+.. code-block:: console
+
+   $ yum install -y kubelet kubectl kubeadm
 
 Ensure that ``kubelet`` is started across system reboots:
 
@@ -409,9 +469,10 @@ and then run a simple ``ping`` command to ensure that the DNS servers can be det
 
 .. code-block:: console
 
-   $ kubectl exec -it multitool -- bash
+   $ kubectl exec multitool -- bash -c 'ping google.com'
 
-   bash-5.0# ping google.com
+.. code-block:: console
+
    PING google.com (172.217.9.206) 56(84) bytes of data.
    64 bytes from iad30s14-in-f14.1e100.net (172.217.9.206): icmp_seq=1 ttl=53 time=0.569 ms
    64 bytes from iad30s14-in-f14.1e100.net (172.217.9.206): icmp_seq=2 ttl=53 time=0.548 ms

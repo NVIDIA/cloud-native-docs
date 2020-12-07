@@ -33,6 +33,20 @@ This release of the GPU Operator includes the following components:
 New features
 -------------
 * Added support for CentOS 7 and 8.
+  
+  .. note::
+
+    Due to a known limitation with the GPU Operator's default values on CentOS, install the operator on CentOS 7/8 
+    using the following Helm command:
+
+    .. code-block:: console
+
+      $ helm install --wait --generate-name \
+        nvidia/gpu-operator \
+        --set toolkit.version=1.4.0-ubi8
+
+    This issue will be fixed in the next release. 
+
 * Added support for airgapped enterprise environments.
 * Added support for ``containerd`` as a container runtime under Kubernetes.
 

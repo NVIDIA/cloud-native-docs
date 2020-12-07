@@ -67,7 +67,66 @@ Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU
 Running Sample GPU Applications
 --------------------------------
 
-In this example, let's try running a TensorFlow Jupyter notebook.
+CUDA FP16 Matrix multiply
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the first example, let's try running a quick CUDA load generator, which does an FP16 matrix-multiply on the GPU:
+
+.. code-block:: console
+
+   $ cat << EOF | kubectl create -f -
+      apiVersion: v1
+      kind: Pod
+      metadata:
+         name: dcgmproftester
+      spec:
+         restartPolicy: OnFailure
+         containers:
+         - name: dcgmproftester11
+         image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
+         args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
+         resources:
+            limits:
+               nvidia.com/gpu: 1
+         securityContext:
+            capabilities:
+               add: ["SYS_ADMIN"]
+      
+   EOF
+
+and then view the logs of the ``dcgmproftester`` pod:
+
+.. code-block:: console
+
+   $ kubectl logs -f dcgmproftester
+
+You should see the FP16 GEMM being run on the GPU:
+
+.. code-block:: console
+
+   Skipping CreateDcgmGroups() since DCGM validation is disabled
+   CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_MULTIPROCESSOR: 1024
+   CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT: 40
+   CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR: 65536
+   CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR: 7
+   CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR: 5
+   CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH: 256
+   CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE: 5001000
+   Max Memory bandwidth: 320064000000 bytes (320.06 GiB)
+   CudaInit completed successfully.
+
+   Skipping WatchFields() since DCGM validation is disabled
+   TensorEngineActive: generated ???, dcgm 0.000 (26096.4 gflops)
+   TensorEngineActive: generated ???, dcgm 0.000 (26344.4 gflops)
+   TensorEngineActive: generated ???, dcgm 0.000 (26351.2 gflops)
+   TensorEngineActive: generated ???, dcgm 0.000 (26359.9 gflops)
+   TensorEngineActive: generated ???, dcgm 0.000 (26750.7 gflops)
+   TensorEngineActive: generated ???, dcgm 0.000 (25378.8 gflops)
+
+Jupyter Notebook
+^^^^^^^^^^^^^^^^^^
+
+In the next example, let's try running a TensorFlow Jupyter notebook.
 
 First, deploy the pods:
 
