@@ -59,16 +59,19 @@ Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes clu
 
 .. include:: install-gpu-operator.rst
 
+Demo
+======
+
 Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
 
 .. image:: graphics/gpu-operator-demo.gif
    :width: 1440
 
 Running Sample GPU Applications
---------------------------------
+=================================
 
 CUDA FP16 Matrix multiply
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------
 
 In the first example, let's try running a quick CUDA load generator, which does an FP16 matrix-multiply on the GPU:
 
@@ -124,7 +127,7 @@ You should see the FP16 GEMM being run on the GPU:
    TensorEngineActive: generated ???, dcgm 0.000 (25378.8 gflops)
 
 Jupyter Notebook
-^^^^^^^^^^^^^^^^^^
+------------------
 
 In the next example, let's try running a TensorFlow Jupyter notebook.
 
@@ -182,7 +185,7 @@ And the token for the Jupyter notebook:
 The notebook should now be accessible from your browser at this URL: ``http:://<your-machine-ip>:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9``
 
 GPU Telemetry
---------------
+==============
 To gather GPU telemetry in Kubernetes, the GPU Operator deploys the ``dcgm-exporter``. ``dcgm-exporter``, based 
 on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of 
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be 
@@ -268,7 +271,7 @@ in the event bar to determine if the GPU metrics are visible:
    :width: 800
 
 Using Grafana 
-``````````````
+---------------
 You can also launch the Grafana tools for visualizing the GPU metrics. 
 
 There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page. 

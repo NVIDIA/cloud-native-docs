@@ -4,10 +4,10 @@
 .. _install-gpu-operator-air-gapped:
 
 Considerations To Install In Air-Gapped Clusters
-================================================
+----------------------------------------------------
 
 Local Image Registry
---------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 With Air-Gapped installs, the GPU Operator requires all images to be hosted in a local image registry accessible to each node in the cluster. To allow
 GPU Operator to work with local registry, users can specify local repository, image, tag along with pull secrets in ``values.yaml``.
@@ -78,8 +78,8 @@ Update ``values.yaml`` with repository, image details as applicable
        repository: <repo.example.com:port>
        tag: "v0.6.0"
 
-Local Package repository
-------------------------
+Local Package Repository
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``Driver`` container deployed as part of GPU operator require certain packages to be available as part of driver installation. In Air-Gapped installations,
 users are required to create a mirror repository for their OS distribution and make following packages available:
@@ -122,7 +122,7 @@ Once the ConfigMap is created using above command, update ``values.yaml`` with t
 within ``Driver`` container to pull required packages.
 
 Ubuntu
-~~~~~~
+""""""""""
 
 .. code-block:: yaml
 
@@ -132,7 +132,7 @@ Ubuntu
          destinationDir: /etc/apt/sources.list.d
 
 CentOS/RHEL/RHCOS
-~~~~~~~~~~~~~~~~~
+""""""""""""""""""""
 
 .. code-block:: yaml
 
@@ -157,7 +157,7 @@ If mirror repository is configured behind a proxy, specify ``driver.env`` in ``v
 
 Deploy GPU Operator with updated ``values.yaml``
 
-.. code-block: console
+.. code-block:: console
 
    $ helm install --wait --generate-name \
       nvidia/gpu-operator -f values.yaml

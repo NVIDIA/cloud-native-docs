@@ -24,6 +24,9 @@ Now, add the NVIDIA Helm repository:
    $ helm repo add nvidia https://nvidia.github.io/gpu-operator \
       && helm repo update
 
+Install the GPU Operator
+--------------------------
+
 Now setup the operator using the Helm chart:
 
 .. note::
@@ -53,7 +56,6 @@ Now setup the operator using the Helm chart:
 
    Note that these instructions are provided for reference and evaluation purposes. Not using the standard releases of the GPU Operator from NVIDIA would mean limited 
    support for such custom configurations.
-
 
 
 Check the status of the pods to ensure all the containers are running:
