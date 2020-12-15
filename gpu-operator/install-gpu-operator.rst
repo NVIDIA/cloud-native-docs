@@ -84,4 +84,6 @@ Check the status of the pods to ensure all the containers are running:
    kube-system              kube-proxy-kj5qb                                                  1/1     Running     0          9m4s
    kube-system              kube-scheduler-ip-172-31-80-124                                   1/1     Running     0          9m18s
 
+.. Shared content for the GPU Operator install
 
+.. include:: install-gpu-operator-air-gapped.rst
