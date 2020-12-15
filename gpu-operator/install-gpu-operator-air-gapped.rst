@@ -114,7 +114,7 @@ users are required to create a mirror repository for their OS distribution and m
 Once, all above required packages are mirrored to local repository, repo lists needs to be created following distribution specific documentation.
 A ``ConfigMap`` needs to be created with the repo list file created under ``gpu-operator-resources`` namespace.
 
-.. code-block: console
+.. code-block:: console
 
    $ kubectl create configmap repo-config -n gpu-operator-resources --from-file=<path-to-repo-list-file>
 

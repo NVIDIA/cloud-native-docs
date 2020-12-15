@@ -81,17 +81,17 @@ In the first example, let's try running a quick CUDA load generator, which does 
       apiVersion: v1
       kind: Pod
       metadata:
-         name: dcgmproftester
+        name: dcgmproftester
       spec:
-         restartPolicy: OnFailure
-         containers:
-         - name: dcgmproftester11
-         image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
-         args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
-         resources:
+        restartPolicy: OnFailure
+        containers:
+        - name: dcgmproftester11
+          image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
+          args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
+          resources:
             limits:
                nvidia.com/gpu: 1
-         securityContext:
+          securityContext:
             capabilities:
                add: ["SYS_ADMIN"]
       
