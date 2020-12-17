@@ -37,6 +37,46 @@ Now setup the operator using the Helm chart:
 
 .. note::
 
+   By default, the operator assumes your Kubernetes deployment is running with `docker` as its container runtime.
+   If your Kubernetes deployment is instead using `cri-o` or `containerd`, you can update the `defaultRuntime` assumed by the operator when you deploy it.
+
+      .. code-block:: console
+
+         $ helm install --wait --generate-name \
+            nvidia/gpu-operator \
+            --set operator.defaultRuntime=crio
+
+      .. code-block:: console
+
+         $ helm install --wait --generate-name \
+            nvidia/gpu-operator \
+            --set operator.defaultRuntime=containerd
+
+   Furthermore, when setting `containerd` as the `defaultRuntime` the following options are also available:
+
+      .. code-block:: console
+
+         toolkit:
+           env:
+           - name: CONTAINERD_CONFIG
+             value: /etc/containerd/config.toml
+           - name: CONTAINERD_SOCKET
+             value: /run/containerd/containerd.sock
+           - name: CONTAINERD_RUNTIME_CLASS
+             value: nvidia
+           - name: CONTAINERD_SET_AS_DEFAULT
+             value: true
+
+    `CONTAINERD_CONFIG`: The path on the host to the `containerd` config you would like to have updated with support for the `nvidia-container-runtime`. By default this will point to `/etc/containerd/config.toml` (the default location for `containerd`). It should be customized if your `containerd` installation is not in the default location.
+
+    `CONTAINERD_SOCKET`: The path on the host to the socket file used to communicate with `containerd`. The operator will use this to send a `SIGHUP` signal to the `containerd` daemon to reload its config. By default this will point to `/run/containerd/containerd.sock` (the default location for `containerd`). It should be customized if your `containerd` installation is not in the default location.
+
+    `CONTAINERD_RUNTIME_CLASS`: The name of the [Runtime Class ](https://kubernetes.io/docs/concepts/containers/runtime-class/)you would like to associate with the `nvidia-container-runtime`. Pods launched with a `runtimeClassName` equal to `CONTAINERD_RUNTIME_CLASS` will always run with the `nvidia-container-runtime`. The default `CONTAINERD_RUNTIME_CLASS` is `nvidia`.
+
+    `CONTAINERD_SET_AS_DEFAULT`: A flag indicating whether you want to set `nvidia-container-runtime` as the default runtime used to launch all containers. When set to false, only containers in pods with a `runtimeClassName` equal to `CONTAINERD_RUNTIME_CLASS` will be run with the `nvidia-container-runtime`. The default value is `true`.
+
+.. note::
+
    If you want to use custom driver container images (for e.g. using 455.28), then you would need to build a new driver container image. Follow these steps:
 
    - Modify the Dockerfile (for e.g. by specifying the driver version in the Ubuntu 20.04 container `here <https://gitlab.com/nvidia/container-images/driver/-/blob/master/ubuntu20.04/Dockerfile#L27>`_)
