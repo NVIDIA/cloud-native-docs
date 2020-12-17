@@ -33,6 +33,8 @@ Now setup the operator using the Helm chart:
 
    If NFD is already running in the cluster prior to the deployment of the operator, use the ``--set nfd.enabled=false`` Helm chart variable
 
+The command below will install the GPU Operator with its default configuration:
+
 .. code-block:: console
 
    $ helm install --wait --generate-name \
