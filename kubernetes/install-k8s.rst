@@ -47,7 +47,7 @@ Use DeepOps to automate deployment, especially for a cluster of many worker node
 
    If you do not explicitly use a release tag, then the latest development code is used, and not an official release.
 
-#. Follow the instructions in the `DeepOps Kubernetes Deployment Guide <https://github.com/NVIDIA/deepops/blob/master/docs/kubernetes-cluster.md>`_ to install Kubernetes.
+#. Follow the instructions in the `DeepOps Kubernetes Deployment Guide <https://github.com/NVIDIA/deepops/blob/master/docs/k8s-cluster>`_ to install Kubernetes.
 
 *****************************************
 Installing Kubernetes Using Kubeadm
