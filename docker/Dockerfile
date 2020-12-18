@@ -12,6 +12,7 @@ RUN apt-get update \
       graphviz \
       imagemagick \
       make \
+      curl \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
