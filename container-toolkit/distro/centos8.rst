@@ -17,31 +17,35 @@ Setting up Docker on CentOS 7/8
 
 Setup the official Docker CE repository:
 
-On CentOS 8: 
+.. tabs::
 
-.. code-block:: console
+   .. tab:: CentOS 8
 
-   $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+      .. code-block:: console
 
-On CentOS 7: 
+         $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
-.. code-block:: console
+   .. tab:: CentOS 7
 
-   $ sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+      .. code-block:: console
+
+         $ sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 
 Now you can observe the packages available from the `docker-ce` repo:
 
-On CentOS 8:
+.. tabs:: 
 
-.. code-block:: console
+   .. tab:: CentOS 8
 
-   $ sudo dnf repolist -v
+      .. code-block:: console
 
-On CentOS 7:
+         $ sudo dnf repolist -v
 
-.. code-block:: console
+   .. tab:: CentOS 7
 
-   $ sudo yum repolist -v
+      .. code-block:: console
+
+         $ sudo yum repolist -v
 
 Since CentOS does not support specific versions of ``containerd.io`` packages that are required for newer versions 
 of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce`` 
@@ -49,32 +53,36 @@ packages.
 
 Install the ``containerd.io`` package:
 
-On CentOS 8: 
+.. tabs:: 
 
-.. code-block:: console
-   
-   $ sudo dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
+   .. tab:: CentOS 8
 
-On CentOS 7: 
+      .. code-block:: console
+         
+         $ sudo dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
 
-.. code-block:: console
-   
-   $ sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.3.7-3.1.el7.x86_64.rpm
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+         
+         $ sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
 
 
 And now install the latest ``docker-ce`` package:
 
-On CentOS 8: 
+..tabs:: 
 
-.. code-block:: console
+   .. tab:: CentOS 8
 
-   $ sudo dnf install docker-ce -y
+      .. code-block:: console
 
-On CentOS 7:
+         $ sudo dnf install docker-ce -y
 
-.. code-block:: console
+   .. tab:: CentOS 7
 
-   $ sudo yum install docker-ce -y
+      .. code-block:: console
+
+         $ sudo yum install docker-ce -y
 
 Ensure the Docker service is running with the following command:
 
@@ -134,29 +142,33 @@ Setup the ``stable`` repository and the GPG key:
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-On CentOS 8:
+.. tabs:: 
 
-.. code-block:: console
+   .. tab:: CentOS 8
 
-   $ sudo dnf clean expire-cache --refresh
+      .. code-block:: console
 
-On CentOS 7:
+         $ sudo dnf clean expire-cache --refresh
 
-.. code-block:: console
+   .. tab:: CentOS 7
 
-   $ sudo yum clean expire-cache
+      .. code-block:: console
 
-On CentOS 8:
+         $ sudo yum clean expire-cache
 
-.. code-block:: console
+.. tabs::
 
-   $ sudo dnf install -y nvidia-docker2
+   .. tab:: CentOS 8
 
-On CentOS 7:
+      .. code-block:: console
 
-.. code-block:: console
+         $ sudo dnf install -y nvidia-docker2
 
-   $ sudo yum install -y nvidia-docker2
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 

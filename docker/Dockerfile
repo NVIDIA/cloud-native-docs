@@ -1,9 +1,10 @@
 # Imported from https://hub.docker.com/r/sphinxdoc/sphinx/dockerfile
+# maintainer="Sphinx Team <https://www.sphinx-doc.org/>"
 # $ docker build --pull \ 
 #   --tag ${REGISTRY}/sphinxdoc 
 #   --file Dockerfile .
 FROM python:3.8-slim
-LABEL maintainer="Sphinx Team <https://www.sphinx-doc.org/>"
+LABEL maintainer="Pramod Ramarao <pramarao@nvidia>"
 
 WORKDIR /docs
 RUN apt-get update \

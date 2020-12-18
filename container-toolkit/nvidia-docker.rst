@@ -1,5 +1,9 @@
-Installing Docker CE
-------------------------
+.. Date: December 18 2020
+.. Author: pramarao
+
+Getting Started
+=======================================
+
 For installing Docker CE, follow the official `instructions <https://docs.docker.com/engine/install/>`_ for your supported Linux distribution. 
 For convenience, the documentation below includes instructions on installing Docker for various Linux distributions.
 

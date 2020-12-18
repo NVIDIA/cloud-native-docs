@@ -8,6 +8,7 @@ stages:
 - build_image
 - build_docs
 - stage_docs
+- publish_docs
 
 services:
   - docker:19.03.12-dind
@@ -41,3 +42,11 @@ stage_docs:
   script:
   - export STAGING_URL="http://${CI_RUNNER_DESCRIPTION}/html/${CI_PIPELINE_ID}"
   - echo "Looks like everything was built OK. See the staged docs at ${STAGING_URL}"
+
+publish_docs:
+  stage: publish_docs
+  script:
+  - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
+  - /root/deploy-docs/deploy_web.sh ${CI_PIPELINE_ID}
+  only:
+    - master
