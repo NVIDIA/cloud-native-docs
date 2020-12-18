@@ -36,7 +36,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.extlinks',
     'sphinx_copybutton',
-    'sphinx.ext.autosectionlabel',    
+    'sphinx.ext.autosectionlabel',
+    'sphinx_tabs.tabs',    
 ]
 
 # Add any paths that contain templates here, relative to this directory.

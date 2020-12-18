@@ -18,5 +18,6 @@ RUN apt-get update \
 RUN python3 -m pip install --no-cache-dir -U pip
 RUN python3 -m pip install --no-cache-dir Sphinx==3.2.1 Pillow
 RUN python3 -m pip install --no-cache-dir sphinx-copybutton
+RUN python3 -m pip install --no-cache-dir sphinx-tabs
 
 CMD ["make", "html"]
