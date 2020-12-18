@@ -47,6 +47,6 @@ publish_docs:
   stage: publish_docs
   script:
   - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
-  - /opt/build/html/deploy_web.sh ${CI_PIPELINE_ID}
+  - /opt/build/html/deploy_web.sh --copy-flush ${CI_PIPELINE_ID}
   only:
     - master
