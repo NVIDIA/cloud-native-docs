@@ -33,6 +33,8 @@ Now setup the operator using the Helm chart:
 
    If NFD is already running in the cluster prior to the deployment of the operator, use the ``--set nfd.enabled=false`` Helm chart variable
 
+The command below will install the GPU Operator with its default configuration:
+
 .. code-block:: console
 
    $ helm install --wait --generate-name \
@@ -74,7 +76,7 @@ Now setup the operator using the Helm chart:
 
     `CONTAINERD_SOCKET`: The path on the host to the socket file used to communicate with `containerd`. The operator will use this to send a `SIGHUP` signal to the `containerd` daemon to reload its config. By default this will point to `/run/containerd/containerd.sock` (the default location for `containerd`). It should be customized if your `containerd` installation is not in the default location.
 
-    `CONTAINERD_RUNTIME_CLASS`: The name of the [Runtime Class ](https://kubernetes.io/docs/concepts/containers/runtime-class/)you would like to associate with the `nvidia-container-runtime`. Pods launched with a `runtimeClassName` equal to `CONTAINERD_RUNTIME_CLASS` will always run with the `nvidia-container-runtime`. The default `CONTAINERD_RUNTIME_CLASS` is `nvidia`.
+    `CONTAINERD_RUNTIME_CLASS`: The name of the [Runtime Class](https://kubernetes.io/docs/concepts/containers/runtime-class/) you would like to associate with the `nvidia-container-runtime`. Pods launched with a `runtimeClassName` equal to `CONTAINERD_RUNTIME_CLASS` will always run with the `nvidia-container-runtime`. The default `CONTAINERD_RUNTIME_CLASS` is `nvidia`.
 
     `CONTAINERD_SET_AS_DEFAULT`: A flag indicating whether you want to set `nvidia-container-runtime` as the default runtime used to launch all containers. When set to false, only containers in pods with a `runtimeClassName` equal to `CONTAINERD_RUNTIME_CLASS` will be run with the `nvidia-container-runtime`. The default value is `true`.
 
