@@ -33,12 +33,37 @@ Now setup the operator using the Helm chart:
 
    If NFD is already running in the cluster prior to the deployment of the operator, use the ``--set nfd.enabled=false`` Helm chart variable
 
-The command below will install the GPU Operator with its default configuration:
 
-.. code-block:: console
+.. tabs:: 
 
-   $ helm install --wait --generate-name \
-      nvidia/gpu-operator
+    .. tab:: Baremetal/Passthrough
+
+         The command below will install the GPU Operator with its default configuration:
+
+         .. code-block:: console
+
+            $ helm install --wait --generate-name \
+               nvidia/gpu-operator
+
+    .. tab:: vGPU
+
+         The command below will install the GPU Operator with its default configuration:
+
+         .. code-block:: console
+
+            $ helm install --wait --generate-name \
+               nvidia/gpu-operator --set driver.repository=$PRIVATE_REGISTRY \
+               --set driver.version=$VERSION \
+               --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME}
+
+         .. note::
+
+            Please refer to section `install-gpu-operator-vgpu`_ for required values of
+            ``PRIVATE_REGISTRY``, ``VERSION`` and ``REGISTRY_SECRET_NAME``. 
+            
+         .. note::
+
+            This command assumes default container runtime as **docker**. For **containerd** please pass ``--set operator.defaultRuntime=containerd`` option. For additional containerd config please refer to below note.        
 
 .. note::
 
@@ -131,3 +156,7 @@ Check the status of the pods to ensure all the containers are running:
 .. Shared content for the GPU Operator install
 
 .. include:: install-gpu-operator-air-gapped.rst
+
+.. Shared content for the GPU Operator install
+
+.. include:: install-gpu-operator-vgpu.rst
