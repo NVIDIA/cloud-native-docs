@@ -25,6 +25,11 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 #. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ 
    gate. From Kubernetes 1.15 onwards, its enabled by default.
 
+Following Prerequisites apply only for installing GPU Operator with vGPU drivers
+
+#. The NVIDIA vGPU Host Driver is pre-installed on all hypervisors hosting vGPU accelerated Kubernetes worker node virtual machines. 
+#. A NVIDIA vGPU License Server is installed and reachable from all Kubernetes worker node virtual machines
+
 .. note:: 
 
    To enable the ``KubeletPodResources`` feature gate, run the following command: ``echo -e "KUBELET_EXTRA_ARGS=--feature-gates=KubeletPodResources=true" | sudo tee /etc/default/kubelet``
