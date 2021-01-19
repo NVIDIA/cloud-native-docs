@@ -10,6 +10,52 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.5.0
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+
+| Component                | Version       |
++==========================+===============+
+| NVIDIA Driver            | 450.80.02     |
++--------------------------+---------------+
+| NVIDIA Container Toolkit | 1.4.2         |
++--------------------------+---------------+
+| NVIDIA K8s Device Plugin | 0.7.3         |
++--------------------------+---------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         |
++--------------------------+---------------+
+| Node Feature Discovery   | 0.6.0         |
++--------------------------+---------------+
+| GPU Feature Discovery    | 0.3.0         |
++--------------------------+---------------+
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+
+New features
+-------------
+* Added support for NVIDIA vGPU
+
+Improvements 
+-------------
+* Driver Validation container is run as an initContainer within device-plugin Daemonset pods. Thus driver installation on each NVIDIA GPU/vGPU node will be validated.
+* GFD will label vGPU nodes with driver version and branch name of NVIDIA vGPU installed on Hypervisor.
+* Driver container will perform automatic compatibility check of NVIDIA vGPU grid driver with the version installed on underlying Hypervisor.
+
+Fixed issues
+------------
+* GPU Operator will no longer crash when no GPU nodes are found.
+* Container Toolkit pods wait for drivers to be loaded on the system before setting the default container runtime as `nvidia`.
+* On host reboot, ordering of pods is maintained to ensure that drivers are always loaded first.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.4.0
 =====
 This release of the GPU Operator includes the following components:
@@ -220,3 +266,9 @@ Known Limitations
 * The GPU Operator currently does not handle node reboots. If a node is rebooted, in some cases, the driver container may not start up 
   successfully. A workaround for this issue would be to uninstall and re-install the operator using the Helm chart.
 * The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
+* The GPU Operator v1.5.0 does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
+* GPU Operator v1.5.0 with NVIDIA vGPUs support Turing and newer GPU architectures.
+* DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
+* DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
+* Currently libnvidia-container doesn't work when kubelet's cgroup driver is configured to systemd.
+
