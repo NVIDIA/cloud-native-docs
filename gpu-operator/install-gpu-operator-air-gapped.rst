@@ -3,7 +3,7 @@
 
 .. _install-gpu-operator-air-gapped:
 
-Considerations To Install In Air-Gapped Clusters
+Considerations to Install in Air-Gapped Clusters
 ----------------------------------------------------
 
 Local Image Registry

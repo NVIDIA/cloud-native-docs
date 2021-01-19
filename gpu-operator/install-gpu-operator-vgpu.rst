@@ -3,8 +3,8 @@
 
 .. _install-gpu-operator-vgpu:
 
-Considerations To Install GPU Operator with vGPU Driver
--------------------------------------------------------
+Considerations to Install GPU Operator with NVIDIA vGPU Driver
+--------------------------------------------------------------
 
 High Level Workflow
 ^^^^^^^^^^^^^^^^^^^
@@ -21,7 +21,7 @@ The following section outlines the high level workflow to use the GPU Operator w
 Detailed Workflow
 ^^^^^^^^^^^^^^^^^
 
-Download the vGPU Software and latest NVIDIA vGPU catalog driver file from the NVIDIA Licensing Portal.
+Download the vGPU Software and latest NVIDIA vGPU catalog driver file from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 #. Login to the NVIDIA Licensing Portal and navigate to the “Software Downloads” section.
 #. The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
@@ -43,16 +43,16 @@ Clone the driver container repository and build driver image
 
     $ cd ubuntu20.04
 
-* Copy the vGPU guest driver from your extracted zip file and the vGPU driver catalog file
+* Copy the NVIDIA vGPU guest driver from your extracted zip file and the NVIDIA vGPU driver catalog file
 
 .. code-block:: console
 
-    $ cp <local-driver-download-directory>/*.run drivers
+    $ cp <local-driver-download-directory>/*-grid.run drivers
     $ cp vgpuDriverCatalog.yaml drivers
 
-* Create vGPU license configuration file
+* Create NVIDIA vGPU license configuration file
 
-Create a vGPU license file named `gridd.conf` in the drivers/ folder with the below content.
+Create a NVIDIA vGPU license file named `gridd.conf` in the drivers/ folder with the below content.
 
 .. code-block:: text
 
@@ -71,7 +71,7 @@ Set the private registry name using below command on the terminal
 
     $ export PRIVATE_REGISTRY=<private registry name>
 
-Set the OS_TAG. The OS_TAG has to match the Guest OS version. Supported values are ubuntu20.04, ubuntu18.04, rhcos4.5, rhcos4.6
+Set the OS_TAG. The OS_TAG has to match the Guest OS version. Supported values are ubuntu20.04, rhcos4.6
 
 .. code-block:: console
 
@@ -121,4 +121,4 @@ Creating an image pull secrets
 
 * Install GPU Operator helm chart
 
-Please refer to `install-gpu-operator`_ section for GPU operator installation command and options for vGPU.
+Please refer to :ref:`Install NVIDIA GPU Operator` section for GPU operator installation command and options for vGPU.

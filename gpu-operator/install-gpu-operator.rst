@@ -45,7 +45,7 @@ Now setup the operator using the Helm chart:
             $ helm install --wait --generate-name \
                nvidia/gpu-operator
 
-    .. tab:: vGPU
+    .. tab:: NVIDIA vGPU
 
          The command below will install the GPU Operator with its default configuration:
 
@@ -58,9 +58,9 @@ Now setup the operator using the Helm chart:
 
          .. note::
 
-            Please refer to section `install-gpu-operator-vgpu`_ for required values of
-            ``PRIVATE_REGISTRY``, ``VERSION`` and ``REGISTRY_SECRET_NAME``. 
-            
+            The GPU Operator with NVIDIA vGPUs requires additional steps to build a private driver image prior to install. Please refer to section :ref:`Considerations to Install GPU Operator with NVIDIA vGPU Driver` for detailed instructions and required values of
+            ``PRIVATE_REGISTRY``, ``VERSION`` and ``REGISTRY_SECRET_NAME``.
+
          .. note::
 
             This command assumes default container runtime as **docker**. For **containerd** please pass ``--set operator.defaultRuntime=containerd`` option. For additional containerd config please refer to below note.        
