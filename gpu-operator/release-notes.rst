@@ -14,21 +14,21 @@ This document describes the new features, improvements, fixed and known issues f
 =====
 This release of the GPU Operator includes the following components:
 
-+--------------------------+---------------+
-| Component                | Version       |
-+==========================+===============+
-| NVIDIA Driver            | 450.80.02     |
-+--------------------------+---------------+
-| NVIDIA Container Toolkit | 1.4.2         |
-+--------------------------+---------------+
-| NVIDIA K8s Device Plugin | 0.7.3         |
-+--------------------------+---------------+
-| NVIDIA DCGM-Exporter     | 2.1.2         |
-+--------------------------+---------------+
-| Node Feature Discovery   | 0.6.0         |
-+--------------------------+---------------+
-| GPU Feature Discovery    | 0.3.0         |
-+--------------------------+---------------+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.2         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.7.3         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.3.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
 
 .. note::
 
@@ -42,13 +42,14 @@ Improvements
 -------------
 * Driver Validation container is run as an initContainer within device-plugin Daemonset pods. Thus driver installation on each NVIDIA GPU/vGPU node will be validated.
 * GFD will label vGPU nodes with driver version and branch name of NVIDIA vGPU installed on Hypervisor.
-* Driver container will perform automatic compatibility check of NVIDIA vGPU grid driver with the version installed on underlying Hypervisor.
+* Driver container will perform automatic compatibility check of NVIDIA vGPU driver with the version installed on the underlying Hypervisor.
 
 Fixed issues
 ------------
 * GPU Operator will no longer crash when no GPU nodes are found.
 * Container Toolkit pods wait for drivers to be loaded on the system before setting the default container runtime as `nvidia`.
 * On host reboot, ordering of pods is maintained to ensure that drivers are always loaded first.
+* Fixed device-plugin issue causing ``symbol lookup error: nvidia-device-plugin: undefined symbol: nvmlEventSetWait_v2`` error.
 
 Known Limitations
 ------------------
@@ -259,7 +260,8 @@ Fixed Issues
 .. _operator-known-limitations:
 
 Known Limitations
-------------------
+=================
+
 * The GPU Operator does not include `NVIDIA Fabric Manager <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_ and 
   thus does not yet support systems that use the NVSwitch fabric (e.g. HGX, DGX-2 or DGX A100).
 * GPU Operator will fail on nodes already setup with NVIDIA components (driver, runtime, device plugin). Support for better error handling will be added in a future release.
@@ -270,5 +272,5 @@ Known Limitations
 * GPU Operator v1.5.0 with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
 * DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
-* Currently libnvidia-container doesn't work when kubelet's cgroup driver is configured to systemd.
+* Currently libnvidia-container doesn't work when kubelet's cgroup driver is configured to systemd. This leads to error ``Error while dialing dial unix:///run/containerd/containerd.sock: timeout`` in kubelet logs.
 
