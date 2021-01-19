@@ -95,10 +95,10 @@ Supported NVIDIA vGPU products
 NVIDIA vGPU 12.0+ with the following software products
 
 * NVIDIA Virtual Compute Server (C-Series)
-* Quadro vDWS (Q-Series)
+* NVIDIA RTX Virtual Workstation (vWS)
 
-Supported Hypervisors for NVIDIA vGPU
--------------------------------------
+Supported Hypervisors with NVIDIA vGPU
+--------------------------------------
 
 The following Virtualization Platforms are supported
 
