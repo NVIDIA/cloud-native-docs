@@ -89,7 +89,7 @@ In addition, the following container management tools are supported:
 * containerd 1.4+
 * CRI-O with OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS)
 
-Supported NVIDIA vGPU products
+Supported NVIDIA vGPU Products
 ------------------------------
 
 NVIDIA vGPU 12.0+ with the following software products
@@ -100,7 +100,7 @@ NVIDIA vGPU 12.0+ with the following software products
 Supported Hypervisors with NVIDIA vGPU
 --------------------------------------
 
-The following Virtualization Platforms are supported
+The following Virtualization Platforms are supported. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/product-support-matrix/index.html>`_ for more detailed information.
 
 * VMware vSphere 7
 * Red Hat Enterprise Linux KVM 
