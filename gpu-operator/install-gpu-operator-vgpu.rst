@@ -96,9 +96,9 @@ Build the driver container image
 .. code-block:: console
 
     $ sudo docker build \
-    --build-arg DRIVER_TYPE=vgpu \
-    --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
-    -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
+      --build-arg DRIVER_TYPE=vgpu \
+      --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
+      -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
 * Push the driver container image to your private repository
 
@@ -125,9 +125,9 @@ Creating an image pull secrets
 .. code-block:: console
 
     $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-    --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
-    --docker-password=<password> \
-    --docker-email=<email-id> -n gpu-operator-resources
+      --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
+      --docker-password=<password> \
+      --docker-email=<email-id> -n gpu-operator-resources
 
 .. note::
 
