@@ -82,6 +82,9 @@ Set the driver container image version to a user defined version number. For exa
 .. code-block:: console
 
     $ export VERSION=1.0.0
+
+.. code-block:: console
+
     $ export VGPU_DRIVER_VERSION=460.16-grid (replace this with the guest vgpu grid driver version downloaded from NVIDIA software portal)
 
 .. note::
@@ -92,13 +95,19 @@ Build the driver container image
 
 .. code-block:: console
 
-    $ sudo docker build --build-arg DRIVER_TYPE=vgpu --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
+    $ sudo docker build \
+    --build-arg DRIVER_TYPE=vgpu \
+    --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
+    -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
 * Push the driver container image to your private repository
 
 .. code-block:: console
 
     $ sudo docker login ${PRIVATE_REGISTRY} --username=<username> {enter password on prompt}
+
+.. code-block:: console
+
     $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
 
 * Install the GPU Operator.
@@ -108,8 +117,17 @@ Creating an image pull secrets
 .. code-block:: console
 
     $ kubectl  create namespace gpu-operator-resources
+
+.. code-block:: console
+
     $ export REGISTRY_SECRET_NAME=registry-secret
-    $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> --docker-password=<password> --docker-email=<email-id> -n gpu-operator-resources
+
+.. code-block:: console
+
+    $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
+    --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
+    --docker-password=<password> \
+    --docker-email=<email-id> -n gpu-operator-resources
 
 .. note::
 
