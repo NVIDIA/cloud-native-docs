@@ -31,7 +31,7 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 
 Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
 
-#. The NVIDIA vGPU Host Driver is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines. Please refer to `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/index.html>`_ for details.
+#. The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines. Please refer to `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/index.html>`_ for details.
 #. A NVIDIA vGPU License Server is installed and reachable from all Kubernetes worker node virtual machines.
 #. A private registry is available to upload the NVIDIA vGPU specific driver container image.
 #. Each Kubernetes worker node in the cluster has access to the private registry. Private registry access is usually managed through imagePullSecrets. See the Kubernetes Documentation for more information. The user is required to provide these secrets to the NVIDIA GPU-Operator in the driver section of the values.yaml file.
