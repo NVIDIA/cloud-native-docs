@@ -92,18 +92,14 @@ Build the driver container image
 
 .. code-block:: console
 
-    $ sudo docker build --build-arg DRIVER_TYPE=vgpu --build-arg VGPU_LICENSE_SERVER_TYPE=FNE --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
-
-.. note::
-
-    ``VGPU_LICENSE_SERVER_TYPE`` can be of either **FNE** (default) or **NLS** based on licensing server config.
+    $ sudo docker build --build-arg DRIVER_TYPE=vgpu --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
 * Push the driver container image to your private repository
 
 .. code-block:: console
 
     $ sudo docker login ${PRIVATE_REGISTRY} --username=<username> {enter password on prompt}
-    $ sudo docker push ${PRIVATE_REGISTRY}/vgpudriver:${VERSION}-${OS_TAG}
+    $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
 
 * Install the GPU Operator.
 
