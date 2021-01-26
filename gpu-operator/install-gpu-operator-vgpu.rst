@@ -21,12 +21,12 @@ The following section outlines the high level workflow to use the GPU Operator w
 Detailed Workflow
 ^^^^^^^^^^^^^^^^^
 
-Download the vGPU Software and latest NVIDIA vGPU catalog driver file from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+Download the vGPU Software and latest NVIDIA vGPU driver catalog file from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 #. Login to the NVIDIA Licensing Portal and navigate to the “Software Downloads” section.
 #. The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
 #. The NVIDIA vGPU catalog driver file is located in the “Additional Software” section.
-#. The vGPU Software bundle is packaged as a zip file. Extract the zip file
+#. The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Linux guest driver (NVIDIA-Linux-x86_64-<version>-grid.run file)
 
 Clone the driver container repository and build driver image
 
@@ -35,6 +35,9 @@ Clone the driver container repository and build driver image
 .. code-block:: console
 
     $ git clone https://gitlab.com/nvidia/container-images/driver
+
+.. code-block:: console
+
     $ cd driver
 
 * Change to the OS directory under the driver directory
@@ -48,6 +51,9 @@ Clone the driver container repository and build driver image
 .. code-block:: console
 
     $ cp <local-driver-download-directory>/*-grid.run drivers
+
+.. code-block:: console
+
     $ cp vgpuDriverCatalog.yaml drivers
 
 * Create NVIDIA vGPU license configuration file
@@ -62,6 +68,10 @@ Create a NVIDIA vGPU license file named `gridd.conf` in the drivers/ folder with
     ServerAddress=<license server address>
 
 Input the license server address of the License Server
+
+.. note::
+
+    Optionally add a backup/secondary license server address if one is configured. ``BackupServerAddress=<backup license server address>``
 
 * Build the driver container image
 
@@ -83,13 +93,18 @@ Set the driver container image version to a user defined version number. For exa
 
     $ export VERSION=1.0.0
 
-.. code-block:: console
-
-    $ export VGPU_DRIVER_VERSION=460.16-grid (replace this with the guest vgpu grid driver version downloaded from NVIDIA software portal)
-
 .. note::
 
     ``VERSION`` can be any user defined value. Please note this value to use during operator installation command
+
+.. code-block:: console
+
+    $ export VGPU_DRIVER_VERSION=460.32.03-grid (replace this with the Linux guest vgpu driver version downloaded from NVIDIA software portal)
+
+.. note::
+
+    GPU Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
+    If version check is disabled with ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when building driver image, then ``VGPU_DRIVER_VERSION`` value is used as default.
 
 Build the driver container image
 

@@ -10,6 +10,47 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.5.1
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.3         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.7.3         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.3.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+
+New features
+-------------
+
+Improvements 
+-------------
+* Kubelet's cgroup driver as ``systemd`` is now supported.
+
+Fixed issues
+------------
+* Device-Plugin stuck in ``init`` phase on node reboot or when new node is added to the cluster.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.5.0
 =====
 This release of the GPU Operator includes the following components:
@@ -272,5 +313,4 @@ Known Limitations
 * GPU Operator v1.5.0 with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
 * DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
-* Currently libnvidia-container doesn't work when kubelet's cgroup driver is configured to systemd. This leads to error ``Error while dialing dial unix:///run/containerd/containerd.sock: timeout`` in kubelet logs.
 
