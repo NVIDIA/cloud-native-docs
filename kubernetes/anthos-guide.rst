@@ -4,7 +4,7 @@
 .. _anthos-guide:
 
 #########################################
-NVIDIA GPUs with Google Cloud Anthos
+NVIDIA GPUs with Google Cloud's Anthos
 #########################################
 
 **********
@@ -12,7 +12,7 @@ Changelog
 **********
 
 * 11/30/2020 (author: PR/DF):
-   * Added information on Anthos bare-metal
+   * Added information on Anthos on bare metal
 * 11/25/2020 (author: PR): 
    * Migrated docs to new format
 * 8/14/2020 (author: PR): 
@@ -22,7 +22,7 @@ Changelog
 Introduction
 ***************
 
-Google Cloud Anthos is a modern application management platform that lets users 
+Google Cloud's Anthos is a modern application management platform that lets users 
 build, deploy, and manage applications anywhere in a secure, consistent manner. 
 The platform provides a consistent development and operations experience across 
 deployments while reducing operational overhead and improving developer productivity. 
@@ -32,7 +32,7 @@ available on `Amazon Web Services (AWS) <https://cloud.google.com/anthos/docs/gk
 Support for Anthos on Microsoft Azure is in preview. For more information on Anthos, 
 see the `product overview <https://cloud.google.com/anthos>`_.
 
-Systems with NVIDIA GPUs can be deployed in various configurations for use with Google Cloud Anthos. 
+Systems with NVIDIA GPUs can be deployed in various configurations for use with Google Cloud's Anthos. 
 The purpose of this document is to provide users with steps on getting started with using 
 NVIDIA GPUs with Anthos in these various configurations. 
 
@@ -41,7 +41,7 @@ Deployment Configurations
 ***************************
 
 Anthos can be deployed in different configurations. Depending on your deployment, choose one of the sections below 
-to get started with NVIDIA GPUs in Google Cloud Anthos:
+to get started with NVIDIA GPUs in Google Cloud's Anthos:
 
 #. :ref:`Anthos with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
 #. :ref:`Anthos with VMware vSphere and NVIDIA GPU accelerated servers<anthos-virt>`
@@ -84,7 +84,7 @@ DGX customers can visit the `NVIDIA DGX Systems Support Portal <https://www.nvid
 .. _anthos-dgx-bm:
 
 ***********************************************************************
-Anthos bare-metal with NVIDIA DGX Systems and GPU-Accelerated Servers
+Anthos on Bare Metal with NVIDIA DGX Systems and GPU-Accelerated Servers
 ***********************************************************************
 
 Anthos on bare metal with DGX A100 or NVIDIA GPU-accelerated servers systems enables a consistent development and operational experience across deployments, 
@@ -883,7 +883,7 @@ You do not need to remove the PCI passthrough device from the host.
 Known Issues
 ==============
 
-This section outlines some known issues with using Google Cloud Anthos with NVIDIA GPUs.
+This section outlines some known issues with using Google Cloud's Anthos with NVIDIA GPUs.
 
 #. Attaching a GPU to a Anthos on-prem worker node requires manually editing the VM from vSphere. 
    These changes will not survive an Anthos on-prem upgrade process. When the node with the GPU is 

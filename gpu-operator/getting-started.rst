@@ -98,13 +98,13 @@ In the first example, let's try running a quick CUDA load generator, which does 
       restartPolicy: OnFailure
       containers:
       - name: dcgmproftester11
-      image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
-      args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
-      resources:
-         limits:
-            nvidia.com/gpu: 1
-      securityContext:
-         capabilities:
+        image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
+        args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
+        resources:
+          limits:
+             nvidia.com/gpu: 1
+        securityContext:
+          capabilities:
             add: ["SYS_ADMIN"]
    
    EOF
