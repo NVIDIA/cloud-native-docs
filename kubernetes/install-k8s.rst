@@ -413,8 +413,7 @@ and if required, start ``firewalld``:
 
 .. code-block:: console
 
-   $ systemctl start firewalld \
-      && systemctl enable firewalld
+   $ systemctl --now enable firewalld
 
 Now open the ports:
 
@@ -511,8 +510,7 @@ Ensure that ``kubelet`` is started across system reboots:
 
 .. code-block:: console
 
-   $ systemctl enable kubelet \
-      && systemctl start kubelet
+   $ systemctl --now enable kubelet
 
 Now use ``kubeadm`` to initialize the control plane:
 
