@@ -70,7 +70,7 @@ Install the ``containerd.io`` package:
 
 And now install the latest ``docker-ce`` package:
 
-..tabs:: 
+.. tabs:: 
 
    .. tab:: CentOS 8
 
@@ -88,8 +88,7 @@ Ensure the Docker service is running with the following command:
 
 .. code-block:: console
 
-   $ sudo systemctl enable docker \
-      && sudo systemctl start docker
+   $ sudo systemctl --now enable docker
 
 And finally, test your Docker installation by running the ``hello-world`` container:
 

@@ -72,7 +72,7 @@ Use the official Docker script to install the latest release of Docker:
 
 .. code-block:: console
 
-   $ sudo systemctl start docker && sudo systemctl enable docker
+   $ sudo systemctl --now enable docker
 
 ----
 

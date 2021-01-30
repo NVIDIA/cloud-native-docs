@@ -21,7 +21,7 @@ import re
 # -- Project information -----------------------------------------------------
 
 project = u'NVIDIA Cloud Native Technologies'
-copyright = u'2018-2020, NVIDIA Corporation'
+copyright = u'2018-2021, NVIDIA Corporation'
 author = u'NVIDIA Corporation'
 
 

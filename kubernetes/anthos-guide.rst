@@ -130,8 +130,7 @@ Time Synchronization
 
    .. code-block:: console
 
-      $ systemctl enable apparmor \
-         && systemctl start apparmor \
+      $ systemctl --now enable apparmor \
          && systemctl stop apparmor
 
 * Synchronize the time on each node:
@@ -286,8 +285,7 @@ Anthos.
 
    .. code-block:: console
 
-      $ systemctl enable docker \
-         && systemctl start docker
+      $ systemctl --now enable docker
 
 Install ``nvidia-docker2`` on GPU Nodes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
