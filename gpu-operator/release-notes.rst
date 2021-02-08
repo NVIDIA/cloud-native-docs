@@ -32,16 +32,16 @@ This release of the GPU Operator includes the following components:
 
 .. note::
 
-  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 New features
 -------------
 
 Improvements
 -------------
-* Allow mig.strategy=single on nodes with non-MIG GPUs
-* Pre-create MIG related nvcaps at startup.
-* Updated device-plugin and toolkit validation to work with CPU Manager
+* Allow ``mig.strategy=single`` on nodes with non-MIG GPUs.
+* Pre-create MIG related ``nvcaps`` at startup.
+* Updated device-plugin and toolkit validation to work with CPU Manager.
 
 Fixed issues
 ------------
@@ -75,7 +75,7 @@ This release of the GPU Operator includes the following components:
 
 .. note::
 
-  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 New features
 -------------
