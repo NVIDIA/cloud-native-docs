@@ -10,6 +10,49 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.5.2
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.4         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.8.1         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.4.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+
+New features
+-------------
+
+Improvements
+-------------
+* Allow ``mig.strategy=single`` on nodes with non-MIG GPUs.
+* Pre-create MIG related ``nvcaps`` at startup.
+* Updated device-plugin and toolkit validation to work with CPU Manager.
+
+Fixed issues
+------------
+* Fixed issue which causes GFD pods to fail with error ``Failed to load NVML`` error even after driver is loaded.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.5.1
 =====
 This release of the GPU Operator includes the following components:
@@ -32,12 +75,12 @@ This release of the GPU Operator includes the following components:
 
 .. note::
 
-  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 New features
 -------------
 
-Improvements 
+Improvements
 -------------
 * Kubelet's cgroup driver as ``systemd`` is now supported.
 
@@ -306,11 +349,11 @@ Known Limitations
 * The GPU Operator does not include `NVIDIA Fabric Manager <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_ and 
   thus does not yet support systems that use the NVSwitch fabric (e.g. HGX, DGX-2 or DGX A100).
 * GPU Operator will fail on nodes already setup with NVIDIA components (driver, runtime, device plugin). Support for better error handling will be added in a future release.
-* The GPU Operator currently does not handle node reboots. If a node is rebooted, in some cases, the driver container may not start up 
-  successfully. A workaround for this issue would be to uninstall and re-install the operator using the Helm chart.
 * The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
-* The GPU Operator v1.5.0 does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
-* GPU Operator v1.5.0 with NVIDIA vGPUs support Turing and newer GPU architectures.
+* The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
+* GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
 * DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
+* After un-install of GPU Operator, nvidia driver modules might still be loaded. User would need to either reboot the node or forcefully remove them using ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 
