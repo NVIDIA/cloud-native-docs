@@ -10,6 +10,49 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.5.2
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.4         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.8.1         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.4.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
+
+New features
+-------------
+
+Improvements
+-------------
+* Allow mig.strategy=single on nodes with non-MIG GPUs
+* Pre-create MIG related nvcaps at startup.
+* Updated device-plugin and toolkit validation to work with CPU Manager
+
+Fixed issues
+------------
+* Fixed issue which causes GFD pods to fail with error ``Failed to load NVML`` error even after driver is loaded.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.5.1
 =====
 This release of the GPU Operator includes the following components:
@@ -37,7 +80,7 @@ This release of the GPU Operator includes the following components:
 New features
 -------------
 
-Improvements 
+Improvements
 -------------
 * Kubelet's cgroup driver as ``systemd`` is now supported.
 
