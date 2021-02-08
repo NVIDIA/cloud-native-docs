@@ -349,11 +349,11 @@ Known Limitations
 * The GPU Operator does not include `NVIDIA Fabric Manager <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_ and 
   thus does not yet support systems that use the NVSwitch fabric (e.g. HGX, DGX-2 or DGX A100).
 * GPU Operator will fail on nodes already setup with NVIDIA components (driver, runtime, device plugin). Support for better error handling will be added in a future release.
-* The GPU Operator currently does not handle node reboots. If a node is rebooted, in some cases, the driver container may not start up 
-  successfully. A workaround for this issue would be to uninstall and re-install the operator using the Helm chart.
 * The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
-* The GPU Operator v1.5.0 does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
-* GPU Operator v1.5.0 with NVIDIA vGPUs support Turing and newer GPU architectures.
+* The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
+* GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
 * DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
+* After un-install of GPU Operator, nvidia driver modules might still be loaded. User would need to either reboot the node or forcefully remove them using ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 
