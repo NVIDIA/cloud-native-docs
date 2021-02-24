@@ -10,6 +10,57 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.6.0
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_ |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.5         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.8.2         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.2.0         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.4.1         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+
+New features
+-------------
+* Support for NVIDIA Data Center GPU Driver version `460.32.03`.
+* Automatic injection of Proxy settings and custom CA certificates into driver container for Red Hat OpenShift.
+* Support for Red Hat OpenShift 4.7.
+
+DCGM-Exporter support includes the following:
+
+* Updated DCGM to v2.1.4
+* Increased reporting interval to 30s instead of 2s to reduce overhead
+* Report NVIDIA vGPU licensing status and row-remapping metrics for Ampere GPUs
+
+Improvements
+-------------
+* NVIDIA vGPU licensing configuration(gridd.conf) can be provided as a ConfigMap to driver component in operator.
+
+Fixed issues
+------------
+* Fixes for DCGM Exporter to work with CPU Manager.
+* nvidia-gridd daemon logs are now collected on host by rsyslog.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.5.2
 =====
 This release of the GPU Operator includes the following components:

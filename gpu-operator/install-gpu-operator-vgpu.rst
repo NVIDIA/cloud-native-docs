@@ -56,23 +56,6 @@ Clone the driver container repository and build driver image
 
     $ cp vgpuDriverCatalog.yaml drivers
 
-* Create NVIDIA vGPU license configuration file
-
-Create a NVIDIA vGPU license file named `gridd.conf` in the drivers/ folder with the below content.
-
-.. code-block:: text
-
-    # Description: Set License Server Address
-    # Data type: string
-    # Format:  "<address>"
-    ServerAddress=<license server address>
-
-Input the license server address of the License Server
-
-.. note::
-
-    Optionally add a backup/secondary license server address if one is configured. ``BackupServerAddress=<backup license server address>``
-
 * Build the driver container image
 
 Set the private registry name using below command on the terminal
@@ -127,11 +110,33 @@ Build the driver container image
 
 * Install the GPU Operator.
 
-Creating an image pull secrets
+Create a NVIDIA vGPU license file named `gridd.conf` with the below content.
+
+.. code-block:: text
+
+    # Description: Set License Server Address
+    # Data type: string
+    # Format:  "<address>"
+    ServerAddress=<license server address>
+
+Input the license server address of the License Server
+
+.. note::
+
+    Optionally add a backup/secondary license server address if one is configured. ``BackupServerAddress=<backup license server address>``
+
+Create a ConfigMap `licensing-config` using `gridd.conf` file created above
 
 .. code-block:: console
 
     $ kubectl  create namespace gpu-operator-resources
+
+.. code-block:: console
+
+    $ kubectl create configmap licensing-config \
+      -n gpu-operator-resources --from-file=gridd.conf
+
+Creating an image pull secrets
 
 .. code-block:: console
 
