@@ -17,7 +17,7 @@ This release of the GPU Operator includes the following components:
 +--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
 | Component                | Version       | Release Notes                                                                                         |
 +==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_ |
+| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_  |
 +--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
 | NVIDIA Container Toolkit | 1.4.5         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
 +--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
