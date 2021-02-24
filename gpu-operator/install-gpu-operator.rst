@@ -54,7 +54,8 @@ Now setup the operator using the Helm chart:
             $ helm install --wait --generate-name \
                nvidia/gpu-operator --set driver.repository=$PRIVATE_REGISTRY \
                --set driver.version=$VERSION \
-               --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME}
+               --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
+               --set driver.licensingConfig.configMapName=licensing-config
 
          .. note::
 
