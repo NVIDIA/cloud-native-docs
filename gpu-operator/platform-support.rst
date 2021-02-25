@@ -20,7 +20,7 @@ Container Platforms
 -------------------
 The following Kubernetes platforms are supported:
 
-* Kubernetes v1.13+
+* Kubernetes v1.16+
 * Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
 * Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
@@ -76,7 +76,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 18.04.z, 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.4, 4.5, 4.6
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.5, 4.6 and 4.7
          * CentOS 7 and 8
 
     .. tab:: NVIDIA vGPU
@@ -84,7 +84,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6 and 4.7
 
 In addition, the following container management tools are supported:
 

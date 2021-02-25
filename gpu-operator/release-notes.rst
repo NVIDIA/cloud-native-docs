@@ -36,9 +36,9 @@ This release of the GPU Operator includes the following components:
 
 New features
 -------------
+* Support for Red Hat OpenShift 4.7.
 * Support for NVIDIA Data Center GPU Driver version `460.32.03`.
 * Automatic injection of Proxy settings and custom CA certificates into driver container for Red Hat OpenShift.
-* Support for Red Hat OpenShift 4.7.
 
 DCGM-Exporter support includes the following:
 
@@ -48,7 +48,7 @@ DCGM-Exporter support includes the following:
 
 Improvements
 -------------
-* NVIDIA vGPU licensing configuration(gridd.conf) can be provided as a ConfigMap to driver component in operator.
+* NVIDIA vGPU licensing configuration (gridd.conf) can be provided as a ConfigMap
 * ClusterPolicy CRD has been updated from v1beta1 to v1. As a result minimum supported Kubernetes version is 1.16 from GPU Operator 1.6.0 onwards.
 
 Fixed issues
