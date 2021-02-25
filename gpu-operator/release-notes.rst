@@ -49,6 +49,7 @@ DCGM-Exporter support includes the following:
 Improvements
 -------------
 * NVIDIA vGPU licensing configuration(gridd.conf) can be provided as a ConfigMap to driver component in operator.
+* ClusterPolicy CRD has been updated from v1beta1 to v1. As a result minimum supported Kubernetes version is 1.16 from GPU Operator 1.6.0 onwards.
 
 Fixed issues
 ------------
@@ -407,4 +408,5 @@ Known Limitations
 * DCGM Exporter 2.0.13 does not report vGPU License Status correctly. Fix will be added to a future NVIDIA GPU Operator release.
 * After un-install of GPU Operator, nvidia driver modules might still be loaded. User would need to either reboot the node or forcefully remove them using ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 * When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
+* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this label manually when project is created.
 
