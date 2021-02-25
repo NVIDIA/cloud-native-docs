@@ -16,7 +16,7 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 #. Nodes must not be pre-configured with NVIDIA components (driver, container runtime, device plugin).
 #. Nodes must be configured with Docker CE/EE, ``cri-o``, or ``containerd``. For docker, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
-#. If the HWE kernel (e.g. kernel 5.x) is used with Ubuntu 18.04 LTS, then the ``nouveau`` driver for NVIDIA GPUs must be blacklisted 
+#. If the HWE kernel (e.g. kernel 5.x) is used with Ubuntu 18.04 LTS or Ubuntu 20.04 LTS, then the ``nouveau`` driver for NVIDIA GPUs must be blacklisted
    before starting the GPU Operator. Follow the steps in the CUDA installation `guide <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau-ubuntu>`_ 
    to disable the nouveau driver and update ``initramfs``.
 #. Node Feature Discovery (NFD) is required on each node. By default, NFD master and worker are automatically deployed. 
