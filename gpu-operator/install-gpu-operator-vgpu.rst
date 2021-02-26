@@ -13,9 +13,10 @@ The following section outlines the high level workflow to use the GPU Operator w
 
 #. Download the vGPU Software and latest NVIDIA vGPU Driver Catalog file.
 #. Clone driver container source repository for building private driver image.
-#. Create vGPU license configuration file.
 #. Build the driver container image.
 #. Push the driver container image to your private repository.
+#. Create a `ConfigMap` in `gpu-operator-resources` namespace with vGPU license configuration file.
+#. Create an `ImagePullSecret` in `gpu-operator-resources` namespace for your private repository.
 #. Install the GPU Operator.
 
 Detailed Workflow
