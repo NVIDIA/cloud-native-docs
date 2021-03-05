@@ -42,7 +42,7 @@ Improvements
 
 Fixed issues
 ------------
-* If default containerd configuration file is empty then `NVIDIA Toolkit Container` generated version 1 configuration with ``nvidia`` runtime, but missed to set ``version=2``. Thus containerd treats that as version 1 configuration and parsing fails. This is now fixed.
+* If default containerd configuration file is empty then `NVIDIA Toolkit Container` generated version 2 configuration with ``nvidia`` runtime, but missed to set ``version=2``. Thus containerd treats that as version 1 configuration and parsing fails. This is now fixed.
 
 
 Known Limitations
