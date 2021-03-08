@@ -42,8 +42,7 @@ Improvements
 
 Fixed issues
 ------------
-* If default containerd configuration file is empty then `NVIDIA Toolkit Container` generated version 2 configuration with ``nvidia`` runtime, but missed to set ``version=2``. Thus containerd treats that as version 1 configuration and parsing fails. This is now fixed.
-
+* Fixed an issue with NVIDIA Container Toolkit 1.4.5 when used with containerd and an empty containerd configuration which file causes error ``Error while dialing dial unix /run/containerd/containerd.sock: connect: connection refused``. NVIDIA Container Toolkit 1.4.6 now explicitly sets the ``version=2`` along with other changes when the default containerd configuration file is empty.
 
 Known Limitations
 ------------------
