@@ -93,6 +93,110 @@ In addition, the following container management tools are supported:
 * containerd 1.4+
 * CRI-O with OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS)
 
+.. _operator-component-matrix:
+
+GPU Operator Component Matrix
+------------------------------
+
+.. list-table::
+    :widths: 20 40 60 60 60 60 60
+    :header-rows: 1
+    :align: center
+
+    * - Release
+      - NVIDIA Driver
+      - NVIDIA Container Toolkit
+      - NVIDIA K8s Device Plugin
+      - NVIDIA DCGM-Exporter
+      - Node Feature Discovery
+      - GPU Feature Discovery
+
+    * - 1.6.2
+      - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
+      - `1.4.7 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.8.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.6.1
+      - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
+      - `1.4.6 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.8.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.6.0
+      - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
+      - `1.4.5 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.8.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.5.2
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.4.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.8.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.4.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.5.1
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.4.3 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.7.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.5.0
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.4.2 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.7.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.4.0
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.4.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.7.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.2.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.3.0
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.3.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.7.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.2.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+    * - 1.2.0
+      - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
+      - `1.3.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.7.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - N/A
+
+    * - 1.1.0
+      - `440.64.00 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-440-6400/index.html>`_
+      - `1.0.5 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `1.0.0-beta4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `1.7.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.5.0
+      - N/A      
+
+.. note::
+    
+    Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+          
+
+
 Supported NVIDIA vGPU Products
 ------------------------------
 

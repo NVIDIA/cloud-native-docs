@@ -8,41 +8,12 @@ Release Notes
 *****************************************
 This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
 
+See the :ref:`Component Matrix<operator-component-matrix>` for a list of components included in each release.
+
 ----
 
 1.6.2
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_  |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.7*        | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.8.2         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.2.0         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.4.1         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Asterisk(*) indicates component versions changed from previous release.
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-
-New features
--------------
-
-Improvements
--------------
 
 Fixed issues
 ------------
@@ -58,33 +29,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.6.1
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_  |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.6         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.8.2         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.2.0         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.4.1         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-
-New features
--------------
-
-Improvements
--------------
 
 Fixed issues
 ------------
@@ -98,27 +42,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.6.0
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_  |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.5         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.8.2         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.2.0         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.4.1         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
 New features
 -------------
@@ -150,30 +73,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.5.2
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.4         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.8.1         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.4.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-
-New features
--------------
 
 Improvements
 -------------
@@ -193,30 +92,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.5.1
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.3         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.7.3         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.3.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-
-New features
--------------
 
 Improvements
 -------------
@@ -234,27 +109,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.5.0
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Component                | Version       | Release Notes                                                                                         |
-+==========================+===============+=======================================================================================================+
-| NVIDIA Driver            | 450.80.02     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_ |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA Container Toolkit | 1.4.2         | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA K8s Device Plugin | 0.7.3         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| NVIDIA DCGM-Exporter     | 2.1.2         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| Node Feature Discovery   | 0.6.0         |                                                                                                       |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-| GPU Feature Discovery    | 0.3.0         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
-+--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
-
-.. note::
-
-  Driver version could be different with NVIDIA vGPU, as it depends on the version which user downloads from NVIDIA Software Portal.
 
 New features
 -------------
@@ -281,23 +135,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.4.0
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+
-| Component                | Version       |
-+==========================+===============+
-| NVIDIA Driver            | 450.80.02     |
-+--------------------------+---------------+
-| NVIDIA Container Toolkit | 1.4.0         |
-+--------------------------+---------------+
-| NVIDIA K8s Device Plugin | 0.7.1         |
-+--------------------------+---------------+
-| NVIDIA DCGM-Exporter     | 2.1.2         |
-+--------------------------+---------------+
-| Node Feature Discovery   | 0.6.0         |
-+--------------------------+---------------+
-| GPU Feature Discovery    | 0.2.2         |
-+--------------------------+---------------+
 
 New features
 -------------
@@ -342,23 +179,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 
 1.3.0
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+
-| Component                | Version       |
-+==========================+===============+
-| NVIDIA Driver            | 450.80.02     |
-+--------------------------+---------------+
-| NVIDIA Container Toolkit | 1.3.0         |
-+--------------------------+---------------+
-| NVIDIA K8s Device Plugin | 0.7.0         |
-+--------------------------+---------------+
-| NVIDIA DCGM-Exporter     | 2.1.0         |
-+--------------------------+---------------+
-| Node Feature Discovery   | 0.6.0         |
-+--------------------------+---------------+
-| GPU Feature Discovery    | 0.2.1         |
-+--------------------------+---------------+
 
 New features
 -------------
@@ -380,27 +200,12 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the Known Limitations at the bottom of this page. 
+See the :ref:`operator-known-limitations` at the bottom of this page. 
 
 ----
 
 1.2.0
 =====
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+
-| Component                | Version       |
-+==========================+===============+
-| NVIDIA Driver            | 450.80.02     |
-+--------------------------+---------------+
-| NVIDIA Container Toolkit | 1.3.0         |
-+--------------------------+---------------+
-| NVIDIA K8s Device Plugin | 0.7.0         |
-+--------------------------+---------------+
-| NVIDIA DCGM-Exporter     | 2.1.0-rc.2    |
-+--------------------------+---------------+
-| Node Feature Discovery   | 0.6.0         |
-+--------------------------+---------------+
 
 New features
 -------------
@@ -420,28 +225,12 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the Known Limitations at the bottom of this page. 
+See the :ref:`operator-known-limitations` at the bottom of this page. 
 
 ----
 
 1.1.0
 =====
-
-This release of the GPU Operator includes the following components:
-
-+--------------------------+---------------+
-| Component                | Version       |
-+==========================+===============+
-| NVIDIA Driver            | 440.64.00     |
-+--------------------------+---------------+
-| NVIDIA Container Toolkit | 1.0.5         |
-+--------------------------+---------------+
-| NVIDIA K8s Device Plugin | 1.0.0-beta4   |
-+--------------------------+---------------+
-| NVIDIA DCGM-Exporter     | 1.7.2         |
-+--------------------------+---------------+
-| Node Feature Discovery   | 0.5.0         |
-+--------------------------+---------------+
 
 New features
 -------------
@@ -464,6 +253,7 @@ Fixed issues
 
 1.0.0
 =====
+
 New features
 -------------
 * Added support for Helm v3. Note that installing the GPU Operator using Helm v2 is no longer supported.
