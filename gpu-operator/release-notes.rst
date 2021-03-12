@@ -10,6 +10,52 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+1.6.2
+=====
+This release of the GPU Operator includes the following components:
+
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Component                | Version       | Release Notes                                                                                         |
++==========================+===============+=======================================================================================================+
+| NVIDIA Driver            | 460.32.03     | `Release Notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_  |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Container Toolkit | 1.4.7*        | `Release Notes <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_                        |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA K8s Device Plugin | 0.8.2         | `Release Notes <https://github.com/NVIDIA/k8s-device-plugin/releases>`_                               |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA DCGM-Exporter     | 2.2.0         | `Release Notes <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_                            |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| Node Feature Discovery   | 0.6.0         |                                                                                                       |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+| GPU Feature Discovery    | 0.4.1         | `Release Notes <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_                           |
++--------------------------+---------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+
+  Asterisk(*) indicates component versions changed from previous release.
+
+.. note::
+
+  Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+
+New features
+-------------
+
+Improvements
+-------------
+
+Fixed issues
+------------
+* Fixed an issue with NVIDIA Container Toolkit 1.4.6 which causes an error with containerd as ``Error while dialing dial unix /run/containerd/containerd.sock: connect: connection refused``. NVIDIA Container Toolkit 1.4.7 now sets ``version`` as an integer to fix this error.
+* Fixed an issue with NVIDIA Container Toolkit which causes nvidia-container-runtime settings to be persistent across node reboot and causes driver pod to fail. Now nvidia-container-runtime will fallback to using ``runc`` when driver modules are not yet loaded during node reboot.
+* GPU Operator now mounts runtime hook configuration for CRIO under ``/run/containers/oci/hooks.d``.
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.6.1
 =====
 This release of the GPU Operator includes the following components:
