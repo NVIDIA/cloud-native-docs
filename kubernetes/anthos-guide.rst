@@ -11,6 +11,8 @@ NVIDIA GPUs with Google Cloud's Anthos
 Changelog
 **********
 
+* 3/22/2020 (author: PR):
+   * Fixed URLs
 * 11/30/2020 (author: PR/DF):
    * Added information on Anthos on bare metal
 * 11/25/2020 (author: PR): 
@@ -27,8 +29,8 @@ build, deploy, and manage applications anywhere in a secure, consistent manner.
 The platform provides a consistent development and operations experience across 
 deployments while reducing operational overhead and improving developer productivity. 
 Anthos runs in hybrid and multi-cloud environments that spans `Google Cloud <https://cloud.google.com/kubernetes-engine>`_, 
-`on-premise <https://cloud.google.com/anthos/docs/gke/on-prem>`_, and is generally 
-available on `Amazon Web Services (AWS) <https://cloud.google.com/anthos/docs/gke/aws>`_. 
+`on-premise <https://cloud.google.com/anthos/docs/setup/on-premises>`_, and is generally 
+available on `Amazon Web Services (AWS) <https://cloud.google.com/anthos/docs/setup/public-cloud>`_. 
 Support for Anthos on Microsoft Azure is in preview. For more information on Anthos, 
 see the `product overview <https://cloud.google.com/anthos>`_.
 
@@ -43,8 +45,8 @@ Deployment Configurations
 Anthos can be deployed in different configurations. Depending on your deployment, choose one of the sections below 
 to get started with NVIDIA GPUs in Google Cloud's Anthos:
 
-#. :ref:`Anthos with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
-#. :ref:`Anthos with VMware vSphere and NVIDIA GPU accelerated servers<anthos-virt>`
+#. :ref:`Anthos clusters with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
+#. :ref:`Anthos clusters with VMware and NVIDIA GPU accelerated servers<anthos-virt>`
 
 *********************
 Supported Platforms
@@ -83,9 +85,9 @@ DGX customers can visit the `NVIDIA DGX Systems Support Portal <https://www.nvid
 
 .. _anthos-dgx-bm:
 
-***********************************************************************
-Anthos on Bare Metal with NVIDIA DGX Systems and GPU-Accelerated Servers
-***********************************************************************
+***********************************************************************************
+Anthos Clusters on Bare Metal with NVIDIA DGX Systems and GPU-Accelerated Servers
+***********************************************************************************
 
 Anthos on bare metal with DGX A100 or NVIDIA GPU-accelerated servers systems enables a consistent development and operational experience across deployments, 
 while reducing expensive overhead and improving developer productivity. Refer to the Anthos `documentation <https://cloud.google.com/anthos/gke/docs>`_ for 
@@ -533,7 +535,7 @@ See the `NFD documentation <https://kubernetes-sigs.github.io/node-feature-disco
 .. _anthos-virt: 
 
 ****************************************************************
-Anthos with VMware vSphere and NVIDIA GPU accelerated servers
+Anthos Clusters with VMware and NVIDIA GPU accelerated servers
 ****************************************************************
 
 Anthos running on-premise has requirements for which vSphere versions are supported along with network and storage requirements. 
