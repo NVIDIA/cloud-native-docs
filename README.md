@@ -17,7 +17,7 @@ The docs can then be built using the custom doc build container `cnt-doc-builder
 ```bash
 docker run -it --rm \
     -v <path-to-local-workspace>/cnt-docs:/docs \
-    cnd-doc-builder \
+    cnt-doc-builder \
     make html
 ```
 
