@@ -44,6 +44,12 @@ using NVIDIA GPUs with Kubernetes.
 
 .. toctree::
    :maxdepth: 2
+   :caption: GPU Telemetry:
+
+   gpu-telemetry/dcgm-exporter.rst
+      
+.. toctree::
+   :maxdepth: 2
    :caption: Driver Containers:
 
    driver-containers/overview.rst
