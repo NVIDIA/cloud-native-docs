@@ -41,11 +41,12 @@ starts `nv-hostengine` as an embedded process and starts publishing metrics:
 
 .. code-block:: console
 
-   $ docker run -d --rm \
+   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 && \
+   docker run -d --rm \
       --gpus all \
       --net host \
       --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:2.1.4-2.3.1-ubuntu20.04 \
+      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
       -f /etc/dcgm-exporter/dcp-metrics-included.csv
 
 Retrieve the metrics: 
@@ -76,15 +77,26 @@ the DGX systems that bundles drivers, DCGM, etc. in the system image. To avoid a
 it is recommended to have `dcgm-exporter` connect to the existing `nv-hostengine` daemon to gather/publish 
 GPU telemetry data.
 
+.. warning:: 
+
+   The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with 
+   the `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect 
+   to an existing `nv-hostengine` running on the host. The DCGM client library uses a protocol to exchange 
+   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library 
+   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is 
+   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by 
+   comparing the version tags of the `dcgm-exporter` image and by running ``nv-hostengine --version`` on the host.
+
 In this scenario, we use the ``-r`` option to connect to an existing `nv-hostengine` process:
 
 .. code-block:: console
 
-   $ docker run -d --rm \
+   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 && 
+   docker run -d --rm \
       --gpus all \
       --net host \
       --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:2.1.4-2.3.1-ubuntu20.04 \
+      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
       -r localhost:5555 -f /etc/dcgm-exporter/dcp-metrics-included.csv
 
 *********************************
@@ -100,7 +112,8 @@ For more information on MIG, refer to the MIG `User Guide <https://docs.nvidia.c
 .. note::
 
    Support for MIG in `dcgm-exporter` was added starting with ``2.4.0-rc.2``. Replace the container image with this tag in the 
-   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``
+   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``. If you are connecting to an existing DCGM on the host system, 
+   ensure that you upgrade to at least 2.1.8 on the host system.
 
 `dcgm-exporter` publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances) 
 as can be seen in the output below: 
@@ -130,6 +143,9 @@ as can be seen in the output below:
    DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.930433
    DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
 
+
+For more information on the profiling metrics and how to interpret the metrics, refer to the `profiling metrics <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-user-guide/feature-overview.html#profiling>`_ 
+section of the DCGM user guide.
 
 ****************************
 GPU Telemetry in Kubernetes
