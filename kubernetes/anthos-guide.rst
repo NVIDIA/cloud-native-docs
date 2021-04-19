@@ -45,8 +45,8 @@ Deployment Configurations
 Anthos can be deployed in different configurations. Depending on your deployment, choose one of the sections below 
 to get started with NVIDIA GPUs in Google Cloud's Anthos:
 
-#. :ref:`Anthos clusters with NVIDIA DGX Systems and GPU-accelerated servers<anthos-dgx-bm>`
-#. :ref:`Anthos clusters with VMware and NVIDIA GPU accelerated servers<anthos-virt>`
+#. :ref:`Anthos Clusters on Bare Metal with NVIDIA DGX Systems and GPU-Accelerated Servers<anthos-dgx-bm>`
+#. :ref:`Anthos Clusters with VMware and NVIDIA GPU-Accelerated Servers<anthos-virt>`
 
 *********************
 Supported Platforms
@@ -64,8 +64,8 @@ DGX Systems
 
 The following NVIDIA DGX systems are supported:
 
-* DGX A100
-* DGX-2
+* NVIDIA DGX A100
+* NVIDIA DGX-2 and DGX-1 (Volta)
 
 Linux Distributions
 =====================
@@ -73,6 +73,8 @@ Linux Distributions
 The following Linux distributions are supported:
 
 * Ubuntu 18.04.z, 20.04.z LTS
+
+For more information on the Anthos Ready platforms, visit this `page <https://cloud.google.com/anthos/docs/resources/partner-platforms#nvidia>`_.
 
 *****************
 Getting Support
@@ -535,7 +537,7 @@ See the `NFD documentation <https://kubernetes-sigs.github.io/node-feature-disco
 .. _anthos-virt: 
 
 ****************************************************************
-Anthos Clusters with VMware and NVIDIA GPU accelerated servers
+Anthos Clusters with VMware and NVIDIA GPU Accelerated Servers
 ****************************************************************
 
 Anthos running on-premise has requirements for which vSphere versions are supported along with network and storage requirements. 
