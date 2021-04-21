@@ -74,20 +74,21 @@ Once the package installation is complete, ensure that the ``hook`` has been add
 .. code-block:: json
 
     {
-    "version": "1.0.0",
-    "hook": {
-    "path": "/usr/bin/nvidia-container-toolkit",
-    "args": ["nvidia-container-toolkit", "prestart"],
-    "env": [
-    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    ]
-    },
-    "when": {
-    "always": true,
-    "commands": [".*"]
-    },
-    "stages": ["prestart"]
+        "version": "1.0.0",
+        "hook": {
+            "path": "/usr/bin/nvidia-container-toolkit",
+            "args": ["nvidia-container-toolkit", "prestart"],
+            "env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ]
+        },
+        "when": {
+            "always": true,
+            "commands": [".*"]
+        },
+        "stages": ["prestart"]
     }
+
 
 Step 3: Rootless Containers Setup
 ------------------------------------
@@ -110,7 +111,11 @@ We can now run some sample GPU containers to test the setup.
         $ podman run --rm --security-opt=label=disable \
              --hooks-dir=/usr/share/containers/oci/hooks.d/ \
              nvidia/cuda:11.0-base nvidia-smi
-        
+   
+   which should produce the following output:
+
+    .. code-block:: console
+
         +-----------------------------------------------------------------------------+
         | NVIDIA-SMI 460.32.03    Driver Version: 460.32.03    CUDA Version: 11.2     |
         |-------------------------------+----------------------+----------------------+
