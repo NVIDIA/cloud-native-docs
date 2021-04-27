@@ -101,8 +101,8 @@ The list of prerequisites for running NVIDIA Container Toolkit is described belo
 
 #. GNU/Linux x86_64 with kernel version > 3.10
 #. Docker >= 19.03 (recommended, but some distributions may include older versions of Docker. The minimum supported version is 1.12)
-#. NVIDIA GPU with Architecture > Fermi (or compute capability 2.1) 
-#. `NVIDIA drivers <http://www.nvidia.com/object/unix.html>`_ ~= 361.93 (untested on older versions)
+#. NVIDIA GPU with Architecture >= Kepler (or compute capability 3.0) 
+#. `NVIDIA Linux drivers <http://www.nvidia.com/object/unix.html>`_ >= 418.81.07 (Note that older driver releases or branches are unsupported.)
 
 .. note::
 

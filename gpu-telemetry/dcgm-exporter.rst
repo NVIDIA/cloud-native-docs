@@ -80,8 +80,8 @@ GPU telemetry data.
 .. warning:: 
 
    The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with 
-   the `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect 
-   to an existing `nv-hostengine` running on the host. The DCGM client library uses a protocol to exchange 
+   `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect 
+   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange 
    information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library 
    and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is 
    greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by 

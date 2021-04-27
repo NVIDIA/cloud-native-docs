@@ -47,6 +47,13 @@ using NVIDIA GPUs with Kubernetes.
    :caption: GPU Telemetry:
 
    gpu-telemetry/dcgm-exporter.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Multi-Instance GPU:
+
+   mig/mig.rst   
+   mig/mig-k8s.rst
       
 .. toctree::
    :maxdepth: 2
