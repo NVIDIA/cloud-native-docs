@@ -32,6 +32,9 @@ using NVIDIA GPUs with Kubernetes.
    gpu-operator/getting-started.rst
    gpu-operator/platform-support.rst
    gpu-operator/release-notes.rst
+   gpu-operator/install-gpu-operator-vgpu.rst
+   gpu-operator/gpu-operator-mig.rst
+   gpu-operator/appendix.rst
 
 .. toctree::
    :maxdepth: 2

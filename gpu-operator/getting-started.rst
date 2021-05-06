@@ -8,20 +8,36 @@ Getting Started
 *****************************************
 This document provides instructions, including pre-requisites for getting started with the NVIDIA GPU Operator. 
 
+----
+
+Red Hat OpenShift 4
+====================
+
+For installing the GPU Operator on clusters with Red Hat OpenShift 4.5 and 4.6 using RHCOS worker nodes, 
+follow the `user guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_.
+
+----
+
+Google Cloud Anthos
+====================
+
+For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started 
+`document <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_.
+
+----
+
 Prerequisites
 =============
 
 Before installing the GPU Operator, you should ensure that the Kubernetes cluster meets some prerequisites.
 
-#. Nodes must not be pre-configured with NVIDIA components (driver, container runtime, device plugin).
-#. Nodes must be configured with Docker CE/EE, ``cri-o``, or ``containerd``. For docker, follow the official install
+#. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
 #. If the HWE kernel (e.g. kernel 5.x) is used with Ubuntu 18.04 LTS or Ubuntu 20.04 LTS, then the ``nouveau`` driver for NVIDIA GPUs must be blacklisted
    before starting the GPU Operator. Follow the steps in the CUDA installation `guide <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau-ubuntu>`_ 
    to disable the nouveau driver and update ``initramfs``.
-#. Node Feature Discovery (NFD) is required on each node. By default, NFD master and worker are automatically deployed. 
-   If NFD is already running in the cluster prior to the deployment of the operator, set the Helm chart variable ``nfd.enabled`` to ``false`` 
-   during the Helm install step. 
+#. Node Feature Discovery (NFD) is a dependency for the Operator on each node. By default, NFD master and worker are automatically deployed by the Operator. 
+   If NFD is already running in the cluster prior to the deployment of the operator, then the Operator can be configured to not to install NFD.
 #. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ 
    gate. From Kubernetes 1.15 onwards, its enabled by default.
 
@@ -41,23 +57,6 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
 
     Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
 
-----
-
-Red Hat OpenShift 4
-====================
-
-For installing the GPU Operator on clusters with Red Hat OpenShift 4.5 and 4.6 using RHCOS worker nodes, 
-follow the `user guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_.
-
-----
-
-Google Cloud Anthos
-====================
-
-For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started 
-`document <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_.
-
-----
 
 The rest of this document includes instructions for installing the GPU Operator supported Linux distributions. 
 
@@ -71,21 +70,48 @@ Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes clu
 
 .. include:: install-gpu-operator.rst
 
-Demo
-======
-
-Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
-
-.. image:: graphics/gpu-operator-demo.gif
-   :width: 1440
-
 Running Sample GPU Applications
 =================================
+
+CUDA VectorAdd
+----------------
+
+In the first example, let's run a simple CUDA sample, which adds two vectors together: 
+
+.. code-block:: console
+
+   $ cat << EOF | kubectl create -f - 
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: cuda-vectoradd
+   spec:
+     restartPolicy: OnFailure
+     containers:
+     - name: cuda-vectoradd
+       image: "nvidia/samples:vectoradd-cuda11.2.1"
+       resources:
+         limits:
+            nvidia.com/gpu: 1
+   EOF
+
+The sample should run fairly quickly. If you view the logs of the container:
+
+.. code-block:: console
+
+   [Vector addition of 50000 elements]
+   Copy input data from the host memory to the CUDA device
+   CUDA kernel launch with 196 blocks of 256 threads
+   Copy output data from the CUDA device to the host memory
+   Test PASSED
+   Done
+
 
 CUDA FP16 Matrix multiply
 ----------------------------
 
-In the first example, let's try running a quick CUDA load generator, which does an FP16 matrix-multiply on the GPU:
+In the second example, let's try running a CUDA load generator, which does an FP16 matrix-multiply on the GPU using 
+the Tensor Cores when available:
 
 .. code-block:: console
 
@@ -99,7 +125,7 @@ In the first example, let's try running a quick CUDA load generator, which does 
       containers:
       - name: dcgmproftester11
         image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
-        args: ["--no-dcgm-validation", "-t 1004", "-d 120"]
+        args: ["--no-dcgm-validation", "-t 1004", "-d 30"]
         resources:
           limits:
              nvidia.com/gpu: 1
@@ -137,6 +163,8 @@ You should see the FP16 GEMM being run on the GPU:
    TensorEngineActive: generated ???, dcgm 0.000 (26359.9 gflops)
    TensorEngineActive: generated ???, dcgm 0.000 (26750.7 gflops)
    TensorEngineActive: generated ???, dcgm 0.000 (25378.8 gflops)
+
+You will observe that on an NVIDIA T4, this has resulted in ~26 TFLOPS of FP16 GEMM performance.
 
 Jupyter Notebook
 ------------------
@@ -195,6 +223,14 @@ And the token for the Jupyter notebook:
       or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
 
 The notebook should now be accessible from your browser at this URL: ``http:://<your-machine-ip>:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9``
+
+Demo
+======
+
+Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
+
+.. image:: graphics/gpu-operator-demo.gif
+   :width: 1440
 
 GPU Telemetry
 ==============
@@ -361,3 +397,9 @@ You should now see all the pods being deleted:
 .. code-block:: console
    
    No resources found.
+
+Also, ensure that CRDs created during the operator install have been removed: 
+
+.. code-block:: console
+
+   $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com 

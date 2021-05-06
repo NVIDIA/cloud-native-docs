@@ -10,7 +10,55 @@ This documents provides an overview of the GPUs and system platform configuratio
 
 GPUs
 ----
-Pascal+ GPUs are supported (incl. NVIDIA A100, T4 and V100). 
+The following NVIDIA datacenter/enterprise GPUs are supported:
+
++--------------------------+------------------+
+| Product                  | GPU Architecture |
++==========================+==================+
+| **Datacenter A-series Products**            |
++--------------------------+------------------+
+| NVIDIA A100              | NVIDIA Ampere    |
++--------------------------+------------------+
+| NVIDIA A40               | NVIDIA Ampere    |
++--------------------------+------------------+
+| NVIDIA A30               | NVIDIA Ampere    |
++--------------------------+------------------+
+| NVIDIA A10               | NVIDIA Ampere    |
++--------------------------+------------------+
+| **Datacenter T-series Products**            |
++--------------------------+------------------+
+| NVIDIA T4                | Turing           |
++--------------------------+------------------+
+| **Datacenter V-series Products**            |
++--------------------------+------------------+
+| NVIDIA V100              | Volta            |
++--------------------------+------------------+
+| **Datacenter P-series Products**            |
++--------------------------+------------------+
+| NVIDIA Tesla P100        | Pascal           |
++--------------------------+------------------+
+| NVIDIA Tesla P40         | Pascal           |
++--------------------------+------------------+
+| NVIDIA Tesla P4          | Pascal           |
++--------------------------+------------------+
+| **RTX-Series / T-Series Products**          |
++--------------------------+------------------+
+| NVIDIA RTX A6000         | NVIDIA Ampere    |
++--------------------------+------------------+
+| NVIDIA RTX A5000         | NVIDIA Ampere    |
++--------------------------+------------------+
+| NVIDIA RTX A4000         | NVIDIA Ampere    |
++--------------------------+------------------+
+| Quadro RTX 8000          | Turing           |
++--------------------------+------------------+
+| Quadro RTX 6000          | Turing           |
++--------------------------+------------------+
+| NVIDIA T1000	           | Turing           | 
++--------------------------+------------------+
+| NVIDIA T600              | Turing           | 
++--------------------------+------------------+
+| NVIDIA T400              | Turing           | 
++--------------------------+------------------+
 
 .. note:: 
 
@@ -39,21 +87,23 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.6.0                    | v1.16+        | 4.5, 4.6 and 4.7       | Supported      |
+      | 1.7                      | v1.18+        | 4.6 and 4.7            | Supported      |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.5.0                    | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
+      | 1.6                      | v1.16+        | 4.5, 4.6 and 4.7       | Supported      |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.4.0                    | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
+      | 1.5                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.3.0                    | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
+      | 1.4                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.2.0                    | v1.13+        | Not supported          | Supported      |
+      | 1.3                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.2                      | v1.13+        | Not supported          | Supported      |
       +--------------------------+---------------+------------------------+----------------+
       | 1.1.7                    | v1.13+        | 4.1, 4.2, 4.3, and 4.4 | Supported      |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.1.0                    | v1.13+        | Not supported          | Not supported  |
+      | 1.1                      | v1.13+        | Not supported          | Not supported  |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.0.0                    | v1.13+        | Not supported          | Not supported  |
+      | 1.0                      | v1.13+        | Not supported          | Not supported  |
       +--------------------------+---------------+------------------------+----------------+
 
     .. tab:: NVIDIA vGPU
@@ -61,9 +111,11 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.6.0                    | v1.16+        | 4.6 and 4.7            | Not Supported  |
+      | 1.7                      | v1.18+        | 4.6 and 4.7            | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+      
+      | 1.6                      | v1.16+        | 4.6 and 4.7            | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
-      | 1.5.0                    | v1.13+        | 4.6                    | Not Supported  |
+      | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
 
 Linux distributions
@@ -99,7 +151,7 @@ GPU Operator Component Matrix
 ------------------------------
 
 .. list-table::
-    :widths: 20 40 60 60 60 60 60
+    :widths: 20 40 60 60 60 60 60 60
     :header-rows: 1
     :align: center
 
@@ -110,7 +162,17 @@ GPU Operator Component Matrix
       - NVIDIA DCGM-Exporter
       - Node Feature Discovery
       - GPU Feature Discovery
+      - K8s MIG Manager
 
+    * - 1.7.0
+      - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
+      - `1.5.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.9.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.8-2.4.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.6.0
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      
     * - 1.6.2
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
       - `1.4.7 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
@@ -118,6 +180,7 @@ GPU Operator Component Matrix
       - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.6.1
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -126,6 +189,7 @@ GPU Operator Component Matrix
       - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.6.0
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -134,6 +198,7 @@ GPU Operator Component Matrix
       - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.5.2
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -142,6 +207,7 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.5.1
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -150,6 +216,7 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.5.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -158,6 +225,7 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.4.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -166,6 +234,7 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.2.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.3.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -174,6 +243,7 @@ GPU Operator Component Matrix
       - `2.1.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.2.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
 
     * - 1.2.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -182,6 +252,7 @@ GPU Operator Component Matrix
       - `2.1.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - N/A
+      - N/A
 
     * - 1.1.0
       - `440.64.00 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-440-6400/index.html>`_
@@ -189,12 +260,16 @@ GPU Operator Component Matrix
       - `1.0.0-beta4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
       - `1.7.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.5.0
-      - N/A      
+      - N/A
+      - N/A   
 
 .. note::
     
-    Driver version could be different with NVIDIA vGPU, as it depends on the driver version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-          
+    - Driver version could be different with NVIDIA vGPU, as it depends on the driver 
+      version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+    - The GPU Operator is supported on all the R450 and R460 NVIDIA datacenter production drivers. For a list of supported 
+      datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
+
 
 
 Supported NVIDIA vGPU Products

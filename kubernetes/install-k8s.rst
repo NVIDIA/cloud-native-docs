@@ -23,6 +23,20 @@ describes a few methods for getting started with Kubernetes. Click on the links 
    * Option 2-a: Use the :ref:`NVIDIA GPU Operator<gpu-operator>` to automate/manage the deployment of the NVIDIA software components 
    * Option 2-b: Set up the NVIDIA software components as :ref:`pre-requisites<nvdp>` before running applications
 
+.. blockdiag:: 
+
+   blockdiag admin {
+      A [label = "Install K8s with GPUs", color = "#00CC00"];
+      B [label = "Use DeepOps"];
+      C [label = "Use Kubeadm", color = pink];
+      D [label = "Use GPU Operator"];
+      E [label = "Set up \n NVIDIA components", color = "#FF9933"];
+
+      A -> B;
+      A -> C;
+      C -> D;
+      C -> E;
+   }
 
 **********************************************
 Option 1: Installing Kubernetes Using DeepOps
@@ -240,7 +254,13 @@ Update the package listing and install `kubelet`:
 
          $ sudo systemctl daemon-reload \
             && sudo systemctl restart kubelet
-      
+
+Disable swap
+
+.. code-block:: console
+
+   $ sudo swapoff -a
+
 And ``init`` using ``kubeadm``:
 
 .. code-block:: console
