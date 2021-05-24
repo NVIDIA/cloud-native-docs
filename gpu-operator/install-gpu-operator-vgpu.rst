@@ -3,11 +3,15 @@
 
 .. _install-gpu-operator-vgpu:
 
-Considerations to Install GPU Operator with NVIDIA vGPU Driver
---------------------------------------------------------------
+##################
+NVIDIA vGPU
+##################
 
+This document provides an overview of the workflow to getting started with using the GPU Operator with NVIDIA vGPU.
+
+*********************
 High Level Workflow
-^^^^^^^^^^^^^^^^^^^
+*********************
 
 The following section outlines the high level workflow to use the GPU Operator with NVIDIA vGPUs.
 
@@ -20,7 +24,7 @@ The following section outlines the high level workflow to use the GPU Operator w
 #. Install the GPU Operator.
 
 Detailed Workflow
-^^^^^^^^^^^^^^^^^
+===================
 
 Download the vGPU Software and latest NVIDIA vGPU driver catalog file from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
@@ -154,6 +158,6 @@ Creating an image pull secrets
 
     Please note the secret name ``REGISTRY_SECRET_NAME`` for using during operator installation command.
 
-* Install GPU Operator helm chart
+* Install GPU Operator via the Helm chart
 
 Please refer to :ref:`Install NVIDIA GPU Operator` section for GPU operator installation command and options for vGPU.

@@ -37,8 +37,13 @@ extensions = [
     'sphinx.ext.extlinks',
     'sphinx_copybutton',
     'sphinx.ext.autosectionlabel',
-    'sphinx_tabs.tabs',    
+    'sphinx_tabs.tabs',
+    'sphinxcontrib.blockdiag',
 ]
+blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
+blockdiag_antialias = True
+# http://blockdiag.com/en/blockdiag/examples.html
+# color picker: https://www.rapidtables.com/web/color/RGB_Color.html
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

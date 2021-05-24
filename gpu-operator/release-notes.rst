@@ -12,6 +12,42 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.7.0
+=====
+
+New Features
+-------------
+* Support for NVIDIA Data Center GPU Driver version `460.73.01`.
+* Added support for automatic configuration of MIG geometry on NVIDIA Ampere products (e.g. A100) using the ``k8s-mig-manager``. 
+* GPU Operator can now be deployed on systems with pre-installed NVIDIA drivers and the NVIDIA Container Toolkit.
+* DCGM-Exporter now supports telemetry for MIG devices on supported Ampere products (e.g. A100).
+* Added support for a new ``nvidia`` ``RuntimeClass`` with `containerd`.
+* The Operator now supports ``PodSecurityPolicies`` when enabled in the cluster.
+
+Improvements
+-------------
+* Changed the label selector used by the DaemonSets of the different states of the GPU Operator. Instead of having a global 
+  label ``nvidia.com/gpu.present=true``, each DaemonSet now has its own label, ``nvidia.com/gpu.deploy.<state>=true``. This 
+  new behavior allows a finer grain of control over the components deployed on each of the GPU nodes. 
+* Migrated to using the latest operator-sdk for building the GPU Operator.
+* The operator components are deployed with ``node-critical`` ``PriorityClass`` to minimize the possibility of eviction.
+* Added a spec for the ``initContainer`` image, to allow flexibility to change the base images as required. 
+* Added the ability to configure the MIG strategy to be applied by the Operator.
+* The driver container now auto-detects OpenShift/RHEL versions to better handle node/cluster upgrades.
+* Validations of the container-toolkit and device-plugin installations are done on all GPU nodes in the cluster.
+* Added an option to skip plugin validation workload pod during the Operator deployment.
+
+Fixed issues
+------------
+* The ``gpu-operator-resources`` namespace is now created by the Operator so that they can be used by both Helm 
+  and OpenShift installations. 
+
+Known Limitations
+------------------
+See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.6.2
 =====
 
@@ -43,7 +79,7 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 1.6.0
 =====
 
-New features
+New Features
 -------------
 * Support for Red Hat OpenShift 4.7.
 * Support for NVIDIA Data Center GPU Driver version `460.32.03`.
@@ -110,7 +146,7 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 1.5.0
 =====
 
-New features
+New Features
 -------------
 * Added support for NVIDIA vGPU
 
@@ -136,7 +172,7 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 1.4.0
 =====
 
-New features
+New Features
 -------------
 * Added support for CentOS 7 and 8.
   
@@ -180,7 +216,7 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 1.3.0
 =====
 
-New features
+New Features
 -------------
 * Integrated `GPU Feature Discovery <https://github.com/NVIDIA/gpu-feature-discovery>`_ to automatically generate labels for GPUs leveraging NFD.
 * Added support for Red Hat OpenShift 4.4+ (i.e. 4.4.29+, 4.5 and 4.6). The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog 
@@ -207,7 +243,7 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 1.2.0
 =====
 
-New features
+New Features
 -------------
 * Added support for Ubuntu 20.04.z LTS. 
 * Added support for the NVIDIA A100 GPU (and appropriate updates to the underlying components of the operator).
@@ -254,7 +290,7 @@ Fixed issues
 1.0.0
 =====
 
-New features
+New Features
 -------------
 * Added support for Helm v3. Note that installing the GPU Operator using Helm v2 is no longer supported.
 * Added support for Red Hat OpenShift 4 (4.1, 4.2 and 4.3) using Red Hat Enterprise Linux Core OS (RHCOS) and CRI-O runtime on GPU worker nodes.

@@ -1,0 +1,12 @@
+.. Date: May 11 2021
+.. Author: pramarao
+
+.. _operator-appendix:
+
+**********
+Appendix
+**********
+
+.. Shared content for the GPU Operator install
+
+.. include:: install-gpu-operator-air-gapped.rst

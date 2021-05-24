@@ -44,7 +44,12 @@ $ command1 \
 
 #### Outputs
 Separate outputs and commands into their own `code-block` sequence. Since the repository is configured to copy everything (including items after the prompt lines by 
-setting `copybutton_only_copy_prompt_lines` to false), it is desirable to only copy commands. 
+setting `copybutton_only_copy_prompt_lines` to false), it is desirable to only copy commands.
+
+### Block Diagrams
+
+The repo includes the [blockdiag](http://blockdiag.com/en/) plugin to allow diagrams to be generated using text. For examples on how to use blockdiag, 
+refer to this [page](http://blockdiag.com/en/blockdiag/examples.html).
 
 ## Sign your work
 
