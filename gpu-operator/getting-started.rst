@@ -403,3 +403,12 @@ Also, ensure that CRDs created during the operator install have been removed:
 .. code-block:: console
 
    $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com 
+
+.. note::
+
+   After un-install of GPU Operator, the NVIDIA driver modules might still be loaded. 
+   Either reboot the node or unload them using the following command:
+   
+   .. code-block:: console
+   
+      $ sudo rmmod nvidia nvidia_modeset nvidia_uvm

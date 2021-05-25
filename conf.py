@@ -122,6 +122,9 @@ html_js_files = [
     '//assets.adobedtm.com/b92787824f2e0e9b68dc2e993f9bd995339fe417/satelliteLib-7ba51e58dc61bcb0e9311aadd02a0108ab24cc6c.js',
 ]
 
+# Add timestamp to each page
+html_last_updated_fmt = '%Y-%m-%d'
+
 def setup(app):
     count_unique_visitor_script = os.getenv("ADD_NVIDIA_VISITS_COUNTING_SCRIPT")
     if count_unique_visitor_script:
