@@ -164,6 +164,15 @@ GPU Operator Component Matrix
       - GPU Feature Discovery
       - K8s MIG Manager
 
+    * - 1.7.1
+      - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
+      - `1.5.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.9.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.1.8-2.4.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.8.2
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+
     * - 1.7.0
       - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
       - `1.5.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
