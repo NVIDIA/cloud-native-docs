@@ -118,6 +118,14 @@ The following table includes the support matrix of the GPU Operator releases and
       | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
 
+.. note::
+   The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
+   
+   Only the most recent release of the GPU Operator is maintained. All prior releases of the GPU Operator are 
+   deprecated (and unsupported) when a new version of the GPU Operator is released. 
+
+   The product lifecycle is subject to change in the future. 
+
 Linux distributions
 -------------------
 
