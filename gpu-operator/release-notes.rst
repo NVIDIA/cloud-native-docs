@@ -15,12 +15,6 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 1.7.1
 =====
 
-New Features
--------------
-
-Improvements
--------------
-
 Fixed issues
 ------------
 * NFD version bumped to `v0.8.2` to support correct kernel version labelling on Anthos nodes. See `NFD issue <https://github.com/kubernetes-sigs/node-feature-discovery/pull/402>`_ for more details.
