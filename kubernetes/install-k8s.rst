@@ -625,7 +625,7 @@ and then run a simple ``ping`` command to ensure that the DNS servers can be det
 
 .. code-block:: console
 
-   $ kubectl exec multitool -- bash -c 'ping google.com'
+   $ kubectl exec multitool -- sh -c 'ping google.com'
 
 .. code-block:: console
 
