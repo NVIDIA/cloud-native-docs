@@ -136,7 +136,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 18.04.z, 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.5, 4.6 and 4.7
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.5, 4.6, 4.7 and 4.8
          * CentOS 7 and 8
 
     .. tab:: NVIDIA vGPU
@@ -144,7 +144,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6 and 4.7
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6, 4.7 and 4.8
 
 In addition, the following container management tools are supported:
 
