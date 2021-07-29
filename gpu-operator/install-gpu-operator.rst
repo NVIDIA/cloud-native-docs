@@ -139,7 +139,7 @@ The command below will install the GPU Operator with its default configuration f
 
 ----
 
-Bare-metal/Passthrough with with pre-installed NVIDIA drivers 
+Bare-metal/Passthrough with pre-installed NVIDIA drivers 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed NVIDIA drivers as part of the system image:
@@ -152,7 +152,7 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 
 ----
 
-Bare-metal/Passthrough with with pre-installed NVIDIA Container Toolkit (but no drivers)
+Bare-metal/Passthrough with pre-installed NVIDIA Container Toolkit (but no drivers)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed the NVIDIA Container Toolkit (``nvidia-docker2``) as part of the system image. 
@@ -173,7 +173,7 @@ Once that is done, now install the GPU operator with the following options (whic
 
 ----
 
-Bare-metal/Passthrough with with pre-installed drivers and NVIDIA Container Toolkit
+Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``) 
