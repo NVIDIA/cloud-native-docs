@@ -289,6 +289,14 @@ on NVIDIA Ampere products.
 
 ----
 
+Outdated Kernels
+""""""""""""""""""""""""""
+
+Refer to the section :ref:`install-gpu-operator-outdated-kernels` for more information on how to install the Operator successfully
+when nodes in the cluster are not running the latest kernel
+
+----
+
 Verify GPU Operator Install
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
