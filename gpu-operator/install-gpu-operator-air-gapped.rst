@@ -155,12 +155,18 @@ If mirror repository is configured behind a proxy, specify ``driver.env`` in ``v
         value: .example.com
 
 
-Deploy GPU Operator with updated ``values.yaml``
+Download and Deploy GPU Operator Chart with updated ``values.yaml``
+
+Fetch latest version of the chart from NGC `repository <https://ngc.nvidia.com/helm-charts/nvidia:gpu-operator>`_. ``v1.7.1`` is used in the command below.
 
 .. code-block:: console
 
-   $ helm install --wait --generate-name \
-        nvidia/gpu-operator \
+   $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.7.1.tgz
+
+.. code-block:: console
+
+   $ helm install --wait gpu-operator \
+        gpu-operator-v1.7.1.tgz \
         -f values.yaml
 
 
