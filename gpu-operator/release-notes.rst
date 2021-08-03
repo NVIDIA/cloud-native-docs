@@ -12,16 +12,61 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.8.0
+=====
+
+New Features
+-------------
+* Support for NVIDIA Data Center GPU Driver version `470.57.02`.
+* Added support for NVSwitch systems such as DGX A100 and HGX A100. The driver container detects the presence of NVSwitches 
+  in the system and automatically deploys the `Fabric Manager <https://docs.nvidia.com/datacenter/tesla/pdf/fabric-manager-user-guide.pdf>`_ 
+  for setting up the NVSwitch fabric.
+* The driver container now builds and loads the ``nvidia-peermem`` kernel module when GPUDirect RDMA is enabled and Mellanox devices are present in the system. 
+  This allows the GPU Operator to complement the `NVIDIA Network Operator <https://github.com/Mellanox/network-operator>`_ to enable GPUDirect RDMA in the 
+  Kubernetes cluster. Refer to the :ref:`RDMA<operator-rdma>` documentation on getting started.
+
+  .. note:: 
+
+    This feature is available only when used with R470 drivers on Ubuntu 20.04 LTS.
+* Added support for :ref:`upgrades<operator-upgrades>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades 
+  of the NVIDIA drivers on nodes in the cluster.
+* NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as 
+  `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <http://docs.nvidia.com/datacenter/nvsm/nvsm-user-guide/index.html>`_ 
+  to be deployed and connect to the existing DCGM container.
+* Added a ``nodeStatusExporter`` component that exports operator and node metrics in a Prometheus format. The component provides 
+  information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).
+
+Improvements
+-------------
+* Reduced the size of the ClusterPolicy CRD by removing duplicates and redundant fields.
+* The GPU Operator now supports detection of the virtual PCIe topology of the system and makes the topology available to 
+  vGPU drivers via a configuration file. The driver container starts the ``nvidia-topologyd`` daemon in vGPU configurations.
+* Added support for specifying the ``RuntimeClass`` variable via Helm.
+* Added ``nvidia-container-toolkit`` images to support CentOS 7 and CentOS 8.
+* ``nvidia-container-toolkit`` now supports configuring `containerd` correctly for K3s.
+* Added new debug options (logging, verbosity levels) for ``nvidia-container-toolkit`` 
+
+
+Fixed issues
+------------
+* The driver container now loads ``ipmi_devintf`` by default. This allows tools such as ``ipmitool`` that rely on ``ipmi`` char devices 
+  to be created and available. 
+
+Known Limitations
+------------------
+* GPUDirect RDMA is only supported with R470 drivers on Ubuntu 20.04 LTS and is not supported on other distributions (e.g. CoreOS, CentOS etc.)
+* The operator supports building and loading of ``nvidia-peermem`` only in conjunction with the Network Operator. Use with pre-installed MOFED drivers 
+  on the host is not supported. This capability will be added in a future release.
+.. * See the :ref:`operator-known-limitations` at the bottom of this page.
+
+----
+
 1.7.1
 =====
 
 Fixed issues
 ------------
 * NFD version bumped to `v0.8.2` to support correct kernel version labelling on Anthos nodes. See `NFD issue <https://github.com/kubernetes-sigs/node-feature-discovery/pull/402>`_ for more details.
-
-Known Limitations
-------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
 
@@ -57,7 +102,11 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
+* DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+  modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 
 ----
 
@@ -70,10 +119,6 @@ Fixed issues
 * Fixed an issue with NVIDIA Container Toolkit which causes nvidia-container-runtime settings to be persistent across node reboot and causes driver pod to fail. Now nvidia-container-runtime will fallback to using ``runc`` when driver modules are not yet loaded during node reboot.
 * GPU Operator now mounts runtime hook configuration for CRIO under ``/run/containers/oci/hooks.d``.
 
-Known Limitations
-------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
-
 ----
 
 1.6.1
@@ -82,10 +127,6 @@ See the :ref:`operator-known-limitations` at the bottom of this page.
 Fixed issues
 ------------
 * Fixed an issue with NVIDIA Container Toolkit 1.4.5 when used with containerd and an empty containerd configuration which file causes error ``Error while dialing dial unix /run/containerd/containerd.sock: connect: connection refused``. NVIDIA Container Toolkit 1.4.6 now explicitly sets the ``version=2`` along with other changes when the default containerd configuration file is empty.
-
-Known Limitations
-------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
 
@@ -116,7 +157,13 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
+* DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+  modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
+* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this 
+  label manually when project is created.
 
 ----
 
@@ -133,10 +180,6 @@ Fixed issues
 ------------
 * Fixed issue which causes GFD pods to fail with error ``Failed to load NVML`` error even after driver is loaded.
 
-Known Limitations
-------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
-
 ----
 
 1.5.1
@@ -149,10 +192,6 @@ Improvements
 Fixed issues
 ------------
 * Device-Plugin stuck in ``init`` phase on node reboot or when new node is added to the cluster.
-
-Known Limitations
-------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
 
@@ -178,7 +217,15 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
+* The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
+* GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
+* DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+  modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
+* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this 
+  label manually when project is created.
 
 ----
 
@@ -222,7 +269,8 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page.
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
 
@@ -249,7 +297,8 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page. 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
 
@@ -274,7 +323,8 @@ Fixed issues
 
 Known Limitations
 ------------------
-See the :ref:`operator-known-limitations` at the bottom of this page. 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
 
@@ -316,20 +366,10 @@ Fixed Issues
 * The SRO custom resource definition is setup as part of the operator.
 * Fixed an issue with the clean up of driver mount files when deleting the operator from the cluster. This issue used to require a reboot of the node, which is no longer required.
 
-----
-
 .. _operator-known-limitations:
 
 Known Limitations
-=================
+------------------
 
-* The GPU Operator does not include `NVIDIA Fabric Manager <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_ and 
-  thus does not yet support systems that use the NVSwitch fabric (e.g. HGX, DGX-2 or DGX A100).
-* The GPU Operator currently does not handle updates to the underlying software components (e.g. drivers) in an automated manner.
-* The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
-* GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
-* DCGM does not support profiling metrics on RTX 6000 and RTX8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
-* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
-* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this label manually when project is created.
-
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
