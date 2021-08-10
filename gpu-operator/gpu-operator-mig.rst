@@ -1,7 +1,7 @@
 .. Date: May 11 2021
 .. Author: pramarao
 
-.. headings (h1/h2/h3/h4/h5) are # * - =
+.. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _install-gpu-operator-mig:
 
@@ -29,7 +29,8 @@ Prerequisites
 The GPU Operator starting with v1.7 supports the use of pre-installed drivers and the NVIDIA 
 Container Toolkit (``nvidia-docker2``). Note that, the MIG Manager currently does not support 
 the use of pre-installed drivers (with one of the reasons being that ``kubelet`` opens a handle 
-to the NVIDIA driver when available). 
+to the NVIDIA driver when available. See this `issue <https://github.com/kubernetes/kubernetes/pull/101712>`_, 
+which may be addressed in future releases of Kubernetes). 
 
 As a result, the ``--set driver.enabled=false`` option in the Helm chart for use with pre-installed 
 drivers is **not supported** when using the MIG Manager on NVIDIA Ampere GPUs. The MIG Manager only 

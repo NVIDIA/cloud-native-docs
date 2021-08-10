@@ -88,7 +88,11 @@ The following options are available when using the Helm chart. These options can
      - Version of the NVIDIA datacenter driver supported by the Operator.
      - Depends on the version of the Operator. See the Component Matrix 
        for more information on supported drivers.
-   
+
+   * - ``driver.rdma.enabled``
+     - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module. 
+     - ``false``
+            
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack) 
        as a container on the system. Set this value to ``false`` when using the Operator on systems 
@@ -100,6 +104,7 @@ The following options are available when using the Helm chart. These options can
        default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
      - ``true``
 
+     
 
 Common Deployment Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -157,13 +162,39 @@ Bare-metal/Passthrough with pre-installed NVIDIA Container Toolkit (but no drive
 
 In this example, the user has already pre-installed the NVIDIA Container Toolkit (``nvidia-docker2``) as part of the system image. 
 
-Before installing the operator, ensure that the ``root`` directive of the container runtime configuration is changed: 
+Before installing the operator, ensure that the following configurations are modified: 
 
-.. code-block:: console
+* Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should 
+  be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the 
+  ``default-runtime`` line into the Docker daemon config file, which is usually located on the system 
+  at ``/etc/docker/daemon.json``:
 
-   $ sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
+  .. code-block:: console
 
-Once that is done, now install the GPU operator with the following options (which will provision a driver):
+    {
+        "default-runtime": "nvidia",
+        "runtimes": {
+            "nvidia": {
+                "path": "/usr/bin/nvidia-container-runtime",
+                "runtimeArgs": []
+          }
+        }
+    }
+
+  Restart the Docker daemon to complete the installation after setting the default runtime:
+
+  .. code-block:: console
+
+    $ sudo systemctl restart docker
+
+* ``root`` directive of the container runtime configuration should be changed: 
+
+  .. code-block:: console
+
+    $ sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
+
+
+Once these steps are complete, now install the GPU operator with the following options (which will provision a driver):
 
 .. code-block:: console
 
@@ -177,7 +208,11 @@ Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``) 
-as part of the system image. 
+as part of the system image. Follow the steps in the previous section to set up the NVIDIA Container Toolkit.
+
+.. note::
+
+  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100. 
 
 Install the GPU operator with the following options:
 
@@ -196,9 +231,17 @@ Custom driver image (based off a specific driver version)
 If you want to use custom driver container images (for e.g. using 465.27), then 
 you would need to build a new driver container image. Follow these steps:
 
-- Modify the Dockerfile (for e.g. by specifying the driver version in the Ubuntu 20.04 
-  container `here <https://gitlab.com/nvidia/container-images/driver/-/blob/master/ubuntu20.04/Dockerfile#L51>`_)
-- Build the container (e.g. ``docker build --pull -t nvidia/driver:455.28-ubuntu20.04 --file Dockerfile .``). 
+- Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For 
+  reference, the driver container Dockerfiles are available on the Git repo `here <https://gitlab.com/nvidia/container-images/driver>`_
+- Build the container using the appropriate Dockerfile. For example:
+
+  .. code-block:: console
+  
+    $ docker build --pull -t \
+        --build-arg DRIVER_VERSION=455.28 \
+        nvidia/driver:455.28-ubuntu20.04 \
+        --file Dockerfile .
+  
   Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema. 
 - Specify the new driver image and repository by overriding the defaults in 
   the Helm install command. For example: 

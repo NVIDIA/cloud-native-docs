@@ -58,7 +58,7 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
     Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
 
 
-The rest of this document includes instructions for installing the GPU Operator supported Linux distributions. 
+The rest of this document includes instructions for installing the GPU Operator on supported Linux distributions. 
 
 Install Kubernetes
 ===================
@@ -379,7 +379,118 @@ The password credentials for the login are available in the ``prometheus.values`
 .. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
-Uninstalling GPU Operator
+.. _operator-upgrades:
+
+Upgrade 
+===========================      
+
+Using Helm
+-----------
+
+Starting with GPU Operator v1.8.0, the GPU Operator supports dynamic updates to existing resources. This allows 
+the GPU Operator to ensure settings from the `ClusterPolicy` Spec are always applied and current.
+
+Since Helm doesn't support auto upgrade of existing CRDs, the user needs to follow a two step process to 
+upgrade the GPU Operator chart: 
+
+.. blockdiag::
+
+   blockdiag admin {
+      A [label = "Update CRD from the latest chart", color = "#00CC00"];
+      B [label = "Upgrade via Helm"];
+
+      A -> B;
+   }
+
+With this workflow, all existing GPU operator resources are updated inline and the `ClusterPolicy` resource is patched with updates from ``values.yaml``.
+
+Download the CRD from the specific `<release-tag>` from the Git repo. For example: 
+
+.. code-block:: console
+
+   $ wget https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/<release-tag>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+
+Apply the CRD using the file downloaded above:
+
+.. code-block:: console
+
+   $  kubectl apply -f nvidia.com_clusterpolicies_crd.yaml
+
+Fetch latest values from the chart (replace the ``.x`` below with the desired version)
+
+.. code-block:: console
+
+   $ helm show values nvidia/gpu-operator --version=1.8.x > values-1.8.x.yaml
+
+Update the values file as needed.
+
+And upgrade via Helm:
+
+.. code-block:: console
+
+   $ helm upgrade gpu-operator -n gpu-operator-resources -f values-1.8.x.yaml
+
+Cluster Policy Updates
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The GPU Operator also supports dynamic updates to the ``ClusterPolicy`` CustomResource using ``kubectl``:
+
+.. code-block:: console
+
+   $ kubectl edit clusterpolicy
+
+After the edits are complete, Kubernetes will automatically apply the updates to cluster.
+
+Additional Controls for Driver Upgrades
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+While most of the GPU Operator managed daemonset pods can be updated without dependencies, the NVIDIA driver daemonset needs special handling. 
+This is due to the fact that the driver kernel modules have to be unloaded and loaded again on each driver container restart. 
+In turn this has certain dependencies:
+
+#. All clients to the GPU driver have to be disabled
+#. The current GPU driver kernel modules have to be unloaded
+#. The updated driver pods need to start
+#. The GPU driver has to be installed and new kernel modules loaded 
+#. The driver clients disabled initially have to be enabled again
+
+In order to achieve this, a new component called `k8s-driver-manager` is added which will ensure that, all 
+existing GPU driver clients are disabled and current modules are unloaded. This component is added as an `initContainer` 
+within the driver daemonset. 
+
+.. The diagram below illustrates the functionality of the `k8s-driver-manager`.
+
+Since the `k8s-driver-manager` evicts pods from the node to complete the driver upgrade, users can control the node drain 
+behavior using environment variables as specified in the GPU Operator Helm chart (see the ``driver.manager.env`` variables):
+
+.. code-block:: yaml
+
+   imagePullPolicy: IfNotPresent
+   env:
+   - name: ENABLE_AUTO_DRAIN
+      value: "true"
+   - name: DRAIN_USE_FORCE
+      value: "false"
+   - name: DRAIN_POD_SELECTOR_LABEL
+      value: ""
+   - name: DRAIN_TIMEOUT_SECONDS
+      value: "0s"
+   - name: DRAIN_DELETE_EMPTYDIR_DATA
+      value: "false"
+
+* The *DRAIN_POD_SELECTOR_LABEL* env can be used to let `k8s-driver-manager` only evict GPU pods with matching labels from the node. 
+  This way, CPU only pods will not be affected during driver upgrades.
+
+* *DRAIN_USE_FORCE* needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
+
+Using OLM in OpenShift
+-----------------------
+
+For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators: 
+https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html
+
+
+Uninstall
 ===========================
 
 To uninstall the operator:
