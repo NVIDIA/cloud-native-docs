@@ -1,0 +1,33 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  /* Create two equal columns that floats next to each other */
+  .column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    /*height: 300px;*/
+  }
+  
+  .bx--tile {
+      position: relative;
+      display: flex;
+      min-width: 12.5rem;
+      min-height: 8rem;
+      height: 100%;
+      padding: 1rem;
+      background-color: #f4f4f4;
+      outline: 2px solid transparent;
+      outline-offset: -2px;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
