@@ -144,6 +144,32 @@ The command below will install the GPU Operator with its default configuration f
 
 ----
 
+NVIDIA AI Enterprise
+"""""""""""""""""""""
+
+.. note::
+
+   The GPU Operator with NVIDIA AI Enterprise requires some tasks to be completed
+   prior to installation. Refer to the document :ref:`install-gpu-operator-nvaie` for instructions
+   prior to running the below commands.
+
+Add the NVIDIA AI Enterprise Helm repository, where ``api-key`` is the NGC API key for accessing
+the NVIDIA Enterprise Collection that you generated:
+
+.. code-block:: console
+
+    $ helm repo add nvaie https://helm.ngc.nvidia.com/nvaie \
+        --username='$oauthtoken' --password=api-key \
+        && helm repo update
+
+Install the NVIDIA GPU Operator:
+
+.. code-block:: console
+
+    $ helm install --wait --generate-name nvaie/gpu-operator
+
+----
+
 Bare-metal/Passthrough with pre-installed NVIDIA drivers 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
