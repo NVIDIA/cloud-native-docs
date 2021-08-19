@@ -12,7 +12,7 @@ using NVIDIA GPUs with Kubernetes.
 .. toctree::
    :hidden:
 
-   Documentation home <self>
+..   Documentation home <self>
 
 .. toctree::
    :maxdepth: 2
