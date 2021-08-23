@@ -166,7 +166,7 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait --generate-name nvaie/gpu-operator
+    $ helm install --wait --generate-name nvaie/gpu-operator -n gpu-operator-resources
 
 ----
 

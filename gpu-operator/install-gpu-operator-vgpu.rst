@@ -9,6 +9,12 @@ NVIDIA vGPU
 
 This document provides an overview of the workflow to getting started with using the GPU Operator with NVIDIA vGPU.
 
+.. note::
+
+   NVIDIA vGPU is only supported with the `NVIDIA Virtual (vGPU) Software License Server (vCS) <https://docs.nvidia.com/grid/ls/index.html>`_.
+   The NVIDIA License System is only supported with `NVIDIA AI Enterprise <https://docs.nvidia.com/license-system/latest/>`_.
+
+
 *********************
 High Level Workflow
 *********************

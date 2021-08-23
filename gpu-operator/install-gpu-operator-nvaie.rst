@@ -8,6 +8,23 @@
 NVIDIA AI Enterprise
 #####################
 
+NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
+The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.
+
+The pre-configured GPU Operator differs from the GPU Operator in the public NGC catalog. The differences are:
+
+  * It is configured to use a prebuilt vGPU driver image (Only available to NVIDIA AI Enterprise customers)
+
+  * It is configured to use containerd as the container runtime
+
+  * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
+
+  * It is installed in namespace ``gpu-operator-resources``
+
+*********************
+Prerequisite Tasks
+*********************
+
 Prior to installing the GPU Operator with NVIDIA AI Enterprise, the following tasks need to be completed for your cluster.
 
 Create the ``gpu-operator-resources`` namespace:
@@ -18,12 +35,17 @@ Create the ``gpu-operator-resources`` namespace:
 
 Create a vGPU license configuration file by `licensing an NVIDIA vGPU <https://docs.nvidia.com/grid/latest/grid-licensing-user-guide/index.html#licensing-grid-vgpu-linux-config-file>`_, omitting the steps for restarting the ``nvidia-gridd`` service and confirming that the service has obtained a license.
 
-From the vGPU license configuration file, create the ``licensing-config`` ConfigMap object in the ``gpu-operator-resources`` namespace:
+Generate and download a NLS client license token. Please refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+
+Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
+
+Create the ``licensing-config`` ConfigMap object in the ``gpu-operator-resources`` namespace. Both the vGPU license
+configuration file and the NLS client license token will be added to this ConfigMap:
 
 .. code-block:: console
 
     $ kubectl create configmap licensing-config \
-        -n gpu-operator-resources --from-file=/etc/nvidia/gridd.conf
+        -n gpu-operator-resources --from-file=<path>/gridd.conf --from-file=<path>/client_configuration_token.tok
 
 Create an image pull secret in the ``gpu-operator-resources`` namespace for the private
 registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for

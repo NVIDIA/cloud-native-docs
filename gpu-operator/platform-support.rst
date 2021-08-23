@@ -144,7 +144,7 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.8                      | v1.18+        | Not Supported          | Not Supported  |
+      | 1.8                      | v1.21+        | Not Supported          | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
 
 .. note::
