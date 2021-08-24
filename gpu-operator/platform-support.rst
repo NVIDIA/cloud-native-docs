@@ -144,7 +144,7 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.8                      | v1.21+        | Not Supported          | Not Supported  |
+      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
 
 .. note::
@@ -208,6 +208,16 @@ GPU Operator Component Matrix
       - K8s MIG Manager
       - NVIDIA DCGM
 
+    * - 1.8.1
+      - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
+      - `1.6.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.9.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.2.9-2.4.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.8.2
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        
     * - 1.8.0
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
       - `1.6.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_

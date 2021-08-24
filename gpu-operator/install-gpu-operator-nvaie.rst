@@ -19,7 +19,7 @@ The pre-configured GPU Operator differs from the GPU Operator in the public NGC 
 
   * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
 
-  * It is installed in namespace ``gpu-operator-resources``
+  * It is installed in the namespace ``gpu-operator-resources``
 
 *********************
 Prerequisite Tasks
