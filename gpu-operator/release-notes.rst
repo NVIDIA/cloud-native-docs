@@ -12,6 +12,15 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.8.1
+=====
+
+Fixed issues
+------------
+* Fixed an issue with using the `NVIDIA License System <https://docs.nvidia.com/license-system/latest/>`_ in NVIDIA AI Enterprise deployments.
+
+----
+
 1.8.0
 =====
 

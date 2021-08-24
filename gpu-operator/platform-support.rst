@@ -139,6 +139,14 @@ The following table includes the support matrix of the GPU Operator releases and
       | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
 
+    .. tab:: NVIDIA AI Enterprise
+
+      +--------------------------+---------------+------------------------+----------------+
+      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
+      +==========================+===============+========================+================+
+      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+
 .. note::
    The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
    
@@ -167,6 +175,12 @@ Linux distributions
          * Ubuntu 20.04.z LTS
          * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6, 4.7 and 4.8
 
+    .. tab:: NVIDIA AI Enterprise
+
+         The following Linux distributions are supported:
+
+         * Ubuntu 20.04.z LTS
+
 In addition, the following container management tools are supported:
 
 * Helm v3
@@ -194,6 +208,16 @@ GPU Operator Component Matrix
       - K8s MIG Manager
       - NVIDIA DCGM
 
+    * - 1.8.1
+      - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
+      - `1.6.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.9.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.2.9-2.4.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.8.2
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        
     * - 1.8.0
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
       - `1.6.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
@@ -353,6 +377,14 @@ The following Virtualization Platforms are supported. Refer to the `NVIDIA vGPU 
 .. .. note::
 ..   Note that the GA has been validated with the 4.15 LTS kernel. When using the HWE kernel (e.g. v5.3), there are additional prerequisites before deploying the operator.
 
+Supported Hypervisors with NVIDIA AI Enterprise
+-----------------------------------------------
+
+The following Virtualization Platforms are supported. Refer to the `NVIDIA AI Enterprise Documentation <https://docs.nvidia.com/ai-enterprise/>`_ for more detailed information.
+
+* VMware vSphere 7.0 Update 2+
+
+
 Deployment Scenarios
 --------------------
 The GPU Operator has been validated in the following scenarios:
@@ -360,6 +392,7 @@ The GPU Operator has been validated in the following scenarios:
 * Bare-metal
 * GPU passthrough virtualization
 * NVIDIA vGPU
+* `NVIDIA AI Enterprise <https://docs.nvidia.com/ai-enterprise/>`_
 
 .. note::
    The GPU Operator deploys the NVIDIA driver as a container. In this environment, running on desktop environments (e.g. workstations with GPUs and display) is not 
