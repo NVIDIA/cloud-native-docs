@@ -27,7 +27,7 @@ Fixed issues
 New Features
 -------------
 * Support for NVIDIA Data Center GPU Driver version `470.57.02`.
-* Added support for NVSwitch systems such as DGX A100 and HGX A100. The driver container detects the presence of NVSwitches 
+* Added support for NVSwitch systems such as HGX A100. The driver container detects the presence of NVSwitches 
   in the system and automatically deploys the `Fabric Manager <https://docs.nvidia.com/datacenter/tesla/pdf/fabric-manager-user-guide.pdf>`_ 
   for setting up the NVSwitch fabric.
 * The driver container now builds and loads the ``nvidia-peermem`` kernel module when GPUDirect RDMA is enabled and Mellanox devices are present in the system. 
@@ -66,6 +66,7 @@ Known Limitations
 * GPUDirect RDMA is only supported with R470 drivers on Ubuntu 20.04 LTS and is not supported on other distributions (e.g. CoreOS, CentOS etc.)
 * The operator supports building and loading of ``nvidia-peermem`` only in conjunction with the Network Operator. Use with pre-installed MOFED drivers 
   on the host is not supported. This capability will be added in a future release.
+* Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
