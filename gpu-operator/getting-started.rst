@@ -522,4 +522,4 @@ Also, ensure that CRDs created during the operator install have been removed:
    
    .. code-block:: console
    
-      $ sudo rmmod nvidia nvidia_modeset nvidia_uvm
+      $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
