@@ -81,7 +81,7 @@ Set the OS_TAG. The OS_TAG has to match the Guest OS version. Supported values a
 
     $ export OS_TAG=ubuntu20.04
 
-Set the driver container image version to a user defined version number. For example 1.0.0
+Set the driver container image version to a user defined version number. For example, ``1.0.0``:
 
 .. code-block:: console
 
@@ -91,14 +91,19 @@ Set the driver container image version to a user defined version number. For exa
 
     ``VERSION`` can be any user defined value. Please note this value to use during operator installation command
 
+Replace the ``VGPU_DRIVER_VERSION`` below with the appropriate Linux guest vGPU driver version downloaded 
+from the NVIDIA software portal. In this example, the ``460.32.03`` driver has been downloaded. Note that 
+the ``-grid`` suffix needs to be added to the environment variable as shown:
+
 .. code-block:: console
 
-    $ export VGPU_DRIVER_VERSION=460.32.03-grid (replace this with the Linux guest vgpu driver version downloaded from NVIDIA software portal)
+    $ export VGPU_DRIVER_VERSION=460.32.03-grid 
 
 .. note::
 
     GPU Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
-    If version check is disabled with ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when building driver image, then ``VGPU_DRIVER_VERSION`` value is used as default.
+    If version check is disabled with ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when building driver image, then 
+    ``VGPU_DRIVER_VERSION`` value is used as default.
 
 Build the driver container image
 
