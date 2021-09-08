@@ -67,6 +67,8 @@ Known Limitations
 * The operator supports building and loading of ``nvidia-peermem`` only in conjunction with the Network Operator. Use with pre-installed MOFED drivers 
   on the host is not supported. This capability will be added in a future release.
 * Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
+* This version of GPU Operator does not work well on RedHat OpenShift when a cluster-wide proxy is configured and causes constant restarts of driver container.
+  This will be fixed in an upcoming patch release `v1.8.2`.
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
