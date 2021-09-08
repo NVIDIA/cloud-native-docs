@@ -121,8 +121,7 @@ A ``ConfigMap`` needs to be created with the repo list file created under ``gpu-
 Once the ConfigMap is created using above command, update ``values.yaml`` with this information, to let GPU Operator mount the repo configiguration
 within ``Driver`` container to pull required packages.
 
-Ubuntu
-""""""""
+For Ubuntu:
 
 .. code-block:: yaml
 
@@ -131,8 +130,7 @@ Ubuntu
          configMapName: repo-config
          destinationDir: /etc/apt/sources.list.d
 
-CentOS/RHEL/RHCOS
-""""""""""""""""""""
+For RHEL/Centos/RHCOS:
 
 .. code-block:: yaml
 
@@ -141,19 +139,33 @@ CentOS/RHEL/RHCOS
          configMapName: repo-config
          destinationDir: /etc/yum.repos.d
 
-If mirror repository is configured behind a proxy, specify ``driver.env`` in ``values.yaml`` with HTTP_PROXY, HTTPS_PROXY and NO_PROXY environment variables.
+Proxy settings:
+
+If mirror repository is configured behind a proxy, specify ``driver.env`` in ``values.yaml`` with appropriate HTTP_PROXY, HTTPS_PROXY and NO_PROXY environment variables(in both uppercase and lowercase).
 
 .. code-block:: yaml
 
    driver:
       env:
       - name: HTTPS_PROXY
-        value: <example.proxy.com:port>
+        value: http://<example.proxy.com:port>
       - name: HTTP_PROXY
-        value: <example.proxy.com:port>
+        value: http://<example.proxy.com:port>
       - name: NO_PROXY
-        value: .example.com
+        value: example.com
+      - name: https_proxy
+        value: http://<example.proxy.com:port>
+      - name: http_proxy
+        value: http://<example.proxy.com:port>
+      - name: no_proxy
+        value: example.com
 
+.. note::
+
+   * Proxy related ENV are automatically injected by GPU Operator for RedHat OpenShift.
+   * GPU Operator `v1.8.0` does not work well on RedHat OpenShift when a cluster-wide proxy is configured and causes constant restarts of driver container.
+     This will be fixed in an upcoming patch release `v1.8.2`.
+   * If HTTPS Proxy server is setup then change the values of `HTTPS_PROXY` and `https_proxy` to use `https` instead.
 
 Download and Deploy GPU Operator Chart with updated ``values.yaml``
 
