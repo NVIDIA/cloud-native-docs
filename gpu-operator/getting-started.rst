@@ -6,22 +6,22 @@
 *****************************************
 Getting Started
 *****************************************
-This document provides instructions, including pre-requisites for getting started with the NVIDIA GPU Operator. 
+This document provides instructions, including pre-requisites for getting started with the NVIDIA GPU Operator.
 
 ----
 
 Red Hat OpenShift 4
 ====================
 
-For installing the GPU Operator on clusters with Red Hat OpenShift 4.5 and 4.6 using RHCOS worker nodes, 
-follow the `user guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_.
+For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
+follow the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/introduction.html>`_.
 
 ----
 
 Google Cloud Anthos
 ====================
 
-For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started 
+For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started
 `document <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_.
 
 ----
@@ -34,14 +34,14 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 #. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
 #. If the HWE kernel (e.g. kernel 5.x) is used with Ubuntu 18.04 LTS or Ubuntu 20.04 LTS, then the ``nouveau`` driver for NVIDIA GPUs must be blacklisted
-   before starting the GPU Operator. Follow the steps in the CUDA installation `guide <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau-ubuntu>`_ 
+   before starting the GPU Operator. Follow the steps in the CUDA installation `guide <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau-ubuntu>`_
    to disable the nouveau driver and update ``initramfs``.
-#. Node Feature Discovery (NFD) is a dependency for the Operator on each node. By default, NFD master and worker are automatically deployed by the Operator. 
+#. Node Feature Discovery (NFD) is a dependency for the Operator on each node. By default, NFD master and worker are automatically deployed by the Operator.
    If NFD is already running in the cluster prior to the deployment of the operator, then the Operator can be configured to not to install NFD.
-#. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ 
+#. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_
    gate. From Kubernetes 1.15 onwards, its enabled by default.
 
-.. note:: 
+.. note::
 
    To enable the ``KubeletPodResources`` feature gate, run the following command: ``echo -e "KUBELET_EXTRA_ARGS=--feature-gates=KubeletPodResources=true" | sudo tee /etc/default/kubelet``
 
@@ -58,7 +58,7 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
     Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
 
 
-The rest of this document includes instructions for installing the GPU Operator on supported Linux distributions. 
+The rest of this document includes instructions for installing the GPU Operator on supported Linux distributions.
 
 Install Kubernetes
 ===================
@@ -76,11 +76,11 @@ Running Sample GPU Applications
 CUDA VectorAdd
 ----------------
 
-In the first example, let's run a simple CUDA sample, which adds two vectors together: 
+In the first example, let's run a simple CUDA sample, which adds two vectors together:
 
 .. code-block:: console
 
-   $ cat << EOF | kubectl create -f - 
+   $ cat << EOF | kubectl create -f -
    apiVersion: v1
    kind: Pod
    metadata:
@@ -110,7 +110,7 @@ The sample should run fairly quickly. If you view the logs of the container:
 CUDA FP16 Matrix multiply
 ----------------------------
 
-In the second example, let's try running a CUDA load generator, which does an FP16 matrix-multiply on the GPU using 
+In the second example, let's try running a CUDA load generator, which does an FP16 matrix-multiply on the GPU using
 the Tensor Cores when available:
 
 .. code-block:: console
@@ -132,7 +132,7 @@ the Tensor Cores when available:
         securityContext:
           capabilities:
             add: ["SYS_ADMIN"]
-   
+
    EOF
 
 and then view the logs of the ``dcgmproftester`` pod:
@@ -184,7 +184,7 @@ Check to determine if the pod has successfully started:
    $ kubectl get pod tf-notebook
 
 .. code-block:: console
-   
+
    NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
    default                  tf-notebook                                                       1/1     Running     0          3m45s
 
@@ -195,7 +195,7 @@ Since the example also includes a service, let's obtain the external port at whi
    $ kubectl get svc -A
 
 .. code-block:: console
-   
+
    NAMESPACE                NAME                                                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
    default                  tf-notebook                                             NodePort    10.106.229.20   <none>        80:30001/TCP             4m41s
    ..
@@ -234,9 +234,9 @@ Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU
 
 GPU Telemetry
 ==============
-To gather GPU telemetry in Kubernetes, the GPU Operator deploys the ``dcgm-exporter``. ``dcgm-exporter``, based 
-on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of 
-``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be 
+To gather GPU telemetry in Kubernetes, the GPU Operator deploys the ``dcgm-exporter``. ``dcgm-exporter``, based
+on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of
+``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
 scraped by Prometheus.
 
 The rest of this section walks through how to setup Prometheus, Grafana using Operators and using Prometheus with ``dcgm-exporter``.
@@ -252,7 +252,7 @@ Now you can see the Prometheus and Grafana pods:
    $ kubectl get pods -A
 
 .. code-block:: console
-   
+
    NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
    default                  gpu-operator-1597965115-node-feature-discovery-master-fbf9rczx5   1/1     Running     1          6h57m
    default                  gpu-operator-1597965115-node-feature-discovery-worker-n58pm       1/1     Running     1          6h57m
@@ -283,11 +283,11 @@ Now you can see the Prometheus and Grafana pods:
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
 .. code-block:: console
-   
+
    $ kubectl get svc -A
 
 .. code-block:: console
-   
+
    NAMESPACE                NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
    default                  gpu-operator-1597965115-node-feature-discovery-master     ClusterIP   10.110.46.7      <none>        8080/TCP                       6h57m
    default                  kubernetes                                                ClusterIP   10.96.0.1        <none>        443/TCP                        10h
@@ -311,27 +311,27 @@ You can view the services setup as part of the operator and ``dcgm-exporter``:
    prometheus               prometheus-operator-1597990146-prometheus-node-exporter   ClusterIP   10.97.64.60      <none>        9100/TCP                       32s
 
 
-You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``. 
-It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL`` 
+You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``.
+It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL``
 in the event bar to determine if the GPU metrics are visible:
 
 .. image:: ../kubernetes/graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
    :width: 800
 
-Using Grafana 
+Using Grafana
 ---------------
-You can also launch the Grafana tools for visualizing the GPU metrics. 
+You can also launch the Grafana tools for visualizing the GPU metrics.
 
-There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page. 
+There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page.
 Either option can be chosen based on preference.
 
 Patching the Grafana Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-By default, Grafana uses a ``ClusterIP`` to expose the ports on which the service is accessible. This can be changed to a ``NodePort`` instead, so the page is accessible 
-from the browser, similar to the Prometheus dashboard. 
+By default, Grafana uses a ``ClusterIP`` to expose the ports on which the service is accessible. This can be changed to a ``NodePort`` instead, so the page is accessible
+from the browser, similar to the Prometheus dashboard.
 
-You can use `kubectl patch <https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>`_ to update the service API 
-object to expose a ``NodePort`` instead. 
+You can use `kubectl patch <https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>`_ to update the service API
+object to expose a ``NodePort`` instead.
 
 First, modify the spec to change the service type:
 
@@ -341,7 +341,7 @@ First, modify the spec to change the service type:
    spec:
      type: NodePort
      nodePort: 32322
-   EOF   
+   EOF
 
 And now use ``kubectl patch``:
 
@@ -365,7 +365,7 @@ You can verify that the service is now exposed at an externally accessible port:
    <snip>
    prometheus    prometheus-operator-1597990146-grafana                    NodePort    10.108.187.141   <none>        80:32258/TCP                   17h
 
-Open your browser to ``http://<machine-ip-address>:32258`` and view the Grafana login page. Access Grafana home using the ``admin`` username. 
+Open your browser to ``http://<machine-ip-address>:32258`` and view the Grafana login page. Access Grafana home using the ``admin`` username.
 The password credentials for the login are available in the ``prometheus.values`` file we edited in the earlier section of the doc:
 
 .. code-block:: console
@@ -374,24 +374,24 @@ The password credentials for the login are available in the ``prometheus.values`
    ##
    defaultDashboardsEnabled: true
 
-   adminPassword: prom-operator 
+   adminPassword: prom-operator
 
 .. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
 .. _operator-upgrades:
 
-Upgrade 
-===========================      
+Upgrade
+===========================
 
 Using Helm
 -----------
 
-Starting with GPU Operator v1.8.0, the GPU Operator supports dynamic updates to existing resources. This allows 
+Starting with GPU Operator v1.8.0, the GPU Operator supports dynamic updates to existing resources. This allows
 the GPU Operator to ensure settings from the `ClusterPolicy` Spec are always applied and current.
 
-Since Helm doesn't support auto upgrade of existing CRDs, the user needs to follow a two step process to 
-upgrade the GPU Operator chart: 
+Since Helm doesn't support auto upgrade of existing CRDs, the user needs to follow a two step process to
+upgrade the GPU Operator chart:
 
 .. blockdiag::
 
@@ -404,7 +404,7 @@ upgrade the GPU Operator chart:
 
 With this workflow, all existing GPU operator resources are updated inline and the `ClusterPolicy` resource is patched with updates from ``values.yaml``.
 
-Download the CRD from the specific `<release-tag>` from the Git repo. For example: 
+Download the CRD from the specific `<release-tag>` from the Git repo. For example:
 
 .. code-block:: console
 
@@ -444,23 +444,23 @@ After the edits are complete, Kubernetes will automatically apply the updates to
 Additional Controls for Driver Upgrades
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While most of the GPU Operator managed daemonset pods can be updated without dependencies, the NVIDIA driver daemonset needs special handling. 
-This is due to the fact that the driver kernel modules have to be unloaded and loaded again on each driver container restart. 
+While most of the GPU Operator managed daemonset pods can be updated without dependencies, the NVIDIA driver daemonset needs special handling.
+This is due to the fact that the driver kernel modules have to be unloaded and loaded again on each driver container restart.
 In turn this has certain dependencies:
 
 #. All clients to the GPU driver have to be disabled
 #. The current GPU driver kernel modules have to be unloaded
 #. The updated driver pods need to start
-#. The GPU driver has to be installed and new kernel modules loaded 
+#. The GPU driver has to be installed and new kernel modules loaded
 #. The driver clients disabled initially have to be enabled again
 
-In order to achieve this, a new component called `k8s-driver-manager` is added which will ensure that, all 
-existing GPU driver clients are disabled and current modules are unloaded. This component is added as an `initContainer` 
-within the driver daemonset. 
+In order to achieve this, a new component called `k8s-driver-manager` is added which will ensure that, all
+existing GPU driver clients are disabled and current modules are unloaded. This component is added as an `initContainer`
+within the driver daemonset.
 
 .. The diagram below illustrates the functionality of the `k8s-driver-manager`.
 
-Since the `k8s-driver-manager` evicts pods from the node to complete the driver upgrade, users can control the node drain 
+Since the `k8s-driver-manager` evicts pods from the node to complete the driver upgrade, users can control the node drain
 behavior using environment variables as specified in the GPU Operator Helm chart (see the ``driver.manager.env`` variables):
 
 .. code-block:: yaml
@@ -478,7 +478,7 @@ behavior using environment variables as specified in the GPU Operator Helm chart
    - name: DRAIN_DELETE_EMPTYDIR_DATA
       value: "false"
 
-* The *DRAIN_POD_SELECTOR_LABEL* env can be used to let `k8s-driver-manager` only evict GPU pods with matching labels from the node. 
+* The *DRAIN_POD_SELECTOR_LABEL* env can be used to let `k8s-driver-manager` only evict GPU pods with matching labels from the node.
   This way, CPU only pods will not be affected during driver upgrades.
 
 * *DRAIN_USE_FORCE* needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
@@ -486,7 +486,7 @@ behavior using environment variables as specified in the GPU Operator Helm chart
 Using OLM in OpenShift
 -----------------------
 
-For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators: 
+For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators:
 https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html
 
 
@@ -506,20 +506,20 @@ You should now see all the pods being deleted:
    $ kubectl get pods -n gpu-operator-resources
 
 .. code-block:: console
-   
+
    No resources found.
 
-Also, ensure that CRDs created during the operator install have been removed: 
+Also, ensure that CRDs created during the operator install have been removed:
 
 .. code-block:: console
 
-   $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com 
+   $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com
 
 .. note::
 
-   After un-install of GPU Operator, the NVIDIA driver modules might still be loaded. 
+   After un-install of GPU Operator, the NVIDIA driver modules might still be loaded.
    Either reboot the node or unload them using the following command:
-   
+
    .. code-block:: console
-   
+
       $ sudo rmmod nvidia_modeset nvidia_uvm nvidia

@@ -5,8 +5,8 @@
 
 NVIDIA Cloud Native Technologies
 ================================
-This documentation repository contains the product documentation for the 
-NVIDIA Container Toolkit (``nvidia-docker2``), the NVIDIA GPU Operator and 
+This documentation repository contains the product documentation for the
+NVIDIA Container Toolkit (``nvidia-docker2``), the NVIDIA GPU Operator and
 using NVIDIA GPUs with Kubernetes.
 
 .. toctree::
@@ -40,6 +40,19 @@ using NVIDIA GPUs with Kubernetes.
 
 .. toctree::
    :maxdepth: 2
+   :caption: OpenShift with GPUs:
+
+   openshift/introduction.rst
+   openshift/prerequisites.rst
+   openshift/steps-overview.rst
+   openshift/cluster-entitlement.rst
+   openshift/install-nfd.rst
+   openshift/install-gpu-ocp.rst
+   openshift/clean-up.rst
+   openshift/troubleshooting-gpu-ocp.rst
+
+.. toctree::
+   :maxdepth: 2
    :caption: Kubernetes with GPUs:
 
    kubernetes/install-k8s.rst
@@ -57,9 +70,9 @@ using NVIDIA GPUs with Kubernetes.
    :maxdepth: 2
    :caption: Multi-Instance GPU:
 
-   mig/mig.rst   
+   mig/mig.rst
    mig/mig-k8s.rst
-      
+
 .. toctree::
    :maxdepth: 2
    :caption: Driver Containers:
@@ -77,4 +90,3 @@ using NVIDIA GPUs with Kubernetes.
 .. ==================
 ..
 .. * :ref:`genindex`
-
