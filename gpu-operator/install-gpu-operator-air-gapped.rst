@@ -9,19 +9,19 @@ Install GPU Operator in Air-gapped Environments
 Introduction
 -------------
 
-This page describes how to successfully deploy the GPU Operator in clusters with restricted Internet access.
-By default, The GPU Operator requires the Internet for two reasons:
+This page describes how to successfully deploy the GPU Operator in clusters with restricted internet access.
+By default, The GPU Operator requires internet access for the following reasons:
 
     1) Container images need to be pulled during GPU Operator installation.
-    2) The Driver container needs to download several OS packages prior to driver installation.
+    2) The ``driver`` container needs to download several OS packages prior to driver installation.
 
 To address these requirements, it may be necessary to create a local image registry and/or a local package repository
 so that the necessary images and packages are available for your cluster. In subsequent sections, we detail how to
 configure the GPU Operator to use local image registries and local package repositories. If your cluster is behind
 a proxy, also follow the steps from :ref:`install-gpu-operator-proxy`.
 
-Different steps are required for different environments with varying levels of Internet connectivity.
-We summarize the supported use cases/environments in the following table:
+Different steps are required for different environments with varying levels of internet connectivity.
+The supported use cases/environments are listed in the below table:
 
 +--------------------+-----------------------------------------+
 |                    | Network Flow                            |
@@ -50,7 +50,7 @@ We summarize the supported use cases/environments in the following table:
 
 .. note::
 
-   Make sure Kubernetes nodes can successfully reach the local DNS server(s).
+   Ensure that Kubernetes nodes can successfully reach the local DNS server(s).
    Public name resolution for image registry and package repositories are
    mandatory for use cases 1 and 2.
 
@@ -70,8 +70,8 @@ Before proceeding to the next sections, get the up-to-date ``values.yaml`` file 
 Local Image Registry
 ----------------------
 
-Without Internet access, the GPU Operator requires all images to be hosted in a local image registry accessible
-to each node in the cluster. To allow the GPU Operator to work with a local registry, users can specify local
+Without internet access, the GPU Operator requires all images to be hosted in a local image registry that is accessible
+to all nodes in the cluster. To allow the GPU Operator to work with a local registry, users can specify local
 repository, image, tag along with pull secrets in ``values.yaml``.
 
 Pulling and pushing container images to local registry
@@ -212,8 +212,8 @@ Sample of ``values.yaml`` for GPU Operator v1.8.1:
 Local Package Repository
 ------------------------
 
-The ``Driver`` container deployed as part of the GPU operator requires certain packages to be available as part of the
-driver installation. In Restricted Internet Access or Air-Gapped installations, users are required to create a
+The ``driver`` container deployed as part of the GPU operator requires certain packages to be available as part of the
+driver installation. In restricted internet access or air-gapped installations, users are required to create a
 local mirror repository for their OS distribution and make the following packages available:
 
 .. note::
@@ -292,8 +292,8 @@ Create the ``ConfigMap``:
 
    $ kubectl create configmap repo-config -n gpu-operator-resources --from-file=<path-to-repo-list-file>
 
-Once the ConfigMap is created using above command, update ``values.yaml`` with this information, to let GPU Operator mount the repo configuration
-within the ``Driver`` container to pull required packages.
+Once the ConfigMap is created using the above command, update ``values.yaml`` with this information, to let the GPU Operator mount the repo configuration
+within the ``driver`` container to pull required packages.
 
 For Ubuntu:
 

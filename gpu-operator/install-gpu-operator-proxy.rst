@@ -10,15 +10,15 @@ Introduction
 -------------
 
 This page describes how to successfully deploy the GPU Operator in clusters behind a HTTP Proxy.
-By default, the GPU Operator requires the Internet for two reasons:
+By default, the GPU Operator requires internet access for the following reasons:
 
     1) Container images need to be pulled during GPU Operator installation.
-    2) The Driver container needs to download several OS packages prior to driver installation.
+    2) The ``driver`` container needs to download several OS packages prior to driver installation.
 
-To address these requirements, all Kubernetes nodes as well as the driver container need proper configuration
+To address these requirements, all Kubernetes nodes as well as the ``driver`` container need proper configuration
 in order to direct traffic through the proxy.
 
-This document demonstrates how to configure the GPU Operator so that the driver container can successfully
+This document demonstrates how to configure the GPU Operator so that the ``driver`` container can successfully
 download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
 a proxy is not specific to the GPU Operator, we do not include those instructions here.
 
@@ -29,12 +29,12 @@ HTTP Proxy Configuration for Openshift
 
 For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
 Please follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html>`_
-from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the driver container
+from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the ``driver`` container
 based on information present in the cluster-wide Proxy object.
 
 .. note::
 
-   * GPU Operator v1.8.0 does not work well on RedHat OpenShift when a cluster-wide Proxy object is configured and causes constant restarts of driver container. This will be fixed in an upcoming patch release v1.8.2.
+   * GPU Operator v1.8.0 does not work well on RedHat OpenShift when a cluster-wide Proxy object is configured and causes constant restarts of ``driver`` container. This will be fixed in an upcoming patch release v1.8.2.
 
 HTTP Proxy Configuration
 -------------------------
@@ -73,7 +73,7 @@ Specify ``driver.env`` in ``values.yaml`` with appropriate HTTP_PROXY, HTTPS_PRO
 
 .. note::
 
-   * Proxy related ENV are automatically injected by GPU Operator into the Driver container to indicate proxy information used when downloading necessary packages.
+   * Proxy related ENV are automatically injected by GPU Operator into the ``driver`` container to indicate proxy information used when downloading necessary packages.
    * If HTTPS Proxy server is setup then change the values of HTTPS_PROXY and https_proxy to use ``https`` instead.
 
 Deploy GPU Operator
