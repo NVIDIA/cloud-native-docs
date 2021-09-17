@@ -50,6 +50,10 @@ The supported use cases/environments are listed in the below table:
 
 .. note::
 
+   For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b), the documentation will be available soon. Please raise a `Github issue <https://github.com/NVIDIA/gpu-operator/issues>`_ for informal documentation. 
+
+.. note::
+
    Ensure that Kubernetes nodes can successfully reach the local DNS server(s).
    Public name resolution for image registry and package repositories are
    mandatory for use cases 1 and 2.
