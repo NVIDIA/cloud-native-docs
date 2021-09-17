@@ -342,11 +342,19 @@ These options are defined as follows:
 
 ----
 
-Air-gapped installations
+Proxy Environments
+""""""""""""""""""""""""""
+
+Refer to the section :ref:`install-gpu-operator-proxy` for more information on how to install the Operator on clusters
+behind a HTTP proxy.
+
+----
+
+Air-gapped Environments
 """"""""""""""""""""""""""
 
 Refer to the section :ref:`install-gpu-operator-air-gapped` for more information on how to install the Operator 
-in air-gapped environments, including private registries.
+in air-gapped environments.
 
 ----
 
