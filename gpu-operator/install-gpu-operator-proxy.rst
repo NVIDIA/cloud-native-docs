@@ -22,7 +22,12 @@ This document demonstrates how to configure the GPU Operator so that the ``drive
 download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
 a proxy is not specific to the GPU Operator, we do not include those instructions here.
 
-The instructions for Openshift are different, so skip the next section if you are not running Openshift.
+The instructions for Openshift are different, so skip the section titled :ref:`HTTP Proxy Configuration for Openshift` if you are not running Openshift.
+
+Prerequisites
+--------------
+
+* Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)
 
 HTTP Proxy Configuration for Openshift
 ---------------------------------------

@@ -23,30 +23,30 @@ a proxy, also follow the steps from :ref:`install-gpu-operator-proxy`.
 Different steps are required for different environments with varying levels of internet connectivity.
 The supported use cases/environments are listed in the below table:
 
-+--------------------+-----------------------------------------+
-|                    | Network Flow                            |
-+--------------------+--------------------+--------------------+
-| Use Case           | Pulling Images     | Pulling Packages   |
-+====================+====================+====================+
-| 1) HTTP Proxy with | K8s node --> HTTP  | Driver container   |
-| full Internet      | Proxy --> Internet | --> HTTP Proxy --> |
-| access             | Image Registry     | Internet Package   |
-|                    |                    | Repository         |
-+--------------------+--------------------+--------------------+
-| 2) HTTP Proxy with | K8s node --> HTTP  | Driver container   |
-| limited Internet   | Proxy --> Internet | --> HTTP Proxy --> |
-| access             | Image Registry     | Local Package      |
-|                    |                    | Repository         |
-+--------------------+--------------------+--------------------+
-| 3a) Full Air-Gapped| K8s node --> Local | Driver container   |
-| (w/ HTTP Proxy)    | Image Registry     | --> HTTP Proxy --> |
-|                    |                    | Local Package      |
-|                    |                    | Repository         |
-+--------------------+--------------------+--------------------+
-| 3b) Full Air-Gapped| K8s node --> Local | Driver container-->|
-| (w/o HTTP Proxy)   | Image Registry     | Local Package      |
-|                    |                    | Repository         |
-+--------------------+--------------------+--------------------+
++--------------------------+-----------------------------------------+
+|                          | Network Flow                            |
++--------------------------+--------------------+--------------------+
+| Use Case                 | Pulling Images     | Pulling Packages   |
++========+=================+====================+====================+
+| **1**  | HTTP Proxy with | K8s node --> HTTP  | Driver container   |
+|        | full Internet   | Proxy --> Internet | --> HTTP Proxy --> |
+|        | access          | Image Registry     | Internet Package   |
+|        |                 |                    | Repository         |
++--------+-----------------+--------------------+--------------------+
+| **2**  | HTTP Proxy with | K8s node --> HTTP  | Driver container   |
+|        | limited Internet| Proxy --> Internet | --> HTTP Proxy --> |
+|        | access          | Image Registry     | Local Package      |
+|        |                 |                    | Repository         |
++--------+-----------------+--------------------+--------------------+
+| **3a** | Full Air-Gapped | K8s node --> Local | Driver container   |
+|        | (w/ HTTP Proxy) | Image Registry     | --> HTTP Proxy --> |
+|        |                 |                    | Local Package      |
+|        |                 |                    | Repository         |
++--------+-----------------+--------------------+--------------------+
+| **3b** | Full Air-Gapped | K8s node --> Local | Driver container-->|
+|        | (w/o HTTP Proxy)| Image Registry     | Local Package      |
+|        |                 |                    | Repository         |
++--------+-----------------+--------------------+--------------------+
 
 .. note::
 
