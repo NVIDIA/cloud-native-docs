@@ -3,6 +3,7 @@ image: docker:19.03.12
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
+  BUILDER_IMAGE: "${CI_REGISTRY_IMAGE}/cnt-sphinxdoc-${CI_PIPELINE_ID}"
 
 stages:
 - build_image
@@ -14,34 +15,67 @@ services:
   - docker:19.03.12-dind
 
 before_script:
-    - export IMAGE_NAME=cnt-sphinxdoc-"${CI_PIPELINE_ID}" && echo "${IMAGE_NAME}"
-    - docker info
-    - docker login -u doc-builder-token -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
+  - echo "${BUILDER_IMAGE}"
+  - docker info
+  - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
 
 build_image:
   stage: build_image
   script:
-    - docker build --pull --tag "${CI_REGISTRY}"/"${IMAGE_NAME}" --file docker/Dockerfile .
-    - docker push "${CI_REGISTRY}"/"${IMAGE_NAME}"
+    - docker build --pull --no-cache --tag "${BUILDER_IMAGE}" --file docker/Dockerfile .
+    - docker push "${BUILDER_IMAGE}"
+
+.build_docs:
+  stage: build_docs
+  variables:
+    PROJECT_PATH: "${CI_BUILDS_DIR}/${CI_CONCURRENT_ID}/${CI_PROJECT_NAME}"
+    DOC_MOUNT_PATH: "/docs"
+    DOC_BUILD_PATH: "${DOC_MOUNT_PATH}/_build/html/"
+    DOC_STAGE_PATH: "/opt/build/html/${CI_PIPELINE_ID}"
+    CONTAINER_NAME: "${CI_PROJECT_NAME}.${CI_JOB_ID}.${CI_JOB_NAME}"
+  script:
+  - echo "${PROJECT_PATH}"
+  - echo "${DOC_BUILD_PATH}"
+  - echo "${DOC_STAGE_PATH}"
+  - echo "${CONTAINER_NAME}"
+  - docker run --name "${CONTAINER_NAME}" -v "${CI_PROJECT_DIR}":"${DOC_MOUNT_PATH}" "${BUILDER_IMAGE}"
 
 build_docs:
-  stage: build_docs
-  script:
-  - export PROJECT_PATH="${CI_BUILDS_DIR}"/"${CI_CONCURRENT_ID}"/"${CI_PROJECT_NAME}"
-  - export DOC_MOUNT_PATH=/docs
-  - export DOC_BUILD_PATH="${DOC_MOUNT_PATH}/_build/html/"                    && echo "${DOC_BUILD_PATH}"
-  - export DOC_STAGE_PATH=/opt/build/html/"${CI_PIPELINE_ID}"                 && echo "${DOC_STAGE_PATH}"
-  - export CONTAINER_NAME="${CI_PROJECT_NAME}.${CI_JOB_ID}.${CI_JOB_NAME}"    && echo "${CONTAINER_NAME}"
-  - docker run --name "${CONTAINER_NAME}" -v "${CI_PROJECT_DIR}":"${DOC_MOUNT_PATH}" "${CI_REGISTRY}"/"${IMAGE_NAME}"
+  extends:
+    - .build_docs
+  after_script:
   - docker cp "${CONTAINER_NAME}:${DOC_BUILD_PATH}" "${DOC_STAGE_PATH}"
   - docker rm -f ${CONTAINER_NAME}
-  - docker rmi "${CI_REGISTRY}"/"${IMAGE_NAME}"
+  - docker rmi "${BUILDER_IMAGE}"
+  only:
+    variables:
+      - $INTERNAL
+
+pages:
+  extends:
+    .build_docs
+  after_script:
+  - mkdir public
+  - mv _build/html/* public
+  - docker rm -f ${CONTAINER_NAME}
+  - docker rmi "${BUILDER_IMAGE}"
+  - echo "Looks like everything was built OK. See the staged docs at ${CI_PAGES_URL}"
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week
+  except:
+    variables:
+      - $INTERNAL
 
 stage_docs:
   stage: stage_docs
   script:
   - export STAGING_URL="http://${CI_RUNNER_DESCRIPTION}/html/${CI_PIPELINE_ID}"
   - echo "Looks like everything was built OK. See the staged docs at ${STAGING_URL}"
+  only:
+    variables:
+      - $INTERNAL
 
 publish_docs:
   stage: publish_docs
@@ -51,4 +85,7 @@ publish_docs:
   - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
   - /opt/build/html/deploy_web.sh --copy-flush ${CI_PIPELINE_ID}
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $INTERNAL

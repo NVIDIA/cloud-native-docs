@@ -26,6 +26,8 @@ docker run -it --rm \
 
 The resulting HTML pages are located in the `_build/html` sub-directory of your ``<path-to-local-workspace>/cnt-docs`` directory.
 
+Additionally, the Gitlab CI for this project is configured to build and stage the documentation on every commit pushed to Gitlab. The staged documentation should be available to view via [Gitlab Pages](https://docs.gitlab.com/ee/user/project/pages/) for your repository. To find the pages url, visit `Settings > Pages` from the Gitlab UI. The url can also be found at the bottom of the logs for the `build_docs` stage of the CI.
+
 ## License and Contributing
 
 This documentation repository is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
