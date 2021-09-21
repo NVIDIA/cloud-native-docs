@@ -18,12 +18,12 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 Fixed issues
 ------------
 * Fixed an issue where Driver Daemonset was spuriously updated on RedHat OpenShift causing repeated restarts in Proxy environments.
-* MIG Manager version bumped to version `v0.1.3`. Please refer to `Release notes<https://github.com/NVIDIA/mig-parted/releases/tag/v0.1.3>`_ for complete list of fixed issues.
+* MIG Manager version bumped to version `v0.1.3`. Please refer to `Release notes <https://github.com/NVIDIA/mig-parted/releases/tag/v0.1.3>`_ for complete list of fixed issues.
 * Container Toolkit bumped to version `v1.7.1` to support A100 80GB.
 
 Improvements
 -------------
-* Added support to provide custom MIG partition configuration using an user defined `ConfigMap`.
+* Added support for user-defined MIG partition configuration via a `ConfigMap`.
 
 ----
 

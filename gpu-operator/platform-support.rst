@@ -232,7 +232,7 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
-        
+
     * - 1.8.0
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
       - `v0.1.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
@@ -243,7 +243,7 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
-        
+
     * - 1.7.1
       - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
       - N/A
@@ -265,7 +265,7 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - N/A
-      
+
     * - 1.6.2
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
       - N/A
@@ -374,13 +374,13 @@ GPU Operator Component Matrix
       - 0.5.0
       - N/A
       - N/A
-      - N/A   
+      - N/A
 
 .. note::
     
     - Driver version could be different with NVIDIA vGPU, as it depends on the driver 
       version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-    - The GPU Operator is supported on all the R450, R460 and R470 NVIDIA datacenter production drivers. For a list of supported 
+    - The GPU Operator is supported on all the R450, R460 and R470 NVIDIA datacenter production drivers. For a list of supported
       datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
 
 
