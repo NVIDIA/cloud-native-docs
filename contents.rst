@@ -23,6 +23,7 @@ using NVIDIA GPUs with Kubernetes.
    container-toolkit/arch-overview.rst
    container-toolkit/install-guide.rst
    container-toolkit/user-guide.rst
+   container-toolkit/release-notes.rst
 
 .. toctree::
    :maxdepth: 2
