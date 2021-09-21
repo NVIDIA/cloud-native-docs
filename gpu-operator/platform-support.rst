@@ -196,7 +196,7 @@ GPU Operator Component Matrix
 ------------------------------
 
 .. list-table::
-    :widths: 20 40 60 60 60 60 60 60 60
+    :widths: 20 40 60 60 60 60 60 60 60 60
     :header-rows: 1
     :align: center
 
