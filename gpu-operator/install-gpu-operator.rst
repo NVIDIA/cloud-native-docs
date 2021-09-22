@@ -111,8 +111,8 @@ Common Deployment Scenarios
 
 In this section, we present some common deployment recipes when using the Helm chart to install the GPU Operator. 
 
-Bare-metal/Passthrough with default configurations
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bare-metal/Passthrough with default configurations on Ubuntu
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this scenario, the default configuration options are used:
 
@@ -120,6 +120,21 @@ In this scenario, the default configuration options are used:
 
    $ helm install --wait --generate-name \
         nvidia/gpu-operator
+
+Bare-metal/Passthrough with default configurations on CentOS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In this scenario, the CentOS toolkit image is used:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name --set toolkit.version=1.7.1-centos7 \
+        nvidia/gpu-operator
+
+.. note::
+
+   * For CentOS 8 systems, use `toolkit.version=1.7.1-centos8`.
+   * Replace `1.7.1` toolkit version used here with the latest one available `here <https://ngc.nvidia.com/catalog/containers/nvidia:k8s:container-toolkit/tags>`_.
 
 ----
 
