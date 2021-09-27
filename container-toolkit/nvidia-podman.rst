@@ -101,7 +101,7 @@ To be able to run rootless containers with ``podman``, we need the following con
 
 .. note::
   If the user running the containers is a privileged user (e.g. ``root``) this change should not be made and will cause
-containers using the NVIDIA Container Toolkit to fail.
+  containers using the NVIDIA Container Toolkit to fail.
 
 Step 4: Running Sample Workloads
 ------------------------------------
