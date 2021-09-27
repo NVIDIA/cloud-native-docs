@@ -99,7 +99,8 @@ To be able to run rootless containers with ``podman``, we need the following con
 
     $ sudo sed -i 's/^#no-cgroups = false/no-cgroups = true/;' /etc/nvidia-container-runtime/config.toml
 
-Note: If the user running the containers is a privileged user (e.g. ``root``) this change should not be made and will cause
+.. note::
+  If the user running the containers is a privileged user (e.g. ``root``) this change should not be made and will cause
 containers using the NVIDIA Container Toolkit to fail.
 
 Step 4: Running Sample Workloads
