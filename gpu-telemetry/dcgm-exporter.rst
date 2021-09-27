@@ -11,7 +11,7 @@ DCGM-Exporter
 Introduction
 *************
 
-`DCGM-Exporter <https://github.com/NVIDIA/gpu-monitoring-tools>`_ is a tool based on the 
+`DCGM-Exporter <https://github.com/NVIDIA/dcgm-exporter>`_ is a tool based on the
 Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`_ that allows users to gather 
 GPU metrics and understand workload behavior or monitor GPUs in clusters. `dcgm-exporter` is 
 written in Go and exposes GPU metrics at an HTTP endpoint (``/metrics``) for monitoring solutions 
