@@ -51,11 +51,15 @@ Clone the driver container repository and build driver image
 
     $ cd driver
 
-* Change to the OS directory under the driver directory
+* Change to the OS directory under the driver directory.
 
 .. code-block:: console
 
     $ cd ubuntu20.04
+
+.. note::
+
+    For RedHat OpenShift, run ``cd rhel`` to use ``rhel`` folder instead.
 
 * Copy the NVIDIA vGPU guest driver from your extracted zip file and the NVIDIA vGPU driver catalog file
 
@@ -75,7 +79,8 @@ Set the private registry name using below command on the terminal
 
     $ export PRIVATE_REGISTRY=<private registry name>
 
-Set the OS_TAG. The OS_TAG has to match the Guest OS version. Supported values are ubuntu20.04, rhcos4.6
+Set the OS_TAG. The OS_TAG has to match the Guest OS version. Please refer to `OS Support <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html#linux-distributions>`_ for the list of supported OS distributions.
+In the below example ``ubuntu20.04`` is used, for RedHat OpenShift this should be ``rhcos4.x`` where ``x`` is the supported minor OCP version.
 
 .. code-block:: console
 
