@@ -281,7 +281,39 @@ GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be 
 scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
 
-The rest of this section walks through how to deploy ``dcgm-exporter`` and then setup Prometheus, Grafana using Operators.
+The rest of this section walks through setting up Prometheus, ``dcgm-exporter``, and grafana.
+
+.. Shared content for kube-prometheus
+
+.. include:: ../kubernetes/kube-prometheus.rst
+
+Now you can see the Prometheus and Grafana pods:
+
+.. code-block:: console
+
+   $ kubectl get pods -A
+
+.. code-block:: console
+
+   NAMESPACE     NAME                                                              READY   STATUS      RESTARTS   AGE
+   kube-system   calico-kube-controllers-8f59968d4-g28x8                           1/1     Running     1          23m
+   kube-system   calico-node-zfnfk                                                 1/1     Running     1          23m
+   kube-system   coredns-f9fd979d6-p7djj                                           1/1     Running     1          23m
+   kube-system   coredns-f9fd979d6-qhhgq                                           1/1     Running     1          23m
+   kube-system   etcd-ip-172-31-92-253                                             1/1     Running     1          23m
+   kube-system   kube-apiserver-ip-172-31-92-253                                   1/1     Running     2          23m
+   kube-system   kube-controller-manager-ip-172-31-92-253                          1/1     Running     1          23m
+   kube-system   kube-proxy-mh528                                                  1/1     Running     1          23m
+   kube-system   kube-scheduler-ip-172-31-92-253                                   1/1     Running     1          23m
+   kube-system   nvidia-device-plugin-1603211071-7hlk6                             1/1     Running     0          15m
+   prometheus    alertmanager-kube-prometheus-stack-1603-alertmanager-0            2/2     Running     0          13m
+   prometheus    kube-prometheus-stack-1603-operator-6b95bcdc79-wmbkn              2/2     Running     0          13m
+   prometheus    kube-prometheus-stack-1603211794-grafana-67ff56c449-tlmxc         2/2     Running     0          13m
+   prometheus    kube-prometheus-stack-1603211794-kube-state-metrics-877df67c49f   1/1     Running     0          13m
+   prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter-b5fl9   1/1     Running     0          13m
+   prometheus    prometheus-kube-prometheus-stack-1603-prometheus-0                3/3     Running     1          13m
+
+
 
 Setting up DCGM
 ----------------
@@ -290,7 +322,7 @@ Now, we will deploy ``dcgm-exporter`` to gather GPU telemetry. First, lets setup
 .. code-block:: console
 
    $ helm repo add gpu-helm-charts \
-      https://nvidia.github.io/gpu-monitoring-tools/helm-charts
+      https://nvidia.github.io/dcgm-exporter/helm-charts
 
 And then update the Helm repo:
 
@@ -326,37 +358,13 @@ Now, you can observe the ``dcgm-exporter`` pod:
    kube-system   kube-proxy-mh528                                                  1/1     Running     1          43m
    kube-system   kube-scheduler-ip-172-31-92-253                                   1/1     Running     1          43m
    kube-system   nvidia-device-plugin-1603211071-7hlk6                             1/1     Running     0          35m
+   prometheus    alertmanager-kube-prometheus-stack-1603-alertmanager-0            2/2     Running     0          33m
+   prometheus    kube-prometheus-stack-1603-operator-6b95bcdc79-wmbkn              2/2     Running     0          33m
+   prometheus    kube-prometheus-stack-1603211794-grafana-67ff56c449-tlmxc         2/2     Running     0          33m
+   prometheus    kube-prometheus-stack-1603211794-kube-state-metrics-877df67c49f   1/1     Running     0          33m
+   prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter-b5fl9   1/1     Running     0          33m
+   prometheus    prometheus-kube-prometheus-stack-1603-prometheus-0                3/3     Running     1          33m
 
-.. Shared content for kube-prometheus
-
-.. include:: ../kubernetes/kube-prometheus.rst
-
-Now you can see the Prometheus and Grafana pods:
-
-.. code-block:: console
-
-   $ kubectl get pods -A
-
-.. code-block:: console
-
-   NAMESPACE     NAME                                                              READY   STATUS      RESTARTS   AGE
-   default       dcgm-exporter-2-1603213075-w27mx                                  1/1     Running     0          2m18s
-   kube-system   calico-kube-controllers-8f59968d4-g28x8                           1/1     Running     1          43m
-   kube-system   calico-node-zfnfk                                                 1/1     Running     1          43m
-   kube-system   coredns-f9fd979d6-p7djj                                           1/1     Running     1          43m
-   kube-system   coredns-f9fd979d6-qhhgq                                           1/1     Running     1          43m
-   kube-system   etcd-ip-172-31-92-253                                             1/1     Running     1          43m
-   kube-system   kube-apiserver-ip-172-31-92-253                                   1/1     Running     2          43m
-   kube-system   kube-controller-manager-ip-172-31-92-253                          1/1     Running     1          43m
-   kube-system   kube-proxy-mh528                                                  1/1     Running     1          43m
-   kube-system   kube-scheduler-ip-172-31-92-253                                   1/1     Running     1          43m
-   kube-system   nvidia-device-plugin-1603211071-7hlk6                             1/1     Running     0          35m
-   prometheus    alertmanager-kube-prometheus-stack-1603-alertmanager-0            2/2     Running     0          23m
-   prometheus    kube-prometheus-stack-1603-operator-6b95bcdc79-wmbkn              2/2     Running     0          23m
-   prometheus    kube-prometheus-stack-1603211794-grafana-67ff56c449-tlmxc         2/2     Running     0          23m
-   prometheus    kube-prometheus-stack-1603211794-kube-state-metrics-877df67c49f   1/1     Running     0          23m
-   prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter-b5fl9   1/1     Running     0          23m
-   prometheus    prometheus-kube-prometheus-stack-1603-prometheus-0                3/3     Running     1          23m
 
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
