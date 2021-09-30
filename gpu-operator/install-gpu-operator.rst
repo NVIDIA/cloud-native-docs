@@ -198,37 +198,145 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 
 ----
 
+Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``)
+as part of the system image.
+
+.. note::
+
+  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100.
+
+Before installing the operator, ensure that the following configurations are modified depending on the container runtime configured in your cluster.
+
+Docker:
+
+  * Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should
+    be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the
+    ``default-runtime`` line into the Docker daemon config file, which is usually located on the system
+    at ``/etc/docker/daemon.json``:
+
+    .. code-block:: console
+
+      {
+          "default-runtime": "nvidia",
+          "runtimes": {
+              "nvidia": {
+                  "path": "/usr/bin/nvidia-container-runtime",
+                  "runtimeArgs": []
+            }
+          }
+      }
+
+    Restart the Docker daemon to complete the installation after setting the default runtime:
+
+    .. code-block:: console
+
+      $ sudo systemctl restart docker
+
+Containerd:
+
+  * Update ``containerd`` to use ``nvidia`` as the default runtime and add ``nvidia`` runtime configuration.
+    This can be done by adding below config to ``/etc/containerd/config.toml`` and restarting ``containerd`` service.
+
+    .. code-block:: console
+
+      version = 2
+      [plugins]
+        [plugins."io.containerd.grpc.v1.cri"]
+          [plugins."io.containerd.grpc.v1.cri".containerd]
+            default_runtime_name = "nvidia"
+
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
+                privileged_without_host_devices = false
+                runtime_engine = ""
+                runtime_root = ""
+                runtime_type = "io.containerd.runc.v2"
+                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
+                  BinaryName = "/usr/bin/nvidia-container-runtime"
+
+    Restart the Containerd daemon to complete the installation after setting the default runtime:
+
+    .. code-block:: console
+
+      $ sudo systemctl restart containerd
+
+
+Install the GPU operator with the following options:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+         nvidia/gpu-operator \
+         --set driver.enabled=false \
+         --set toolkit.enabled=false
+
+----
+
 Bare-metal/Passthrough with pre-installed NVIDIA Container Toolkit (but no drivers)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed the NVIDIA Container Toolkit (``nvidia-docker2``) as part of the system image.
 
-Before installing the operator, ensure that the following configurations are modified:
+Before installing the operator, ensure that the following configurations are modified depending on the container runtime configured in your cluster.
 
-* Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should
-  be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the
-  ``default-runtime`` line into the Docker daemon config file, which is usually located on the system
-  at ``/etc/docker/daemon.json``:
+Docker:
 
-  .. code-block:: console
+  * Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should
+    be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the
+    ``default-runtime`` line into the Docker daemon config file, which is usually located on the system
+    at ``/etc/docker/daemon.json``:
 
-    {
-        "default-runtime": "nvidia",
-        "runtimes": {
-            "nvidia": {
-                "path": "/usr/bin/nvidia-container-runtime",
-                "runtimeArgs": []
+    .. code-block:: console
+
+      {
+          "default-runtime": "nvidia",
+          "runtimes": {
+              "nvidia": {
+                  "path": "/usr/bin/nvidia-container-runtime",
+                  "runtimeArgs": []
+            }
           }
-        }
-    }
+      }
 
-  Restart the Docker daemon to complete the installation after setting the default runtime:
+    Restart the Docker daemon to complete the installation after setting the default runtime:
 
-  .. code-block:: console
+    .. code-block:: console
 
-    $ sudo systemctl restart docker
+      $ sudo systemctl restart docker
 
-* ``root`` directive of the container runtime configuration should be changed:
+Containerd:
+
+  * Update ``containerd`` to use ``nvidia`` as the default runtime and add ``nvidia`` runtime configuration.
+    This can be done by adding below config to ``/etc/containerd/config.toml`` and restarting ``containerd`` service.
+
+    .. code-block:: console
+
+      version = 2
+      [plugins]
+        [plugins."io.containerd.grpc.v1.cri"]
+          [plugins."io.containerd.grpc.v1.cri".containerd]
+            default_runtime_name = "nvidia"
+
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes]
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
+                privileged_without_host_devices = false
+                runtime_engine = ""
+                runtime_root = ""
+                runtime_type = "io.containerd.runc.v2"
+                [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
+                  BinaryName = "/usr/bin/nvidia-container-runtime"
+
+    Restart the Containerd daemon to complete the installation after setting the default runtime:
+
+    .. code-block:: console
+
+      $ sudo systemctl restart containerd
+
+
+Configure toolkit to use the ``root`` directory of the driver installation as ``/run/nvidia/driver``, which is the path mounted by driver container.
 
   .. code-block:: console
 
@@ -242,27 +350,6 @@ Once these steps are complete, now install the GPU operator with the following o
    $ helm install --wait --generate-name \
         nvidia/gpu-operator \
         --set toolkit.enabled=false
-
-----
-
-Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``)
-as part of the system image. Follow the steps in the previous section to set up the NVIDIA Container Toolkit.
-
-.. note::
-
-  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100.
-
-Install the GPU operator with the following options:
-
-.. code-block:: console
-
-   $ helm install --wait --generate-name \
-         nvidia/gpu-operator \
-         --set driver.enabled=false \
-         --set toolkit.enabled=false
 
 ----
 
