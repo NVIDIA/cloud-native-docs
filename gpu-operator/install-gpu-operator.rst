@@ -27,7 +27,7 @@ Now, add the NVIDIA Helm repository:
 Install the GPU Operator
 --------------------------
 
-The GPU Operator Helm chart offers a number of customizable options that can be configured depending on your environment. 
+The GPU Operator Helm chart offers a number of customizable options that can be configured depending on your environment.
 
 .. blockdiag::
 
@@ -55,61 +55,61 @@ The following options are available when using the Helm chart. These options can
      - Default
 
    * - ``nfd.enabled``
-     - Deploys Node Feature Discovery plugin as a daemonset. 
+     - Deploys Node Feature Discovery plugin as a daemonset.
        Set this variable to ``false`` if NFD is already running in the cluster.
      - ``true``
 
    * - ``operator.defaultRuntime``
-     - By default, the operator assumes your Kubernetes deployment is running with 
-       ``docker`` as its container runtime. Other values are either ``crio`` 
-       (for CRI-O) or ``containerd`` (for **containerd**).      
+     - By default, the operator assumes your Kubernetes deployment is running with
+       ``docker`` as its container runtime. Other values are either ``crio``
+       (for CRI-O) or ``containerd`` (for **containerd**).
      - ``docker``
 
    * - ``mig.strategy``
-     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options 
+     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
        are either ``mixed`` or ``single``.
      - ``single``
 
    * - ``psp.enabled``
      - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
-     - ``false``     
+     - ``false``
 
    * - ``driver.enabled``
-     - By default, the Operator deploys NVIDIA drivers as a container on the system. 
+     - By default, the Operator deploys NVIDIA drivers as a container on the system.
        Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
      - ``true``
 
    * - ``driver.repository``
-     - The images are downloaded from NGC. Specify another image repository when using 
+     - The images are downloaded from NGC. Specify another image repository when using
        custom driver images.
      - ``nvcr.io/nvidia``
 
    * - ``driver.version``
      - Version of the NVIDIA datacenter driver supported by the Operator.
-     - Depends on the version of the Operator. See the Component Matrix 
+     - Depends on the version of the Operator. See the Component Matrix
        for more information on supported drivers.
 
    * - ``driver.rdma.enabled``
-     - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module. 
+     - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module.
      - ``false``
-            
+
    * - ``toolkit.enabled``
-     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack) 
-       as a container on the system. Set this value to ``false`` when using the Operator on systems 
+     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
+       as a container on the system. Set this value to ``false`` when using the Operator on systems
        with pre-installed NVIDIA runtimes.
      - ``true``
-  
+
    * - ``migManager.enabled``
-     - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By 
+     - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
        default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
      - ``true``
 
-     
+
 
 Common Deployment Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this section, we present some common deployment recipes when using the Helm chart to install the GPU Operator. 
+In this section, we present some common deployment recipes when using the Helm chart to install the GPU Operator.
 
 Bare-metal/Passthrough with default configurations on Ubuntu
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -143,7 +143,7 @@ NVIDIA vGPU
 
 .. note::
 
-   The GPU Operator with NVIDIA vGPUs requires additional steps to build a private driver image prior to install. 
+   The GPU Operator with NVIDIA vGPUs requires additional steps to build a private driver image prior to install.
    Refer to the document :ref:`install-gpu-operator-vgpu` for detailed instructions on the workflow and required values of
    the variables used in this command.
 
@@ -185,7 +185,7 @@ Install the NVIDIA GPU Operator:
 
 ----
 
-Bare-metal/Passthrough with pre-installed NVIDIA drivers 
+Bare-metal/Passthrough with pre-installed NVIDIA drivers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 In this example, the user has already pre-installed NVIDIA drivers as part of the system image:
@@ -201,13 +201,13 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 Bare-metal/Passthrough with pre-installed NVIDIA Container Toolkit (but no drivers)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-In this example, the user has already pre-installed the NVIDIA Container Toolkit (``nvidia-docker2``) as part of the system image. 
+In this example, the user has already pre-installed the NVIDIA Container Toolkit (``nvidia-docker2``) as part of the system image.
 
-Before installing the operator, ensure that the following configurations are modified: 
+Before installing the operator, ensure that the following configurations are modified:
 
-* Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should 
-  be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the 
-  ``default-runtime`` line into the Docker daemon config file, which is usually located on the system 
+* Update the Docker configuration to add ``nvidia`` as the default runtime. The ``nvidia`` runtime should
+  be setup as the default container runtime for Docker on GPU nodes. This can be done by adding the
+  ``default-runtime`` line into the Docker daemon config file, which is usually located on the system
   at ``/etc/docker/daemon.json``:
 
   .. code-block:: console
@@ -228,7 +228,7 @@ Before installing the operator, ensure that the following configurations are mod
 
     $ sudo systemctl restart docker
 
-* ``root`` directive of the container runtime configuration should be changed: 
+* ``root`` directive of the container runtime configuration should be changed:
 
   .. code-block:: console
 
@@ -241,19 +241,19 @@ Once these steps are complete, now install the GPU operator with the following o
 
    $ helm install --wait --generate-name \
         nvidia/gpu-operator \
-        --set toolkit.enabled=false    
+        --set toolkit.enabled=false
 
 ----
 
 Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``) 
+In this example, the user has already pre-installed the NVIDIA drivers and NVIDIA Container Toolkit (``nvidia-docker2``)
 as part of the system image. Follow the steps in the previous section to set up the NVIDIA Container Toolkit.
 
 .. note::
 
-  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100. 
+  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100.
 
 Install the GPU operator with the following options:
 
@@ -262,30 +262,30 @@ Install the GPU operator with the following options:
    $ helm install --wait --generate-name \
          nvidia/gpu-operator \
          --set driver.enabled=false \
-         --set toolkit.enabled=false 
+         --set toolkit.enabled=false
 
 ----
-         
+
 Custom driver image (based off a specific driver version)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-If you want to use custom driver container images (for e.g. using 465.27), then 
+If you want to use custom driver container images (for e.g. using 465.27), then
 you would need to build a new driver container image. Follow these steps:
 
-- Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For 
+- Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
   reference, the driver container Dockerfiles are available on the Git repo `here <https://gitlab.com/nvidia/container-images/driver>`_
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
-  
+
     $ docker build --pull -t \
         --build-arg DRIVER_VERSION=455.28 \
         nvidia/driver:455.28-ubuntu20.04 \
         --file Dockerfile .
-  
-  Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema. 
-- Specify the new driver image and repository by overriding the defaults in 
-  the Helm install command. For example: 
+
+  Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema.
+- Specify the new driver image and repository by overriding the defaults in
+  the Helm install command. For example:
 
   .. code-block:: console
 
@@ -294,8 +294,8 @@ you would need to build a new driver container image. Follow these steps:
           --set driver.repository=docker.io/nvidia \
           --set driver.version="465.27"
 
-Note that these instructions are provided for reference and evaluation purposes. 
-Not using the standard releases of the GPU Operator from NVIDIA would mean limited 
+Note that these instructions are provided for reference and evaluation purposes.
+Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
 ----
@@ -303,7 +303,7 @@ support for such custom configurations.
 Set the default container runtime as ``containerd``
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
-In this example, we set the default container runtime to be used as ``containerd``. 
+In this example, we set the default container runtime to be used as ``containerd``.
 
 .. code-block:: console
 
@@ -311,7 +311,7 @@ In this example, we set the default container runtime to be used as ``containerd
         nvidia/gpu-operator \
         --set operator.defaultRuntime=containerd
 
-When setting `containerd` as the `defaultRuntime` the following 
+When setting `containerd` as the `defaultRuntime` the following
 options are also available:
 
 .. code-block:: yaml
@@ -327,33 +327,33 @@ options are also available:
       - name: CONTAINERD_SET_AS_DEFAULT
       value: true
 
-These options are defined as follows:       
-      
-   - **CONTAINERD_CONFIG** : The path on the host to the ``containerd`` config 
-      you would like to have updated with support for the ``nvidia-container-runtime``. 
-      By default this will point to ``/etc/containerd/config.toml`` (the default 
-      location for ``containerd``). It should be customized if your ``containerd`` 
+These options are defined as follows:
+
+   - **CONTAINERD_CONFIG** : The path on the host to the ``containerd`` config
+      you would like to have updated with support for the ``nvidia-container-runtime``.
+      By default this will point to ``/etc/containerd/config.toml`` (the default
+      location for ``containerd``). It should be customized if your ``containerd``
       installation is not in the default location.
 
-   - **CONTAINERD_SOCKET** : The path on the host to the socket file used to 
-      communicate with ``containerd``. The operator will use this to send a 
-      ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By 
-      default this will point to ``/run/containerd/containerd.sock`` 
-      (the default location for ``containerd``). It should be customized if 
+   - **CONTAINERD_SOCKET** : The path on the host to the socket file used to
+      communicate with ``containerd``. The operator will use this to send a
+      ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
+      default this will point to ``/run/containerd/containerd.sock``
+      (the default location for ``containerd``). It should be customized if
       your ``containerd`` installation is not in the default location.
 
-   - **CONTAINERD_RUNTIME_CLASS** : The name of the 
-      `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_ 
-      you would like to associate with the ``nvidia-container-runtime``. 
-      Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS 
-      will always run with the ``nvidia-container-runtime``. The default 
+   - **CONTAINERD_RUNTIME_CLASS** : The name of the
+      `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_
+      you would like to associate with the ``nvidia-container-runtime``.
+      Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS
+      will always run with the ``nvidia-container-runtime``. The default
       CONTAINERD_RUNTIME_CLASS is ``nvidia``.
 
-   - **CONTAINERD_SET_AS_DEFAULT** : A flag indicating whether you want to set 
-      ``nvidia-container-runtime`` as the default runtime used to launch all 
-      containers. When set to false, only containers in pods with a ``runtimeClassName`` 
-      equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``. 
-      The default value is ``true``. 
+   - **CONTAINERD_SET_AS_DEFAULT** : A flag indicating whether you want to set
+      ``nvidia-container-runtime`` as the default runtime used to launch all
+      containers. When set to false, only containers in pods with a ``runtimeClassName``
+      equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
+      The default value is ``true``.
 
 ----
 
@@ -368,7 +368,7 @@ behind a HTTP proxy.
 Air-gapped Environments
 """"""""""""""""""""""""""
 
-Refer to the section :ref:`install-gpu-operator-air-gapped` for more information on how to install the Operator 
+Refer to the section :ref:`install-gpu-operator-air-gapped` for more information on how to install the Operator
 in air-gapped environments.
 
 ----
@@ -376,8 +376,8 @@ in air-gapped environments.
 Multi-Instance GPU (MIG)
 """"""""""""""""""""""""""
 
-Refer to the document :ref:`install-gpu-operator-mig` for more information on how use the Operator with Multi-Instance GPU (MIG) 
-on NVIDIA Ampere products.
+Refer to the document :ref:`install-gpu-operator-mig` for more information on how use the Operator with Multi-Instance GPU (MIG)
+on NVIDIA Ampere products. For guidance on configuring MIG support for the **NVIDIA GPU Operator** in an OpenShift Container Platform cluster, see the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/mig-ocp.html>`_.
 
 ----
 
@@ -399,7 +399,7 @@ Once the Helm chart is installed, check the status of the pods to ensure all the
    $ kubectl get pods -A
 
 .. code-block:: console
-   
+
    NAMESPACE                NAME                                                          READY   STATUS      RESTARTS   AGE
    default                  gpu-operator-d6ccd4d8d-f7m57                                  1/1     Running     0          5m51s
    default                  gpu-operator-node-feature-discovery-master-867c4f7bfb-cbxck   1/1     Running     0          5m51s
@@ -421,5 +421,5 @@ Once the Helm chart is installed, check the status of the pods to ensure all the
    kube-system              kube-controller-manager-ip-172-31-65-3                        1/1     Running     0          8m25s
    kube-system              kube-proxy-gpqc5                                              1/1     Running     0          8m11s
    kube-system              kube-scheduler-ip-172-31-65-3                                 1/1     Running     0          8m25s
-  
+
 We can now proceed to running some sample GPU workloads to verify that the Operator (and its components) are working correctly.
