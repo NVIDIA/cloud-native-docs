@@ -11,7 +11,7 @@ With the proper :ref:`Red Hat entitlement<cluster-entitlement>` in place and the
 
 #. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/4.8/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
-#. Select the regular version (not the one labelled Marketplace), click **Install**. In the subsequent screen click **Install**.
+#. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 
 *****************************************************
 Create the cluster policy for the NVIDIA GPU Operator
@@ -77,7 +77,7 @@ The commands below describe various ways to verify the successful installation o
 .. _running-sample-app:
 
 *************************************************************
-Running Sample GPU Application
+Running a sample GPU Application
 *************************************************************
 
 Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure the GPUs have bootstrapped correctly.
