@@ -239,6 +239,31 @@ on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheu
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
 scraped by Prometheus.
 
+With GPU Operator users can customize the metrics to be collected by ``dcgm-exporter``. Below are the steps for this
+
+ 1. Fetch the metrics file and save as dcgm-metrics.csv
+
+   .. code-block:: console
+   
+      $ curl https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/etc/dcp-metrics-included.csv > dcgm-metrics.csv
+
+ 2. Edit the metrics file as required to add/remove any metrics to be collected.
+   
+ 3. Create a Namespace ``gpu-operator-resources`` if one is already not present.
+
+   .. code-block:: console
+   
+      $ kubectl create namespace gpu-operator-resources
+
+ 4. Create a ConfigMap using the file edited above.
+
+   .. code-block:: console
+
+      $ kubectl create configmap metrics-config -n gpu-operator-resources --from-file=dcgm-metrics.csv
+
+ 5. Install GPU Operator with additional options ``--set dcgmExporter.config.name=metrics-config`` and
+   ``--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv``
+
 The rest of this section walks through how to setup Prometheus, Grafana using Operators and using Prometheus with ``dcgm-exporter``.
 
 .. Shared content for kube-prometheus
