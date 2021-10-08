@@ -44,9 +44,50 @@ With v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` ke
         nvidia/gpu-operator \
         --set driver.rdma.enabled=true
 
+ 
+
+Verification
+==============    
+
 During the installation, an `initContainer` is used with the driver daemonset to wait on the Mellanox OFED (MOFED) drivers to be ready. 
-This initContainer checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported MOFED kernel drivers. 
-        
+This initContainer checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported MOFED kernel drivers.
+Once everything is in place, the container nvidia-peermem-ctr will be instantiated inside the driver daemonset.
+
+.. code-block:: console
+
+   $ kubectl describe pod -n gpu-operator-resources nvidia-driver-daemonset-xxxx
+   <snip>
+    Init Containers:
+     mofed-validation:
+     Container ID:  containerd://5a36c66b43f676df616e25ba7ae0c81aeaa517308f28ec44e474b2f699218de3
+     Image:         nvcr.io/nvidia/cloud-native/gpu-operator-validator:v1.8.1
+     Image ID:      nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:7a70e95fd19c3425cd4394f4b47bbf2119a70bd22d67d72e485b4d730853262c
+     
+    <snip>
+    Containers:
+     nvidia-driver-ctr:
+     Container ID:  containerd://199a760946c55c3d7254fa0ebe6a6557dd231179057d4909e26c0e6aec49ab0f
+     Image:         nvcr.io/nvaie/vgpu-guest-driver:470.63.01-ubuntu20.04
+     Image ID:      nvcr.io/nvaie/vgpu-guest-driver@sha256:a1b7d2c8e1bad9bb72d257ddfc5cec341e790901e7574ba2c32acaddaaa94625
+     
+     <snip>
+     nvidia-peermem-ctr:
+     Container ID:  containerd://0742d86f6017bf0c304b549ebd8caad58084a4185a1225b2c9a7f5c4a171054d
+     Image:         nvcr.io/nvaie/vgpu-guest-driver:470.63.01-ubuntu20.04
+     Image ID:      nvcr.io/nvaie/vgpu-guest-driver@sha256:a1b7d2c8e1bad9bb72d257ddfc5cec341e790901e7574ba2c32acaddaaa94625
+     
+    <snip>
+
+
+To validate that nvidia-peermem-ctr has successfully loaded the nvidia-peermem module, you can use the following command:
+
+.. code-block:: console
+
+  $ kubectl logs -n gpu-operator-resourcesnvidia-driver-daemonset-xxx -c nvidia-peermem-ctr
+  waiting for mellanox ofed and nvidia drivers to be installed
+  waiting for mellanox ofed and nvidia drivers to be installed
+  successfully loaded nvidia-peermem module
+
 
 For more information on ``nvidia-peermem``, refer to the `documentation <https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#nvidia-peermem>`_.
 
