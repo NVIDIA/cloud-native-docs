@@ -32,7 +32,11 @@ Create the ``gpu-operator-resources`` namespace:
 
     $ kubectl create namespace gpu-operator-resources
 
-Create a vGPU license configuration file by `licensing an NVIDIA vGPU <https://docs.nvidia.com/grid/latest/grid-licensing-user-guide/index.html#licensing-grid-vgpu-linux-config-file>`_, omitting the steps for restarting the ``nvidia-gridd`` service and confirming that the service has obtained a license.
+Create an empty vGPU license configuration file:
+
+.. code-block:: console
+
+  $ sudo touch gridd.conf
 
 Generate and download a NLS client license token. Please refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
 
@@ -44,7 +48,7 @@ configuration file and the NLS client license token will be added to this Config
 .. code-block:: console
 
     $ kubectl create configmap licensing-config \
-        -n gpu-operator-resources --from-file=<path>/gridd.conf --from-file=<path>/client_configuration_token.tok
+        -n gpu-operator-resources --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
 Create an image pull secret in the ``gpu-operator-resources`` namespace for the private
 registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for
