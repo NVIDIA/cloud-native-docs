@@ -934,5 +934,5 @@ And check the logs of the ``gpu-operator-test`` pod:
 GPU Telemetry
 ^^^^^^^^^^^^^^
 
-Refer to the `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/dcgme2e.html#gpu-telemetry>`_ documentation 
+Refer to the `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html#integrating-gpu-telemetry-into-kubernetes.html>`_ documentation 
 to get started with integrating GPU metrics into a Prometheus monitoring system.

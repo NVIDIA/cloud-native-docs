@@ -49,7 +49,6 @@ using NVIDIA GPUs with Kubernetes.
    openshift/cluster-entitlement.rst
    openshift/install-nfd.rst
    openshift/install-gpu-ocp.rst
-   openshift/mig-ocp.rst
    openshift/clean-up.rst
    openshift/troubleshooting-gpu-ocp.rst
 
@@ -60,7 +59,6 @@ using NVIDIA GPUs with Kubernetes.
    kubernetes/install-k8s.rst
    kubernetes/mig-k8s.rst
    kubernetes/anthos-guide.rst
-   kubernetes/dcgme2e
 
 .. toctree::
    :maxdepth: 2
