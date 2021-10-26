@@ -164,31 +164,13 @@ Step 2: Install NVIDIA Container Toolkit
 -------------------------------------------
 
 After installing containerd, we can proceed to install the NVIDIA Container Toolkit. For ``containerd``, we need to use
-the ``nvidia-container-runtime`` package. See the :ref:`architecture overview <arch-overview>`
+the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview>`
 for more details on the package hierarchy.
 
-First, setup the package repository and GPG key:
+.. include:: install-nvidia-container-toolkit.rst
 
-.. tabs::
-
-    .. tab:: Ubuntu LTS
-
-        .. code-block:: console
-
-            $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-                && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-                && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-Now, install the NVIDIA runtime:
-
-.. tabs::
-
-    .. tab:: Ubuntu LTS
-
-        .. code-block:: console
-
-            $ sudo apt-get update \
-                && sudo apt-get install -y nvidia-container-runtime
+Step 3: Testing the Installation
+--------------------------------
 
 Then, we can test a GPU container:
 
