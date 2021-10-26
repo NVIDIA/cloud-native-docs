@@ -51,7 +51,7 @@ After installing ``podman``, we can proceed to install the NVIDIA Container Tool
 the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview>`
 for more details on the package hierarchy.
 
-.. include:: install-nvidia-container-toolkit.rst
+.. include:: install/nvidia-container-toolkit.rst
 
 Step 2.1. Check the installation
 --------------------------------
