@@ -1,4 +1,4 @@
-Installing on Amazon Linux 
+Installing on Amazon Linux
 ----------------------------
 The following steps can be used to setup the NVIDIA Container Toolkit on Amazon Linux 1 and Amazon Linux 2.
 
@@ -6,7 +6,7 @@ Setting up Docker on Amazon Linux
 ++++++++++++++++++++++++++++++++++
 Amazon Linux is available on Amazon EC2 instances. For full install instructions, see `Docker basics for Amazon ECS <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker>`_.
 
-After launching the official Amazon Linux EC2 image, update the installed packages and install the most recent Docker CE packages: 
+After launching the official Amazon Linux EC2 image, update the installed packages and install the most recent Docker CE packages:
 
 .. code-block:: console
 
@@ -15,7 +15,7 @@ After launching the official Amazon Linux EC2 image, update the installed packag
 Install the ``docker`` package:
 
 .. code-block:: console
-   
+
    $ sudo amazon-linux-extras install docker
 
 Ensure the Docker service is running with the following command:
@@ -65,12 +65,7 @@ This should result in a console output shown below:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-Setup the ``stable`` repository and the GPG key:
-
-.. code-block:: console
-
-   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
+.. include:: ../install/repo-yum.rst
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
@@ -79,7 +74,7 @@ Install the ``nvidia-docker2`` package (and dependencies) after updating the pac
    $ sudo yum clean expire-cache
 
 .. code-block::bash
-   
+
    $ sudo yum install nvidia-docker2 -y
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
