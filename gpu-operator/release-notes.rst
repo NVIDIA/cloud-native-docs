@@ -44,47 +44,48 @@ Fixed issues
 New Features
 -------------
 * Support for NVIDIA Data Center GPU Driver version `470.57.02`.
-* Added support for NVSwitch systems such as HGX A100. The driver container detects the presence of NVSwitches 
-  in the system and automatically deploys the `Fabric Manager <https://docs.nvidia.com/datacenter/tesla/pdf/fabric-manager-user-guide.pdf>`_ 
+* Added support for NVSwitch systems such as HGX A100. The driver container detects the presence of NVSwitches
+  in the system and automatically deploys the `Fabric Manager <https://docs.nvidia.com/datacenter/tesla/pdf/fabric-manager-user-guide.pdf>`_
   for setting up the NVSwitch fabric.
-* The driver container now builds and loads the ``nvidia-peermem`` kernel module when GPUDirect RDMA is enabled and Mellanox devices are present in the system. 
-  This allows the GPU Operator to complement the `NVIDIA Network Operator <https://github.com/Mellanox/network-operator>`_ to enable GPUDirect RDMA in the 
+* The driver container now builds and loads the ``nvidia-peermem`` kernel module when GPUDirect RDMA is enabled and Mellanox devices are present in the system.
+  This allows the GPU Operator to complement the `NVIDIA Network Operator <https://github.com/Mellanox/network-operator>`_ to enable GPUDirect RDMA in the
   Kubernetes cluster. Refer to the :ref:`RDMA<operator-rdma>` documentation on getting started.
 
-  .. note:: 
+  .. note::
 
     This feature is available only when used with R470 drivers on Ubuntu 20.04 LTS.
-* Added support for :ref:`upgrades<operator-upgrades>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades 
+* Added support for :ref:`upgrades<operator-upgrades>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades
   of the NVIDIA drivers on nodes in the cluster.
-* NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as 
-  `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <http://docs.nvidia.com/datacenter/nvsm/nvsm-user-guide/index.html>`_ 
+* NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as
+  `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <http://docs.nvidia.com/datacenter/nvsm/nvsm-user-guide/index.html>`_
   to be deployed and connect to the existing DCGM container.
-* Added a ``nodeStatusExporter`` component that exports operator and node metrics in a Prometheus format. The component provides 
+* Added a ``nodeStatusExporter`` component that exports operator and node metrics in a Prometheus format. The component provides
   information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).
 
 Improvements
 -------------
 * Reduced the size of the ClusterPolicy CRD by removing duplicates and redundant fields.
-* The GPU Operator now supports detection of the virtual PCIe topology of the system and makes the topology available to 
+* The GPU Operator now supports detection of the virtual PCIe topology of the system and makes the topology available to
   vGPU drivers via a configuration file. The driver container starts the ``nvidia-topologyd`` daemon in vGPU configurations.
 * Added support for specifying the ``RuntimeClass`` variable via Helm.
 * Added ``nvidia-container-toolkit`` images to support CentOS 7 and CentOS 8.
 * ``nvidia-container-toolkit`` now supports configuring `containerd` correctly for K3s.
-* Added new debug options (logging, verbosity levels) for ``nvidia-container-toolkit`` 
+* Added new debug options (logging, verbosity levels) for ``nvidia-container-toolkit``
 
 
 Fixed issues
 ------------
-* The driver container now loads ``ipmi_devintf`` by default. This allows tools such as ``ipmitool`` that rely on ``ipmi`` char devices 
-  to be created and available. 
+* The driver container now loads ``ipmi_devintf`` by default. This allows tools such as ``ipmitool`` that rely on ``ipmi`` char devices
+  to be created and available.
 
 Known Limitations
 ------------------
 * GPUDirect RDMA is only supported with R470 drivers on Ubuntu 20.04 LTS and is not supported on other distributions (e.g. CoreOS, CentOS etc.)
-* The operator supports building and loading of ``nvidia-peermem`` only in conjunction with the Network Operator. Use with pre-installed MOFED drivers 
+* The operator supports building and loading of ``nvidia-peermem`` only in conjunction with the Network Operator. Use with pre-installed MOFED drivers
   on the host is not supported. This capability will be added in a future release.
 * Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
 * This version of GPU Operator does not work well on RedHat OpenShift when a cluster-wide proxy is configured and causes constant restarts of driver container.
+  This will be fixed in an upcoming patch release.
   This will be fixed in an upcoming patch release `v1.8.2`.
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
@@ -105,7 +106,7 @@ Fixed issues
 New Features
 -------------
 * Support for NVIDIA Data Center GPU Driver version `460.73.01`.
-* Added support for automatic configuration of MIG geometry on NVIDIA Ampere products (e.g. A100) using the ``k8s-mig-manager``. 
+* Added support for automatic configuration of MIG geometry on NVIDIA Ampere products (e.g. A100) using the ``k8s-mig-manager``.
 * GPU Operator can now be deployed on systems with pre-installed NVIDIA drivers and the NVIDIA Container Toolkit.
 * DCGM-Exporter now supports telemetry for MIG devices on supported Ampere products (e.g. A100).
 * Added support for a new ``nvidia`` ``RuntimeClass`` with `containerd`.
@@ -113,12 +114,12 @@ New Features
 
 Improvements
 -------------
-* Changed the label selector used by the DaemonSets of the different states of the GPU Operator. Instead of having a global 
-  label ``nvidia.com/gpu.present=true``, each DaemonSet now has its own label, ``nvidia.com/gpu.deploy.<state>=true``. This 
-  new behavior allows a finer grain of control over the components deployed on each of the GPU nodes. 
+* Changed the label selector used by the DaemonSets of the different states of the GPU Operator. Instead of having a global
+  label ``nvidia.com/gpu.present=true``, each DaemonSet now has its own label, ``nvidia.com/gpu.deploy.<state>=true``. This
+  new behavior allows a finer grain of control over the components deployed on each of the GPU nodes.
 * Migrated to using the latest operator-sdk for building the GPU Operator.
 * The operator components are deployed with ``node-critical`` ``PriorityClass`` to minimize the possibility of eviction.
-* Added a spec for the ``initContainer`` image, to allow flexibility to change the base images as required. 
+* Added a spec for the ``initContainer`` image, to allow flexibility to change the base images as required.
 * Added the ability to configure the MIG strategy to be applied by the Operator.
 * The driver container now auto-detects OpenShift/RHEL versions to better handle node/cluster upgrades.
 * Validations of the container-toolkit and device-plugin installations are done on all GPU nodes in the cluster.
@@ -126,15 +127,15 @@ Improvements
 
 Fixed issues
 ------------
-* The ``gpu-operator-resources`` namespace is now created by the Operator so that they can be used by both Helm 
-  and OpenShift installations. 
+* The ``gpu-operator-resources`` namespace is now created by the Operator so that they can be used by both Helm
+  and OpenShift installations.
 
 Known Limitations
 ------------------
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
-* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 
 ----
@@ -187,11 +188,11 @@ Fixed issues
 Known Limitations
 ------------------
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
-* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
-* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this 
+* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this
   label manually when project is created.
 
 ----
@@ -231,7 +232,7 @@ New Features
 -------------
 * Added support for NVIDIA vGPU
 
-Improvements 
+Improvements
 -------------
 * Driver Validation container is run as an initContainer within device-plugin Daemonset pods. Thus driver installation on each NVIDIA GPU/vGPU node will be validated.
 * GFD will label vGPU nodes with driver version and branch name of NVIDIA vGPU installed on Hypervisor.
@@ -249,11 +250,11 @@ Known Limitations
 * The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
 * GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
-* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to 
+* When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
-* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this 
+* ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this
   label manually when project is created.
 
 ----
@@ -264,10 +265,10 @@ Known Limitations
 New Features
 -------------
 * Added support for CentOS 7 and 8.
-  
+
   .. note::
 
-    Due to a known limitation with the GPU Operator's default values on CentOS, install the operator on CentOS 7/8 
+    Due to a known limitation with the GPU Operator's default values on CentOS, install the operator on CentOS 7/8
     using the following Helm command:
 
     .. code-block:: console
@@ -276,29 +277,29 @@ New Features
         nvidia/gpu-operator \
         --set toolkit.version=1.4.0-ubi8
 
-    This issue will be fixed in the next release. 
+    This issue will be fixed in the next release.
 
 * Added support for airgapped enterprise environments.
 * Added support for ``containerd`` as a container runtime under Kubernetes.
 
-Improvements 
+Improvements
 -------------
 * Updated DCGM-Exporter to ``2.1.2``, which uses DCGM 2.0.13.
-* Added the ability to pass arguments to the NVIDIA device plugin to enable ``migStrategy`` and ``deviceListStrategy`` flags 
+* Added the ability to pass arguments to the NVIDIA device plugin to enable ``migStrategy`` and ``deviceListStrategy`` flags
   that allow addtional configuration of the plugin.
-* Added more resiliency to ``dcgm-exporter``- ``dcgm-exporter`` would not check whether GPUs support profiling metrics and would result in a ``CrashLoopBackOff`` 
+* Added more resiliency to ``dcgm-exporter``- ``dcgm-exporter`` would not check whether GPUs support profiling metrics and would result in a ``CrashLoopBackOff``
   state at launch in these configurations.
 
 Fixed issues
 ------------
-* Fixed the issue where the removal of the GPU Operator from the cluster required a restart of the Docker daemon (since the Operator 
-  sets the ``nvidia`` as the default runtime). 
+* Fixed the issue where the removal of the GPU Operator from the cluster required a restart of the Docker daemon (since the Operator
+  sets the ``nvidia`` as the default runtime).
 * Fixed volume mounts for ``dcgm-exporter`` under the GPU Operator to allow pod<->device metrics attribution.
 * Fixed an issue where the GFD and ``dcgm-exporter`` container images were artificially limited to R450+ (CUDA 11.0+) drivers.
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
@@ -309,10 +310,10 @@ Known Limitations
 New Features
 -------------
 * Integrated `GPU Feature Discovery <https://github.com/NVIDIA/gpu-feature-discovery>`_ to automatically generate labels for GPUs leveraging NFD.
-* Added support for Red Hat OpenShift 4.4+ (i.e. 4.4.29+, 4.5 and 4.6). The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog 
+* Added support for Red Hat OpenShift 4.4+ (i.e. 4.4.29+, 4.5 and 4.6). The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog
   `listing <https://catalog.redhat.com/software/operators/nvidia/gpu-operator/5ea882962937381642a232cd>`_ for more information.
 
-Improvements 
+Improvements
 -------------
 * Updated DCGM-Exporter to ``2.1.0`` and added profiling metrics by default.
 * Added further capabilities to configure tolerations, node affinity, node selectors, pod security context, resource requirements through the ``ClusterPolicy``.
@@ -321,12 +322,12 @@ Improvements
 
 Fixed issues
 ------------
-* Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue 
+* Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue
   where the NVIDIA container toolkit would be setup as the default runtime, causing the driver container initialization to fail.
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
@@ -336,13 +337,13 @@ Known Limitations
 
 New Features
 -------------
-* Added support for Ubuntu 20.04.z LTS. 
+* Added support for Ubuntu 20.04.z LTS.
 * Added support for the NVIDIA A100 GPU (and appropriate updates to the underlying components of the operator).
 
-Improvements 
+Improvements
 -------------
 * Updated Node Feature Discovery (NFD) to 0.6.0.
-* Container images are now hosted (and mirrored) on both `DockerHub <https://hub.docker.com/u/nvidiadocker.io>`_ and `NGC <https://ngc.nvidia.com/catalog/containers/nvidia:gpu-operator>`_. 
+* Container images are now hosted (and mirrored) on both `DockerHub <https://hub.docker.com/u/nvidiadocker.io>`_ and `NGC <https://ngc.nvidia.com/catalog/containers/nvidia:gpu-operator>`_.
 
 Fixed issues
 ------------
@@ -352,7 +353,7 @@ Fixed issues
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
 
 ----
@@ -364,7 +365,7 @@ New features
 -------------
 * DCGM is now deployed as part of the GPU Operator on OpenShift 4.3.
 
-Improvements 
+Improvements
 -------------
 * The operator CRD has been renamed to ``ClusterPolicy``.
 * The operator image is now based on UBI8.
@@ -372,8 +373,8 @@ Improvements
 
 Fixed issues
 ------------
-* Fixed an issue with the toolkit container which would setup the NVIDIA runtime under ``/run/nvidia`` with a symlink to ``/usr/local/nvidia``. 
-  If a node was rebooted, this would prevent any containers from being run with Docker as the container runtime configured in ``/etc/docker/daemon.json`` 
+* Fixed an issue with the toolkit container which would setup the NVIDIA runtime under ``/run/nvidia`` with a symlink to ``/usr/local/nvidia``.
+  If a node was rebooted, this would prevent any containers from being run with Docker as the container runtime configured in ``/etc/docker/daemon.json``
   would not be available after reboot.
 * Fixed a race condition with the creation of the CRD and registration.
 
@@ -388,7 +389,7 @@ New Features
 * Added support for Red Hat OpenShift 4 (4.1, 4.2 and 4.3) using Red Hat Enterprise Linux Core OS (RHCOS) and CRI-O runtime on GPU worker nodes.
 * GPU Operator now deploys NVIDIA DCGM for GPU telemetry on Ubuntu 18.04 LTS
 
-Fixed Issues 
+Fixed Issues
 -------------
 * The driver container now sets up the required dependencies on ``i2c`` and ``ipmi_msghandler`` modules.
 * Fixed an issue with the validation steps (for the driver and device plugin) taking considerable time. Node provisioning times are now improved by 5x.
@@ -400,5 +401,5 @@ Fixed Issues
 Known Limitations
 ------------------
 
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using 
+* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.

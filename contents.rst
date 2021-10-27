@@ -51,6 +51,7 @@ using NVIDIA GPUs with Kubernetes.
    openshift/install-gpu-ocp.rst
    openshift/clean-up.rst
    openshift/troubleshooting-gpu-ocp.rst
+   openshift/mirror-gpu-ocp-disconnected.rst
 
 .. toctree::
    :maxdepth: 2
