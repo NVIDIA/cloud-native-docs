@@ -301,19 +301,19 @@ within the ``driver`` container to pull required packages.
 
 For Ubuntu:
 
-   .. code-block:: yaml
-         driver:
-            repoConfig:
-               configMapName: repo-config
-               destinationDir: /etc/apt/sources.list.d
+.. code-block:: yaml
+      driver:
+         repoConfig:
+            configMapName: repo-config
+            destinationDir: /etc/apt/sources.list.d
 
 For RHEL/Centos/RHCOS:
 
-   .. code-block:: yaml
-         driver:
-            repoConfig:
-               configMapName: repo-config
-               destinationDir: /etc/yum.repos.d
+.. code-block:: yaml
+      driver:
+         repoConfig:
+            configMapName: repo-config
+            destinationDir: /etc/yum.repos.d
 
 
 Deploy GPU Operator
