@@ -50,7 +50,7 @@ The supported use cases/environments are listed in the below table:
 
 .. note::
 
-   For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b), the documentation will be available soon. Please raise a `Github issue <https://github.com/NVIDIA/gpu-operator/issues>`_ for informal documentation. 
+   For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b), see the documentation `here <https://docs.nvidia.com/datacenter/cloud-native/openshift/mirror-gpu-ocp-disconnected.html>`_.
 
 .. note::
 
@@ -231,7 +231,7 @@ local mirror repository for their OS distribution and make the following package
        linux-headers-${KERNEL_VERSION}
        linux-image-${KERNEL_VERSION}
        linux-modules-${KERNEL_VERSION}
-       
+
     centos:
        elfutils-libelf.x86_64
        elfutils-libelf-devel.x86_64
@@ -301,21 +301,20 @@ within the ``driver`` container to pull required packages.
 
 For Ubuntu:
 
-.. code-block:: yaml
-
-   driver:
-      repoConfig:
-         configMapName: repo-config
-         destinationDir: /etc/apt/sources.list.d
+   .. code-block:: yaml
+         driver:
+            repoConfig:
+               configMapName: repo-config
+               destinationDir: /etc/apt/sources.list.d
 
 For RHEL/Centos/RHCOS:
 
-.. code-block:: yaml
+   .. code-block:: yaml
+         driver:
+            repoConfig:
+               configMapName: repo-config
+               destinationDir: /etc/yum.repos.d
 
-   driver:
-      repoConfig:
-         configMapName: repo-config
-         destinationDir: /etc/yum.repos.d
 
 Deploy GPU Operator
 --------------------
