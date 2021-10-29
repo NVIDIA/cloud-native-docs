@@ -97,7 +97,7 @@ Configure ``containerd`` with a default ``config.toml`` configuration file:
     $ sudo mkdir -p /etc/containerd \
         && sudo containerd config default | sudo tee /etc/containerd/config.toml
 
-For using the NVIDIA runtime, additional configuration is required. The following options should be added to configure
+To make use of the NVIDIA Container Runtime, additional configuration is required. The following options should be added to configure
 ``nvidia`` as a runtime and use ``systemd`` as the cgroup driver. A patch is provided below:
 
 .. code-block:: console

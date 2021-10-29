@@ -43,6 +43,7 @@ Now, install the NVIDIA Container Toolkit:
 
 
 .. note::
+
     For version of the NVIDIA Container Toolkit prior to ``1.6.0``, the ``nvidia-docker`` repository should be used and the ``nvidia-container-runtime`` package
     should be installed instead. This means that the package repositories should be set up as follows:
 
@@ -62,8 +63,6 @@ Now, install the NVIDIA Container Toolkit:
 
             $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
                 && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
-
-
 
 
 The installed packages can be confirmed by running:
