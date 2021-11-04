@@ -29,7 +29,7 @@ In a completely disconnected (airgapped) environment a second `jump host` is nee
 
 This guide describes how to enable the Operator Lifecycle Manager and to make available all the RPM packages the **NVIDIA GPU Operator** requires in a disconnected environment.
 
-The `OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/4.8/operators/admin/olm-restricted-networks.html>`_ provides generic guidance on using Operator Lifecycle Manager on restricted networks.
+The `OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-restricted-networks.html>`_ provides generic guidance on using Operator Lifecycle Manager on restricted networks.
 
 **************
 Prerequisites
@@ -935,7 +935,7 @@ Installing the NVIDIA GPU Operator
 
 With the **Node Feature Discovery Operator** installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
-#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/4.8/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 

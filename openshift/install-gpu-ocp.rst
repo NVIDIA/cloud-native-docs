@@ -9,7 +9,7 @@ Installing the NVIDIA GPU Operator
 
 With the proper :ref:`Red Hat entitlement<cluster-entitlement>` in place and the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
-#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/4.8/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 

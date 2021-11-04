@@ -9,7 +9,7 @@ Installing the Node Feature Discovery (NFD) Operator
 
 The Node Feature Discovery (NFD) Operator is a prerequisite for the NVIDIA GPU Operator and can be installed from the Red Hat OperatorHub catalog in the OpenShift Container Platform web console.
 
-#. Follow the Red Hat documentation guidance in `The Node Feature Discovery Operator <https://docs.openshift.com/container-platform/latest/scalability_and_performance/psap-node-feature-discovery-operator.html>`_ to install the Node Feature Discovery Operator.
+#. Follow the Red Hat documentation guidance in `The Node Feature Discovery Operator <https://docs.openshift.com/container-platform/latest/hardware_enablement/psap-node-feature-discovery-operator.html>`_ to install the Node Feature Discovery Operator.
 
 #. Verify the Node Feature Discovery Operator is running:
 
