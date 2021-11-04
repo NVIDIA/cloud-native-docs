@@ -49,6 +49,7 @@ using NVIDIA GPUs with Kubernetes.
    openshift/cluster-entitlement.rst
    openshift/install-nfd.rst
    openshift/install-gpu-ocp.rst
+   openshift/mig-ocp.rst
    openshift/clean-up.rst
    openshift/troubleshooting-gpu-ocp.rst
    openshift/mirror-gpu-ocp-disconnected.rst
