@@ -10,6 +10,53 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.6.0
+==============================
+
+This version of the NVIDIA Container Toolkit moves to unify the packaging of the components of the NVIDIA container stack.
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.6.0``
+* ``libnvidia-container-tools 1.6.0``
+* ``libnvidia-container1 1.6.0``
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.6.0``:
+
+* ``nvidia-container-runtime 3.6.0``
+* ``nvidia-docker2 2.7.0``
+
+.. note::
+
+    All the above packages are published to the `libnvidia-container <https://nvidia.github.io/libnvidia-container/>`_ repository.
+
+.. note::
+
+    As of version ``2.7.0`` the ``nvidia-docker2`` package depends directly on ``nvidia-container-toolkit``.
+    This means that the ``nvidia-container-runtime`` package is no longer required and may be uninstalled as part of the upgrade process.
+
+
+Packaging Changes
+------------------
+
+* The ``nvidia-container-toolkit`` package now provides the ``nvidia-container-runtime`` executable
+* The ``nvidia-docker2`` package now depends directly on the ``nvidia-container-toolkit`` directly
+* The ``nvidia-container-runtime`` package is now an architecture-independent meta-package serving only to define a dependency on the ``nvidia-container-toolkit`` for workflows that require this
+* Added packages for Amazon Linux 2 on AARC64 platforms for all components
+
+
+Fixes and Features
+------------------
+
+* Move OCI and command line checks for the NVIDIA Container Runtime to an internal go package (``oci``)
+* Update OCI runtime specification dependency to `opencontainers/runtime-spec@a3c33d6 <https://github.com/opencontainers/runtime-spec/commit/a3c33d663ebc/>`_ to fix compatibility with docker when overriding clone3 syscall return value [fixes `NVIDIA/nvidia-container-runtime#157 <https://github.com/NVIDIA/nvidia-container-runtime/issues/157>`_]
+* Use relative path to OCI specification file (``config.json``) if bundle path is not specified as an argument to the nvidia-container-runtime
+
+specific to libnvidia-container
+``````````````````````````````````
+* Bump ``nvidia-modprobe`` dependency to ``495.44`` in the NVIDIA Container Library to allow for non-root monitoring of MIG devices
+* Fix bug that lead to unexpected mount error when ``/proc/driver/nvidia`` does not exist on the host
+
+
 Toolkit Container 1.7.0
 =======================
 
