@@ -35,6 +35,66 @@ The following packages have also been updated to depend on ``nvidia-container-to
     This means that the ``nvidia-container-runtime`` package is no longer required and may be uninstalled as part of the upgrade process.
 
 
+Known Issues
+---------------
+
+Dependency errors when installing older versions of ``nvidia-container-runtime`` on Debian-based systems
+``````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+With the release of the ``1.6.0`` and ``3.6.0`` versions of the ``nvidia-container-toolkit`` and
+``nvidia-container-runtime`` packages, respectively, some files were reorganized and the package
+dependencies updated accordingly. (See case 10 in the `Debian Package Transition <https://wiki.debian.org/PackageTransition>`_ documentation).
+
+Due to these new constraints a package manager may not correctly resolve the required version of ``nvidia-container-toolkit`` when
+pinning to versions of the ``nvidia-container-runtime`` prior to ``3.6.0``.
+
+This means that if a command such as:
+
+.. code-block:: console
+
+    sudo apt-get install nvidia-container-runtime=3.5.0-1
+
+is used to install a specific version of the ``nvidia-container-runtime`` package, this may fail with the following error message:
+
+.. code-block:: console
+
+    Some packages could not be installed. This may mean that you have
+    requested an impossible situation or if you are using the unstable
+    distribution that some required packages have not yet been created
+    or been moved out of Incoming.
+    The following information may help to resolve the situation:
+
+    The following packages have unmet dependencies:
+    nvidia-container-runtime : Depends: nvidia-container-toolkit (>= 1.5.0) but it is not going to be installed
+                                Depends: nvidia-container-toolkit (< 2.0.0) but it is not going to be installed
+    E: Unable to correct problems, you have held broken packages.
+
+In order to address this, the versions of the ``nvidia-container-toolkit`` package should be specified explicitly to be at most ``1.5.1``
+
+.. code-block:: console
+
+    sudo apt-get install \
+        nvidia-container-runtime=3.5.0-1 \
+        nvidia-container-toolkit=1.5.1-1
+
+In general, it is suggested that all components of the NVIDIA container stack be pinned to their required versions.
+
+For the ``nvidia-container-runtime`` ``3.5.0`` these are:
+* ``nvidia-container-toolkit 1.5.1``
+* ``libnvidia-container-tools 1.5.1``
+* ``libnvidia-container1 1.5.1``
+
+To pin all the package versions above, run:
+
+.. code-block:: console
+
+    sudo apt-get install \
+        nvidia-container-runtime=3.5.0-1 \
+        nvidia-container-toolkit=1.5.1-1 \
+        libnvidia-container-tools=1.5.1-1 \
+        libnvidia-container1==1.5.1-1
+
+
 Packaging Changes
 ------------------
 
