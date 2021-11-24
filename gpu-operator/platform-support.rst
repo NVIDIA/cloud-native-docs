@@ -74,9 +74,6 @@ The following NVIDIA server platforms are supported:
 | NVIDIA HGX A100          | A100 and NVSwitch  |
 +--------------------------+--------------------+
 
-.. note::
-
-   Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
 
 .. note:: 
 
