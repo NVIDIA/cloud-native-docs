@@ -10,6 +10,11 @@ This document describes the new features, improvements, fixed and known issues f
 
 See the :ref:`Component Matrix<operator-component-matrix>` for a list of components included in each release.
 
+.. note::
+
+   GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
+
+
 ----
 
 1.8.2
