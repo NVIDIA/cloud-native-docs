@@ -10,6 +10,40 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.7.0-rc.1
+====================================
+
+This version of the NVIDIA Container Toolkit allows up to date packages to be installed on Jetson devices.
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.7.0-rc.1``
+* ``libnvidia-container-tools 1.7.0-rc.1``
+* ``libnvidia-container1 1.7.0-rc.1``
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.7.0-rc.1``:
+
+* ``nvidia-container-runtime 3.7.0-rc.1``
+* ``nvidia-docker2 2.8.0-rc.1``
+
+Packaging Changes
+------------------
+
+* On Ubuntu ``arm64`` distributions the ``libnvidia-container-tools`` package depends on both ``libnvidia-container0`` and ``libnvidia-container1`` to support Jetson devices
+
+Fixes and Features
+-------------------
+
+* Add a ``supported-driver-capabilities`` config option to allow for a subset of all driver capabilities to be specified
+* Makes the fixes from ``v1.6.0`` to addresses an incompatibility with recent docker.io and containerd.io updates on Ubuntu installations (see `NVIDIA/nvidia-container-runtime#157 <https://github.com/NVIDIA/nvidia-container-runtime/issues/157>`_) available on Jetson devices.
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Filter command line options based on `libnvidia-container` library version
+* Include `libnvidia-container` version in CLI version output
+* Allow for `nvidia-container-cli` to load `libnvidia-container.so.0` dynamically on Jetson platforms
+
+
 NVIDIA Container Toolkit 1.6.0
 ==============================
 
