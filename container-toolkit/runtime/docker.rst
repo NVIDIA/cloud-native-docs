@@ -137,7 +137,8 @@ Some examples of the usage are shown below:
 
    .. code-block:: console
 
-      $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
+      $ docker run --rm --runtime=nvidia \
+          -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
     
 #. Start a GPU enabled container on two GPUs
 
@@ -149,7 +150,8 @@ Some examples of the usage are shown below:
 
    .. code-block:: console
     
-      $ docker run --gpus '"device=1,2"' nvidia/cuda nvidia-smi --query-gpu=uuid --format-csv
+      $ docker run --gpus '"device=1,2"' \
+          nvidia/cuda nvidia-smi --query-gpu=uuid --format-csv
 
    .. code-block:: console
 
@@ -161,7 +163,9 @@ Some examples of the usage are shown below:
 
    .. code-block:: console
 
-      $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=1,2 nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
+      $ docker run --rm --runtime=nvidia \
+          -e NVIDIA_VISIBLE_DEVICES=1,2 \
+          nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
 
    .. code-block:: console
 
@@ -179,8 +183,11 @@ Some examples of the usage are shown below:
 
       uuid
       GPU-18a3e86f-4c0e-cd9f-59c3-55488c4b0c24
-      
-      docker run --gpus device=GPU-18a3e86f-4c0e-cd9f-59c3-55488c4b0c24 nvidia/cuda nvidia-smi
+   
+   .. code-block:: console
+
+      $ docker run --gpus device=GPU-18a3e86f-4c0e-cd9f-59c3-55488c4b0c24 \
+           nvidia/cuda nvidia-smi
 
 
 Driver Capabilities
@@ -204,7 +211,7 @@ The possible values of the ``NVIDIA_DRIVER_CAPABILITIES`` variable are:
       - enable all available driver capabilities.
 
     * - `empty` or `unset` 
-      - use default driver capability: ``utility``
+      - use default driver capability: ``utility``, ``compute``
 
 The supported driver capabilities are provided below:
 
@@ -237,11 +244,15 @@ For example, specify the ``compute`` and ``utility`` capabilities, allowing usag
 
    .. code-block:: console
 
-        $ docker run --rm --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=2,3 -e NVIDIA_DRIVER_CAPABILITIES=compute,utility nvidia/cuda nvidia-smi
+        $ docker run --rm --runtime=nvidia \
+            -e NVIDIA_VISIBLE_DEVICES=2,3 \
+            -e NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+            nvidia/cuda nvidia-smi
 
    .. code-block:: console 
 
-        $ docker run --rm --gpus 'all,"capabilities=compute,utility"' nvidia/cuda:11.0-base nvidia-smi
+        $ docker run --rm --gpus 'all,"capabilities=compute,utility"' \
+            nvidia/cuda:11.0-base nvidia-smi
 
 Constraints
 ```````````
