@@ -1,19 +1,19 @@
 .. Date: August 26 2021
 .. Author: kquinn
 
-.. _install-nvidiagpu:
+.. _install-nvidiagpu-1.8:
 
 ###################################
 Installing the NVIDIA GPU Operator
 ###################################
 
-With the proper :ref:`Red Hat entitlement<cluster-entitlement>` in place and the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
+With the proper :ref:`Red Hat entitlement<cluster-entitlement-1.8>` in place and the :ref:`Node Feature Discovery Operator<install-nfd-1.8>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
 #. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 
-.. _create-cluster-policy:
+.. _create-cluster-policy-1.8:
 
 *****************************************************
 Create the cluster policy for the NVIDIA GPU Operator
@@ -37,7 +37,7 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 
  .. image:: graphics/cluster_policy_suceed.png
 
-.. _verify-gpu-operator-install-ocp:
+.. _verify-gpu-operator-install-ocp-1.8:
 
 *************************************************************
 Verify the successful installation of the NVIDIA GPU Operator
@@ -78,7 +78,7 @@ The commands below describe various ways to verify the successful installation o
 
    The ``nvidia-driver-daemonset`` pod runs on each worker node that contains a supported NVIDIA GPU.
 
-.. _running-sample-app:
+.. _running-sample-app-1.8:
 
 *************************************************************
 Running a sample GPU Application

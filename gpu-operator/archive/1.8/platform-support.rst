@@ -1,7 +1,7 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
-.. _operator-platform-support:
+.. _operator-platform-support-1.8:
 
 ****************
 Platform Support
@@ -82,7 +82,7 @@ The following NVIDIA server platforms are supported:
 
    The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported. 
 
-.. _container-platforms:
+.. _container-platforms-1.8:
 
 Container Platforms
 -------------------
@@ -191,7 +191,7 @@ In addition, the following container management tools are supported:
 * containerd 1.4+
 * CRI-O with OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS)
 
-.. _operator-component-matrix:
+.. _operator-component-matrix-1.8:
 
 GPU Operator Component Matrix
 ------------------------------

@@ -3,7 +3,7 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
-.. _install-gpu-operator-mig:
+.. _install-gpu-operator-1.8-mig:
 
 #######################
 GPU Operator with MIG

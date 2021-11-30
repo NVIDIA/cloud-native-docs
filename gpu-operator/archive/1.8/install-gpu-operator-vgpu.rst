@@ -1,7 +1,7 @@
 .. Date: Jan 17 2021
 .. Author: smerla
 
-.. _install-gpu-operator-vgpu:
+.. _install-gpu-operator-1.8-vgpu:
 
 ##################
 NVIDIA vGPU
@@ -176,4 +176,4 @@ Creating an image pull secrets
 
 * Install GPU Operator via the Helm chart
 
-Please refer to :ref:`install-gpu-operator` section for GPU operator installation command and options for vGPU.
+Please refer to :ref:`install-gpu-operator-1.8` section for GPU operator installation command and options for vGPU.
