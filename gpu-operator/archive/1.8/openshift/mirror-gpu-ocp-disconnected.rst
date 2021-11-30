@@ -3,7 +3,7 @@
 
 .. headings are # * - =
 
-.. _mirror-gpu-ocp-disconnected:
+.. _mirror-gpu-ocp-disconnected-1.8:
 
 ###############################################################
 Deploy GPU Operators in a disconnected or airgapped environment
@@ -889,7 +889,7 @@ Verify the following resources are created successfully.
 Deploy the Node Feature Discovery Operator
 *************************************************************
 
-Follow the guidance :ref:`here <install-nfd>` to install the **Node Feature Discovery (NFD) Operator**.
+Follow the guidance :ref:`here <install-nfd-1.8>` to install the **Node Feature Discovery (NFD) Operator**.
 
 *************************************************************
 Deploy the NVIDIA GPU Operator
@@ -971,4 +971,4 @@ With the **Node Feature Discovery Operator** installed you can continue with the
 
    .. image:: graphics/cluster_policy_suceed.png
 
-You can now proceed to :ref:`verify the successful installation of the NVIDIA GPU Operator <verify-gpu-operator-install-ocp>`.
+You can now proceed to :ref:`verify the successful installation of the NVIDIA GPU Operator <verify-gpu-operator-install-ocp-1.8>`.

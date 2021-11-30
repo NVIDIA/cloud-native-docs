@@ -3,7 +3,7 @@
 
 .. headings are # * - =
 
-.. _mig-ocp:
+.. _mig-ocp-1.8:
 
 ############################################
 MIG Support in OpenShift Container Platform
@@ -63,7 +63,7 @@ Prerequisites
 The deployment workflow requires these prerequisites.
 
 #. You already have a OpenShift Container Platform cluster up and running with access to at least one MIG-capable GPU.
-#. You have followed the guidance in :ref:`NVIDIA documentation <steps-overview>` proceeding as far as creating the `cluster policy <create-cluster-policy>`.
+#. You have followed the guidance in :ref:`NVIDIA documentation <steps-overview-1.8>` proceeding as far as creating the `cluster policy <create-cluster-policy-1.8>`.
 
 .. note:: The node must be free (drained) of GPU workloads before any reconfiguration is triggered. For guidance on draining a node see, the OpenShift Container Platform documentation `Understanding how to evacuate pods on nodes <https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-evacuating_nodes-nodes-working>`_.
 
@@ -170,7 +170,7 @@ All-balanced is composed of 3 distinct configurations, with a `device-filter` fi
 |             |               |   2g.12gb:1               |
 +-------------+---------------+---------------------------+
 
-.. _MIG-partitioning:
+.. _MIG-partitioning-1.8:
 
 Set the MIG advertisement strategy and apply the MIG partitioning
 *****************************************************************
@@ -318,7 +318,7 @@ Follow the guidance below to create a new slicing profile.
             config:
               name: custom-mig-parted-config
 
-#. Label the node with this newly created profile following the guidance in :ref:`MIG-partitioning`.
+#. Label the node with this newly created profile following the guidance in :ref:`MIG-partitioning-1.8`.
 
 *************************************************************
 Running a sample GPU application

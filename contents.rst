@@ -35,24 +35,11 @@ using NVIDIA GPUs with Kubernetes.
    gpu-operator/release-notes.rst
    gpu-operator/install-gpu-operator-vgpu.rst
    gpu-operator/install-gpu-operator-nvaie.rst
+   gpu-operator/openshift/contents.rst
    gpu-operator/gpu-operator-mig.rst
    gpu-operator/gpu-operator-rdma.rst
    gpu-operator/appendix.rst
-
-.. toctree::
-   :maxdepth: 2
-   :caption: OpenShift with GPUs:
-
-   openshift/introduction.rst
-   openshift/prerequisites.rst
-   openshift/steps-overview.rst
-   openshift/cluster-entitlement.rst
-   openshift/install-nfd.rst
-   openshift/install-gpu-ocp.rst
-   openshift/mig-ocp.rst
-   openshift/clean-up.rst
-   openshift/troubleshooting-gpu-ocp.rst
-   openshift/mirror-gpu-ocp-disconnected.rst
+   gpu-operator/archive.rst
 
 .. toctree::
    :maxdepth: 2

@@ -1,7 +1,7 @@
 .. Date: Sep 16 2021
 .. Author: cdesiniotis
 
-.. _install-gpu-operator-proxy:
+.. _install-gpu-operator-1.8-proxy:
 
 Install GPU Operator in Proxy Environments
 ============================================
@@ -22,14 +22,14 @@ This document demonstrates how to configure the GPU Operator so that the ``drive
 download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
 a proxy is not specific to the GPU Operator, we do not include those instructions here.
 
-The instructions for Openshift are different, so skip the section titled :ref:`proxy_config_openshift` if you are not running Openshift.
+The instructions for Openshift are different, so skip the section titled :ref:`proxy_config_openshift-1.8` if you are not running Openshift.
 
 Prerequisites
 --------------
 
 * Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)
 
-.. _proxy_config_openshift:
+.. _proxy_config_openshift-1.8:
 
 HTTP Proxy Configuration for Openshift
 ---------------------------------------

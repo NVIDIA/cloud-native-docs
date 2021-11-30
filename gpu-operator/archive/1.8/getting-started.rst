@@ -1,7 +1,7 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
-.. _operator-install-guide:
+.. _operator-install-guide-1.8:
 
 *****************************************
 Getting Started
@@ -404,7 +404,7 @@ The password credentials for the login are available in the ``prometheus.values`
 .. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
-.. _operator-upgrades:
+.. _operator-upgrades-1.8:
 
 Upgrade
 ===========================

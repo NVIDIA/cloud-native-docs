@@ -1,7 +1,7 @@
 .. Date: Aug 18 2021
 .. Author: cdesiniotis
 
-.. _install-gpu-operator-nvaie:
+.. _install-gpu-operator-1.8-nvaie:
 
 
 #####################
@@ -78,4 +78,4 @@ use with NVIDIA GPU Operator:
         --docker-password=password \
         --docker-email=e-mail-address -n gpu-operator-resources
 
-The GPU Operator is now ready to install. Please refer to :ref:`install-gpu-operator` section for installing the GPU Operator.
+The GPU Operator is now ready to install. Please refer to :ref:`install-gpu-operator-1.8` section for installing the GPU Operator.
