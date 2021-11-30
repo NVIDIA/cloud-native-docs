@@ -48,7 +48,8 @@ blockdiag_antialias = True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 html_additional_pages = {
-    "index": "cnt-landing-page.html"
+    "index": "cnt-landing-page.html",
+    "contents": "cnt-landing-page.html"
 }
 
 
