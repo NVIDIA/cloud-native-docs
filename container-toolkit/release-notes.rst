@@ -10,20 +10,20 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
-NVIDIA Container Toolkit 1.7.0-rc.1
+NVIDIA Container Toolkit 1.7.0
 ====================================
 
 This version of the NVIDIA Container Toolkit allows up to date packages to be installed on Jetson devices.
 The following packages are included:
 
-* ``nvidia-container-toolkit 1.7.0-rc.1``
-* ``libnvidia-container-tools 1.7.0-rc.1``
-* ``libnvidia-container1 1.7.0-rc.1``
+* ``nvidia-container-toolkit 1.7.0``
+* ``libnvidia-container-tools 1.7.0``
+* ``libnvidia-container1 1.7.0``
 
-The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.7.0-rc.1``:
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.7.0``:
 
-* ``nvidia-container-runtime 3.7.0-rc.1``
-* ``nvidia-docker2 2.8.0-rc.1``
+* ``nvidia-container-runtime 3.7.0``
+* ``nvidia-docker2 2.8.0``
 
 Packaging Changes
 ------------------
