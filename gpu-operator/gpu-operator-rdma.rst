@@ -31,12 +31,15 @@ Using nvidia-peermem
 Prerequisites
 ===============
 
-First, install the Network Operator on the system to ensure that the `MOFED <https://github.com/Mellanox/ofed-docker>`_ drivers are setup in the system.  
+Make sure that `MOFED <https://github.com/Mellanox/ofed-docker>`_ drivers are installed either through `Network Operator <https://github.com/Mellanox/network-operator>`_ or directly on the host.
 
 Installation
 ==============
 
-With v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` kernel module during the bootstrap of the NVIDIA driver daemonset. 
+Starting with v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` kernel module during the bootstrap of the NVIDIA driver daemonset.
+Please refer to below install commands based on if MOFED is installed through Network-Operator or on the host.
+
+MOFED drivers installed with Network-Operator:
 
 .. code-block:: console
 
@@ -44,12 +47,19 @@ With v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` ke
         nvidia/gpu-operator \
         --set driver.rdma.enabled=true
 
- 
+MOFED drivers installed directly on host:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set driver.rdma.enabled=true --set driver.rdma.useHostMofed=true
 
 Verification
-==============    
+==============
 
-During the installation, an `initContainer` is used with the driver daemonset to wait on the Mellanox OFED (MOFED) drivers to be ready. 
+During the installation, an `initContainer` is used with the driver daemonset to wait on the Mellanox OFED (MOFED) drivers to be ready.
 This initContainer checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported MOFED kernel drivers.
 Once everything is in place, the container nvidia-peermem-ctr will be instantiated inside the driver daemonset.
 
