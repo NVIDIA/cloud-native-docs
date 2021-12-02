@@ -26,7 +26,7 @@ New Features
 * Support for preinstalled GPU Driver with MIG Manager.
 * Removed dependency to maintain active Red Hat OpenShift entitlements to build the GPU Driver. Introduce entitlement free driver builds starting with Red Hat OpenShift 4.9.9.
 * Support for GPUDirect RDMA with preinstalled Mellanox OFED drivers
-* Support for GPU Operator and operands using Red Hat OpenShift Lifecycle Manager (OLM)
+* Support for GPU Operator and operands upgrades using Red Hat OpenShift Lifecycle Manager (OLM)
 
 Improvements
 -------------

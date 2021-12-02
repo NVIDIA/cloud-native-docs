@@ -14,7 +14,7 @@ Red Hat OpenShift 4
 ====================
 
 For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
-follow the `user guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/introduction.html>`_.
+follow the :ref:`user guide <openshift-introduction>`.
 
 ----
 
