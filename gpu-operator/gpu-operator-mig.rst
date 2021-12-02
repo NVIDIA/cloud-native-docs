@@ -23,21 +23,6 @@ MIG.
 Getting Started
 *****************
 
-Prerequisites
----------------
-
-The GPU Operator starting with v1.7 supports the use of pre-installed drivers and the NVIDIA 
-Container Toolkit (``nvidia-docker2``). Note that, the MIG Manager currently does not support 
-the use of pre-installed drivers (with one of the reasons being that ``kubelet`` opens a handle 
-to the NVIDIA driver when available. See this `issue <https://github.com/kubernetes/kubernetes/pull/101712>`_, 
-which may be addressed in future releases of Kubernetes). 
-
-As a result, the ``--set driver.enabled=false`` option in the Helm chart for use with pre-installed 
-drivers is **not supported** when using the MIG Manager on NVIDIA Ampere GPUs. The MIG Manager only 
-works when the Operator deploys the NVIDIA driver as a container.
-
-Future releases of the MIG Manager will support the use of pre-installed drivers.
-
 Initial Setup
 ---------------
 
@@ -59,6 +44,15 @@ We can use the following option to install the GPU Operator:
         deployments/gpu-operator \
         --set mig.strategy=single
 
+.. note::
+
+   ``mig.strategy`` should be set to ``mixed`` when MIG mode is not enabled on all GPUs on a node.
+
+.. note::
+
+   Starting with v1.9, MIG Manager supports preinstalled drivers. If drivers are preinstalled, use
+   an additional option during installation ``--set driver.enable=false``. See :ref:`mig-with-preinstalled-drivers`
+   for more details.
 
 At this point, all the pods, including the ``nvidia-mig-manager`` will be deployed on nodes that have MIG capable GPUs:
 
@@ -303,6 +297,83 @@ We can now proceed to run some sample workloads.
 
 .. include:: /mig/mig-examples.rst
 
+.. _mig-with-preinstalled-drivers:
+
+**************************************
+MIG Manager with Preinstalled Drivers
+**************************************
+
+Starting with v1.9, MIG Manager supports preinstalled drivers. Everything detailed in this document
+still applies, however there are a few additional details to consider.
+
+=======
+Install
+=======
+
+During GPU Operator installation, ``driver.enable=false`` must be set. The following options
+can be used to install the GPU Operator:
+
+.. code-block:: console
+
+    $ helm install gpu-operator \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set driver.enable=false
+
+=========================
+Managing Host GPU Clients
+=========================
+
+The MIG Manager stops all operator-managed pods that have access to GPUs when applying a MIG reconfiguration.
+When drivers are preinstalled, there may be GPU clients on the host that also need to be stopped.
+
+When drivers are preinstalled, the MIG Manager will try stopping and restarting a list of systemd services on the host across
+a MIG reconfiguration. The list of services are specified in a ``ConfigMap`` to the MIG Manager daemonset. By default,
+the GPU Operator creates a ``ConfigMap``, named ``default-gpu-clients``, containing a default list of systemd services.
+
+Below is a sample GPU clients file, ``clients.yaml``, used when creating the ``default-gpu-clients`` ``ConfigMap``:
+
+.. code-block:: yaml
+
+    version: v1
+    systemd-services:
+      - nvsm.service
+      - nvsm-mqtt.service
+      - nvsm-core.service
+      - nvsm-api-gateway.service
+      - nvsm-notifier.service
+      - nv_peer_mem.service
+      - nvidia-dcgm.service
+      - dcgm.service
+      - dcgm-exporter.service
+
+In the future, the GPU clients file will be extended to allow specifying more than just systemd services.
+
+The user may modify the default list by directly editing the ``default-gpu-clients`` ``ConfigMap`` post-install. The user can also create their own
+custom ``ConfigMap`` to be used by the MIG Manager by performing the following steps:
+
+* Create the ``gpu-operator`` namespace:
+
+  .. code-block:: console
+
+     $ kubectl create namespace gpu-operator
+
+* Create a ``ConfigMap`` containing the custom `clients.yaml` file with a list of GPU clients:
+
+  .. code-block:: console
+
+     $ kubectl create configmap -n gpu-operator gpu-clients --from-file=clients.yaml
+
+* Install the GPU Operator:
+
+  .. code-block:: console
+
+    $ helm install gpu-operator \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set migManager.gpuClientsConfig.name=gpu-clients
+        --set driver.enable=false
+
 *****************
 Architecture
 *****************
@@ -310,8 +381,9 @@ Architecture
 The MIG manager is designed as a controller within Kubernetes. It watches for changes to the 
 ``nvidia.com/mig.config`` label on the node and then applies the user requested MIG configuration 
 When the label changes, the MIG Manager first stops all GPU pods (including the `device plugin`, `gfd` 
-and `dcgm-exporter`), applies the MIG reconfiguration and restarts the GPU pods. The MIG reconfiguration 
-may also involve a node reboot if required for enabling MIG mode.
+and `dcgm-exporter`). It then stops all host GPU clients listed in the ``clients.yaml`` ConfigMap
+if drivers are preinstalled. Finally, it applies the MIG reconfiguration and restarts the GPU pods (and possibly host GPU clients).
+The MIG reconfiguration may also involve a node reboot if required for enabling MIG mode.
 
 The available MIG profiles are specified in a ``ConfigMap`` to the MIG manager daemonset. The user may 
 choose one of these profiles to apply to the ``mig.config`` label to trigger a reconfiguration of the 
