@@ -33,9 +33,6 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 
 #. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
-#. If the HWE kernel (e.g. kernel 5.x) is used with Ubuntu 18.04 LTS or Ubuntu 20.04 LTS, then the ``nouveau`` driver for NVIDIA GPUs must be blacklisted
-   before starting the GPU Operator. Follow the steps in the CUDA installation `guide <https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-nouveau-ubuntu>`_
-   to disable the nouveau driver and update ``initramfs``.
 #. Node Feature Discovery (NFD) is a dependency for the Operator on each node. By default, NFD master and worker are automatically deployed by the Operator.
    If NFD is already running in the cluster prior to the deployment of the operator, then the Operator can be configured to not to install NFD.
 #. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_
