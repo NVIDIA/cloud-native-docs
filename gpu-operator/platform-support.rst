@@ -23,6 +23,8 @@ The following NVIDIA datacenter/enterprise GPUs are supported:
 +--------------------------+------------------+
 | NVIDIA A30               | NVIDIA Ampere    |
 +--------------------------+------------------+
+| NVIDIA A16               | NVIDIA Ampere    |
++--------------------------+------------------+
 | NVIDIA A10               | NVIDIA Ampere    |
 +--------------------------+------------------+
 | **Datacenter T-series Products**            |
@@ -85,8 +87,8 @@ Container Platforms
 -------------------
 The following Kubernetes platforms are supported:
 
-* Kubernetes v1.18+
-* Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See
+* Kubernetes v1.19+
+* Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
 * Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
 
@@ -104,6 +106,8 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
+      | 1.9                      | v1.19+        | 4.8 and 4.9           | Supported       |
+      +--------------------------+---------------+------------------------+----------------+
       | 1.8                      | v1.18+        | 4.7, 4.8 and 4.9       | Supported      |
       +--------------------------+---------------+------------------------+----------------+
       | 1.7                      | v1.18+        | 4.5, 4.6 and 4.7       | Supported      |
@@ -130,6 +134,8 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
+      | 1.9                      | v1.19+        | 4.8 and 4.9            | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
       | 1.8                      | v1.18+        | 4.7 and 4.8            | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
       | 1.7                      | v1.18+        | 4.6, 4.7 and 4.8       | Not Supported  |
@@ -166,14 +172,15 @@ Linux distributions
 
          * Ubuntu 18.04.z, 20.04.z LTS
          * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.5, 4.6, 4.7 and 4.8
-         * CentOS 7 and 8
+         * CentOS 7
+
 
     .. tab:: NVIDIA vGPU
 
          The following Linux distributions are supported:
 
          * Ubuntu 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.6, 4.7 and 4.8
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.8 and 4.9
 
     .. tab:: NVIDIA AI Enterprise
 
@@ -208,6 +215,17 @@ GPU Operator Component Matrix
       - NVIDIA GPU Feature Discovery
       - NVIDIA MIG Manager for K8s
       - NVIDIA DCGM
+
+    * - 1.9.0
+      - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
+      - `v0.2.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+      - `1.7.2 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.10.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.3.1-2.6.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.8.2
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.2.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.3.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
 
     * - 1.8.2
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
