@@ -106,7 +106,7 @@ The following table includes the support matrix of the GPU Operator releases and
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.9                      | v1.19+        | 4.8 and 4.9           | Supported       |
+      | 1.9                      | v1.19+        | 4.8 and 4.9            | Supported      |
       +--------------------------+---------------+------------------------+----------------+
       | 1.8                      | v1.18+        | 4.7, 4.8 and 4.9       | Supported      |
       +--------------------------+---------------+------------------------+----------------+
@@ -171,7 +171,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 18.04.z, 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.5, 4.6, 4.7 and 4.8
+         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.8 and 4.9
          * CentOS 7
 
 
