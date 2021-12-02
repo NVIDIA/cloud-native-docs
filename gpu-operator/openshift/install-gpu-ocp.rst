@@ -1,4 +1,4 @@
-.. Date: August 26 2021
+.. Date: November 16 2021
 .. Author: kquinn
 
 .. _install-nvidiagpu:
@@ -7,11 +7,25 @@
 Installing the NVIDIA GPU Operator
 ###################################
 
-With the proper :ref:`Red Hat entitlement<cluster-entitlement>` in place and the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
+.. note:: If you are installing the **NVIDIA GPU Operator** on OpenShift ``4.8.19``, ``4.8.21`` or ``4.9.8`` ensure you have :ref:`enabled a Cluster-wide entitlement <cluster-entitlement>`.
+   For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
-#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
+With the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
+
+#. In the OpenShift Container Platform web console from the side menu, navigate to  **Operators** > **OperatorHub** and select **All Projects**.
+
+#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
+
+  .. note:: Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace under **Select a Namespace**.
+
+            If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+            If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
+
+            .. code-block:: console
+
+               $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
 .. _create-cluster-policy:
 
@@ -19,11 +33,11 @@ With the proper :ref:`Red Hat entitlement<cluster-entitlement>` in place and the
 Create the cluster policy for the NVIDIA GPU Operator
 *****************************************************
 
-When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack that will be deployed, configuring the image names and repository, pod restrictions/credentials and so on.
+When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.
 
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, then click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
@@ -31,9 +45,9 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. This may take a while so be patient and wait at least 10-20 minutes before digging deeper into any form of troubleshooting.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.
 
-#. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` once the installation succeeded.
+#. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
  .. image:: graphics/cluster_policy_suceed.png
 
@@ -43,40 +57,91 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 Verify the successful installation of the NVIDIA GPU Operator
 *************************************************************
 
-The commands below describe various ways to verify the successful installation of the NVIDIA GPU Operator.
+Verify the successful installation of the NVIDIA GPU Operator as shown here:
 
 #. Run the following command to view these new pods and daemonsets:
 
    .. code-block:: console
 
-      $ oc get pods,daemonset -n gpu-operator-resources
+      $ oc get pods,daemonset -n nvidia-gpu-operator
 
    .. code-block:: console
 
-      NAME                                           READY   STATUS      RESTARTS   AGE
-      pod/gpu-feature-discovery-vwhnt                1/1     Running     0          6m32s
-      pod/nvidia-container-toolkit-daemonset-k8x28   1/1     Running     0          6m33s
-      pod/nvidia-cuda-validator-xr5sz                0/1     Completed   0          90s
-      pod/nvidia-dcgm-5grvn                          1/1     Running     0          6m32s
-      pod/nvidia-dcgm-exporter-cp8ml                 1/1     Running     0          6m32s
-      pod/nvidia-device-plugin-daemonset-p9dp4       1/1     Running     0          6m32s
-      pod/nvidia-device-plugin-validator-mrhst       0/1     Completed   0          48s
-      pod/nvidia-driver-daemonset-pbplc              1/1     Running     0          6m33s
-      pod/nvidia-node-status-exporter-s2ml2          1/1     Running     0          6m33s
-      pod/nvidia-operator-validator-44jdf            1/1     Running     0          6m32s
+      NAME                                                                  READY   STATUS      RESTARTS   AGE
+      pod/bb0dd90f1b757a8c7b338785a4a65140732d30447093bc2c4f6ae8e75844gfv   0/1     Completed   0          94m
+      pod/gpu-feature-discovery-hlpgs                                       1/1     Running     0          91m
+      pod/gpu-operator-8dc8d6648-jzhnr                                      1/1     Running     0          94m
+      pod/nvidia-container-toolkit-daemonset-z2wh7                          1/1     Running     0          91m
+      pod/nvidia-cuda-validator-8fx22                                       0/1     Completed   0          86m
+      pod/nvidia-dcgm-exporter-ds9xd                                        1/1     Running     0          91m
+      pod/nvidia-dcgm-k7tz6                                                 1/1     Running     0          91m
+      pod/nvidia-device-plugin-daemonset-nqxmc                              1/1     Running     0          91m
+      pod/nvidia-device-plugin-validator-87zdl                              0/1     Completed   0          86m
+      pod/nvidia-driver-daemonset-48.84.202110270303-0-9df9j                2/2     Running     0          91m
+      pod/nvidia-node-status-exporter-7bhdk                                 1/1     Running     0          91m
+      pod/nvidia-operator-validator-kjznr                                   1/1     Running     0          91m
+      pod/openshift-psap-ci-artifacts-operator-bundle-gpu-operator-master   1/1     Running     0          94m
 
-      NAME                                                DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                      AGE
-      daemonset.apps/gpu-feature-discovery                1         1         1       1            1           nvidia.com/gpu.deploy.gpu-feature-discovery=true   6m32s
-      daemonset.apps/nvidia-container-toolkit-daemonset   1         1         1       1            1           nvidia.com/gpu.deploy.container-toolkit=true       6m33s
-      daemonset.apps/nvidia-dcgm                          1         1         1       1            1           nvidia.com/gpu.deploy.dcgm=true                    6m33s
-      daemonset.apps/nvidia-dcgm-exporter                 1         1         1       1            1           nvidia.com/gpu.deploy.dcgm-exporter=true           6m33s
-      daemonset.apps/nvidia-device-plugin-daemonset       1         1         1       1            1           nvidia.com/gpu.deploy.device-plugin=true           6m33s
-      daemonset.apps/nvidia-driver-daemonset              1         1         1       1            1           nvidia.com/gpu.deploy.driver=true                  6m33s
-      daemonset.apps/nvidia-mig-manager                   0         0         0       0            0           nvidia.com/gpu.deploy.mig-manager=true             6m32s
-      daemonset.apps/nvidia-node-status-exporter          1         1         1       1            1           nvidia.com/gpu.deploy.node-status-exporter=true    6m34s
-      daemonset.apps/nvidia-operator-validator            1         1         1       1            1           nvidia.com/gpu.deploy.operator-validator=true      6m33s
+      NAME                                                          DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                        AGE
+      daemonset.apps/gpu-feature-discovery                          1         1         1       1            1           nvidia.com/gpu.deploy.gpu-feature-discovery=true                                                                     91m
+      daemonset.apps/nvidia-container-toolkit-daemonset             1         1         1       1            1           nvidia.com/gpu.deploy.container-toolkit=true                                                                         91m
+      daemonset.apps/nvidia-dcgm                                    1         1         1       1            1           nvidia.com/gpu.deploy.dcgm=true                                                                                      91m
+      daemonset.apps/nvidia-dcgm-exporter                           1         1         1       1            1           nvidia.com/gpu.deploy.dcgm-exporter=true                                                                             91m
+      daemonset.apps/nvidia-device-plugin-daemonset                 1         1         1       1            1           nvidia.com/gpu.deploy.device-plugin=true                                                                             91m
+      daemonset.apps/nvidia-driver-daemonset-48.84.202110270303-0   1         1         1       1            1           feature.node.kubernetes.io/system-os_release.OSTREE_VERSION=48.84.202110270303-0,nvidia.com/gpu.deploy.driver=true   91m
+      daemonset.apps/nvidia-mig-manager                             0         0         0       0            0           nvidia.com/gpu.deploy.mig-manager=true                                                                               91m
+      daemonset.apps/nvidia-node-status-exporter                    1         1         1       1            1           nvidia.com/gpu.deploy.node-status-exporter=true                                                                      91m
+      daemonset.apps/nvidia-operator-validator                      1         1         1       1            1           nvidia.com/gpu.deploy.operator-validator=true                                                                        91m
 
    The ``nvidia-driver-daemonset`` pod runs on each worker node that contains a supported NVIDIA GPU.
+
+   .. note:: When the Driver Toolkit is active, the ``DaemonSet`` is named ``nvidia-driver-daemonset-<RHCOS-version>``. Where ``RHCOS-version`` equals ``<OCP XY>.<RHEL XY>.<related date YYYYMMDDHHSS-0``.
+             The pods of the ``DaemonSet`` are named ``nvidia-driver-daemonset-<RHCOS-version>-<UUID>``.
+
+*************************************************************
+Cluster monitoring
+*************************************************************
+
+The GPU Operator generates GPU performance metrics (DCGM-export), status metrics (node-status-exporter) and node-status alerts. For OpenShift Prometheus to collect these metrics, the namespace hosting the GPU Operator must have the label ``openshift.io/cluster-monitoring=true``.
+
+When the GPU Operator is installed in the suggested ``nvidia-gpu-operator`` namespace, the GPU Operator automatically enables monitoring if the ``openshift.io/cluster-monitoring`` label is not defined.
+If the label is defined, the GPU Operator will not change its value.
+
+Disable cluster monitoring in the ``nvidia-gpu-operator`` namespace by setting ``openshift.io/cluster-monitoring=false`` as shown:
+
+   .. code-block:: console
+
+      oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring=true
+
+If the GPU Operator is not installed in the suggested namespace, the GPU Operator will not automatically enable monitoring. Set the label manually as shown:
+
+   .. code-block:: console
+
+      oc label ns/$NAMESPACE openshift.io/cluster-monitoring=true
+
+   .. note:: Only do this if trusted operators are installed in this namespace.
+
+*************************************************************
+Logging
+*************************************************************
+
+The ``nvidia-driver-daemonset`` pod has two containers.
+
+#. Run the following to examine the logs associated with the ``nvidia-driver-ctr``:
+
+   .. note:: This log shows the main container waiting for the driver binary, and loading it in memory.
+
+   .. code-block:: console
+
+      oc logs -f nvidia-driver-daemonset-48.84.202110270303-0-w6kxk -n nvidia-gpu-operator -c nvidia-driver-ctr
+
+#. Run the following to examine the logs associated with the ``openshift-driver-toolkit-ctr``:
+
+   .. note:: This log shows the driver being built.
+
+   .. code-block:: console
+
+      oc logs -f nvidia-driver-daemonset-48.84.202110270303-0-w6kxk -n nvidia-gpu-operator -c openshift-driver-toolkit-ctr
 
 .. _running-sample-app:
 
@@ -126,40 +191,44 @@ Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure th
       Done
 
 *************************************************************
-Getting information on the GPU
+Getting information about the GPU
 *************************************************************
 
-The ``nvidia-smi`` shows memory usage, GPU utilization and the temperature of GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
+The ``nvidia-smi`` shows memory usage, GPU utilization and the temperature of the GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
 
 To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemonset.
 
-#. Change to the gpu-operator-resources project:
+#. Change to the nvidia-gpu-operator project:
 
    .. code-block:: console
 
-      $ oc project gpu-operator-resources
+      $ oc project nvidia-gpu-operator
 
 #. Run the following command to view these new pods:
 
    .. code-block:: console
 
-      $ oc get pod -owide -lapp=nvidia-driver-daemonset
+      $ oc get pod -owide -lopenshift.driver-toolkit=true
 
    .. code-block:: console
 
-      NAME                            READY   STATUS    RESTARTS   AGE     IP            NODE                          NOMINATED NODE   READINESS GATES
-      nvidia-driver-daemonset-pbplc   1/1     Running   0          8m17s   10.130.2.28   ip-10-0-143-64.ec2.internal   <none>           <none>
+      NAME                                                 READY   STATUS    RESTARTS   AGE    IP            NODE                          NOMINATED NODE   READINESS GATES
+      nvidia-driver-daemonset-48.84.202110270303-0-9df9j   2/2     Running   0          111m   10.130.2.20   ip-10-0-140-91.ec2.internal   <none>           <none>
 
-   .. note:: The node is shown above, so with the Pod name, you can choose to execute the ``nvidia-smi`` on the correct node.
+
+   .. note:: With the Pod and node name, run the ``nvidia-smi`` on the correct node.
 
 #. Run the ``nvidia-smi`` command within the pod:
 
    .. code-block:: console
 
-      $ oc exec -it nvidia-driver-daemonset-pbplc -- nvidia-smi
+      $ oc exec -it nvidia-driver-daemonset-48.84.202110270303-0-9df9j -- nvidia-smi
 
    .. code-block:: console
 
+      Defaulting container name to nvidia-driver-ctr.
+      Use 'oc describe pod/nvidia-driver-daemonset-48.84.202110270303-0-9df9j -n nvidia-gpu-operator' to see all of the containers in this pod.
+      Wed Nov 17 13:24:03 2021
       +-----------------------------------------------------------------------------+
       | NVIDIA-SMI 470.57.02    Driver Version: 470.57.02    CUDA Version: 11.4     |
       |-------------------------------+----------------------+----------------------+
@@ -178,6 +247,6 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
       |  No running processes found                                                 |
       +-----------------------------------------------------------------------------+
 
-Two tables are generated the first reflects the information about all available GPUs (the example shows one GPU). The second table tells you about the processes using the GPUs.
+   Two tables are generated the first reflects the information about all available GPUs (the example shows one GPU). The second table tells provides details on the processes using the GPUs.
 
-For more information on the contents of the tables please refer to the man page for ``nvidia-smi``.
+   For more information describing the contents of the tables see the man page for ``nvidia-smi``.
