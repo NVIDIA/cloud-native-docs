@@ -57,11 +57,11 @@ The following NVIDIA datacenter/enterprise GPUs are supported:
 +--------------------------+------------------+
 | Quadro RTX 4000          | Turing           |
 +--------------------------+------------------+
-| NVIDIA T1000	           | Turing           | 
+| NVIDIA T1000	           | Turing           |
 +--------------------------+------------------+
-| NVIDIA T600              | Turing           | 
+| NVIDIA T600              | Turing           |
 +--------------------------+------------------+
-| NVIDIA T400              | Turing           | 
+| NVIDIA T400              | Turing           |
 +--------------------------+------------------+
 
 The following NVIDIA server platforms are supported:
@@ -75,9 +75,9 @@ The following NVIDIA server platforms are supported:
 +--------------------------+--------------------+
 
 
-.. note:: 
+.. note::
 
-   The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported. 
+   The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported.
 
 .. _container-platforms:
 
@@ -86,18 +86,18 @@ Container Platforms
 The following Kubernetes platforms are supported:
 
 * Kubernetes v1.18+
-* Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
+* Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
 * Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
 
 .. note::
-   Note that the Kubernetes community supports only the last three minor releases as of v1.17. Older releases 
-   may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift. See the prerequisites 
+   Note that the Kubernetes community supports only the last three minor releases as of v1.17. Older releases
+   may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift. See the prerequisites
    for enabling monitoring in Kubernetes releases before v1.16.
 
 The following table includes the support matrix of the GPU Operator releases and supported container platforms.
 
-.. tabs:: 
+.. tabs::
 
     .. tab:: Baremetal/Passthrough
 
@@ -133,7 +133,7 @@ The following table includes the support matrix of the GPU Operator releases and
       | 1.8                      | v1.18+        | 4.7 and 4.8            | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
       | 1.7                      | v1.18+        | 4.6, 4.7 and 4.8       | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+      
+      +--------------------------+---------------+------------------------+----------------+
       | 1.6                      | v1.16+        | 4.6 and 4.7            | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
       | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
@@ -149,16 +149,16 @@ The following table includes the support matrix of the GPU Operator releases and
 
 .. note::
    The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
-   
-   Only the most recent release of the GPU Operator is maintained through *z* patch updates. All prior releases of the GPU Operator are 
-   deprecated (and unsupported) when a new *x.y* version of the GPU Operator is released. 
 
-   The product lifecycle and versioning are subject to change in the future. 
+   Only the most recent release of the GPU Operator is maintained through *z* patch updates. All prior releases of the GPU Operator are
+   deprecated (and unsupported) when a new *x.y* version of the GPU Operator is released.
+
+   The product lifecycle and versioning are subject to change in the future.
 
 Linux distributions
 -------------------
 
-.. tabs:: 
+.. tabs::
 
     .. tab:: Baremetal/Passthrough
 
@@ -375,8 +375,8 @@ GPU Operator Component Matrix
       - N/A
 
 .. note::
-    
-    - Driver version could be different with NVIDIA vGPU, as it depends on the driver 
+
+    - Driver version could be different with NVIDIA vGPU, as it depends on the driver
       version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
     - The GPU Operator is supported on all the R450, R460 and R470 NVIDIA datacenter production drivers. For a list of supported
       datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
@@ -397,7 +397,7 @@ Supported Hypervisors with NVIDIA vGPU
 The following Virtualization Platforms are supported. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/product-support-matrix/index.html>`_ for more detailed information.
 
 * VMware vSphere 7
-* Red Hat Enterprise Linux KVM 
+* Red Hat Enterprise Linux KVM
 * Red Hat Virtualization (RHV)
 
 .. .. note::
@@ -421,5 +421,5 @@ The GPU Operator has been validated in the following scenarios:
 * `NVIDIA AI Enterprise <https://docs.nvidia.com/ai-enterprise/>`_
 
 .. note::
-   The GPU Operator deploys the NVIDIA driver as a container. In this environment, running on desktop environments (e.g. workstations with GPUs and display) is not 
+   The GPU Operator deploys the NVIDIA driver as a container. In this environment, running on desktop environments (e.g. workstations with GPUs and display) is not
    supported.

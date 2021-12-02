@@ -19,7 +19,7 @@ For an OpenShift Container Platform cluster that is installed on a disconnected 
 
 However, as a cluster administrator you can still enable your cluster to use the OLM in a disconnected network if you have a workstation that has full Internet access. The workstation, which requires full Internet access to pull the remote OperatorHub content, is used to prepare local mirrors of the remote sources, and push the content to a mirror registry.
 
-This workstation for the purposes of the remainder of this document is referred to as the `jump host`. The mirror registry for the purposes of this illustrated example is located on the `jump host`, with connectivity to both your internet and the disconnected cluster
+This workstation for the purposes of the remainder of this document is referred to as the `jump host`. The mirror registry for the purposes of this illustrated example is located on the `jump host`, with connectivity to both your internet and the disconnected cluster.
 
 In a completely disconnected (airgapped) environment a second `jump host` is needed. In this environment you need to:
 
@@ -27,7 +27,7 @@ In a completely disconnected (airgapped) environment a second `jump host` is nee
 #. Move the disk to a second jump host
 #. Set up the services from the second jump host
 
-This guide describes how to enable the Operator Lifecycle Manager and to make available all the RPM packages the **NVIDIA GPU Operator** requires in a disconnected environment.
+This guide describes how to prune the Operator catalog to the subset that enables the installation of the **NVIDIA GPU Operator** in a disconnected environment.
 
 The `OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-restricted-networks.html>`_ provides generic guidance on using Operator Lifecycle Manager on restricted networks.
 
@@ -36,6 +36,9 @@ Prerequisites
 **************
 
 * A working OpenShift cluster up and running with a GPU worker node. See, `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`_ for guidance on installing OpenShift Container Platform.
+
+  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
+
 * Access to the cluster as a user with the ``cluster-admin`` role.
 * Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the jump host. This can be one of the following registries:
 
@@ -44,10 +47,9 @@ Prerequisites
   * `Sonatype Nexus Repository <https://www.sonatype.com/products/repository-oss?topnav=true>`_
   * `Harbor <https://goharbor.io/>`_
 
-  A private registry can be created using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`_ and in the section :ref:`Creating a private registry`.
+  Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`_ and in the section :ref:`Creating a private registry`.
 
-  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information on the mirror registry see `about the mirror registry <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html#installation-about-mirror-registry_installing-mirroring-installation-images>`_.
-
+  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information, see `about the mirror registry <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html#installation-about-mirror-registry_installing-mirroring-installation-images>`_.
 
    .. note::
 
@@ -64,23 +66,23 @@ Prerequisites
 
       If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`_.
 
-On the jump host:
+**On the jump host:**
 
- * Install ``yum-utils``. This provides the ``reposync`` script.
+* **Optional**: Install ``yum-utils``. This provides the ``reposync`` script and is **only** required if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 ``yum-utils`` is required for the package mirror while the remaining prerequisites (listed below) are required for the image mirroring.
 
- * ``podman`` version 1.9.3+
- * `grpcurl <https://github.com/fullstorydev/grpcurl>`_
- * Install the OpenShift CLI (``oc``).
- * Red Hat Enterprise Linux (RHEL) on your jump host. The jump host once configured will act as the a private registry host.
- * Install the ``opm`` CLI (opm version 1.12.3+). This tool is required to prune the default catalog. Guidance on downloading this tool is found `here <https://docs.openshift.com/container-platform/latest/cli_reference/opm-cli.html>`_.
+* ``podman`` version 1.9.3+
+* `grpcurl <https://github.com/fullstorydev/grpcurl>`_
+* Install the OpenShift CLI (``oc``).
+* Red Hat Enterprise Linux (RHEL) on your jump host. The jump host when configured becomes the private registry host.
+* Install the ``opm`` CLI (opm version 1.12.3+) used to prune the default catalog. Guidance on downloading this tool is `here <https://docs.openshift.com/container-platform/latest/cli_reference/opm-cli.html>`_.
 
 *****************************************************
 Set up a basic HTTP Server
 *****************************************************
 
-Package and image mirroring require a simple HTTP server, follow the guidance below to setup a basic web server:
+Image mirroring require a simple HTTP server, follow the guidance below to setup a basic web server:
 
 #. Install Apache ``httpd``:
 
@@ -100,7 +102,7 @@ Package and image mirroring require a simple HTTP server, follow the guidance be
 
       $ systemctl enable httpd
 
-#. Open port 80 and 443 to allow web traffic to the Apache web server service, update the system firewall rules to permit inbound packets on HTTP and HTTPS using the commands below:
+#. Open port 80 and 443 to allow web traffic to the Apache web server service, update the system firewall rules allowing inbound packets on HTTP and HTTPS using the commands below:
 
    .. code-block:: console
 
@@ -115,8 +117,10 @@ Package and image mirroring require a simple HTTP server, follow the guidance be
       $ firewall-cmd --reload
 
 *****************************************************
-Check the version of RHEL being used in the cluster
+Optional: Check the version of RHEL being used in the cluster
 *****************************************************
+
+These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 Before mirroring the RPM packages check the version of RHEL being used in the cluster.
 
@@ -134,13 +138,15 @@ Before mirroring the RPM packages check the version of RHEL being used in the cl
 
       Removing debug pod ...
 
-   This gives you the ``releasever`` to supply as a command line argument to ``reposync``.
+This gives you the ``releasever`` to supply as a command line argument to ``reposync``.
 
-   For guidance on logging in to the OpenShift CLI see, `here <https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html>`_.
+For guidance on logging in to the OpenShift CLI see, `here <https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html>`_.
 
 *****************************************************
-Mirror the RPM packages
+Optional: Mirror the RPM packages
 *****************************************************
+
+These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 Follow the guidance below to sync the required ``yum`` repositories:
 
@@ -169,7 +175,7 @@ Follow the guidance below to sync the required ``yum`` repositories:
    .. code-block:: console
 
       +----------------------------------------------------------+
-          Available Repositories in /etc/yum.repos.d/redhat.repo
+            Available Repositories in /etc/yum.repos.d/redhat.repo
       +----------------------------------------------------------+
       Repo ID:   rhel-8-for-x86_64-appstream-rpms
       Repo Name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
@@ -196,9 +202,9 @@ Follow the guidance below to sync the required ``yum`` repositories:
 
 #. Run ``reposync`` to synchronize the AppStream repos to the locally created directory:
 
-   .. code-block:: console
+    .. code-block:: console
 
-      $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
+       $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
         --releasever=8.4 \
         --download-path=/opt/mirror-repos/ \
         --downloadcomps \
@@ -612,7 +618,7 @@ The four primary official indexes the OpenShift Container Platform uses are:
    | redhat-operators    | nfd                             | registry.redhat.io/redhat/redhat-operator-index:v4.9    |
    +---------------------+---------------------------------+---------------------------------------------------------+
 
-How these were determined is illustrated below in steps 2,3 and 4.
+How these are determined is illustrated below in steps 2,3 and 4.
 
 #. Authenticate with ``registry.redhat.io`` and your target registry as follows:
 
@@ -707,7 +713,7 @@ Mirror Node Feature Discovery and the NVIDIA GPU Operator Catalog
 
 You can mirror the Operator content of a Red Hat-provided catalog, or a custom catalog, into a container image registry using the ``oc adm catalog mirror`` command. The target registry must support `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.
 
-The ``oc adm catalog mirror`` command also automatically mirrors the index image that is specified during the mirroring process, whether it be a Red Hat-provided index image or your own custom-built index image, to the target registry. You can then use the mirrored index image to create a catalog source that allows Operator Lifecycle Manager (OLM) to load the mirrored catalog onto your OpenShift Container Platform cluster.
+The ``oc adm catalog mirror`` command also automatically mirrors the index image specified during the mirroring process, whether it be a Red Hat-provided index image or your own custom-built index image, to the target registry. You can then use the mirrored index image to create a catalog source that allows Operator Lifecycle Manager (OLM) to load the mirrored catalog onto your OpenShift Container Platform cluster.
 
 #. Set the following environment variable:
 
@@ -843,7 +849,7 @@ Create a CatalogSource object that references your **NVIDIA GPU Operator** index
 Verify the mirrored catalog source
 *************************************************************
 
-Verify the following resources are created successfully.
+Verify the following resources are successfully created.
 
 #. Check the pods:
 
@@ -857,7 +863,6 @@ Verify the following resources are created successfully.
       certified-operator-index-bq7bt         0/1     Running            0             17h
       marketplace-operator-d65d479cc-7zblj   1/1     Running            1 (23d ago)   23d
       redhat-operator-index-725tv            0/1     Running            0             17h
-
 
 #. Check the package manifest:
 
@@ -883,21 +888,20 @@ Verify the following resources are created successfully.
 
 #. Log in to the OpenShift Container Platform web console and click **Operators** → **OperatorHub**.
 
-   You can find the mirrored operator after you login to the OpenShift Container Platform console. You can get started to deploy operators in your disconnected cluster now!
+   You can find the mirrored operator after you login to the OpenShift Container Platform console. You can get started deploying operators in your disconnected cluster now!
 
 *************************************************************
-Deploy the Node Feature Discovery Operator
+Install the Node Feature Discovery Operator
 *************************************************************
 
-Follow the guidance :ref:`here <install-nfd>` to install the **Node Feature Discovery (NFD) Operator**.
 
-*************************************************************
-Deploy the NVIDIA GPU Operator
-*************************************************************
+Follow the guidance :ref:`here <install-nfd>` to install the **Node Feature Discovery (NFD) Operator**. If you are installing on any Openshift Container Platform version other than ``4.8.19``, ``4.8.21`` or ``4.9.8`` proceed to :ref:`install-gpu-noworkaround`.
 
 ------------------------------------------------
-Configure repoConfig using Local Yum Repository
+Optional: Configure repoConfig using Local Yum Repository
 ------------------------------------------------
+
+These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 Carry on the following steps on the jump host when it is connected to the cluster.
 
@@ -928,10 +932,11 @@ Carry on the following steps on the jump host when it is connected to the cluste
       protect=1
       priority=1
       EOF
+***************************************************************************************************
+Optional: Installing the NVIDIA GPU Operator on OpenShift version ``4.8.19``, ``4.8.21``, ``4.9.8``
+***************************************************************************************************
 
------------------------------------
-Installing the NVIDIA GPU Operator
------------------------------------
+These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 With the **Node Feature Discovery Operator** installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
@@ -939,25 +944,17 @@ With the **Node Feature Discovery Operator** installed you can continue with the
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 
-#. Create the ``gpu-operator-resources`` namespace:
+   .. note:: Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace under **Select a Namespace**.
 
-   .. code-block:: console
+      If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+      If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
 
-      $ oc create ns gpu-operator-resources
+      .. code-block:: console
 
-#. Using the OpenShift CLI (``oc``) create a Configmap for the GPU Operator:
+         $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
-   .. code-block:: console
 
-      $ oc create configmap yum-repos-d -n gpu-operator-resources --from-file=Local-Base.repo
-
-#. Label the ``namespace/gpu-operator-resources`` with ``openshift.io/cluster-monitoring=true``:
-
-   .. code-block:: console
-
-      $ oc label ns/gpu-operator-resources openshift.io/cluster-monitoring=true
-
-#. Back in the select the **NVIDIA GPU Operator** and the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
+#. Back in the **Installed Operators** menu option select the **NVIDIA GPU Operator** and the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
 #. Edit the ``Config Map Name`` field entering the value ``yum-repos-d``.
 
@@ -971,4 +968,12 @@ With the **Node Feature Discovery Operator** installed you can continue with the
 
    .. image:: graphics/cluster_policy_suceed.png
 
-You can now proceed to :ref:`verify the successful installation of the NVIDIA GPU Operator <verify-gpu-operator-install-ocp>`.
+You can now proceed to :ref:`install and verify the NVIDIA GPU Operator <install-nvidiagpu>`.
+
+.. _install-gpu-noworkaround:
+
+*************************************************************
+Install the NVIDIA GPU Operator
+*************************************************************
+
+You can now proceed to :ref:`install and verify the NVIDIA GPU Operator <install-nvidiagpu>`.

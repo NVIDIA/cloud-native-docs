@@ -1,0 +1,6 @@
+/* style field lists */
+
+/* adds scrollbar to sidenav */
+.wy-side-scroll {
+  width: auto;
+  overflow-y: auto;

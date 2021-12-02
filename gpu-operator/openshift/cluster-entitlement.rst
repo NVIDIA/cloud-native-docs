@@ -3,15 +3,13 @@
 
 .. _cluster-entitlement:
 
-####################################
 Enabling a Cluster-wide entitlement
-####################################
+============================================
 
-*************
 Introduction
-*************
+-------------
 
-The NVIDIA GPU Operator deploys several pods that are used to manage and enable GPUs for use in the OpenShift Container Platform.
+The **NVIDIA GPU Operator** deploys several pods used to manage and enable GPUs for use in the OpenShift Container Platform.
 Some of these Pods require packages that are not available by default in the Universal Base Image (UBI) that OpenShift Container
 Platform uses. To make packages available to the NVIDIA GPU driver container, you must enable cluster-wide entitled container builds in OpenShift.
 
@@ -29,9 +27,8 @@ Creating entitled containers requires that you assign machine configuration that
 
 .. _obtain-entitlement:
 
-####################################################
 Obtaining an entitlement certificate
-####################################################
+---------------------------------------
 
 Follow the guidance below to edit obtain the entitlement certificate.
 
@@ -78,9 +75,8 @@ Follow the guidance below to edit obtain the entitlement certificate.
       <repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
       <revision>1631130504</revision>
 
-**********************************************
 Add a cluster-wide entitlement
-**********************************************
+---------------------------------------
 
 Use the following procedure to add a cluster-wide entitlement:
 
@@ -140,9 +136,8 @@ Use the following procedure to add a cluster-wide entitlement:
 
    Here you can see that the MCP is updated, not updating or degraded, so all the ``MachineConfig`` resources have been successfully applied to the nodes and you can proceed to validate the cluster.
 
-*************************************
 Validate the cluster-wide entitlement
-*************************************
+---------------------------------------
 
 Validate the cluster-wide entitlement with a test pod that queries a Red Hat subscription repo for the kernel-devel package.
 
@@ -226,5 +221,4 @@ Validate the cluster-wide entitlement with a test pod that queries a Red Hat sub
       kernel-devel-4.18.0-147.3.1.el8_1.x86_64 : Development package for building
                                          : kernel modules to match the kernel
 
-Any Pod based on RHEL can now execute entitled builds.
-You can now proceed with the installation of the Node Feature Discovery (NFD) and the NVIDIA GPU Operator.
+Any Pod based on RHEL can now run entitled builds.

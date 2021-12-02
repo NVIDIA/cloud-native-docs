@@ -1,4 +1,4 @@
-.. Date: September 28 2021
+.. Date: November 16 2021
 .. Author: kquinn
 
 .. headings are # * - =
@@ -19,7 +19,7 @@ MIG is useful anytime you have an application that does not require the full pow
 The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.
 
-The compute units of the GPU, as well as its memory, can be partitioned into multiple MIG instances.
+The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
 Each of these instances presents as a stand-alone GPU device from the system perspective and can be bound to any application, container, or virtual machine running on the node.
 
 From the perspective of the software consuming the GPU each of these MIG instances looks like its own individual GPU.
@@ -205,7 +205,7 @@ For example to set the advertisement strategy to ``mixed`` and the MIG partition
 
    .. code-block:: console
 
-      $ oc -n gpu-operator-resources logs ds/nvidia-mig-manager --all-containers -f --prefix
+      $ oc -n nvidia-gpu-operator logs ds/nvidia-mig-manager --all-containers -f --prefix
 
    The status of the reconfiguration should change from success → pending → success.
 
@@ -213,13 +213,13 @@ For example to set the advertisement strategy to ``mixed`` and the MIG partition
 
    .. code-block:: console
 
-      $ oc get pods -n gpu-operator-resources -lapp=nvidia-driver-daemonset -owide
+      $ oc get pods -n nvidia-gpu-operator -lapp=nvidia-driver-daemonset -owide
 
    Select the name of the Pod on the MIG GPU enabled node and run the following:
 
    .. code-block:: console
 
-      $ oc rsh -n gpu-operator-resources $POD_NAME nvidia-smi mig -lgi
+      $ oc rsh -n nvidia-gpu-operator $POD_NAME nvidia-smi mig -lgi
 
    .. code-block:: console
 
@@ -299,14 +299,14 @@ Follow the guidance below to create a new slicing profile.
 
    .. note:: For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on `supported profiles <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles>`_.
 
-#. Create the custom configuration within the ``gpu-operator-resources`` namespace:
+#. Create the custom configuration within the ``nvidia-gpu-operator`` namespace:
 
    .. code-block:: console
 
       $ CONFIG_FILE=/path/to/custom_configmap.yaml && \
         oc create configmap custom-mig-parted-config \
            --from-file=config.yaml=$CONFIG_FILE \
-           -n gpu-operator-resources
+           -n nvidia-gpu-operator
 
 #. Edit the cluster policy and enter the name of the config map in the field ``spec.migManager.config.name``:
 

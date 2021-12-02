@@ -14,7 +14,7 @@ Red Hat OpenShift 4
 ====================
 
 For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
-follow the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/introduction.html>`_.
+follow the `user guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/introduction.html>`_.
 
 ----
 
@@ -244,15 +244,15 @@ With GPU Operator users can customize the metrics to be collected by ``dcgm-expo
  1. Fetch the metrics file and save as dcgm-metrics.csv
 
    .. code-block:: console
-   
+
       $ curl https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/etc/dcp-metrics-included.csv > dcgm-metrics.csv
 
  2. Edit the metrics file as required to add/remove any metrics to be collected.
-   
+
  3. Create a Namespace ``gpu-operator-resources`` if one is already not present.
 
    .. code-block:: console
-   
+
       $ kubectl create namespace gpu-operator-resources
 
  4. Create a ConfigMap using the file edited above.

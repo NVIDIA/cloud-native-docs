@@ -1,4 +1,4 @@
-.. Date: May 11 2021
+.. Date: November 17 2021
 .. Author: kquinn
 
 .. _ocp-appendix:
@@ -7,4 +7,4 @@
 Appendix
 **********
 
-.. include:: get-entitlement.rst
+.. include:: cluster-entitlement.rst
