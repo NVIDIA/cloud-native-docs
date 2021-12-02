@@ -93,6 +93,10 @@ The following options are available when using the Helm chart. These options can
      - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module.
      - ``false``
 
+   * - ``driver.rdma.useHostMofed``
+     - Indicate if MOFED is directly pre-installed on the host. This is used to build and load ``nvidia-peermem`` kernel module.
+     - ``false``
+
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
        as a container on the system. Set this value to ``false`` when using the Operator on systems
