@@ -60,8 +60,7 @@ The following options are available when using the Helm chart. These options can
      - ``true``
 
    * - ``operator.defaultRuntime``
-     - By default, the operator assumes your Kubernetes deployment is running with
-       ``docker`` as its container runtime. Other values are either ``crio``
+     - **DEPRECATED as of v1.9**
        (for CRI-O) or ``containerd`` (for **containerd**).
      - ``docker``
 
@@ -418,20 +417,11 @@ support for such custom configurations.
 
 ----
 
-Set the default container runtime as ``containerd``
+Custom configuration for runtime ``containerd``
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
-In this example, we set the default container runtime to be used as ``containerd``.
-
-.. code-block:: console
-
-   $ helm install --wait --generate-name \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --set operator.defaultRuntime=containerd
-
-When setting `containerd` as the `defaultRuntime` the following
-options are also available:
+When `containerd` is the container runtime used, the following configuration
+options are also respected:
 
 .. code-block:: yaml
 
