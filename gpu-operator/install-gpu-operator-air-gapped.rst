@@ -292,29 +292,29 @@ Create the ``ConfigMap``:
 
 .. code-block:: console
 
-   $ kubectl create configmap repo-config -n <gpu-operator-namespace> --from-file=<path-to-repo-list-file>
+   $ kubectl create configmap repo-config -n gpu-operator --from-file=<path-to-repo-list-file>
 
 Once the ConfigMap is created using the above command, update ``values.yaml`` with this information, to let the GPU Operator mount the repo configuration
-within the ``driver`` container to pull required packages.
-
-For Ubuntu:
+within the ``driver`` container to pull required packages. Based on the OS distribution the GPU Operator will automatically mount this ConfigMap into the appropriate directory.
 
 .. code-block:: yaml
 
       driver:
          repoConfig:
             configMapName: repo-config
-            destinationDir: /etc/apt/sources.list.d
 
-For RHEL/Centos/RHCOS:
+If self-signed certificates are used for an HTTPS based internal repository then a ConfigMap needs to be created for those certs and provide that during the GPU Operator
+install. Based on the OS distribution the GPU Operator will automatically mount this ConfigMap into the appropriate directory.
+
+.. code-block:: console
+
+   $ kubectl create configmap cert-config -n gpu-operator --from-file=<path-to-pem-file1> --from-file=<path-to-pem-file2>
 
 .. code-block:: yaml
 
       driver:
-         repoConfig:
-            configMapName: repo-config
-            destinationDir: /etc/yum.repos.d
-
+         certConfig:
+            name: cert-config
 
 Deploy GPU Operator
 --------------------
