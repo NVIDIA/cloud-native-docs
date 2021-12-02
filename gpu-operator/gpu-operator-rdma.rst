@@ -41,6 +41,7 @@ With v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` ke
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --set driver.rdma.enabled=true
 
@@ -55,7 +56,7 @@ Once everything is in place, the container nvidia-peermem-ctr will be instantiat
 
 .. code-block:: console
 
-   $ kubectl describe pod -n gpu-operator-resources nvidia-driver-daemonset-xxxx
+   $ kubectl describe pod -n gpu-operator nvidia-driver-daemonset-xxxx
    <snip>
     Init Containers:
      mofed-validation:
@@ -83,7 +84,7 @@ To validate that nvidia-peermem-ctr has successfully loaded the nvidia-peermem m
 
 .. code-block:: console
 
-  $ kubectl logs -n gpu-operator-resourcesnvidia-driver-daemonset-xxx -c nvidia-peermem-ctr
+  $ kubectl logs -n gpu-operator nvidia-driver-daemonset-xxx -c nvidia-peermem-ctr
   waiting for mellanox ofed and nvidia drivers to be installed
   waiting for mellanox ofed and nvidia drivers to be installed
   successfully loaded nvidia-peermem module
@@ -97,17 +98,20 @@ Platform Support
 
 The following Linux distributions are supported:
 
-* Ubuntu 20.04 LTS
+  * Ubuntu 20.04 LTS
 
 The following NVIDIA drivers are supported:
 
-* R470 datacenter drivers (470.57.02+)
+  * R470 datacenter drivers (470.57.02+)
 
 *****************
 Further Reading
 *****************
 
 Refer to the following resources for more information:
-#. GPUDirect RDMA: https://docs.nvidia.com/cuda/gpudirect-rdma/index.html
-#. NVIDIA Network Operator: https://github.com/Mellanox/network-operator
-#. Blog post on deploying the Network Operator: https://developer.nvidia.com/blog/deploying-gpudirect-rdma-on-egx-stack-with-the-network-operator/
+
+  * GPUDirect RDMA: https://docs.nvidia.com/cuda/gpudirect-rdma/index.html
+
+  * NVIDIA Network Operator: https://github.com/Mellanox/network-operator
+
+  * Blog post on deploying the Network Operator: https://developer.nvidia.com/blog/deploying-gpudirect-rdma-on-egx-stack-with-the-network-operator/

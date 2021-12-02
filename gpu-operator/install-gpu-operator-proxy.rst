@@ -46,17 +46,15 @@ based on information present in the cluster-wide Proxy object.
 HTTP Proxy Configuration
 -------------------------
 
-First, get the up-to-date ``values.yaml`` file used for GPU Operator configuration:
+First, get the ``values.yaml`` file used for GPU Operator configuration:
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/deployments/gpu-operator/values.yaml
+  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
 
 .. note::
 
-   The above command retrieves the latest ``values.yaml``. If you want to use a specific GPU Operator version, use the following
-   url, replacing ``v1.7.0`` with the appropriate version:
-   https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+   Replace ``v1.7.0`` in the above command with the version you want to use.
 
 Specify ``driver.env`` in ``values.yaml`` with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
 (in both uppercase and lowercase).
@@ -88,22 +86,23 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch latest version of the chart from NGC repository. ``v1.8.1`` is used in the command below:
+Fetch the chart from NGC repository. ``v1.9.0`` is used in the command below:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.8.1.tgz
+    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.9.0.tgz
 
 Install the GPU Operator with updated ``values.yaml``:
 
 .. code-block:: console
 
     $ helm install --wait gpu-operator \
-         gpu-operator-v1.8.1.tgz \
+         -n gpu-operator --create-namespace \
+         gpu-operator-v1.9.0.tgz \
          -f values.yaml
 
 Check the status of the pods to ensure all the containers are running:
 
 .. code-block:: console
 
-   $ kubectl get pods -n gpu-operator-resources
+   $ kubectl get pods -n gpu-operator

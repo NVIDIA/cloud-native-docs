@@ -55,8 +55,9 @@ We can use the following option to install the GPU Operator:
 
 .. code-block:: console
 
-    $ helm install gpu-operator \
-        deployments/gpu-operator \
+    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
         --set mig.strategy=single
 
 
@@ -64,29 +65,23 @@ At this point, all the pods, including the ``nvidia-mig-manager`` will be deploy
 
 .. code-block:: console
 
-    NAMESPACE                NAME                                                          READY   STATUS      RESTARTS   AGE
-    default                  gpu-operator-d6ccd4d8d-9cgzr                                  1/1     Running     2          6m58s
-    default                  gpu-operator-node-feature-discovery-master-867c4f7bfb-4nlq7   1/1     Running     0          6m58s
-    default                  gpu-operator-node-feature-discovery-worker-6rvr2              1/1     Running     1          6m58s
-    gpu-operator-resources   gpu-feature-discovery-sclxr                                   1/1     Running     0          6m39s
-    gpu-operator-resources   nvidia-container-toolkit-daemonset-tnh82                      1/1     Running     0          6m39s
-    gpu-operator-resources   nvidia-cuda-validator-qt6wq                                   0/1     Completed   0          3m11s
-    gpu-operator-resources   nvidia-dcgm-exporter-dh46q                                    1/1     Running     0          6m39s
-    gpu-operator-resources   nvidia-device-plugin-daemonset-t6qkz                          1/1     Running     0          6m39s
-    gpu-operator-resources   nvidia-device-plugin-validator-sd5f7                          0/1     Completed   0          105s
-    gpu-operator-resources   nvidia-driver-daemonset-f7ktr                                 1/1     Running     0          6m40s
-    gpu-operator-resources   nvidia-mig-manager-gzg8n                                      1/1     Running     0          79s
-    gpu-operator-resources   nvidia-operator-validator-vsccj                               1/1     Running     0          6m39s
-    kube-system              calico-kube-controllers-b656ddcfc-722nd                       1/1     Running     0          39m
-    kube-system              calico-node-vt5pz                                             1/1     Running     0          39m
-    kube-system              coredns-558bd4d5db-cmgzk                                      1/1     Running     0          39m
-    kube-system              coredns-558bd4d5db-hx98h                                      1/1     Running     0          39m
-    kube-system              etcd-a100-mig-k8s                                             1/1     Running     0          39m
-    kube-system              kube-apiserver-a100-mig-k8s                                   1/1     Running     0          39m
-    kube-system              kube-controller-manager-a100-mig-k8s                          1/1     Running     1          39m
-    kube-system              kube-proxy-7597j                                              1/1     Running     0          39m
-    kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running     1          39m
+    $ kubectl get pods -n gpu-operator
 
+.. code-block:: console
+
+    NAME                                                          READY   STATUS      RESTARTS   AGE
+    gpu-operator-d6ccd4d8d-9cgzr                                  1/1     Running     2          6m58s
+    gpu-operator-node-feature-discovery-master-867c4f7bfb-4nlq7   1/1     Running     0          6m58s
+    gpu-operator-node-feature-discovery-worker-6rvr2              1/1     Running     1          6m58s
+    gpu-feature-discovery-sclxr                                   1/1     Running     0          6m39s
+    nvidia-container-toolkit-daemonset-tnh82                      1/1     Running     0          6m39s
+    nvidia-cuda-validator-qt6wq                                   0/1     Completed   0          3m11s
+    nvidia-dcgm-exporter-dh46q                                    1/1     Running     0          6m39s
+    nvidia-device-plugin-daemonset-t6qkz                          1/1     Running     0          6m39s
+    nvidia-device-plugin-validator-sd5f7                          0/1     Completed   0          105s
+    nvidia-driver-daemonset-f7ktr                                 1/1     Running     0          6m40s
+    nvidia-mig-manager-gzg8n                                      1/1     Running     0          79s
+    nvidia-operator-validator-vsccj                               1/1     Running     0          6m39s
 
 You can also check the labels applied to the node:
 
@@ -135,7 +130,7 @@ GPU node.
 
 .. note::
 
-    The ``mig-manager`` uses a `ConfigMap` called ``mig-parted-config`` in the ``gpu-operator-resources`` 
+    The ``mig-manager`` uses a `ConfigMap` called ``mig-parted-config`` in the GPU Operator
     namespace in the daemonset to include supported MIG profiles. Refer to the `ConfigMap` to use when 
     changing the label below or modify the `ConfigMap` appropriately for your use-case. 
 
@@ -155,10 +150,10 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
   
 .. code-block:: console
 
-    kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running     1          45m
-    gpu-operator-resources   nvidia-dcgm-exporter-dh46q                                    1/1     Terminating   0          13m
-    gpu-operator-resources   gpu-feature-discovery-sclxr                                   1/1     Terminating   0          13m
-    gpu-operator-resources   nvidia-device-plugin-daemonset-t6qkz                          1/1     Terminating   0          13m
+    kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running       1          45m
+    gpu-operator             nvidia-dcgm-exporter-dh46q                                    1/1     Terminating   0          13m
+    gpu-operator             gpu-feature-discovery-sclxr                                   1/1     Terminating   0          13m
+    gpu-operator             nvidia-device-plugin-daemonset-t6qkz                          1/1     Terminating   0          13m
 
 .. note::
 
@@ -224,31 +219,22 @@ in the driver container to verify that the GPU has been configured:
     
 Finally, verify that the GPU Operator pods are in running state:
 
+
 .. code-block:: console
 
-    NAMESPACE                NAME                                                          READY   STATUS      RESTARTS   AGE
-    default                  gpu-operator-d6ccd4d8d-hhhq4                                  1/1     Running     4          38m
-    default                  gpu-operator-node-feature-discovery-master-867c4f7bfb-jt95x   1/1     Running     1          38m
-    default                  gpu-operator-node-feature-discovery-worker-rjpfb              1/1     Running     3          38m
-    gpu-operator-resources   gpu-feature-discovery-drzft                                   1/1     Running     0          97s
-    gpu-operator-resources   nvidia-container-toolkit-daemonset-885b5                      1/1     Running     1          38m
-    gpu-operator-resources   nvidia-cuda-validator-kh4tv                                   0/1     Completed   0          94s
-    gpu-operator-resources   nvidia-dcgm-exporter-6d5kd                                    1/1     Running     0          97s
-    gpu-operator-resources   nvidia-device-plugin-daemonset-kspv5                          1/1     Running     0          97s
-    gpu-operator-resources   nvidia-device-plugin-validator-mpgv9                          0/1     Completed   0          83s
-    gpu-operator-resources   nvidia-driver-daemonset-mgmdb                                 1/1     Running     3          38m
-    gpu-operator-resources   nvidia-mig-manager-svv7b                                      1/1     Running     1          35m
-    gpu-operator-resources   nvidia-operator-validator-w44q8                               1/1     Running     0          97s
-    kube-system              calico-kube-controllers-b656ddcfc-722nd                       1/1     Running     6          19h
-    kube-system              calico-node-vt5pz                                             1/1     Running     6          19h
-    kube-system              coredns-558bd4d5db-cmgzk                                      1/1     Running     5          19h
-    kube-system              coredns-558bd4d5db-hx98h                                      1/1     Running     5          19h
-    kube-system              etcd-a100-mig-k8s                                             1/1     Running     5          19h
-    kube-system              kube-apiserver-a100-mig-k8s                                   1/1     Running     5          19h
-    kube-system              kube-controller-manager-a100-mig-k8s                          1/1     Running     13         19h
-    kube-system              kube-proxy-7597j                                              1/1     Running     5          19h
-    kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running     11         19h
-
+    NAME                                                          READY   STATUS      RESTARTS   AGE
+    gpu-operator-d6ccd4d8d-hhhq4                                  1/1     Running     4          38m
+    gpu-operator-node-feature-discovery-master-867c4f7bfb-jt95x   1/1     Running     1          38m
+    gpu-operator-node-feature-discovery-worker-rjpfb              1/1     Running     3          38m
+    gpu-feature-discovery-drzft                                   1/1     Running     0          97s
+    nvidia-container-toolkit-daemonset-885b5                      1/1     Running     1          38m
+    nvidia-cuda-validator-kh4tv                                   0/1     Completed   0          94s
+    nvidia-dcgm-exporter-6d5kd                                    1/1     Running     0          97s
+    nvidia-device-plugin-daemonset-kspv5                          1/1     Running     0          97s
+    nvidia-device-plugin-validator-mpgv9                          0/1     Completed   0          83s
+    nvidia-driver-daemonset-mgmdb                                 1/1     Running     3          38m
+    nvidia-mig-manager-svv7b                                      1/1     Running     1          35m
+    nvidia-operator-validator-w44q8                               1/1     Running     0          97s
 
 Reconfiguring MIG Profiles
 ---------------------------

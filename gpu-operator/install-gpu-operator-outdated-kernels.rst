@@ -19,7 +19,7 @@ Add Archived Package Repositories
 
 The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package 
 manager running inside the ``driver`` container. To achieve this, we can simply mount a repository list file into the ``driver`` container using a ``ConfigMap``.
-The ``ConfigMap`` needs to be created with the repository list file created under the ``gpu-operator-resources`` namespace.
+The ``ConfigMap`` containing the repository list file needs to be created in the ``gpu-operator`` namespace.
 
 Let us demonstrate this workaround via an example. The system used in this example is running CentOS 7 with an outdated kernel:
 
@@ -57,7 +57,7 @@ Once the repo list file is created, we can create a ``ConfigMap`` for it:
 
 .. code-block:: console
 
-   $ kubectl create configmap repo-config -n gpu-operator-resources --from-file=<path-to-repo-list-file>
+   $ kubectl create configmap repo-config -n gpu-operator --from-file=<path-to-repo-list-file>
 
 Once the ``ConfigMap`` is created using the above command, update ``values.yaml`` with this information, to let the GPU Operator mount the repo configuration
 within the ``driver`` container to pull required packages.
@@ -85,6 +85,7 @@ Deploy GPU Operator with updated ``values.yaml``:
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         -f values.yaml
 
@@ -93,4 +94,4 @@ Check the status of the pods to ensure all the containers are running:
 
 .. code-block:: console
 
-   $ kubectl get pods -n gpu-operator-resources
+   $ kubectl get pods -n gpu-operator

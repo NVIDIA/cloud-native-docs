@@ -105,6 +105,24 @@ The following options are available when using the Helm chart. These options can
      - ``true``
 
 
+Namespace
+^^^^^^^^^
+
+Prior to GPU Operator v1.9, the operator was installed in the ``default`` namespace while all operands were
+installed in the ``gpu-operator-resources`` namespace.
+
+Starting with GPU Operator v1.9, both the operator and operands get installed in the same namespace.
+The namespace is configurable and is determined during installation. For example, to install the GPU Operator
+in the ``gpu-operator`` namespace:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace
+        nvidia/gpu-operator
+
+If a namespace is not specified during installation, all GPU Operator components will be installed in the
+``default`` namespace.
 
 Common Deployment Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -119,6 +137,7 @@ In this scenario, the default configuration options are used:
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator
 
 Bare-metal/Passthrough with default configurations on CentOS
@@ -128,8 +147,10 @@ In this scenario, the CentOS toolkit image is used:
 
 .. code-block:: console
 
-   $ helm install --wait --generate-name --set toolkit.version=1.7.1-centos7 \
-        nvidia/gpu-operator
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set toolkit.version=1.7.1-centos7
 
 .. note::
 
@@ -152,7 +173,9 @@ The command below will install the GPU Operator with its default configuration f
 .. code-block:: console
 
    $ helm install --wait --generate-name \
-        nvidia/gpu-operator --set driver.repository=$PRIVATE_REGISTRY \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set driver.repository=$PRIVATE_REGISTRY \
         --set driver.version=$VERSION \
         --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
         --set driver.licensingConfig.configMapName=licensing-config
@@ -193,6 +216,7 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --set driver.enabled=false
 
@@ -269,6 +293,7 @@ Install the GPU operator with the following options:
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
          --set driver.enabled=false \
          --set toolkit.enabled=false
@@ -348,6 +373,7 @@ Once these steps are complete, now install the GPU operator with the following o
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --set toolkit.enabled=false
 
@@ -377,6 +403,7 @@ you would need to build a new driver container image. Follow these steps:
   .. code-block:: console
 
      $ helm install --wait --generate-name \
+          -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
           --set driver.repository=docker.io/nvidia \
           --set driver.version="465.27"
@@ -395,6 +422,7 @@ In this example, we set the default container runtime to be used as ``containerd
 .. code-block:: console
 
    $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --set operator.defaultRuntime=containerd
 
@@ -483,30 +511,24 @@ Once the Helm chart is installed, check the status of the pods to ensure all the
 
 .. code-block:: console
 
-   $ kubectl get pods -A
+   $ kubectl get pods -n gpu-operator
 
 .. code-block:: console
 
-   NAMESPACE                NAME                                                          READY   STATUS      RESTARTS   AGE
-   default                  gpu-operator-d6ccd4d8d-f7m57                                  1/1     Running     0          5m51s
-   default                  gpu-operator-node-feature-discovery-master-867c4f7bfb-cbxck   1/1     Running     0          5m51s
-   default                  gpu-operator-node-feature-discovery-worker-wv2rq              1/1     Running     0          5m51s
-   gpu-operator-resources   gpu-feature-discovery-qmftl                                   1/1     Running     0          5m35s
-   gpu-operator-resources   nvidia-container-toolkit-daemonset-tx4rd                      1/1     Running     0          5m35s
-   gpu-operator-resources   nvidia-cuda-validator-ip-172-31-65-3                          0/1     Completed   0          2m29s
-   gpu-operator-resources   nvidia-dcgm-exporter-99t8p                                    1/1     Running     0          5m35s
-   gpu-operator-resources   nvidia-device-plugin-daemonset-nkbtz                          1/1     Running     0          5m35s
-   gpu-operator-resources   nvidia-device-plugin-validator-ip-172-31-65-3                 0/1     Completed   0          103s
-   gpu-operator-resources   nvidia-driver-daemonset-w97sh                                 1/1     Running     0          5m35s
-   gpu-operator-resources   nvidia-operator-validator-2djn2                               1/1     Running     0          5m35s
-   kube-system              calico-kube-controllers-b656ddcfc-4sgld                       1/1     Running     0          8m11s
-   kube-system              calico-node-wzdbr                                             1/1     Running     0          8m11s
-   kube-system              coredns-558bd4d5db-2w9tf                                      1/1     Running     0          8m11s
-   kube-system              coredns-558bd4d5db-cv5md                                      1/1     Running     0          8m11s
-   kube-system              etcd-ip-172-31-65-3                                           1/1     Running     0          8m25s
-   kube-system              kube-apiserver-ip-172-31-65-3                                 1/1     Running     0          8m25s
-   kube-system              kube-controller-manager-ip-172-31-65-3                        1/1     Running     0          8m25s
-   kube-system              kube-proxy-gpqc5                                              1/1     Running     0          8m11s
-   kube-system              kube-scheduler-ip-172-31-65-3                                 1/1     Running     0          8m25s
+   NAME                                                          READY   STATUS      RESTARTS   AGE
+   gpu-feature-discovery-crrsq                                   1/1     Running     0          60s
+   gpu-operator-7fb75556c7-x8spj                                 1/1     Running     0          5m13s
+   gpu-operator-node-feature-discovery-master-58d884d5cc-w7q7b   1/1     Running     0          5m13s
+   gpu-operator-node-feature-discovery-worker-6rht2              1/1     Running     0          5m13s
+   gpu-operator-node-feature-discovery-worker-9r8js              1/1     Running     0          5m13s
+   nvidia-container-toolkit-daemonset-lhgqf                      1/1     Running     0          4m53s
+   nvidia-cuda-validator-rhvbb                                   0/1     Completed   0          54s
+   nvidia-dcgm-5jqzg                                             1/1     Running     0          60s
+   nvidia-dcgm-exporter-h964h                                    1/1     Running     0          60s
+   nvidia-device-plugin-daemonset-d9ntc                          1/1     Running     0          60s
+   nvidia-device-plugin-validator-cm2fd                          0/1     Completed   0          48s
+   nvidia-driver-daemonset-5xj6g                                 1/1     Running     0          4m53s
+   nvidia-mig-manager-89z9b                                      1/1     Running     0          4m53s
+   nvidia-operator-validator-bwx99                               1/1     Running     0          58s
 
 We can now proceed to running some sample GPU workloads to verify that the Operator (and its components) are working correctly.

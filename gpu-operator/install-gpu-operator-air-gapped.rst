@@ -58,17 +58,15 @@ The supported use cases/environments are listed in the below table:
    Public name resolution for image registry and package repositories are
    mandatory for use cases 1 and 2.
 
-Before proceeding to the next sections, get the up-to-date ``values.yaml`` file used for GPU Operator configuration.
+Before proceeding to the next sections, get the ``values.yaml`` file used for GPU Operator configuration.
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/deployments/gpu-operator/values.yaml
+  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
 
 .. note::
 
-   The above command retrieves the latest ``values.yaml``. If you want to use a specific GPU Operator version, use the following
-   url, replacing ``v1.7.0`` with the appropriate version:
-   https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+   Replace ``v1.7.0`` in the above command with the version you want to use.
 
 
 Local Image Registry
@@ -96,13 +94,13 @@ An example is shown below with the gpu-operator container image:
     operator:
         repository: nvcr.io/nvidia
         image: gpu-operator
-        version: "v1.8.1"
+        version: "v1.9.0"
 
-For instance, to pull the gpu-operator image version v1.8.1, use the following instruction:
+For instance, to pull the gpu-operator image version v1.9.0, use the following instruction:
 
 .. code-block:: console
 
-    $ docker pull nvcr.io/nvidia/gpu-operator:v1.8.1
+    $ docker pull nvcr.io/nvidia/gpu-operator:v1.9.0
 
 There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.
 
@@ -111,19 +109,19 @@ There is one caveat with regards to the driver image. The version field must be 
     driver:
         repository: nvcr.io/nvidia
         image: driver
-        version: "470.57.02"
+        version: "470.82.01"
 
 To pull the driver image for Ubuntu 20.04:
 
 .. code-block:: console
 
-    $ docker pull nvcr.io/nvidia/driver:470.57.02-ubuntu20.04
+    $ docker pull nvcr.io/nvidia/driver:470.82.01-ubuntu20.04
 
 To pull the driver image for CentOS 8:
 
 .. code-block:: console
 
-    $ docker pull nvcr.io/nvidia/driver:470.57.02-centos8
+    $ docker pull nvcr.io/nvidia/driver:470.82.01-centos8
 
 To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.
 
@@ -131,15 +129,15 @@ Using the above examples, this will result in:
 
 .. code-block:: console
 
-    $ docker tag nvcr.io/nvidia/gpu-operator:v1.8.1 <local-registry>/<local-path>/gpu-operator:v1.8.1
-    $ docker tag nvcr.io/nvidia/driver:470.57.02-ubuntu20.04 <local-registry>/<local-path>/driver:470.57.02-ubuntu20.04
+    $ docker tag nvcr.io/nvidia/gpu-operator:v1.9.0 <local-registry>/<local-path>/gpu-operator:v1.9.0
+    $ docker tag nvcr.io/nvidia/driver:470.82.01-ubuntu20.04 <local-registry>/<local-path>/driver:470.82.01-ubuntu20.04
 
 Finally, push the images to the local registry:
 
 .. code-block:: console
 
-    $ docker push  <local-registry>/<local-path>/gpu-operator:v1.8.1
-    $ docker push <local-registry>/<local-path>/driver:470.57.02-ubuntu20.04
+    $ docker push  <local-registry>/<local-path>/gpu-operator:v1.9.0
+    $ docker push <local-registry>/<local-path>/driver:470.82.01-ubuntu20.04
 
 Update ``values.yaml`` with local registry information in the repository field.
 
@@ -147,52 +145,52 @@ Update ``values.yaml`` with local registry information in the repository field.
 
    replace <repo.example.com:port> below with your local image registry url and port
 
-Sample of ``values.yaml`` for GPU Operator v1.8.1:
+Sample of ``values.yaml`` for GPU Operator v1.9.0:
 
 .. code-block:: yaml
 
    operator:
      repository: <repo.example.com:port>
      image: gpu-operator
-     version: 1.8.1
+     version: 1.9.0
      imagePullSecrets: []
      initContainer:
        image: cuda
        repository: <repo.example.com:port>
-       version: 11.2.1-base-ubi8
+       version: 11.4.2-base-ubi8
 
     validator:
       image: gpu-operator-validator
       repository: <repo.example.com:port>
-      version: 1.8.1
+      version: 1.9.0
       imagePullSecrets: []
 
     driver:
       repository: <repo.example.com:port>
       image: driver
-      version: "470.57.02"
+      version: "470.82.01"
       imagePullSecrets: []
       manager:
         image: k8s-driver-manager
         repository: <repo.example.com:port>
-        version: v0.1.0
+        version: v0.2.0
 
     toolkit:
       repository: <repo.example.com:port>
       image: container-toolkit
-      version: 1.6.0-ubuntu18.04
+      version: 1.7.2-ubuntu18.04
       imagePullSecrets: []
 
     devicePlugin:
       repository: <repo.example.com:port>
       image: k8s-device-plugin
-      version: v0.9.0-ubi8
+      version: v0.10.0-ubi8
       imagePullSecrets: []
 
     dcgmExporter:
       repository: <repo.example.com:port>
       image: dcgm-exporter
-      version: 2.2.9-2.4.0-ubuntu20.04
+      version: 2.3.1-2.6.0-ubuntu20.04
       imagePullSecrets: []
 
     gfd:
@@ -205,13 +203,13 @@ Sample of ``values.yaml`` for GPU Operator v1.8.1:
       enabled: false
       repository: <repo.example.com:port>
       image: gpu-operator-validator
-      version: "1.8.1"
+      version: "1.9.0"
 
     migManager:
       enabled: true
       repository: <repo.example.com:port>
       image: k8s-mig-manager
-      version: v0.1.2-ubuntu20.04
+      version: v0.2.0-ubuntu20.04
 
 Local Package Repository
 ------------------------
@@ -253,8 +251,8 @@ to your local package repository server.
 For CentOS, ``reposync`` can be used to create the local mirror.
 
 Once all above required packages are mirrored to the local repository, repo lists need to be created following
-distribution specific documentation. A ``ConfigMap`` needs to be created with the repo list file created under
-``gpu-operator-resources`` namespace.
+distribution specific documentation. A ``ConfigMap`` containing the repo list file needs to be created in
+the namespace where the GPU Operator gets deployed.
 
 An example of repo list is shown below for Ubuntu 20.04 (access to local package repository via HTTP):
 
@@ -294,7 +292,7 @@ Create the ``ConfigMap``:
 
 .. code-block:: console
 
-   $ kubectl create configmap repo-config -n gpu-operator-resources --from-file=<path-to-repo-list-file>
+   $ kubectl create configmap repo-config -n <gpu-operator-namespace> --from-file=<path-to-repo-list-file>
 
 Once the ConfigMap is created using the above command, update ``values.yaml`` with this information, to let the GPU Operator mount the repo configuration
 within the ``driver`` container to pull required packages.
@@ -302,6 +300,7 @@ within the ``driver`` container to pull required packages.
 For Ubuntu:
 
 .. code-block:: yaml
+
       driver:
          repoConfig:
             configMapName: repo-config
@@ -310,6 +309,7 @@ For Ubuntu:
 For RHEL/Centos/RHCOS:
 
 .. code-block:: yaml
+
       driver:
          repoConfig:
             configMapName: repo-config
@@ -321,22 +321,23 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch latest version of the chart from NGC repository. ``v1.8.1`` is used in the command below:
+Fetch the chart from NGC repository. ``v1.9.0`` is used in the command below:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.8.1.tgz
+    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.9.0.tgz
 
 Install the GPU Operator with updated ``values.yaml``:
 
 .. code-block:: console
 
     $ helm install --wait gpu-operator \
-         gpu-operator-v1.8.1.tgz \
+         -n gpu-operator --create-namespace \
+         gpu-operator-v1.9.0.tgz \
          -f values.yaml
 
 Check the status of the pods to ensure all the containers are running:
 
 .. code-block:: console
 
-   $ kubectl get pods -n gpu-operator-resources
+   $ kubectl get pods -n gpu-operator

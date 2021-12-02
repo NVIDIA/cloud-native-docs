@@ -248,21 +248,21 @@ With GPU Operator users can customize the metrics to be collected by ``dcgm-expo
       $ curl https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/etc/dcp-metrics-included.csv > dcgm-metrics.csv
 
  2. Edit the metrics file as required to add/remove any metrics to be collected.
+   
+ 3. Create a Namespace ``gpu-operator`` if one is not already present.
 
- 3. Create a Namespace ``gpu-operator-resources`` if one is already not present.
+  .. code-block:: console
 
-   .. code-block:: console
-
-      $ kubectl create namespace gpu-operator-resources
+     $ kubectl create namespace gpu-operator
 
  4. Create a ConfigMap using the file edited above.
 
    .. code-block:: console
 
-      $ kubectl create configmap metrics-config -n gpu-operator-resources --from-file=dcgm-metrics.csv
+      $ kubectl create configmap metrics-config -n gpu-operator --from-file=dcgm-metrics.csv
 
  5. Install GPU Operator with additional options ``--set dcgmExporter.config.name=metrics-config`` and
-   ``--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv``
+    ``--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv``
 
 The rest of this section walks through how to setup Prometheus, Grafana using Operators and using Prometheus with ``dcgm-exporter``.
 
@@ -274,36 +274,18 @@ Now you can see the Prometheus and Grafana pods:
 
 .. code-block:: console
 
-   $ kubectl get pods -A
+   $ kubectl get pods -n prometheus
 
 .. code-block:: console
 
-   NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
-   default                  gpu-operator-1597965115-node-feature-discovery-master-fbf9rczx5   1/1     Running     1          6h57m
-   default                  gpu-operator-1597965115-node-feature-discovery-worker-n58pm       1/1     Running     1          6h57m
-   default                  gpu-operator-774ff7994c-xh62d                                     1/1     Running     1          6h57m
-   default                  gpu-operator-test                                                 0/1     Completed   0          8h
-   gpu-operator-resources   nvidia-container-toolkit-daemonset-grnnd                          1/1     Running     1          6h57m
-   gpu-operator-resources   nvidia-dcgm-exporter-nv5z7                                        1/1     Running     7          6h57m
-   gpu-operator-resources   nvidia-device-plugin-daemonset-qq6lq                              1/1     Running     7          6h57m
-   gpu-operator-resources   nvidia-device-plugin-validation                                   0/1     Completed   0          6h57m
-   gpu-operator-resources   nvidia-driver-daemonset-vwzvq                                     1/1     Running     1          6h57m
-   gpu-operator-resources   nvidia-driver-validation                                          0/1     Completed   3          6h57m
-   kube-system              calico-kube-controllers-578894d4cd-pv5kw                          1/1     Running     1          10h
-   kube-system              calico-node-ffhdd                                                 1/1     Running     1          10h
-   kube-system              coredns-66bff467f8-nwdrx                                          1/1     Running     1          10h
-   kube-system              coredns-66bff467f8-srg8d                                          1/1     Running     1          10h
-   kube-system              etcd-ip-172-31-80-124                                             1/1     Running     1          10h
-   kube-system              kube-apiserver-ip-172-31-80-124                                   1/1     Running     1          10h
-   kube-system              kube-controller-manager-ip-172-31-80-124                          1/1     Running     1          10h
-   kube-system              kube-proxy-kj5qb                                                  1/1     Running     1          10h
-   kube-system              kube-scheduler-ip-172-31-80-124                                   1/1     Running     1          10h
-   prometheus               alertmanager-prometheus-operator-159799-alertmanager-0            2/2     Running     0          12s
-   prometheus               prometheus-operator-159799-operator-78f95fccbd-hcl76              2/2     Running     0          16s
-   prometheus               prometheus-operator-1597990146-grafana-5c7db4f7d4-qcjbj           2/2     Running     0          16s
-   prometheus               prometheus-operator-1597990146-kube-state-metrics-645c57c8x28nv   1/1     Running     0          16s
-   prometheus               prometheus-operator-1597990146-prometheus-node-exporter-6lchc     1/1     Running     0          16s
-   prometheus               prometheus-prometheus-operator-159799-prometheus-0                2/3     Running     0          2s
+   NAME                                                              READY   STATUS    RESTARTS   AGE
+   alertmanager-kube-prometheus-stack-1637-alertmanager-0            2/2     Running   0          23s
+   kube-prometheus-stack-1637-operator-7bd6d6455c-pcv6n              1/1     Running   0          25s
+   kube-prometheus-stack-1637791640-grafana-f99f499df-kwm4f          2/2     Running   0          25s
+   kube-prometheus-stack-1637791640-kube-state-metrics-65bf4526xnl   1/1     Running   0          25s
+   kube-prometheus-stack-1637791640-prometheus-node-exporter-8pwc4   1/1     Running   0          25s
+   kube-prometheus-stack-1637791640-prometheus-node-exporter-nvzhq   1/1     Running   0          25s
+   prometheus-kube-prometheus-stack-1637-prometheus-0                2/2     Running   0          23s
 
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
@@ -313,28 +295,26 @@ You can view the services setup as part of the operator and ``dcgm-exporter``:
 
 .. code-block:: console
 
-   NAMESPACE                NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
-   default                  gpu-operator-1597965115-node-feature-discovery-master     ClusterIP   10.110.46.7      <none>        8080/TCP                       6h57m
-   default                  kubernetes                                                ClusterIP   10.96.0.1        <none>        443/TCP                        10h
-   default                  tf-notebook                                               NodePort    10.106.229.20    <none>        80:30001/TCP                   8h
-   gpu-operator-resources   nvidia-dcgm-exporter                                      ClusterIP   10.99.250.100    <none>        9400/TCP                       6h57m
-   kube-system              kube-dns                                                  ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP         10h
-   kube-system              prometheus-operator-159797-kubelet                        ClusterIP   None             <none>        10250/TCP,10255/TCP,4194/TCP   4h50m
-   kube-system              prometheus-operator-159799-coredns                        ClusterIP   None             <none>        9153/TCP                       32s
-   kube-system              prometheus-operator-159799-kube-controller-manager        ClusterIP   None             <none>        10252/TCP                      32s
-   kube-system              prometheus-operator-159799-kube-etcd                      ClusterIP   None             <none>        2379/TCP                       32s
-   kube-system              prometheus-operator-159799-kube-proxy                     ClusterIP   None             <none>        10249/TCP                      32s
-   kube-system              prometheus-operator-159799-kube-scheduler                 ClusterIP   None             <none>        10251/TCP                      32s
-   kube-system              prometheus-operator-159799-kubelet                        ClusterIP   None             <none>        10250/TCP,10255/TCP,4194/TCP   18s
-   prometheus               alertmanager-operated                                     ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP     28s
-   prometheus               prometheus-operated                                       ClusterIP   None             <none>        9090/TCP                       18s
-   prometheus               prometheus-operator-159799-alertmanager                   ClusterIP   10.106.93.161    <none>        9093/TCP                       32s
-   prometheus               prometheus-operator-159799-operator                       ClusterIP   10.100.116.170   <none>        8080/TCP,443/TCP               32s
-   prometheus               prometheus-operator-159799-prometheus                     NodePort    10.102.169.42    <none>        9090:30090/TCP                 32s
-   prometheus               prometheus-operator-1597990146-grafana                    ClusterIP   10.104.40.69     <none>        80/TCP                         32s
-   prometheus               prometheus-operator-1597990146-kube-state-metrics         ClusterIP   10.100.204.91    <none>        8080/TCP                       32s
-   prometheus               prometheus-operator-1597990146-prometheus-node-exporter   ClusterIP   10.97.64.60      <none>        9100/TCP                       32s
-
+   NAMESPACE      NAME                                                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
+   default        kubernetes                                                  ClusterIP   10.96.0.1        <none>        443/TCP                        34d
+   gpu-operator   gpu-operator                                                ClusterIP   10.106.165.20    <none>        8080/TCP                       29m
+   gpu-operator   gpu-operator-node-feature-discovery-master                  ClusterIP   10.102.207.205   <none>        8080/TCP                       30m
+   gpu-operator   nvidia-dcgm-exporter                                        ClusterIP   10.108.99.82     <none>        9400/TCP                       29m
+   kube-system    kube-dns                                                    ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP         34d
+   kube-system    kube-prometheus-stack-1637-coredns                          ClusterIP   None             <none>        9153/TCP                       56s
+   kube-system    kube-prometheus-stack-1637-kube-controller-manager          ClusterIP   None             <none>        10252/TCP                      56s
+   kube-system    kube-prometheus-stack-1637-kube-etcd                        ClusterIP   None             <none>        2379/TCP                       56s
+   kube-system    kube-prometheus-stack-1637-kube-proxy                       ClusterIP   None             <none>        10249/TCP                      56s
+   kube-system    kube-prometheus-stack-1637-kube-scheduler                   ClusterIP   None             <none>        10251/TCP                      56s
+   kube-system    kube-prometheus-stack-1637-kubelet                          ClusterIP   None             <none>        10250/TCP,10255/TCP,4194/TCP   6m42s
+   prometheus     alertmanager-operated                                       ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP     54s
+   prometheus     kube-prometheus-stack-1637-alertmanager                     ClusterIP   10.99.137.105    <none>        9093/TCP                       56s
+   prometheus     kube-prometheus-stack-1637-operator                         ClusterIP   10.101.198.43    <none>        443/TCP                        56s
+   prometheus     kube-prometheus-stack-1637-prometheus                       NodePort    10.105.175.245   <none>        9090:30090/TCP                 56s
+   prometheus     kube-prometheus-stack-1637791640-grafana                    ClusterIP   10.111.115.192   <none>        80/TCP                         56s
+   prometheus     kube-prometheus-stack-1637791640-kube-state-metrics         ClusterIP   10.105.66.181    <none>        8080/TCP                       56s
+   prometheus     kube-prometheus-stack-1637791640-prometheus-node-exporter   ClusterIP   10.108.72.70     <none>        9100/TCP                       56s
+   prometheus     prometheus-operated                                         ClusterIP   None             <none>        9090/TCP                       54s
 
 You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``.
 It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL``
@@ -372,11 +352,11 @@ And now use ``kubectl patch``:
 
 .. code-block:: console
 
-   $ kubectl patch svc prometheus-operator-1597990146-grafana -n prometheus --patch "$(cat grafana-patch.yaml)"
+   $ kubectl patch svc prometheus-operator-1637791640-grafana -n prometheus --patch "$(cat grafana-patch.yaml)"
 
 .. code-block:: console
 
-   service/prometheus-operator-1597990146-grafana patched
+   service/prometheus-operator-1637791640-grafana patched
 
 You can verify that the service is now exposed at an externally accessible port:
 
@@ -388,7 +368,7 @@ You can verify that the service is now exposed at an externally accessible port:
 
    NAMESPACE     NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
    <snip>
-   prometheus    prometheus-operator-1597990146-grafana                    NodePort    10.108.187.141   <none>        80:32258/TCP                   17h
+   prometheus    prometheus-operator-1637791640-grafana                    NodePort    10.111.115.192   <none>        80:32258/TCP                   2m2s
 
 Open your browser to ``http://<machine-ip-address>:32258`` and view the Grafana login page. Access Grafana home using the ``admin`` username.
 The password credentials for the login are available in the ``prometheus.values`` file we edited in the earlier section of the doc:
@@ -453,7 +433,7 @@ And upgrade via Helm:
 
 .. code-block:: console
 
-   $ helm upgrade gpu-operator -n gpu-operator-resources -f values-1.8.x.yaml
+   $ helm upgrade gpu-operator -n gpu-operator -f values-1.8.x.yaml
 
 Cluster Policy Updates
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -522,13 +502,13 @@ To uninstall the operator:
 
 .. code-block:: console
 
-   $ helm delete $(helm list | grep gpu-operator | awk '{print $1}')
+   $ helm delete -n gpu-operator $(helm list -n gpu-operator | grep gpu-operator | awk '{print $1}')
 
 You should now see all the pods being deleted:
 
 .. code-block:: console
 
-   $ kubectl get pods -n gpu-operator-resources
+   $ kubectl get pods -n gpu-operator
 
 .. code-block:: console
 
