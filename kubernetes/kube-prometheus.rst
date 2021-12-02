@@ -73,7 +73,7 @@ Also, modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` sett
     ##
     serviceMonitorSelectorNilUsesHelmValues: false
 
-Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in the Helm chart:
+Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in the Helm chart.
 
 .. code-block:: console
 
@@ -97,7 +97,7 @@ Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in
       - role: endpoints
         namespaces:
           names:
-          - gpu-operator-resources
+          - gpu-operator
       relabel_configs:
       - source_labels: [__meta_kubernetes_pod_node_name]
         action: replace
@@ -129,14 +129,13 @@ You should see a console output as below:
 
 .. code-block:: console
 
-   NAME: kube-prometheus-stack-1603211794
-   LAST DEPLOYED: Tue Oct 20 16:36:39 2020
+   NAME: kube-prometheus-stack-1637791640
+   LAST DEPLOYED: Wed Nov 24 22:07:22 2021
    NAMESPACE: prometheus
    STATUS: deployed
    REVISION: 1
    NOTES:
    kube-prometheus-stack has been installed. Check its status by running:
-   kubectl --namespace prometheus get pods -l "release=kube-prometheus-stack-1603211794"
+     kubectl --namespace prometheus get pods -l "release=kube-prometheus-stack-1637791640"
 
    Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
-

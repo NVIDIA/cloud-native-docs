@@ -25,8 +25,8 @@ The following section outlines the high level workflow to use the GPU Operator w
 #. Clone driver container source repository for building private driver image.
 #. Build the driver container image.
 #. Push the driver container image to your private repository.
-#. Create a `ConfigMap` in `gpu-operator-resources` namespace with vGPU license configuration file.
-#. Create an `ImagePullSecret` in `gpu-operator-resources` namespace for your private repository.
+#. Create a `ConfigMap` in the `gpu-operator` namespace with vGPU license configuration file.
+#. Create an `ImagePullSecret` in the `gpu-operator` namespace for your private repository.
 #. Install the GPU Operator.
 
 Detailed Workflow
@@ -150,12 +150,12 @@ Create a ConfigMap `licensing-config` using `gridd.conf` file created above
 
 .. code-block:: console
 
-    $ kubectl  create namespace gpu-operator-resources
+    $ kubectl create namespace gpu-operator
 
 .. code-block:: console
 
     $ kubectl create configmap licensing-config \
-      -n gpu-operator-resources --from-file=gridd.conf
+      -n gpu-operator --from-file=gridd.conf
 
 Creating an image pull secrets
 
@@ -168,7 +168,7 @@ Creating an image pull secrets
     $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
       --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
       --docker-password=<password> \
-      --docker-email=<email-id> -n gpu-operator-resources
+      --docker-email=<email-id> -n gpu-operator
 
 .. note::
 
