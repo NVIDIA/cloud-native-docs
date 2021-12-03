@@ -37,7 +37,8 @@ Installation
 ==============
 
 Starting with v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` kernel module during the bootstrap of the NVIDIA driver daemonset.
-Please refer to below install commands based on if MOFED is installed through Network-Operator or on the host.
+Please refer to below install commands based on if Mellanox OFED (MOFED) drivers are installed through Network-Operator or on the host.
+GPU Operator v1.9 added support for GPUDirect RDMA with MOFED drivers installed on the host.
 
 MOFED drivers installed with Network-Operator:
 

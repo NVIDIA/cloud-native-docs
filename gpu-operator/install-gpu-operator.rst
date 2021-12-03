@@ -61,7 +61,6 @@ The following options are available when using the Helm chart. These options can
 
    * - ``operator.defaultRuntime``
      - **DEPRECATED as of v1.9**
-       (for CRI-O) or ``containerd`` (for **containerd**).
      - ``docker``
 
    * - ``mig.strategy``

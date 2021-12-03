@@ -52,7 +52,7 @@ We can use the following option to install the GPU Operator:
 .. note::
 
    Starting with v1.9, MIG Manager supports preinstalled drivers. If drivers are preinstalled, use
-   an additional option during installation ``--set driver.enable=false``. See :ref:`mig-with-preinstalled-drivers`
+   an additional option during installation ``--set driver.enabled=false``. See :ref:`mig-with-preinstalled-drivers`
    for more details.
 
 At this point, all the pods, including the ``nvidia-mig-manager`` will be deployed on nodes that have MIG capable GPUs:
@@ -296,7 +296,7 @@ still applies, however there are a few additional details to consider.
 Install
 =======
 
-During GPU Operator installation, ``driver.enable=false`` must be set. The following options
+During GPU Operator installation, ``driver.enabled=false`` must be set. The following options
 can be used to install the GPU Operator:
 
 .. code-block:: console
@@ -304,7 +304,7 @@ can be used to install the GPU Operator:
     $ helm install gpu-operator \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set driver.enable=false
+        --set driver.enabled=false
 
 =========================
 Managing Host GPU Clients
@@ -358,7 +358,7 @@ custom ``ConfigMap`` to be used by the MIG Manager by performing the following s
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --set migManager.gpuClientsConfig.name=gpu-clients
-        --set driver.enable=false
+        --set driver.enabled=false
 
 *****************
 Architecture

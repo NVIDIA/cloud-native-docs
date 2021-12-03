@@ -58,8 +58,15 @@ Clean Install
 
 You can deploy the **NVIDIA GPU Operator** on a clean install of the OpenShift Container Platform (a newly deployed cluster that was not upgraded) without entitlement on the following versions:
 
-* OpenShift 4.8.22 and above z-streams
-* All the versions of OpenShift 4.9 except 4.9.8
+* OpenShift 4.9.9 and above z-streams
+.. * OpenShift 4.8.22 and above z-streams
+.. * All the versions of OpenShift 4.9 except 4.9.8
+
+.. note::
+
+   The Driver Toolkit, which enables entitlement-free deployments of the GPU Operator, is available for certain z-streams on OpenShift
+   4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
+   all OpenShift versions prior to 4.9.9. See :ref:`broken driver toolkit <broken-dtk>` for more information.
 
 #. Verify your cluster has the OpenShift Driver toolkit:
 
@@ -107,7 +114,7 @@ After an **upgrade** a bug in OpenShift Cluster Version Operator (`BZ#2014071 <h
 Broken driver toolkit
 =====================
 
-OpenShift `4.8.19`, `4.8.21`, `4.9.8` are known to have a broken Driver Toolkit image. The following messages are recorded in the driver Pod containers. Follow the guidance in :ref:`enabling a Cluster-wide entitlement <cluster-entitlement>` and once complete the ``nvidia-driver-daemonset`` will automatically fallback.
+OpenShift `4.8.19`, `4.8.21`, `4.9.8` are known to have a broken Driver Toolkit image. The following messages are recorded in the driver Pod containers. Follow the guidance in :ref:`enabling a Cluster-wide entitlement <cluster-entitlement>` and once complete the ``nvidia-driver-daemonset`` will automatically fallback. To disable the usage of Driver Toolkit image altogether, edit the **ClusterPolicy** instance and set ``driver.use_ocp_driver_toolkit`` option to ``false``. Also, we recommend maintaining entitlements for OpenShift versions <``4.9.9``.
 
    .. code-block:: console
 
