@@ -25,8 +25,9 @@ New Features
 * Support for NVIDIA Data Center GPU Driver version `470.82.01`.
 * Support for preinstalled GPU Driver with MIG Manager.
 * Removed dependency to maintain active Red Hat OpenShift entitlements to build the GPU Driver. Introduce entitlement free driver builds starting with Red Hat OpenShift 4.9.9.
-* Support for GPUDirect RDMA with preinstalled Mellanox OFED drivers
-* Support for GPU Operator and operands upgrades using Red Hat OpenShift Lifecycle Manager (OLM)
+* Support for GPUDirect RDMA with preinstalled Mellanox OFED drivers.
+* Support for GPU Operator and operands upgrades using Red Hat OpenShift Lifecycle Manager (OLM).
+* Support for NVIDIA Virtual Compute Server 13.1 (vGPU).
 
 Improvements
 -------------
@@ -46,7 +47,7 @@ Known Limitations
 * Upgrades from v1.8.x to v1.9.x are not supported due to GPU Operator 1.9 installing the GPU Operator and its operands into a single namespace. Previous GPU Operator versions installed them into different namespaces. Upgrading to GPU Operator 1.9 requires uninstalling pre 1.9 GPU Operator versions prior to installing GPU Operator 1.9
 * Collection of GPU metrics in MIG mode is not supported with 470+ drivers.
 * The GPU Operator requires all MIG related configurations to be executed by MIG Manager. Enabling/Disabling MIG and other MIG related configurations directly on the host is discouraged.
-* Fabric Manager with CentOS 7 is not supported.
+* Fabric Manager (required for NVSwitch based systems) with CentOS 7 is not supported.
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----

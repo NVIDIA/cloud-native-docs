@@ -7,7 +7,7 @@
 Installing the NVIDIA GPU Operator
 ###################################
 
-.. note:: If you are installing the **NVIDIA GPU Operator** on OpenShift ``4.8.19``, ``4.8.21`` or ``4.9.8`` ensure you have :ref:`enabled a Cluster-wide entitlement <cluster-entitlement>`.
+.. note:: If you are installing the **NVIDIA GPU Operator** on OpenShift <``4.9.9`` ensure you have :ref:`enabled a Cluster-wide entitlement <cluster-entitlement>`.
    For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
 With the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.

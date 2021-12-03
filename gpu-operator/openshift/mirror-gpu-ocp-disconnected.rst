@@ -37,7 +37,7 @@ Prerequisites
 
 * A working OpenShift cluster up and running with a GPU worker node. See, `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`_ for guidance on installing OpenShift Container Platform.
 
-  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
+  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
 * Access to the cluster as a user with the ``cluster-admin`` role.
 * Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the jump host. This can be one of the following registries:
