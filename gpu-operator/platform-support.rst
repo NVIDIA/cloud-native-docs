@@ -75,7 +75,12 @@ The following NVIDIA server platforms are supported:
 +--------------------------+--------------------+
 | NVIDIA HGX A100          | A100 and NVSwitch  |
 +--------------------------+--------------------+
+| NVIDIA DGX A100          | A100 and NVSwitch  |
++--------------------------+--------------------+
 
+.. note::
+
+   The GPU Operator supports DGX A100 with DGX OS 5.1+. Please see :ref:`preinstalled-drivers-and-toolkit` for further installation instructions.
 
 .. note::
 
@@ -171,6 +176,7 @@ Linux distributions
          The following Linux distributions are supported:
 
          * Ubuntu 18.04.z, 20.04.z LTS
+         * DGX OS 5.1+
          * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.8 and 4.9
          * CentOS 7
 
