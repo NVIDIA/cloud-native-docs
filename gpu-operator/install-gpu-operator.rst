@@ -224,6 +224,8 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 
 ----
 
+.. _preinstalled-drivers-and-toolkit:
+
 Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -232,7 +234,7 @@ as part of the system image.
 
 .. note::
 
-  These steps should be followed when using the GPU Operator v1.8+ on DGX systems such as DGX A100.
+  These steps should be followed when using the GPU Operator v1.9+ on DGX A100 systems with DGX OS 5.1+.
 
 Before installing the operator, ensure that the following configurations are modified depending on the container runtime configured in your cluster.
 

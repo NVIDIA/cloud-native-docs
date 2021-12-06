@@ -23,6 +23,7 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 New Features
 -------------
 * Support for NVIDIA Data Center GPU Driver version `470.82.01`.
+* Support for DGX A100 with DGX OS 5.1+.
 * Support for preinstalled GPU Driver with MIG Manager.
 * Removed dependency to maintain active Red Hat OpenShift entitlements to build the GPU Driver. Introduce entitlement free driver builds starting with Red Hat OpenShift 4.9.9.
 * Support for GPUDirect RDMA with preinstalled Mellanox OFED drivers.
