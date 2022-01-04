@@ -14,14 +14,15 @@ import os
 import sys
 from builtins import str
 import re
+from datetime import date
 #import sphinx_rtd_theme
 # sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
-
+year = date.today().year
 project = u'NVIDIA Cloud Native Technologies'
-copyright = u'2018-2021, NVIDIA Corporation'
+copyright = u'2018-%s, NVIDIA Corporation' % year
 author = u'NVIDIA Corporation'
 
 
