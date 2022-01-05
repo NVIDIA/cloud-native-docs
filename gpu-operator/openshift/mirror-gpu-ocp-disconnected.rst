@@ -725,6 +725,8 @@ The ``oc adm catalog mirror`` command also automatically mirrors the index image
 
       $ export JUMP_HOST=<Your_jump_hostname>
 
+   .. note:: Specify the fully qualified domain name (FQDN) for **<Your_jump_hostname>**. 
+
 #. Run the following command to mirror the GPU content:
 
    .. note:: The assumption here is your mirror registry is on the same network.

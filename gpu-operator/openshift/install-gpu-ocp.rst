@@ -12,6 +12,12 @@ Installing the NVIDIA GPU Operator
 
 With the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
+As a cluster administrator, you can install the **NVIDIA GPU Operator** using the OpenShift Container Platform CLI or the web console.
+
+***********************************************************
+Installing the NVIDIA GPU Operator by using the web console
+***********************************************************
+
 #. In the OpenShift Container Platform web console from the side menu, navigate to  **Operators** > **OperatorHub** and select **All Projects**.
 
 #. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
@@ -27,6 +33,167 @@ With the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can c
 
                $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
+Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator<create-cluster-policy>`.
+
+*************************************************
+Installing the NVIDIA GPU Operator using the CLI
+*************************************************
+
+As a cluster administrator, you can install the **NVIDIA GPU Operator** using the OpenShift CLI (``oc``).
+
+#. Create a namespace for the **NVIDIA GPU Operator**.
+
+   #. Create the following ``Namespace`` custom resource (CR) that defines the ``nvidia-gpu-operator`` namespace, and then save the YAML in the ``nvidia-gpu-operator.yaml`` file:
+
+      .. code-block:: yaml
+
+         apiVersion: v1
+         kind: Namespace
+         metadata:
+           name: nvidia-gpu-operator
+
+      .. note:: The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace name.
+                If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+
+                If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
+
+                 .. code-block:: console
+
+                    $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
+
+   #. Create the namespace by running the following command:
+
+      .. code-block:: console
+
+         $ oc create -f nvidia-gpu-operator.yaml
+
+      .. code-block:: console
+
+         namespace/nvidia-gpu-operator created
+
+#. Install the **NVIDIA GPU Operator** in the namespace you created in the previous step by creating the following objects:
+
+   #. Create the following ``OperatorGroup`` CR and save the YAML in the ``nvidia-gpu-operatorgroup.yaml`` file:
+
+      .. code-block:: yaml
+
+         apiVersion: operators.coreos.com/v1
+         kind: OperatorGroup
+         metadata:
+           name: nvidia-gpu-operator-group
+           namespace: nvidia-gpu-operator
+         spec:
+          targetNamespaces:
+          - nvidia-gpu-operator
+
+   #. Create the ``OperatorGroup`` CR by running the following command:
+
+      .. code-block:: console
+
+         $ oc create -f nvidia-gpu-operatorgroup.yaml
+
+      .. code-block:: console
+
+         operatorgroup.operators.coreos.com/nvidia-gpu-operator-group created
+
+#. Run the following command to get the ``channel`` value required for step number 5.
+
+   .. code-block:: console
+
+      $ oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}'
+
+   **Example output**
+
+   .. code-block:: console
+
+      v1.9.0
+
+#. Run the following commands to get the ``startingCSV`` value required for step number 5.
+
+   .. code-block:: console
+
+      $ CHANNEL=v1.9.0
+
+   .. code-block:: console
+
+      $ oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV'
+
+   **Example output**
+
+   .. code-block:: console
+
+      gpu-operator-certified.v1.9.0
+
+#. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
+
+   .. code-block:: yaml
+
+      apiVersion: operators.coreos.com/v1alpha1
+      kind: Subscription
+      metadata:
+        name: gpu-operator-certified
+        namespace: nvidia-gpu-operator
+      spec:
+        channel: "v1.9.0"
+        installPlanApproval: Manual
+        name: gpu-operator-certified
+        source: certified-operators
+        sourceNamespace: openshift-marketplace
+        startingCSV: "gpu-operator-certified.v1.9.0"
+
+   .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in step 3 and 4.
+
+#. Create the subscription object by running the following command:
+
+   .. code-block:: console
+
+      $ oc create -f nvidia-gpu-sub.yaml
+
+   .. code-block:: console
+
+      subscription.operators.coreos.com/gpu-operator-certified created
+
+#. Optional: Log in to web console and navigate to the **Operators** > **Installed Operators** page. In the ``Project: nvidia-gpu-operator`` the following is displayed:
+
+   .. image:: graphics/gpu-operator-certified-cli-install.png
+
+#. Verify an install plan has been created:
+
+   .. code-block:: console
+
+      $ oc get installplan -n nvidia-gpu-operator
+
+   **Example output**
+
+   .. code-block:: console
+
+      NAME            CSV                             APPROVAL   APPROVED
+      install-5dm2c   gpu-operator-certified.v1.9.0   Manual     false
+
+#. Approve the install plan using the CLI commands:
+
+   .. code-block:: console
+
+      $ INSTALL_PLAN=$(oc get installplan -n nvidia-gpu-operator -oname)
+
+   .. code-block:: console
+
+      $ oc patch $INSTALL_PLAN -n nvidia-gpu-operator --type merge --patch '{"spec":{"approved":true }}'
+
+   **Example output**
+
+   .. code-block:: console
+
+      installplan.operators.coreos.com/install-5dm2c patched
+
+#. Alternatively click ``Upgrade available`` and approve the plan using the web console:
+
+   .. image:: graphics/gpu-operator-certified-cli-install.png
+
+#. Optional: Verify the successful install in the web console. The display changes to:
+
+   .. image:: graphics/cluster_policy_suceed.png
+
 .. _create-cluster-policy:
 
 *****************************************************
@@ -36,6 +203,11 @@ Create the cluster policy for the NVIDIA GPU Operator
 When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.
 
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
+
+As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console.
+
+Create the cluster policy using the web console
+-----------------------------------------------
 
 #. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
 
@@ -52,6 +224,23 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
  .. image:: graphics/cluster_policy_suceed.png
 
 .. _verify-gpu-operator-install-ocp:
+
+Create the cluster policy using the CLI
+---------------------------------------
+
+#. Create the ClusterPolicy:
+
+   .. code-block:: console
+
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+
+   .. code-block:: console
+
+      $ oc apply -f clusterpolicy.json
+
+   .. code-block:: console
+
+      clusterpolicy.nvidia.com/gpu-cluster-policy created
 
 *************************************************************
 Verify the successful installation of the NVIDIA GPU Operator
