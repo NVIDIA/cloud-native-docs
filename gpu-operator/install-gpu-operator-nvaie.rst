@@ -10,7 +10,8 @@ NVIDIA AI Enterprise
 
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA to run on VMware vSphere  with  NVIDIA-Certified  Systems.
-Additional information can be found in the `NVIDIA AI Enterprise public page <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/#benefits>`_
+
+Additional information can be found in the `NVIDIA AI Enterprise web page <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/#benefits>`_
 
  
 NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
