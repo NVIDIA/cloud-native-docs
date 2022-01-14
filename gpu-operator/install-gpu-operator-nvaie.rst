@@ -26,11 +26,11 @@ Prerequisite Tasks
 
 Prior to installing the GPU Operator with NVIDIA AI Enterprise, the following tasks need to be completed for your cluster.
 
-Create the ``gpu-operator-resources`` namespace:
+Create the ``gpu-operator`` namespace:
 
 .. code-block:: console
 
-    $ kubectl create namespace gpu-operator-resources
+    $ kubectl create namespace gpu-operator
 
 Create an empty vGPU license configuration file:
 
@@ -48,7 +48,7 @@ configuration file and the NLS client license token will be added to this Config
 .. code-block:: console
 
     $ kubectl create configmap licensing-config \
-        -n gpu-operator-resources --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
+        -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
 Create an image pull secret in the ``gpu-operator-resources`` namespace for the private
 registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for
@@ -67,7 +67,7 @@ use with NVIDIA GPU Operator:
 
     $ export PRIVATE_REGISTRY=nvcr.io/nvaie
 
-  * Create an image pull secret in the ``gpu-operator-resources`` namespace with the registry
+  * Create an image pull secret in the ``gpu-operator`` namespace with the registry
     secret name and the private registry name that you set. Replace ``user-name``, ``password``,
     and ``e-mail-address`` with your credentials for logging into the Docker server:
 
@@ -76,6 +76,6 @@ use with NVIDIA GPU Operator:
     $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
         --docker-server=${PRIVATE_REGISTRY} --docker-username=user-name \
         --docker-password=password \
-        --docker-email=e-mail-address -n gpu-operator-resources
+        --docker-email=e-mail-address -n gpu-operator
 
 The GPU Operator is now ready to install. Please refer to :ref:`install-gpu-operator` section for installing the GPU Operator.
