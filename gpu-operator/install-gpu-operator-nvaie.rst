@@ -8,6 +8,11 @@
 NVIDIA AI Enterprise
 #####################
 
+
+NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA to run on VMware vSphere  with  NVIDIA-Certified  Systems.
+Additional information can be found in the `NVIDIA AI Enterprise public page <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/#benefits>`_
+
+ 
 NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
 The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.
 
@@ -42,7 +47,7 @@ Generate and download a NLS client license token. Please refer to Section 4.6 of
 
 Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
 
-Create the ``licensing-config`` ConfigMap object in the ``gpu-operator-resources`` namespace. Both the vGPU license
+Create the ``licensing-config`` ConfigMap object in the ``gpu-operator`` namespace. Both the vGPU license
 configuration file and the NLS client license token will be added to this ConfigMap:
 
 .. code-block:: console
@@ -50,7 +55,7 @@ configuration file and the NLS client license token will be added to this Config
     $ kubectl create configmap licensing-config \
         -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
-Create an image pull secret in the ``gpu-operator-resources`` namespace for the private
+Create an image pull secret in the ``gpu-operator`` namespace for the private
 registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for
 use with NVIDIA GPU Operator:
 
@@ -68,14 +73,16 @@ use with NVIDIA GPU Operator:
     $ export PRIVATE_REGISTRY=nvcr.io/nvaie
 
   * Create an image pull secret in the ``gpu-operator`` namespace with the registry
-    secret name and the private registry name that you set. Replace ``user-name``, ``password``,
-    and ``e-mail-address`` with your credentials for logging into the Docker server:
+    secret name and the private registry name that you set. Replace ``password``,
+    and ``email-address`` with your NGC API key and email address respectively:
 
   .. code-block:: console
 
     $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-        --docker-server=${PRIVATE_REGISTRY} --docker-username=user-name \
-        --docker-password=password \
-        --docker-email=e-mail-address -n gpu-operator
+        --docker-server=${PRIVATE_REGISTRY} \
+        --docker-username='$oauthtoken' \
+        --docker-password=<password> \
+        --docker-email=<email-address> \
+        -n gpu-operator
 
 The GPU Operator is now ready to install. Please refer to :ref:`install-gpu-operator` section for installing the GPU Operator.
