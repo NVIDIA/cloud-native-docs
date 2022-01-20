@@ -1,11 +1,13 @@
 #!/bin/bash
 
 # WARNING: assumes you are running this script from the top-level directory (e.g. scripts/create_archive.sh)
+# Example:
+# PROJECT=gpu-operator VERSION=1.9.0 ./scripts/create_archive.sh
 
 set -e
 
-PROJECT="gpu-operator"
-VERSION="1.9.0"
+PROJECT=${PROJECT:?"Missing PROJECT to archive"}
+VERSION=${VERSION:?"Missing VERSION to archive"}
 ARCHIVE="${PROJECT}/archive/${VERSION}"
 
 # Create archive directory and copy over all current files/directories, excluding the archive directory itself
