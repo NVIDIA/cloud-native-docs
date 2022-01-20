@@ -17,6 +17,23 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.9.1
+=====
+
+Improvements
+------------
+* Improved logic in the driver container for waiting on MOFED driver readiness. This ensures that ``nvidia-peermem`` is built and installed correctly.
+
+Fixed issues
+------------
+* Allow ``driver`` container to fallback to using cluster entitlements on Red Hat OpenShift on build failures. This issue exposed itself when using GPU Operator with some Red Hat OpenShift 4.8.z versions and Red Hat OpenShift 4.9.8. GPU Operator 1.9+ with Red Hat OpenShift 4.9.9+ doesn't require entitlements.
+* Fixed an issue when DCGM-Exporter didn't work correctly with using the separate DCGM host engine that is part of the standalone DCGM pod. Fixed the issue and changed the default behavior to use the DCGM Host engine that is embedded in DCGM-Exporter. The standalone DCGM pod will not be launched by default but can be enabled for use with DGX A100.
+* Update to latest Go vendor packages to avoid any CVE's.
+* Fixed an issue to allow GPU Operator to work with ``CRI-O`` runtime on Kubernetes.
+* Mount correct source path for Mellanox OFED 5.x drivers for enabling GPUDirect RDMA.
+
+----
+
 1.9.0
 =====
 

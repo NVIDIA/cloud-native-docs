@@ -93,6 +93,7 @@ Container Platforms
 The following Kubernetes platforms are supported:
 
 * Kubernetes v1.19+
+* VMware vSphere with Tanzu
 * Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
   the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
 * Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
@@ -152,11 +153,13 @@ The following table includes the support matrix of the GPU Operator releases and
 
     .. tab:: NVIDIA AI Enterprise
 
-      +--------------------------+---------------+------------------------+----------------+
-      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
-      +==========================+===============+========================+================+
-      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
+      +--------------------------+---------------+------------------------+----------------+---------------------------+
+      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         | vSphere with Tanzu        |
+      +==========================+===============+========================+================+===========================+
+      | 1.9.1                    | v1.21+        | Not Supported          | Not Supported  | Supported                 |
+      +--------------------------+---------------+------------------------+----------------+---------------------------+
+      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported  | Not Supported             |
+      +--------------------------+---------------+------------------------+----------------+---------------------------+
 
 .. note::
    The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
@@ -197,7 +200,7 @@ Linux distributions
 In addition, the following container management tools are supported:
 
 * Helm v3
-* Docker CE 19.03.z
+* Docker CE 19.03+
 * containerd 1.4+
 * CRI-O with OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS)
 
@@ -221,6 +224,17 @@ GPU Operator Component Matrix
       - NVIDIA GPU Feature Discovery
       - NVIDIA MIG Manager for K8s
       - NVIDIA DCGM
+
+    * - 1.9.1
+      - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
+      - `v0.2.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+      - `1.7.2 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.10.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.3.1-2.6.1 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.8.2
+      - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.2.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.3.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
 
     * - 1.9.0
       - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
@@ -405,7 +419,14 @@ GPU Operator Component Matrix
     - The GPU Operator is supported on all the R450, R460 and R470 NVIDIA datacenter production drivers. For a list of supported
       datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
 
+Supported Platforms with NVIDIA AI Enterprise
+-----------------------------------------------
 
+The following platforms are supported. Refer to the `NVIDIA AI Enterprise Documentation <https://docs.nvidia.com/ai-enterprise/>`_ for more detailed information.
+
+* VMware vSphere 7.0 Update 2+ with Ubuntu 20.04 guest operating systems
+* Ubuntu 20.04.z LTS bare metal
+* VMware vSphere with Tanzu (7.0 U3) with Ubuntu 20.04 guest operating systems
 
 Supported NVIDIA vGPU Products
 ------------------------------
@@ -426,14 +447,6 @@ The following Virtualization Platforms are supported. Refer to the `NVIDIA vGPU 
 
 .. .. note::
 ..   Note that the GA has been validated with the 4.15 LTS kernel. When using the HWE kernel (e.g. v5.3), there are additional prerequisites before deploying the operator.
-
-Supported Hypervisors with NVIDIA AI Enterprise
------------------------------------------------
-
-The following Virtualization Platforms are supported. Refer to the `NVIDIA AI Enterprise Documentation <https://docs.nvidia.com/ai-enterprise/>`_ for more detailed information.
-
-* VMware vSphere 7.0 Update 2+
-
 
 Deployment Scenarios
 --------------------
