@@ -168,7 +168,8 @@ Install the NVIDIA GPU Operator:
     $ helm install --wait gpu-operator nvaie/gpu-operator -n gpu-operator \
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
-      --set driver.version=470.82.01
+      --set driver.version=470.82.01 \
+      --set driver.licensingConfig.config.name=""
 
 
 .. note::
