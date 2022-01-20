@@ -14,6 +14,11 @@ This document provides an overview of the workflow to getting started with using
    NVIDIA vGPU is only supported with the `NVIDIA Virtual (vGPU) Software License Server (vCS) <https://docs.nvidia.com/grid/ls/index.html>`_.
    The `NVIDIA License System <https://docs.nvidia.com/license-system/latest/>`_ is only supported with NVIDIA AI Enterprise.
 
+.. note::
+
+    Below steps assume ``gpu-operator`` as the default namespace for installing the GPU Operator. In case of RedHat OpenShift, the default
+    namespace would be ``nvidia-gpu-operator``. Please change the namespace accordingly based on your cluster configuration. Also replace
+    ``kubectl`` in the below commands with ``oc`` when running on RedHat OpenShift.
 
 *********************
 High Level Workflow
@@ -176,4 +181,8 @@ Creating an image pull secrets
 
 * Install GPU Operator via the Helm chart
 
-Please refer to :ref:`install-gpu-operator` section for GPU operator installation command and options for vGPU.
+Please refer to :ref:`install-gpu-operator` section for GPU operator installation command and options for vGPU on Kubernetes.
+
+* Install GPU Operator via OLM on RedHat OpenShift
+
+Please refer to :ref:`install-nvidiagpu` section for GPU operator installation command and options for using NVIDIA vGPU on RedHat OpenShift.

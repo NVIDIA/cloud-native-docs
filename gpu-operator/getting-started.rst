@@ -16,6 +16,15 @@ Red Hat OpenShift 4
 For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
 follow the :ref:`user guide <openshift-introduction>`.
 
+
+----
+
+VMware vSphere with Tanzu
+=========================
+
+For installing the GPU Operator on VMware vSphere with Tanzu leveraging NVIDIA AI Enterprise,
+follow the :ref:`NVIDIA AI Enterprise document <install-gpu-operator-nvaie>`.
+
 ----
 
 Google Cloud Anthos
@@ -236,6 +245,9 @@ on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheu
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
 scraped by Prometheus.
 
+Custom Metrics Config
+---------------------
+
 With GPU Operator users can customize the metrics to be collected by ``dcgm-exporter``. Below are the steps for this
 
  1. Fetch the metrics file and save as dcgm-metrics.csv
@@ -260,6 +272,37 @@ With GPU Operator users can customize the metrics to be collected by ``dcgm-expo
 
  5. Install GPU Operator with additional options ``--set dcgmExporter.config.name=metrics-config`` and
     ``--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv``
+
+
+Collecting Metrics on NVIDIA DGX A100 with DGX OS
+----------------------------------------------------
+
+NVIDIA DGX systems running with DGX OS bundles drivers, DCGM, etc. in the system image and have `nv-hostengine` running already.
+To avoid any compatibility issues, it is recommended to have `dcgm-exporter` connect to the existing `nv-hostengine` daemon to gather/publish
+GPU telemetry data.
+
+.. warning::
+
+   The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with
+   `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect
+   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange
+   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library
+   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is
+   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by
+   comparing the version tags of the `dcgm-exporter` image and by running ``nv-hostengine --version`` on the host.
+
+In this scenario, we need to set ``DCGM_REMOTE_HOSTENGINE_INFO`` to ``localhost:5555`` for `dcgm-exporter` to connect to `nv-hostengine` running on the host.
+
+.. code-block:: console
+
+   $ kubectl patch clusterpolicy/cluster-policy --type='json' -p='[{"op": "add", "path": "/spec/dcgmExporter/env/-", "value":{"name":"DCGM_REMOTE_HOSTENGINE_INFO", "value":"localhost:5555"}}]'
+
+Verify `dcgm-exporter` pod is running after this change
+
+.. code-block:: console
+
+   $ kubectl get pods -l app=nvidia-dcgm-exporter --all-namespaces
+
 
 The rest of this section walks through how to setup Prometheus, Grafana using Operators and using Prometheus with ``dcgm-exporter``.
 

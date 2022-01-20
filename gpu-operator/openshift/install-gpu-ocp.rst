@@ -196,15 +196,16 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
 .. _create-cluster-policy:
 
-*****************************************************
-Create the cluster policy for the NVIDIA GPU Operator
-*****************************************************
-
 When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.
 
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
 
-As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console.
+As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
+when using **NVIDIA vGPU**. Please refer to appropriate sections below.
+
+*****************************************************
+Create the ClusterPolicy instance
+*****************************************************
 
 Create the cluster policy using the web console
 -----------------------------------------------
@@ -233,6 +234,72 @@ Create the cluster policy using the CLI
    .. code-block:: console
 
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+
+   .. code-block:: console
+
+      $ oc apply -f clusterpolicy.json
+
+   .. code-block:: console
+
+      clusterpolicy.nvidia.com/gpu-cluster-policy created
+
+***************************************************************************
+Create the ClusterPolicy instance with NVIDIA vGPU
+***************************************************************************
+
+Pre-requisites
+--------------
+
+* Please refer to :ref:`install-gpu-operator-vgpu` section for pre-requisite steps for using NVIDIA vGPU on RedHat OpenShift.
+
+Create the cluster policy using the web console
+-----------------------------------------------
+
+#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+
+#. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
+
+#. Provide name of the licensing ``ConfigMap`` under **Driver** section, this should be created during pre-requsite steps above for NVIDIA vGPU. Refer to below screenshots for example and modify values accordingly.
+
+ .. image:: graphics/cluster_policy_vgpu_1.png
+
+#. Specify ``repository`` path, ``image`` name and NVIDIA vGPU driver ``version`` bundled under **Driver** section. If the registry is not public, please specify the ``imagePullSecret`` created during pre-requisite step under **Driver** advanced configurations section.
+
+ .. image:: graphics/cluster_policy_vgpu_2.png
+
+#. Click **Create**.
+
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.
+
+#. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
+
+ .. image:: graphics/cluster_policy_suceed.png
+
+.. _verify-gpu-operator-install-ocp:
+
+Create the cluster policy using the CLI
+---------------------------------------
+
+#. Create the ClusterPolicy:
+
+   .. code-block:: console
+
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+
+   Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
+
+   .. code-block:: json
+
+         "driver": {
+              "repository": "<repository-path>"
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": "licensing-config",
+                "nlsEnabled": true
+              }
+              "version": "470.82.01"
+         }
 
    .. code-block:: console
 
