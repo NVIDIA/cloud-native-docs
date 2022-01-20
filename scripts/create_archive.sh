@@ -5,7 +5,7 @@
 set -e
 
 PROJECT="gpu-operator"
-VERSION="1.8"
+VERSION="1.9.0"
 ARCHIVE="${PROJECT}/archive/${VERSION}"
 
 # Create archive directory and copy over all current files/directories, excluding the archive directory itself
