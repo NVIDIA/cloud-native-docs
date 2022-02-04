@@ -10,6 +10,47 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.8.0
+====================================
+
+This version of the NVIDIA Container Toolkit adds ``cgroupv2`` support and removes packaging support for Amazon Linux 1.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.8.0``
+* ``libnvidia-container-tools 1.8.0``
+* ``libnvidia-container1 1.8.0``
+
+The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0`` and ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-ubuntu18.04``
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.8.0``:
+
+* ``nvidia-container-runtime 3.8.0``
+* ``nvidia-docker2 2.9.0``
+
+Packaging Changes
+------------------
+
+* Packages for Amazon Linux 1 are no longer built or published
+* The `container-toolkit` container is built and released from the same repository as the NVIDIA Container Toolkit packages.
+
+Fixes and Features
+-------------------
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Add `cgroupv2` support
+* Fix a bug where the GSP firmware path was mounted with write permissions instead of read-only
+* Include the GSP firmware path (if present) in the output of the `nvidia-container-cli list` command
+* Add support for injecting PKS libraries into a container
+
+
 NVIDIA Container Toolkit 1.7.0
 ====================================
 
