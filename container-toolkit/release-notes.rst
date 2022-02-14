@@ -10,6 +10,40 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.8.1
+====================================
+
+This version of the NVIDIA Container Toolkit is a bugfix release and fixes issue with ``cgroup`` support found in
+NVIDIA Container Toolkit ``1.8.0``.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.8.1``
+* ``libnvidia-container-tools 1.8.1``
+* ``libnvidia-container1 1.8.1``
+
+The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1`` and ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-ubuntu18.04``
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.8.1``:
+
+* ``nvidia-container-runtime 3.8.1``
+* ``nvidia-docker2 2.9.1``
+
+Fixes and Features
+-------------------
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Fix bug in determining cgroup root when running in nested containers
+* Fix permission issue when determining cgroup version under certain conditions
+
+
 NVIDIA Container Toolkit 1.8.0
 ====================================
 
