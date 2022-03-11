@@ -80,7 +80,7 @@ The following NVIDIA server platforms are supported:
 
 .. note::
 
-   The GPU Operator supports DGX A100 with DGX OS 5.1+. Please see :ref:`preinstalled-drivers-and-toolkit` for further installation instructions.
+   The GPU Operator supports DGX A100 with DGX OS 5.1+ and DGX A100 with OCP using RHCOS. Please see :ref:`preinstalled-drivers-and-toolkit` for further installation instructions.
 
 .. note::
 
