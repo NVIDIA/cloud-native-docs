@@ -151,7 +151,7 @@ Some examples of the usage are shown below:
    .. code-block:: console
     
       $ docker run --gpus '"device=1,2"' \
-          nvidia/cuda nvidia-smi --query-gpu=uuid --format-csv
+          nvidia/cuda nvidia-smi --query-gpu=uuid --format=csv
 
    .. code-block:: console
 
