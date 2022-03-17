@@ -4,7 +4,7 @@
 Getting Started
 =======================
 
-For installing containerd, follow the official `instructions <https://containerd.io/docs/getting-started/>`_ for your supported Linux distribution. 
+For installing containerd, follow the official `instructions <https://containerd.io/docs/getting-started/>`_ for your supported Linux distribution.
 For convenience, the documentation below includes instructions on installing containerd for various Linux distributions supported by NVIDIA.
 
 Step 0: Pre-Requisites
@@ -47,11 +47,11 @@ You can also ensure these are persistent:
 Step 1: Install containerd
 -------------------------------
 
-After the pre-requisities, we can proceed with installing *containerd* for your Linux distribution. 
+After the pre-requisities, we can proceed with installing *containerd* for your Linux distribution.
 
 Setup the Docker repository:
 
-.. tabs:: 
+.. tabs::
 
     .. tab:: Ubuntu LTS
 
@@ -97,7 +97,7 @@ Configure ``containerd`` with a default ``config.toml`` configuration file:
     $ sudo mkdir -p /etc/containerd \
         && sudo containerd config default | sudo tee /etc/containerd/config.toml
 
-For using the NVIDIA runtime, additional configuration is required. The following options should be added to configure 
+For using the NVIDIA runtime, additional configuration is required. The following options should be added to configure
 ``nvidia`` as a runtime and use ``systemd`` as the cgroup driver. A patch is provided below:
 
 .. code-block:: console
@@ -163,9 +163,9 @@ You can test the installation by using the Docker ``hello-world`` container with
 Step 2: Install NVIDIA Container Toolkit
 -------------------------------------------
 
-After installing containerd, we can proceed to install the NVIDIA Container Toolkit. For ``containerd``, we need to use 
-the ``nvidia-container-runtime`` package. See the `architecture overview <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/arch-overview.html>`_ 
-for more details on the package hierarchy. 
+After installing containerd, we can proceed to install the NVIDIA Container Toolkit. For ``containerd``, we need to use
+the ``nvidia-container-runtime`` package. See the :ref:`architecture overview <arch-overview>`
+for more details on the package hierarchy.
 
 First, setup the package repository and GPG key:
 
@@ -181,7 +181,7 @@ First, setup the package repository and GPG key:
 
 Now, install the NVIDIA runtime:
 
-.. tabs:: 
+.. tabs::
 
     .. tab:: Ubuntu LTS
 
@@ -190,7 +190,7 @@ Now, install the NVIDIA runtime:
             $ sudo apt-get update \
                 && sudo apt-get install -y nvidia-container-runtime
 
-Then, we can test a GPU container: 
+Then, we can test a GPU container:
 
 .. code-block:: console
 

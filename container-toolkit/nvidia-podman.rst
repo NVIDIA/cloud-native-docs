@@ -4,7 +4,7 @@
 Getting Started
 =======================
 
-For installing podman, follow the official `instructions <https://podman.io/getting-started/installation>`_ for your supported Linux distribution. 
+For installing podman, follow the official `instructions <https://podman.io/getting-started/installation>`_ for your supported Linux distribution.
 For convenience, the documentation below includes instructions on installing podman on RHEL 8.
 
 Step 1: Install podman
@@ -42,14 +42,14 @@ Once, ``podman`` is installed, check the version:
     API Version:  2
     Go Version:   go1.14.7
     Built:        Mon Feb  8 21:19:06 2021
-    OS/Arch:      linux/amd64    
+    OS/Arch:      linux/amd64
 
 Step 2: Install NVIDIA Container Toolkit
 -------------------------------------------
 
-After installing ``podman``, we can proceed to install the NVIDIA Container Toolkit. For ``podman``, we need to use 
-the ``nvidia-container-toolkit`` package. See the `architecture overview <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/arch-overview.html>`_ 
-for more details on the package hierarchy. 
+After installing ``podman``, we can proceed to install the NVIDIA Container Toolkit. For ``podman``, we need to use
+the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview>`
+for more details on the package hierarchy.
 
 First, setup the package repository and GPG key:
 
@@ -65,7 +65,7 @@ Now, install the NVIDIA runtime:
     $ sudo dnf clean expire-cache \
         && sudo dnf install -y nvidia-container-toolkit
 
-Once the package installation is complete, ensure that the ``hook`` has been added: 
+Once the package installation is complete, ensure that the ``hook`` has been added:
 
 .. code-block:: console
 
@@ -115,7 +115,7 @@ We can now run some sample GPU containers to test the setup.
         $ podman run --rm --security-opt=label=disable \
              --hooks-dir=/usr/share/containers/oci/hooks.d/ \
              nvidia/cuda:11.0-base nvidia-smi
-   
+
    which should produce the following output:
 
     .. code-block:: console
@@ -163,7 +163,7 @@ We can now run some sample GPU containers to test the setup.
         CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE: 5001000
         Max Memory bandwidth: 320064000000 bytes (320.06 GiB)
         CudaInit completed successfully.
-        
+
         Skipping WatchFields() since DCGM validation is disabled
         TensorEngineActive: generated ???, dcgm 0.000 (27334.5 gflops)
         TensorEngineActive: generated ???, dcgm 0.000 (27795.5 gflops)
