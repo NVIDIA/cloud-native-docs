@@ -41,3 +41,16 @@ Archive
    archive/1.7.0/install-guide.rst
    archive/1.7.0/user-guide.rst
    archive/1.7.0/release-notes.rst
+
+1.6.0
+=====
+
+.. toctree::
+   :maxdepth: 1
+
+   archive/1.6.0/overview.rst
+   archive/1.6.0/concepts.rst
+   archive/1.6.0/arch-overview.rst
+   archive/1.6.0/install-guide.rst
+   archive/1.6.0/user-guide.rst
+   archive/1.6.0/release-notes.rst
