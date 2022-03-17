@@ -60,7 +60,7 @@ With the dedpendencies between these packages shown below:
     │    └─ libnvidia-container1 (>= version)
     └─ libnvidia-container1 (version)
 
-where ``version`` is used to represen the NVIDIA Container Toolkit version.
+where ``version`` is used to represent the NVIDIA Container Toolkit version.
 
 In addition to these main packages, the following two packages are considered part of the NVIDIA container stack:
 
@@ -89,9 +89,9 @@ package and does not provide any functionality of itself.
 The NVIDIA Container Library and CLI
 ````````````````````````````````````
 
-These component are packaged as the ``libnvidia-container-tools`` and ``libnvidia-container1`` packages, respectively.
+These components are packaged as the ``libnvidia-container-tools`` and ``libnvidia-container1`` packages, respectively.
 
-This component provides a library and a simple CLI utility to automatically configure GNU/Linux containers leveraging NVIDIA GPUs.
+These components provide a library and a simple CLI utility to automatically configure GNU/Linux containers leveraging NVIDIA GPUs.
 The implementation relies on kernel primitives and is designed to be agnostic of the container runtime.
 
 ``libnvidia-container`` provides a well-defined API and a wrapper CLI (called ``nvidia-container-cli``) that different runtimes can invoke to
