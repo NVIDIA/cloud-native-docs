@@ -48,7 +48,7 @@ Step 2: Install NVIDIA Container Toolkit
 -------------------------------------------
 
 After installing ``podman``, we can proceed to install the NVIDIA Container Toolkit. For ``podman``, we need to use
-the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview>`
+the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview-1.8.0>`
 for more details on the package hierarchy.
 
 First, setup the package repository and GPG key:

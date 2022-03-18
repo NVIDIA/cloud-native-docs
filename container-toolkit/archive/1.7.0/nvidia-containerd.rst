@@ -164,7 +164,7 @@ Step 2: Install NVIDIA Container Toolkit
 -------------------------------------------
 
 After installing containerd, we can proceed to install the NVIDIA Container Toolkit. For ``containerd``, we need to use
-the ``nvidia-container-runtime`` package. See the :ref:`architecture overview <arch-overview>`
+the ``nvidia-container-runtime`` package. See the :ref:`architecture overview <arch-overview-1.7.0>`
 for more details on the package hierarchy.
 
 First, setup the package repository and GPG key:
