@@ -1,14 +1,14 @@
-Installing on CentOS 7/8 
+Installing on CentOS 7/8
 --------------------------
 The following steps can be used to setup the NVIDIA Container Toolkit on CentOS 7/8.
 
 Setting up Docker on CentOS 7/8
 ++++++++++++++++++++++++++++++++
 
-.. note:: 
+.. note::
 
-   If you're on a cloud instance such as EC2, then the official `CentOS images <https://wiki.centos.org/Cloud/AWS>`_ may not include 
-   tools such as ``iptables`` which are required for a successful Docker installation. Try this command to get a more functional VM, 
+   If you're on a cloud instance such as EC2, then the official `CentOS images <https://wiki.centos.org/Cloud/AWS>`_ may not include
+   tools such as ``iptables`` which are required for a successful Docker installation. Try this command to get a more functional VM,
    before proceeding with the remaining steps outlined in this document.
 
    .. code-block:: console
@@ -33,7 +33,7 @@ Setup the official Docker CE repository:
 
 Now you can observe the packages available from the `docker-ce` repo:
 
-.. tabs:: 
+.. tabs::
 
    .. tab:: CentOS 8
 
@@ -47,30 +47,30 @@ Now you can observe the packages available from the `docker-ce` repo:
 
          $ sudo yum repolist -v
 
-Since CentOS does not support specific versions of ``containerd.io`` packages that are required for newer versions 
-of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce`` 
+Since CentOS does not support specific versions of ``containerd.io`` packages that are required for newer versions
+of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce``
 packages.
 
 Install the ``containerd.io`` package:
 
-.. tabs:: 
+.. tabs::
 
    .. tab:: CentOS 8
 
       .. code-block:: console
-         
+
          $ sudo dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
 
    .. tab:: CentOS 7
 
       .. code-block:: console
-         
+
          $ sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
 
 
 And now install the latest ``docker-ce`` package:
 
-.. tabs:: 
+.. tabs::
 
    .. tab:: CentOS 8
 
@@ -131,17 +131,11 @@ This should result in a console output shown below:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-Setup the ``stable`` repository and the GPG key:
-
-.. code-block:: console
-
-   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
-
+.. include:: ../install/repo-yum.rst
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. tabs:: 
+.. tabs::
 
    .. tab:: CentOS 8
 

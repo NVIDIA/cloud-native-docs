@@ -2,7 +2,7 @@ Installing on Ubuntu and Debian
 -------------------------------
 The following steps can be used to setup NVIDIA Container Toolkit on Ubuntu LTS - 16.04, 18.04, 20.4 and Debian - Stretch, Buster distributions.
 
-Setting up Docker 
+Setting up Docker
 +++++++++++++++++
 Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 
@@ -11,37 +11,21 @@ Docker-CE on Ubuntu can be setup using Docker's official convenience script:
    $ curl https://get.docker.com | sh \
      && sudo systemctl --now enable docker
 
-.. seealso:: 
-   
+.. seealso::
+
    Follow the official `instructions <https://docs.docker.com/engine/install/ubuntu/>`_ for more details and `post-install actions <https://docs.docker.com/engine/install/linux-postinstall/>`_.
 
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-Setup the ``stable`` repository and the GPG key:
-
-.. code-block:: console
-
-   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-.. note::
-
-   To get access to ``experimental`` features such as `CUDA on WSL <https://docs.nvidia.com/cuda/wsl-user-guide/index.html>`_ or the 
-   new `MIG capability <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_ on A100, 
-   you may want to add the ``experimental`` branch to the repository listing: 
-
-   .. code-block:: console
-   
-      $ curl -s -L https://nvidia.github.io/nvidia-container-runtime/experimental/$distribution/nvidia-container-runtime.list | sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
+..  include:: ../install/repo-apt.rst
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
 .. code-block:: console
 
    $ sudo apt-get update
-   
+
 .. code-block:: console
 
    $ sudo apt-get install -y nvidia-docker2

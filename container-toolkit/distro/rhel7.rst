@@ -15,11 +15,11 @@ Docker can then be installed using ``yum``
 
 .. code:: console
 
-   $ sudo yum install docker -y   
+   $ sudo yum install docker -y
 
-.. seealso:: 
+.. seealso::
 
-   More information is available in the KB `article <https://access.redhat.com/solutions/3727511>`_. 
+   More information is available in the KB `article <https://access.redhat.com/solutions/3727511>`_.
 
 Ensure the Docker service is running with the following command:
 
@@ -28,7 +28,7 @@ Ensure the Docker service is running with the following command:
    $ sudo systemctl --now enable docker
 
 
-And finally, test your Docker installation. We can query the version info: 
+And finally, test your Docker installation. We can query the version info:
 
 .. code-block:: console
 
@@ -42,7 +42,7 @@ You should see an output like below:
 
 And run the ``hello-world`` container:
 
-.. code-block:: console 
+.. code-block:: console
 
    $ sudo docker run --rm hello-world
 
@@ -75,13 +75,7 @@ Giving you the following result:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-Setup the ``stable`` repository and the GPG key:
-
-.. code-block:: console
-
-   $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
-
+.. include:: ../install/repo-yum.rst
 
 On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
@@ -108,7 +102,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 .. code-block:: console
 
    $ sudo docker run --rm -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda:11.0-base nvidia-smi
-   
+
 This should result in a console output shown below:
 
 .. code-block:: console
@@ -134,9 +128,9 @@ This should result in a console output shown below:
    +-----------------------------------------------------------------------------+
 
 .. note::
-   
-   Depending on how your RHEL 7 system is configured with SELinux, you may have to use ``--security-opt=label=disable`` on 
-   the Docker command line to share parts of the host OS that can not be relabeled. Without this option, you may observe this 
-   error when running GPU containers: ``Failed to initialize NVML: Insufficient Permissions``. However, using this option disables 
-   SELinux separation in the container and the container is executed in an unconfined type. Review the SELinux policies 
+
+   Depending on how your RHEL 7 system is configured with SELinux, you may have to use ``--security-opt=label=disable`` on
+   the Docker command line to share parts of the host OS that can not be relabeled. Without this option, you may observe this
+   error when running GPU containers: ``Failed to initialize NVML: Insufficient Permissions``. However, using this option disables
+   SELinux separation in the container and the container is executed in an unconfined type. Review the SELinux policies
    on your system.

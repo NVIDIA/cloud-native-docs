@@ -51,19 +51,10 @@ After installing ``podman``, we can proceed to install the NVIDIA Container Tool
 the ``nvidia-container-toolkit`` package. See the :ref:`architecture overview <arch-overview>`
 for more details on the package hierarchy.
 
-First, setup the package repository and GPG key:
+.. include:: install/nvidia-container-toolkit.rst
 
-.. code-block:: console
-
-    $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-        && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
-
-Now, install the NVIDIA runtime:
-
-.. code-block:: console
-
-    $ sudo dnf clean expire-cache \
-        && sudo dnf install -y nvidia-container-toolkit
+Step 2.1. Check the installation
+--------------------------------
 
 Once the package installation is complete, ensure that the ``hook`` has been added:
 
