@@ -11,7 +11,7 @@ NVIDIA AI Enterprise
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with  NVIDIA-Certified  Systems. Additional information can be found at the `NVIDIA AI Enterprise web page <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/#benefits>`_.
 
- 
+
 NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
 The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.
 
@@ -21,14 +21,6 @@ The pre-configured GPU Operator differs from the GPU Operator in the public NGC 
 
   * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
 
-This page provides documentation for the following configurations:
-
-* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
-* VMware vSphere with Tanzu.
-* Red Hat Openshift on bare metal and on vSphere VMs with GPU passthrough and vGPU.
-
-The following sections are applicable to the first two configurations and describe how to deploy the GPU Operator using the Helm Chart.
-For Red Hat Openshift configurations, please follow this procedure `NVIDIA AI Enterprise with OpenShift <nvaie-ocp>`.
 
 ***********************
 Installing GPU Operator
@@ -37,7 +29,7 @@ Installing GPU Operator
 To install GPU Operator with NVIDIA AI Enterprise, apply the following steps.
 
 .. note::
-    
+
    You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
 Create the ``gpu-operator`` namespace:
 
@@ -122,7 +114,7 @@ Installing GPU Operator with the NVIDIA Datacenter Driver
 To install GPU Operator on baremetal with the NVIDIA Datacenter Driver, apply the following steps.
 
 .. note::
-    
+
    You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
 Create the ``gpu-operator`` namespace:
 
@@ -208,7 +200,7 @@ Create a new ``licensing-config-new`` ConfigMap object in the ``gpu-operator`` n
     $ kubectl create configmap licensing-config-new \
         -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
-      
+
 Edit the clusterpolicies by using the command:
 
 .. code-block:: console

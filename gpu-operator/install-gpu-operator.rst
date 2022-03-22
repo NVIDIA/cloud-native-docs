@@ -128,6 +128,21 @@ in the ``gpu-operator`` namespace:
 If a namespace is not specified during installation, all GPU Operator components will be installed in the
 ``default`` namespace.
 
+Operands
+^^^^^^^^
+
+By default, the GPU Operator operands are deployed on all GPU worker nodes in the cluster.
+GPU worker nodes are identified by the presence of the label ``feature.node.kubernetes.io/pci-10de.present=true``,
+where ``0x10de`` is the PCI vendor ID assigned to NVIDIA.
+
+To disable operands from getting deployed on a GPU worker node, label the node with ``nvidia.com/gpu.deploy.operands=false``.
+This can be useful when dedicating a GPU worker node for non-container workloads (i.e. KubeVirt VMs).
+
+.. code-block:: console
+
+   $ kubectl label nodes $NODE nvidia.com/gpu.deploy.operands=false
+
+
 Common Deployment Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -143,6 +158,10 @@ In this scenario, the default configuration options are used:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator
+
+.. note::
+
+   * For installing on Secure Boot systems or using Precompiled modules refer to :ref:`install-precompiled-signed-drivers`.
 
 Bare-metal/Passthrough with default configurations on CentOS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

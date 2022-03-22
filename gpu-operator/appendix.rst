@@ -14,3 +14,7 @@ Appendix
 .. include:: install-gpu-operator-air-gapped.rst
 
 .. include:: install-gpu-operator-outdated-kernels.rst
+
+.. include:: custom-driver-params
+
+.. include:: install-precompiled-signed-drivers.rst

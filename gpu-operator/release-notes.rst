@@ -17,6 +17,58 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.10.0
+=====
+
+New Features
+-------------
+* Support for NVIDIA Data Center GPU Driver version `510.47.03`.
+* Support NVIDIA A2, A100X and A30X
+* Support for A100X and A30X on the DPU’s Arm processor.
+* Support for secure boot with Ubuntu Server 20.04 and NVIDIA Data Center GPU Driver version R470.
+* Support for Red Hat OpenShift 4.10.
+* Support for GPUDirect RDMA with Red Hat OpenShift.
+* Support for NVIDIA AI Enterprise 2.0.
+* Support for NVIDIA Virtual Compute Server 14 (vGPU).
+
+Improvements
+------------
+* Enabling/Disabling of GPU System Processor (GSP) Mode through NVIDIA driver module parameters.
+* Ability to avoid deploying GPU Operator Operands on certain worker nodes through labels. Useful for running VMs with GPUs using KubeVirt.
+
+Fixed issues
+------------
+* Increased lease duration of GPU Operator to 60s to avoid restarts during etcd defrag. More details `here <https://github.com/NVIDIA/gpu-operator/issues/326>`_.
+* Avoid spurious alerts generated of type ``GPUOperatorOpenshiftDriverToolkitEnabledNfdTooOld`` on RedHat OpenShift when there are no GPU nodes in the cluster.
+* Avoid uncordoning nodes during driver pod startup when ``ENABLE_AUTO_DRAIN`` is set to ``false``.
+* Collection of GPU metrics in MIG mode is now supported with 470+ drivers.
+* Fabric Manager (required for NVSwitch based systems) with CentOS 7 is now supported.
+
+
+Known Limitations
+------------------
+* Upgrading to a new NVIDIA AI Enterprise major branch:
+Upgrading the vGPU host driver to a newer major branch than the vGPU guest driver will result in GPU driver pod transitioning to a failed state. This happens for instance when the Host is upgraded to vGPU version 14.x while the Kubernetes nodes are still running with vGPU version 13.x.
+
+To overcome this situation, before upgrading the host driver to the new vGPU branch, apply the following steps:
+
+  #. kubectl edit clusterpolicy
+  #. modify the policy and set the environment variable DISABLE_VGPU_VERSION_CHECK to true as shown below:
+
+      .. code-block:: yaml
+
+        driver:
+          env:
+          - name: DISABLE_VGPU_VERSION_CHECK
+            value: "true"
+
+  #. write and quit the clusterpolicy edit
+* The ``gpu-operator:v1.10.0`` and ``gpu-operator:v1.10.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * `openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+
+----
+
 1.9.1
 =====
 
