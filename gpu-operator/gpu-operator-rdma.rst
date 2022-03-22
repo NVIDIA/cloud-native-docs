@@ -36,6 +36,13 @@ Make sure that `MOFED <https://github.com/Mellanox/ofed-docker>`_ drivers are in
 Installation
 ==============
 
+The following section is applicable to the following configurations and describe how to deploy the GPU Operator using the Helm Chart:
+
+* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
+* VMware vSphere with Tanzu.
+
+For Red Hat Openshift on bare metal and on vSphere VMs with GPU passthrough and vGPU configurations, please follow this procedure :ref:`NVIDIA AI Enterprise with OpenShift <nvaie-ocp>`.
+
 Starting with v1.8, the GPU Operator provides an option to load the ``nvidia-peermem`` kernel module during the bootstrap of the NVIDIA driver daemonset.
 Please refer to below install commands based on if Mellanox OFED (MOFED) drivers are installed through Network-Operator or on the host.
 GPU Operator v1.9 added support for GPUDirect RDMA with MOFED drivers installed on the host.
@@ -67,7 +74,7 @@ Once everything is in place, the container nvidia-peermem-ctr will be instantiat
 
 .. code-block:: console
 
-   $ kubectl describe pod -n gpu-operator nvidia-driver-daemonset-xxxx
+   $ kubectl describe pod -n <Operator Namespace> nvidia-driver-daemonset-xxxx
    <snip>
     Init Containers:
      mofed-validation:
@@ -102,18 +109,6 @@ To validate that nvidia-peermem-ctr has successfully loaded the nvidia-peermem m
 
 
 For more information on ``nvidia-peermem``, refer to the `documentation <https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#nvidia-peermem>`_.
-
-*****************
-Platform Support
-*****************
-
-The following Linux distributions are supported:
-
-  * Ubuntu 20.04 LTS
-
-The following NVIDIA drivers are supported:
-
-  * R470 datacenter drivers (470.57.02+)
 
 *****************
 Further Reading

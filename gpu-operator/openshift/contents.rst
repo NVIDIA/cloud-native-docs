@@ -10,6 +10,7 @@ GPU Operator on OpenShift
    steps-overview.rst
    install-nfd.rst
    install-gpu-ocp.rst
+   nvaie-with-ocp.rst
    mig-ocp.rst
    clean-up.rst
    mirror-gpu-ocp-disconnected.rst
