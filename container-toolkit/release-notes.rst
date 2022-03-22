@@ -10,6 +10,72 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.9.0
+====================================
+
+This release of the NVIDIA Container Toolkit `v1.9.0` is primarily targeted at adding multi-arch support for the `container-toolkit` images.
+It also includes enhancements for use on Tegra-systems and some notable bugfixes.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.9.0``
+* ``libnvidia-container-tools 1.9.0``
+* ``libnvidia-container1 1.9.0``
+
+The following `container-toolkit` containers are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0`` and ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu18.04``
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.9.0``:
+
+* ``nvidia-container-runtime 3.9.0``
+* ``nvidia-docker2 2.10.0``
+
+Fixes and Features
+-------------------
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Add additional check for Tegra in ``/sys/.../family`` file in CLI
+* Update jetpack-specific CLI option to only load Base CSV files by default
+* Fix bug (from ``v1.8.0``) when mounting GSP firmware into containers without ``/lib`` to ``/usr/lib`` symlinks
+* Update ``nvml.h`` to CUDA 11.6.1 nvML_DEV 11.6.55
+* Update switch statement to include new brands from latest ``nvml.h``
+* Process all ``--require`` flags on Jetson platforms
+* Fix long-standing issue with running ldconfig on Debian systems
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+
+* Publish an ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu20.04`` image based on ``nvidia/cuda:11.6.0-base-ubuntu20.04``
+* The following images are available as multi-arch images including support for ``linux/amd64`` and ``linux/arm64`` platforms:
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu18.04`` (and ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0``)
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu20.04``
+
+Known Issues
+-------------
+
+* The ``container-toolkit:v1.9.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``:
+    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
+    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
+    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``:
+    * ``cyrus-sasl-lib`` - `CVE-2022-24407 <https://access.redhat.com/security/cve/CVE-2022-24407>`_
+    * ``openssl``, ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
+    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
+    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``:
+    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+
+
 NVIDIA Container Toolkit 1.8.1
 ====================================
 
