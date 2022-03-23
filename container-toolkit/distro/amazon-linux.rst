@@ -65,7 +65,7 @@ This should result in a console output shown below:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. include:: ../install/repo-yum.rst
+.. include:: install/repo-yum.rst
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 

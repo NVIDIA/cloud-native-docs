@@ -67,7 +67,7 @@ Setting up NVIDIA Container Toolkit
 
    You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` explicitly when adding the repositories
 
-.. include:: ../install/repo-zypper.rst
+.. include:: install/repo-zypper.rst
 
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:

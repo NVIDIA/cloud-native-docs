@@ -18,7 +18,7 @@ Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-..  include:: ../install/repo-apt.rst
+..  include:: install/repo-apt.rst
 
 Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 

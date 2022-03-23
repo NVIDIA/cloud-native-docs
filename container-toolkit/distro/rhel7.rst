@@ -75,7 +75,7 @@ Giving you the following result:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. include:: ../install/repo-yum.rst
+.. include:: install/repo-yum.rst
 
 On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
