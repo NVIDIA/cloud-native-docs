@@ -21,7 +21,7 @@ Now, add the NVIDIA Helm repository:
 
 .. code-block:: console
 
-   $ helm repo add nvidia https://nvidia.github.io/gpu-operator \
+   $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
       && helm repo update
 
 Install the GPU Operator
