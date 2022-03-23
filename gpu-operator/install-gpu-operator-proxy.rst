@@ -86,11 +86,11 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from NGC repository. ``v1.9.0`` is used in the command below:
+Fetch the chart from NGC repository. ``v1.10.0`` is used as an example in the command below:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.9.0.tgz
+    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.10.0.tgz
 
 Install the GPU Operator with updated ``values.yaml``:
 
@@ -98,7 +98,7 @@ Install the GPU Operator with updated ``values.yaml``:
 
     $ helm install --wait gpu-operator \
          -n gpu-operator --create-namespace \
-         gpu-operator-v1.9.0.tgz \
+         gpu-operator-v1.10.0.tgz \
          -f values.yaml
 
 Check the status of the pods to ensure all the containers are running:
