@@ -120,7 +120,7 @@ in the ``gpu-operator`` namespace:
 .. code-block:: console
 
    $ helm install --wait --generate-name \
-        -n gpu-operator --create-namespace
+        -n gpu-operator --create-namespace \
         nvidia/gpu-operator
 
 If a namespace is not specified during installation, all GPU Operator components will be installed in the
