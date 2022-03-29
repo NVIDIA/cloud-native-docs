@@ -231,9 +231,9 @@ Now create the cluster policy, which is responsible for maintaining policy resou
    .. image:: graphics/createclusterpolicy3.png
 
    * **version**: 510.47.03
-   * **image**: vgpu-guest-driver
+   * **image**: vgpu-guest-driver-2-0
 
-      .. note:: The vGPU driver image for OpenShift Container Platform version 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver:510.47.03-rhcos4.9``. For 4.10 the vGPU driver image is ``nvcr.io/nvaie/vgpu-guest-driver:510.47.03-rhcos4.10``
+      .. note:: The vGPU driver image for OpenShift Container Platform version 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.9``. For 4.10 the vGPU driver image is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.10``
 
 #. Expand the **Advanced configuration** menu and specify the imagePullSecret . (For example: *gpu-operator-secret*)
 
