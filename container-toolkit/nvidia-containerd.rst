@@ -49,7 +49,7 @@ Step 1: Install containerd
 
 After the pre-requisities, we can proceed with installing *containerd* for your Linux distribution.
 
-Setup the Docker repository:
+Setup the Docker repository as described `here <https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository>`_:
 
 .. tabs::
 
@@ -59,25 +59,27 @@ Setup the Docker repository:
 
             .. code-block:: console
 
-                $ sudo apt-get install -y \
-                    apt-transport-https \
+                $ sudo apt-get update
+
+            .. code-block:: console
+
+                $ sudo apt-get install \
                     ca-certificates \
                     curl \
-                    gnupg-agent \
-                    software-properties-common
+                    gnupg \
+                    lsb-release
 
         #. Add the repository GPG key and the repo:
 
             .. code-block:: console
 
-                $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+                $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
             .. code-block:: console
 
-                $ sudo add-apt-repository \
-                    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-                    $(lsb_release -cs) \
-                    stable"
+                $ echo \
+                  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+                  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 Now, install the ``containerd`` package:
 
