@@ -6,7 +6,7 @@
 NVIDIA Cloud Native Technologies
 ================================
 This documentation repository contains the product documentation for the
-NVIDIA Container Toolkit (``nvidia-docker2``), the NVIDIA GPU Operator and
+:ref:`NVIDIA Container Toolkit <container-toolkit/overview>`, the :ref:`NVIDIA GPU Operator <gpu-operator/overview>`, and
 using NVIDIA GPUs with Kubernetes.
 
 .. toctree::

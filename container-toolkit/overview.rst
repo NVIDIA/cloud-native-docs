@@ -1,19 +1,21 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
+.. _overview:
+
 **************
 Overview
 **************
-The NVIDIA Container Toolkit allows users to build and run GPU accelerated containers. 
-The toolkit includes a container runtime `library <https://github.com/NVIDIA/libnvidia-container>`_ 
+The NVIDIA Container Toolkit allows users to build and run GPU accelerated containers.
+The toolkit includes a container runtime `library <https://github.com/NVIDIA/libnvidia-container>`_
 and utilities to automatically configure containers to leverage NVIDIA GPUs.
 
 .. image:: https://cloud.githubusercontent.com/assets/3028125/12213714/5b208976-b632-11e5-8406-38d379ec46aa.png
    :width: 400
 
 
-The NVIDIA Container Toolkit supports different container engines in the ecosystem - `Docker <https://docs.docker.com/get-started/overview/>`_, 
-`LXC <https://linuxcontainers.org>`_, `Podman <http://podman.io/>`_ etc. Follow the :ref:`user-guide` for running GPU 
+The NVIDIA Container Toolkit supports different container engines in the ecosystem - `Docker <https://docs.docker.com/get-started/overview/>`_,
+`LXC <https://linuxcontainers.org>`_, `Podman <http://podman.io/>`_ etc. Follow the :ref:`user-guide` for running GPU
 containers with these engines.
 
 ----
