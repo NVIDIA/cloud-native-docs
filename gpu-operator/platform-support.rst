@@ -287,6 +287,17 @@ GPU Operator Component Matrix
       - NVIDIA MIG Manager for K8s
       - NVIDIA DCGM
 
+    * - 1.10.1
+      - `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_
+      - `v0.3.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+      - `1.9.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.11.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.3.4-2.6.4 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      - 0.10.1
+      - `0.5.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.3.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.3.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+
     * - 1.10
       - `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_
       - `v0.3.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
