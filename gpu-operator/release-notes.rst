@@ -14,6 +14,28 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
+----
+
+1.10.1
+=====
+
+Improvements
+------------
+* Validated secure boot with signed NVIDIA Data Center Driver R510.
+* Validated cgroup v2 with Ubuntu Server 20.04 LTS.
+
+Fixed issues
+------------
+* Fixed an issue when GPU Operator was installed and MIG was already enabled on a GPU. The GPU Operator will now install sucessfully and MIG can either be disabled via the label ``nvidia.com/mig.config=all-disabled`` or configured with the required MIG profiles.
+
+Known Limitations
+------------------
+
+* The ``gpu-operator:v1.10.1`` and ``gpu-operator:v1.10.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+    * ``zlib`` - `CVE-2018-25032 <https://access.redhat.com/security/cve/CVE-2018-25032>`_
+    * ``gzip`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 ----
 
@@ -65,7 +87,7 @@ To overcome this situation, before upgrading the host driver to the new vGPU bra
   #. write and quit the clusterpolicy edit
 * The ``gpu-operator:v1.10.0`` and ``gpu-operator:v1.10.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * `openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
 
 ----
 
