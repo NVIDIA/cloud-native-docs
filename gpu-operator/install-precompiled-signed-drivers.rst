@@ -16,7 +16,7 @@ when nodes are enabled with Secure Boot. In order to use these, GPU Operator nee
         nvidia/gpu-operator \
         --set driver.version=<DRIVER_BRANCH>-signed
 
-supported DRIVER_BRANCH value currently is ``470`` which will install latest drivers available on that branch for current running
+supported DRIVER_BRANCH value currently are ``470`` and ``510`` which will install latest drivers available on that branch for current running
 kernel version.
 
 Following are the packages used in this case by the driver container.
