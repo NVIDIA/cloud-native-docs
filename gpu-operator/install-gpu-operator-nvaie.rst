@@ -177,7 +177,7 @@ Install the NVIDIA GPU Operator:
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
       --set driver.version=510.47.03 \
-      --set driver.licensingConfig.config.name=""
+      --set driver.licensingConfig.configMapName=""
 
 
 .. note::
