@@ -299,6 +299,11 @@ driver versions:
 
 Single switch to disable all the constraints of the form ``NVIDIA_REQUIRE_*``.
 
+.. note::
+
+   If you are running CUDA-base images older than CUDA 11.7 (and unable to update to the new base images with updated constraints),
+   CUDA compatibility checks can be disabled by setting ``NVIDIA_DISABLE_REQUIRE`` to ``true``.
+
 ``NVIDIA_REQUIRE_CUDA``
 """""""""""""""""""""""
 
