@@ -153,7 +153,7 @@ Create the ConfigMap for NLS Token
 Prerequisites
 -------------
 
-Generate and download a NLS client license token. See Section 4.6 of the `NVIDIA License System User Guide <https://https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+Generate and download a NLS client license token. See Section 4.6 of the `NVIDIA License System User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
 
 Procedure
 ---------

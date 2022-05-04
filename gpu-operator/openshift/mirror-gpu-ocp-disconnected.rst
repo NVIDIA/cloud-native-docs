@@ -601,22 +601,31 @@ When configuring Operator Lifecycle Manager (OLM) to use mirrored content on res
 Determine the Operators of interest
 -----------------------------------
 
-The four primary official indexes the OpenShift Container Platform uses are:
+The four primary official indexes the OpenShift Container Platform 4.9 uses are:
 
    * ``registry.redhat.io/redhat/certified-operator-index:v4.9``
    * ``registry.redhat.io/redhat/redhat-operator-index:v4.9``
    * ``registry.redhat.io/redhat/community-operator-index:v4.9``
    * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.9``
 
-   The table below provides the relevant information extracted from the steps below for the Operators of interest to this procedure.
+The four primary official indexes the OpenShift Container Platform 4.10 uses are:
 
-   +---------------------+---------------------------------+---------------------------------------------------------+
-   | CatalogSource Name  | Operator Name                   |      Index Image Name                                   |
-   +=====================+=================================+=========================================================+
-   | certified-operators | gpu-operator-certified          | registry.redhat.io/redhat/certified-operator-index:v4.9 |
-   +---------------------+---------------------------------+---------------------------------------------------------+
-   | redhat-operators    | nfd                             | registry.redhat.io/redhat/redhat-operator-index:v4.9    |
-   +---------------------+---------------------------------+---------------------------------------------------------+
+      * ``registry.redhat.io/redhat/certified-operator-index:v4.10``
+      * ``registry.redhat.io/redhat/redhat-operator-index:v4.10``
+      * ``registry.redhat.io/redhat/community-operator-index:v4.10``
+      * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.10``
+
+  .. note:: The procedure refers to OpenShift Container Platform 4.9 for 4.10 replace references to 4.9 with 4.10.
+
+This table provides the relevant information extracted from the steps below for the Operators of interest to this procedure.
+
++---------------------+---------------------------------+---------------------------------------------------------+
+| CatalogSource Name  | Operator Name                   |      Index Image Name                                   |
++=====================+=================================+=========================================================+
+| certified-operators | gpu-operator-certified          | registry.redhat.io/redhat/certified-operator-index:v4.9 |
++---------------------+---------------------------------+---------------------------------------------------------+
+| redhat-operators    | nfd                             | registry.redhat.io/redhat/redhat-operator-index:v4.9    |
++---------------------+---------------------------------+---------------------------------------------------------+
 
 How these are determined is illustrated below in steps 2,3 and 4.
 
@@ -725,7 +734,7 @@ The ``oc adm catalog mirror`` command also automatically mirrors the index image
 
       $ export JUMP_HOST=<Your_jump_hostname>
 
-   .. note:: Specify the fully qualified domain name (FQDN) for **<Your_jump_hostname>**. 
+   .. note:: Specify the fully qualified domain name (FQDN) for **<Your_jump_hostname>**.
 
 #. Run the following command to mirror the GPU content:
 
