@@ -106,13 +106,13 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      v1.9.0
+      v1.10
 
 #. Run the following commands to get the ``startingCSV`` value required for step number 5.
 
    .. code-block:: console
 
-      $ CHANNEL=v1.9.0
+      $ CHANNEL=v1.10
 
    .. code-block:: console
 
@@ -122,7 +122,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      gpu-operator-certified.v1.9.0
+      gpu-operator-certified.v1.10.1
 
 #. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
 
@@ -134,12 +134,12 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
         name: gpu-operator-certified
         namespace: nvidia-gpu-operator
       spec:
-        channel: "v1.9.0"
+        channel: "v1.10"
         installPlanApproval: Manual
         name: gpu-operator-certified
         source: certified-operators
         sourceNamespace: openshift-marketplace
-        startingCSV: "gpu-operator-certified.v1.9.0"
+        startingCSV: "gpu-operator-certified.v1.10.1"
 
    .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in step 3 and 4.
 
@@ -167,8 +167,9 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      NAME            CSV                             APPROVAL   APPROVED
-      install-5dm2c   gpu-operator-certified.v1.9.0   Manual     false
+      NAME            CSV                              APPROVAL   APPROVED
+      install-wwhfj   gpu-operator-certified.v1.10.1   Manual     false
+
 
 #. Approve the install plan using the CLI commands:
 
@@ -184,7 +185,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      installplan.operators.coreos.com/install-5dm2c patched
+      installplan.operators.coreos.com/install-wwhfj patched
 
 #. Alternatively click ``Upgrade available`` and approve the plan using the web console:
 
@@ -233,7 +234,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.10.1 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    .. code-block:: console
 
@@ -284,7 +285,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.10.1 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
 
@@ -323,31 +324,29 @@ Verify the successful installation of the NVIDIA GPU Operator as shown here:
 
    .. code-block:: console
 
-      NAME                                                                  READY   STATUS      RESTARTS   AGE
-      pod/bb0dd90f1b757a8c7b338785a4a65140732d30447093bc2c4f6ae8e75844gfv   0/1     Completed   0          94m
-      pod/gpu-feature-discovery-hlpgs                                       1/1     Running     0          91m
-      pod/gpu-operator-8dc8d6648-jzhnr                                      1/1     Running     0          94m
-      pod/nvidia-container-toolkit-daemonset-z2wh7                          1/1     Running     0          91m
-      pod/nvidia-cuda-validator-8fx22                                       0/1     Completed   0          86m
-      pod/nvidia-dcgm-exporter-ds9xd                                        1/1     Running     0          91m
-      pod/nvidia-dcgm-k7tz6                                                 1/1     Running     0          91m
-      pod/nvidia-device-plugin-daemonset-nqxmc                              1/1     Running     0          91m
-      pod/nvidia-device-plugin-validator-87zdl                              0/1     Completed   0          86m
-      pod/nvidia-driver-daemonset-48.84.202110270303-0-9df9j                2/2     Running     0          91m
-      pod/nvidia-node-status-exporter-7bhdk                                 1/1     Running     0          91m
-      pod/nvidia-operator-validator-kjznr                                   1/1     Running     0          91m
-      pod/openshift-psap-ci-artifacts-operator-bundle-gpu-operator-master   1/1     Running     0          94m
+      NAME                                                      READY   STATUS      RESTARTS   AGE
+      pod/gpu-feature-discovery-c2rfm                           1/1     Running     0          6m28s
+      pod/gpu-operator-84b7f5bcb9-vqds7                         1/1     Running     0          39m
+      pod/nvidia-container-toolkit-daemonset-pgcrf              1/1     Running     0          6m28s
+      pod/nvidia-cuda-validator-p8gv2                           0/1     Completed   0          99s
+      pod/nvidia-dcgm-exporter-kv6k8                            1/1     Running     0          6m28s
+      pod/nvidia-dcgm-tpsps                                     1/1     Running     0          6m28s
+      pod/nvidia-device-plugin-daemonset-gbn55                  1/1     Running     0          6m28s
+      pod/nvidia-device-plugin-validator-z7ltr                  0/1     Completed   0          82s
+      pod/nvidia-driver-daemonset-410.84.202203290245-0-xxgdv   2/2     Running     0          6m28s
+      pod/nvidia-node-status-exporter-snmsm                     1/1     Running     0          6m28s
+      pod/nvidia-operator-validator-6pfk6                       1/1     Running     0          6m28s
 
-      NAME                                                          DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                        AGE
-      daemonset.apps/gpu-feature-discovery                          1         1         1       1            1           nvidia.com/gpu.deploy.gpu-feature-discovery=true                                                                     91m
-      daemonset.apps/nvidia-container-toolkit-daemonset             1         1         1       1            1           nvidia.com/gpu.deploy.container-toolkit=true                                                                         91m
-      daemonset.apps/nvidia-dcgm                                    1         1         1       1            1           nvidia.com/gpu.deploy.dcgm=true                                                                                      91m
-      daemonset.apps/nvidia-dcgm-exporter                           1         1         1       1            1           nvidia.com/gpu.deploy.dcgm-exporter=true                                                                             91m
-      daemonset.apps/nvidia-device-plugin-daemonset                 1         1         1       1            1           nvidia.com/gpu.deploy.device-plugin=true                                                                             91m
-      daemonset.apps/nvidia-driver-daemonset-48.84.202110270303-0   1         1         1       1            1           feature.node.kubernetes.io/system-os_release.OSTREE_VERSION=48.84.202110270303-0,nvidia.com/gpu.deploy.driver=true   91m
-      daemonset.apps/nvidia-mig-manager                             0         0         0       0            0           nvidia.com/gpu.deploy.mig-manager=true                                                                               91m
-      daemonset.apps/nvidia-node-status-exporter                    1         1         1       1            1           nvidia.com/gpu.deploy.node-status-exporter=true                                                                      91m
-      daemonset.apps/nvidia-operator-validator                      1         1         1       1            1           nvidia.com/gpu.deploy.operator-validator=true                                                                        91m
+      NAME                                                           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                         AGE
+      daemonset.apps/gpu-feature-discovery                           1         1         1       1            1           nvidia.com/gpu.deploy.gpu-feature-discovery=true                                                                      6m28s
+      daemonset.apps/nvidia-container-toolkit-daemonset              1         1         1       1            1           nvidia.com/gpu.deploy.container-toolkit=true                                                                          6m28s
+      daemonset.apps/nvidia-dcgm                                     1         1         1       1            1           nvidia.com/gpu.deploy.dcgm=true                                                                                       6m28s
+      daemonset.apps/nvidia-dcgm-exporter                            1         1         1       1            1           nvidia.com/gpu.deploy.dcgm-exporter=true                                                                              6m28s
+      daemonset.apps/nvidia-device-plugin-daemonset                  1         1         1       1            1           nvidia.com/gpu.deploy.device-plugin=true                                                                              6m28s
+      daemonset.apps/nvidia-driver-daemonset-410.84.202203290245-0   1         1         1       1            1           feature.node.kubernetes.io/system-os_release.OSTREE_VERSION=410.84.202203290245-0,nvidia.com/gpu.deploy.driver=true   6m28s
+      daemonset.apps/nvidia-mig-manager                              0         0         0       0            0           nvidia.com/gpu.deploy.mig-manager=true                                                                                6m28s
+      daemonset.apps/nvidia-node-status-exporter                     1         1         1       1            1           nvidia.com/gpu.deploy.node-status-exporter=true                                                                       6m29s
+      daemonset.apps/nvidia-operator-validator                       1         1         1       1            1           nvidia.com/gpu.deploy.operator-validator=true                                                                         6m28s
 
    The ``nvidia-driver-daemonset`` pod runs on each worker node that contains a supported NVIDIA GPU.
 
@@ -367,13 +366,13 @@ Disable cluster monitoring in the ``nvidia-gpu-operator`` namespace by setting `
 
    .. code-block:: console
 
-      oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring=true
+       $ oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring=true
 
 If the GPU Operator is not installed in the suggested namespace, the GPU Operator will not automatically enable monitoring. Set the label manually as shown:
 
    .. code-block:: console
 
-      oc label ns/$NAMESPACE openshift.io/cluster-monitoring=true
+      $ oc label ns/$NAMESPACE openshift.io/cluster-monitoring=true
 
    .. note:: Only do this if trusted operators are installed in this namespace.
 
@@ -389,7 +388,7 @@ The ``nvidia-driver-daemonset`` pod has two containers.
 
    .. code-block:: console
 
-      oc logs -f nvidia-driver-daemonset-48.84.202110270303-0-w6kxk -n nvidia-gpu-operator -c nvidia-driver-ctr
+      $ oc logs -f nvidia-driver-daemonset-410.84.202203290245-0-xxgdv -n nvidia-gpu-operator -c nvidia-driver-ctr
 
 #. Run the following to examine the logs associated with the ``openshift-driver-toolkit-ctr``:
 
@@ -397,7 +396,7 @@ The ``nvidia-driver-daemonset`` pod has two containers.
 
    .. code-block:: console
 
-      oc logs -f nvidia-driver-daemonset-48.84.202110270303-0-w6kxk -n nvidia-gpu-operator -c openshift-driver-toolkit-ctr
+      $ oc logs -f nvidia-driver-daemonset-410.84.202203290245-0-xxgdv -n nvidia-gpu-operator -c openshift-driver-toolkit-ctr
 
 .. _running-sample-app:
 
@@ -468,8 +467,8 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
 
    .. code-block:: console
 
-      NAME                                                 READY   STATUS    RESTARTS   AGE    IP            NODE                          NOMINATED NODE   READINESS GATES
-      nvidia-driver-daemonset-48.84.202110270303-0-9df9j   2/2     Running   0          111m   10.130.2.20   ip-10-0-140-91.ec2.internal   <none>           <none>
+      NAME                                                  READY   STATUS    RESTARTS   AGE   IP            NODE                           NOMINATED NODE   READINESS GATES
+      nvidia-driver-daemonset-410.84.202203290245-0-xxgdv   2/2     Running   0          23m   10.130.2.18   ip-10-0-143-147.ec2.internal   <none>           <none>
 
 
    .. note:: With the Pod and node name, run the ``nvidia-smi`` on the correct node.
@@ -478,24 +477,25 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
 
    .. code-block:: console
 
-      $ oc exec -it nvidia-driver-daemonset-48.84.202110270303-0-9df9j -- nvidia-smi
+      $ oc exec -it nvidia-driver-daemonset-410.84.202203290245-0-xxgdv -- nvidia-smi
 
    .. code-block:: console
 
-      Defaulting container name to nvidia-driver-ctr.
-      Use 'oc describe pod/nvidia-driver-daemonset-48.84.202110270303-0-9df9j -n nvidia-gpu-operator' to see all of the containers in this pod.
-      Wed Nov 17 13:24:03 2021
+      Defaulted container "nvidia-driver-ctr" out of: nvidia-driver-ctr, openshift-driver-toolkit-ctr, k8s-driver-manager (init)
+      Mon Apr 11 15:02:23 2022
       +-----------------------------------------------------------------------------+
-      | NVIDIA-SMI 470.57.02    Driver Version: 470.57.02    CUDA Version: 11.4     |
+      | NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
       |-------------------------------+----------------------+----------------------+
       | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
       | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
       |                               |                      |               MIG M. |
       |===============================+======================+======================|
       |   0  Tesla T4            On   | 00000000:00:1E.0 Off |                    0 |
-      | N/A   40C    P8    16W /  70W |      0MiB / 15109MiB |      0%      Default |
+      | N/A   33C    P8    15W /  70W |      0MiB / 15360MiB |      0%      Default |
       |                               |                      |                  N/A |
       +-------------------------------+----------------------+----------------------+
+
+      +-----------------------------------------------------------------------------+
       | Processes:                                                                  |
       |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
       |        ID   ID                                                   Usage      |

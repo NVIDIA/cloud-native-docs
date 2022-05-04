@@ -12,43 +12,15 @@ Follow these steps to install the **NVIDIA GPU Operator**:
 #. :ref:`install-nvidiagpu`.
 #. :ref:`running-sample-app`.
 
-Improvements with version 1.9
+Improvements with version 1.10
 -----------------------------
 
-The **NVIDIA GPU Operator** in version 1.9 has the following enhancements:
-
-* You can install the Operator into the ``nvidia-gpu-operator`` dedicated namespace. This replaces the ``openshift-operators`` and ``gpu-operator-resources`` used in previous versions.
-
-  .. note:: The option does exist to install the Operator to any existing namespace or to a created new namespace. The recommendation is to **not** enable namespace monitoring unless only trusted operators are installed in the choosen namespace.
-     When the GPU Operator is installed into the suggested namespace ``nvidia-gpu-operator`` alerts are automatically enabled and logged in the console.
-
-     Verify monitoring is enabled for the namespace:
-
-      .. code-block:: console
-
-         $ oc get ns/nvidia-gpu-operator --show-labels | grep openshift.io/cluster-monitoring=true
-
-* State indicator metrics are now generated which include:
-
-   - Successful deployment
-   - Number of GPUs available in the nodes
-   - Validation of the different stack layers
-* Prometheus alerts are generated when GPU nodes are not available or when the driver cannot be built.
-* The ``nvidia-driver-daemonset`` now includes two containers where in previous releases it only had one:
-
-   - ``nvidia-driver-ctr``
-   - ``openshift-driver-toolkit-ctr``
-
-* The driver toolkit removes the requirements to:
-
-   - Set up an entitlement
-   - Mirror the RPM packages in a disconnected environment
-   - Configure a proxy to access the package repository
+NVIDIA GPU operator 1.10 provides support for ARM architecture with OpenShift Container Platform 4.10.
 
 Upgrade
 -------
 
-To upgrade the **NVIDIA GPU Operator** from 1.8 to 1.9 you must uninstall 1.8 and install 1.9. For information about upgrading the OpenShift Container Platform release, see `Updating a cluster between minor versions <https://docs.openshift.com/container-platform/latest/updating/updating-cluster-between-minor.html>`_.
+To upgrade the **NVIDIA GPU Operator** from 1.9 to 1.10 you must uninstall 1.9 and install 1.10. For information about upgrading the OpenShift Container Platform release, see `Understanding upgrade channels and releases <https://docs.openshift.com/container-platform/latest/updating/understanding-upgrade-channels-release.html>`_.
 
 Entitlement-free supported versions
 -----------------------------------
@@ -68,6 +40,8 @@ You can deploy the **NVIDIA GPU Operator** on a clean install of the OpenShift C
    4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
    all OpenShift versions prior to 4.9.9. See :ref:`broken driver toolkit <broken-dtk>` for more information.
 
+   You do not need an entitlement on OpenShift Container Platform versions greater than 4.9.9.
+
 #. Verify your cluster has the OpenShift Driver toolkit:
 
    .. code-block:: console
@@ -78,8 +52,9 @@ You can deploy the **NVIDIA GPU Operator** on a clean install of the OpenShift C
 
    .. code-block:: console
 
-      $ NAME             IMAGE REPOSITORY                                                            TAGS                          UPDATED
-        driver-toolkit   image-registry.openshift-image-registry.svc:5000/openshift/driver-toolkit   49.84.202110081407-0,latest   10 days ago
+      NAME             IMAGE REPOSITORY                                                            TAGS                           UPDATED
+      driver-toolkit   image-registry.openshift-image-registry.svc:5000/openshift/driver-toolkit   410.84.202203290245-0,latest   47 minutes ago
+
 
 Upgrade
 =======
