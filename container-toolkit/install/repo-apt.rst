@@ -23,9 +23,9 @@ Setup the package repository and the GPG key:
    ``libnvidia-container`` repositories above.
 
 .. note::
-   Note that in some cases the downloaded list file may contain URLs that do not seem to match the expected value of `distribution` which is expected
+   Note that in some cases the downloaded list file may contain URLs that do not seem to match the expected value of ``distribution`` which is expected
    as packages may be used for all compatible distributions.
    As an examples:
 
-      * For `distribution` values of `ubuntu20.04` or `ubuntu22.04` the file will contain `ubuntu18.04` URLs
-      * For a `distribution` value of `debian11` the file will contain `debian10` URLs
+      * For ``distribution`` values of ``ubuntu20.04`` or ``ubuntu22.04`` the file will contain ``ubuntu18.04`` URLs
+      * For a ``distribution`` value of ``debian11`` the file will contain ``debian10`` URLs
