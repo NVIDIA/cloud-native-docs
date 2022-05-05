@@ -55,7 +55,7 @@ you accept the terms and conditions of these licenses.
   The license for the NVIDIA datacenter drivers is available at this `link <https://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us>`_.
 
 * NVIDIA Data Center GPU Manager (DCGM)
-  The license for the NVIDIA DCGM is available on the product `page <https://www.developer.vidia.com/dcgm>`_.
+  The license for the NVIDIA DCGM is available on the product `page <https://www.developer.nvidia.com/dcgm>`_.
 
 
 Since the underlying images may include components licensed under open-source licenses such as GPL,
