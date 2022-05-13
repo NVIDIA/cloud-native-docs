@@ -32,6 +32,11 @@ The :ref:`install-guide` shows how to install NVIDIA Container Toolkit on differ
 
 ----
 
+Troubleshooting Guide
+=====================
+:ref:`toolkit-troubleshooting` list a number of know issues along with general troubleshooting steps for NVIDIA Container Toolkit.
+
+
 User Guide
 ==========
 The :ref:`user-guide` provides information on the configuration options available for running GPU containers.

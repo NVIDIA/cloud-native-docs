@@ -22,6 +22,7 @@ using NVIDIA GPUs with Kubernetes.
    container-toolkit/concepts.rst
    container-toolkit/arch-overview.rst
    container-toolkit/install-guide.rst
+   container-toolkit/troubleshooting.rst
    container-toolkit/user-guide.rst
    container-toolkit/release-notes.rst
    container-toolkit/archive.rst
