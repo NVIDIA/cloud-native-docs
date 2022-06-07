@@ -8,6 +8,43 @@ Troubleshooting
 *****************************************
 This document describes common issues and known workarounds or solutions
 
+.. _conflicting_signed_by
+
+Conflicting values set for option Signed-By error when running ``apt update``
+====================================
+
+When following the installation instructions on Ubuntu or Debian-based systems and updating the package repository, the following error could be triggered:
+
+.. code-block:: console
+
+    $ sudo apt-get update
+    E: Conflicting values set for option Signed-By regarding source https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/ /: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg !=
+    E: The list of sources could not be read.
+
+This is caused by the combination of two things:
+
+#. A recent update to the installation instructions to create a repo list file ``/etc/apt/sources.list.d/nvidia-container-toolkit.list``
+#. The deprecation of ``apt-key`` meaning that the ``signed-by`` directive is included in the repo list file
+
+If this error is triggered it means that another reference to the same repository exists that does not specify the ``signed-by`` directive.
+The most likely candidates would be one or more of the files ``libnvidia-container.list``, ``nvidia-docker.list``, or ``nvidia-container-runtime.list`` in the
+folder ``/etc/apt/sources.list.d/``.
+
+The conflicting repository references can be obtained by running and inspecting the output:
+
+.. code-block:: console
+
+    $ grep "nvidia.github.io" /etc/apt/sources.list.d/*
+
+The list of files with (possibly)  conflicting references can be optained by running:
+
+.. code-block:: console
+
+    $ grep -l "nvidia.github.io" /etc/apt/sources.list.d/* | grep -vE "/nvidia-container-toolkit.list\$"
+
+Deleting the listed files should resolve the original error.
+
+
 Permission denied error when running the ``nvidia-docker`` wrapper under SELinux
 ====================================
 

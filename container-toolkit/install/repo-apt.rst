@@ -31,3 +31,6 @@ Setup the package repository and the GPG key:
 
       * For ``distribution`` values of ``ubuntu20.04`` or ``ubuntu22.04`` the file will contain ``ubuntu18.04`` URLs
       * For a ``distribution`` value of ``debian11`` the file will contain ``debian10`` URLs
+
+.. note::
+   If running ``apt update`` after configuring repositories raises an error regarding a conflict in the Signed-By option, see the :ref:`relevant troubleshooting section<conflicting_signed_by>`.
