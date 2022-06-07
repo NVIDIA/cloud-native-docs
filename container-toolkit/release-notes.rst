@@ -10,6 +10,77 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.10.0
+====================================
+
+This release of the NVIDIA Container Toolkit `v1.10.0` is primarily targeted at improving support for Tegra-based systems.
+It sees the introduction of a new mode of operation for the NVIDIA Container Runtime that makes modifications to the incomming OCI runtime
+specification directly instead of relying on the NVIDIA Container CLI.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.10.0``
+* ``libnvidia-container-tools 1.10.0``
+* ``libnvidia-container1 1.10.0``
+
+The following `container-toolkit` containers are included:
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubuntu18.04``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0``)
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.10.0``:
+
+* ``nvidia-container-runtime 3.10.0``
+* ``nvidia-docker2 2.11.0``
+
+Packaging Changes
+------------------
+
+* The package repository includes support for Ubuntu 22.04. This redirects to the Ubuntu 18.04 packages.
+* The package repository includes support for RHEL 9.0. This redirects to the Centos 8 packages.
+* The package repository includes support for OpenSUSE 15.2 and 15.3. These redirect to the OpenSUSE 15.1 packages.
+* The ``nvidia-docker2`` Debian packages were updated to allow installation with ``moby-engine`` instead of requiring ``docker-ce``, ``docker-ee``, or ``docker.io``.
+
+Fixes and Features
+-------------------
+
+* Add ``nvidia-ctk`` CLI to provide utilities for interacting with the NVIDIA Container Toolkit
+* Add a new mode to the NVIDIA Container Runtime targeted at Tegra-based systems using CSV-file based mount spefifications.
+* Use default config instead of raising an error if config file cannot be found
+* Switch to debug logging to reduce log verbosity
+* Support logging to logs requested in command line
+* Allow low-level runtime path to be set explicitly as ``nvidia-container-runtime.runtimes`` option
+* Fix failure to locate low-level runtime if PATH envvar is unset
+* Add ``--version`` flag to all CLIs
+
+specific to libnvidia-container
+``````````````````````````````````
+* Bump ``libtirpc`` to ``1.3.2``
+* Fix bug when running host ldconfig using glibc compiled with a non-standard prefix
+* Add ``libcudadebugger.so`` to list of compute libraries
+* [WSL2] Fix segmentation fault on WSL2s system with no adpaters present (e.g. ``/dev/dxg`` missing)
+* Ignore pending MIG mode when checking if a device is MIG enabled
+* [WSL2] Fix bug where ``/dev/dxg`` is not mounted when ``NVIDIA_DRIVER_CAPABILITIES`` does not include "compute"
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+
+* Fix a bug in applying runtime configuratin to containerd when version 1 config files are used
+* Update base images to CUDA 11.7.0
+* Multi-arch images for Ubuntu 18.04 are no longer available. (For multi-arch support for the container toolkit images at least Ubuntu 20.04 is required)
+* Centos 8 images are no longer available since the OS is considered EOL and no CUDA base image updates are available
+* Images are no longer published to Docker Hub and the NGC images should be used instead
+
+
+Known Issues
+-------------
+
+* The ``container-toolkit:v1.10.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+  * TODO(elezar): These will be filled in with the data from the final scans.
+
+
 NVIDIA Container Toolkit 1.9.0
 ====================================
 
