@@ -14,7 +14,7 @@ NVIDIA Container Toolkit 1.10.0
 ====================================
 
 This release of the NVIDIA Container Toolkit `v1.10.0` is primarily targeted at improving support for Tegra-based systems.
-It sees the introduction of a new mode of operation for the NVIDIA Container Runtime that makes modifications to the incomming OCI runtime
+It sees the introduction of a new mode of operation for the NVIDIA Container Runtime that makes modifications to the incoming OCI runtime
 specification directly instead of relying on the NVIDIA Container CLI.
 
 The following packages are included:
