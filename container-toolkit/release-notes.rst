@@ -78,7 +78,11 @@ Known Issues
 -------------
 
 * The ``container-toolkit:v1.10.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
-  * TODO(elezar): These will be filled in with the data from the final scans.
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``:
+    * ``xz`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``:
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 
 NVIDIA Container Toolkit 1.9.0
