@@ -78,10 +78,14 @@ Known Issues
 -------------
 
 * The ``container-toolkit:v1.10.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``:
+
     * ``xz`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
     * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``:
+
     * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 
@@ -128,6 +132,7 @@ specific to container-toolkit container images
 
 * Publish an ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu20.04`` image based on ``nvidia/cuda:11.6.0-base-ubuntu20.04``
 * The following images are available as multi-arch images including support for ``linux/amd64`` and ``linux/arm64`` platforms:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu18.04`` (and ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0``)
@@ -137,17 +142,23 @@ Known Issues
 -------------
 
 * The ``container-toolkit:v1.9.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``:
+
     * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
     * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
     * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``:
+
     * ``cyrus-sasl-lib`` - `CVE-2022-24407 <https://access.redhat.com/security/cve/CVE-2022-24407>`_
     * ``openssl``, ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
     * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
     * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
     * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``:
+
     * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
 
 
