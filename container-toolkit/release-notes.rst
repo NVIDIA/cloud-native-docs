@@ -13,7 +13,7 @@ This document describes the new features, improvements, fixed and known issues f
 NVIDIA Container Toolkit 1.10.0
 ====================================
 
-This release of the NVIDIA Container Toolkit `v1.10.0` is primarily targeted at improving support for Tegra-based systems.
+This release of the NVIDIA Container Toolkit ``v1.10.0`` is primarily targeted at improving support for Tegra-based systems.
 It sees the introduction of a new mode of operation for the NVIDIA Container Runtime that makes modifications to the incoming OCI runtime
 specification directly instead of relying on the NVIDIA Container CLI.
 
@@ -23,7 +23,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.10.0``
 * ``libnvidia-container1 1.10.0``
 
-The following `container-toolkit` containers are included:
+The following ``container-toolkit`` containers are included:
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``
@@ -92,7 +92,7 @@ Known Issues
 NVIDIA Container Toolkit 1.9.0
 ====================================
 
-This release of the NVIDIA Container Toolkit `v1.9.0` is primarily targeted at adding multi-arch support for the `container-toolkit` images.
+This release of the NVIDIA Container Toolkit ``v1.9.0`` is primarily targeted at adding multi-arch support for the ``container-toolkit`` images.
 It also includes enhancements for use on Tegra-systems and some notable bugfixes.
 
 The following packages are included:
@@ -101,7 +101,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.9.0``
 * ``libnvidia-container1 1.9.0``
 
-The following `container-toolkit` containers are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
@@ -174,7 +174,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.8.1``
 * ``libnvidia-container1 1.8.1``
 
-The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers have are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos8``
@@ -207,7 +207,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.8.0``
 * ``libnvidia-container1 1.8.0``
 
-The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers have are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos8``
@@ -223,7 +223,7 @@ Packaging Changes
 ------------------
 
 * Packages for Amazon Linux 1 are no longer built or published
-* The `container-toolkit` container is built and released from the same repository as the NVIDIA Container Toolkit packages.
+* The ``container-toolkit`` container is built and released from the same repository as the NVIDIA Container Toolkit packages.
 
 Fixes and Features
 -------------------
@@ -266,9 +266,9 @@ Fixes and Features
 specific to libnvidia-container
 ``````````````````````````````````
 
-* Filter command line options based on `libnvidia-container` library version
-* Include `libnvidia-container` version in CLI version output
-* Allow for `nvidia-container-cli` to load `libnvidia-container.so.0` dynamically on Jetson platforms
+* Filter command line options based on ``libnvidia-container`` library version
+* Include ``libnvidia-container`` version in CLI version output
+* Allow for ``nvidia-container-cli`` to load ``libnvidia-container.so.0`` dynamically on Jetson platforms
 
 
 NVIDIA Container Toolkit 1.6.0
