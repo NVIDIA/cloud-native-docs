@@ -13,7 +13,7 @@ This document describes the new features, improvements, fixed and known issues f
 NVIDIA Container Toolkit 1.10.0
 ====================================
 
-This release of the NVIDIA Container Toolkit `v1.10.0` is primarily targeted at improving support for Tegra-based systems.
+This release of the NVIDIA Container Toolkit ``v1.10.0`` is primarily targeted at improving support for Tegra-based systems.
 It sees the introduction of a new mode of operation for the NVIDIA Container Runtime that makes modifications to the incoming OCI runtime
 specification directly instead of relying on the NVIDIA Container CLI.
 
@@ -23,7 +23,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.10.0``
 * ``libnvidia-container1 1.10.0``
 
-The following `container-toolkit` containers are included:
+The following ``container-toolkit`` containers are included:
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``
@@ -78,17 +78,21 @@ Known Issues
 -------------
 
 * The ``container-toolkit:v1.10.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``:
+
     * ``xz`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
     * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``:
+
     * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 
 NVIDIA Container Toolkit 1.9.0
 ====================================
 
-This release of the NVIDIA Container Toolkit `v1.9.0` is primarily targeted at adding multi-arch support for the `container-toolkit` images.
+This release of the NVIDIA Container Toolkit ``v1.9.0`` is primarily targeted at adding multi-arch support for the ``container-toolkit`` images.
 It also includes enhancements for use on Tegra-systems and some notable bugfixes.
 
 The following packages are included:
@@ -97,7 +101,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.9.0``
 * ``libnvidia-container1 1.9.0``
 
-The following `container-toolkit` containers are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
@@ -128,6 +132,7 @@ specific to container-toolkit container images
 
 * Publish an ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu20.04`` image based on ``nvidia/cuda:11.6.0-base-ubuntu20.04``
 * The following images are available as multi-arch images including support for ``linux/amd64`` and ``linux/arm64`` platforms:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu18.04`` (and ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0``)
@@ -137,17 +142,23 @@ Known Issues
 -------------
 
 * The ``container-toolkit:v1.9.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``:
+
     * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
     * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
     * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``:
+
     * ``cyrus-sasl-lib`` - `CVE-2022-24407 <https://access.redhat.com/security/cve/CVE-2022-24407>`_
     * ``openssl``, ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
     * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
     * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
     * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``:
+
     * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
 
 
@@ -163,7 +174,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.8.1``
 * ``libnvidia-container1 1.8.1``
 
-The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers have are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.1-centos8``
@@ -196,7 +207,7 @@ The following packages are included:
 * ``libnvidia-container-tools 1.8.0``
 * ``libnvidia-container1 1.8.0``
 
-The following `container-toolkit` containers have are included (note these are also available on Docker Hub as `nvidia/container-toolkit`):
+The following ``container-toolkit`` containers have are included (note these are also available on Docker Hub as ``nvidia/container-toolkit``):
 
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos7``
 * ``nvcr.io/nvidia/k8s/container-toolkit:v1.8.0-centos8``
@@ -212,7 +223,7 @@ Packaging Changes
 ------------------
 
 * Packages for Amazon Linux 1 are no longer built or published
-* The `container-toolkit` container is built and released from the same repository as the NVIDIA Container Toolkit packages.
+* The ``container-toolkit`` container is built and released from the same repository as the NVIDIA Container Toolkit packages.
 
 Fixes and Features
 -------------------
@@ -255,9 +266,9 @@ Fixes and Features
 specific to libnvidia-container
 ``````````````````````````````````
 
-* Filter command line options based on `libnvidia-container` library version
-* Include `libnvidia-container` version in CLI version output
-* Allow for `nvidia-container-cli` to load `libnvidia-container.so.0` dynamically on Jetson platforms
+* Filter command line options based on ``libnvidia-container`` library version
+* Include ``libnvidia-container`` version in CLI version output
+* Allow for ``nvidia-container-cli`` to load ``libnvidia-container.so.0`` dynamically on Jetson platforms
 
 
 NVIDIA Container Toolkit 1.6.0
