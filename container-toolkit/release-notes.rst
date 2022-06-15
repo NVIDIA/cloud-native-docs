@@ -47,7 +47,7 @@ Fixes and Features
 -------------------
 
 * Add ``nvidia-ctk`` CLI to provide utilities for interacting with the NVIDIA Container Toolkit
-* Add a new mode to the NVIDIA Container Runtime targeted at Tegra-based systems using CSV-file based mount spefifications.
+* Add a new mode to the NVIDIA Container Runtime targeted at Tegra-based systems using CSV-file based mount specifications.
 * Use default config instead of raising an error if config file cannot be found
 * Switch to debug logging to reduce log verbosity
 * Support logging to logs requested in command line
