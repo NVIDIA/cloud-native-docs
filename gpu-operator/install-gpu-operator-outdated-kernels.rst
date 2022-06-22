@@ -4,7 +4,7 @@
 .. _install-gpu-operator-outdated-kernels:
 
 Considerations when Installing with Outdated Kernels in Cluster
-=================================================================
+***************************************************************
 
 The ``driver`` container deployed as part of the GPU Operator requires certain packages to be available as part of the driver installation.
 On GPU nodes where the running kernel is not the latest, the ``driver`` container may fail to find the right version of these packages 
@@ -15,7 +15,7 @@ In general, upgrading your system to the latest kernel should fix this issue. Bu
 workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.
 
 Add Archived Package Repositories
-----------------------------------
+=================================
 
 The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package 
 manager running inside the ``driver`` container. To achieve this, we can simply mount a repository list file into the ``driver`` container using a ``ConfigMap``.

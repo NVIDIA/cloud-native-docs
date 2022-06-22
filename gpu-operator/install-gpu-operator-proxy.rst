@@ -4,10 +4,10 @@
 .. _install-gpu-operator-proxy:
 
 Install GPU Operator in Proxy Environments
-============================================
+*******************************************
 
 Introduction
--------------
+============
 
 This page describes how to successfully deploy the GPU Operator in clusters behind a HTTP Proxy.
 By default, the GPU Operator requires internet access for the following reasons:
@@ -25,14 +25,14 @@ a proxy is not specific to the GPU Operator, we do not include those instruction
 The instructions for Openshift are different, so skip the section titled :ref:`proxy_config_openshift` if you are not running Openshift.
 
 Prerequisites
---------------
+=============
 
 * Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)
 
 .. _proxy_config_openshift:
 
 HTTP Proxy Configuration for Openshift
----------------------------------------
+======================================
 
 For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
 Please follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html>`_
@@ -44,7 +44,7 @@ based on information present in the cluster-wide Proxy object.
    * GPU Operator v1.8.0 does not work well on RedHat OpenShift when a cluster-wide Proxy object is configured and causes constant restarts of ``driver`` container. This will be fixed in an upcoming patch release v1.8.2.
 
 HTTP Proxy Configuration
--------------------------
+========================
 
 First, get the ``values.yaml`` file used for GPU Operator configuration:
 
@@ -82,7 +82,7 @@ Specify ``driver.env`` in ``values.yaml`` with appropriate HTTP_PROXY, HTTPS_PRO
    * If HTTPS Proxy server is setup then change the values of HTTPS_PROXY and https_proxy to use ``https`` instead.
 
 Deploy GPU Operator
---------------------
+===================
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 

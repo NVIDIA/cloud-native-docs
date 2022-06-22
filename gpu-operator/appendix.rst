@@ -3,9 +3,9 @@
 
 .. _operator-appendix:
 
-**********
+########
 Appendix
-**********
+########
 
 .. Shared content for the GPU Operator install
 
