@@ -2,24 +2,6 @@
 Archive
 ********
 
-1.10.1
-=====
-
-.. toctree::
-   :maxdepth: 1
-
-   archive/1.10.1/overview.rst
-   archive/1.10.1/getting-started.rst
-   archive/1.10.1/platform-support.rst
-   archive/1.10.1/release-notes.rst
-   archive/1.10.1/install-gpu-operator-vgpu.rst
-   archive/1.10.1/install-gpu-operator-nvaie.rst
-   archive/1.10.1/openshift/contents.rst
-   archive/1.10.1/gpu-operator-mig.rst
-   archive/1.10.1/gpu-operator-rdma.rst
-   archive/1.10.1/appendix.rst
-
-
 1.9.1
 =====
 
