@@ -505,6 +505,7 @@ GPU Operator Component Matrix
     - The GPU Operator is supported on all the R450, R470 and R510 NVIDIA datacenter production drivers. For a list of supported
       datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
 
+.. _gpudirect_rdma_support:
 
 GPUDirect RDMA
 --------------
@@ -514,14 +515,18 @@ For more information on GPUDirect RDMA refer to :ref:`this document <operator-rd
 The following Linux distributions are supported:
 
   * Ubuntu 20.04 LTS
+  * Ubuntu 22.04 LTS
   * RedHat OpenShift 4.10 using RHCOS
+  * CentOS 7
 
 The following NVIDIA drivers are supported:
 
   * R470 datacenter drivers (470.57.02+)
   * R510 datacenter drivers (510.47.03+)
+  * R515 datacenter drivers (515.48.07+)
 
 .. note::
 
-   For Red Hat OpenShift GPUDirect RDMA is only supported from 470.103.01+ when using R470 datacenter drivers.
+   * For Red Hat OpenShift GPUDirect RDMA is only supported from 470.103.01+ when using R470 datacenter drivers.
+   * For CentOS 7 GPUDirect RDMA is only supported with `MOFED <https://github.com/Mellanox/ofed-docker>`_ pre-installed on the node (i.e ``driver.rdma.useHostMofed=true`` is required to be set)
 
