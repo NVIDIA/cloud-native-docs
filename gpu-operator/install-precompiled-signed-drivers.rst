@@ -4,7 +4,7 @@
 .. _install-precompiled-signed-drivers:
 
 Installing Precompiled and Canonical Signed Drivers on Ubuntu20.04
-==================================================================
+******************************************************************
 
 GPU Operator supports deploying NVIDIA precompiled and signed drivers from Canonical on Ubuntu20.04. This is required
 when nodes are enabled with Secure Boot. In order to use these, GPU Operator needs to be installed with options ``--set driver.version=<DRIVER_BRANCH>-signed``.
