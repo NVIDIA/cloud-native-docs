@@ -4,10 +4,10 @@
 .. _install-gpu-operator-air-gapped:
 
 Install GPU Operator in Air-gapped Environments
-===================================================
+***********************************************
 
 Introduction
--------------
+============
 
 This page describes how to successfully deploy the GPU Operator in clusters with restricted internet access.
 By default, The GPU Operator requires internet access for the following reasons:
@@ -70,14 +70,14 @@ Before proceeding to the next sections, get the ``values.yaml`` file used for GP
 
 
 Local Image Registry
-----------------------
+===================
 
 Without internet access, the GPU Operator requires all images to be hosted in a local image registry that is accessible
 to all nodes in the cluster. To allow the GPU Operator to work with a local registry, users can specify local
 repository, image, tag along with pull secrets in ``values.yaml``.
 
 Pulling and pushing container images to local registry
-""""""""""""""""""""""""""""""""""""""""""""""""""""""
+------------------------------------------------------
 
 To pull the correct images from the NVIDIA registry, you can leverage the fields ``repository``, ``image`` and ``version``
 specified in the file ``values.yaml``.
@@ -212,7 +212,7 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
       version: v0.2.0-ubuntu20.04
 
 Local Package Repository
-------------------------
+========================
 
 The ``driver`` container deployed as part of the GPU operator requires certain packages to be available as part of the
 driver installation. In restricted internet access or air-gapped installations, users are required to create a
@@ -317,7 +317,7 @@ install. Based on the OS distribution the GPU Operator will automatically mount 
             name: cert-config
 
 Deploy GPU Operator
---------------------
+===================
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 

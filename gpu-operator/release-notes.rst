@@ -16,6 +16,59 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.11.0
+======
+
+New Features
+------------
+
+* Support for NVIDIA Data Center GPU Driver version ``515.48.07``.
+* Support for NVIDIA AI Enterprise 2.1.
+* Support for NVIDIA Virtual Compute Server 14.1 (vGPU).
+* Support for Ubuntu 22.04 LTS.
+* Support for secure boot with GPU Driver version 515 and Ubuntu Server 20.04 LTS and 22.04 LTS.
+* Support for Kubernetes 1.24.
+* Support for :ref:`Time-Slicing GPUs in Kubernetes<gpu-sharing>`.
+* Support for Red Hat OpenShift on AWS, Azure and GCP instances. Refer to the Platform Support Matrix for the supported instances.
+* Support for Red Hat Openshift 4.10 on AWS EC2 G5g instances(ARM).
+* Support for Kubernetes 1.24 on AWS EC2 G5g instances(ARM).
+* Support for use with the NVIDIA Network Operator 1.2.
+* [Technical Preview] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
+* [Technical Preview] - Kubernetes on ARM with Server Base System Architecture (SBSA).
+
+Improvements
+------------
+
+* GPUDirect RDMA is now supported with CentOS using MOFED installed on the node.
+* The NVIDIA vGPU Manager can now be upgraded to a newer branch while using an older, compatible guest driver.
+* DGX A100 and non-DGX servers can now be used within the same cluster.
+* Improved user interface while deploying a ClusterPolicy instance(CR) for the GPU Operator through Red Hat OpenShift Console.
+* Improved the container-toolkit to handle v1 containerd configurations.
+
+Fixed issues
+------------
+
+* Fix for incorrect reporting of ``DCGM_FI_DEV_FB_USED`` where reserved memory is reported as used memory. For more details refer to `GitHub issue <https://github.com/NVIDIA/gpu-operator/issues/348>`_.
+* Fixed nvidia-peermem sidecar container to correctly load the ``nvidia-peermem`` module when MOFED is directly installed on the node.
+* Fixed duplicate mounts of ``/run/mellanox/drivers`` within the driver container which caused driver cleanup or re-install to fail.
+* Fixed uncordoning of the node with k8s-driver-manager whenever ENABLE_AUTO_DRAIN env is disabled.
+* Fixed readiness check for MOFED driver installation by the NVIDIA Network Operator. This will avoid the GPU driver containers to be in ``CrashLoopBackOff`` while waiting for MOFED drivers to be ready.
+
+Known Limitations
+------------------
+
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* See the :ref:`limitations<gpu-operator-kubevirt-limitations>` sections for the [Technical Preview] of GPU Operator support for KubeVirt.
+* The ``clusterpolicies.nvidia.com`` CRD has to be manually deleted after the GPU Operator is uninstalled using Helm.
+* ``nouveau`` driver has to be blacklisted when using the NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``init`` state.
+* The ``gpu-operator:v1.11.0`` and ``gpu-operator:v1.11.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
+
+----
+
 1.10.1
 =====
 

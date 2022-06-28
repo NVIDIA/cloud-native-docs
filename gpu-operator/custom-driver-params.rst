@@ -4,7 +4,7 @@
 .. _custom-driver-params
 
 Customizing NVIDIA GPU Driver Parameters during Installation
-============================================================
+************************************************************
 
 The NVIDIA Driver kernel modules accept a number of parameters which can be used to customize the behavior of the driver.
 Most of the parameters are documented in the `NVIDIA Driver README <https://download.nvidia.com/XFree86/Linux-x86_64/510.47.03/README/>`.

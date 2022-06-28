@@ -6,267 +6,17 @@
 ****************
 Platform Support
 ****************
-This documents provides an overview of the GPUs and system platform configurations supported.
+This documents provides an overview of the GPU Operator lifecycle and the GPUs and system Platform configurations supported.
 
-GPUs
+GPU Operator Lifecycle
 ----
-The following NVIDIA datacenter/enterprise GPUs are supported:
 
-+--------------------------+------------------+
-| Product                  | GPU Architecture |
-+==========================+==================+
-| **Datacenter A-series Products**            |
-+--------------------------+------------------+
-| NVIDIA A100              | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A100X             | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A40               | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A30               | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A30X              | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A16               | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A10               | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA A2                | NVIDIA Ampere    |
-+--------------------------+------------------+
-| **Datacenter T-series Products**            |
-+--------------------------+------------------+
-| NVIDIA T4                | Turing           |
-+--------------------------+------------------+
-| **Datacenter V-series Products**            |
-+--------------------------+------------------+
-| NVIDIA V100              | Volta            |
-+--------------------------+------------------+
-| **Datacenter P-series Products**            |
-+--------------------------+------------------+
-| NVIDIA Tesla P100        | Pascal           |
-+--------------------------+------------------+
-| NVIDIA Tesla P40         | Pascal           |
-+--------------------------+------------------+
-| NVIDIA Tesla P4          | Pascal           |
-+--------------------------+------------------+
-| **RTX-Series / T-Series Products**          |
-+--------------------------+------------------+
-| NVIDIA RTX A6000         | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA RTX A5000         | NVIDIA Ampere    |
-+--------------------------+------------------+
-| NVIDIA RTX A4000         | NVIDIA Ampere    |
-+--------------------------+------------------+
-| Quadro RTX 8000          | Turing           |
-+--------------------------+------------------+
-| Quadro RTX 6000          | Turing           |
-+--------------------------+------------------+
-| Quadro RTX 5000          | Turing           |
-+--------------------------+------------------+
-| Quadro RTX 4000          | Turing           |
-+--------------------------+------------------+
-| NVIDIA T1000	           | Turing           |
-+--------------------------+------------------+
-| NVIDIA T600              | Turing           |
-+--------------------------+------------------+
-| NVIDIA T400              | Turing           |
-+--------------------------+------------------+
+The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
 
-The following NVIDIA server platforms are supported:
+Only the most recent release of the GPU Operator is maintained through *z* patch updates. All prior releases of the GPU Operator are
+deprecated (and unsupported) when a new *x.y* version of the GPU Operator is released.
 
-+--------------------------+--------------------+
-| Product                  | Architecture       |
-+==========================+====================+
-| **Datacenter A-series Products**              |
-+--------------------------+--------------------+
-| NVIDIA HGX A100          | A100 and NVSwitch  |
-+--------------------------+--------------------+
-| NVIDIA DGX A100          | A100 and NVSwitch  |
-+--------------------------+--------------------+
-
-.. note::
-
-   The GPU Operator supports NVIDIA A100X/A30X running on the x86 host or on the DPU’s Arm processor.
-
-.. note::
-
-   The GPU Operator supports DGX A100 with DGX OS 5.1+ and DGX A100 with OCP using RHCOS. For installation instructions,
-   see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for OCP.
-
-.. note::
-
-   The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported.
-
-.. _container-platforms:
-
-Kubernetes Platforms
--------------------
-The following Kubernetes platforms are supported:
-
-* Kubernetes v1.21+
-* VMware vSphere with Tanzu
-* Red Hat OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS) and CRI-O container runtime. See 
-  the OpenShift `guide <https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html>`_ for getting started.
-* Google Cloud Anthos. See the user `guide <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_ for getting started.
-
-.. note::
-   **Technical Preview:** Red Hat OpenShift 4.10 on ARM Server Base System Architecture (SBSA) systems. Raise issues on `GitHub <https://github.com/NVIDIA/gpu-operator/issues>`_
-
-.. note::
-   Note that the Kubernetes community supports only the last three minor releases as of v1.17. Older releases
-   may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift. See the prerequisites
-   for enabling monitoring in Kubernetes releases before v1.16.
-
-The following table includes the support matrix of the GPU Operator releases and supported kubernetes platforms.
-
-.. tabs::
-
-    .. tab:: Bare metal/Passthrough
-
-      +--------------------------+---------------+------------------------+----------------+
-      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
-      +==========================+===============+========================+================+
-      | 1.10                     | v1.21+        | 4.9 and 4.10           | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.9                      | v1.19+        | 4.8 and 4.9            | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.8                      | v1.18+        | 4.7, 4.8 and 4.9       | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.7                      | v1.18+        | 4.5, 4.6 and 4.7       | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.6                      | v1.16+        | 4.5, 4.6 and 4.7       | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.5                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.4                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.3                      | v1.13+        | 4.4.29+, 4.5 and 4.6   | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.2                      | v1.13+        | Not supported          | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.1.7                    | v1.13+        | 4.1, 4.2, 4.3, and 4.4 | Supported      |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.1                      | v1.13+        | Not supported          | Not supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.0                      | v1.13+        | Not supported          | Not supported  |
-      +--------------------------+---------------+------------------------+----------------+
-
-    .. tab:: NVIDIA vGPU
-
-      +--------------------------+---------------+------------------------+----------------+
-      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
-      +==========================+===============+========================+================+
-      | 1.10                     | v1.21+        | 4.9 and 4.10           | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.9                      | v1.19+        | 4.8 and 4.9            | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.8                      | v1.18+        | 4.7 and 4.8            | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.7                      | v1.18+        | 4.6, 4.7 and 4.8       | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.6                      | v1.16+        | 4.6 and 4.7            | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-      | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+
-
-    .. tab:: NVIDIA AI Enterprise
-
-      +--------------------------+---------------+------------------------+----------------+---------------------------+---------------+
-      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         | vSphere with Tanzu        | Release       |
-      +==========================+===============+========================+================+===========================+===============+
-      | 1.10.1                   | v1.21+        | 4.9.9+ and 4.10        | Not Supported  | Supported                 | 2.0           |
-      +--------------------------+---------------+------------------------+----------------+---------------------------+---------------+
-      | 1.10.1                   | v1.21+        | Not Supported          | Not Supported  | Supported                 | 1.2           |
-      +--------------------------+---------------+------------------------+----------------+---------------------------+---------------+
-      | 1.9.1                    | v1.21+        | Not Supported          | Not Supported  | Supported                 | 1.1           |
-      +--------------------------+---------------+------------------------+----------------+---------------------------+---------------+
-      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported  | Not Supported             | 1.0           |
-      +--------------------------+---------------+------------------------+----------------+---------------------------+---------------+
-
-.. note::
-   The GPU Operator versions are expressed as *x.y.z* or `<major, minor, patch>` and follows the `semver <https://semver.org/>`_ terminology.
-
-   Only the most recent release of the GPU Operator is maintained through *z* patch updates. All prior releases of the GPU Operator are
-   deprecated (and unsupported) when a new *x.y* version of the GPU Operator is released.
-
-   The product lifecycle and versioning are subject to change in the future.
-
-Deployment Scenarios
---------------------
-The GPU Operator has been validated in the following scenarios:
-
-* Bare metal
-* GPU passthrough virtualization
-* NVIDIA vGPU
-* `NVIDIA AI Enterprise <https://docs.nvidia.com/ai-enterprise/>`_
-
-Linux distributions
--------------------
-
-.. tabs::
-
-    .. tab:: Bare metal/Passthrough
-
-         The following Linux distributions are supported:
-
-         * Ubuntu 18.04.z, 20.04.z LTS
-         * DGX OS 5.1+
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.9 and 4.10
-         * CentOS 7
-
-
-    .. tab:: NVIDIA vGPU
-
-         The following Linux distributions are supported:
-
-         * Ubuntu 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.9 and 4.10
-
-    .. tab:: NVIDIA AI Enterprise
-
-         The following Linux distributions are supported:
-
-         * Ubuntu 20.04.z LTS
-         * Red Hat Enterprise Linux CoreOS (RHCOS) for use with OpenShift 4.9 and 4.10
-
-In addition, the following container management tools are supported:
-
-* Helm v3
-* Docker CE 19.03+
-* containerd 1.4+
-* CRI-O with OpenShift 4 using Red Hat Enterprise Linux CoreOS (RHCOS)
-
-Supported Platforms with NVIDIA AI Enterprise
------------------------------------------------
-
-The following platforms are supported. Refer to the `NVIDIA AI Enterprise Documentation <https://docs.nvidia.com/ai-enterprise/>`_ for more detailed information.
-
-* Ubuntu 20.04.z LTS bare metal
-* Red Hat OpenShift 4.9.9+ and 4.10 with RHCOS on bare metal
-* Red Hat OpenShift 4.9.9+ and 4.10 with RHCOS on VMware vSphere 7.0 Update 2+
-* VMware vSphere 7.0 Update 2+ with Ubuntu 20.04 guest operating systems
-* VMware vSphere with Tanzu (7.0 U3c) with Ubuntu 20.04 guest operating systems
-
-Supported NVIDIA vGPU Products
-------------------------------
-
-NVIDIA vGPU 12.0+ with the following software products
-
-* NVIDIA Virtual Compute Server (C-Series)
-* NVIDIA RTX Virtual Workstation (vWS)
-
-Supported Hypervisors with NVIDIA vGPU
---------------------------------------
-
-The following Virtualization Platforms are supported. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/product-support-matrix/index.html>`_ for more detailed information.
-
-* VMware vSphere 7
-* Red Hat Enterprise Linux KVM
-* Red Hat Virtualization (RHV)
-
-.. note::
-   The GPU Operator deploys the NVIDIA driver as a container. In this environment, running on desktop environments (e.g. workstations with GPUs and display) is not
-   supported.
+The product lifecycle and versioning are subject to change in the future.
 
 .. _operator-component-matrix:
 
@@ -274,31 +24,37 @@ GPU Operator Component Matrix
 ------------------------------
 
 .. list-table::
-    :widths: 20 40 60 60 60 60 60 60 60 60
+    :widths: 100 100 100 100 100 100 100 100 100 100 100 100 100
     :header-rows: 1
     :align: center
 
     * - Release
-      - NVIDIA Driver
+      - NVIDIA GPU Driver
       - NVIDIA Driver Manager for K8s
       - NVIDIA Container Toolkit
-      - NVIDIA K8s Device Plugin
-      - NVIDIA DCGM-Exporter
+      - NVIDIA Kubernetes Device Plugin
+      - DCGM Exporter
       - Node Feature Discovery
-      - NVIDIA GPU Feature Discovery
-      - NVIDIA MIG Manager for K8s
-      - NVIDIA DCGM
+      - NVIDIA GPU Feature Discovery for Kubernetes
+      - NVIDIA MIG Manager for Kubernetes
+      - DCGM
+      - Validator for NVIDIA GPU Operator
+      - NVIDIA KubeVirt GPU Device Plugin
+      - NVIDIA vGPU Device Manager
 
-    * - 1.10.1
-      - `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_
-      - `v0.3.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-      - `1.9.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-      - `0.11.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-      - `2.3.4-2.6.4 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-      - 0.10.1
-      - `0.5.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-      - `0.3.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-      - `2.3.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+    * - 1.11
+      - `515.48.07 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_, `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_, `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_, `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
+      - `v0.4.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+      - `1.10.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+      - `0.12.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+      - `2.4.5-2.6.7 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+      -  v0.10.1
+      - `0.6.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - `0.4.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - `2.4.5-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.11.0
+      - `v1.1.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
+      - v0.1.0
 
     * - 1.10
       - `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_
@@ -306,10 +62,13 @@ GPU Operator Component Matrix
       - `1.9.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
       - `0.11.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
       - `2.3.4-2.6.4 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-      - 0.10.1
+      - 0.8.2
       - `0.5.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.3.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.3.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.10.0
+      - N/A
+      - N/A
   
     * - 1.9.1
       - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
@@ -321,6 +80,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.2.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.3.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.9.1
+      - N/A
+      - N/A
 
     * - 1.9.0
       - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
@@ -332,6 +94,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.2.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.3.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.9.0
+      - N/A
+      - N/A
 
     * - 1.8.2
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
@@ -343,6 +108,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.3 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.8.2
+      - N/A
+      - N/A
 
     * - 1.8.1
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
@@ -354,6 +122,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.8.1
+      - N/A
+      - N/A
 
     * - 1.8.0
       - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
@@ -365,6 +136,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+      - v1.8.0
+      - N/A
+      - N/A
 
     * - 1.7.1
       - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
@@ -375,6 +149,9 @@ GPU Operator Component Matrix
       - 0.8.2
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+      - N/A
+      - v1.7.1
+      - N/A
       - N/A
 
     * - 1.7.0
@@ -387,6 +164,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
       - N/A
+      - v1.7.0
+      - N/A
+      - N/A
 
     * - 1.6.2
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -396,6 +176,9 @@ GPU Operator Component Matrix
       - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
+      - N/A
+      - N/A
       - N/A
       - N/A
 
@@ -409,6 +192,9 @@ GPU Operator Component Matrix
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - N/A
       - N/A
+      - N/A
+      - N/A
+      - N/A
 
     * - 1.6.0
       - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -418,6 +204,9 @@ GPU Operator Component Matrix
       - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
+      - N/A
+      - N/A
       - N/A
       - N/A
 
@@ -431,6 +220,9 @@ GPU Operator Component Matrix
       - `0.4.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - N/A
       - N/A
+      - N/A
+      - N/A
+      - N/A
 
     * - 1.5.1
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -440,6 +232,9 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
+      - N/A
+      - N/A
       - N/A
       - N/A
 
@@ -453,6 +248,9 @@ GPU Operator Component Matrix
       - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - N/A
       - N/A
+      - N/A
+      - N/A
+      - N/A
 
     * - 1.4.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -462,6 +260,9 @@ GPU Operator Component Matrix
       - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
       - `0.2.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+      - N/A
+      - N/A
+      - N/A
       - N/A
       - N/A
 
@@ -475,6 +276,9 @@ GPU Operator Component Matrix
       - `0.2.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
       - N/A
       - N/A
+      - N/A
+      - N/A
+      - N/A
 
     * - 1.2.0
       - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -483,6 +287,9 @@ GPU Operator Component Matrix
       - `0.7.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
       - `2.1.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
       - 0.6.0
+      - N/A
+      - N/A
+      - N/A
       - N/A
       - N/A
       - N/A
@@ -497,31 +304,369 @@ GPU Operator Component Matrix
       - N/A
       - N/A
       - N/A
+      - N/A
+      - N/A
+      - N/A
 
 .. note::
 
     - Driver version could be different with NVIDIA vGPU, as it depends on the driver
       version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-    - The GPU Operator is supported on all the R450, R470 and R510 NVIDIA datacenter production drivers. For a list of supported
+    - The GPU Operator is supported on all the R450, R470, R510 and 515 NVIDIA datacenter production drivers. For a list of supported
       datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
 
 
-GPUDirect RDMA
---------------
+
+
+Supported NVIDIA GPUs/Systems
+----
+
+The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platforms:
+
+.. tabs::
+
+  .. tab:: Datacenter A-series Products
+
+    +-------------------------+---------------------------+
+    | Product                 | Architecture              |
+    +=========================+===========================+
+    | NVIDIA DGX A100         | A100 and NVSwitch         |
+    +-------------------------+---------------------------+
+    | NVIDIA HGX A100         | A100 and NVSwitch         |
+    +-------------------------+---------------------------+
+    | NVIDIA A100             | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A100X            | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A40              | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A30              | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A30X             | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A16              | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A10              | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+    | NVIDIA A2               | NVIDIA Ampere             |
+    +-------------------------+---------------------------+
+
+    .. note::
+
+      The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
+
+  .. tab:: Datacenter D,T and V-series Products
+
+    +-----------------------+------------------------+
+    | Product               | Architecture           |
+    +=======================+========================+
+    | NVIDIA T4             | Turing                 |
+    +-----------------------+------------------------+
+    | NVIDIA V100           | Volta                  |
+    +-----------------------+------------------------+
+    | NVIDIA P100           | Pascal                 |
+    +-----------------------+------------------------+
+    | NVIDIA P40            | Pascal                 |
+    +-----------------------+------------------------+
+    | NVIDIA P4             | Pascal                 |
+    +-----------------------+------------------------+
+  
+  .. tab:: Datacenter RTX / T-series Products
+
+    +-------------------------+------------------------+
+    | Product                 | Architecture           |
+    +=========================+========================+
+    | NVIDIA RTX A6000        | NVIDIA Ampere          |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A5000        | NVIDIA Ampere          |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A4000        | NVIDIA Ampere          |
+    +-------------------------+------------------------+ 
+    | NVIDIA RTX A8000        | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A6000        | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A5000        | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A4000        | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA T1000            | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA T600             | Turing                 |
+    +-------------------------+------------------------+
+    | NVIDIA T400             | Turing                 |
+    +-------------------------+------------------------+
+
+Supported ARM based platforms
+----
+
+The following NVIDIA datacenter/enterprise GPUs are supported:
+
+.. tabs::
+
+  .. tab:: ARM platforms 
+  
+    +-------------------------+---------------------------+
+    | Product                 | Architecture              |
+    +=========================+===========================+
+    | NVIDIA A100X            | Ampere                    |
+    +-------------------------+---------------------------+
+    | NVIDIA A30X             | Ampere                    |
+    +-------------------------+---------------------------+
+    | AWS EC2 G5g instaces    | Turing                    |
+    +-------------------------+---------------------------+
+
+    .. note::
+
+      The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported.
+
+Supported deployment options, hypervisors and NVIDIA vGPU based products
+----
+
+The GPU Operator has been validated in the following scenarios:
+
++-----------------------------------------------------+
+| Deployment Options                                  |
++=====================================================+
+| Bare Metal                                          |
++-----------------------------------------------------+
+| Virtual machines with GPU Passthrough               |
++-----------------------------------------------------+
+| Virtual machines with NVIDIA vGPU based products    |
++-----------------------------------------------------+
+   
+Hypervisors (On-premises)
+
++-----------------------------------------------------+
+| Hypervisors                                         |
++=====================================================+
+| VMware vSphere 7                                    |
++-----------------------------------------------------+
+| Red Hat Enterprise Linux KVM                        |
++-----------------------------------------------------+
+| Red Hat Virtualization (RHV)                        |
++-----------------------------------------------------+
+
+NVIDIA vGPU based products
+
++-----------------------------------------------------+
+| NVIDIA vGPU based products                          |
++=====================================================+
+| NVIDIA vGPU (NVIDIA AI Enterprise)                  |
++-----------------------------------------------------+
+| NVIDIA vCompute Server                              |
++-----------------------------------------------------+
+| NVIDIA RTX Virtual Workstation                      |
++-----------------------------------------------------+
+
+  .. note::
+    GPU Operator is supported with NVIDIA vGPU 12.0+
+
+.. _container-platforms:
+
+Supported Operating Systems and Kubernetes platforms
+----
+
+The GPU Operator has been validated in the following scenarios:
+
+.. note::
+   The Kubernetes community supports only the last three minor releases as of v1.17. Older releases
+   may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
+
+.. tabs::
+
+  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough 
+  
+    +---------------------------+------------------------+-------------------+---------------------------+
+    |                           | Kubernetes             | Red Hat OpenShift | VMware vSphere with Tanzu |
+    +===========================+========================+===================+===========+===============+
+    | Ubuntu 18.04 LTS          | 1.21, 1.22, 1.23, 1.24 |                   |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | Ubuntu 20.04 LTS          | 1.21, 1.22, 1.23, 1.24 |                   | VMware vSphere 7.0 U3c    |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | Ubuntu 22.04 LTS          | 1.21, 1.22, 1.23, 1.24 |                   |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | CentOS 7                  | 1.21, 1.22, 1.23, 1.24 |                   |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | Red Hat Core OS           |                        | 4.9, 4.10         |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+
+    .. note::
+      Red Hat OpenShift is supported on the AWS (G4, G5, P3 and P4), Azure (NC-T4-v3, NC-v3 and ND-A100-v4) and GCP (T4, V100, A100 based instances).
+  
+  .. tab:: Virtual Machines with NVIDIA vGPU
+  
+    +---------------------------+------------------------+-------------------+---------------------------+
+    |                           | Kubernetes             | Red Hat OpenShift | VMware vSphere with Tanzu |
+    +===========================+========================+===================+===========+===============+
+    | Ubuntu 20.04 LTS          | 1.21, 1.22, 1.23, 1.24 |                   | VMware vSphere 7.0 U3c    |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | Ubuntu 22.04 LTS          | 1.21, 1.22, 1.23, 1.24 |                   |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+    | Red Hat Core OS           |                        | 4.9, 4.10         |                           |
+    +---------------------------+------------------------+-------------------+---------------------------+
+
+Supported Container Runtimes
+----
+
+The GPU Operator has been validated in the following scenarios:
+  
++-------------------------+-----------------+----------------+
+| Product                 | Containerd 1.4+ | CRI-O          |
++=========================+=================+================+
+| Ubuntu 18.04 LTS        | Yes             | No             |
++-------------------------+-----------------+----------------+
+| Ubuntu 20.04 LTS        | Yes             | No             |
++-------------------------+-----------------+----------------+
+| Ubuntu 22.04 LTS        | Yes             | No             |
++-------------------------+-----------------+----------------+
+| CentOS 7                | Yes             | No             |
++-------------------------+-----------------+----------------+
+| Red Hat Core OS (RHCOS) | No              | Yes            |
++-------------------------+-----------------+----------------+
+
+.. note::
+  The GPU Operator has been validated with version 2 of the containerd config file.
+
+NVIDIA AI Enterprise support matrix
+----
+
+The latest version of NVIDIA AI Enterprise supports the following scenarios:
+
+.. tabs::
+
+  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough 
+  
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    |                           | Ubuntu 20.04 LTS       | Ubuntu 22.04 LTS          | Red Hat Core OS (RHCOS)   |
+    +===========================+========================+===========================+===========================+
+    | Kubernetes                | 1.21, 1.22, 1.23, 1.24 | 1.21, 1.22, 1.23, 1.24    |                           |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    | Red Hat OpenShift         |                        |                           | 4.9.9+, 4.10              |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    | VMware vSphere with Tanzu | VMware vSphere 7.0 U3c |                           |                           |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+
+  
+  .. tab:: Virtual Machines with NVIDIA vGPU
+
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    |                           | Ubuntu 20.04 LTS       | Ubuntu 22.04 LTS          | Red Hat Core OS (RHCOS)   |
+    +===========================+========================+===========================+===========================+
+    | Kubernetes                | 1.21, 1.22, 1.23, 1.24 | 1.21, 1.22, 1.23, 1.24    |                           |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    | Red Hat OpenShift         |                        |                           | 4.9.9+, 4.10              |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+    | VMware vSphere with Tanzu | VMware vSphere 7.0 U3c |                           |                           |
+    +---------------------------+------------------------+---------------------------+---------------------------+
+
+.. note::
+      Red Hat OpenShift is supported on the AWS (G4, G5, P3 and P4), Azure (NC-T4-v3, NC-v3 and ND-A100-v4) and GCP (T4, V100, A100 based instances).
+
+Support for GPUDirect RDMA
+----
+
+Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
+
++--------------------------------------------------+------------------------+---------------------------+---------------------------+
+|                                                  | 470 GPU Driver         | 510 GPU Driver            | 515 GPU Driver            |
++==================================================+========================+===========================+===========================+
+| Ubuntu 20.04 LTS with Network Operator 1.2       | 470.129.06             | 510.47.03                 | 515.48.07                 |
++--------------------------------------------------+------------------------+---------------------------+---------------------------+
+| Red Hat OpenShift 4.10 with Network Operator 1.2 | 470.129.06             | 510.47.03                 | 515.48.07                 |
++--------------------------------------------------+------------------------+---------------------------+---------------------------+
+| CentOS 7 with MOFED installed on the node        | 470.129.06             | 510.47.03                 | 515.48.07                 |
++--------------------------------------------------+------------------------+---------------------------+---------------------------+
+
 
 For more information on GPUDirect RDMA refer to :ref:`this document <operator-rdma>`.
 
-The following Linux distributions are supported:
+Additional supported container management tools:
+----
+* Helm v3
+* Red Hat Operator Lifecycle Manager (OLM)
 
-  * Ubuntu 20.04 LTS
-  * RedHat OpenShift 4.10 using RHCOS
+Technical Preview
+----
+Try out below features that are in technical preview and share `feedback <https://github.com/NVIDIA/gpu-operator/issues>`_ and `contribute <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ .
 
-The following NVIDIA drivers are supported:
+* :ref:`KubeVirt support with vGPU and GPU Passthrough <gpu-operator-kubevirt>`
+* Kubernetes on ARM with Server Base System Architecture (SBSA)
 
-  * R470 datacenter drivers (470.57.02+)
-  * R510 datacenter drivers (510.47.03+)
+Previous GPU Operator Releases
+----
 
-.. note::
+The following table outlines a historic view of GPU Operator support matrix.
 
-   For Red Hat OpenShift GPUDirect RDMA is only supported from 470.103.01+ when using R470 datacenter drivers.
+.. tabs::
+
+    .. tab:: Bare metal / Virtual machines with GPU Passthrough
+
+      +--------------------------+---------------+------------------------+----------------+
+      | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
+      +==========================+===============+========================+================+
+      | 1.11                     | v1.21+        | 4.9, 4.10              | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.10                     | v1.21+        | 4.9, 4.10              | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.9                      | v1.19+        | 4.8, 4.9               | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.8                      | v1.18+        | 4.7, 4.8, 4.9          | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.7                      | v1.18+        | 4.5, 4.6, 4.7          | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.6                      | v1.16+        | 4.5, 4.6, 4.7          | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.5                      | v1.13+        | 4.4.29+, 4.5, 4.6      | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.4                      | v1.13+        | 4.4.29+, 4.5, 4.6      | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.3                      | v1.13+        | 4.4.29+, 4.5, 4.6      | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.2                      | v1.13+        | Not supported          | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.1.7                    | v1.13+        | 4.1, 4.2, 4.3, 4.4     | Supported      |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.1                      | v1.13+        | Not supported          | Not supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.0                      | v1.13+        | Not supported          | Not supported  |
+      +--------------------------+---------------+------------------------+----------------+
+
+    .. tab:: Virtual machines with NVIDIA vCompute Server and NVIDIA RTX Virtual Workstation 
+
+      +--------------------------+---------------+------------------------+----------------+
+      | GPU Operator Release     | Kubernetes    | Red Hat OpenShift      | Anthos         |
+      +==========================+===============+========================+================+
+      | 1.11                     | v1.21+        | 4.9, 4.10              | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.10                     | v1.21+        | 4.9, 4.10              | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.9                      | v1.19+        | 4.8, 4.9               | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.8                      | v1.18+        | 4.7, 4.8               | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.7                      | v1.18+        | 4.6, 4.7, 4.8          | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.6                      | v1.16+        | 4.6, 4.7               | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+      | 1.5                      | v1.13+        | 4.6                    | Not Supported  |
+      +--------------------------+---------------+------------------------+----------------+
+
+    .. tab:: NVIDIA AI Enterprise
+
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
+      | GPU Operator Release     | Kubernetes    | OpenShift              | vSphere with Tanzu        | Release       |
+      +==========================+===============+========================+===========================+===============+
+      | 1.11                     | v1.21+        | 4.9.9+, 4.10           | Supported                 | 2.1           |
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
+      | 1.10.1                   | v1.21+        | 4.9.9+, 4.10           | Supported                 | 2.0           |
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
+      | 1.9.1                    | v1.21+        | Not Supported          | Supported                 | 1.1           |
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
+      | 1.8.1                    | v1.21+        | Not Supported          | Not Supported             | 1.0           |
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
+
+
+* Red Hat OpenShift 4.10 on ARM Server Base System Architecture (SBSA) systems. 
+* KubeVirt with GPU Passthrough and NVIDIA vGPU. 
 

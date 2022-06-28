@@ -28,6 +28,11 @@ on installing the Network Operator.
 Using nvidia-peermem
 *********************
 
+Supported Platforms
+===================
+
+For platforms supported, see :ref:`here <gpudirect_rdma_support>`
+
 Prerequisites
 ===============
 
