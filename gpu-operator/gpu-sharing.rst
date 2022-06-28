@@ -3,6 +3,8 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
+.. _gpu-sharing:
+
 ###############################
 Time-Slicing GPUs in Kubernetes
 ###############################

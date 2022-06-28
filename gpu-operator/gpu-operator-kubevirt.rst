@@ -48,6 +48,8 @@ Node C receives the following software components:
 * ``NVIDIA vGPU Device Manager`` - to create vGPU devices on the node
 * ``Sandbox Device Plugin`` - to discover and advertise the vGPU devices to kubelet
 
+.. _gpu-operator-kubevirt-limitations:
+
 Limitations
 ===========
 
