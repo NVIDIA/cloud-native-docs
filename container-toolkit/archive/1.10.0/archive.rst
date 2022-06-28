@@ -2,20 +2,6 @@
 Archive
 ********
 
-1.10.0
-=====
-
-.. toctree::
-   :maxdepth: 1
-
-   archive/1.10.0/overview.rst
-   archive/1.10.0/concepts.rst
-   archive/1.10.0/arch-overview.rst
-   archive/1.10.0/install-guide.rst
-   archive/1.10.0/user-guide.rst
-   archive/1.10.0/troubleshooting.rst
-   archive/1.10.0/release-notes.rst
-
 1.9.0
 =====
 
