@@ -575,6 +575,9 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 +--------------------------------------------------+------------------------+---------------------------+---------------------------+
 | Red Hat OpenShift 4.10 with Network Operator 1.2 | 470.129.06             | 510.47.03                 | 515.48.07                 |
 +--------------------------------------------------+------------------------+---------------------------+---------------------------+
+| CentOS 7 with MOFED installed on the node        | 470.129.06             | 510.47.03                 | 515.48.07                 |
++--------------------------------------------------+------------------------+---------------------------+---------------------------+
+
 
 For more information on GPUDirect RDMA refer to :ref:`this document <operator-rdma>`.
 
@@ -588,6 +591,7 @@ Technical Preview
 Try out below features that are in technical preview and share `feedback <https://github.com/NVIDIA/gpu-operator/issues>`_ and `contribute <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ .
 
 * :ref:`KubeVirt support with vGPU and GPU Passthrough <gpu-operator-kubevirt>`
+* Kubernetes on ARM with Server Base System Architecture (SBSA)
 
 Previous GPU Operator Releases
 ----

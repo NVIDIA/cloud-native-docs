@@ -62,6 +62,10 @@ Known Limitations
 * See the :ref:`limitations<gpu-operator-kubevirt-limitations>` sections for the [Technical Preview] of GPU Operator support for KubeVirt.
 * The ``clusterpolicies.nvidia.com`` CRD has to be manually deleted after the GPU Operator is uninstalled using Helm.
 * ``nouveau`` driver has to be blacklisted when using the NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``init`` state.
+* The ``gpu-operator:v1.11.0`` and ``gpu-operator:v1.11.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
 
 ----
 
