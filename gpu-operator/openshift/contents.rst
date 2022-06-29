@@ -15,5 +15,6 @@ GPU Operator on OpenShift
    clean-up.rst
    mirror-gpu-ocp-disconnected.rst
    enable-gpu-op-dashboard.rst
+   time-slicing-gpus-in-openshift.rst
    troubleshooting-gpu-ocp.rst
    appendix-ocp.rst
