@@ -16,7 +16,7 @@ The NVIDIA Container Toolkit is available on a variety of Linux distributions an
 .. note::
 
     As of NVIDIA Container Toolkit ``1.7.0`` (``nvidia-docker2 >= 2.8.0``) support for Jetson plaforms
-    is included for Ubuntu 18.04 and Ubuntu 20.04 distributions. This means that the installation
+    is included for Ubuntu 18.04, Ubuntu 20.04, and Ubuntu 22.04 distributions. This means that the installation
     instructions provided for these distributions are expected to work on Jetson devices.
 
 
