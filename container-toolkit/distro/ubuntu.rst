@@ -1,6 +1,6 @@
 Installing on Ubuntu and Debian
 -------------------------------
-The following steps can be used to setup NVIDIA Container Toolkit on Ubuntu LTS - 16.04, 18.04, 20.4 and Debian - Stretch, Buster distributions.
+The following steps can be used to setup NVIDIA Container Toolkit on Ubuntu LTS (18.04, 20.04, and 22.04) and Debian (Stretch, Buster) distributions.
 
 Setting up Docker
 +++++++++++++++++
