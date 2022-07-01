@@ -66,12 +66,12 @@ You can provide time-slicing configurations for the NVIDIA Kubernetes Device Plu
 
     version: v1
     sharing:
-    timeSlicing:
+      timeSlicing:
         renameByDefault: <bool>
         failRequestsGreaterThanOne: <bool>
         resources:
         - name: <resource-name>
-        replicas: <num-replicas>
+          replicas: <num-replicas>
         ...
 
 For each named resource under ``sharing.timeSlicing.resources``, a number of 
@@ -109,13 +109,13 @@ example.
     apiVersion: v1
     kind: ConfigMap
     metadata:
-    name: time-slicing-config
-    namespace: nvidia-gpu-operator
+      name: time-slicing-config
+      namespace: gpu-operator
     data:
         a100-40gb: |-
             version: v1
             sharing:
-            timeSlicing:
+              timeSlicing:
                 resources:
                 - name: nvidia.com/gpu
                   replicas: 8
@@ -130,7 +130,7 @@ example.
         tesla-t4: |-
             version: v1
             sharing:
-            timeSlicing:
+              timeSlicing:
                 resources:
                 - name: nvidia.com/gpu
                   replicas: 4
@@ -279,109 +279,6 @@ are appended to the product name, like this:
 
     nvidia.com/gpu.product = A100-SXM4-40GB-MIG-1g.5gb-SHARED
 
-
-Examples
-========
-
-Consider the following configuration file:
-
-.. code-block:: yaml
-
-      version: v1
-      sharing:
-      timeSlicing:
-         resources:
-         - name: nvidia.com/gpu
-            replicas: 10
-         ...
-
-
-When applying this configuration to a node with 8 GPUs on it, 
-the plugin advertises 80 ``nvidia.com/gpu`` resources to 
-Kubernetes instead of 8, because there are 10 replicas.
-
-Likewise, when applying the following configuration to a node, 
-then 80 ``nvidia.com/gpu.shared`` resources would be advertised to 
-Kubernetes instead of 8 ``nvidia.com/gpu`` resources.
-
-.. code-block:: yaml
-
-      version: v1
-      sharing:
-      timeSlicing:
-         renameByDefault: true
-         resources:
-         - name: nvidia.com/gpu
-            replicas: 10
-         ...
-
-
-In both cases, the plugin simply creates 10 references to each GPU and
-indiscriminately hands them out to anyone that asks for them. Internally, 
-GPU time-slicing is used to allow workloads that execute on the same
-GPU to interleave with one another. However, nothing special is done to
-isolate workloads that are granted replicas from the same underlying
-GPU, and each workload has access to the GPU memory and runs in the same
-fault domain as all of the others, meaning that if one workload crashes, they
-all do.
-
-.. _h.yirkus4krhkp:
-
-Labels Applied by gpu-feature-discovery
-=======================================
-
-For ``gpu-feature-discovery``, the labels that get applied depend on 
-whether ``renameByDefault=true``.
-
-When ``renameByDefault=false`` then the following label is added:
-
-.. code-block:: console
-
-    nvidia.com/<resource-name>.replicas = <num-replicas>
-
-
-``nvidia.com/<resource-name>.product`` is modified as follows if ``renameByDefault=false``:
-
-.. code-block:: text
-
-    nvidia.com/<resource-name>.product = <product name>-SHARED
-
-
-In the example above on a DGX-A100 machine, the labels that would 
-be applied are:
-
-.. code-block:: console
-
-      nvidia.com/gpu.replicas = 10
-      nvidia.com/gpu.product = A100-SXM4-40GB-SHARED
-
-
-When running with ``renameByDefault=false`` and 
-``migStrategy=single`` both the MIG profile name and the 
-new ``SHARED`` annotation 
-will be appended to the product name. For example: 
-
-.. code-block:: console
-
-      nvidia.com/gpu.product = A100-SXM4-40GB-MIG-1g.5gb-SHARED
-
-
-On the other hand, when ``renameByDefault=true`` then only the 
-following label is added, and the product name remains unchanged:
-
-.. code-block:: console
-
-      nvidia.com/<resource-name>.replicas = <num-replicas>
-
-
-Because ``renameByDefault=true`` already encodes the fact 
-that the resource is shared on the resource name itself, there is 
-no need to annotate the product name with ``SHARED``. You can already 
-find the needed shared resources by simply requesting it in the 
-pod specification.
-
-.. _h.7wfh7klm2fy0:
-
 Supported Resource Types
 ========================
 
@@ -417,125 +314,6 @@ Likewise, on an A100 80GB card, they would be:
       nvidia.com/mig-2g.20gb
       nvidia.com/mig-3g.40gb
       nvidia.com/mig-7g.80gb
-
-
-.. _h.zhys08yprw2d:
-
-A Complete Example
-==================
-
-Build a configuration called ``default.yaml`` to apply by default to all nodes:
-
-.. code-block:: yaml
-
-      version: v1
-      flags:
-      migStrategy: none
-
-
-Build a configuration called ``t4-config.yaml`` for nodes with a T4 card:
-
-.. code-block:: yaml
-
-      version: v1
-      flags:
-      migStrategy: none
-      sharing:
-      timeSlicing:
-         resources:
-         - name: nvidia.com/gpu
-            replicas: 8
-
-
-Build a configuration called ``a100-40gb-config.yaml`` for nodes with 
-a 40GB A100 card:
-
-.. code-block:: yaml
-
-      version: v1
-      flags:
-      migStrategy: mixed
-      sharing:
-      timeSlicing:
-         resources:
-         - name: nvidia.com/gpu
-            replicas: 8
-         - name: nvidia.com/mig-1g.5gb
-            replicas: 1
-         - name: nvidia.com/mig-2g.10gb
-            replicas: 2
-         - name: nvidia.com/mig-3g.20gb
-            replicas: 3
-         - name: nvidia.com/mig-7g.40gb
-            replicas: 7
-
-
-Build a configuration called ``a100-80gb-config.yaml`` for nodes 
-with an 80GB A100 card:
-
-.. code-block:: yaml
-
-      version: v1
-      flags:
-      migStrategy: mixed
-      sharing:
-      timeSlicing:
-         resources:
-         - name: nvidia.com/gpu
-            replicas: 8
-         - name: nvidia.com/mig-1g.10gb
-            replicas: 1
-         - name: nvidia.com/mig-2g.20gb
-            replicas: 2
-         - name: nvidia.com/mig-3g.40gb
-            replicas: 3
-         - name: nvidia.com/mig-7g.80gb
-            replicas: 7
-
-
-Install the plugin and GFD referencing these configurations:
-
-.. code-block:: console
-
-      $ helm upgrade -i nvdp nvdp/nvidia-device-plugin \
-         --version=0.12.2 \
-         --namespace nvidia-device-plugin \
-         --create-namespace \
-         --set gfd.enable = true \
-         --set config.map.default=default.yaml \
-         --set config.map.t4-config=t4-config.yaml \
-         --set config.map.a100-40gb-config=a100-40gb.config.yaml \
-         --set config.map.a100-80gb-config=a100-80gb.config.yaml
-
-
-Update the configuration for each node, based on the type of GPU 
-they contain:
-
-.. code-block:: console
-
-      $ kubectl label node \
-         --overwrite \
-         --selector=nvidia.com/gpu.product=TESLA-T4 \
-         nvidia.com/device-plugin.config=t4-config
-         
-      $ kubectl label node \
-         --overwrite \
-         --selector=nvidia.com/gpu.product=A100-SXM4-40GB \
-         nvidia.com/device-plugin.config=a100-40gb-config
-
-      $ kubectl label node \
-         --overwrite \
-         --selector=nvidia.com/gpu.product=A100-SXM4-80GB \
-         nvidia.com/device-plugin.config=a100-80gb-config
-
-
-References
-==========
-
-You can find more information about GPU time-slicing at the following resources.
-
-1) `Blog post on GPU time-slicing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`_.
-2) `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing>`_.
 
 *****************************************************
 Testing GPU Time-Slicing with the NVIDIA GPU Operator
@@ -639,12 +417,9 @@ Your output should look something like this:
       |    0   N/A  N/A      4324      C   /usr/bin/dcgmproftester11         315MiB |
       +-----------------------------------------------------------------------------+
 
+***********
+References
+***********
 
-****************
-More Information
-****************
-
-You can find more information in the following document:
-
-`Improving GPU Utilization in Kubernetes <https://docs.google.com/document/d/1N0crA5BrqguvjPm5t00uoxA827d1ZomoGU0WwQ0e2CU/>`_
-
+1) `Blog post on GPU sharing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`_.
+2) `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing>`_.
