@@ -9,7 +9,6 @@
 Time-Slicing GPUs in Kubernetes
 ###############################
 
-
 ************
 Introduction
 ************
@@ -55,7 +54,6 @@ time-slicing feature in Kubernetes.
 *************
 Configuration
 *************
-
 
 Configuration for Shared Access to GPUs with GPU Time-Slicing
 =============================================================
@@ -156,7 +154,7 @@ where ``<config-map-name>``
 is the name of the ``ConfigMap`` created for the time-slicing 
 configuration as described in the previous section.
 
-Install the NVIDIA GPU Operator with time-slicing enabled (e.g. ``time-slicing-config``):
+During fresh install of the NVIDIA GPU Operator with time-slicing enabled (e.g. ``time-slicing-config``):
 
 .. code-block:: console
 
@@ -164,6 +162,13 @@ Install the NVIDIA GPU Operator with time-slicing enabled (e.g. ``time-slicing-c
          -n gpu-operator \
          --set devicePlugin.config.name=time-slicing-config
 
+For dynamically enabling time-slicing with GPU Operator already installed:
+
+.. code-block:: console
+
+    $ kubectl patch clusterpolicy/cluster-policy \
+       -n gpu-operator --type merge \
+       -p '{"spec": {"devicePlugin": {"config": {"name": "time-slicing-config"}}}}'
 
 Applying the Default Configuration Across the Cluster
 =====================================================
@@ -178,10 +183,9 @@ Install the GPU Operator by passing the time-slicing ``ConfigMap`` name and the
 
 .. code-block:: console
 
-    $ helm install gpu-operator nvidia/gpu-operator \
-         -n gpu-operator \
-         --set devicePlugin.config.name=time-slicing-config \
-         --set devicePlugin.config.default=a100-40gb
+    $ kubectl patch clusterpolicy/cluster-policy \
+       -n gpu-operator --type merge \
+       -p '{"spec": {"devicePlugin": {"config": {"name": "time-slicing-config", "default": "a100-40gb"}}}}'
 
 Verify that the time-slicing configuration is applied successfully to all 
 GPU nodes in the cluster:
@@ -319,9 +323,7 @@ Likewise, on an A100 80GB card, they would be:
 Testing GPU Time-Slicing with the NVIDIA GPU Operator
 *****************************************************
 
-
 This section covers a workload test scenario to validate GPU time-slicing with GPU resources.
-
 
 #. Create a workload test file ``plugin-test.yaml`` as follows:
 
@@ -330,35 +332,35 @@ This section covers a workload test scenario to validate GPU time-slicing with G
       apiVersion: apps/v1
       kind: Deployment
       metadata:
-      name: nvidia-plugin-test
-      labels:
-         app: nvidia-plugin-test
+        name: nvidia-plugin-test
+        labels:
+          app: nvidia-plugin-test
       spec:
-      replicas: 5
-      selector:
-         matchLabels:
+        replicas: 5
+        selector:
+          matchLabels:
             app: nvidia-plugin-test
-      template:
-         metadata:
+        template:
+          metadata:
             labels:
-            app: nvidia-plugin-test
-         spec:
+              app: nvidia-plugin-test
+          spec:
             tolerations:
-            - key: nvidia.com/gpu
-               operator: Exists
-               effect: NoSchedule
+              - key: nvidia.com/gpu
+                operator: Exists
+                effect: NoSchedule
             containers:
-            - name: dcgmproftester11
-               image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
-               command: ["/bin/sh", "-c"]
-               args:
+              - name: dcgmproftester11
+                image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
+                command: ["/bin/sh", "-c"]
+                args:
                   - while true; do /usr/bin/dcgmproftester11 --no-dcgm-validation -t 1004 -d 300; sleep 30; done
-               resources:
-               limits:
-                  nvidia.com/gpu: 1
-               securityContext:
-               capabilities:
-                  add: ["SYS_ADMIN"]
+                resources:
+                 limits:
+                   nvidia.com/gpu: 1
+                securityContext:
+                  capabilities:
+                    add: ["SYS_ADMIN"]
 
 2. Create a deployment with multiple replicas:
 
@@ -371,12 +373,12 @@ This section covers a workload test scenario to validate GPU time-slicing with G
 .. code:: console
 
       kubectl get pods
-      sudo chroot /run/nvidia/driver nvidia-smi
+      kubectl exec <driver-pod-name> -n gpu-operator -- nvidia-smi
 
 Your output should look something like this:
 
 .. code:: console
-   
+
       NAME                                  READY   STATUS    RESTARTS   AGE
       nvidia-plugin-test-8479c8f7c8-4tnsn   1/1     Running   0          6s
       nvidia-plugin-test-8479c8f7c8-cdgdb   1/1     Running   0          6s
@@ -384,10 +386,9 @@ Your output should look something like this:
       nvidia-plugin-test-8479c8f7c8-t9d4b   1/1     Running   0          6s
       nvidia-plugin-test-8479c8f7c8-xggls   1/1     Running   0          6s
 
-
 .. code:: console
 
-      $ sudo chroot /run/nvidia/driver nvidia-smi  
+      $ kubectl exec <driver-pod-name> -n gpu-operator -- nvidia-smi
 
 Your output should look something like this:
 
