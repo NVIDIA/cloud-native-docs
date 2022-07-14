@@ -182,7 +182,11 @@ Then, we can test a GPU container:
 
 .. code-block:: console
 
-    $ sudo ctr run --rm --gpus 0 -t docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 cuda-11.0.3-base-ubuntu20.04 nvidia-smi
+    $ sudo ctr run --rm -t \
+        --runc-binary=/usr/bin/nvidia-container-runtime \
+        --env NVIDIA_VISIBLE_DEVICES=all \
+        docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 \
+        cuda-11.0.3-base-ubuntu20.04 nvidia-smi
 
 You should see an output similar to the one shown below:
 
