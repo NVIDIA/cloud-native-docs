@@ -107,7 +107,7 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-2-0 -n gpu-operator
+    $ helm install --wait gpu-operator nvaie/gpu-operator-2-1 -n gpu-operator
 
 
 .. note::
@@ -173,7 +173,7 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-2-0 -n gpu-operator \
+    $ helm install --wait gpu-operator nvaie/gpu-operator-2-1 -n gpu-operator \
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
       --set driver.version=510.47.03 \
