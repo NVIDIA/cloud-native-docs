@@ -9,6 +9,12 @@ Enabling a Cluster-wide entitlement
 Introduction
 -------------
 
+.. note::
+
+   The Driver Toolkit, which enables entitlement-free deployments of the GPU Operator, is available for certain z-streams on OpenShift
+   4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
+   all OpenShift versions prior to 4.9.9. See :ref:`broken driver toolkit <broken-dtk>` for more information.
+
 The **NVIDIA GPU Operator** deploys several pods used to manage and enable GPUs for use in the OpenShift Container Platform.
 Some of these Pods require packages that are not available by default in the Universal Base Image (UBI) that OpenShift Container
 Platform uses. To make packages available to the NVIDIA GPU driver container, you must enable cluster-wide entitled container builds in OpenShift.
