@@ -432,13 +432,13 @@ options are also respected:
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-      value: /etc/containerd/config.toml
+        value: /etc/containerd/config.toml
       - name: CONTAINERD_SOCKET
-      value: /run/containerd/containerd.sock
+        value: /run/containerd/containerd.sock
       - name: CONTAINERD_RUNTIME_CLASS
-      value: nvidia
+        value: nvidia
       - name: CONTAINERD_SET_AS_DEFAULT
-      value: true
+        value: true
 
 These options are defined as follows:
 
