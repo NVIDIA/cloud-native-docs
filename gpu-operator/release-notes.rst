@@ -16,6 +16,25 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+1.11.1
+=====
+
+Improvements
+------------
+
+* Added ``startupProbe`` to NVIDIA driver container to allow RollingUpgrades to progress to other nodes only after driver modules are successfully loaded on current one.
+* Added support for ``driver.rollingUpdate.maxUnavailable`` parameter to specify maximum nodes for simultaneous driver upgrades. Default is 1.
+* NVIDIA driver container will auto-disable itself on the node with pre-installed drivers by applying label ``nvidia.com/gpu.deploy.driver=pre-installed``. This is useful for heterogeneous clusters where only some GPU nodes have pre-installed drivers(e.g. DGX OS).
+
+Fixed issues
+------------
+
+* Apply tolerations to ``cuda-validator`` and ``device-plugin-validator`` Pods based on ``deamonsets.tolerations`` in `ClusterPolicy`. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/360>`_.
+* Fixed an issue causing ``cuda-validator`` Pod to fail when ``accept-nvidia-visible-devices-envvar-when-unprivileged = false`` is set with NVIDIA Container Toolkit. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/365>`_.
+* Fixed an issue which caused recursive mounts under ``/run/nvidia/driver`` when both ``driver.rdma.enabled`` and ``driver.rdma.useHostMofed`` are set to ``true``. This caused other GPU Pods to fail to start.
+
+----
+
 1.11.0
 ======
 
