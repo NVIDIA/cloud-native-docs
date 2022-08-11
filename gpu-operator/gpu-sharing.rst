@@ -118,7 +118,7 @@ example.
                 - name: nvidia.com/gpu
                   replicas: 8
                 - name: nvidia.com/mig-1g.5gb
-                  replicas: 1
+                  replicas: 2
                 - name: nvidia.com/mig-2g.10gb
                   replicas: 2
                 - name: nvidia.com/mig-3g.20gb
