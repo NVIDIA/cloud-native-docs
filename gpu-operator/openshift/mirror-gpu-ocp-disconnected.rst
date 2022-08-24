@@ -610,12 +610,19 @@ The four primary official indexes the OpenShift Container Platform 4.9 uses are:
 
 The four primary official indexes the OpenShift Container Platform 4.10 uses are:
 
-      * ``registry.redhat.io/redhat/certified-operator-index:v4.10``
-      * ``registry.redhat.io/redhat/redhat-operator-index:v4.10``
-      * ``registry.redhat.io/redhat/community-operator-index:v4.10``
-      * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.10``
+   * ``registry.redhat.io/redhat/certified-operator-index:v4.10``
+   * ``registry.redhat.io/redhat/redhat-operator-index:v4.10``
+   * ``registry.redhat.io/redhat/community-operator-index:v4.10``
+   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.10``
 
-  .. note:: The procedure refers to OpenShift Container Platform 4.9 for 4.10 replace references to 4.9 with 4.10.
+The four primary official indexes the OpenShift Container Platform 4.11 uses are:
+
+   * ``registry.redhat.io/redhat/certified-operator-index:v4.11``
+   * ``registry.redhat.io/redhat/redhat-operator-index:v4.11``
+   * ``registry.redhat.io/redhat/community-operator-index:v4.11``
+   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.11``
+
+  .. note:: The procedure refers to OpenShift Container Platform 4.9. For 4.10 replace references to 4.9 with 4.10 and similarly for 4.11.
 
 This table provides the relevant information extracted from the steps below for the Operators of interest to this procedure.
 
