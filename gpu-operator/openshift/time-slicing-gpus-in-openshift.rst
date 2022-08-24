@@ -41,9 +41,9 @@ custom resource, GFD is enabled. In case, you disabled it, you can re-enable it 
 
 .. code-block:: console
 
-$ oc patch clusterpolicy gpu-cluster-policy -n nvidia-gpu-operator \
-    --type json \
-    --patch '[{"op": "replace", "path": "/spec/gfd/enable", "value": true}]'
+   $ oc patch clusterpolicy gpu-cluster-policy -n nvidia-gpu-operator \
+       --type json \
+       --patch '[{"op": "replace", "path": "/spec/gfd/enable", "value": true}]'
 
 -----------------------------------
 Creating the slicing configurations
@@ -53,156 +53,148 @@ Creating the slicing configurations
 
    .. code-block:: yaml
 
-   ---
-   apiVersion: v1
-   kind: ConfigMap
-   metadata:
-     name: device-plugin-config
-     namespace: nvidia-gpu-operator
-   data:
-     A100-SXM4-40GB: |-
-       version: v1
-       sharing:
-         timeSlicing:
-           resources:
-             - name: nvidia.com/gpu
-               replicas: 8
-             - name: nvidia.com/mig-1g.5gb
-               replicas: 1
-             - name: nvidia.com/mig-2g.10gb
-               replicas: 2
-             - name: nvidia.com/mig-3g.20gb
-               replicas: 3
-             - name: nvidia.com/mig-7g.40gb
-               replicas: 7
-     A100-SXM4-80GB: |-
-       version: v1
-       sharing:
-         timeSlicing:
-           resources:
-             - name: nvidia.com/gpu
-               replicas: 8
-             - name: nvidia.com/mig-1g.10gb
-               replicas: 1
-             - name: nvidia.com/mig-2g.20gb
-               replicas: 2
-             - name: nvidia.com/mig-3g.40gb
-               replicas: 3
-             - name: nvidia.com/mig-7g.80gb
-               replicas: 7
-     Tesla-T4: |-
-       version: v1
-       sharing:
-         timeSlicing:
-           resources:
-             - name: nvidia.com/gpu
-               replicas: 8
-
+      ---
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: device-plugin-config
+        namespace: nvidia-gpu-operator
+      data:
+        A100-SXM4-40GB: |-
+          version: v1
+          sharing:
+            timeSlicing:
+              resources:
+                - name: nvidia.com/gpu
+                  replicas: 8
+                - name: nvidia.com/mig-1g.5gb
+                  replicas: 1
+                - name: nvidia.com/mig-2g.10gb
+                  replicas: 2
+                - name: nvidia.com/mig-3g.20gb
+                  replicas: 3
+                - name: nvidia.com/mig-7g.40gb
+                  replicas: 7
+        A100-SXM4-80GB: |-
+          version: v1
+          sharing:
+            timeSlicing:
+              resources:
+                - name: nvidia.com/gpu
+                  replicas: 8
+                - name: nvidia.com/mig-1g.10gb
+                  replicas: 1
+                - name: nvidia.com/mig-2g.20gb
+                  replicas: 2
+                - name: nvidia.com/mig-3g.40gb
+                  replicas: 3
+                - name: nvidia.com/mig-7g.80gb
+                  replicas: 7
+        Tesla-T4: |-
+          version: v1
+          sharing:
+            timeSlicing:
+              resources:
+                - name: nvidia.com/gpu
+                  replicas: 8
 
 
 #. Create the ConfigMap:
 
    .. code-block:: console
 
-   $ oc create -f device-plugin-config.yaml
+      $ oc create -f device-plugin-config.yaml
 
-#. Tell the GPU Operator which ConfigMap to use for the device plugin configuration. You can simply patch
-the ``ClusterPolicy`` custom resource.
+#. Tell the GPU Operator which ConfigMap to use for the device plugin configuration. You can simply patch the ``ClusterPolicy`` custom resource.
 
    .. code-block:: console
 
-   $ oc patch clusterpolicy gpu-cluster-policy \
-       -n nvidia-gpu-operator --type merge \
-       -p '{"spec": {"devicePlugin": {"config": {"name": "device-plugin-config"}}}}'
+      $ oc patch clusterpolicy gpu-cluster-policy \
+          -n nvidia-gpu-operator --type merge \
+          -p '{"spec": {"devicePlugin": {"config": {"name": "device-plugin-config"}}}}'
 
-#. Apply the configuration to all the nodes you have with Tesla TA GPUs. GFD, labels the
-nodes with the GPU product, in this example ``Tesla-T4``, so you can use a node selector
-to label all of the nodes at once.
+#. Apply the configuration to all the nodes you have with Tesla TA GPUs. GFD, labels the nodes with the GPU product, in this example ``Tesla-T4``, so you can use a node selector to label all of the nodes at once.
 
    You can also set ``devicePlugin.config.default=Tesla-T4``, which applies the configuration across the cluster by default without requiring node specific labels.
 
    .. code-block:: console
 
-   $ oc label --overwrite node \
-       --selector=nvidia.com/gpu.product=Tesla-T4 \
-       nvidia.com/device-plugin.config=Tesla-T4
+      $ oc label --overwrite node \
+          --selector=nvidia.com/gpu.product=Tesla-T4 \
+          nvidia.com/device-plugin.config=Tesla-T4
 
-#. After a few seconds, the configuration is applied and you can verify that GPU resource replicas have been
-created. The following configuration creates eight replicas for Tesla T4 GPUs, so the
-``nvidia.com/gpu`` external resource is set to ``8``.
+#. After a few seconds, the configuration is applied and you can verify that GPU resource replicas have been created. The following configuration creates eight replicas for Tesla T4 GPUs, so the ``nvidia.com/gpu`` external resource is set to ``8``.
 
    .. code-block:: console
 
-   $ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json | jq '.items[0].status.capacity'
+      $ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json | jq '.items[0].status.capacity'
 
    **Example output**
 
    .. code-block:: console
 
-   {
-     "attachable-volumes-aws-ebs": "39",
-     "cpu": "4",
-     "ephemeral-storage": "125293548Ki",
-     "hugepages-1Gi": "0",
-     "hugepages-2Mi": "0",
-     "memory": "16105592Ki",
-     "nvidia.com/gpu": "8",
-     "pods": "250"
-   }
+      {
+        "attachable-volumes-aws-ebs": "39",
+        "cpu": "4",
+        "ephemeral-storage": "125293548Ki",
+        "hugepages-1Gi": "0",
+        "hugepages-2Mi": "0",
+        "memory": "16105592Ki",
+        "nvidia.com/gpu": "8",
+        "pods": "250"
+      }
 
-#.  Note that a -SHARED suffix has been added to the ``nvidia.com/gpu.product`` label to reflect that time
-slicing is enabled. You can disable this in the configuration. For example, the Tesla T4
-configuration would look like this:
+#. Note that a -SHARED suffix has been added to the ``nvidia.com/gpu.product`` label to reflect that time slicing is enabled. You can disable this in the configuration. For example, the Tesla T4 configuration would look like this:
 
    .. code-block:: yaml
 
-   version: v1
-   sharing:
-     timeSlicing:
-       renameByDefault: false
-       resources:
-         - name: nvidia.com/gpu
-           replicas: 8
+        version: v1
+        sharing:
+          timeSlicing:
+            renameByDefault: false
+            resources:
+              - name: nvidia.com/gpu
+                replicas: 8
 
 #. Verify that GFD labels have been added to indicate time-sharing.
 
    .. code-block:: console
 
-   $ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
-    | jq '.items[0].metadata.labels' | grep nvidia
+      $ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
+       | jq '.items[0].metadata.labels' | grep nvidia
 
    **Example Output**
 
-    .. code-block:: console
+   .. code-block:: console
 
-    "nvidia.com/cuda.driver.major": "510",
-    "nvidia.com/cuda.driver.minor": "73",
-    "nvidia.com/cuda.driver.rev": "08",
-    "nvidia.com/cuda.runtime.major": "11",
-    "nvidia.com/cuda.runtime.minor": "7",
-    "nvidia.com/device-plugin.config": "Tesla-T4",
-    "nvidia.com/gfd.timestamp": "1655482336",
-    "nvidia.com/gpu.compute.major": "7",
-    "nvidia.com/gpu.compute.minor": "5",
-    "nvidia.com/gpu.count": "1",
-    "nvidia.com/gpu.deploy.container-toolkit": "true",
-    "nvidia.com/gpu.deploy.dcgm": "true",
-    "nvidia.com/gpu.deploy.dcgm-exporter": "true",
-    "nvidia.com/gpu.deploy.device-plugin": "true",
-    "nvidia.com/gpu.deploy.driver": "true",
-    "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
-    "nvidia.com/gpu.deploy.node-status-exporter": "true",
-    "nvidia.com/gpu.deploy.nvsm": "",
-    "nvidia.com/gpu.deploy.operator-validator": "true",
-    "nvidia.com/gpu.family": "turing",
-    "nvidia.com/gpu.machine": "g4dn.xlarge",
-    "nvidia.com/gpu.memory": "16106127360",
-    "nvidia.com/gpu.present": "true",
-    "nvidia.com/gpu.product": "Tesla-T4-SHARED",
-    "nvidia.com/gpu.replicas": "8",
-    "nvidia.com/mig.strategy": "single",
+       "nvidia.com/cuda.driver.major": "510",
+       "nvidia.com/cuda.driver.minor": "73",
+       "nvidia.com/cuda.driver.rev": "08",
+       "nvidia.com/cuda.runtime.major": "11",
+       "nvidia.com/cuda.runtime.minor": "7",
+       "nvidia.com/device-plugin.config": "Tesla-T4",
+       "nvidia.com/gfd.timestamp": "1655482336",
+       "nvidia.com/gpu.compute.major": "7",
+       "nvidia.com/gpu.compute.minor": "5",
+       "nvidia.com/gpu.count": "1",
+       "nvidia.com/gpu.deploy.container-toolkit": "true",
+       "nvidia.com/gpu.deploy.dcgm": "true",
+       "nvidia.com/gpu.deploy.dcgm-exporter": "true",
+       "nvidia.com/gpu.deploy.device-plugin": "true",
+       "nvidia.com/gpu.deploy.driver": "true",
+       "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
+       "nvidia.com/gpu.deploy.node-status-exporter": "true",
+       "nvidia.com/gpu.deploy.nvsm": "",
+       "nvidia.com/gpu.deploy.operator-validator": "true",
+       "nvidia.com/gpu.family": "turing",
+       "nvidia.com/gpu.machine": "g4dn.xlarge",
+       "nvidia.com/gpu.memory": "16106127360",
+       "nvidia.com/gpu.present": "true",
+       "nvidia.com/gpu.product": "Tesla-T4-SHARED",
+       "nvidia.com/gpu.replicas": "8",
+       "nvidia.com/mig.strategy": "single",
 
-If you remove the label, the node configuration is reset to its default.
+   If you remove the label, the node configuration is reset to its default.
 
 ******************************************
 Applying the configuration to a MachineSet
@@ -219,11 +211,11 @@ Consider a MachineSet named ``worker-gpu-nvidia-t4-us-east-1``, with
 You want to ensure the new nodes will have time slicing enabled automatically, that is, you want to apply the
 label to every new node. This can be done by setting the label in the MachineSet template.
 
-.. code-block:: console
+   .. code-block:: console
 
-$ oc patch machineset worker-gpu-nvidia-t4-us-east-1a \
-    -n openshift-machine-api --type merge \
-    --patch '{"spec": {"template": {"spec": {"metadata": {"labels": {"nvidia.com/device-plugin.config": "Tesla-T4"}}}}}}'
+      $ oc patch machineset worker-gpu-nvidia-t4-us-east-1a \
+          -n openshift-machine-api --type merge \
+          --patch '{"spec": {"template": {"spec": {"metadata": {"labels": {"nvidia.com/device-plugin.config": "Tesla-T4"}}}}}}'
 
 Now, any new machine created by the Machine Autoscaler for this MachineSet will have the label, and time-slicing enabled.
 
