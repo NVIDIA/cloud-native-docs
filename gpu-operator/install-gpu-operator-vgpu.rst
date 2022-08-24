@@ -11,8 +11,7 @@ This document provides an overview of the workflow to getting started with using
 
 .. note::
 
-   NVIDIA vGPU is only supported with the `NVIDIA Virtual (vGPU) Software License Server (vCS) <https://docs.nvidia.com/grid/ls/index.html>`_.
-   The `NVIDIA License System <https://docs.nvidia.com/license-system/latest/>`_ is only supported with NVIDIA AI Enterprise.
+   NVIDIA vGPU is only supported with the NVIDIA License System.
 
 .. note::
 
