@@ -164,10 +164,6 @@ Procedure
 
 #. Select **ConfigMaps**.
 
-#. The syntax associated with the ConfigMap needs to match that shown in the screenshot:
-
-   .. image:: graphics/create_config_maps2.png
-
 #. Click **Create ConfigMap**.
 
    .. image:: graphics/create_config_map1.png
@@ -176,22 +172,27 @@ Procedure
 
    #. The ``name`` must be ``licensing-config``.
 
-   #. Copy/paste the information your NLS client token into the ``client_configuration_token.tok`` parameter.
+   #. Copy and paste the information for your NLS client token into the ``client_configuration_token.tok`` parameter.
 
 #. Click **Create**.
 
-  **Example output**
+   **Example output**
 
-  .. code-block:: yaml
+   .. code-block:: yaml
 
-     kind: ConfigMap
-     apiVersion: v1
-     metadata:
-      name: licensing-config
-     data:
-      client_configuration_token.tok: >-
-       tJ8EKOD5-rN7sSUWyHKsrvVSgfRYucvKo-lg<SNIP>
-      gridd.conf: '# empty file'
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+       name: licensing-config
+      data:
+       client_configuration_token.tok: >-
+        tJ8EKOD5-rN7sSUWyHKsrvVSgfRYucvKo-lg<SNIP>
+       gridd.conf: '# empty file'
+
+#. The created ConfigMap should resemble the following:
+
+   .. image:: graphics/create_config_maps2.png
+
 
 Create the Cluster Policy Instance
 ==================================
@@ -233,7 +234,11 @@ Now create the cluster policy, which is responsible for maintaining policy resou
    * **version**: 510.47.03
    * **image**: vgpu-guest-driver-2-0
 
-      .. note:: The vGPU driver image for OpenShift Container Platform version 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.9``. For 4.10 the vGPU driver image is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.10``
+      .. note:: The vGPU driver image for OpenShift Container Platform version
+
+                * 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.9``
+                * 4.10 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.10``
+                * 4.11 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.11``
 
 #. Expand the **Advanced configuration** menu and specify the imagePullSecret . (For example: *gpu-operator-secret*)
 
@@ -247,9 +252,9 @@ The GPU Operator proceeds to install all the required components to set up the N
 
 .. note:: Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take some time to finish.
 
-The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to State:ready when the installation succeeds.
+The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
-.. image:: graphics/cluster-policy-suceed.png
+.. image:: graphics/cluster_policy_suceed.png
 
 
 Verify the ClusterPolicy installation from the CLI run:

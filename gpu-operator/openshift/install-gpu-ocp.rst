@@ -106,13 +106,13 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      v1.10
+      v1.11
 
 #. Run the following commands to get the ``startingCSV`` value required for step number 5.
 
    .. code-block:: console
 
-      $ CHANNEL=v1.10
+      $ CHANNEL=v1.11
 
    .. code-block:: console
 
@@ -122,7 +122,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      gpu-operator-certified.v1.10.1
+      gpu-operator-certified.v1.11.0
 
 #. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
 
@@ -134,12 +134,12 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
         name: gpu-operator-certified
         namespace: nvidia-gpu-operator
       spec:
-        channel: "v1.10"
+        channel: "v1.11"
         installPlanApproval: Manual
         name: gpu-operator-certified
         source: certified-operators
         sourceNamespace: openshift-marketplace
-        startingCSV: "gpu-operator-certified.v1.10.1"
+        startingCSV: "gpu-operator-certified.v1.11.0"
 
    .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in step 3 and 4.
 
@@ -168,7 +168,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
    .. code-block:: console
 
       NAME            CSV                              APPROVAL   APPROVED
-      install-wwhfj   gpu-operator-certified.v1.10.1   Manual     false
+      install-wwhfj   gpu-operator-certified.v1.11.0   Manual     false
 
 
 #. Approve the install plan using the CLI commands:
@@ -234,7 +234,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.10.1 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.11.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    .. code-block:: console
 
@@ -285,7 +285,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.10.1 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.11.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
 

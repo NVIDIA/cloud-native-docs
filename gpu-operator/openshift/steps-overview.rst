@@ -1,4 +1,4 @@
-.. Date: November 15 2021
+.. Date: Aug 22 2022
 .. Author: kquinn
 
 .. _steps_overview:
@@ -12,15 +12,6 @@ Follow these steps to install the **NVIDIA GPU Operator**:
 #. :ref:`install-nvidiagpu`.
 #. :ref:`running-sample-app`.
 
-Improvements with version 1.10
------------------------------
-
-NVIDIA GPU operator 1.10 provides support for ARM architecture with OpenShift Container Platform 4.10.
-
-Upgrade
--------
-
-To upgrade the **NVIDIA GPU Operator** from 1.9 to 1.10 you must uninstall 1.9 and install 1.10. For information about upgrading the OpenShift Container Platform release, see `Understanding upgrade channels and releases <https://docs.openshift.com/container-platform/latest/updating/understanding-upgrade-channels-release.html>`_.
 
 Entitlement-free supported versions
 -----------------------------------
