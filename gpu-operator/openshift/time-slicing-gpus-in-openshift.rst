@@ -200,14 +200,14 @@ Creating the slicing configurations
 Applying the configuration to a MachineSet
 ******************************************
 
-With OpenShift, you can leverage the `Machine Management https://docs.openshift.com/container-platform/4.10/machine_management/index.html`_ feature to dynamically provision nodes on
+With OpenShift, you can leverage the `Machine Management <https://docs.openshift.com/container-platform/4.10/machine_management/index.html>`_ feature to dynamically provision nodes on
 platforms that support it.
 
 For example, an administrator can create a MachineSet for nodes with Tesla T4 GPUs configured with time-slicing enabled.
 This provides a pool of replicas for workloads that don't require a full T4 GPU.
 
 Consider a MachineSet named ``worker-gpu-nvidia-t4-us-east-1``, with
-`Machine Autoscaler https://docs.openshift.com/container-platform/4.10/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling`_ configured.
+`Machine Autoscaler <https://docs.openshift.com/container-platform/4.10/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling>`_ configured.
 You want to ensure the new nodes will have time slicing enabled automatically, that is, you want to apply the
 label to every new node. This can be done by setting the label in the MachineSet template.
 
