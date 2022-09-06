@@ -15,7 +15,7 @@ Appendix
 
 .. include:: install-gpu-operator-outdated-kernels.rst
 
-.. include:: custom-driver-params
+.. include:: custom-driver-params.rst
 
 .. include:: install-precompiled-signed-drivers.rst
 
