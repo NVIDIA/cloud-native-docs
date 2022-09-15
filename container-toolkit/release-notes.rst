@@ -10,6 +10,84 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.11.0
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.11.0`` is primarily targeted at adding support for injection of GPUDirect Storage and MOFED devices into containerized environments.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.11.0``
+* ``libnvidia-container-tools 1.11.0``
+* ``libnvidia-container1 1.11.0``
+
+The following ``container-toolkit`` containers are included:
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubuntu18.04``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0``)
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.11.0``:
+
+* ``nvidia-container-runtime 3.11.0``
+
+Note that this release does not include an update to ``nvidia-docker2`` and is compatible with ``nvidia-docker2 2.11.0``.
+
+Packaging Changes
+------------------
+
+* An ``nvidia-container-toolkit-base`` package has been introduced that allows for the higher-level components to be
+installed in cases where the NVIDIA Container Runtime Hook, NVIDIA Container CLI, and NVIDIA Container Library are not required.
+This includes Tegra-based systems where the CSV mode of the NVIDIA Container Runtime is used.
+* The package repository includes support for Fedora 35 packages.
+* The package repository includes support for RHEL 8.6. This redirects to the Centos 8 packages.
+* Mirrors for older distributions have been removed to limit the size of the package repository.
+
+Fixes and Features
+-------------------
+
+* Fix bug in CSV mode where libraries listed as ``sym`` entries in mount specification are not added to the LDCache.
+* Rename the ``nvidia-container-toolkit`` executable to ``nvidia-container-runtime-hook`` to better indicate intent.
+A symlink named ``nvidia-container-toolkit`` is created that points to the ``nvidia-container-runtime-hook`` executable.
+* Inject platform files into container on Tegra-based systems to allow for future support of these systems in the GPU Device Plugin.
+* Add ``cdi`` mode to NVIDIA Container Runtime
+* Add discovery of GPUDirect Storage (``nvidia-fs*``) devices if the ``NVIDIA_GDS`` environment variable of the container is set to ``enabled``
+* Add discovery of MOFED Infiniband devices if the ``NVIDIA_MOFED`` environment variable of the container is set to ``enabled``
+* Add ``nvidia-ctk runtime configure`` command to configure the Docker config file (e.g. ``/etc/docker/daemon.json``) for use with the NVIDIA Container Runtime.
+
+specific to libnvidia-container
+``````````````````````````````````
+* Fix bug where LDCache was not updated when the ``--no-pivot-root`` option was specified
+* Preload ``libgcc_s.so.1`` on arm64 systems
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+* Update CUDA base images to ``11.7.1``
+* Allow ``accept-nvidia-visible-devices-*`` config options to be set by toolkit container
+
+Known Issues
+-------------
+
+* The ``container-toolkit:v1.11.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
+
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-centos7``:
+
+    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubi8``:
+
+    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+
+  * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubuntu18.04``:
+
+    * ``libsystemd0`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`_
+    * ``libudev1`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`_
+
+
 NVIDIA Container Toolkit 1.10.0
 ====================================
 
