@@ -2,27 +2,8 @@
 Archive
 ********
 
-1.11.1
-======
-
-.. toctree::
-   :maxdepth: 1
-
-   archive/1.11.1/overview.rst
-   archive/1.11.1/getting-started.rst
-   archive/1.11.1/platform-support.rst
-   archive/1.11.1/release-notes.rst
-   archive/1.11.1/install-gpu-operator-vgpu.rst
-   archive/1.11.1/install-gpu-operator-nvaie.rst
-   archive/1.11.1/openshift/contents.rst
-   archive/1.11.1/gpu-operator-mig.rst
-   archive/1.11.1/gpu-sharing.rst
-   archive/1.11.1/gpu-operator-rdma.rst
-   archive/1.11.1/appendix.rst
-
-
 1.11.0
-======
+=====
 
 .. toctree::
    :maxdepth: 1
@@ -35,13 +16,12 @@ Archive
    archive/1.11.0/install-gpu-operator-nvaie.rst
    archive/1.11.0/openshift/contents.rst
    archive/1.11.0/gpu-operator-mig.rst
-   archive/1.11.0/gpu-sharing.rst
    archive/1.11.0/gpu-operator-rdma.rst
-   archive/1.11.0/appendix.rst
+   archive/1.11.0x/appendix.rst
 
 
 1.10.1
-======
+=====
 
 .. toctree::
    :maxdepth: 1
