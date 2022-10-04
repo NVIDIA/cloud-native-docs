@@ -482,8 +482,8 @@ Option 2 - auto upgrade CRD using Helm hook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is utilized to automatically upgrade to latest CRD.
-A new parameter ``upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
-This parameter needs to be set using ``--set upgradeCRD=true`` option during upgrade command as below.
+A new parameter ``operator.upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
+This parameter needs to be set using ``--set operator.upgradeCRD=true`` option during upgrade command as below.
 
 Fetch latest values from the chart (replace the ``.x`` below with the desired version)
 
@@ -493,7 +493,7 @@ Fetch latest values from the chart (replace the ``.x`` below with the desired ve
 
 .. code-block:: console
 
-   $ helm upgrade gpu-operator -n gpu-operator --set upgradeCRD=true --disable-openapi-validation -f values-v22.9.x.yaml
+   $ helm upgrade gpu-operator -n gpu-operator --set operator.upgradeCRD=true --disable-openapi-validation -f values-v22.9.x.yaml
 
 .. note::
 
@@ -589,8 +589,8 @@ Thus ``clusterpolicy`` CRD will still remain by default.
 
    $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com
 
-To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``cleanupCRD``
-is added to enable this hook. This is disabled by default. This paramter needs to be enabled with ``--set cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
+To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``operator.cleanupCRD``
+is added to enable this hook. This is disabled by default. This paramter needs to be enabled with ``--set operator.cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
 
 .. note::
 
