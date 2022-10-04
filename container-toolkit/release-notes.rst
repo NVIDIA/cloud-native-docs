@@ -69,6 +69,13 @@ specific to container-toolkit container images
 Known Issues
 -------------
 
+* When upgrading from an earlier version of the NVIDIA Container Toolkit on RPM-based systems, a package manager such as ``yum`` may remove
+the installed ``/usr/bin/nvidia-container-runtime-hook`` executable due to the post-uninstall hooks defined in the older package version. To avoid this
+problem either remove the older version of the ``nvidia-container-toolkit`` before installing ``v1.11.0`` or **reinstall** the ``v1.11.0`` package if the
+``/usr/bin/nvidia-container-runtime-hook`` file is missing. For systems where the ``v1.11.0`` version of the package has already been installed and left
+in an unusable state, running ``yum reinstall -y nvidia-container-toolkit-1.11.0-1`` should address this issue.
+
+
 * The ``container-toolkit:v1.11.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-centos7``:
