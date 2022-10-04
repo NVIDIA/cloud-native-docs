@@ -18,5 +18,3 @@ Appendix
 .. include:: custom-driver-params.rst
 
 .. include:: install-precompiled-signed-drivers.rst
-
-.. include:: gpu-operator-kubevirt.rst

@@ -1,4 +1,4 @@
-.. Date: November 16 2021
+.. Date: Sept 28 2022
 .. Author: kquinn
 
 .. _install-nvidiagpu:
@@ -106,13 +106,13 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      v1.11
+      v22.9
 
 #. Run the following commands to get the ``startingCSV`` value required for step number 5.
 
    .. code-block:: console
 
-      $ CHANNEL=v1.11
+      $ CHANNEL=v22.9
 
    .. code-block:: console
 
@@ -122,7 +122,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. code-block:: console
 
-      gpu-operator-certified.v1.11.0
+      gpu-operator-certified.v22.9.0
 
 #. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
 
@@ -134,12 +134,12 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
         name: gpu-operator-certified
         namespace: nvidia-gpu-operator
       spec:
-        channel: "v1.11"
+        channel: "v22.9"
         installPlanApproval: Manual
         name: gpu-operator-certified
         source: certified-operators
         sourceNamespace: openshift-marketplace
-        startingCSV: "gpu-operator-certified.v1.11.0"
+        startingCSV: "gpu-operator-certified.v22.9.0"
 
    .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in step 3 and 4.
 
@@ -168,8 +168,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
    .. code-block:: console
 
       NAME            CSV                              APPROVAL   APPROVED
-      install-wwhfj   gpu-operator-certified.v1.11.0   Manual     false
-
+      install-wwhfj   gpu-operator-certified.v22.9.0   Manual     false
 
 #. Approve the install plan using the CLI commands:
 
@@ -234,7 +233,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.11.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    .. code-block:: console
 
@@ -285,7 +284,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v1.11.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
    Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
 
@@ -449,7 +448,7 @@ Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure th
 Getting information about the GPU
 *************************************************************
 
-The ``nvidia-smi`` shows memory usage, GPU utilization and the temperature of the GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
+The ``nvidia-smi`` shows memory usage, GPU utilization, and the temperature of the GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
 
 To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemonset.
 
@@ -503,6 +502,6 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
       |  No running processes found                                                 |
       +-----------------------------------------------------------------------------+
 
-   Two tables are generated the first reflects the information about all available GPUs (the example shows one GPU). The second table tells provides details on the processes using the GPUs.
+   Two tables are generated. The first table reflects the information about all available GPUs (the example shows one GPU). The second table provides details on the processes using the GPUs.
 
    For more information describing the contents of the tables see the man page for ``nvidia-smi``.
