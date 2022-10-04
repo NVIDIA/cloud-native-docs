@@ -136,7 +136,6 @@ GPU worker nodes are identified by the presence of the label ``feature.node.kube
 where ``0x10de`` is the PCI vendor ID assigned to NVIDIA.
 
 To disable operands from getting deployed on a GPU worker node, label the node with ``nvidia.com/gpu.deploy.operands=false``.
-This can be useful when dedicating a GPU worker node for non-container workloads (i.e. KubeVirt VMs).
 
 .. code-block:: console
 
@@ -419,13 +418,15 @@ Note that these instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
+.. _custom-runtime-options:
+
 ----
 
 Custom configuration for runtime ``containerd``
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
 When `containerd` is the container runtime used, the following configuration
-options are also respected:
+options are used with the container-toolkit deployed with GPU Operator:
 
 .. code-block:: yaml
 
@@ -468,6 +469,57 @@ These options are defined as follows:
       equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
       The default value is ``true``.
 
+For using with RKE2 (Rancher Kubernetes Engine 2) or K3s following settings needs to be set in `ClusterPolicy`.
+
+.. code-block:: yaml
+
+   toolkit:
+      env:
+      - name: CONTAINERD_CONFIG
+        value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
+      - name: CONTAINERD_SOCKET
+        value: /run/k3s/containerd/containerd.sock
+      - name: CONTAINERD_RUNTIME_CLASS
+        value: nvidia
+      - name: CONTAINERD_SET_AS_DEFAULT
+        value: true
+
+These options can be passed to GPU Operator during install time as below.
+
+.. code-block:: console
+
+  helm install -n gpu-operator --create-namespace \
+    nvidia/gpu-operator $HELM_OPTIONS \
+      --set toolkit.env[0].name=CONTAINERD_CONFIG \
+      --set toolkit.env[0].value=/var/lib/rancher/k3s/agent/etc/containerd/config.toml \
+      --set toolkit.env[1].name=CONTAINERD_SOCKET \
+      --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
+      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
+      --set toolkit.env[2].value=nvidia \
+      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
+      --set-string toolkit.env[3].value=true
+
+Custom configuration for runtime ``CRI-O``
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+When `CRI-O` is the container runtime used, nvidia-container-runtime hook is created under ``/run/containers/oci/hooks.d`` directory.
+By default `CRI-O` will not look under this directory for invoking hooks. ``hooks_dir`` needs to be configured in ``/etc/crio/crio.conf`` to include this path for `CRI-O` to be able to find the nvidia-container-runtime hook:
+
+.. code-block:: console
+
+    [crio.runtime]
+    hooks_dir = [
+            "/usr/share/containers/oci/hooks.d",
+            "/run/containers/oci/hooks.d",
+    ]
+
+Alternatively a drop-in file can be created under ``/etc/crio/crio.conf.d`` as ``10-nvidia-hook.conf`` with above content.
+
+.. note::
+
+   * This is not required in case of Red Hat OpenShift with CoreOS as CRI-O configuration already include this directory.
+   * ``crio`` service restart is required for this to take effect using command ``systemctl restart crio``.
+
 ----
 
 Proxy Environments
@@ -493,6 +545,12 @@ Refer to the document :ref:`install-gpu-operator-mig` for more information on ho
 on NVIDIA Ampere products. For guidance on configuring MIG support for the **NVIDIA GPU Operator** in an OpenShift Container Platform cluster, see the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/mig-ocp.html>`_.
 
 ----
+
+KubeVirt / OpenShift Virtualization
+""""""""""""""""""""""""""""""""""""
+
+Refer to the document :ref:`gpu-operator-kubevirt` for more information on how to use the GPU Operator to provision GPU nodes for running KubeVirt virtual machines with access to GPU.
+For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :ref:`nvidia-gpu-operator-openshift-virtualization-vgpu-enablement`.
 
 Outdated Kernels
 """"""""""""""""""""""""""

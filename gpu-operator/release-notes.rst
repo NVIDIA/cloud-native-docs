@@ -16,6 +16,53 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+22.9.0
+======
+
+New Features
+------------
+
+* Support for RHEL 8 with Kubernetes and Containerd or CRI-O.
+* Support with Kubernetes 1.25.
+* Support for OCP with ARM (on prem using SBSA server or on AWS)
+* Support for RKE2 (Rancher Kubernetes Engine 2) with Ubuntu 20.04 and RHEL8.
+* Support for GPUDirect RDMA with NVIDIA Network Operator 1.3.
+* Support for Red Hat OpenShift with Cloud Service Providers (CSPs) Amazon AWS, Google GKE and Microsoft Azure.
+* [General Availibility] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
+* [General Availibility] - Kubernetes on ARM with Server Base System Architecture (SBSA).
+* Support for `Pod Security Admission (PSA) <https://kubernetes.io/docs/concepts/security/pod-security-admission/>`_ through the ``psp.enabled`` flag. If enabled, the namespace where the operator is installed in will be labeled with the ``privileged`` pod security level.
+
+Improvements
+------------
+
+* Support automatic upgrade and cleanup of ``clusterpolicies.nvidia.com`` CRD using Helm hooks. Refer to :ref:`Operator upgrades<operator-upgrades>` for more info.
+* Support for dynamically enabling/disabling GFD, MIG Manager, DCGM and DCGM-Exporter.
+* Switched to calendar versioning starting from this release for better life cycle management and support. Refer to :ref:`NVIDIA GPU Operator Versioning<operator-versioning>` for more info.
+
+Fixed issues
+------------
+
+* Remove CUDA compat libs from the operator and all operand images to avoid mismatch with installed CUDA driver version. More info `here <https://github.com/NVIDIA/gpu-operator/issues/391>`_ and `here <https://github.com/NVIDIA/gpu-operator/issues/389>`_.
+* Migrate to ``node.k8s.io/v1`` API for creation of ``RuntimeClass`` objects. More info `here <https://github.com/NVIDIA/gpu-operator/issues/409>`_.
+* Remove PodSecurityPolicy (PSP) starting with Kubernetes v1.25. Setting ``psp.enabled`` will now enable Pod Security Admission (PSA) instead.
+
+Known Limitations
+------------------
+
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* ``nouveau`` driver has to be blacklisted when using NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``Init`` state.
+* When using ``CRI-O`` runtime with Kubernetes, the config file ``/etc/crio/crio.conf`` has to include ``/run/containers/oci/hooks.d`` as path for ``hooks_dir``. Refer :ref:`here<custom-runtime-options>` for steps to configure this.
+* When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
+* The ``gpu-operator:v22.9.0`` and ``gpu-operator:v22.9.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * ``expat`` - `CVE-2022-40674 <https://access.redhat.com/security/cve/CVE-2022-40674>`_
+    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+
+----
+
 1.11.1
 =====
 

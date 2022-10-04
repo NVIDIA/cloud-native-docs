@@ -435,8 +435,11 @@ Using Helm
 Starting with GPU Operator v1.8.0, the GPU Operator supports dynamic updates to existing resources. This allows
 the GPU Operator to ensure settings from the `ClusterPolicy` Spec are always applied and current.
 
-Since Helm doesn't support auto upgrade of existing CRDs, the user needs to follow a two step process to
+Since Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ auto upgrade of existing CRDs, the user has following options to
 upgrade the GPU Operator chart:
+
+Option 1 - manually upgrade CRD
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. blockdiag::
 
@@ -465,7 +468,7 @@ Fetch latest values from the chart (replace the ``.x`` below with the desired ve
 
 .. code-block:: console
 
-   $ helm show values nvidia/gpu-operator --version=1.8.x > values-1.8.x.yaml
+   $ helm show values nvidia/gpu-operator --version=v22.9.x > values-22.9.x.yaml
 
 Update the values file as needed.
 
@@ -473,7 +476,32 @@ And upgrade via Helm:
 
 .. code-block:: console
 
-   $ helm upgrade gpu-operator -n gpu-operator -f values-1.8.x.yaml
+   $ helm upgrade gpu-operator -n gpu-operator -f values-22.9.x.yaml
+
+Option 2 - auto upgrade CRD using Helm hook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is utilized to automatically upgrade to latest CRD.
+A new parameter ``upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
+This parameter needs to be set using ``--set upgradeCRD=true`` option during upgrade command as below.
+
+Fetch latest values from the chart (replace the ``.x`` below with the desired version)
+
+.. code-block:: console
+
+   $ helm show values nvidia/gpu-operator --version=v22.9.x > values-v22.9.x.yaml
+
+.. code-block:: console
+
+   $ helm upgrade gpu-operator -n gpu-operator --set upgradeCRD=true --disable-openapi-validation -f values-v22.9.x.yaml
+
+.. note::
+
+   * Option ``--disable-openapi-validation`` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
+     Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
+
+   * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
+     In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
 
 Cluster Policy Updates
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -554,17 +582,24 @@ You should now see all the pods being deleted:
 
    No resources found.
 
-Also, ensure that CRDs created during the operator install have been removed:
+By default, Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ deletion of existing CRDs when the Chart is deleted.
+Thus ``clusterpolicy`` CRD will still remain by default.
 
 .. code-block:: console
 
    $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com
 
+To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``cleanupCRD``
+is added to enable this hook. This is disabled by default. This paramter needs to be enabled with ``--set cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
+
 .. note::
 
-   After un-install of GPU Operator, the NVIDIA driver modules might still be loaded.
+   * After un-install of GPU Operator, the NVIDIA driver modules might still be loaded.
    Either reboot the node or unload them using the following command:
 
    .. code-block:: console
 
       $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
+
+   * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
+     In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
