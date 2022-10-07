@@ -22,14 +22,14 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 New Features
 ------------
 
+* Support for Hopper (H100) GPU with CUDA 11.8 / R520 Data Center drivers on x86 servers.
 * Support for RHEL 8 with Kubernetes and Containerd or CRI-O.
 * Support with Kubernetes 1.25.
-* Support for OCP with ARM (on prem using SBSA server or on AWS)
 * Support for RKE2 (Rancher Kubernetes Engine 2) with Ubuntu 20.04 and RHEL8.
 * Support for GPUDirect RDMA with NVIDIA Network Operator 1.3.
 * Support for Red Hat OpenShift with Cloud Service Providers (CSPs) Amazon AWS, Google GKE and Microsoft Azure.
 * [General Availibility] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
-* [General Availibility] - Kubernetes on ARM with Server Base System Architecture (SBSA).
+* [General Availibility] - OCP and Upstream Kubernetes on ARM with :ref:`supported platforms<gpu-operator-arm-platforms>`.
 * Support for `Pod Security Admission (PSA) <https://kubernetes.io/docs/concepts/security/pod-security-admission/>`_ through the ``psp.enabled`` flag. If enabled, the namespace where the operator is installed in will be labeled with the ``privileged`` pod security level.
 
 Improvements

@@ -63,7 +63,7 @@ GPU Operator Component Matrix
         - NVIDIA vGPU Device Manager
 
       * - v22.9.0
-        - `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_, `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_, `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_, `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
+        - 520.61.05, `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_, `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_, `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_, `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
         - `v0.4.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.12.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
