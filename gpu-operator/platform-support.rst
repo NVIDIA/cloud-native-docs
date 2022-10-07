@@ -24,6 +24,8 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
     +=========================+===========================+
+    | NVIDIA H100             | NVIDIA Hopper             |
+    +-------------------------+---------------------------+
     | NVIDIA DGX A100         | A100 and NVSwitch         |
     +-------------------------+---------------------------+
     | NVIDIA HGX A100         | A100 and NVSwitch         |
@@ -47,6 +49,7 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
 
     .. note::
 
+      * Hopper (H100) GPU is only supported on x86 servers using  CUDA 11.8 / R520 Data Center drivers.
       * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
 
   .. tab:: Datacenter D,T and V-series Products
@@ -91,6 +94,9 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
+
+.. _gpu-operator-arm-platforms:
+
 Supported ARM based platforms
 ----
 
@@ -113,6 +119,10 @@ The following NVIDIA datacenter/enterprise GPUs are supported:
     .. note::
 
       The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported.
+
+    .. note::
+
+      The R520 Data Center Driver is not supported for ARM.
 
 
 Supported deployment options, hypervisors and NVIDIA vGPU based products
@@ -319,7 +329,7 @@ The following table outlines a historic view of GPU Operator support matrix.
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | OpenShift              | Anthos         |
       +==========================+===============+========================+================+
-      | 1.11                     | v1.21+        | 4.9, 4.10              | Supported      |
+      | 1.11                     | v1.21+        | 4.9, 4.10, 4.11        | Supported      |
       +--------------------------+---------------+------------------------+----------------+
       | 1.10                     | v1.21+        | 4.9, 4.10              | Supported      |
       +--------------------------+---------------+------------------------+----------------+
