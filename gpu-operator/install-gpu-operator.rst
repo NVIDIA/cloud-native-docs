@@ -482,7 +482,7 @@ For using with RKE2 (Rancher Kubernetes Engine 2) or K3s following settings need
       - name: CONTAINERD_RUNTIME_CLASS
         value: nvidia
       - name: CONTAINERD_SET_AS_DEFAULT
-        value: true
+        value: "true"
 
 These options can be passed to GPU Operator during install time as below.
 
