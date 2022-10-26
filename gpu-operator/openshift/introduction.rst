@@ -1,4 +1,4 @@
-.. Date: August 26 2021
+.. Date: Oct 24 2022
 .. Author: kquinn
 
 .. _openshift-introduction:
@@ -15,4 +15,4 @@ The NVIDIA GPU Operator uses the operator framework within Kubernetes to automat
 Kubernetes device plugin for GPUs, the `NVIDIA Container Toolkit <https://github.com/NVIDIA/nvidia-docker>`_,
 automatic node labelling using `GFD <https://github.com/NVIDIA/gpu-feature-discovery>`_, `DCGM <https://developer.nvidia.com/dcgm>`_ based monitoring and others.
 
-----
+For guidance on the specific NVIDIA support entitlement needs, see `obtaining support from NVIDIA <https://access.redhat.com/solutions/5174941>`_.
