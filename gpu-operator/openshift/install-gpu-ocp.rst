@@ -222,7 +222,7 @@ Create the cluster policy using the web console
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
- .. image:: graphics/cluster_policy_suceed.png
+ .. image:: graphics/cluster-policy-state-ready.png
 
 .. _verify-gpu-operator-install-ocp:
 
@@ -273,7 +273,7 @@ Create the cluster policy using the web console
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
- .. image:: graphics/cluster_policy_suceed.png
+ .. image:: graphics/cluster-policy-state-ready.png
 
 .. _verify-gpu-operator-install-ocp:
 
