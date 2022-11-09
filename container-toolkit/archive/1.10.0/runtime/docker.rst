@@ -252,7 +252,7 @@ For example, specify the ``compute`` and ``utility`` capabilities, allowing usag
    .. code-block:: console
 
         $ docker run --rm --gpus 'all,"capabilities=compute,utility"' \
-            nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+            nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 Constraints
 ```````````
