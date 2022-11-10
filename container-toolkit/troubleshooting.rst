@@ -53,7 +53,7 @@ one may see the following error
 
 .. code-block:: console
 
-    $ sudo nvidia-docker run --gpus=all --rm nvcr.io/nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+    $ sudo nvidia-docker run --gpus=all --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
     /bin/nvidia-docker: line 34: /bin/docker: Permission denied
     /bin/nvidia-docker: line 34: /bin/docker: Success
 
@@ -80,7 +80,7 @@ To address this it is recommeded that the ``docker`` command be used directly sp
 
 .. code-block:: console
 
-    $ sudo docker run --gpus=all --runtime=nvidia --rm nvcr.io/nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+    $ sudo docker run --gpus=all --runtime=nvidia --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 Alternatively a local SELinux policy can be generated as suggested:
 

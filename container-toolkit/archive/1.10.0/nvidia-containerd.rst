@@ -178,11 +178,11 @@ Then, we can test a GPU container:
 
 .. code-block:: console
 
-    $ sudo ctr image pull docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04
+    $ sudo ctr image pull docker.io/nvidia/cuda:11.6.2-base-ubuntu20.04
 
 .. code-block:: console
 
-    $ sudo ctr run --rm --gpus 0 -t docker.io/nvidia/cuda:11.0.3-base-ubuntu20.04 cuda-11.0.3-base-ubuntu20.04 nvidia-smi
+    $ sudo ctr run --rm --gpus 0 -t docker.io/nvidia/cuda:11.6.2-base-ubuntu20.04 cuda-11.6.2-base-ubuntu20.04 nvidia-smi
 
 You should see an output similar to the one shown below:
 

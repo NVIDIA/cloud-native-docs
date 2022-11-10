@@ -105,7 +105,7 @@ We can now run some sample GPU containers to test the setup.
 
         $ podman run --rm --security-opt=label=disable \
              --hooks-dir=/usr/share/containers/oci/hooks.d/ \
-             nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi
+             nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
    which should produce the following output:
 
