@@ -130,6 +130,13 @@ The list of prerequisites for running NVIDIA Container Toolkit is described belo
 ----
 
 ********************
+Container Device Interface (CDI) Support
+********************
+
+.. include:: cdi-support.rst
+
+
+********************
 Docker
 ********************
 .. Docker instructions
