@@ -162,6 +162,22 @@ In this scenario, the default configuration options are used:
 
    * For installing on Secure Boot systems or using Precompiled modules refer to :ref:`install-precompiled-signed-drivers`.
 
+
+Bare-metal/Passthrough with default configurations on Red Hat Enterprise Linux
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In this scenario, the default configuration options are used:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator
+
+.. note::
+
+   * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported. 
+
 Bare-metal/Passthrough with default configurations on CentOS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
