@@ -67,12 +67,12 @@ In addition to these main packages, the following two packages are considered pa
 * ``nvidia-docker2``
 * ``nvidia-container-runtime``
 
-with their dependence on the ``nvidia-container-toolkit`` package shown below:
+with their dependence on the ``nvidia-container-toolkit`` package shown below. Note that these packages are considered deprecated and in general only the ``nvidia-container-toolkit`` package is required.
 
 .. code-block:: bash
 
     ├─ nvidia-docker2
-    │    ├─ docker-ce || docker-ee || docker.io
+    │    ├─ docker-ce || docker-ee || docker.io || moby-engine
     │    └─ nvidia-container-toolkit (>= version)
     │
     └─ nvidia-container-runtime
@@ -149,11 +149,11 @@ As a general rule, installing the ``nvidia-container-toolkit`` package will be s
 package is continuously being enhanced with additional functionality and tools that simplify working with containers and
 NVIDIA devices.
 
-However, if you want to use Kubernetes with Docker, you need to either configure the Docker ``daemon.json`` to include
-a reference to the NVIDIA Container Runtime and set this runtime as the default or install the ``nvidia-docker2`` package
-which would overwrite the ``daemon.json`` file on the host.
+To use Kubernetes with Docker, you need to configure the Docker ``daemon.json`` to include
+a reference to the NVIDIA Container Runtime and set this runtime as the default. The NVIDIA Container Toolkit contains a utility to update this file
+as highlighed in the ``docker``-specific installation instructions.
 
-See the :ref:`install-guide` for more information on installing ``nvidia-docker2`` on various Linux distributions.
+See the :ref:`install-guide` for more information on installing the NVIDIA Container Toolkit on various Linux distributions.
 
 Package Repository
 ```````````````````
