@@ -12,8 +12,3 @@ Setup the repository and refresh the package listings
    .. code-block:: console
 
       $ zypper modifyrepo --enable libnvidia-container-experimental
-
-
-.. note::
-   For version of the NVIDIA Container Toolkit prior to ``1.6.0``, the ``nvidia-docker`` repository should be used instead of the
-   ``libnvidia-container`` repositories above.
