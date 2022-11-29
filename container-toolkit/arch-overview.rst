@@ -37,6 +37,7 @@ Components and Packages
 The main packages of the NVIDIA Container Toolkit are:
 
 * ``nvidia-container-toolkit``
+* ``nvidia-cotnainer-toolkit-base``
 * ``libnvidia-container-tools``
 * ``libnvidia-container1``
 
@@ -45,7 +46,8 @@ With the dedpendencies between these packages shown below:
 .. code-block:: bash
 
     ├─ nvidia-container-toolkit (version)
-    │    └─ libnvidia-container-tools (>= version)
+    │    ├─ libnvidia-container-tools (>= version)
+    │    └─ nvidia-container-toolkit-base (version)
     │
     ├─ libnvidia-container-tools (version)
     │    └─ libnvidia-container1 (>= version)
@@ -86,7 +88,7 @@ most important flags being which specific GPU devices should be injected into th
 The NVIDIA Container Runtime
 `````````````````````````````
 
-This component is included in the ``nvidia-container-toolkit`` package.
+This component is included in the ``nvidia-container-toolkit-base`` package.
 
 This component used to be a complete fork of ``runC`` with NVIDIA-specific code injected into it. Since 2019, it is a thin wrapper around the native
 ``runC`` installed on the host system. ``nvidia-container-runtime`` takes a ``runC`` spec as input, injects the NVIDIA Container Runtime Hook as
@@ -99,7 +101,7 @@ It's important to note that this component is not necessarily specific to docker
 The NVIDIA Container Toolkit CLI
 `````````````````````````````````
 
-This component is included in the ``nvidia-container-toolkit`` package.
+This component is included in the ``nvidia-container-toolkit-base`` package.
 
 This component is a CLI that includes a number of utilities for interacting with the NVIDIA Container Toolkit. This functionality includes configuring
 runtimes such as ``docker`` for use with the NVIDIA Container Toolkit or generating `Container Device Interface (CDI) <https://github.com/container-orchestrated-devices/container-device-interface>`_ specifications.
