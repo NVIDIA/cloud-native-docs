@@ -16,6 +16,57 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 
 ----
 
+22.9.1
+======
+
+New Features
+------------
+
+* Support for CUDA 12.0 / R525 Data Center drivers on x86 / ARM servers.
+* Support for RHEL 8.7 with Kubernetes and Containerd or CRI-O.
+* Support for NVIDIA GPUDirect Storage using Ubuntu 20.04 and Ubuntu 22.04 with Kubernetes.
+* Support for RTX 6000 ADA GPU
+* Support for A800 GPU
+* Support for vSphere 8.0 with Tanzu
+* Support for vGPU 15.0
+* Support for HPE Ezmeral Runtime Enterprise. Version 5.5 - with RHEL 8.4 and 8.5
+
+Improvements
+------------
+
+* Added helm parameters to control operator logging levels and time encoding.
+* When using CRI-O runtime with Kubernetes, it is no longer required to update the CRI-O config file to include ``/run/containers/oci/hooks.d`` as an additional path for OCI hooks. By default, the NVIDIA OCI runtime hook gets installed at ``/usr/share/conatiners/oci/hooks.d`` which is the default path configured with CRI-O.
+* Allow per node configurations for NVIDIA Device Plugin using a custom ConfigMap and node label ``nvidia.com/device-plugin.config=<config-name>``.
+* Support for `OnDelete <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_ upgrade strategy for all Daemonsets deployed by the GPU Operator.
+  This can be configured using ``daemonsets.upgradeStrategy`` parameter in the ``ClusterPolicy``. This prevents pods managed by the GPU Operator from being restarted automatically on spec updates.
+* Enable eviction of GPU Pods only during driver container upgrades with ``ENABLE_GPU_POD_EVICTION`` env (default: "true") set under ``driver.manager.env`` in the ``ClusterPolicy``.
+  This eliminates the requirement to drain the entire node currently.
+
+Fixed issues
+------------
+
+* Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to Github `issue <https://github.com/NVIDIA/gpu-operator/issues/432>`_ for more details.
+* Disable creation of PodSecurityPolicies (PSP) with K8s versions ``1.25`` and above as it is removed.
+
+Common Vulnerability and Exposures
+----------------------------------
+* Fixed - Updated driver images for ``515.86.01``, ``510.108.03``, ``470.161.03``, ``450.216.04`` to address CVEs noted `here <https://nvidia.custhelp.com/app/answers/detail/a_id/5415>`_.
+* The ``gpu-operator:v22.9.1`` and ``gpu-operator:v22.9.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
+  These are from the base images and are not in libraries used by GPU Operator:
+    * ``krb5-libs`` - `CVE-2022-42898 <https://nvd.nist.gov/vuln/detail/CVE-2022-42898>`_
+
+Known Limitations
+------------------
+
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* No support for newer MIG profiles ``1g.10gb``, ``1g.20gb``, ``2.12gb+me`` with R525 drivers. It will be added in the following release.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* ``nouveau`` driver has to be blacklisted when using NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``Init`` state.
+* When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
+
 22.9.0
 ======
 
