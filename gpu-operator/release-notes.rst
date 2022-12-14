@@ -35,7 +35,7 @@ Improvements
 ------------
 
 * Added helm parameters to control operator logging levels and time encoding.
-* When using CRI-O runtime with Kubernetes, it is no longer required to update the CRI-O config file to include ``/run/containers/oci/hooks.d`` as an additional path for OCI hooks. By default, the NVIDIA OCI runtime hook gets installed at ``/usr/share/conatiners/oci/hooks.d`` which is the default path configured with CRI-O.
+* When using CRI-O runtime with Kubernetes, it is no longer required to update the CRI-O config file to include ``/run/containers/oci/hooks.d`` as an additional path for OCI hooks. By default, the NVIDIA OCI runtime hook gets installed at ``/usr/share/containers/oci/hooks.d`` which is the default path configured with CRI-O.
 * Allow per node configurations for NVIDIA Device Plugin using a custom ConfigMap and node label ``nvidia.com/device-plugin.config=<config-name>``.
 * Support for `OnDelete <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_ upgrade strategy for all Daemonsets deployed by the GPU Operator.
   This can be configured using ``daemonsets.upgradeStrategy`` parameter in the ``ClusterPolicy``. This prevents pods managed by the GPU Operator from being restarted automatically on spec updates.
@@ -79,8 +79,8 @@ New Features
 * Support for RKE2 (Rancher Kubernetes Engine 2) with Ubuntu 20.04 and RHEL8.
 * Support for GPUDirect RDMA with NVIDIA Network Operator 1.3.
 * Support for Red Hat OpenShift with Cloud Service Providers (CSPs) Amazon AWS, Google GKE and Microsoft Azure.
-* [General Availibility] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
-* [General Availibility] - OCP and Upstream Kubernetes on ARM with :ref:`supported platforms<gpu-operator-arm-platforms>`.
+* [General Availability] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
+* [General Availability] - OCP and Upstream Kubernetes on ARM with :ref:`supported platforms<gpu-operator-arm-platforms>`.
 * Support for `Pod Security Admission (PSA) <https://kubernetes.io/docs/concepts/security/pod-security-admission/>`_ through the ``psp.enabled`` flag. If enabled, the namespace where the operator is installed in will be labeled with the ``privileged`` pod security level.
 
 Improvements
