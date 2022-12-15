@@ -533,13 +533,15 @@ within the driver daemonset.
 
 .. The diagram below illustrates the functionality of the `k8s-driver-manager`.
 
-Since the `k8s-driver-manager` evicts pods from the node to complete the driver upgrade, users can control the node drain
+Since the `k8s-driver-manager` evicts GPU pods from the node to complete the driver upgrade, users can control the node drain
 behavior using environment variables as specified in the GPU Operator Helm chart (see the ``driver.manager.env`` variables):
 
 .. code-block:: yaml
 
    imagePullPolicy: IfNotPresent
    env:
+   - name: ENABLE_GPU_POD_EVICTION
+      value: "true"
    - name: ENABLE_AUTO_DRAIN
       value: "true"
    - name: DRAIN_USE_FORCE
@@ -551,10 +553,18 @@ behavior using environment variables as specified in the GPU Operator Helm chart
    - name: DRAIN_DELETE_EMPTYDIR_DATA
       value: "false"
 
-* The *DRAIN_POD_SELECTOR_LABEL* env can be used to let `k8s-driver-manager` only evict GPU pods with matching labels from the node.
-  This way, CPU only pods will not be affected during driver upgrades.
+* The *ENABLE_GPU_POD_EVICTION* env lets `k8s-driver-manager` to only evict GPU pods from the node. If this fails, then entire node will be
+  drained if *ENABLE_AUTO_DRAIN* is also enabled.
+* The *DRAIN_USE_FORCE* env needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
+* The *DRAIN_DELETE_EMPTYDIR_DATA* env needs to be enabled to allow deletion of GPU pods using emptyDir volume.
 
-* *DRAIN_USE_FORCE* needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
+.. note::
+
+   Since GPU pods get evicted whenever the NVIDIA Driver Daemonset spec is updated, it may not always be desirable to allow this to happen automatically.
+   To prevent this ``daemonsets.updateStrategy`` parameter in the ``ClusterPolicy`` can be set to `OnDelete <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_ .
+   With ``OnDelete`` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted. 
+  Thus, admins can control when to rollout spec updates to driver pods on any given node. 
+  For more information on DaemonSet update strategies, refer to the `Kubernetes documentation <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_.
 
 Using OLM in OpenShift
 -----------------------
