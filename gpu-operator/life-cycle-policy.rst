@@ -44,7 +44,7 @@ GPU Operator Component Matrix
 ----
 
   .. list-table::
-      :widths: 100 100 100 100 100 100 100 100 100 100 100 100 100
+      :widths: 100 100 100 100 100 100 100 100 100 100 100 100 100 100
       :header-rows: 1
       :align: center
 
@@ -61,6 +61,22 @@ GPU Operator Component Matrix
         - Validator for NVIDIA GPU Operator
         - NVIDIA KubeVirt GPU Device Plugin
         - NVIDIA vGPU Device Manager
+        - NVIDIA GDS Driver
+
+      * - v22.9.1
+        - `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_, `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_, `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_, `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_, `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
+        - `v0.5.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+        - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+        - `0.13.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+        - `3.1.3-3.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+        -  v0.10.1
+        - `0.7.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - `0.5.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
+        - `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        - v22.9.1
+        - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
+        - v0.2.0
+        - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
       * - v22.9.0
         - 520.61.05, `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_, `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_, `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_, `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
@@ -75,6 +91,7 @@ GPU Operator Component Matrix
         - v22.9.0
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
+        - N/A
           
       * - 1.11
         - `515.48.07 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_, `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_, `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_, `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
@@ -89,6 +106,7 @@ GPU Operator Component Matrix
         - v1.11.0
         - `v1.1.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.1.0
+        - N/A
 
       * - 1.10
         - `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_
@@ -101,6 +119,7 @@ GPU Operator Component Matrix
         - `0.3.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
         - `2.3.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
         - v1.10.0
+        - N/A
         - N/A
         - N/A
 
@@ -117,6 +136,7 @@ GPU Operator Component Matrix
         - v1.9.1
         - N/A
         - N/A
+        - N/A
 
       * - 1.9.0
         - `470.82.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-82-01/index.html>`_
@@ -129,6 +149,7 @@ GPU Operator Component Matrix
         - `0.2.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
         - `2.3.1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
         - v1.9.0
+        - N/A
         - N/A
         - N/A
 
@@ -145,6 +166,7 @@ GPU Operator Component Matrix
         - v1.8.2
         - N/A
         - N/A
+        - N/A
 
       * - 1.8.1
         - `470.57.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-57-02/index.html>`_
@@ -157,6 +179,7 @@ GPU Operator Component Matrix
         - `0.1.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
         - `2.2.3 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
         - v1.8.1
+        - N/A
         - N/A
         - N/A
 
@@ -173,6 +196,7 @@ GPU Operator Component Matrix
         - v1.8.0
         - N/A
         - N/A
+        - N/A
 
       * - 1.7.1
         - `460.73.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-73-01/index.html>`_
@@ -185,6 +209,7 @@ GPU Operator Component Matrix
         - `0.1.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
         - N/A
         - v1.7.1
+        - N/A
         - N/A
         - N/A
 
@@ -201,6 +226,7 @@ GPU Operator Component Matrix
         - v1.7.0
         - N/A
         - N/A
+        - N/A
 
       * - 1.6.2
         - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -210,6 +236,7 @@ GPU Operator Component Matrix
         - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
         - 0.6.0
         - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - N/A
         - N/A
         - N/A
         - N/A
@@ -229,6 +256,7 @@ GPU Operator Component Matrix
         - N/A
         - N/A
         - N/A
+        - N/A
 
       * - 1.6.0
         - `460.32.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-460-32-03/index.html>`_
@@ -238,6 +266,7 @@ GPU Operator Component Matrix
         - `2.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
         - 0.6.0
         - `0.4.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - N/A
         - N/A
         - N/A
         - N/A
@@ -257,6 +286,7 @@ GPU Operator Component Matrix
         - N/A
         - N/A
         - N/A
+        - N/A
 
       * - 1.5.1
         - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -266,6 +296,7 @@ GPU Operator Component Matrix
         - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
         - 0.6.0
         - `0.3.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - N/A
         - N/A
         - N/A
         - N/A
@@ -285,6 +316,7 @@ GPU Operator Component Matrix
         - N/A
         - N/A
         - N/A
+        - N/A
 
       * - 1.4.0
         - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -294,6 +326,7 @@ GPU Operator Component Matrix
         - `2.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
         - 0.6.0
         - `0.2.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - N/A
         - N/A
         - N/A
         - N/A
@@ -313,6 +346,7 @@ GPU Operator Component Matrix
         - N/A
         - N/A
         - N/A
+        - N/A
 
       * - 1.2.0
         - `450.80.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-102-04/index.html>`_
@@ -321,6 +355,7 @@ GPU Operator Component Matrix
         - `0.7.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
         - `2.1.0-rc.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
         - 0.6.0
+        - N/A
         - N/A
         - N/A
         - N/A
@@ -341,10 +376,11 @@ GPU Operator Component Matrix
         - N/A
         - N/A
         - N/A
+        - N/A
 
   .. note::
 
       - Driver version could be different with NVIDIA vGPU, as it depends on the driver
         version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-      - The GPU Operator is supported on all the R450, R470, R510, 515 and 520 NVIDIA datacenter production drivers. For a list of supported
+      - The GPU Operator is supported on all the R450, R470, R510, 515, 520 and 525 NVIDIA datacenter production drivers. For a list of supported
         datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
