@@ -48,8 +48,8 @@ Fixed issues
 * Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to Github `issue <https://github.com/NVIDIA/gpu-operator/issues/432>`_ for more details.
 * Disable creation of PodSecurityPolicies (PSP) with K8s versions ``1.25`` and above as it is removed.
 
-Common Vulnerability and Exposures
-----------------------------------
+Common Vulnerabilities and Exposures (CVEs)
+-------------------------------------------
 * Fixed - Updated driver images for ``515.86.01``, ``510.108.03``, ``470.161.03``, ``450.216.04`` to address CVEs noted `here <https://nvidia.custhelp.com/app/answers/detail/a_id/5415>`_.
 * The ``gpu-operator:v22.9.1`` and ``gpu-operator:v22.9.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
