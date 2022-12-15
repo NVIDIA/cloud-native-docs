@@ -136,19 +136,21 @@ Use the following steps to build the vGPU Manager container and push it to a pri
    * ``PRIVATE_REGISTRY`` - Name of the private registry used to store the driver image.
    * ``VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
    * ``OS_TAG`` - This must match the Guest OS version. For RedHat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
+   * ``CUDA_VERSION`` - CUDA base image version to build the driver image with.
 
    .. note:: The recommended registry to use is the Integrated OpenShift Container Platform registry. For more information about the registry, see `Accessing the registry <https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html>`_.
 
    .. code-block:: console
 
-      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11
+      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11 CUDA_VERSION=11.7.1
 
 #. Build the NVIDIA vGPU Manager image:
 
    .. code-block:: console
 
       $ docker build \
-          –build-arg DRIVER_VERSION=${VERSION} \
+          --build-arg DRIVER_VERSION=${VERSION} \
+          --build-arg CUDA_VERSION=${CUDA_VERSION} \
           -t ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG} .
 
 #. Push the NVIDIA vGPU Manager image to your private registry:

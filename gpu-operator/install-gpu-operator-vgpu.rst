@@ -100,13 +100,25 @@ Set the driver container image version to a user defined version number. For exa
 
     ``VERSION`` can be any user defined value. Please note this value to use during operator installation command
 
+Set the version of the CUDA base image used when building the driver container:
+
+.. code-block:: console
+
+    $ export CUDA_VERSION=11.8.0
+
+.. note::
+
+   The ``CUDA_VERSION`` only dictates what base image is used when building the driver container,
+   and does not have any correlation to the version of CUDA associated with / supported by the
+   resulting driver container.
+
 Replace the ``VGPU_DRIVER_VERSION`` below with the appropriate Linux guest vGPU driver version downloaded 
-from the NVIDIA software portal. In this example, the ``460.32.03`` driver has been downloaded. Note that 
+from the NVIDIA software portal. In this example, the ``525.60.13`` driver has been downloaded. Note that 
 the ``-grid`` suffix needs to be added to the environment variable as shown:
 
 .. code-block:: console
 
-    $ export VGPU_DRIVER_VERSION=460.32.03-grid 
+    $ export VGPU_DRIVER_VERSION=525.60.13-grid 
 
 .. note::
 
@@ -121,6 +133,7 @@ Build the driver container image
     $ sudo docker build \
       --build-arg DRIVER_TYPE=vgpu \
       --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
+      --build-arg CUDA_VERSION=$CUDA_VERSION \
       -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
 * Push the driver container image to your private repository
