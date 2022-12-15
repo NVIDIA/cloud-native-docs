@@ -515,27 +515,6 @@ These options can be passed to GPU Operator during install time as below.
       --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
       --set-string toolkit.env[3].value=true
 
-Custom configuration for runtime ``CRI-O``
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-When `CRI-O` is the container runtime used, nvidia-container-runtime hook is created under ``/run/containers/oci/hooks.d`` directory.
-By default `CRI-O` will not look under this directory for invoking hooks. ``hooks_dir`` needs to be configured in ``/etc/crio/crio.conf`` to include this path for `CRI-O` to be able to find the nvidia-container-runtime hook:
-
-.. code-block:: console
-
-    [crio.runtime]
-    hooks_dir = [
-            "/usr/share/containers/oci/hooks.d",
-            "/run/containers/oci/hooks.d",
-    ]
-
-Alternatively a drop-in file can be created under ``/etc/crio/crio.conf.d`` as ``10-nvidia-hook.conf`` with above content.
-
-.. note::
-
-   * This is not required in case of Red Hat OpenShift with CoreOS as CRI-O configuration already include this directory.
-   * ``crio`` service restart is required for this to take effect using command ``systemctl restart crio``.
-
 ----
 
 Proxy Environments
