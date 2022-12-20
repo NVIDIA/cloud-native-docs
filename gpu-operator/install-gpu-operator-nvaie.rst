@@ -21,10 +21,6 @@ The pre-configured GPU Operator differs from the GPU Operator in the public NGC 
 
   * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
 
-.. note::
-
-   For NVIDIA AI Enterprise 2.3, the GPU Operator is configured to deploy the 520.61.05 Data Center GPU Driver by default.
-   This default driver only works with bare metal and virtual machines with GPU Passthrough.
 
 This page provides documentation for the following configurations:
 
@@ -112,7 +108,7 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-2-1 -n gpu-operator
+    $ helm install --wait gpu-operator nvaie/gpu-operator-3-0 -n gpu-operator
 
 
 .. note::
@@ -178,10 +174,10 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-2-1 -n gpu-operator \
+    $ helm install --wait gpu-operator nvaie/gpu-operator-3-0 -n gpu-operator \
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
-      --set driver.version=510.47.03 \
+      --set driver.version=525.60.13 \
       --set driver.licensingConfig.configMapName=""
 
 
