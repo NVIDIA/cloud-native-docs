@@ -1,5 +1,5 @@
 .. Date: March 21 2022
-.. Author: kquinn
+.. Author: stephenjamessmith
 
 .. _nvaie-ocp:
 
@@ -23,162 +23,9 @@ OpenShift Container Platform bare metal or VMware vSphere with GPU Passthrough
 
 For OpenShift Container Platform bare metal or VMware vSphere with GPU Passthrough you do not need to make changes to the `ClusterPolicy`. Follow the guidance in :ref:`install-nvidiagpu` to install the NVIDIA GPU Operator.
 
-NVIDIA AI Enterprise 2.3 is the exception. If using NVIDIA Enterprise 2.3, please follow :ref:`ocp-nvaie-2-3-instructions`.
-
 .. note::
    The option exists to use the vGPU driver with bare metal and VMware vSphere VMs with GPU Passthrough. In this case, follow the guidance in the section “OpenShift Container Platform on VMware vSphere with NVIDIA vGPU”.
 
-.. _ocp-nvaie-2-3-instructions:
-
-Instructions for NVIDIA AI Enterprise 2.3
-=========================================
-
-The Data Center GPU Driver included with NVIDIA AI Enterprise 2.3, ``520.61.05``, must be pulled from the NVIDIA AI Enterprise container registry.
-This section covers how to install the GPU Operator and use this driver.
-
-The steps involved are:
-
-- Step 1: Install Node Feature Discovery (NFD) Operator
-
-- Step 2: Install NVIDIA GPU Operator
-
-- Step 3: Create the NGC secret
-
-- Step 4: Create the Cluster Policy instance
-
-Install Node Feature Discover (NFD) Operator
---------------------------------------------
-
-Follow the steps provided in :ref:`install-nfd`.
-
-Install NVIDIA GPU Operator
----------------------------
-
-Follow the steps provided in :ref:`install-nvidiagpu`.
-
-Create the NGC secret
----------------------
-
-OpenShift has a secret object type which provides a mechanism for holding sensitive information such as passwords and private source repository credentials. Next you will create a secret object for storing our NGC API key (the mechanism used to authenticate your access to the
-NGC container registry).
-
-.. note:: Before you begin you will need to generate or use an existing `API key <https://docs.nvidia.com/ngc/ngc-private-registry-user-guide/index.html#generating-api-key>`_.
-
-
-#. Navigate to **Home** > **Projects** and ensure the ``nvidia-gpu-operator`` is selected.
-
-#. In the OpenShift Container Platform web console, click **Secrets** from the Workloads drop down.
-
-#. Click the **Create** Drop down.
-
-#. Select Image Pull Secret.
-
-   .. image:: graphics/secrets.png
-
-#. Enter the following into each field:
-
-    * **Secret name**: ngc-secret
-
-    * **Authentication type**: Image registry credentials
-
-    * **Registry server address**: nvcr.io/nvaie
-
-    * **Username**: $oauthtoken
-
-    * **Password**: <API-KEY>
-
-    * **Email**: <YOUR-EMAIL>
-
-   .. image:: graphics/secrets_2.png
-
-#. Click **Create**.
-
-   A pull secret is created.
-
-   .. image:: graphics/created_pull-secret.png
-
-
-Create the ClusterPolicy Instance
-----------------------------------
-
-Now create a ClusterPolicy instance, which contains the GPU Operator configuration.
-
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
-
-#. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**.
-
-   .. note:: The platform assigns the default name *gpu-cluster-policy*.
-
-#. Scroll down to specify repository path under the **NVIDIA GPU/vGPU Driver config** section. See the screenshot below for parameter examples and modify values accordingly.
-
-   .. image:: graphics/createclusterpolicy2.png
-
-   * **enabled**: Enabled
-   * **repository**: ``nvcr.io/nvaie``
-
-   #. Expand the rdma menu and check **enabled** if you want to deploy GPUDirect RDMA:
-
-      .. image:: graphics/enable-gpu-direct-rdma.png
-
-#. Scroll down further to image name and specify the NVIDIA Data Center driver version under the **NVIDIA GPU/vGPU Driver config** section.
-
-   .. image:: graphics/nvaie2.3_cluster_policy.png
-
-   * **version**: 520.61.05
-   * **image**: data-center-driver-2-3
-
-      .. note:: The NVIDIA Data Center driver image for OpenShift Container Platform version
-
-                * 4.9 is ``nvcr.io/nvaie/data-center-driver-2-3:520.61.05-rhcos4.9``
-                * 4.10 is ``nvcr.io/nvaie/data-center-driver-2-3:520.61.05-rhcos4.10``
-                * 4.11 is ``nvcr.io/nvaie/data-center-driver-2-3:520.61.05-rhcos4.11``
-
-#. Expand the **Advanced configuration** menu and specify the imagePullSecret.
-
-   .. note:: This was previously created in the section "Create NGC secret".
-
-   .. image:: graphics/cluster_policy_4.png
-
-#. Click **Create**.
-
-The GPU Operator proceeds to install all the required components to set up the NVIDIA GPUs in the OpenShift Container Platform cluster.
-
-.. note:: Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take some time to finish.
-
-The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
-
-.. image:: graphics/cluster_policy_suceed.png
-
-
-Verify the ClusterPolicy installation from the CLI run:
-
-   .. code-block:: console
-
-      $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
-
-This lists each node and the number of GPUs.
-
-   **Example output**
-
-   .. code-block:: console
-
-      $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
-
-        Node GPUs
-
-        nvaie-ocp-7rfr8-master-0 <none>
-
-        nvaie-ocp-7rfr8-master-1 <none>
-
-        nvaie-ocp-7rfr8-master-2 <none>
-
-        nvaie-ocp-7rfr8-worker-7x5km 1
-
-        nvaie-ocp-7rfr8-worker-9jgmk <none>
-
-        nvaie-ocp-7rfr8-worker-jntsp 1
-
-        nvaie-ocp-7rfr8-worker-zkggt <none>
 
 
 ****************************************************************
@@ -385,13 +232,14 @@ Now create the cluster policy, which is responsible for maintaining policy resou
 
    .. image:: graphics/createclusterpolicy3.png
 
-   * **version**: 510.47.03 
-   * **image**: vgpu-guest-driver-2-0
+   * **version**: 525.60.13
+   * **image**: vgpu-guest-driver-3-0
 
-      .. note:: The above version and image are examples for NVIDIA AI Enterprise 2.0. Please update the vGPU driver version and image for the appropriate OpenShift Container Platform version.
+      .. note:: The above version and image are examples for NVIDIA AI Enterprise 3.0. Please update the vGPU driver version and image for the appropriate OpenShift Container Platform version.
 
-                * 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.9``
-                * 4.10 is ``nvcr.io/nvaie/vgpu-guest-driver-2-0:510.47.03-rhcos4.10``
+                * 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.9``
+                * 4.10 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.10``
+                * 4.11 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.11``
 
 #. Expand the **Advanced configuration** menu and specify the imagePullSecret.
 
