@@ -211,6 +211,15 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
       image: k8s-mig-manager
       version: v0.2.0-ubuntu20.04
 
+    node-feature-discovery:
+      image:
+        repository: <repo.example.com:port>
+        pullPolicy: IfNotPresent
+        # tag, if defined will use the given image tag, else Chart.AppVersion will be used
+        # tag:
+      imagePullSecrets: []
+
+
 Local Package Repository
 ========================
 
