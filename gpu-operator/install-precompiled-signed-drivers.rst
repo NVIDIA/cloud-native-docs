@@ -33,6 +33,8 @@ Following are the packages used in this case by the driver container.
      cause driver installation failures.
 
 To check if above packages are available for a specific kernel version, use the following commands (in this example, we use the 515 branch):
+
+
 .. code-block:: console
 
    $ KERNEL_VERSION=$(uname -r)
@@ -41,6 +43,7 @@ To check if above packages are available for a specific kernel version, use the 
    $ sudo apt-cache show linux-modules-nvidia-${DRIVER_BRANCH}-server-${KERNEL_VERSION}
 
 A successful output is shown below:
+
 .. code-block:: console
 
    $ sudo apt-cache show linux-modules-nvidia-${DRIVER_BRANCH}-server-${KERNEL_VERSION}
