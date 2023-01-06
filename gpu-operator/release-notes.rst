@@ -24,6 +24,7 @@ New Features
 
 * Support for CUDA 12.0 / R525 Data Center drivers on x86 / ARM servers.
 * Support for RHEL 8.7 with Kubernetes and Containerd or CRI-O.
+* Support for Ubuntu 20.4 and 22.04 with Kubernetes and CRI-O.
 * Support for NVIDIA GPUDirect Storage using Ubuntu 20.04 and Ubuntu 22.04 with Kubernetes.
 * Support for RTX 6000 ADA GPU
 * Support for A800 GPU
