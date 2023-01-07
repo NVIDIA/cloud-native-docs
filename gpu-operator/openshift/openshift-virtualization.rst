@@ -297,7 +297,7 @@ In the example below, the **A10** GPU device and **A10-24Q** vGPU device are bei
 
 * Replace the values of the:
 
-  * ``pciVendorSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
+  * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
 
   * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
 
@@ -320,7 +320,7 @@ To find the device ID for a particular GPU, search by device name in the `PCI ID
       permittedHostDevices:
         pciHostDevices:
         - externalResourceProvider: true
-          pciVendorSelector: 10DE:2236
+          pciDeviceSelector: 10DE:2236
           resourceName: nvidia.com/GA102GL_A10
         mediatedDevices:
         - externalResourceProvider: true
@@ -358,24 +358,19 @@ Prerequisites
 
       apiVersion: kubevirt.io/v1
       kind: VirtualMachine
+      . . . snip . . .
       spec:
-      domain:
-      devices:
-      gpus:
-      - deviceName: nvidia.com/TU104GL_Tesla_T4
-      name: gpu1
-      - deviceName: nvidia.com/GRID_T4-1Q
-      name: gpu2
+        domain:
+          devices:
+            gpus:
+            - deviceName: nvidia.com/TU104GL_Tesla_T4
+              name: gpu1
+            - deviceName: nvidia.com/GRID_T4-1Q
+              name: gpu2
+      . . . snip . . .
 
-   * ``- deviceName`` The resource name associated with the GPU.
+   * ``deviceName`` The resource name associated with the GPU.
    * ``name`` A name to identify the device on the VM.
-
-#. To verify that the device is available from the virtual machine, run the following command, substituting ``<device_name>`` with the ``deviceName`` value from the ``VirtualMachine`` manifest:
-
-   .. code-block:: console
-
-      $ lspci -nnk | grep <device_name>
-
 
 .. _vgpu-device-configuration:
 
