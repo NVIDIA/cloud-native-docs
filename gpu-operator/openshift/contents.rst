@@ -16,6 +16,6 @@ GPU Operator on OpenShift
    mirror-gpu-ocp-disconnected.rst
    enable-gpu-op-dashboard.rst
    time-slicing-gpus-in-openshift.rst
-   nvidia-gpu-operator-openshift-virtualization-vgpu-enablement.rst
+   openshift-virtualization.rst
    troubleshooting-gpu-ocp.rst
    appendix-ocp.rst
