@@ -492,7 +492,7 @@ For using with RKE2 (Rancher Kubernetes Engine 2) or K3s following settings need
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml
+        value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
       - name: CONTAINERD_SOCKET
         value: /run/k3s/containerd/containerd.sock
       - name: CONTAINERD_RUNTIME_CLASS
@@ -507,7 +507,7 @@ These options can be passed to GPU Operator during install time as below.
   helm install -n gpu-operator --create-namespace \
     nvidia/gpu-operator $HELM_OPTIONS \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/lib/rancher/k3s/agent/etc/containerd/config.toml \
+      --set toolkit.env[0].value=/var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
