@@ -44,28 +44,42 @@ GPU Operator Component Matrix
 ----
 
   .. list-table::
-      :widths: 100 100 100 100 100 100 100 100 100 100 100 100 100 100
       :header-rows: 1
       :align: center
 
       * - Release
-        - NVIDIA GPU Driver
-        - NVIDIA Driver Manager for K8s
-        - NVIDIA Container Toolkit
-        - NVIDIA Kubernetes Device Plugin
+        - | NVIDIA
+          | GPU
+          | Driver
+        - | NVIDIA Driver
+          | Manager for K8s
+        - | NVIDIA
+          | Container
+          | Toolkit
+        - | NVIDIA Kubernetes
+          | Device Plugin
         - DCGM Exporter
-        - Node Feature Discovery
-        - NVIDIA GPU Feature Discovery for Kubernetes
-        - NVIDIA MIG Manager for Kubernetes
+        - | Node Feature
+          | Discovery
+        - | NVIDIA GPU Feature
+          | Discovery for Kubernetes
+        - | NVIDIA MIG Manager
+          | for Kubernetes
         - DCGM
-        - Validator for NVIDIA GPU Operator
-        - NVIDIA KubeVirt GPU Device Plugin
-        - NVIDIA vGPU Device Manager
+        - | Validator for
+          | NVIDIA GPU Operator
+        - | NVIDIA KubeVirt
+          | GPU Device Plugin
+        - | NVIDIA vGPU
+          | Device Manager
         - NVIDIA GDS Driver
 
-
       * - v22.9.2
-        - `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_, `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_, `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_, `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_, `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
+        - | `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_,
+          | `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_,
+          | `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_,
+          | `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_,
+          | `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
         - `v0.6.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.13.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
@@ -80,7 +94,11 @@ GPU Operator Component Matrix
         - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
       * - v22.9.1
-        - `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_, `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_, `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_, `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_, `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
+        - | `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_,
+          | `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_,
+          | `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_,
+          | `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_,
+          | `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
         - `v0.5.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.13.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
@@ -95,7 +113,11 @@ GPU Operator Component Matrix
         - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
       * - v22.9.0
-        - 520.61.05, `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_, `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_, `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_, `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
+        - | 520.61.05,
+          | `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_,
+          | `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_,
+          | `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_,
+          | `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
         - `v0.4.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.12.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
@@ -108,9 +130,12 @@ GPU Operator Component Matrix
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - N/A
-          
+
       * - 1.11
-        - `515.48.07 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_, `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_, `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_, `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
+        - | `515.48.07 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_,
+          | `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_,
+          | `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_,
+          | `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
         - `v0.4.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.10.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.12.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
