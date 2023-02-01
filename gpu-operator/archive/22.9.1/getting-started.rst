@@ -1,7 +1,7 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
-.. _operator-install-guide:
+.. _operator-install-guide-22.9.1:
 
 *****************************************
 Getting Started
@@ -14,7 +14,7 @@ Red Hat OpenShift 4
 ====================
 
 For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
-follow the :ref:`user guide <openshift-introduction>`.
+follow the :ref:`user guide <openshift-introduction-22.9.1>`.
 
 
 ----
@@ -23,7 +23,7 @@ VMware vSphere with Tanzu
 =========================
 
 For installing the GPU Operator on VMware vSphere with Tanzu leveraging NVIDIA AI Enterprise,
-follow the :ref:`NVIDIA AI Enterprise document <install-gpu-operator-nvaie>`.
+follow the :ref:`NVIDIA AI Enterprise document <install-gpu-operator-22.9.1-nvaie>`.
 
 ----
 
@@ -424,7 +424,7 @@ The password credentials for the login are available in the ``prometheus.values`
 .. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
-.. _operator-upgrades:
+.. _operator-upgrades-22.9.1:
 
 Upgrade
 ===========================
@@ -517,8 +517,54 @@ After the edits are complete, Kubernetes will automatically apply the updates to
 Additional Controls for Driver Upgrades
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
-Refer to :ref:`gpu_driver_upgrades` to learn more about how to upgrade drivers with the GPU Operator.
+While most of the GPU Operator managed daemonset pods can be updated without dependencies, the NVIDIA driver daemonset needs special handling.
+This is due to the fact that the driver kernel modules have to be unloaded and loaded again on each driver container restart.
+In turn this has certain dependencies:
+
+#. All clients to the GPU driver have to be disabled
+#. The current GPU driver kernel modules have to be unloaded
+#. The updated driver pods need to start
+#. The GPU driver has to be installed and new kernel modules loaded
+#. The driver clients disabled initially have to be enabled again
+
+In order to achieve this, a new component called `k8s-driver-manager` is added which will ensure that, all
+existing GPU driver clients are disabled and current modules are unloaded. This component is added as an `initContainer`
+within the driver daemonset.
+
+.. The diagram below illustrates the functionality of the `k8s-driver-manager`.
+
+Since the `k8s-driver-manager` evicts GPU pods from the node to complete the driver upgrade, users can control the node drain
+behavior using environment variables as specified in the GPU Operator Helm chart (see the ``driver.manager.env`` variables):
+
+.. code-block:: yaml
+
+   imagePullPolicy: IfNotPresent
+   env:
+   - name: ENABLE_GPU_POD_EVICTION
+      value: "true"
+   - name: ENABLE_AUTO_DRAIN
+      value: "true"
+   - name: DRAIN_USE_FORCE
+      value: "false"
+   - name: DRAIN_POD_SELECTOR_LABEL
+      value: ""
+   - name: DRAIN_TIMEOUT_SECONDS
+      value: "0s"
+   - name: DRAIN_DELETE_EMPTYDIR_DATA
+      value: "false"
+
+* The *ENABLE_GPU_POD_EVICTION* env lets `k8s-driver-manager` to only evict GPU pods from the node. If this fails, then entire node will be
+  drained if *ENABLE_AUTO_DRAIN* is also enabled.
+* The *DRAIN_USE_FORCE* env needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
+* The *DRAIN_DELETE_EMPTYDIR_DATA* env needs to be enabled to allow deletion of GPU pods using emptyDir volume.
+
+.. note::
+
+   Since GPU pods get evicted whenever the NVIDIA Driver Daemonset spec is updated, it may not always be desirable to allow this to happen automatically.
+   To prevent this ``daemonsets.updateStrategy`` parameter in the ``ClusterPolicy`` can be set to `OnDelete <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_ .
+   With ``OnDelete`` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted. 
+  Thus, admins can control when to rollout spec updates to driver pods on any given node. 
+  For more information on DaemonSet update strategies, refer to the `Kubernetes documentation <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_.
 
 Using OLM in OpenShift
 -----------------------

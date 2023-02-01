@@ -1,7 +1,7 @@
 .. Date: Nov 25 2020
 .. Author: pramarao
 
-.. _install-gpu-operator:
+.. _install-gpu-operator-22.9.1:
 
 Install NVIDIA GPU Operator
 =============================
@@ -40,7 +40,7 @@ The GPU Operator Helm chart offers a number of customizable options that can be 
       B -> C;
    }
 
-.. _gpu-operator-helm-chart-options:
+.. _gpu-operator-helm-chart-options-22.9.1:
 
 Chart Customization Options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -108,14 +108,6 @@ The following options are available when using the Helm chart. These options can
        default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
      - ``true``
 
-   * - ``operator.labels``
-     - Map of custom labels that will be added to all GPU Operator managed pods.
-     - ``{}``
-
-   * - ``operator.annotations``
-     - Map of custom annotations that will be added to all GPU Operator managed pods.
-     - ``{}``
-
 
 Namespace
 ^^^^^^^^^
@@ -168,7 +160,7 @@ In this scenario, the default configuration options are used:
 
 .. note::
 
-   * For installing on Secure Boot systems or using Precompiled modules refer to :ref:`install-precompiled-signed-drivers`.
+   * For installing on Secure Boot systems or using Precompiled modules refer to :ref:`install-precompiled-signed-drivers-22.9.1`.
 
 
 Bare-metal/Passthrough with default configurations on Red Hat Enterprise Linux
@@ -211,7 +203,7 @@ NVIDIA vGPU
 .. note::
 
    The GPU Operator with NVIDIA vGPUs requires additional steps to build a private driver image prior to install.
-   Refer to the document :ref:`install-gpu-operator-vgpu` for detailed instructions on the workflow and required values of
+   Refer to the document :ref:`install-gpu-operator-22.9.1-vgpu` for detailed instructions on the workflow and required values of
    the variables used in this command.
 
 The command below will install the GPU Operator with its default configuration for vGPU:
@@ -231,7 +223,7 @@ The command below will install the GPU Operator with its default configuration f
 NVIDIA AI Enterprise
 """""""""""""""""""""
 
-Refer to :ref:`GPU Operator with NVIDIA AI Enterprise <install-gpu-operator-nvaie>`.
+Refer to :ref:`GPU Operator with NVIDIA AI Enterprise <install-gpu-operator-22.9.1-nvaie>`.
 
 
 ----
@@ -250,7 +242,7 @@ In this example, the user has already pre-installed NVIDIA drivers as part of th
 
 ----
 
-.. _preinstalled-drivers-and-toolkit:
+.. _preinstalled-drivers-and-toolkit-22.9.1:
 
 Bare-metal/Passthrough with pre-installed drivers and NVIDIA Container Toolkit
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -442,7 +434,7 @@ Note that these instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
-.. _custom-runtime-options:
+.. _custom-runtime-options-22.9.1:
 
 ----
 
@@ -528,7 +520,7 @@ These options can be passed to GPU Operator during install time as below.
 Proxy Environments
 """"""""""""""""""""""""""
 
-Refer to the section :ref:`install-gpu-operator-proxy` for more information on how to install the Operator on clusters
+Refer to the section :ref:`install-gpu-operator-22.9.1-proxy` for more information on how to install the Operator on clusters
 behind a HTTP proxy.
 
 ----
@@ -536,7 +528,7 @@ behind a HTTP proxy.
 Air-gapped Environments
 """"""""""""""""""""""""""
 
-Refer to the section :ref:`install-gpu-operator-air-gapped` for more information on how to install the Operator
+Refer to the section :ref:`install-gpu-operator-22.9.1-air-gapped` for more information on how to install the Operator
 in air-gapped environments.
 
 ----
@@ -544,7 +536,7 @@ in air-gapped environments.
 Multi-Instance GPU (MIG)
 """"""""""""""""""""""""""
 
-Refer to the document :ref:`install-gpu-operator-mig` for more information on how use the Operator with Multi-Instance GPU (MIG)
+Refer to the document :ref:`install-gpu-operator-22.9.1-mig` for more information on how use the Operator with Multi-Instance GPU (MIG)
 on NVIDIA Ampere products. For guidance on configuring MIG support for the **NVIDIA GPU Operator** in an OpenShift Container Platform cluster, see the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/mig-ocp.html>`_.
 
 ----
@@ -552,13 +544,13 @@ on NVIDIA Ampere products. For guidance on configuring MIG support for the **NVI
 KubeVirt / OpenShift Virtualization
 """"""""""""""""""""""""""""""""""""
 
-Refer to the document :ref:`gpu-operator-kubevirt` for more information on how to use the GPU Operator to provision GPU nodes for running KubeVirt virtual machines with access to GPU.
-For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :ref:`nvidia-gpu-operator-openshift-virtualization-vgpu-enablement`.
+Refer to the document :ref:`gpu-operator-kubevirt-22.9.1` for more information on how to use the GPU Operator to provision GPU nodes for running KubeVirt virtual machines with access to GPU.
+For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :ref:`nvidia-gpu-operator-openshift-virtualization-vgpu-enablement-22.9.1`.
 
 Outdated Kernels
 """"""""""""""""""""""""""
 
-Refer to the section :ref:`install-gpu-operator-outdated-kernels` for more information on how to install the Operator successfully
+Refer to the section :ref:`install-gpu-operator-22.9.1-outdated-kernels` for more information on how to install the Operator successfully
 when nodes in the cluster are not running the latest kernel
 
 ----

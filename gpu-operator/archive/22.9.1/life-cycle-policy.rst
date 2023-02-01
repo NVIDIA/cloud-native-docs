@@ -1,9 +1,9 @@
 .. Date: September 25 2022
 .. Author: ebohnhorst
 
-.. _gpu-operator-life-cycle-policy:
+.. _gpu-operator-life-cycle-policy-22.9.1:
 
-.. _operator-versioning:
+.. _operator-versioning-22.9.1:
 
 NVIDIA GPU Operator Versioning
 ----
@@ -19,7 +19,7 @@ The first two segments in the version are in the format of `YY.MM` which represe
 The third segment as in '.0' represents a dot release. Dot releases typically include fixes for bugs or CVEs but could also include minor features like support for a new NVIDIA GPU driver.
 
 
-.. _operator_life_cycle_policy:
+.. _operator_life_cycle_policy-22.9.1:
 
 NVIDIA GPU Operator Life Cycle
 ----
@@ -38,7 +38,7 @@ The product lifecycle and versioning are subject to change in the future.
     - Upgrades are only supported within a major release or to the next major release.
 
 
-.. _operator-component-matrix:
+.. _operator-component-matrix-22.9.1:
 
 GPU Operator Component Matrix
 ----
@@ -62,22 +62,6 @@ GPU Operator Component Matrix
         - NVIDIA KubeVirt GPU Device Plugin
         - NVIDIA vGPU Device Manager
         - NVIDIA GDS Driver
-
-
-      * - v22.9.2
-        - `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_, `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_, `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_, `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_, `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_
-        - `v0.6.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-        - `1.11.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-        - `0.13.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-        - `3.1.3-3.1.2 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-        -  v0.10.1
-        - `0.7.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-        - `0.5.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-        - `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
-        - v22.9.1
-        - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
-        - v0.2.0
-        - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
       * - v22.9.1
         - `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_, `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_, `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_, `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_, `450.216.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-216-04/index.html>`_

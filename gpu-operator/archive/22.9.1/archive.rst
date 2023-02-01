@@ -2,25 +2,6 @@
 Archive
 ********
 
-22.9.1
-======
-
-.. toctree::
-   :maxdepth: 1
-
-   archive/22.9.1/overview.rst
-   archive/22.9.1/getting-started.rst
-   archive/22.9.1/platform-support.rst
-   archive/22.9.1/release-notes.rst
-   archive/22.9.1/install-gpu-operator-vgpu.rst
-   archive/22.9.1/install-gpu-operator-nvaie.rst
-   archive/22.9.1/openshift/contents.rst
-   archive/22.9.1/gpu-operator-mig.rst
-   archive/22.9.1/gpu-sharing.rst
-   archive/22.9.1/gpu-operator-rdma.rst
-   archive/22.9.1/gpu-operator-kubevirt.rst
-   archive/22.9.1/appendix.rst
-
 22.9.0
 ======
 
