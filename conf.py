@@ -11,11 +11,8 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import sys
-from builtins import str
 import re
 from datetime import date
-#import sphinx_rtd_theme
 # sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -68,7 +65,7 @@ master_doc = 'contents'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -78,44 +75,34 @@ pygments_style = 'sphinx'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = [u'_build', 'Thumbs.db', '.DS_Store']
 
-# -- Options for Napoleon ----------------------------------------------------
-
-napoleon_custom_sections = ['Supported backends']
-
-
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
 html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes", ]
 html_show_sourcelink = False
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_logo = "assets/NVLogo_H_B&W.png"
 html_theme_options = {
     'canonical_url': 'https://docs.nvidia.com/datacenter/cloud-native/',
-    'collapse_navigation': False,
+    'collapse_navigation': True,
+    'sticky_navigation': True,
     'display_version': False,
-    'logo_only': True,
+    'logo_only': False,
+    'navigation_depth': 2,
+    'includehidden': True,
+    'display_version': False,
+    'prev_next_buttons_location': "bottom",
+    'style_external_links': False,
 }
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-# We remove the `_static` as we do not use it
-html_static_path = []
 
 # Download favicon and set it (the variable `html_favicon`) for this project.
 # It must be relative path.
-favicon_rel_path = "assets/nvidia.ico"
-html_favicon = favicon_rel_path
+html_favicon = "_static/nvidia.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

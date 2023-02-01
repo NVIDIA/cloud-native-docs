@@ -4,3 +4,8 @@
 .wy-side-scroll {
   width: auto;
   overflow-y: auto;
+}
+
+td > div.line-block, th > div.line-block {
+  margin-bottom: 0px !important;
+}
