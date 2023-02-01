@@ -1,72 +1,18 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
-.. _operator-release-notes:
+.. _operator-release-notes-22.9.1:
 
 *****************************************
 Release Notes
 *****************************************
-
 This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
 
-See the :ref:`Component Matrix<operator-component-matrix>` for a list of components included in each release.
+See the :ref:`Component Matrix<operator-component-matrix-22.9.1>` for a list of components included in each release.
 
 .. note::
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
-
-----
-
-22.9.2
-======
-
-New Features
-------------
-
-* Added support for Kubernetes v1.26.
-* Added a new controller that is responsible managing NVIDIA driver upgrades.
-  Refer to :doc:`gpu-driver-upgrades` for more details.
-* Added the ability to apply custom labels and annotations for all of the GPU Operator pods.
-  Refer to :ref:`gpu-operator-helm-chart-options` for how to configure custom labels and annotations.
-
-Improvements
-------------
-
-* Enhanced the driver validation logic to make sure that the current instance of the driver container has successfully finished installing drivers.
-  This enhancement prevents other operands from incorrectly starting with previously loaded drivers.
-* Increased overall driver startup probe timeout from 10 to 20 minutes.
-  The increased timeout improves the installation experience for clusters with slow networks by avoiding unnecessary driver container restarts.
-
-Fixed issues
-------------
-
-* Fixed an issue where containers allocated GPU lose access to them when systemd is triggered to run some reevaluation of the cgroups it manages.
-  The issue affects systems using runc configured with systemd cgroups.
-  Refer to Github `issue <https://github.com/NVIDIA/gpu-operator/issues/430>`_ for more details.
-* Fixed an issue that prevented the GPU operator from applying PSA labels on the namespace when no prior labels existed.
-
-Common Vulnerabilities and Exposures (CVEs)
--------------------------------------------
-
-The ``gpu-operator:v22.9.2`` and ``gpu-operator:v22.9.2-ubi8`` images have the following known high-vulnerability CVEs.
-These CVEs are from the base images and are not in libraries that are used by the GPU operator:
-
-    * ``libksba`` - `CVE-2022-47629 <https://access.redhat.com/security/cve/CVE-2022-47629>`_
-
-Known Limitations
-------------------
-
-* All worker nodes within the Kubernetes cluster must use the same operating system version.
-* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
-* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
-  in this case for the driver installation to succeed.
-* No support for newer MIG profiles ``1g.10gb``, ``1g.20gb``, ``2.12gb+me`` with R525 drivers.
-* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
-  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
-* When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
-  Additionally, network-restricted environments are not supported.
 
 ----
 
@@ -134,16 +80,16 @@ New Features
 * Support for RKE2 (Rancher Kubernetes Engine 2) with Ubuntu 20.04 and RHEL8.
 * Support for GPUDirect RDMA with NVIDIA Network Operator 1.3.
 * Support for Red Hat OpenShift with Cloud Service Providers (CSPs) Amazon AWS, Google GKE and Microsoft Azure.
-* [General Availability] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
-* [General Availability] - OCP and Upstream Kubernetes on ARM with :ref:`supported platforms<gpu-operator-arm-platforms>`.
+* [General Availability] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt-22.9.1>`.
+* [General Availability] - OCP and Upstream Kubernetes on ARM with :ref:`supported platforms<gpu-operator-arm-platforms-22.9.1>`.
 * Support for `Pod Security Admission (PSA) <https://kubernetes.io/docs/concepts/security/pod-security-admission/>`_ through the ``psp.enabled`` flag. If enabled, the namespace where the operator is installed in will be labeled with the ``privileged`` pod security level.
 
 Improvements
 ------------
 
-* Support automatic upgrade and cleanup of ``clusterpolicies.nvidia.com`` CRD using Helm hooks. Refer to :ref:`Operator upgrades<operator-upgrades>` for more info.
+* Support automatic upgrade and cleanup of ``clusterpolicies.nvidia.com`` CRD using Helm hooks. Refer to :ref:`Operator upgrades<operator-upgrades-22.9.1>` for more info.
 * Support for dynamically enabling/disabling GFD, MIG Manager, DCGM and DCGM-Exporter.
-* Switched to calendar versioning starting from this release for better life cycle management and support. Refer to :ref:`NVIDIA GPU Operator Versioning<operator-versioning>` for more info.
+* Switched to calendar versioning starting from this release for better life cycle management and support. Refer to :ref:`NVIDIA GPU Operator Versioning<operator-versioning-22.9.1>` for more info.
 
 Fixed issues
 ------------
@@ -158,7 +104,7 @@ Known Limitations
 * All worker nodes within the Kubernetes cluster must use the same operating system version.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * ``nouveau`` driver has to be blacklisted when using NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``Init`` state.
-* When using ``CRI-O`` runtime with Kubernetes, the config file ``/etc/crio/crio.conf`` has to include ``/run/containers/oci/hooks.d`` as path for ``hooks_dir``. Refer :ref:`here<custom-runtime-options>` for steps to configure this.
+* When using ``CRI-O`` runtime with Kubernetes, the config file ``/etc/crio/crio.conf`` has to include ``/run/containers/oci/hooks.d`` as path for ``hooks_dir``. Refer :ref:`here<custom-runtime-options-22.9.1>` for steps to configure this.
 * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
 * The ``gpu-operator:v22.9.0`` and ``gpu-operator:v22.9.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
@@ -200,12 +146,12 @@ New Features
 * Support for Ubuntu 22.04 LTS.
 * Support for secure boot with GPU Driver version 515 and Ubuntu Server 20.04 LTS and 22.04 LTS.
 * Support for Kubernetes 1.24.
-* Support for :ref:`Time-Slicing GPUs in Kubernetes<gpu-sharing>`.
+* Support for :ref:`Time-Slicing GPUs in Kubernetes<gpu-sharing-22.9.1>`.
 * Support for Red Hat OpenShift on AWS, Azure and GCP instances. Refer to the Platform Support Matrix for the supported instances.
 * Support for Red Hat Openshift 4.10 on AWS EC2 G5g instances(ARM).
 * Support for Kubernetes 1.24 on AWS EC2 G5g instances(ARM).
 * Support for use with the NVIDIA Network Operator 1.2.
-* [Technical Preview] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt>`.
+* [Technical Preview] - Support for :ref:`KubeVirt and Red Hat OpenShift Virtualization with GPU Passthrough and NVIDIA vGPU based products<gpu-operator-kubevirt-22.9.1>`.
 * [Technical Preview] - Kubernetes on ARM with Server Base System Architecture (SBSA).
 
 Improvements
@@ -231,7 +177,7 @@ Known Limitations
 
 * All worker nodes within the Kubernetes cluster must use the same operating system version.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-* See the :ref:`limitations<gpu-operator-kubevirt-limitations>` sections for the [Technical Preview] of GPU Operator support for KubeVirt.
+* See the :ref:`limitations<gpu-operator-kubevirt-22.9.1-limitations>` sections for the [Technical Preview] of GPU Operator support for KubeVirt.
 * The ``clusterpolicies.nvidia.com`` CRD has to be manually deleted after the GPU Operator is uninstalled using Helm.
 * ``nouveau`` driver has to be blacklisted when using the NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``init`` state.
 * The ``gpu-operator:v1.11.0`` and ``gpu-operator:v1.11.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
@@ -365,7 +311,7 @@ Known Limitations
 * Collection of GPU metrics in MIG mode is not supported with 470+ drivers.
 * The GPU Operator requires all MIG related configurations to be executed by MIG Manager. Enabling/Disabling MIG and other MIG related configurations directly on the host is discouraged.
 * Fabric Manager (required for NVSwitch based systems) with CentOS 7 is not supported.
-.. * See the :ref:`operator-known-limitations` at the bottom of this page.
+.. * See the :ref:`operator-known-limitations-22.9.1` at the bottom of this page.
 
 ----
 
@@ -406,12 +352,12 @@ New Features
   for setting up the NVSwitch fabric.
 * The driver container now builds and loads the ``nvidia-peermem`` kernel module when GPUDirect RDMA is enabled and Mellanox devices are present in the system.
   This allows the GPU Operator to complement the `NVIDIA Network Operator <https://github.com/Mellanox/network-operator>`_ to enable GPUDirect RDMA in the
-  Kubernetes cluster. Refer to the :ref:`RDMA<operator-rdma>` documentation on getting started.
+  Kubernetes cluster. Refer to the :ref:`RDMA<operator-rdma-22.9.1>` documentation on getting started.
 
   .. note::
 
     This feature is available only when used with R470 drivers on Ubuntu 20.04 LTS.
-* Added support for :ref:`upgrades<operator-upgrades>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades
+* Added support for :ref:`upgrades<operator-upgrades-22.9.1>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades
   of the NVIDIA drivers on nodes in the cluster.
 * NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as
   `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <http://docs.nvidia.com/datacenter/nvsm/nvsm-user-guide/index.html>`_
@@ -443,7 +389,7 @@ Known Limitations
 * Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
 * This version of GPU Operator does not work well on RedHat OpenShift when a cluster-wide proxy is configured and causes constant restarts of driver container.
   This will be fixed in an upcoming patch release `v1.8.2`.
-.. * See the :ref:`operator-known-limitations` at the bottom of this page.
+.. * See the :ref:`operator-known-limitations-22.9.1` at the bottom of this page.
 
 ----
 
@@ -752,7 +698,7 @@ Fixed Issues
 * The SRO custom resource definition is setup as part of the operator.
 * Fixed an issue with the clean up of driver mount files when deleting the operator from the cluster. This issue used to require a reboot of the node, which is no longer required.
 
-.. _operator-known-limitations:
+.. _operator-known-limitations-22.9.1:
 
 Known Limitations
 ------------------
