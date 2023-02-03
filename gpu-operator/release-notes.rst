@@ -23,8 +23,9 @@ See the :ref:`Component Matrix<operator-component-matrix>` for a list of compone
 New Features
 ------------
 
-* Added support for Kubernetes v1.26.
-* Added a new controller that is responsible managing NVIDIA driver upgrades.
+* Added support for Kubernetes v1.26 and Red Hat OpenShift 4.12.
+  Refer to :doc:`platform-support` for more details.
+* Added a new controller that is responsible for managing NVIDIA driver upgrades.
   Refer to :doc:`gpu-driver-upgrades` for more details.
 * Added the ability to apply custom labels and annotations for all of the GPU Operator pods.
   Refer to :ref:`gpu-operator-helm-chart-options` for how to configure custom labels and annotations.

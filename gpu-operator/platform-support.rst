@@ -1,25 +1,26 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
+.. |ocp_csp_support| replace:: Red Hat OpenShift is supported on the AWS (G4, G5, P3, P4), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.
+
 .. _operator-platform-support:
-
-
 
 ****************
 Platform Support
 ****************
+
 This documents provides an overview of the GPUs and system Platform configurations supported.
 
 .. include:: life-cycle-policy.rst
 
-Supported NVIDIA GPUs/Systems
-----
+Supported NVIDIA GPUs and Systems
+---------------------------------
 
-The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platforms:
+The following NVIDIA data center GPUs are supported on x86 based platforms:
 
 .. tabs::
 
-  .. tab:: Datacenter A, H and L-series Products
+  .. tab:: Data Center A, H and L-series Products
 
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
@@ -54,7 +55,7 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
       * Hopper (H100) GPU is only supported on x86 servers.
       * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
 
-  .. tab:: Datacenter D,T and V-series Products
+  .. tab:: Data Center D,T and V-series Products
 
     +-----------------------+------------------------+
     | Product               | Architecture           |
@@ -69,8 +70,8 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
     +-----------------------+------------------------+
     | NVIDIA P4             | Pascal                 |
     +-----------------------+------------------------+
-  
-  .. tab:: Datacenter RTX / T-series Products
+
+  .. tab:: Data Center RTX / T-series Products
 
     +-------------------------+------------------------+
     | Product                 | Architecture           |
@@ -80,7 +81,7 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
     | NVIDIA RTX A5000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
-    +-------------------------+------------------------+ 
+    +-------------------------+------------------------+
     | NVIDIA RTX A8000        | Turing                 |
     +-------------------------+------------------------+
     | NVIDIA RTX A6000        | Turing                 |
@@ -99,15 +100,15 @@ The following NVIDIA datacenter/enterprise GPUs are supported on x86 based platf
 
 .. _gpu-operator-arm-platforms:
 
-Supported ARM based platforms
-----
+Supported ARM Based Platforms
+-----------------------------
 
-The following NVIDIA datacenter/enterprise GPUs are supported:
+The following NVIDIA data center GPUs are supported:
 
 .. tabs::
 
-  .. tab:: ARM platforms 
-  
+  .. tab:: ARM platforms
+
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
     +=========================+===========================+
@@ -115,20 +116,21 @@ The following NVIDIA datacenter/enterprise GPUs are supported:
     +-------------------------+---------------------------+
     | NVIDIA A30X             | Ampere                    |
     +-------------------------+---------------------------+
-    | AWS EC2 G5g instaces    | Turing                    |
+    | AWS EC2 G5g instances   | Turing                    |
     +-------------------------+---------------------------+
 
     .. note::
 
-      The GPU Operator only supports platforms using discrete GPUs - Jetson or other embedded products with integrated GPUs are not supported.
+      The GPU Operator only supports platforms using discrete GPUs.
+      NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
 
     .. note::
 
       The R520 Data Center Driver is not supported for ARM.
 
 
-Supported deployment options, hypervisors and NVIDIA vGPU based products
-----
+Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products
+-------------------------------------------------------------------------
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -141,7 +143,7 @@ The GPU Operator has been validated in the following scenarios:
 +-----------------------------------------------------+
 | Virtual machines with NVIDIA vGPU based products    |
 +-----------------------------------------------------+
-   
+
 Hypervisors (On-premises)
 
 +-----------------------------------------------------+
@@ -165,67 +167,166 @@ NVIDIA vGPU based products
 +-----------------------------------------------------+
 | NVIDIA RTX Virtual Workstation                      |
 +-----------------------------------------------------+
+
 .. note::
-  GPU Operator is supported with NVIDIA vGPU 12.0+
+
+  GPU Operator is supported with NVIDIA vGPU 12.0+.
 
 .. _container-platforms:
 
-Supported Operating Systems and Kubernetes platforms
-----
+Supported Operating Systems and Kubernetes Platforms
+----------------------------------------------------
 
 The GPU Operator has been validated in the following scenarios:
 
 .. note::
+
    The Kubernetes community supports only the last three minor releases as of v1.17. Older releases
    may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
 
 .. tabs::
 
-  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough 
-  
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    |                                         | Kubernetes                         | Red Hat OpenShift | VMware vSphere with Tanzu   | Rancher Kubernetes Engine 2   | HPE Ezmeral Runtime Enterprise      |
-    +=========================================+====================================+===================+=============================+===============================+=====================================+
-    | Ubuntu 18.04 LTS                        | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             |                               |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | Ubuntu 20.04 LTS                        | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   | VMware vSphere 7.0 U3c, 8.0 | 1.21, 1.22, 1.23, 1.24, 1.25  |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | Ubuntu 22.04 LTS                        | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             |                               |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | CentOS 7                                | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             |                               |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | Red Hat Core OS                         |                                    | 4.9, 4.10, 4.11   |                             |                               |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | Red Hat Enterprise Linux 8.4, 8.6, 8.7  | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             | 1.21, 1.22, 1.23, 1.24, 1.25  |                                     |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
-    | Red Hat Enterprise Linux 8.4, 8.5       |                                    |                   |                             |                               | 5.5                                 |
-    +-----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+-------------------------------------+
+  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough
 
+    .. list-table::
+       :header-rows: 1
+       :stub-columns: 1
+
+       * - | Operating
+           | System
+         - Kubernetes
+         - | Red Hat
+           | OpenShift
+         - | VMWare vSphere
+           | with Tanzu
+         - | Rancher Kubernetes
+           | Engine 2
+         - | HPE Ezmeral
+           | Runtime
+           | Enterprise
+
+       * - Ubuntu 18.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         -
+         -
+
+       * - Ubuntu 20.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         - 7.0 U3c, 8.0
+         - | 1.21, 1.22, 1.23,
+           | 1.24, 1.25
+         -
+
+       * - Ubuntu 22.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         -
+         -
+
+       * - CentOS 7
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         -
+         -
+
+       * - Red Hat Core OS
+         -
+         - | 4.9, 4.10
+           | 4.11, 4.12
+         -
+         -
+         -
+
+       * - | Red Hat
+           | Enterprise
+           | Linux 8.4,
+           | 8.6, 8.7
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         - | 1.21, 1.22, 1.23,
+           | 1.24, 1.25
+         -
+
+       * - | Red Hat
+           | Enterprise
+           | Linux 8.4, 8.5
+         -
+         -
+         -
+         -
+         - 5.5
 
     .. note::
-      Red Hat OpenShift is supported on the AWS (G4, G5, P3 and P4), Azure (NC-T4-v3, NC-v3 and ND-A100-v4) and GCP (T4, V100, A100 based instances).
-  
+
+      |ocp_csp_support|
+
   .. tab:: Virtual Machines with NVIDIA vGPU
-  
-    +----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+
-    |                                        | Kubernetes                         | Red Hat OpenShift | VMware vSphere with Tanzu   | Rancher Kubernetes Engine 2   |
-    +========================================+====================================+===================+=============================+===============================+
-    | Ubuntu 20.04 LTS                       | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   | VMware vSphere 7.0 U3c, 8.0 | 1.21, 1.22, 1.23, 1.24, 1.25  |
-    +----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+
-    | Ubuntu 22.04 LTS                       | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             |                               |
-    +----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+
-    | Red Hat Core OS                        |                                    | 4.9, 4.10, 4.11   |                             |                               |
-    +----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+
-    | Red Hat Enterprise Linux 8.4, 8.6, 8.7 | 1.21, 1.22, 1.23, 1.24, 1.25, 1.26 |                   |                             | 1.21, 1.22, 1.23, 1.24, 1.25  |
-    +----------------------------------------+------------------------------------+-------------------+-----------------------------+-------------------------------+
+
+    .. list-table::
+       :header-rows: 1
+       :stub-columns: 1
+
+       * - | Operating
+           | System
+         - Kubernetes
+         - | Red Hat
+           | OpenShift
+         - | VMWare vSphere
+           | with Tanzu
+         - | Rancher Kubernetes
+           | Engine 2
+
+       * - Ubuntu 20.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         - 7.0 U3c, 8.0
+         - | 1.21, 1.22, 1.23,
+           | 1.24, 1.25
+
+       * - Ubuntu 22.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         -
+
+       * - Red Hat Core OS
+         -
+         - | 4.9, 4.10
+           | 4.11, 4.12
+         -
+         -
+
+       * - | Red Hat
+           | Enterprise
+           | Linux 8.4,
+           | 8.6, 8.7
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25, 1.26
+         -
+         -
+         - | 1.21, 1.22, 1.23,
+           | 1.24, 1.25
 
 Supported Container Runtimes
-----
+----------------------------
 
 The GPU Operator has been validated in the following scenarios:
-  
+
 +----------------------------+------------------------+----------------+
-| Product                    | Containerd 1.4 - 1.6   | CRI-O          |
+| Operating System           | Containerd 1.4 - 1.6   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 18.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -241,59 +342,115 @@ The GPU Operator has been validated in the following scenarios:
 +----------------------------+------------------------+----------------+
 
 .. note::
+
   The GPU Operator has been validated with version 2 of the containerd config file.
 
-NVIDIA AI Enterprise support matrix
-----
+NVIDIA AI Enterprise Support Matrix
+-----------------------------------
 
 The latest version of NVIDIA AI Enterprise supports the following scenarios:
 
 .. tabs::
 
-  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough 
-  
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    |                           | Ubuntu 20.04 LTS             | Ubuntu 22.04 LTS             | Red Hat Core OS (RHCOS)   |
-    +===========================+==============================+==============================+===========================+
-    | Kubernetes                | 1.21, 1.22, 1.23, 1.24, 1.25 | 1.21, 1.22, 1.23, 1.24, 1.25 |                           |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    | Red Hat OpenShift         |                              |                              | 4.9.9+, 4.10, 4.11        |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    | VMware vSphere with Tanzu | VMware vSphere 7.0 U3c, 8.0  |                              |                           |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-  
+  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough
+
+    .. list-table::
+       :header-rows: 1
+       :stub-columns: 1
+
+       * - | Operating
+           | System
+         - Kubernetes
+         - | Red Hat
+           | OpenShift
+         - | VMWare vSphere
+           | with Tanzu
+
+       * - Ubuntu 20.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25
+         -
+         - 7.0 U3c, 8.0
+
+       * - Ubuntu 22.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25
+         -
+         -
+
+       * - Red Hat Core OS
+         -
+         - | 4.9.9+, 4.10
+           | 4.11
+         -
+
   .. tab:: Virtual Machines with NVIDIA vGPU
 
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    |                           | Ubuntu 20.04 LTS             | Ubuntu 22.04 LTS             | Red Hat Core OS (RHCOS)   |
-    +===========================+==============================+==============================+===========================+
-    | Kubernetes                | 1.21, 1.22, 1.23, 1.24, 1.25 | 1.21, 1.22, 1.23, 1.24, 1.25 |                           |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    | Red Hat OpenShift         |                              |                              | 4.9.9+, 4.10, 4.11        |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
-    | VMware vSphere with Tanzu | VMware vSphere 7.0 U3c, 8.0  |                              |                           |
-    +---------------------------+------------------------------+------------------------------+---------------------------+
+    .. list-table::
+       :header-rows: 1
+       :stub-columns: 1
+
+       * - | Operating
+           | System
+         - Kubernetes
+         - | Red Hat
+           | OpenShift
+         - | VMWare vSphere
+           | with Tanzu
+
+       * - Ubuntu 20.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25
+         -
+         - 7.0 U3c, 8.0
+
+       * - Ubuntu 22.04 LTS
+         - | 1.21, 1.22, 1,23
+           | 1.24, 1.25
+         -
+         -
+
+       * - Red Hat Core OS
+         -
+         - | 4.9.9+, 4.10
+           | 4.11
+         -
 
 .. note::
-      Red Hat OpenShift is supported on the AWS (G4, G5, P3 and P4), Azure (NC-T4-v3, NC-v3 and ND-A100-v4) and GCP (T4, V100, A100 based instances).
+
+   |ocp_csp_support|
 
 Support for KubeVirt
-----
+--------------------
 
-KubeVirt v0.36.0 is supported with the following operating systems and kubernetes versions.
+KubeVirt v0.36.0 is supported with the following operating systems and Kubernetes versions.
 
-+-----------------------------------+------------------------------+-------------------+
-|                                   | Kubernetes                   | Red Hat OpenShift |
-+===================================+==============================+===================+
-| Ubuntu 20.04 LTS                  | 1.21, 1.22, 1.23, 1.24, 1.25 |                   |
-+-----------------------------------+------------------------------+-------------------+
-| Ubuntu 22.04 LTS                  | 1.21, 1.22, 1.23, 1.24, 1.25 |                   |
-+-----------------------------------+------------------------------+-------------------+
-| Red Hat Core OS                   |                              | 4.11              |
-+-----------------------------------+------------------------------+-------------------+
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - | Operating
+       | System
+     - Kubernetes
+     - | Red Hat
+       | OpenShift
+
+   * - Ubuntu 20.04 LTS
+     - | 1.21, 1.22, 1,23
+       | 1.24, 1.25, 1.26
+     -
+
+   * - Ubuntu 22.04 LTS
+     - | 1.21, 1.22, 1,23
+       | 1.24, 1.25, 1.26
+     -
+
+   * - Red Hat Core OS
+     -
+     - 4.11
 
 Support for GPUDirect RDMA
-----
+--------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
@@ -310,7 +467,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 For more information on GPUDirect RDMA refer to :ref:`this document <operator-rdma>`.
 
 Support for GPUDirect Storage
-----
+-----------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
@@ -323,21 +480,17 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 +--------------------------------------------------+---------------------------+
 
 .. note::
+
       Not supported with secure boot and only with local NVME and remote NFS storage.
 
-Additional supported container management tools:
-----
+Additional Supported Container Management Tools
+-----------------------------------------------
+
 * Helm v3
 * Red Hat Operator Lifecycle Manager (OLM)
 
-Technical Preview
-----
-Try out below features that are in technical preview and share `feedback <https://github.com/NVIDIA/gpu-operator/issues>`_ and `contribute <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ .
-
-* None
-
 Previous GPU Operator Releases
-----
+------------------------------
 
 The following table outlines a historic view of GPU Operator support matrix.
 
@@ -377,13 +530,13 @@ The following table outlines a historic view of GPU Operator support matrix.
       | 1.0                      | v1.13+        | Not supported          | Not supported  |
       +--------------------------+---------------+------------------------+----------------+
 
-    .. tab:: Virtual machines with NVIDIA vCompute Server and NVIDIA RTX Virtual Workstation 
+    .. tab:: Virtual machines with NVIDIA vCompute Server and NVIDIA RTX Virtual Workstation
 
       +--------------------------+---------------+------------------------+----------------+
       | GPU Operator Release     | Kubernetes    | Red Hat OpenShift      | Anthos         |
       +==========================+===============+========================+================+
       | v22.9.0                  | v1.21+        | 4.9, 4.10, 4.11        | Not Supported  |
-      +--------------------------+---------------+------------------------+----------------+  
+      +--------------------------+---------------+------------------------+----------------+
       | 1.11                     | v1.21+        | 4.9, 4.10, 4.11        | Not Supported  |
       +--------------------------+---------------+------------------------+----------------+
       | 1.10                     | v1.21+        | 4.9, 4.10              | Not Supported  |
@@ -405,7 +558,7 @@ The following table outlines a historic view of GPU Operator support matrix.
       | GPU Operator Release     | Kubernetes    | OpenShift              | vSphere with Tanzu        | Release       |
       +==========================+===============+========================+===========================+===============+
       | v22.9.1                  | v1.21+.       | 4.9.9+, 4.10, 4.11     | Supported                 | 3.0 and 1.4   |
-      +--------------------------+---------------+------------------------+---------------------------+---------------+       
+      +--------------------------+---------------+------------------------+---------------------------+---------------+
       | v22.9.0                  | v1.21+        | 4.9.9+, 4.10, 4.11     | Supported                 | 1.3 and 2.3   |
       +--------------------------+---------------+------------------------+---------------------------+---------------+
       | 1.11.1                   | v1.21+        | 4.9.9+, 4.10, 4.11     | Supported                 | 2.2           |
@@ -418,5 +571,3 @@ The following table outlines a historic view of GPU Operator support matrix.
       +--------------------------+---------------+------------------------+---------------------------+---------------+
       | 1.8.1                    | v1.21+        | Not Supported          | Not Supported             | 1.0           |
       +--------------------------+---------------+------------------------+---------------------------+---------------+
-
-
