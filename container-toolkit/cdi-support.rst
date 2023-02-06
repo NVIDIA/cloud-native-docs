@@ -78,7 +78,7 @@ Step 3: Using the CDI specification
     The use of CDI to inject NVIDIA devices may conflict with the use of the NVIDIA Container Runtime hook. This means that if a ``/usr/share/containers/oci/hooks.d/oci-nvidia-hook.json`` file exists, it should be deleted or care should be taken to not run containers with the ``NVIDIA_VISIBLE_DEVICES`` environment variable set.
 
 
-The use of the CDI specification is dependent the CDI-enabled container engine or CLI being used. In the case of ``podman``, for example, releases as of ``v4.1.0`` include support for specifying CDI devices in the ``--device`` flag. Assuming that the specification has been generated as above, running a container with access to all NVIDIA GPUs would require the following command:
+The use of the CDI specification is dependent on the CDI-enabled container engine or CLI being used. In the case of ``podman``, for example, releases as of ``v4.1.0`` include support for specifying CDI devices in the ``--device`` flag. Assuming that the specification has been generated as above, running a container with access to all NVIDIA GPUs would require the following command:
 
     .. code-block:: console
 
