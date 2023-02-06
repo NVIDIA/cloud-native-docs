@@ -1,24 +1,88 @@
-Installing on SUSE 15
------------------------
-The following steps can be used to setup the NVIDIA Container Toolkit on SUSE SLES 15 and OpenSUSE Leap 15.
+Installing on CentOS 7/8
+--------------------------
+The following steps can be used to setup the NVIDIA Container Toolkit on CentOS 7/8.
 
-Setting up Docker on SUSE 15
-+++++++++++++++++++++++++++++
-To install the latest Docker 19.03 CE release on SUSE 15 (OpenSUSE Leap or SLES), you can use the ``Virtualization::containers``
-`project <https://software.opensuse.org/download.html?project=Virtualization%3Acontainers&package=docker>`_.
+Setting up Docker on CentOS 7/8
+++++++++++++++++++++++++++++++++
 
-First, set up the repository:
+.. note::
 
-.. code-block:: console
+   If you're on a cloud instance such as EC2, then the official `CentOS images <https://wiki.centos.org/Cloud/AWS>`_ may not include
+   tools such as ``iptables`` which are required for a successful Docker installation. Try this command to get a more functional VM,
+   before proceeding with the remaining steps outlined in this document.
 
-   $ sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo \
-      && sudo zypper refresh
+   .. code-block:: console
 
-Install the ``docker`` package:
+      $ sudo dnf install -y tar bzip2 make automake gcc gcc-c++ vim pciutils elfutils-libelf-devel libglvnd-devel iptables
 
-.. code-block:: console
+Setup the official Docker CE repository:
 
-   $ sudo zypper install docker
+.. tabs::
+
+   .. tab:: CentOS 8
+
+      .. code-block:: console
+
+         $ sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+Now you can observe the packages available from the `docker-ce` repo:
+
+.. tabs::
+
+   .. tab:: CentOS 8
+
+      .. code-block:: console
+
+         $ sudo dnf repolist -v
+
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum repolist -v
+
+Since CentOS does not support specific versions of ``containerd.io`` packages that are required for newer versions
+of Docker-CE, one option is to manually install the ``containerd.io`` package and then proceed to install the ``docker-ce``
+packages.
+
+Install the ``containerd.io`` package:
+
+.. tabs::
+
+   .. tab:: CentOS 8
+
+      .. code-block:: console
+
+         $ sudo dnf install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
+
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.4.3-3.1.el7.x86_64.rpm
+
+
+And now install the latest ``docker-ce`` package:
+
+.. tabs::
+
+   .. tab:: CentOS 8
+
+      .. code-block:: console
+
+         $ sudo dnf install docker-ce -y
+
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum install docker-ce -y
 
 Ensure the Docker service is running with the following command:
 
@@ -31,6 +95,10 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 .. code-block:: console
 
    $ sudo docker run --rm hello-world
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
@@ -63,28 +131,37 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. note::
+.. include:: install/repo-yum.rst
 
-   You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` explicitly when adding the repositories
+Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
-.. include:: install/repo-zypper.rst
+.. tabs::
 
+   .. tab:: CentOS 8
 
-Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
+      .. code-block:: console
 
-.. code-block:: console
+         $ sudo dnf clean expire-cache --refresh
 
-   $ sudo zypper refresh
+   .. tab:: CentOS 7
 
-.. code-block:: console
+      .. code-block:: console
 
-   $ sudo zypper install -y nvidia-container-toolkit
+         $ sudo yum clean expire-cache
 
-Configure the Docker daemon to recognise the NVIDIA Container Runtime:
+.. tabs::
 
-.. code-block:: console
+   .. tab:: CentOS 8
 
-   $ sudo nvidia-ctk runtime configure --runtime=docker
+      .. code-block:: console
+
+         $ sudo dnf install -y nvidia-docker2
+
+   .. tab:: CentOS 7
+
+      .. code-block:: console
+
+         $ sudo yum install -y nvidia-docker2
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
@@ -96,7 +173,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. code-block:: console
 
-   $ sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 This should result in a console output shown below:
 

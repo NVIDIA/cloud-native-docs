@@ -1,24 +1,25 @@
-Installing on SUSE 15
------------------------
-The following steps can be used to setup the NVIDIA Container Toolkit on SUSE SLES 15 and OpenSUSE Leap 15.
+Installing on RHEL 7
+--------------------
+The following steps can be used to setup the NVIDIA Container Toolkit on RHEL 7.
 
-Setting up Docker on SUSE 15
+Setting up Docker on RHEL 7
 +++++++++++++++++++++++++++++
-To install the latest Docker 19.03 CE release on SUSE 15 (OpenSUSE Leap or SLES), you can use the ``Virtualization::containers``
-`project <https://software.opensuse.org/download.html?project=Virtualization%3Acontainers&package=docker>`_.
 
-First, set up the repository:
+RHEL includes Docker in the ``Extras`` repository. To install Docker on RHEL 7, first enable this repository:
 
-.. code-block:: console
+.. code:: console
 
-   $ sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo \
-      && sudo zypper refresh
+   $ sudo subscription-manager repos --enable rhel-7-server-extras-rpms
 
-Install the ``docker`` package:
+Docker can then be installed using ``yum``
 
-.. code-block:: console
+.. code:: console
 
-   $ sudo zypper install docker
+   $ sudo yum install docker -y
+
+.. seealso::
+
+   More information is available in the KB `article <https://access.redhat.com/solutions/3727511>`_.
 
 Ensure the Docker service is running with the following command:
 
@@ -26,17 +27,28 @@ Ensure the Docker service is running with the following command:
 
    $ sudo systemctl --now enable docker
 
-And finally, test your Docker installation by running the ``hello-world`` container:
+
+And finally, test your Docker installation. We can query the version info:
+
+.. code-block:: console
+
+   $ sudo docker -v
+
+You should see an output like below:
+
+.. code-block:: console
+
+   Docker version 1.13.1, build 64e9980/1.13.1
+
+And run the ``hello-world`` container:
 
 .. code-block:: console
 
    $ sudo docker run --rm hello-world
 
-   Unable to find image 'hello-world:latest' locally
-   latest: Pulling from library/hello-world
-   0e03bdcc26d7: Pull complete
-   Digest: sha256:7f0a9f93b4aa3022c3a4c147a449bf11e0941a1fd0bf4a8e6c9408b2600777c5
-   Status: Downloaded newer image for hello-world:latest
+Giving you the following result:
+
+.. code-block:: console
 
    Hello from Docker!
    This message shows that your installation appears to be working correctly.
@@ -63,28 +75,21 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
+.. include:: install/repo-yum.rst
+
+On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
+
+.. code-block:: console
+
+   $ sudo yum clean expire-cache
+
+.. code-block:: console
+
+   $ sudo yum install nvidia-container-toolkit -y
+
 .. note::
 
-   You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` explicitly when adding the repositories
-
-.. include:: install/repo-zypper.rst
-
-
-Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
-
-.. code-block:: console
-
-   $ sudo zypper refresh
-
-.. code-block:: console
-
-   $ sudo zypper install -y nvidia-container-toolkit
-
-Configure the Docker daemon to recognise the NVIDIA Container Runtime:
-
-.. code-block:: console
-
-   $ sudo nvidia-ctk runtime configure --runtime=docker
+   On POWER (``ppc64le``) platforms, the following package should be used: ``nvidia-container-hook`` instead of ``nvidia-container-toolkit``
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
@@ -96,7 +101,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. code-block:: console
 
-   $ sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+   $ sudo docker run --rm -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 This should result in a console output shown below:
 
@@ -109,8 +114,8 @@ This should result in a console output shown below:
    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
    |                               |                      |               MIG M. |
    |===============================+======================+======================|
-   |   0  Tesla T4            On   | 00000000:00:1E.0 Off |                    0 |
-   | N/A   34C    P8     9W /  70W |      0MiB / 15109MiB |      0%      Default |
+   |   0  Tesla T4            Off  | 00000000:00:1E.0 Off |                    0 |
+   | N/A   43C    P0    20W /  70W |      0MiB / 15109MiB |      0%      Default |
    |                               |                      |                  N/A |
    +-------------------------------+----------------------+----------------------+
 
@@ -121,3 +126,11 @@ This should result in a console output shown below:
    |=============================================================================|
    |  No running processes found                                                 |
    +-----------------------------------------------------------------------------+
+
+.. note::
+
+   Depending on how your RHEL 7 system is configured with SELinux, you may have to use ``--security-opt=label=disable`` on
+   the Docker command line to share parts of the host OS that can not be relabeled. Without this option, you may observe this
+   error when running GPU containers: ``Failed to initialize NVML: Insufficient Permissions``. However, using this option disables
+   SELinux separation in the container and the container is executed in an unconfined type. Review the SELinux policies
+   on your system.

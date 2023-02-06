@@ -21,6 +21,10 @@ Setup the package repository and the GPG key:
                sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
 .. note::
+   For version of the NVIDIA Container Toolkit prior to ``1.6.0``, the ``nvidia-docker`` repository should be used instead of the
+   ``libnvidia-container`` repositories above.
+
+.. note::
    Note that in some cases the downloaded list file may contain URLs that do not seem to match the expected value of ``distribution`` which is expected
    as packages may be used for all compatible distributions.
    As an examples:
@@ -29,4 +33,4 @@ Setup the package repository and the GPG key:
       * For a ``distribution`` value of ``debian11`` the file will contain ``debian10`` URLs
 
 .. note::
-   If running ``apt update`` after configuring repositories raises an error regarding a conflict in the Signed-By option, see the :ref:`relevant troubleshooting section<conflicting_signed_by>`.
+   If running ``apt update`` after configuring repositories raises an error regarding a conflict in the Signed-By option, see the :ref:`relevant troubleshooting section<conflicting_signed_by-1.11.0>`.

@@ -1,7 +1,7 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
-.. _docker:
+.. _docker-1.11.0:
 
 Docker
 -------
@@ -19,6 +19,9 @@ for CUDA containers. This user guide demonstrates the following features of the 
 
 Adding the NVIDIA Runtime
 ++++++++++++++++++++++++++
+
+.. warning::
+    Do not follow this section if you installed the ``nvidia-docker2`` package, it already registers the runtime.
 
 To register the ``nvidia`` runtime, use the method below that is best suited to your environment.
 You might need to merge the new argument with your existing configuration. Three options are available:
@@ -45,26 +48,30 @@ Systemd drop-in file
 Daemon configuration file
 `````````````````````````
 
-The ``nvidia`` runtime can also be registered with Docker using the ``daemon.json`` configuration file. The NVIDIA Container Toolkit provides a utility to apply this configuration:
+The ``nvidia`` runtime can also be registered with Docker using the ``daemon.json`` configuration file:
 
 .. code-block:: console
 
-    $ sudo nvidia-ctk runtime configure --runtime=docker
-
-You can optionally set the ``nvidia`` runtime as the default runtime by specifying the ``--set-as-default`` flag:
+    $ sudo tee /etc/docker/daemon.json <<EOF
+    {
+        "runtimes": {
+            "nvidia": {
+                "path": "/usr/bin/nvidia-container-runtime",
+                "runtimeArgs": []
+            }
+        }
+    }
+    EOF
 
 .. code-block:: console
 
-    $ sudo nvidia-ctk runtime configure --runtime=docker --set-as-default
+    sudo pkill -SIGHUP dockerd
 
-And a ``--dry-run`` flag is also available to preview the changes before applying them.
-
-To apply the new configuration, restart the docker daemon:
+You can optionally reconfigure the default runtime by adding the following to ``/etc/docker/daemon.json``:
 
 .. code-block:: console
 
-    $ sudo systemctl restart docker
-
+    "default-runtime": "nvidia"
 
 Command Line
 `````````````

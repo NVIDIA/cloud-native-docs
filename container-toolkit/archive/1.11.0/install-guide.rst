@@ -1,7 +1,7 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
-.. _install-guide:
+.. _install-guide-1.11.0:
 
 #########################
 Installation Guide
@@ -15,7 +15,7 @@ The NVIDIA Container Toolkit is available on a variety of Linux distributions an
 
 .. note::
 
-    As of NVIDIA Container Toolkit ``1.7.0`` support for Jetson plaforms
+    As of NVIDIA Container Toolkit ``1.7.0`` (``nvidia-docker2 >= 2.8.0``) support for Jetson plaforms
     is included for Ubuntu 18.04, Ubuntu 20.04, and Ubuntu 22.04 distributions. This means that the installation
     instructions provided for these distributions are expected to work on Jetson devices.
 
@@ -128,13 +128,6 @@ The list of prerequisites for running NVIDIA Container Toolkit is described belo
     includes a table of the minimum driver and CUDA Toolkit versions.
 
 ----
-
-********************
-Container Device Interface (CDI) Support
-********************
-
-.. include:: cdi-support.rst
-
 
 ********************
 Docker

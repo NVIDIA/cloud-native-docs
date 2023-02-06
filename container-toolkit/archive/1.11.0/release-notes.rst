@@ -1,7 +1,7 @@
 .. Date: September 21 2021
 .. Author: elezar
 
-.. _toolkit-release-notes:
+.. _toolkit-release-notes-1.11.0:
 
 *****************************************
 Release Notes
@@ -9,63 +9,6 @@ Release Notes
 This document describes the new features, improvements, fixed and known issues for the NVIDIA Container Toolkit.
 
 ----
-
-NVIDIA Container Toolkit 1.12.0
-====================================
-
-This release of the NVIDIA Container Toolkit ``v1.12.0`` adds the following major features:
-
-* Improved support for headless Vulkan applications in containerized environments.
-* Tooling to generate Container Device Interface (CDI) specifications for GPU devices. The use of CDI is now the recommended mechanism for using GPUs in ``podman``.
-
-The following packages are included:
-
-* ``nvidia-container-toolkit 1.12.0``
-* ``libnvidia-container-tools 1.12.0``
-* ``libnvidia-container1 1.12.0``
-
-The following ``container-toolkit`` containers are included:
-
-* ``nvcr.io/nvidia/k8s/container-toolkit:v1.12.0-centos7``
-* ``nvcr.io/nvidia/k8s/container-toolkit:v1.12.0-ubi8``
-* ``nvcr.io/nvidia/k8s/container-toolkit:v1.12.0-ubuntu18.04``
-* ``nvcr.io/nvidia/k8s/container-toolkit:v1.12.0-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.12.0``)
-
-The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.12.0``:
-
-* ``nvidia-container-runtime 3.12.0``
-* ``nvidia-docker2 2.12.0``
-
-.. note::
-
-   This will be the last release that updates the ``nvidia-container-runtime`` and ``nvidia-docker2`` packages. All required functionality is now included in the ``nvidia-container-toolkit`` package. This includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.
-
-Packaging Changes
-------------------
-
-* The ``nvidia-container-toolkit`` packages was updated to allow upgrades from pre-``v1.11.0`` versions of the package without removing the ``nvidia-container-runtime-hook`` executable.
-* On certain distributions, full mirrors have been removed. The links to the ``.list`` and ``.repo`` files for Debian and RPM-based distributions respectively have been maintained to ensure that the official installation instructions continue to function. This change serves to further optimize the size of our package repository.
-
-
-Fixes and Features
--------------------
-
-* Add ``nvidia-ctk cdi generate`` command to generate CDI specifications for available NVIDIA devices. The generated CDI specification can be used to provide access to NVIDIA devices in CDI-enabled container engines such as ``podman`` -- especially in the rootless case.
-* Add full support for headless Vulkan applications in containerized environments when ``NVIDIA_DRIVER_CAPABILITIES`` includes
- ``graphics`` or ``display``. This includes the injection of Vulkan ICD loaders as well as direct rendering devices.
-* Improve the logging of errors in the NVIDIA Container Runtime.
-
-specific to libnvidia-container
-``````````````````````````````````
-* Include the NVVM compiler library in the set of injected compute libraries
-* Skip the creation of files that are already mounted to allow paths such as ``/var/run`` to be mounted into containers.
-* Add ``nvcubins.bin`` to DriverStore components under WSL2
-
-specific to container-toolkit container images
-````````````````````````````````````````````````
-* Update CUDA base images to ``12.0.1``
-
-
 
 NVIDIA Container Toolkit 1.11.0
 ====================================

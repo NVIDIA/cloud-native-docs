@@ -1,24 +1,22 @@
-Installing on SUSE 15
------------------------
-The following steps can be used to setup the NVIDIA Container Toolkit on SUSE SLES 15 and OpenSUSE Leap 15.
+Installing on Amazon Linux
+----------------------------
+The following steps can be used to setup the NVIDIA Container Toolkit on Amazon Linux 1 and Amazon Linux 2.
 
-Setting up Docker on SUSE 15
-+++++++++++++++++++++++++++++
-To install the latest Docker 19.03 CE release on SUSE 15 (OpenSUSE Leap or SLES), you can use the ``Virtualization::containers``
-`project <https://software.opensuse.org/download.html?project=Virtualization%3Acontainers&package=docker>`_.
+Setting up Docker on Amazon Linux
+++++++++++++++++++++++++++++++++++
+Amazon Linux is available on Amazon EC2 instances. For full install instructions, see `Docker basics for Amazon ECS <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker>`_.
 
-First, set up the repository:
+After launching the official Amazon Linux EC2 image, update the installed packages and install the most recent Docker CE packages:
 
 .. code-block:: console
 
-   $ sudo zypper addrepo https://download.opensuse.org/repositories/Virtualization:containers/openSUSE_Leap_15.2/Virtualization:containers.repo \
-      && sudo zypper refresh
+   $ sudo yum update -y
 
 Install the ``docker`` package:
 
 .. code-block:: console
 
-   $ sudo zypper install docker
+   $ sudo amazon-linux-extras install docker
 
 Ensure the Docker service is running with the following command:
 
@@ -31,6 +29,10 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 .. code-block:: console
 
    $ sudo docker run --rm hello-world
+
+This should result in a console output shown below:
+
+.. code-block:: console
 
    Unable to find image 'hello-world:latest' locally
    latest: Pulling from library/hello-world
@@ -63,28 +65,17 @@ And finally, test your Docker installation by running the ``hello-world`` contai
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. note::
+.. include:: install/repo-yum.rst
 
-   You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` explicitly when adding the repositories
-
-.. include:: install/repo-zypper.rst
-
-
-Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
+Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
 
 .. code-block:: console
 
-   $ sudo zypper refresh
+   $ sudo yum clean expire-cache
 
-.. code-block:: console
+.. code-block::bash
 
-   $ sudo zypper install -y nvidia-container-toolkit
-
-Configure the Docker daemon to recognise the NVIDIA Container Runtime:
-
-.. code-block:: console
-
-   $ sudo nvidia-ctk runtime configure --runtime=docker
+   $ sudo yum install nvidia-docker2 -y
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
@@ -96,7 +87,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. code-block:: console
 
-   $ sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+   $ sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 This should result in a console output shown below:
 

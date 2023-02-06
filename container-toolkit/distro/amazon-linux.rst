@@ -67,7 +67,7 @@ Setting up NVIDIA Container Toolkit
 
 .. include:: install/repo-yum.rst
 
-Install the ``nvidia-docker2`` package (and dependencies) after updating the package listing:
+Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
 .. code-block:: console
 
@@ -75,7 +75,13 @@ Install the ``nvidia-docker2`` package (and dependencies) after updating the pac
 
 .. code-block::bash
 
-   $ sudo yum install nvidia-docker2 -y
+   $ sudo yum install -y nvidia-container-toolkit
+
+Configure the Docker daemon to recognize the NVIDIA Container Runtime:
+
+.. code-block:: console
+
+   $ sudo nvidia-ctk runtime configure --runtime=docker
 
 Restart the Docker daemon to complete the installation after setting the default runtime:
 
@@ -87,7 +93,7 @@ At this point, a working setup can be tested by running a base CUDA container:
 
 .. code-block:: console
 
-   $ sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+   $ sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 
 This should result in a console output shown below:
 
