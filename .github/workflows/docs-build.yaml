@@ -14,7 +14,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 0.1.0
+  TAG: 0.2.0
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -89,16 +89,20 @@ jobs:
           chown -R $(id -u):$(id -g) $PWD
       - name: Build docs
         run: |
-          make html
+          ./repo docs -p container-toolkit || true
+          ./repo docs -p driver-containers || true
+          ./repo docs -p gpu-operator || true
       - name: Delete unnecessary files
         run: |
-          find _build/html -name .doctrees -prune -exec rm -rf {} \;
-          find _build/html -name .buildinfo -exec rm {} \;
+          find _build -name .buildinfo -exec rm {} \;
       - name: Upload HTML
         uses: actions/upload-artifact@v3
         with:
           name: html-build-artifact
-          path: _build/html
+          path: |
+            _build/docs/container-toolkit
+            _build/docs/driver-containers
+            _build/docs/gpu-operator
           if-no-files-found: error
           retention-days: 1
       - name: Store PR information

@@ -3,17 +3,17 @@
 
 .. _operator-release-notes:
 
-*****************************************
-Release Notes
-*****************************************
+*********************************
+NVIDIA GPU Operator Release Notes
+*********************************
 
 This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
 
-See the :ref:`Component Matrix<operator-component-matrix>` for a list of components included in each release.
+See the :ref:`Component Matrix <gpu-operator-component-matrix>` for a list of components included in each release.
 
 .. note::
 
-   GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
+   GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`__. NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ----
 
@@ -114,7 +114,7 @@ Common Vulnerabilities and Exposures (CVEs)
 * Fixed - Updated driver images for ``515.86.01``, ``510.108.03``, ``470.161.03``, ``450.216.04`` to address CVEs noted `here <https://nvidia.custhelp.com/app/answers/detail/a_id/5415>`_.
 * The ``gpu-operator:v22.9.1`` and ``gpu-operator:v22.9.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``krb5-libs`` - `CVE-2022-42898 <https://nvd.nist.gov/vuln/detail/CVE-2022-42898>`_
+  * ``krb5-libs`` - `CVE-2022-42898 <https://nvd.nist.gov/vuln/detail/CVE-2022-42898>`_
 
 Known Limitations
 ------------------
@@ -168,10 +168,10 @@ Known Limitations
 * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
 * The ``gpu-operator:v22.9.0`` and ``gpu-operator:v22.9.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``expat`` - `CVE-2022-40674 <https://access.redhat.com/security/cve/CVE-2022-40674>`_
-    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+  * ``expat`` - `CVE-2022-40674 <https://access.redhat.com/security/cve/CVE-2022-40674>`_
+  * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+  * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+  * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
 
 ----
 
@@ -264,9 +264,9 @@ Known Limitations
 
 * The ``gpu-operator:v1.10.1`` and ``gpu-operator:v1.10.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
-    * ``zlib`` - `CVE-2018-25032 <https://access.redhat.com/security/cve/CVE-2018-25032>`_
-    * ``gzip`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+  * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+  * ``zlib`` - `CVE-2018-25032 <https://access.redhat.com/security/cve/CVE-2018-25032>`_
+  * ``gzip`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 ----
 
@@ -318,7 +318,7 @@ To overcome this situation, before upgrading the host driver to the new vGPU bra
   #. write and quit the clusterpolicy edit
 * The ``gpu-operator:v1.10.0`` and ``gpu-operator:v1.10.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+  * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
 
 ----
 
