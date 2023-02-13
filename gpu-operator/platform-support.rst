@@ -5,11 +5,14 @@
 
 .. _operator-platform-support:
 
-****************
-Platform Support
-****************
+********************************************
+Platform Support for the NVIDIA GPU Operator
+********************************************
 
-This documents provides an overview of the GPUs and system Platform configurations supported.
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
 
 .. include:: life-cycle-policy.rst
 

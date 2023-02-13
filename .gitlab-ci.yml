@@ -1,91 +1,130 @@
-image: docker:19.03.12
-
 variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_TLS_CERTDIR: ""
-  BUILDER_IMAGE: "${CI_REGISTRY_IMAGE}/cnt-sphinxdoc-${CI_PIPELINE_ID}"
+  STAGING_HOST: "sw-docs-dgx-station.nvidia.com"
+  STAGING_SRC_PATH: "/raid/webapps/ROOT/datacenter/cloud-native-play"
+  STAGING_USER: "swdocs"
+  CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.1.0"
+  BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
 
 stages:
-- build_image
-- build_docs
-- stage_docs
-- publish_docs
+  - .pre
+  - build
+  - deploy
 
-services:
-  - docker:19.03.12-dind
 
-before_script:
-  - echo "${BUILDER_IMAGE}"
-  - docker info
-  - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
-
-build_image:
-  stage: build_image
+build_builder:
+  image: docker:19.03.12
+  stage: .pre
+  services:
+    - docker:19.03.12-dind
+  tags:
+    - os/linux
+    - type/docker
   script:
-    - docker build --pull --no-cache --tag "${BUILDER_IMAGE}" --file docker/Dockerfile .
-    - docker push "${BUILDER_IMAGE}"
+    - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
+    - docker build -t "${CONTAINER_TEST_IMAGE}" . -f docker/Dockerfile
+    - docker push "${CONTAINER_TEST_IMAGE}"
+    - echo "BUILDER_IMAGE=${CONTAINER_TEST_IMAGE}" >> build.env
+    - >
+      if [ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ] && [ "${CI_PIPELINE_SOURCE}" == "push" ]; then
+        docker tag "${CONTAINER_TEST_IMAGE}" "${CONTAINER_RELEASE_IMAGE}"
+        docker push "${CONTAINER_RELEASE_IMAGE}"
+      fi
+  artifacts:
+    reports:
+      dotenv: build.env
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - docker/Dockerfile
+        - "deps/*"
+        - repo.toml
 
-.build_docs:
-  stage: build_docs
-  variables:
-    PROJECT_PATH: "${CI_BUILDS_DIR}/${CI_CONCURRENT_ID}/${CI_PROJECT_NAME}"
-    DOC_MOUNT_PATH: "/docs"
-    DOC_BUILD_PATH: "${DOC_MOUNT_PATH}/_build/html/"
-    DOC_STAGE_PATH: "/opt/build/html/${CI_PIPELINE_ID}"
-    CONTAINER_NAME: "${CI_PROJECT_NAME}.${CI_JOB_ID}.${CI_JOB_NAME}"
+
+build:
+  stage: build
+  image: "${BUILDER_IMAGE}"
   script:
-  - echo "${PROJECT_PATH}"
-  - echo "${DOC_BUILD_PATH}"
-  - echo "${DOC_STAGE_PATH}"
-  - echo "${CONTAINER_NAME}"
-  - docker run --name "${CONTAINER_NAME}" -v "${CI_PROJECT_DIR}":"${DOC_MOUNT_PATH}" "${BUILDER_IMAGE}"
+    - ./repo docs -p container-toolkit || true
+    - ./repo docs -p driver-containers || true
+    - ./repo docs -p gpu-operator || true
+    - ./repo docs -p review || true
+    - echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
+  tags:
+    - os/linux
+    - type/docker
+  artifacts:
+    name: ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}
+    paths:
+      - _build
+    expire_in: 1h
+    reports:
+      dotenv: build.env
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-build_docs:
-  extends:
-    - .build_docs
-  after_script:
-  - docker cp "${CONTAINER_NAME}:${DOC_BUILD_PATH}" "${DOC_STAGE_PATH}"
-  - docker rm -f ${CONTAINER_NAME}
-  - docker rmi "${BUILDER_IMAGE}"
-  only:
-    variables:
-      - $INTERNAL
+
 
 pages:
-  extends:
-    .build_docs
-  after_script:
-  - mkdir public
-  - mv _build/html/* public
-  - docker rm -f ${CONTAINER_NAME}
-  - docker rmi "${BUILDER_IMAGE}"
-  - echo "Looks like everything was built OK. See the staged docs at ${CI_PAGES_URL}"
+  image: "${CONTAINER_RELEASE_IMAGE}"
+  stage: deploy
+  script:
+  - ./repo docs --build internal
+  - rm -rf public
+  - cp -r _build/docs/forge-docs/latest-internal public
+  tags:
+  - pages
   artifacts:
     paths:
-      - public
-    expire_in: 1 week
-  except:
-    variables:
-      - $INTERNAL
+    - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
 
-stage_docs:
-  stage: stage_docs
-  script:
-  - export STAGING_URL="http://${CI_RUNNER_DESCRIPTION}/html/${CI_PIPELINE_ID}"
-  - echo "Looks like everything was built OK. See the staged docs at ${STAGING_URL}"
-  only:
-    variables:
-      - $INTERNAL
 
-publish_docs:
-  stage: publish_docs
-  before_script:
-    - apk add --update curl && rm -rf /var/cache/apk/*
+# https://about.gitlab.com/blog/2016/12/07/building-a-new-gitlab-docs-site-with-nanoc-gitlab-ci-and-gitlab-pages/
+review:
+  stage: deploy
+  cache: {}
+  image: "${BUILDER_IMAGE}"
+  tags:
+    - os/linux
+    - type/docker
+  environment:
+    name: "review/${CI_MERGE_REQUEST_IID}"
+    url: "https://${STAGING_HOST}/datacenter/cloud-native-play/review/${CI_MERGE_REQUEST_IID}/review/latest/"
+    on_stop: review_stop
   script:
-  - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
-  - /opt/build/html/deploy_web.sh --copy-flush ${CI_PIPELINE_ID}
-  only:
-    refs:
-      - master
-    variables:
-      - $INTERNAL
+    - ls _build/docs/
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+    - cd _build/docs/
+    - ssh "${STAGING_USER}@${STAGING_HOST}" mkdir -p "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+    - rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+  dependencies:
+    - build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+
+review_stop:
+  stage: deploy
+  cache: {}
+  image: "${BUILDER_IMAGE}"
+  tags:
+    - os/linux
+    - type/docker
+  environment:
+    name: "review/${CI_MERGE_REQUEST_IID}"
+    action: stop
+  script:
+    - echo "Delete files from ${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+    - ssh "${STAGING_USER}@${STAGING_HOST}" rm -rf "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  when: manual

@@ -9,16 +9,16 @@
 MIG Support in Kubernetes
 ##########################
 
-This document provides steps on getting started and running some example CUDA workloads 
+This document provides steps on getting started and running some example CUDA workloads
 on MIG-enabled GPUs in a Kubernetes cluster.
 
 ************************
 Software Pre-requisites
 ************************
 
-The deployment workflow requires these prerequisites. Once these prerequisites have been met, 
-you can proceed to deploy a MIG capable version of the NVIDIA ``k8s-device-plugin`` and 
-the ``gpu-feature-discovery`` component in your cluster, so that Kubernetes can schedule 
+The deployment workflow requires these prerequisites. Once these prerequisites have been met,
+you can proceed to deploy a MIG capable version of the NVIDIA ``k8s-device-plugin`` and
+the ``gpu-feature-discovery`` component in your cluster, so that Kubernetes can schedule
 pods on the available MIG devices.
 
 
@@ -27,7 +27,7 @@ pods on the available MIG devices.
 
     * NVIDIA `datacenter driver <https://docs.nvidia.com/datacenter/tesla/drivers/index.html>`_ >= 450.80.02
     * NVIDIA Container Toolkit (``nvidia-docker2``) >= 2.5.0 (and corresponding ``libnvidia-container`` >= 1.3.3)
-  
+
 #. NVIDIA `k8s-device-plugin <https://github.com/NVIDIA/k8s-device-plugin/tree/v0.7.0>`_: v0.7.0+
 #. NVIDIA `gpu-feature-discovery <https://github.com/NVIDIA/gpu-feature-discovery/tree/v0.2.0>`_: v0.2.0+
 
@@ -39,7 +39,7 @@ Getting Started
 Install Kubernetes
 --------------------
 
-As a first step, ensure that you have a Kubernetes deployment set up with a control plane and nodes joined to the 
+As a first step, ensure that you have a Kubernetes deployment set up with a control plane and nodes joined to the
 cluster. Follow the :ref:`install-k8s` guide for getting started with setting up a Kubernetes cluster.
 
 Configuration Strategy
@@ -50,11 +50,11 @@ TBD.
 Setting up MIG Geometry
 --------------------------
 
-You can either use NVML (or its command-line interface ``nvidia-smi``) to configure the desired MIG geometry. For automation, 
-we recommend using tooling such as `mig-parted <https://github.com/nvidia/mig-parted>`_ that allows configuring MIG mode 
+You can either use NVML (or its command-line interface ``nvidia-smi``) to configure the desired MIG geometry. For automation,
+we recommend using tooling such as `mig-parted <https://github.com/nvidia/mig-parted>`_ that allows configuring MIG mode
 and creating the desired profiles on the GPUs.
 
-In this step, let's use ``mig-parted`` to configure the A100 into 7 GPUs (using the ``1g.5gb`` profile): 
+In this step, let's use ``mig-parted`` to configure the A100 into 7 GPUs (using the ``1g.5gb`` profile):
 
 .. code-block:: console
 
@@ -91,8 +91,8 @@ Deploying the NVIDIA Device Plugin and GFD
 NVIDIA Device Plugin
 =====================
 
-Depending on the MIG configuration strategy used for the cluster, deploy the NVIDIA device plugin with the right options. 
-In this example, we assume that the user has chosen a ``single`` MIG strategy for the cluster. 
+Depending on the MIG configuration strategy used for the cluster, deploy the NVIDIA device plugin with the right options.
+In this example, we assume that the user has chosen a ``single`` MIG strategy for the cluster.
 
 .. code-block:: console
 
@@ -101,7 +101,7 @@ In this example, we assume that the user has chosen a ``single`` MIG strategy fo
        --set migStrategy=single \
        nvdp/nvidia-device-plugin
 
-At this point, the `nvidia-device-plugin` daemonset should be deployed and enumerated the MIG devices to Kubernetes: 
+At this point, the `nvidia-device-plugin` daemonset should be deployed and enumerated the MIG devices to Kubernetes:
 
 .. code-block:: console
 
@@ -116,8 +116,8 @@ At this point, the `nvidia-device-plugin` daemonset should be deployed and enume
 GPU Feature Discovery
 ======================
 
-Next, we deploy the `GPU Feature Discovery (GFD) <https://github.com/NVIDIA/gpu-feature-discovery>`_ plugin to label the GPU nodes 
-so that users can specific MIG devices as resources in their podspec. Note that the GFD Helm chart also deploys the Node Feature Discovery 
+Next, we deploy the `GPU Feature Discovery (GFD) <https://github.com/NVIDIA/gpu-feature-discovery>`_ plugin to label the GPU nodes
+so that users can specific MIG devices as resources in their podspec. Note that the GFD Helm chart also deploys the Node Feature Discovery
 (NFD) as a prerequisite:
 
 .. code-block:: console
@@ -160,8 +160,9 @@ And the node has been labeled:
 
 with labels:
 
-.. code-block:: json
+.. code-block:: output
 
+    {
     ...
     "node-role.kubernetes.io/master": "",
     "node.kubernetes.io/exclude-from-external-load-balancers": "",
