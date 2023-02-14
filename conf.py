@@ -92,13 +92,14 @@ html_theme_options = {
     'collapse_navigation': True,
     'sticky_navigation': True,
     'display_version': False,
-    'logo_only': False,
+    'logo_only': True,
     'navigation_depth': 2,
     'includehidden': True,
     'display_version': False,
     'prev_next_buttons_location': "bottom",
     'style_external_links': False,
 }
+html_logo = "assets/NVLogo_H_B&W.png"
 
 # Download favicon and set it (the variable `html_favicon`) for this project.
 # It must be relative path.
