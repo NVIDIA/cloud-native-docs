@@ -80,97 +80,65 @@ Running Sample GPU Applications
 =================================
 
 CUDA VectorAdd
-----------------
+--------------
 
 In the first example, let's run a simple CUDA sample, which adds two vectors together:
 
-.. code-block:: console
 
-   $ cat << EOF | kubectl create -f -
-   apiVersion: v1
-   kind: Pod
-   metadata:
-     name: cuda-vectoradd
-   spec:
-     restartPolicy: OnFailure
-     containers:
-     - name: cuda-vectoradd
-       image: "nvidia/samples:vectoradd-cuda11.2.1"
-       resources:
-         limits:
-            nvidia.com/gpu: 1
-   EOF
+#. Create a file, such as ``cuda-vectoradd.yaml``, with contents like the following:
 
-The sample should run fairly quickly. If you view the logs of the container:
+   .. code-block:: yaml
 
-.. code-block:: console
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: cuda-vectoradd
+      spec:
+        restartPolicy: OnFailure
+        containers:
+        - name: cuda-vectoradd
+          image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
+          resources:
+            limits:
+              nvidia.com/gpu: 1
 
-   [Vector addition of 50000 elements]
-   Copy input data from the host memory to the CUDA device
-   CUDA kernel launch with 196 blocks of 256 threads
-   Copy output data from the CUDA device to the host memory
-   Test PASSED
-   Done
+#. Run the pod:
 
+   .. code-block:: console
 
-CUDA FP16 Matrix multiply
-----------------------------
+      $ kubectl apply -f cuda-vectoradd.yaml
 
-In the second example, let's try running a CUDA load generator, which does an FP16 matrix-multiply on the GPU using
-the Tensor Cores when available:
+   The pod starts, runs the ``vectorAdd`` command, and then exits.
 
-.. code-block:: console
+#. View the logs from the container:
 
-   $ cat << EOF | kubectl create -f -
-   apiVersion: v1
-   kind: Pod
-   metadata:
-      name: dcgmproftester
-   spec:
-      restartPolicy: OnFailure
-      containers:
-      - name: dcgmproftester11
-        image: nvidia/samples:dcgmproftester-2.0.10-cuda11.0-ubuntu18.04
-        args: ["--no-dcgm-validation", "-t 1004", "-d 30"]
-        resources:
-          limits:
-             nvidia.com/gpu: 1
-        securityContext:
-          capabilities:
-            add: ["SYS_ADMIN"]
+   .. code-block:: console
 
-   EOF
+      $ kubectl logs pod/cuda-vectoradd
 
-and then view the logs of the ``dcgmproftester`` pod:
+   *Example Output*
 
-.. code-block:: console
+   .. code-block:: output
 
-   $ kubectl logs -f dcgmproftester
+      [Vector addition of 50000 elements]
+      Copy input data from the host memory to the CUDA device
+      CUDA kernel launch with 196 blocks of 256 threads
+      Copy output data from the CUDA device to the host memory
+      Test PASSED
+      Done
 
-You should see the FP16 GEMM being run on the GPU:
+#. Removed the stopped pod:
 
-.. code-block:: console
+   .. code-block:: console
 
-   Skipping CreateDcgmGroups() since DCGM validation is disabled
-   CU_DEVICE_ATTRIBUTE_MAX_THREADS_PER_MULTIPROCESSOR: 1024
-   CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT: 40
-   CU_DEVICE_ATTRIBUTE_MAX_SHARED_MEMORY_PER_MULTIPROCESSOR: 65536
-   CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR: 7
-   CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR: 5
-   CU_DEVICE_ATTRIBUTE_GLOBAL_MEMORY_BUS_WIDTH: 256
-   CU_DEVICE_ATTRIBUTE_MEMORY_CLOCK_RATE: 5001000
-   Max Memory bandwidth: 320064000000 bytes (320.06 GiB)
-   CudaInit completed successfully.
+      $ kubectl delete -f cuda-vectoradd.yaml
 
-   Skipping WatchFields() since DCGM validation is disabled
-   TensorEngineActive: generated ???, dcgm 0.000 (26096.4 gflops)
-   TensorEngineActive: generated ???, dcgm 0.000 (26344.4 gflops)
-   TensorEngineActive: generated ???, dcgm 0.000 (26351.2 gflops)
-   TensorEngineActive: generated ???, dcgm 0.000 (26359.9 gflops)
-   TensorEngineActive: generated ???, dcgm 0.000 (26750.7 gflops)
-   TensorEngineActive: generated ???, dcgm 0.000 (25378.8 gflops)
+   *Example Output*
 
-You will observe that on an NVIDIA T4, this has resulted in ~26 TFLOPS of FP16 GEMM performance.
+   .. code-block:: output
+
+      pod "cuda-vectoradd" deleted
+
 
 Jupyter Notebook
 ------------------
@@ -257,7 +225,7 @@ With GPU Operator users can customize the metrics to be collected by ``dcgm-expo
       $ curl https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/etc/dcp-metrics-included.csv > dcgm-metrics.csv
 
  2. Edit the metrics file as required to add/remove any metrics to be collected.
-   
+
  3. Create a Namespace ``gpu-operator`` if one is not already present.
 
   .. code-block:: console
