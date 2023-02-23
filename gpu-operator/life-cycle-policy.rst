@@ -22,14 +22,18 @@ The third segment as in '.0' represents a dot release. Dot releases typically in
 .. _operator_life_cycle_policy:
 
 NVIDIA GPU Operator Life Cycle
-----
-The NVIDIA GPU Operator life cycle policy has been updated to provide a more predictable support policy and timeline of when new NVIDIA GPU Operator versions are released.
+------------------------------
 
-Starting with the NVIDIA GPU Operator v22.9.0, a new major GPU Operator version will be released every 6 months. Therefore, the next major release of the NVIDIA GPU Operator will be released in March 2023 and will be named v23.3.0.
+The NVIDIA GPU Operator life cycle policy provides a predictable support policy and timeline of when new NVIDIA GPU Operator versions are released.
 
-Every major release of the NVIDIA GPU Operator (starting with v22.09) will be maintained for 12 months. Fixes (bug and CVE) will be released throughout the 12 months while minor feature updates will only be released within the first six months of the year.
+Starting with the NVIDIA GPU Operator v22.9.0, a new major GPU Operator version will be released every 6 months.
+Therefore, the next major release of the NVIDIA GPU Operator will be released in March 2023 and will be named v23.3.0.
 
-This life cycle allows NVIDIA GPU Operator users to use a given NVIDIA GPU Operator version for up to 12 months. It also provides users a 6 month period where they can plan the transition to the next major NVIDIA GPU Operator version.
+Every major release of the NVIDIA GPU Operator, starting with v22.09, is maintained for 12 months.
+Bug fixes and CVEs are released throughout the 12 months while minor feature updates are only released within the first six months.
+
+This life cycle allows NVIDIA GPU Operator users to use a given NVIDIA GPU Operator version for up to 12 months.
+It also provides users a 6 month period where they can plan the transition to the next major NVIDIA GPU Operator version.
 
 The product lifecycle and versioning are subject to change in the future.
 
@@ -41,7 +45,12 @@ The product lifecycle and versioning are subject to change in the future.
 .. _operator-component-matrix:
 
 GPU Operator Component Matrix
-----
+-----------------------------
+
+The following table shows the operands and default operand versions that correspond to a GPU Operator version.
+
+When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
+Refer to :ref:`upgrade` for information about upgrading the Operator.
 
   .. list-table::
       :header-rows: 1
@@ -75,7 +84,8 @@ GPU Operator Component Matrix
         - NVIDIA GDS Driver
 
       * - v22.9.2
-        - | `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_,
+        - | `525.85.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-85-12/index.html>`_ (recommended),
+          | `525.60.13 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_ (default),
           | `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_,
           | `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_,
           | `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_,
@@ -87,14 +97,15 @@ GPU Operator Component Matrix
         -  v0.10.1
         - `0.7.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
         - `0.5.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-        - `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        - | `3.1.6 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_ (recommended),
+          | `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_ (default)
         - v22.9.1
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
       * - v22.9.1
-        - | `525.60.13 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_,
+        - | `525.60.13 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_ (default),
           | `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_,
           | `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_,
           | `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_,
@@ -106,7 +117,7 @@ GPU Operator Component Matrix
         -  v0.10.1
         - `0.7.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
         - `0.5.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-        - `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        - `3.1.3-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_
         - v22.9.1
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
@@ -114,7 +125,7 @@ GPU Operator Component Matrix
 
       * - v22.9.0
         - | 520.61.05,
-          | `515.65.01 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_,
+          | `515.65.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-65-01/index.html>`_ (default),
           | `510.85.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-85-02/index.html>`_,
           | `470.141.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-141-03/index.html>`_,
           | `450.203.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-203-03/index.html>`_
@@ -125,14 +136,14 @@ GPU Operator Component Matrix
         -  v0.10.1
         - `0.6.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
         - `0.5.0 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-        - `3.0.4-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
+        - `3.0.4-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_
         - v22.9.0
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - N/A
 
       * - 1.11
-        - | `515.48.07 (default) <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_,
+        - | `515.48.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_ (default),
           | `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_,
           | `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_,
           | `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
