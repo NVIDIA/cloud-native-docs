@@ -29,6 +29,11 @@ New Features
   Refer to :doc:`gpu-driver-upgrades` for more details.
 * Added the ability to apply custom labels and annotations for all of the GPU Operator pods.
   Refer to :ref:`gpu-operator-helm-chart-options` for how to configure custom labels and annotations.
+* Added support for NVIDIA vGPU 15.1.
+  Refer to the `NVIDIA Virtual GPU Software Documentation <https://docs.nvidia.com/grid/15.0/index.html>`_.
+* Added support for the NVIDIA HGX H100 System in the :ref:`Supported NVIDIA GPUs and Systems` table on the Platform Support page.
+* Added 525.85.12 as the recommended driver version and 3.1.6 as the recommended DCGM version in the :ref:`GPU Operator Component Matrix`.
+  These updates enable support for the NVIDIA HGX H100 System.
 
 Improvements
 ------------
