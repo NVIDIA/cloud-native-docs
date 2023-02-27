@@ -29,7 +29,7 @@ The NVIDIA GPU Operator life cycle policy provides a predictable support policy 
 Starting with the NVIDIA GPU Operator v22.9.0, a new major GPU Operator version will be released every 6 months.
 Therefore, the next major release of the NVIDIA GPU Operator will be released in March 2023 and will be named v23.3.0.
 
-Every major release of the NVIDIA GPU Operator, starting with v22.09, is maintained for 12 months.
+Every major release of the NVIDIA GPU Operator, starting with v22.9.0, is maintained for 12 months.
 Bug fixes and CVEs are released throughout the 12 months while minor feature updates are only released within the first six months.
 
 This life cycle allows NVIDIA GPU Operator users to use a given NVIDIA GPU Operator version for up to 12 months.
