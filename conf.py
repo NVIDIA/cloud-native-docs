@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx_tabs.tabs',
     'sphinxcontrib.blockdiag',
+    'sphinx.ext.intersphinx',
 ]
 blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
 blockdiag_antialias = True
@@ -119,6 +120,10 @@ html_js_files = [
 
 # Add timestamp to each page
 html_last_updated_fmt = '%Y-%m-%d'
+
+intersphinx_mapping = {
+    'dcgm': ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
+}
 
 def setup(app):
     count_unique_visitor_script = os.getenv("ADD_NVIDIA_VISITS_COUNTING_SCRIPT")

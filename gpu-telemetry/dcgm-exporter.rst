@@ -12,13 +12,13 @@ Introduction
 ************
 
 `DCGM-Exporter <https://github.com/NVIDIA/dcgm-exporter>`_ is a tool based on the
-Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`_ that allows users to gather 
-GPU metrics and understand workload behavior or monitor GPUs in clusters. `dcgm-exporter` is 
-written in Go and exposes GPU metrics at an HTTP endpoint (``/metrics``) for monitoring solutions 
-such as Prometheus. 
+Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`_ that allows users to gather
+GPU metrics and understand workload behavior or monitor GPUs in clusters. `dcgm-exporter` is
+written in Go and exposes GPU metrics at an HTTP endpoint (``/metrics``) for monitoring solutions
+such as Prometheus.
 
-For information on the profiling metrics available from DCGM, refer to `this section <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-user-guide/feature-overview.html#profiling>`_ 
-in the documentation. 
+For information on the profiling metrics available from DCGM, refer to
+:external+dcgm:ref:`profiling` in the DCGM documentation.
 
 .. TODO: include a high-level diagram of the dcgm-exporter stack in Kubernetes
 
@@ -26,18 +26,18 @@ in the documentation.
 Getting Started
 ***************
 
-`dcgm-exporter` can be run as a standalone container or deployed as a 
-daemonset on GPU nodes in a Kubernetes cluster. 
+`dcgm-exporter` can be run as a standalone container or deployed as a
+daemonset on GPU nodes in a Kubernetes cluster.
 
-Since `dcgm-exporter` starts `nv-hostengine` as an embedded process (for collecting metrics), 
-appropriate configuration options should be used if `dcgm-exporter` is run on systems (such as 
-NVIDIA DGX) that have DCGM (or rather `nv-hostengine`) running. 
+Since `dcgm-exporter` starts `nv-hostengine` as an embedded process (for collecting metrics),
+appropriate configuration options should be used if `dcgm-exporter` is run on systems (such as
+NVIDIA DGX) that have DCGM (or rather `nv-hostengine`) running.
 
 Running `dcgm-exporter`
 -----------------------
 
-The `dcgm-exporter` container can be run using a container engine such as Docker. In this mode, `dcgm-exporter` 
-starts `nv-hostengine` as an embedded process and starts publishing metrics: 
+The `dcgm-exporter` container can be run using a container engine such as Docker. In this mode, `dcgm-exporter`
+starts `nv-hostengine` as an embedded process and starts publishing metrics:
 
 .. image:: graphics/dcgm-exporter_embedded.png
    :width: 800
@@ -52,7 +52,7 @@ starts `nv-hostengine` as an embedded process and starts publishing metrics:
       nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
       -f /etc/dcgm-exporter/dcp-metrics-included.csv
 
-Retrieve the metrics: 
+Retrieve the metrics:
 
 .. code-block:: console
 
@@ -70,7 +70,7 @@ Retrieve the metrics:
    DCGM_FI_DEV_SM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 139
    DCGM_FI_DEV_MEM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 405
    DCGM_FI_DEV_MEMORY_TEMP{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 9223372036854775794
-   ...   
+   ...
 
 DCGM-Exporter Customization
 ---------------------------
@@ -126,26 +126,26 @@ Specify which devices to monitor. Default: all GPU instances in MIG mode, all GP
 Connecting to an existing DCGM agent
 ======================================
 
-In this scenario, system images include DCGM and have `nv-hostengine` running already. Examples include 
-the DGX systems that bundles drivers, DCGM, etc. in the system image. To avoid any compatibility issues, 
-it is recommended to have `dcgm-exporter` connect to the existing `nv-hostengine` daemon to gather/publish 
+In this scenario, system images include DCGM and have `nv-hostengine` running already. Examples include
+the DGX systems that bundles drivers, DCGM, etc. in the system image. To avoid any compatibility issues,
+it is recommended to have `dcgm-exporter` connect to the existing `nv-hostengine` daemon to gather/publish
 GPU telemetry data.
 
-.. warning:: 
+.. warning::
 
-   The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with 
-   `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect 
-   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange 
-   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library 
-   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is 
-   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by 
+   The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with
+   `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect
+   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange
+   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library
+   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is
+   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by
    comparing the version tags of the `dcgm-exporter` image and by running ``nv-hostengine --version`` on the host.
 
 In this scenario, we use the ``-r`` option to connect to an existing `nv-hostengine` process:
 
 .. code-block:: console
 
-   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 && 
+   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 &&
    docker run -d --rm \
       --gpus all \
       --net host \
@@ -214,20 +214,20 @@ DCGM container:
 Multi-Instance GPU (MIG) Support
 *********************************
 
-The new Multi-Instance GPU (MIG) feature allows the GPUs based on the NVIDIA Ampere architecture to be 
-securely partitioned into up to seven separate GPU Instances for CUDA applications, providing multiple users 
+The new Multi-Instance GPU (MIG) feature allows the GPUs based on the NVIDIA Ampere architecture to be
+securely partitioned into up to seven separate GPU Instances for CUDA applications, providing multiple users
 with separate GPU resources for optimal GPU utilization.
 
 For more information on MIG, refer to the MIG `User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_.
 
 .. note::
 
-   Support for MIG in `dcgm-exporter` was added starting with ``2.4.0-rc.2``. Replace the container image with this tag in the 
-   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``. If you are connecting to an existing DCGM on the host system, 
+   Support for MIG in `dcgm-exporter` was added starting with ``2.4.0-rc.2``. Replace the container image with this tag in the
+   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``. If you are connecting to an existing DCGM on the host system,
    ensure that you upgrade to at least 2.1.8 on the host system.
 
-`dcgm-exporter` publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances) 
-as can be seen in the output below: 
+`dcgm-exporter` publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances)
+as can be seen in the output below:
 
 .. code-block:: console
 
@@ -255,25 +255,25 @@ as can be seen in the output below:
    DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
 
 
-For more information on the profiling metrics and how to interpret the metrics, refer to the `profiling metrics <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-user-guide/feature-overview.html#profiling>`_ 
+For more information on the profiling metrics and how to interpret the metrics, refer to the `profiling metrics <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-user-guide/feature-overview.html#profiling>`_
 section of the DCGM user guide.
 
 #########################################
 Integrating GPU Telemetry into Kubernetes
 #########################################
 
-Understanding GPU usage provides important insights for IT administrators managing a data center. 
-Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation, 
-diagnose anomalies, and increase overall data center efficiency. As GPUs become more mainstream in 
-Kubernetes environments, users would like to get access to GPU metrics to monitor GPU resources, just 
-like they do today for CPUs. 
+Understanding GPU usage provides important insights for IT administrators managing a data center.
+Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
+diagnose anomalies, and increase overall data center efficiency. As GPUs become more mainstream in
+Kubernetes environments, users would like to get access to GPU metrics to monitor GPU resources, just
+like they do today for CPUs.
 
-The purpose of this document is to enumerate an end-to-end (e2e) workflow 
-for setting up and using `DCGM <https://developer.nvidia.com/dcgm>`_ within a Kubernetes environment. 
+The purpose of this document is to enumerate an end-to-end (e2e) workflow
+for setting up and using `DCGM <https://developer.nvidia.com/dcgm>`_ within a Kubernetes environment.
 
-For simplicity, the base environment being used in this guide is Ubuntu 18.04 LTS and 
-a native installation of the NVIDIA drivers on the GPU enabled nodes (i.e. neither 
-the `NVIDIA GPU Operator <https://github.com/NVIDIA/gpu-operator>`_ nor containerized drivers are used 
+For simplicity, the base environment being used in this guide is Ubuntu 18.04 LTS and
+a native installation of the NVIDIA drivers on the GPU enabled nodes (i.e. neither
+the `NVIDIA GPU Operator <https://github.com/NVIDIA/gpu-operator>`_ nor containerized drivers are used
 in this document).
 
 **************
@@ -284,7 +284,7 @@ This section provides a summary of the steps for installing the driver using the
 .. note::
 
    For complete instructions on setting up NVIDIA drivers, visit the quickstart guide at https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html.
-   The guide covers a number of pre-installation requirements and steps on supported Linux distributions for a successful install of the driver. 
+   The guide covers a number of pre-installation requirements and steps on supported Linux distributions for a successful install of the driver.
 
 
 Install the kernel headers and development packages for the currently running kernel:
@@ -308,7 +308,7 @@ Install the CUDA repository GPG key:
    $ sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub \
       && echo "deb http://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list
 
-Update the ``apt`` repository cache and install the driver using the ``cuda-drivers`` meta-package. Use the ``--no-install-recommends`` option for a lean driver install 
+Update the ``apt`` repository cache and install the driver using the ``cuda-drivers`` meta-package. Use the ``--no-install-recommends`` option for a lean driver install
 without any dependencies on X packages. This is particularly useful for headless installations on cloud instances:
 
 .. code-block:: console
@@ -332,7 +332,7 @@ Use the official Docker script to install the latest release of Docker:
 ****************************************************************
 Install NVIDIA Container Toolkit (previously ``nvidia-docker2``)
 ****************************************************************
-To run GPU accelerated containers in Docker, NVIDIA Container Toolkit for Docker is required. 
+To run GPU accelerated containers in Docker, NVIDIA Container Toolkit for Docker is required.
 
 Setup the ``stable`` repository and the GPG key:
 
@@ -349,8 +349,8 @@ Install the NVIDIA runtime packages (and their dependencies) after updating the 
    $ sudo apt-get update \
       && sudo apt-get install -y nvidia-docker2
 
-Since Kubernetes does not support the ``--gpus`` option with Docker yet, the ``nvidia`` runtime should be setup as the 
-default container runtime for Docker on the GPU node. This can be done by adding the ``default-runtime`` line into the Docker daemon 
+Since Kubernetes does not support the ``--gpus`` option with Docker yet, the ``nvidia`` runtime should be setup as the
+default container runtime for Docker on the GPU node. This can be done by adding the ``default-runtime`` line into the Docker daemon
 config file, which is usually located on the system at ``/etc/docker/daemon.json``:
 
 .. code-block:: console
@@ -412,8 +412,8 @@ Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes clu
 ****************************
 Install NVIDIA Device Plugin
 ****************************
-To use GPUs in Kubernetes, the `NVIDIA Device Plugin <https://github.com/NVIDIA/k8s-device-plugin/>`_ is required. 
-The NVIDIA Device Plugin is a daemonset that automatically enumerates the number of GPUs on each node of the cluster 
+To use GPUs in Kubernetes, the `NVIDIA Device Plugin <https://github.com/NVIDIA/k8s-device-plugin/>`_ is required.
+The NVIDIA Device Plugin is a daemonset that automatically enumerates the number of GPUs on each node of the cluster
 and allows pods to be run on GPUs.
 
 The preferred method to deploy the device plugin is as a daemonset using ``helm``. First, install Helm:
@@ -437,7 +437,7 @@ Deploy the device plugin:
 
    $ helm install --generate-name nvdp/nvidia-device-plugin
 
-For more user configurable options while deploying the daemonset, refer to the `documentation <https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm>`_ 
+For more user configurable options while deploying the daemonset, refer to the `documentation <https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm>`_
 
 At this point, all the pods should be deployed:
 
@@ -485,18 +485,18 @@ Save this podspec as ``gpu-pod.yaml``. Now, deploy the application:
 
    $ kubectl apply -f gpu-pod.yaml
 
-Check the logs to ensure the app completed successfully: 
+Check the logs to ensure the app completed successfully:
 
 .. code-block:: console
 
    $ kubectl get pods gpu-operator-test
 
 .. code-block:: console
-   
+
    NAME                READY   STATUS      RESTARTS   AGE
    gpu-operator-test   0/1     Completed   0          9d
 
-And check the logs of the ``gpu-operator-test`` pod: 
+And check the logs of the ``gpu-operator-test`` pod:
 
 .. code-block:: console
 
@@ -514,12 +514,12 @@ And check the logs of the ``gpu-operator-test`` pod:
 *************
 GPU Telemetry
 *************
-Monitoring stacks usually consist of a collector, a time-series database to store metrics and a visualization layer. 
-A popular open-source stack is `Prometheus <https://prometheus.io/>`_ used along with `Grafana <https://grafana.com/>`_ as 
-the visualization tool to create rich dashboards. Prometheus also includes an `Alertmanager <https://github.com/prometheus/alertmanager>`_, 
-to create and manage alerts. Prometheus is deployed along with `kube-state-metrics <https://github.com/kubernetes/kube-state-metrics>`_ and 
-`node_exporter <https://github.com/prometheus/node_exporter>`_ to expose cluster-level metrics for Kubernetes API objects and node-level 
-metrics such as CPU utilization. 
+Monitoring stacks usually consist of a collector, a time-series database to store metrics and a visualization layer.
+A popular open-source stack is `Prometheus <https://prometheus.io/>`_ used along with `Grafana <https://grafana.com/>`_ as
+the visualization tool to create rich dashboards. Prometheus also includes an `Alertmanager <https://github.com/prometheus/alertmanager>`_,
+to create and manage alerts. Prometheus is deployed along with `kube-state-metrics <https://github.com/kubernetes/kube-state-metrics>`_ and
+`node_exporter <https://github.com/prometheus/node_exporter>`_ to expose cluster-level metrics for Kubernetes API objects and node-level
+metrics such as CPU utilization.
 
 An architecture of Prometheus is shown in the figure below:
 
@@ -527,9 +527,9 @@ An architecture of Prometheus is shown in the figure below:
    :width: 800
 
 
-To gather GPU telemetry in Kubernetes, its recommended to use ``dcgm-exporter``. ``dcgm-exporter``, based on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes 
-GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of 
-``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be 
+To gather GPU telemetry in Kubernetes, its recommended to use ``dcgm-exporter``. ``dcgm-exporter``, based on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes
+GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of
+``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
 scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
 
 The rest of this section walks through setting up Prometheus, ``dcgm-exporter``, and grafana.
@@ -658,11 +658,11 @@ Now, you can observe the ``dcgm-exporter`` pod:
 You can view the services setup as part of the operator and ``dcgm-exporter``:
 
 .. code-block:: console
-   
+
    $ kubectl get svc -A
 
 .. code-block:: console
-   
+
    NAMESPACE     NAME                                                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                        AGE
    default       dcgm-exporter-2-1603213075                                  ClusterIP   10.104.40.255   <none>        9400/TCP                       7m44s
    default       kubernetes                                                  ClusterIP   10.96.0.1       <none>        443/TCP                        49m
@@ -682,27 +682,27 @@ You can view the services setup as part of the operator and ``dcgm-exporter``:
    prometheus    kube-prometheus-stack-1603211794-prometheus-node-exporter   ClusterIP   10.108.225.36   <none>        9100/TCP                       28m
    prometheus    prometheus-operated                                         ClusterIP   None            <none>        9090/TCP                       28m
 
-You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``. 
-It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL`` 
+You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``.
+It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL``
 in the event bar to determine if the GPU metrics are visible:
 
 .. image:: graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
    :width: 800
 
-Using Grafana 
+Using Grafana
 -------------
-You can also launch the Grafana tools for visualizing the GPU metrics. 
+You can also launch the Grafana tools for visualizing the GPU metrics.
 
-There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page. 
+There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page.
 Either option can be chosen based on preference.
 
 **Patching the Grafana Service**
 
-By default, Grafana uses a ``ClusterIP`` to expose the ports on which the service is accessible. This can be changed to a ``NodePort`` instead, so the page is accessible 
-from the browser, similar to the Prometheus dashboard. 
+By default, Grafana uses a ``ClusterIP`` to expose the ports on which the service is accessible. This can be changed to a ``NodePort`` instead, so the page is accessible
+from the browser, similar to the Prometheus dashboard.
 
-You can use `kubectl patch <https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>`_ to update the service API 
-object to expose a ``NodePort`` instead. 
+You can use `kubectl patch <https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>`_ to update the service API
+object to expose a ``NodePort`` instead.
 
 First, modify the spec to change the service type:
 
@@ -712,7 +712,7 @@ First, modify the spec to change the service type:
    spec:
      type: NodePort
      nodePort: 32322
-   EOF   
+   EOF
 
 And now use ``kubectl patch``:
 
@@ -738,7 +738,7 @@ You can verify that the service is now exposed at an externally accessible port:
    <snip>
    prometheus    kube-prometheus-stack-1603211794-grafana                    NodePort    10.109.219.60   <none>        80:30759/TCP                   32m
 
-Open your browser to ``http://<machine-ip-address>:30759`` and view the Grafana login page. Access Grafana home using the ``admin`` username. 
+Open your browser to ``http://<machine-ip-address>:30759`` and view the Grafana login page. Access Grafana home using the ``admin`` username.
 The password credentials for the login are available in the ``prometheus.values`` file we edited in the earlier section of the doc:
 
 .. code-block:: console
@@ -747,39 +747,39 @@ The password credentials for the login are available in the ``prometheus.values`
    ##
    defaultDashboardsEnabled: true
 
-   adminPassword: prom-operator 
+   adminPassword: prom-operator
 
 .. image:: graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
    :width: 800
 
 **Port Forwarding**
 
-Another method to access the Grafana page would be to use port forwarding. 
+Another method to access the Grafana page would be to use port forwarding.
 
-First, it can be observed that the Grafana service is available at port 80. We will need to port-forward the service from an abitrary port - in this example, 
-we will forward from port 32322 on our local machine to port 80 on the service (which in turn will forward to port 3000 that the Grafana pod is listening at, as 
-shown below): 
+First, it can be observed that the Grafana service is available at port 80. We will need to port-forward the service from an abitrary port - in this example,
+we will forward from port 32322 on our local machine to port 80 on the service (which in turn will forward to port 3000 that the Grafana pod is listening at, as
+shown below):
 
 .. code-block:: console
 
    $ kubectl port-forward svc/kube-prometheus-stack-1603211794-grafana -n prometheus 32322:80
 
 .. code-block:: console
-   
+
    Forwarding from 127.0.0.1:32322 -> 3000
    Forwarding from [::1]:32322 -> 3000
    Handling connection for 32322
 
-If your cluster is setup on a cloud instance e.g. AWS EC2, you may have to setup an SSH tunnel between your local workstation and the instance using 
-port forwarding to view the Grafana tool in your local workstation's browser. For example, on Windows you can use PuTTY to open an SSH tunnel and specify the 
+If your cluster is setup on a cloud instance e.g. AWS EC2, you may have to setup an SSH tunnel between your local workstation and the instance using
+port forwarding to view the Grafana tool in your local workstation's browser. For example, on Windows you can use PuTTY to open an SSH tunnel and specify the
 source port as 32322 and destination as ``localhost:32322`` under the ``Tunnels`` sub-menu in the SSH menu.
 
 Open your browser and point to ``http://localhost:32322/`` to view the Grafana login page using the same credentials in the previous section.
 
 
-DCGM Dashboard in Grafana 
+DCGM Dashboard in Grafana
 -------------------------
-To add a dashboard for DCGM, you can use a standard dashboard that NVIDIA has made available, which can also be customized. 
+To add a dashboard for DCGM, you can use a standard dashboard that NVIDIA has made available, which can also be customized.
 
 .. image:: graphics/dcgm-e2e/003-dcgm-e2e-grafana-home-screenshot.png
    :width: 800
@@ -793,7 +793,7 @@ To access the dashboard, navigate from the Grafana home page to Dashboards -> Ma
    :width: 800
 
 Import the NVIDIA dashboard from ``https://grafana.com/grafana/dashboards/12239``
-and choose *Prometheus* as the data source in the drop down: 
+and choose *Prometheus* as the data source in the drop down:
 
 .. image:: graphics/dcgm-e2e/006-dcgm-e2e-grafana-import-screenshot.png
    :width: 800
@@ -810,9 +810,9 @@ The GPU dashboard will now be available on Grafana for visualizing metrics:
 
 Viewing Metrics for Running Applications
 ----------------------------------------
-In this section, let's run a more complicated application and view the GPU metrics on the NVIDIA dashboard. 
+In this section, let's run a more complicated application and view the GPU metrics on the NVIDIA dashboard.
 
-We can use the standard *DeepStream Intelligent Video Analytics* `Demo <https://ngc.nvidia.com/catalog/helm-charts/nvidia:video-analytics-demo>`_ available on the NGC registry. 
+We can use the standard *DeepStream Intelligent Video Analytics* `Demo <https://ngc.nvidia.com/catalog/helm-charts/nvidia:video-analytics-demo>`_ available on the NGC registry.
 For our example, let's use the Helm chart to use the WebUI:
 
 .. code-block:: console
@@ -839,10 +839,10 @@ For our example, let's use the Helm chart to use the WebUI:
    echo http://$NODE_IP:$ANT_NODE_PORT/WebRTCApp/play.html?name=videoanalytics
    Disclaimer:
    Note: Due to the output from DeepStream being real-time via RTSP, you may experience occasional hiccups in the video stream depending on network conditions.
-   
-The demo can be viewed in the browser by pointing to the address following the instructions above. 
 
-The GPU metrics are also visible either in the Grafana dashboard or the Prometheus dashboard as can be seen in the following screenshots showing 
+The demo can be viewed in the browser by pointing to the address following the instructions above.
+
+The GPU metrics are also visible either in the Grafana dashboard or the Prometheus dashboard as can be seen in the following screenshots showing
 GPU utilization, memory allocated as the application is running on the GPU:
 
 .. image:: graphics/dcgm-e2e/010-dcgm-e2e-deepstream-screenshot.png
