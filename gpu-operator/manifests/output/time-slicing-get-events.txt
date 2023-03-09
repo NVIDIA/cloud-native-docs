@@ -1,0 +1,25 @@
+LAST SEEN   TYPE      REASON             OBJECT                                     MESSAGE
+33s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container toolkit-validation
+33s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container toolkit-validation
+33s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container toolkit-validation
+33s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container toolkit-validation
+33s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image "nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1" already present on machine
+33s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image "nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1" already present on machine
+32s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager-init
+32s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image "nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8" already present on machine
+32s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image "nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8" already present on machine
+32s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager-init
+32s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager-init
+32s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager-init
+31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager
+31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container gpu-feature-discovery
+31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container gpu-feature-discovery
+31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image "nvcr.io/nvidia/gpu-feature-discovery:v0.7.0-ubi8" already present on machine
+31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager
+31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager
+31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image "nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8" already present on machine
+31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container nvidia-device-plugin
+31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container nvidia-device-plugin
+31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image "nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8" already present on machine
+31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image "nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8" already present on machine
+31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager
