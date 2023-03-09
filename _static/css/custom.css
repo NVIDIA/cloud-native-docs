@@ -9,3 +9,13 @@
 td > div.line-block, th > div.line-block {
   margin-bottom: 0px !important;
 }
+
+table.docutils td > p {
+  margin-top: 16px;
+  white-space: normal;
+}
+
+table.docutils td > p:nth-of-type(1) {
+  margin-top: 0px;
+  white-space: normal;
+}

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: time-slicing-config-fine
+data:
+  a100-40gb: |-
+    version: v1
+    flags:
+      migStrategy: mixed
+    sharing:
+      timeSlicing:
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 8
+        - name: nvidia.com/mig-1g.5gb
+          replicas: 2
+        - name: nvidia.com/mig-2g.10gb
+          replicas: 2
+        - name: nvidia.com/mig-3g.20gb
+          replicas: 3
+        - name: nvidia.com/mig-7g.40gb
+          replicas: 7
+  tesla-t4: |-
+    version: v1
+    flags:
+      migStrategy: none
+    sharing:
+      timeSlicing:
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 4
