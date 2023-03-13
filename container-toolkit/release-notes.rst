@@ -10,6 +10,37 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.12.1
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.12.1`` and is a bugfix release.
+
+Packaging Changes
+------------------
+
+* Fix a bug in the uninstall scriplet on RPM-based systems that would issue an error due to a missing ``nvidia-container-runtime-hook`` symlink.
+* Remove specific targets for ``fedora35``. The ``centos8`` packages should be used instead.
+
+Fixes and Features
+-------------------
+
+* Fix a bug when due to missing ``/dev/dri`` files when ``NVIDIA_DRIVER_CAPABILITIES`` includes ``graphics`` or ``display``
+* Add GSP firmware files for newer drivers for generated CDI specifications.
+* Fix possible blank ``nvidia-ctk`` path in generated CDI specifications
+* Fix missing NVML symbols when running ``nvidia-ctk`` on some platforms
+
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Include all GSP firmware files for newer drivers
+
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+* Update CUDA base images to ``12.1.0``
+
+
 NVIDIA Container Toolkit 1.12.0
 ====================================
 
