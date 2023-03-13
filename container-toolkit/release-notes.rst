@@ -10,6 +10,38 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.12.1
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.12.1`` is primarily a bugfix release.
+
+Packaging Changes
+------------------
+
+* Fixed a bug in the uninstall scriplet on RPM-based systems that would issue an error due to a missing ``nvidia-container-runtime-hook`` symlink. This did not prevent the uninstallation of the package.
+* Removed ``fedora35`` as a packaging target. Use the ``centos8`` packages instead.
+
+Fixes and Features
+-------------------
+
+* Fixed a bug when running containers using a generated CDI specification or when ``NVIDIA_DRIVER_CAPABILITIES`` includes ``graphics`` or ``display`` or is set to ``all``. Now, containers no longer fail with an error message indicating a missing ``/dev/dri`` or ``/dev/nvidia-caps`` path.
+* Added support for detecting and injecting multiple GSP firmware files as required by the ``525.x`` versions of the NVIDIA GPU drivers.
+* Fixed an issue that caused the ``nvidia-ctk`` path to be blank in generated CDI specifications.
+* Fixed missing NVML symbols for ``nvidia-ctk`` on some platforms.  For more information, see `issue #49 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/49>`_.
+
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Added support for detecting and injecting multiple GSP firmware files as required by the ``525.x`` versions of the NVIDIA GPU drivers.
+
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+
+* Updated CUDA base images to ``12.1.0``.
+
+
 NVIDIA Container Toolkit 1.12.0
 ====================================
 
@@ -65,7 +97,21 @@ specific to container-toolkit container images
 ````````````````````````````````````````````````
 * Update CUDA base images to ``12.0.1``
 
+Known Issues
+--------------
 
+* When running a container using CDI or if ``NVIDIA_DRIVER_CAPABILITIES`` includes ``graphics`` or ``display``, and error may be raised citing missing
+ ``/dev/dri`` and / or ``/dev/nvidia-caps`` paths in container if the selected device does not have such nodes associated with it.
+
+
+.. code-block:: console
+
+    $ docker run -it --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=nvidia.com/gpu=0 nvidia/cuda:11.0.3-base-ubuntu20.04 nvidia-smi -L
+        docker: Error response from daemon: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #1: error running hook: exit status 1, stdout: , stderr: chmod: cannot access '/var/lib/docker/overlay2/9069fafcb6e39ccf704fa47b52ca92a1d48ca5ccfedd381f407456fb6cd3f9f0/merged/dev/dri': No such file or directory: unknown.
+        ERRO[0000] error waiting for container: context canceled
+
+
+This issue has been addressed in the ``v1.12.1`` release.
 
 NVIDIA Container Toolkit 1.11.0
 ====================================
