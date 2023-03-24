@@ -4,6 +4,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
   BUILDER_IMAGE: "${CI_REGISTRY_IMAGE}/cnt-sphinxdoc-${CI_PIPELINE_ID}"
+  PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:1.0.0"
 
 # Enable pipelines on merge requests, tags, and branches.
 # Avoid duplicate pipelines when pushing to a branch associated with an open MR.
@@ -89,14 +90,12 @@ stage_docs:
       - $INTERNAL
 
 publish_docs:
+  image:
+    name: "${PUBLISHER_IMAGE}"
+    entrypoint: [ "/bin/bash" ]
   stage: publish_docs
-  before_script:
-    - apk add --update curl && rm -rf /var/cache/apk/*
   script:
   - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
-  - /opt/build/html/deploy_web.sh --copy-flush ${CI_PIPELINE_ID}
-  only:
-    refs:
-      - master
-    variables:
-      - $INTERNAL
+  - /opt/build/html/deploy_s3.sh --copy-flush ${CI_PIPELINE_ID}
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && ( $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" ) && $INTERNAL != null
