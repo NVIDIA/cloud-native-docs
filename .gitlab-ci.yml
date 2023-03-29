@@ -92,7 +92,9 @@ stage_docs:
 publish_docs:
   image:
     name: "${PUBLISHER_IMAGE}"
-    entrypoint: [ "/bin/bash" ]
+    entrypoint: [ "" ]
+  services: []
+  before_script: []
   stage: publish_docs
   script:
   - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
