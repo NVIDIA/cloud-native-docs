@@ -1,3 +1,19 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
 .. Date: May 11 2021
 .. Author: pramarao
 
@@ -9,31 +25,38 @@
 GPU Operator with MIG
 #######################
 
-Multi-Instance GPU (MIG) allows GPUs based on the NVIDIA Ampere architecture 
-(such as NVIDIA A100) to be securely partitioned into separate GPU Instances for 
-CUDA applications. Refer to the 
-`MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_ 
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
+
+************************
+About Multi-Instance GPU
+************************
+
+Multi-Instance GPU (MIG) allows GPUs based on the NVIDIA Ampere architecture
+(such as NVIDIA A100) to be securely partitioned into separate GPU Instances for
+CUDA applications. Refer to the
+`MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_
 for more details on MIG.
 
-This documents provides an overview of how to use the GPU Operator with nodes that support 
+This documents provides an overview of how to use the GPU Operator with nodes that support
 MIG.
 
 
-*****************
-Getting Started
-*****************
+********************************
+Enabling MIG During Installation
+********************************
 
-Initial Setup
----------------
-
-In this example workflow, we start with a MIG strategy of ``single``. The ``mixed`` strategy can also be 
+In this example workflow, we start with a MIG strategy of ``single``. The ``mixed`` strategy can also be
 specified and used in a similar manner.
 
-.. note:: 
+.. note::
 
-    In a CSP IaaS environment such as Google Cloud, ensure that the ``mig-manager`` variable 
-    ``WITH_REBOOT`` is set to "true". 
-    Refer to the `note <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#enable-mig-mode>`_ 
+    In a CSP IaaS environment such as Google Cloud, ensure that the ``mig-manager`` variable
+    ``WITH_REBOOT`` is set to "true".
+    Refer to the `note <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#enable-mig-mode>`_
     in the MIG User Guide for more information on the constraints with enabling MIG mode.
 
 We can use the following option to install the GPU Operator:
@@ -110,23 +133,25 @@ You can also check the labels applied to the node:
 
 .. warning::
 
-    The MIG Manager currently requires that all user workloads on the GPUs being configured be stopped. 
-    In some cases, the node may need to be rebooted (esp. in CSP IaaS), so the node may need to be cordoned 
+    The MIG Manager currently requires that all user workloads on the GPUs being configured be stopped.
+    In some cases, the node may need to be rebooted (esp. in CSP IaaS), so the node may need to be cordoned
     before changing the MIG mode or the MIG geometry on the GPUs.
 
     This requirement may be relaxed in future releases.
 
-Configuring MIG Profiles
----------------------------
 
-Now, let's configure the GPU into a supported by setting the ``mig.config`` label on the 
+************************
+Configuring MIG Profiles
+************************
+
+Now, let's configure the GPU into a supported by setting the ``mig.config`` label on the
 GPU node.
 
 .. note::
 
     The ``mig-manager`` uses a `ConfigMap` called ``mig-parted-config`` in the GPU Operator
-    namespace in the daemonset to include supported MIG profiles. Refer to the `ConfigMap` to use when 
-    changing the label below or modify the `ConfigMap` appropriately for your use-case. 
+    namespace in the daemonset to include supported MIG profiles. Refer to the `ConfigMap` to use when
+    changing the label below or modify the `ConfigMap` appropriately for your use-case.
 
 In this example, we use the ``1g.5gb`` profile:
 
@@ -134,14 +159,14 @@ In this example, we use the ``1g.5gb`` profile:
 
     $ kubectl label nodes $NODE nvidia.com/mig.config=all-1g.5gb
 
-The MIG manager will proceed to apply a ``mig.config.state`` label to the GPU and then terminate all 
+The MIG manager will proceed to apply a ``mig.config.state`` label to the GPU and then terminate all
 the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry:
 
 .. code-block:: console
 
     "nvidia.com/mig.config": "all-1g.5gb",
     "nvidia.com/mig.config.state": "pending"
-  
+
 .. code-block:: console
 
     kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running       1          45m
@@ -154,12 +179,12 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
     As described above, if the ``WITH_REBOOT`` option is set then the MIG manager will proceed to reboot the node:
 
     .. code-block:: console
-    
+
         "nvidia.com/mig.config": "all-1g.5gb",
         "nvidia.com/mig.config.state": "rebooting"
-  
-Once the MIG manager has completed applying the configuration changes (including a node reboot if required), the node 
-labels should appear as shown below: 
+
+Once the MIG manager has completed applying the configuration changes (including a node reboot if required), the node
+labels should appear as shown below:
 
 .. code-block:: console
 
@@ -196,7 +221,7 @@ labels should appear as shown below:
     "nvidia.com/mig.config.state": "success",
     "nvidia.com/mig.strategy": "single"
 
-The labels ``gpu.count`` and ``gpu.slices`` indicate that the devices are configured. We can also run ``nvidia-smi`` 
+The labels ``gpu.count`` and ``gpu.slices`` indicate that the devices are configured. We can also run ``nvidia-smi``
 in the driver container to verify that the GPU has been configured:
 
 .. code-block:: console
@@ -210,7 +235,7 @@ in the driver container to verify that the GPU has been configured:
       MIG 1g.5gb Device 4: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/12/0)
       MIG 1g.5gb Device 5: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/13/0)
       MIG 1g.5gb Device 6: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/14/0)
-    
+
 Finally, verify that the GPU Operator pods are in running state:
 
 
@@ -230,10 +255,12 @@ Finally, verify that the GPU Operator pods are in running state:
     nvidia-mig-manager-svv7b                                      1/1     Running     1          35m
     nvidia-operator-validator-w44q8                               1/1     Running     0          97s
 
-Reconfiguring MIG Profiles
----------------------------
 
-The MIG manager supports dynamic reconfiguration of the MIG geometry. In this example, let's reconfigure the 
+**************************
+Reconfiguring MIG Profiles
+**************************
+
+The MIG manager supports dynamic reconfiguration of the MIG geometry. In this example, let's reconfigure the
 GPU into a ``3g.20gb`` profile:
 
 .. code-block:: console
@@ -279,9 +306,26 @@ And the node labels have been updated appropriately:
     "nvidia.com/gpu.slices.gi": "3",
     "nvidia.com/mig.config": "all-3g.20gb",
 
-We can now proceed to run some sample workloads.
+
+*******************************************
+Verification: Running Sample CUDA Workloads
+*******************************************
 
 .. include:: /mig/mig-examples.rst
+   :start-line: 11
+
+
+*************
+Disabling MIG
+*************
+
+You can disable MIG on a node by setting the ``nvidia.con/mig.config`` label
+to ``all-disabled``:
+
+.. code-block:: console
+
+   $ kubectl label nodes $NODE nvidia.com/mig.config=all-disabled --overwrite
+
 
 .. _mig-with-preinstalled-drivers:
 
@@ -364,21 +408,21 @@ custom ``ConfigMap`` to be used by the MIG Manager by performing the following s
 Architecture
 *****************
 
-The MIG manager is designed as a controller within Kubernetes. It watches for changes to the 
-``nvidia.com/mig.config`` label on the node and then applies the user requested MIG configuration 
-When the label changes, the MIG Manager first stops all GPU pods (including the `device plugin`, `gfd` 
+The MIG manager is designed as a controller within Kubernetes. It watches for changes to the
+``nvidia.com/mig.config`` label on the node and then applies the user requested MIG configuration
+When the label changes, the MIG Manager first stops all GPU pods (including the `device plugin`, `gfd`
 and `dcgm-exporter`). It then stops all host GPU clients listed in the ``clients.yaml`` ConfigMap
 if drivers are preinstalled. Finally, it applies the MIG reconfiguration and restarts the GPU pods (and possibly host GPU clients).
 The MIG reconfiguration may also involve a node reboot if required for enabling MIG mode.
 
-The available MIG profiles are specified in a ``ConfigMap`` to the MIG manager daemonset. The user may 
-choose one of these profiles to apply to the ``mig.config`` label to trigger a reconfiguration of the 
+The available MIG profiles are specified in a ``ConfigMap`` to the MIG manager daemonset. The user may
+choose one of these profiles to apply to the ``mig.config`` label to trigger a reconfiguration of the
 MIG geometry.
 
-The MIG manager relies on the `mig-parted <https://github.com/NVIDIA/mig-parted>`_ tool to apply the configuration 
-changes to the GPU, including enabling MIG mode (with a node reboot as required by some scenarios). 
+The MIG manager relies on the `mig-parted <https://github.com/NVIDIA/mig-parted>`_ tool to apply the configuration
+changes to the GPU, including enabling MIG mode (with a node reboot as required by some scenarios).
 
-.. blockdiag:: 
+.. blockdiag::
 
    blockdiag admin {
       group mm_group {
@@ -389,7 +433,7 @@ changes to the GPU, including enabling MIG mode (with a node reboot as required 
       }
       A [label = "controller", group = mm_group];
       B [label = "mig-parted", group = mm_group];
-      
+
       A <-> B;
       group reconfig {
         label = "Reconfiguration";
