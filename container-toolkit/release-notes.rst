@@ -10,6 +10,76 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.13.0
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.13.0`` adds the following major features:
+
+* Improved support for the Container Device Interface (CDI) specifications for GPU devices when using the NVIDIA Container Toolkit in the context of the GPU Operator.
+* Added the generation CDI specifications on WSL2-based systems using the ``nvidia-ctk cdi generate`` command. This is now the recommended mechanism for using GPUs on WSL2 and ``podman`` is the recommended container engine.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.13.0``
+* ``libnvidia-container-tools 1.13.0``
+* ``libnvidia-container1 1.13.0``
+
+The following ``container-toolkit`` containers are included:
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.0-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.0-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.0-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.0``)
+
+The following packages have also been updated to depend on ``nvidia-container-toolkit`` of at least ``1.13.0``:
+
+* ``nvidia-container-runtime 3.13.0``
+* ``nvidia-docker2 2.13.0``
+
+.. note::
+
+   This will be the last release that updates the ``nvidia-container-runtime`` and ``nvidia-docker2`` packages. All required functionality is now included in the ``nvidia-container-toolkit`` package. This includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.
+
+Packaging Changes
+------------------
+
+* Fixed a bug in the uninstall scriplet on RPM-based systems that would issue an error due to a missing ``nvidia-container-runtime-hook`` symlink. This did not prevent the uninstallation of the package.
+* Removed ``fedora35`` as a packaging target. Use the ``centos8`` packages instead.
+
+Fixes and Features
+-------------------
+
+* Fixed a bug when running containers using a generated CDI specification or when ``NVIDIA_DRIVER_CAPABILITIES`` includes ``graphics`` or ``display`` or is set to ``all``. Now, containers no longer fail with an error message indicating a missing ``/dev/dri`` or ``/dev/nvidia-caps`` path.
+* Added support for detecting and injecting multiple GSP firmware files as required by the ``525.x`` versions of the NVIDIA GPU drivers.
+* Fixed an issue that caused the ``nvidia-ctk`` path to be blank in generated CDI specifications.
+* Fixed missing NVML symbols for ``nvidia-ctk`` on some platforms.  For more information, see `issue #49 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/49>`_.
+
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Added support for detecting and injecting multiple GSP firmware files as required by the ``525.x`` versions of the NVIDIA GPU drivers.
+* Fixed a segmentation fault when RPC initialization fails.
+* Changed the centos variants of the NVIDIA Container Library to use a static libtirpc v1.3.2 to prevent errors when using RPC internally.
+* Removed ``fedora35`` as a packaging target. Use the ``centos8`` packages instead.
+
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+
+* Added ``--cdi-enabled`` flag to toolkit config. When this is set, a CDI specification for use in management containers will be generated.
+* Fixed bug where ``nvidia-ctk`` was not installed onto the host when installing the rest of the toolkit components.
+* Updated the NVIDIA Container Toolkit config to use the installed ``nvidia-ctk`` path.
+* Updated the installation of the experimental runtime to use ``nvidia-container-runtime.experimental`` as an executable name instead of ``nvidia-container-runtime-experimental``. This aligns with the executables added for the mode-specific runtimes.
+* Added the installation and configuration of mode-specific runtimes for ``cdi`` and ``legacy`` modes.
+* Updated the CUDA base images to ``12.1.0``.
+* Added an ``nvidia-container-runtime.modes.cdi.annotation-prefixes`` config option that allows the CDI annotation prefixes that are read to be overridden. This setting is used to update the ``containerd`` config to allow these annotations to be visible by the low-level runtime.
+* Added tooling to create device nodes when generating CDI specification for management containers. This ensures that the CDI specification for management containers has access to the required control devices.
+* Added an ``nvidia-container-runtime.runtimes`` config option to set the low-level runtime for the NVIDIA Container Runtime. This can be used on Crio-based systems where ``crun`` is the configured default low-level runtime.
+
+Known Issues
+--------------
+
+
 NVIDIA Container Toolkit 1.12.1
 ====================================
 
