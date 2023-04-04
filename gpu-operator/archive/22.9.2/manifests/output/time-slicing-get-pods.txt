@@ -1,0 +1,6 @@
+NAME                                         READY   STATUS    RESTARTS   AGE
+time-slicing-verification-7cdc7f87c5-lkd9d   1/1     Running   0          23s
+time-slicing-verification-7cdc7f87c5-rrzq7   1/1     Running   0          23s
+time-slicing-verification-7cdc7f87c5-s8qwk   1/1     Running   0          23s
+time-slicing-verification-7cdc7f87c5-xhmb7   1/1     Running   0          23s
+time-slicing-verification-7cdc7f87c5-zsncp   1/1     Running   0          23s
