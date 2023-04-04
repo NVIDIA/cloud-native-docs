@@ -1,3 +1,19 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
 .. Date: July 30 2020
 .. Author: pramarao
 
@@ -9,13 +25,184 @@ Release Notes
 
 This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
 
-See the :ref:`Component Matrix<operator-component-matrix>` for a list of components included in each release.
+See the :ref:`GPU Operator Component Matrix` for a list of components included in each release.
 
 .. note::
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ----
+
+23.3.0
+======
+
+
+New Features
+------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 525.105.17.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for GPUDirect Storage with Red Hat OpenShift Container Platform 4.11.
+  Refer to :ref:`Support for GPUDirect Storage` on the platform support page.
+
+* Added support for Canonical MicroK8s v1.26.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
+
+* Added support for running the NVIDIA GPU Operator in Amazon EKS and Google GKE.
+  You must configure the cluster with custom nodes that run a supported operating
+  system, such as Ubuntu 22.04.
+
+* Added support for the Container Device Interface (CDI) that is implemented by the
+  NVIDIA Container Toolkit v1.13.0.
+  Refer to :ref:`gpu-operator-helm-chart-options` for information about the ``cdi.enable`` and
+  ``cdi.default`` options to enable CDI during installation
+  or :doc:`cdi` for post-installation configuration information.
+
+* [Technology Preview] Added support for precompiled driver containers for select operating systems.
+  This feature removes the dynamic dependencies to build the driver during installation in the
+  cluster such as downloading kernel header packages and GCC tooling.
+  Sites with isolated networks that cannot access the internet can benefit.
+  Sites with machines that are resource constrained can also benefit by removing the computational demand
+  to compile the driver.
+  For more information, see :doc:`precompiled-drivers`.
+
+
+Improvements
+------------
+
+* The upgrade process for the GPU driver is enhanced.
+  This release introduces a ``maxUnavailable`` field that you can use to specify
+  the number of nodes that can be unavailable during an upgrade.
+  The value can be an integer or a string that specifies a percentage.
+  If you specify a percentage, the number of nodes is calculated by rounding up.
+  The default value is ``25%``.
+
+  If you specify a value for ``maxUnavailable`` and also specify ``maxParallelUpgrades``,
+  the ``maxUnavailable`` value applies an additional constraint on the value of
+  ``maxParallelUpgrades`` to ensure that the number of parallel upgrades does not
+  cause more than the intended number of nodes to become unavailable during the upgrade.
+  For example, if you specify ``maxUnavailable=100%`` and ``maxParallelUpgrades=1``,
+  one node at a time is upgraded.
+
+* In previous releases, when you upgrade the GPU driver, the Operator validator
+  pod could fail to complete all the validation checks.
+  As a result, the node could remain in the validation required state indefinitely
+  and prevent performing the driver upgrade on the other nodes in the cluster.
+  This release adds a ``600`` second timeout for the validation process.
+  If the validation does not complete successfully within the duration, the node is
+  labelled ``upgrade-failed`` and the upgrade process proceeds on other nodes.
+
+* The Multi-Instance GPU (MIG) manager is enhanced to support setting an initial
+  value for the ``nvidia.com/mig.config`` node annotation.
+  On nodes with MIG-capable GPUs that do not already have the annotation set, the
+  value is set to ``all-disabled`` and the MIG manager does not create MIG devices.
+  The value is overwritten when you label the node with a MIG profile.
+  For configuration information, see :doc:`gpu-operator-mig`.
+
+
+Fixed issues
+------------
+
+* Fixed an issue that prevented building the GPU driver container when a :ref:`Local Package Repository`
+  is used.
+  Previously, if you needed to provide CA certificates, the certificates were not installed correctly.
+  The certificates are now installed in the correct directories.
+  Refer to GitHub `issue #299 <https://github.com/NVIDIA/gpu-operator/issues/299>`_ for more details.
+
+* Fixed an issue that created audit log records related to deprecated API requests for pod security policy.
+  on Red Hat OpenShift Container Platform.
+  Refer to GitHub `issue #451 <https://github.com/NVIDIA/gpu-operator/issues/451>`_
+  and `issue #490 <https://github.com/NVIDIA/gpu-operator/issues/490>`_ for more details.
+
+* Fixed an issue that caused the Operator to attempt to add a pod security policy on pre-release versions
+  of Kubernetes v1.25.
+  Refer to GitHub `issue #484 <https://github.com/NVIDIA/gpu-operator/issues/484>`_ for more details.
+
+* Fixed a race condition that is related to preinstalled GPU drivers, validator pods, and the device plugin pods.
+  The race condition can cause the device plugin pods to set the wrong path to the GPU driver.
+  Refer to GitHub `issue #508 <https://github.com/NVIDIA/gpu-operator/issues/508>`_ for more details.
+
+* Fixed an issue with the driver manager that prevented the manager from accurately detecting whether a
+  node has preinstalled GPU drivers.
+  This issue can appear if preinstalled GPU drivers were initially installed and later removed.
+  The resolution is for the manager to check that the ``nvidia-smi`` file exists on the host
+  and to check the output from executing the file.
+
+* Fixed an issue that prevented adding custom annotations to daemon sets that the Operator starts.
+  Refer to GitHub `issue #499 <https://github.com/NVIDIA/gpu-operator/issues/499>`_ for more details.
+
+* Fixed an issue that is related to not starting the GPU Feature Discovery (GFD) pods when the DCGM Exporter
+  service monitor is enabled, but a service monitor custom resource definition does not exist.
+  Previously, there was no log record to describe why the GFD pods were not started.
+  In this release, the Operator logs the error ``Couldn't find ServiceMonitor CRD`` and the
+  message ``Install Prometheus and necessary CRDs for gathering GPU metrics`` to indicate
+  the reason.
+
+* Fixed a race condition that prevented the GPU driver containers from loading the nvidia-peermem Linux kernel module
+  and caused the driver daemon set pods to crash loop back off.
+  The condition could occur when both GPUDirect RDMA and GPUDirect Storage are enabled.
+  In this release, the start script for the driver containers confirm that Operator validator
+  indicates the driver container is ready before attempting to load the kernel module.
+
+* Fixed an issue that caused upgrade of the GPU driver to fail when GPUDirect Storage is enabled.
+  In this release, the driver manager unloads the nvidia-fs Linux kernel module before
+  performing the upgrade.
+
+* Added support for new MIG profiles with the 525 driver.
+
+  * For A100-40GB devices:
+
+    * ``1g.5gb.me``
+    * ``1g.10gb``
+    * ``4g.20gb``
+
+  * For H100-80GB and A100-80GB devices:
+
+    * ``1g.10gb``
+    * ``1g.10gb.me``
+    * ``1g.20gb``
+    * ``4g.40gb``
+
+  * For A30-24GB devices:
+
+    * ``1g.6gb.me``
+    * ``2g.12gb.me``
+
+Common Vulnerabilities and Exposures (CVEs)
+-------------------------------------------
+
+The ``gpu-operator:v23.3.0`` and ``gpu-operator-validator:v23.3.0`` images have the following known high-vulnerability CVEs.
+These CVEs are from the base images and are not in libraries that are used by the GPU operator:
+
+* ``openssl-libs`` - `CVE-2023-0286 <https://access.redhat.com/security/cve/CVE-2023-0286>`_
+* ``platform-python`` and ``python3-libs`` - `CVE-2023-24329 <https://access.redhat.com/security/cve/CVE-2023-24329>`_
+
+
+Known Limitations
+------------------
+
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
+  Additionally, network-restricted environments are not supported.
+
+----
+
 
 22.9.2
 ======
@@ -257,7 +444,7 @@ Improvements
 
 Fixed issues
 ------------
-* Fixed an issue when GPU Operator was installed and MIG was already enabled on a GPU. The GPU Operator will now install sucessfully and MIG can either be disabled via the label ``nvidia.com/mig.config=all-disabled`` or configured with the required MIG profiles.
+* Fixed an issue when GPU Operator was installed and MIG was already enabled on a GPU. The GPU Operator will now install successfully and MIG can either be disabled via the label ``nvidia.com/mig.config=all-disabled`` or configured with the required MIG profiles.
 
 Known Limitations
 ------------------
@@ -648,7 +835,7 @@ Improvements
 -------------
 * Updated DCGM-Exporter to ``2.1.2``, which uses DCGM 2.0.13.
 * Added the ability to pass arguments to the NVIDIA device plugin to enable ``migStrategy`` and ``deviceListStrategy`` flags
-  that allow addtional configuration of the plugin.
+  that allow additional configuration of the plugin.
 * Added more resiliency to ``dcgm-exporter``- ``dcgm-exporter`` would not check whether GPUs support profiling metrics and would result in a ``CrashLoopBackOff``
   state at launch in these configurations.
 
