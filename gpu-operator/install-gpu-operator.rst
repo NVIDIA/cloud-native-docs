@@ -71,6 +71,21 @@ The following options are available when using the Helm chart. These options can
      - Description
      - Default
 
+   * - ``cdi.enabled``
+     - When set to ``true``, the Operator installs two additional runtime classes,
+       nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
+       for making GPUs accessible to containers.
+       Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
+       are exposed to containerized environments.
+
+       Pods can specify ``spec.runtimeClassName`` as ``nvidia-cdi`` to use the functionality or
+       specify ``nvidia-legacy`` to prevent using CDI to perform device injection.
+     - ``false``
+
+   * - ``cdi.default``
+     - When set to ``true``, the container runtime uses CDI to perform device injection by default.
+     - ``false``
+
    * - ``daemonsets.annotations``
      - Map of custom annotations to add to all GPU Operator managed pods.
      - ``{}``
@@ -127,6 +142,24 @@ The following options are available when using the Helm chart. These options can
    * - ``operator.defaultRuntime``
      - **DEPRECATED as of v1.9**
      - ``docker``
+
+   * - ``psp.enabled``
+     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
+     - ``false``
+
+   * - ``toolkit.enabled``
+     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
+       as a container on the system. Set this value to ``false`` when using the Operator on systems
+       with pre-installed NVIDIA runtimes.
+     - ``true``
+
+   * - ``operator.defaultRuntime``
+     - **DEPRECATED as of v1.9**
+     - ``docker``
+
+   * - ``operator.labels``
+     - Map of custom labels that will be added to all GPU Operator managed pods.
+     - ``{}``
 
    * - ``psp.enabled``
      - The GPU operator deploys ``PodSecurityPolicies`` if enabled.

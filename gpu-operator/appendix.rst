@@ -34,5 +34,6 @@ Advanced Configurations
 
    custom-driver-params.rst
 
-   install-precompiled-signed-drivers.rst
    precompiled-drivers.rst
+
+   Container Device Interface Support <cdi.rst>

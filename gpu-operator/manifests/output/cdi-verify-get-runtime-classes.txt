@@ -1,0 +1,4 @@
+NAME            HANDLER         AGE
+nvidia          nvidia          2d
+nvidia-cdi      nvidia-cdi      5m7s
+nvidia-legacy   nvidia-legacy   5m7s
