@@ -1,3 +1,19 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
 .. Date: Nov 25 2020
 .. Author: pramarao
 
@@ -43,36 +59,25 @@ The GPU Operator Helm chart offers a number of customizable options that can be 
 .. _gpu-operator-helm-chart-options:
 
 Chart Customization Options
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following options are available when using the Helm chart. These options can be used with ``--set`` when installing via Helm.
 
 .. list-table::
-   :widths: auto
+   :widths: 20 50 30
    :header-rows: 1
-   :align: center
 
    * - Parameter
      - Description
      - Default
 
-   * - ``nfd.enabled``
-     - Deploys Node Feature Discovery plugin as a daemonset.
-       Set this variable to ``false`` if NFD is already running in the cluster.
-     - ``true``
+   * - ``daemonsets.annotations``
+     - Map of custom annotations to add to all GPU Operator managed pods.
+     - ``{}``
 
-   * - ``operator.defaultRuntime``
-     - **DEPRECATED as of v1.9**
-     - ``docker``
-
-   * - ``mig.strategy``
-     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
-       are either ``mixed`` or ``single``.
-     - ``single``
-
-   * - ``psp.enabled``
-     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
-     - ``false``
+   * - ``daemonsets.labels``
+     - Map of custom labels to add to all GPU Operator managed pods.
+     - ``{}``
 
    * - ``driver.enabled``
      - By default, the Operator deploys NVIDIA drivers as a container on the system.
@@ -84,11 +89,6 @@ The following options are available when using the Helm chart. These options can
        custom driver images.
      - ``nvcr.io/nvidia``
 
-   * - ``driver.version``
-     - Version of the NVIDIA datacenter driver supported by the Operator.
-     - Depends on the version of the Operator. See the Component Matrix
-       for more information on supported drivers.
-
    * - ``driver.rdma.enabled``
      - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module.
      - ``false``
@@ -97,24 +97,46 @@ The following options are available when using the Helm chart. These options can
      - Indicate if MOFED is directly pre-installed on the host. This is used to build and load ``nvidia-peermem`` kernel module.
      - ``false``
 
-   * - ``toolkit.enabled``
-     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
-       as a container on the system. Set this value to ``false`` when using the Operator on systems
-       with pre-installed NVIDIA runtimes.
-     - ``true``
+   * - ``driver.usePrecompiled``
+     - When set to ``true``, the Operator attempts to deploy driver containers that have
+       precompiled kernel drivers.
+       This option is available as a technology preview feature for select operating systems.
+       Refer to the :doc:`precompiled driver containers <precompiled-drivers>` page for the supported operating systems.
+     - ``false``
+
+   * - ``driver.version``
+     - Version of the NVIDIA datacenter driver supported by the Operator.
+     - Depends on the version of the Operator. See the Component Matrix
+       for more information on supported drivers.
+
+   * - ``mig.strategy``
+     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
+       are either ``mixed`` or ``single``.
+     - ``single``
 
    * - ``migManager.enabled``
      - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
        default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
      - ``true``
 
-   * - ``operator.labels``
-     - Map of custom labels that will be added to all GPU Operator managed pods.
-     - ``{}``
+   * - ``nfd.enabled``
+     - Deploys Node Feature Discovery plugin as a daemonset.
+       Set this variable to ``false`` if NFD is already running in the cluster.
+     - ``true``
 
-   * - ``operator.annotations``
-     - Map of custom annotations that will be added to all GPU Operator managed pods.
-     - ``{}``
+   * - ``operator.defaultRuntime``
+     - **DEPRECATED as of v1.9**
+     - ``docker``
+
+   * - ``psp.enabled``
+     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
+     - ``false``
+
+   * - ``toolkit.enabled``
+     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
+       as a container on the system. Set this value to ``false`` when using the Operator on systems
+       with pre-installed NVIDIA runtimes.
+     - ``true``
 
 
 Namespace
@@ -155,6 +177,7 @@ Common Deployment Scenarios
 
 In this section, we present some common deployment recipes when using the Helm chart to install the GPU Operator.
 
+
 Bare-metal/Passthrough with default configurations on Ubuntu
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -184,7 +207,7 @@ In this scenario, the default configuration options are used:
 
 .. note::
 
-   * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported. 
+   * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
 
 Bare-metal/Passthrough with default configurations on CentOS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -591,3 +614,4 @@ Once the Helm chart is installed, check the status of the pods to ensure all the
    nvidia-operator-validator-bwx99                               1/1     Running     0          58s
 
 We can now proceed to running some sample GPU workloads to verify that the Operator (and its components) are working correctly.
+
