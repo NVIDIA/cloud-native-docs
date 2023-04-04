@@ -15,6 +15,10 @@ By default, The GPU Operator requires internet access for the following reasons:
     1) Container images need to be pulled during GPU Operator installation.
     2) The ``driver`` container needs to download several OS packages prior to driver installation.
 
+       .. tip::
+          Using :doc:`precompiled-drivers` removes the need for the ``driver`` containers to
+          download operating system packages and removes the need to create a local package repository.
+
 To address these requirements, it may be necessary to create a local image registry and/or a local package repository
 so that the necessary images and packages are available for your cluster. In subsequent sections, we detail how to
 configure the GPU Operator to use local image registries and local package repositories. If your cluster is behind
@@ -231,6 +235,9 @@ local mirror repository for their OS distribution and make the following package
 
    KERNEL_VERSION is the underlying running kernel version on the GPU node
    GCC_VERSION is the gcc version matching the one used for building underlying kernel
+
+   Configuring a local package repository is not necessary for clusters that
+   can run :doc:`precompiled-drivers`.
 
 .. code-block:: yaml
 

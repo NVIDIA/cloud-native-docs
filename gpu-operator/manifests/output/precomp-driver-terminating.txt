@@ -1,0 +1,13 @@
+NAME                                                              READY   STATUS        RESTARTS   AGE
+pod/gpu-feature-discovery-pzzr8                                   2/2     Running       0          19m
+pod/gpu-operator-859cb64846-57hfn                                 1/1     Running       0          47m
+pod/gpu-operator-node-feature-discovery-master-6d6649d597-7l8bj   1/1     Running       0          10d
+pod/gpu-operator-node-feature-discovery-worker-v86vj              1/1     Running       0          10d
+pod/nvidia-container-toolkit-daemonset-6ltbv                      1/1     Running       0          19m
+pod/nvidia-cuda-validator-62w6r                                   0/1     Completed     0          17m
+pod/nvidia-dcgm-exporter-fh5wz                                    1/1     Running       0          19m
+pod/nvidia-device-plugin-daemonset-rwslh                          2/2     Running       0          19m
+pod/nvidia-device-plugin-validator-gq4ww                          0/1     Completed     0          17m
+pod/nvidia-driver-daemonset-xqrxk                                 1/1     Terminating   0          20m
+pod/nvidia-operator-validator-78mzv                               1/1     Running       0          19m
+

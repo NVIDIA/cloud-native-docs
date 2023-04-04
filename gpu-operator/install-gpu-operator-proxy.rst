@@ -1,19 +1,41 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings # #, * *, =, -, ^, "
+
 .. Date: Sep 16 2021
 .. Author: cdesiniotis
 
 .. _install-gpu-operator-proxy:
 
 Install GPU Operator in Proxy Environments
-*******************************************
+******************************************
 
 Introduction
 ============
 
-This page describes how to successfully deploy the GPU Operator in clusters behind a HTTP Proxy.
+This page describes how to successfully deploy the GPU Operator in clusters behind an HTTP proxy.
 By default, the GPU Operator requires internet access for the following reasons:
 
     1) Container images need to be pulled during GPU Operator installation.
     2) The ``driver`` container needs to download several OS packages prior to driver installation.
+
+       .. tip::
+          Using :doc:`precompiled-drivers` removes the need for the ``driver`` containers to
+          download operating system packages.
 
 To address these requirements, all Kubernetes nodes as well as the ``driver`` container need proper configuration
 in order to direct traffic through the proxy.
