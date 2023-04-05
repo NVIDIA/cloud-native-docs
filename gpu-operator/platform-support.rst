@@ -342,7 +342,7 @@ Supported Container Runtimes
 The GPU Operator has been validated in the following scenarios:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.4 - 1.6   | CRI-O          |
+| Operating System           | Containerd 1.4 - 1.7   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 18.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
