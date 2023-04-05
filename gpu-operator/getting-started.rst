@@ -394,17 +394,17 @@ The password credentials for the login are available in the ``prometheus.values`
 
 .. _operator-upgrades:
 
-Upgrade
-===========================
+Upgrading the GPU Operator
+==========================
 
 Using Helm
 -----------
 
-Starting with GPU Operator v1.8.0, the GPU Operator supports dynamic updates to existing resources. This allows
-the GPU Operator to ensure settings from the `ClusterPolicy` Spec are always applied and current.
+The GPU Operator supports dynamic updates to existing resources.
+This ability enables the GPU Operator to ensure settings from the cluster policy specification are always applied and current.
 
-Since Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ auto upgrade of existing CRDs, the user has following options to
-upgrade the GPU Operator chart:
+Because Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ automatic upgrade of existing CRDs,
+you can upgrade the GPU Operator chart manually or by enabling a Helm hook.
 
 Option 1 - manually upgrade CRD
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -418,33 +418,42 @@ Option 1 - manually upgrade CRD
       A -> B;
    }
 
-With this workflow, all existing GPU operator resources are updated inline and the `ClusterPolicy` resource is patched with updates from ``values.yaml``.
+With this workflow, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from ``values.yaml``.
 
-Download the CRD from the specific `<release-tag>` from the Git repo. For example:
+#. Specify the Operator release tag in an environment variable:
 
-.. code-block:: console
+   .. code-block:: console
 
-   $ wget https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/<release-tag>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+      $ export RELEASE_TAG=v23.3.0
 
-Apply the CRD using the file downloaded above:
+#. Apply the custom resource definition for the cluster policy:
 
-.. code-block:: console
+   .. code-block:: console
 
-   $  kubectl apply -f nvidia.com_clusterpolicies_crd.yaml
+      $  kubectl apply -f \
+           https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
 
-Fetch latest values from the chart (replace the ``.x`` below with the desired version)
+#. Apply the custom resource definition for Node Feature Discovery:
 
-.. code-block:: console
+   .. code-block:: console
 
-   $ helm show values nvidia/gpu-operator --version=v22.9.x > values-22.9.x.yaml
+      $  kubectl apply -f \
+           https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 
-Update the values file as needed.
+#. Fetch the values from the chart (replace the ``.x`` below with the desired version)
 
-And upgrade via Helm:
+   .. code-block:: console
 
-.. code-block:: console
+      $ helm show values nvidia/gpu-operator --version=$RELEASE_TAG > values-$RELEASE_TAG.yaml
 
-   $ helm upgrade gpu-operator -n gpu-operator -f values-22.9.x.yaml
+#. Update the values file as needed.
+
+#. Upgrade the Operator:
+
+   .. code-block:: console
+
+      $ helm upgrade gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml
+
 
 Option 2 - auto upgrade CRD using Helm hook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

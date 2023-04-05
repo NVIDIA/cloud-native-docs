@@ -1,22 +1,27 @@
 # Contributing to the Docs
 
-Thanks for contributing to the documentation repository! The documentation is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0). Before 
+Thanks for contributing to the documentation repository! The documentation is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0). Before
 patches are accepted and merged, we require that these relatively simple guidelines be followed:
 * Adhere to the documentation style guidelines
 * Sign your work
 
-Also, read an [overview](https://developers.google.com/tech-writing/overview) on Technical Writing from Google on authoring good technical content! 
+Also, read an [overview](https://developers.google.com/tech-writing/overview) on Technical Writing from Google on authoring good technical content!
 
 ## Documentation style guidelines
 
-This documentation is authored using [reStructuredText](http://docutils.sourceforge.net/rst.html) as a markup language and uses the 
+This documentation is authored using [reStructuredText](http://docutils.sourceforge.net/rst.html) as a markup language and uses the
 [Sphinx](https://www.sphinx-doc.org/en/master/) documentation generator.
 
 ### Filenames
 Use only lowercase alphanumeric characters and hyphens `-` where required. Filenames are suffixed with the `.rst` extension.
 
 ### Headings
+
+Use title case for headings.
+Refer to https://titlecase.com/ for more information.
+
 The headings follow this convention:
+
 1. `H1` or document title based on `#` with overline
 1. `H2` based on `*` with overline
 1. `H3` based on `=`
@@ -24,16 +29,25 @@ The headings follow this convention:
 1. `H5` based on `^`
 1. `H6` based on `"`
 
-If you need more levels, then consider creating a new document. A document should only have one `H1`. 
+If you need more levels, then consider creating a new document. A document has only one `H1`.
+
+### Guideline for Kubernetes Object Types in Body Text
+
+Prefer lowercase plain text such as namespace, pod, daemon set, container, service, and so on.
+This guideline applies to multi-word types like custom resource definition.
+
+Use the camel case name only if you follow the name with object, resource, and so on.
+For example, "Delete the ``Pod`` object..."
+However, that example is not compelling and is just as clear when written as "Delete the pod..."
 
 ### Console Outputs
 #### Directives
-For console outputs in this document, use `code-block:: console` directive. This results in a red prompt, which makes it easy to distinguish between the prompt 
+For console outputs in this document, use `code-block:: console` directive. This results in a red prompt, which makes it easy to distinguish between the prompt
 and the command.
 
 #### Commands
-Separate each command into its own `code-block`. Since this repository uses the Sphinx `copy-button` to allow for easy copy/pasting of commands 
-by users, it makes sense to separate each command for readability and usage. 
+Separate each command into its own `code-block`. Since this repository uses the Sphinx `copy-button` to allow for easy copy/pasting of commands
+by users, it makes sense to separate each command for readability and usage.
 
 If you need to aggregate multiple commands, then use the separator, 2-space indentation and `&&` on each line as shown in the example below:
 ```console
@@ -43,12 +57,12 @@ $ command1 \
 ```
 
 #### Outputs
-Separate outputs and commands into their own `code-block` sequence. Since the repository is configured to copy everything (including items after the prompt lines by 
+Separate outputs and commands into their own `code-block` sequence. Since the repository is configured to copy everything (including items after the prompt lines by
 setting `copybutton_only_copy_prompt_lines` to false), it is desirable to only copy commands.
 
 ### Block Diagrams
 
-The repo includes the [blockdiag](http://blockdiag.com/en/) plugin to allow diagrams to be generated using text. For examples on how to use blockdiag, 
+The repo includes the [blockdiag](http://blockdiag.com/en/) plugin to allow diagrams to be generated using text. For examples on how to use blockdiag,
 refer to this [page](http://blockdiag.com/en/blockdiag/examples.html).
 
 ## Sign your work
