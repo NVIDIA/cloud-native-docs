@@ -51,6 +51,10 @@ New Features
   Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
   on the platform support page.
 
+* Added support for containerd v1.7.
+  Refer to :ref:`Supported Container Runtimes`
+  on the platform support page.
+
 * Added support for running the NVIDIA GPU Operator in Amazon EKS and Google GKE.
   You must configure the cluster with custom nodes that run a supported operating
   system, such as Ubuntu 22.04.
