@@ -1,15 +1,41 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
 .. Date: Jan 30 2023
 .. Author: cdesiniotis
 
+.. headings # #, * *, =, -, ^, "
+
 .. _gpu-driver-upgrades:
 
+###################
 GPU Driver Upgrades
 ###################
 
-Introduction
-************
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
 
-The NVIDIA driver daeamonset requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.
+
+******************************
+About Upgrading the GPU Driver
+******************************
+
+The NVIDIA driver daeamon set requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.
 Consequently, the following steps must occur across a driver upgrade:
 
 #. Disable all clients to the GPU driver.
@@ -26,19 +52,22 @@ The GPU Operator supports several methods for managing and automating this drive
    Drivers which are pre-installed on the host are not managed by the GPU Operator.
 
 
+************************************
 Upgrades with the Upgrade Controller
-******************************************
+************************************
 
 NVIDIA recommends upgrading by using the upgrade controller and the controller is enabled by default in the GPU Operator.
 The controller automates the upgrade process and generates metrics and events so that you can monitor the upgrade process.
 
 .. rubric:: Procedure
 
-1. Upgrade the driver by changing ``driver.version`` value in ClusterPolicy:
+1. Upgrade the driver by changing the ``driver.version`` value in the cluster policy:
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
+      $ kubectl patch clusterpolicy/cluster-policy \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
 
 2. (Optional) For each node, monitor the upgrade status:
 
@@ -47,31 +76,28 @@ The controller automates the upgrade process and generates metrics and events so
       $ kubectl get node -l nvidia.com/gpu.present \
          -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{"\n"}{end}'
 
-.. rubric:: Example Output
+   *Example Output*
 
-   .. code-block:: console
+   .. code-block:: output
 
-      $ kubectl patch clusterpolicy/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
-      clusterpolicy.nvidia.com/cluster-policy patched
-
-      $ kubectl get node -l nvidia.com/gpu.present \
-          -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{"\n"}{end}'
       k8s-node-1 upgrade-required
       k8s-node-2 upgrade-required
       k8s-node-3 upgrade-required
 
-      // Wait for upgrades to complete
-      $ kubectl get node -l nvidia.com/gpu.present \
-          -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{"\n"}{end}'
+   You can periodically poll the upgrade status by running the preceding command.
+   The GPU driver upgrade is complete when the output shows ``upgrade-done``:
+
+   .. code-block:: output
+
       k8s-node-1 upgrade-done
       k8s-node-2 upgrade-done
       k8s-node-3 upgrade-done
 
 
-Configuration options
+Configuration Options
 =====================
 
-The following fields in ClusterPolicy are available to configure the upgrade controller:
+You can set the following fields in the cluster policy to configure the upgrade controller:
 
 .. code-block:: yaml
 
@@ -83,7 +109,12 @@ The following fields in ClusterPolicy are available to configure the upgrade con
        autoUpgrade: true
        # maxParallelUpgrades (default=1): Number of nodes that can be upgraded in parallel. 0 means infinite.
        maxParallelUpgrades: 1
-
+       # maximum number of nodes with the driver installed, that can be unavailable during
+       # the upgrade. Value can be an absolute number (ex: 5) or
+       # a percentage of total nodes at the start of upgrade (ex:
+       # 10%). Absolute number is calculated from percentage by rounding
+       # up. By default, a fixed value of 25% is used.'
+       maxUnavailable: 25%
        # waitForCompletion: Options for the 'wait-for-completion' state, which will wait for a user-defined group of pods
        #    to complete before upgrading the driver on a node.
        waitForCompletion:
@@ -119,6 +150,18 @@ The following fields in ClusterPolicy are available to configure the upgrade con
          # deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).
          deleteEmptyDir: false
 
+If you specify a value for ``maxUnavailable`` and also specify ``maxParallelUpgrades``,
+the ``maxUnavailable`` value applies an additional constraint on the value of
+``maxParallelUpgrades`` to ensure that the number of parallel upgrades does not
+cause more than the intended number of nodes to become unavailable during the upgrade.
+For example, if you specify ``maxUnavailable=100%`` and ``maxParallelUpgrades=1``,
+one node at a time is upgraded.
+
+The ``maxUnavailable`` value also applies to the currently unavailable nodes in the cluster.
+If you cordoned nodes in the cluster and the ``maxUnavailable`` value is already met by the number of cordoned nodes,
+then the upgrade does not progress.
+
+
 Upgrade State Machine
 =====================
 
@@ -148,20 +191,20 @@ The complete state machine is depicted in the diagram below.
 Pausing Driver Upgrades
 =======================
 
-If you desire to pause the automatic driver upgrade process in the cluster, toggle ``driver.upgradePolicy.autoUpgrade`` flag
-in ClusterPolicy.
-The entire state machine will pause and effectively disable any pending nodes from being upgraded.
-This flag can be dynamically toggled again to re-enable the upgrade controller and resume any pending upgrades.
+To pause the automatic driver upgrade process in the cluster, toggle ``driver.upgradePolicy.autoUpgrade`` flag
+in the cluster policy.
+The entire state machine pauses and effectively disables any pending nodes from being upgraded.
+You can toggle the flag to ``true`` again to re-enable the upgrade controller and resume any pending upgrades.
 
 Skipping Driver Upgrades
 ========================
 
-If you desire to skip driver upgrades on a certain node, label the node with ``nvidia.com/gpu-driver-upgrade.skip=true``.
+To skip driver upgrades on a certain node, label the node with ``nvidia.com/gpu-driver-upgrade.skip=true``.
 
 Metrics and Events
 ==================
 
-The GPU Operator will generate the following metrics during the upgrade process which can be scraped by Prometheus.
+The GPU Operator generates the following metrics during the upgrade process which can be scraped by Prometheus.
 
 * ``gpu_operator_auto_upgrade_enabled``: 1 if driver auto upgrade is enabled; 0 if not.
 * ``gpu_operator_nodes_upgrades_in_progress``: Total number of nodes in which a driver pod is being upgraded on.
@@ -170,13 +213,18 @@ The GPU Operator will generate the following metrics during the upgrade process 
 * ``gpu_operator_nodes_upgrades_available``: Total number of nodes in which a driver pod upgrade can start on.
 * ``gpu_operator_nodes_upgrades_pending``: Total number of nodes in which driver pod upgrades are pending.
 
-The GPU Operator will generate events during the upgrade process.
+The GPU Operator generates events during the upgrade process.
 The most common events are for state transitions or failures at a particular state.
 Below are an example set of events generated for the upgrade of one node.
 
-.. code:: console
+.. code-block:: console
 
    $ kubectl get events --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
+
+*Example Output*
+
+.. code-block:: output
+
    10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [upgrade-required]
    10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [cordon-required]
    10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [wait-for-jobs-required]
@@ -189,36 +237,46 @@ Below are an example set of events generated for the upgrade of one node.
 Troubleshooting
 ===============
 
-If the upgrade fails for a particular node, the node will be marked in the ``upgrade-failed`` state.
+If the upgrade fails for a particular node, the node is labelled with the ``upgrade-failed`` state.
 
-.. code:: console
+#. View the upgrade state labels:
 
-   $ kubectl get node -l nvidia.com/gpu.present \
-       -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{"\n"}{end}'
-   k8s-node-1 upgrade-done
-   k8s-node-2 upgrade-done
-   k8s-node-3 upgrade-failed
+   .. code-block:: console
 
-Check events to better understand at which stage the ugprade failed:
+      $ kubectl get node -l nvidia.com/gpu.present \
+          -ojsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{"\n"}{end}'
 
-.. code:: console
+   *Example Output*
 
-   $ kubectl get events --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
+   .. code-block:: output
+      :emphasize-lines: 3
 
-Optionally, you can check the gpu-operator logs generated for the upgrade controller:
+      k8s-node-1 upgrade-done
+      k8s-node-2 upgrade-done
+      k8s-node-3 upgrade-failed
 
-.. code:: console
+#. Check the events to determine the stage that the upgrade failed:
 
-   $ kubectl logs -n gpu-operator gpu-operator-xxxxx | grep controllers.Upgrade
+   .. code:: console
 
-After resolving the upgrade failures for a particular node, you can restart the upgrade process on the node by placing it in the ``upgrade-required`` state:
+      $ kubectl get events --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
 
-.. code:: console
+#. (Optional) Check the logs from the upgrade controller in the gpu-operator container:
 
-   $ kubectl label node <node-name>  nvidia.com/gpu-driver-upgrade-state=upgrade-required --overwrite
+   .. code:: console
 
+      $ kubectl logs -n gpu-operator gpu-operator-xxxxx | grep controllers.Upgrade
+
+#. After resolving the upgrade failures for a particular node, you can restart the upgrade process on the node by placing it in the ``upgrade-required`` state:
+
+   .. code:: console
+
+      $ kubectl label node <node-name>  nvidia.com/gpu-driver-upgrade-state=upgrade-required --overwrite
+
+
+***************************************
 Upgrades without the Upgrade Controller
-********************************************
+***************************************
 
 If the upgrade controller is disabled or not supported for your GPU Operator version, a component called ``k8s-driver-manager`` is responsible
 for executing the driver upgrade process.
@@ -240,13 +298,13 @@ In addition, no new features will be added to the ``k8s-driver-manager`` moving 
 
    .. code-block:: console
 
-      kubectl get pods -n gpu-operator -lapp=nvidia-driver-daemonset -w
+      $ kubectl get pods -n gpu-operator -lapp=nvidia-driver-daemonset -w
 
 Configuration Options
 =====================
 
 The following configuration options are available for ``k8s-driver-manager``. The options allow users to control the
-GPU pod eviction / node drain behavior.
+GPU pod eviction and node drain behavior.
 
 .. code-block:: yaml
 
@@ -266,16 +324,16 @@ GPU pod eviction / node drain behavior.
        - name: DRAIN_DELETE_EMPTYDIR_DATA
          value: "false"
 
-* The *ENABLE_GPU_POD_EVICTION* env allows ``k8s-driver-manager`` to attempt evicting only GPU pods from the node before attempting a node drain. Only if this fails and
-  *ENABLE_AUTO_DRAIN* is enabled will the node ever be drained.
-* The *DRAIN_USE_FORCE* env needs to be enabled for evicting GPU pods that are not managed by any of the replication controllers (Deployment, Daemonset, StatefulSet, ReplicaSet).
-* The *DRAIN_DELETE_EMPTYDIR_DATA* env needs to be enabled to allow deletion of GPU pods using emptyDir volume.
+* The ``ENABLE_GPU_POD_EVICTION`` environment variable enables ``k8s-driver-manager`` to attempt evicting only GPU pods from the node before attempting a node drain. Only if this fails and
+  ``ENABLE_AUTO_DRAIN`` is enabled will the node ever be drained.
+* The ``DRAIN_USE_FORCE`` environment variable must be enabled to evict GPU pods that are not managed by any of the replication controllers such as deployment, daemon set, stateful set, and replica set.
+* The ``DRAIN_DELETE_EMPTYDIR_DATA`` environment variable must be enabled to delete GPU pods that use the ``emptyDir`` type volume.
 
 .. note::
 
-   Since GPU pods get evicted whenever the NVIDIA Driver Daemonset spec is updated, it may not always be desirable to allow this to happen automatically.
+   Since GPU pods get evicted whenever the NVIDIA Driver daemon set specification is updated, it might not always be desirable to allow this to happen automatically.
    To prevent this ``daemonsets.updateStrategy`` parameter in the ``ClusterPolicy`` can be set to `OnDelete <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_ .
-   With ``OnDelete`` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted. 
-  Thus, admins can control when to rollout spec updates to driver pods on any given node. 
+   With ``OnDelete`` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted.
+  Thus, admins can control when to rollout spec updates to driver pods on any given node.
   For more information on DaemonSet update strategies, refer to the `Kubernetes documentation <https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy>`_.
 
