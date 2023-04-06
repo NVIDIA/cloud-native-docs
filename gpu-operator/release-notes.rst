@@ -33,6 +33,11 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+23.3.1
+======
+
+This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub `issue #513 <https://github.com/NVIDIA/gpu-operator/issues/513>`_. 
+
 23.3.0
 ======
 
