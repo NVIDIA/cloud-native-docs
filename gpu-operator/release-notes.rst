@@ -36,7 +36,7 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 23.3.1
 ======
 
-This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub `issue #513 <https://github.com/NVIDIA/gpu-operator/issues/513>`_. 
+This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub `issue #513 <https://github.com/NVIDIA/gpu-operator/issues/513>`_.
 
 23.3.0
 ======
@@ -205,6 +205,10 @@ Known Limitations
   pod security policy (PSP).
   If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
   argument so that the default value, ``false``, is used.
+* Ubuntu 18.04 is scheduled to reach end of standard support in May of 2023.
+  When Ubuntu transitions it to end of life (EOL), the NVIDIA GPU Operator and
+  related projects plan to cease building containers for 18.04 and to
+  cease providing support.
 * All worker nodes within the Kubernetes cluster must use the same operating system version.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
