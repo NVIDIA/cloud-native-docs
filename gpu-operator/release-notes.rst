@@ -84,6 +84,8 @@ New Features
   to compile the driver.
   For more information, see :doc:`precompiled-drivers`.
 
+* Added support for the NVIDIA H800 GPU in the :ref:`Supported NVIDIA GPUs and Systems` table on the Platform Support page.
+
 
 Improvements
 ------------
