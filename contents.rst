@@ -55,6 +55,12 @@ using NVIDIA GPUs with Kubernetes.
    kubernetes/anthos-guide.rst
 
 .. toctree::
+   :titlesonly:
+   :caption: NVIDIA GPUs and Red Hat Device Edge
+
+   edge/nvidia-gpu-with-device-edge.rst
+
+.. toctree::
    :maxdepth: 2
    :caption: GPU Telemetry:
 
