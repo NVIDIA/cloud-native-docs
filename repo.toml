@@ -13,19 +13,17 @@ sphinx_conf_py_extra = """
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
   blockdiag_antialias = True
   pygments_style = 'sphinx'
-  html_theme_options = { 'titles_only': True, }
+  html_theme_options = {
+    'titles_only': True,
+    'logo_only': True,
+  }
   highlight_language = 'console'
+  rst_epilog = ".. |gitlab_mr_url| replace:: Not a merge request...sorry, Charlie."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
     rst_epilog = ".. |gitlab_mr_url| replace:: {}/-/merge_requests/{}".format(
       os.environ["CI_MERGE_REQUEST_PROJECT_URL"], os.environ["CI_MERGE_REQUEST_IID"])
 """
 version = "0.1.0"
-
-#deps = [
-#  ["container-toolkit", "_build/docs/container-toolkit/latest"],
-#  ["driver-containers", "_build/docs/driver-containers/latest"],
-#  ["gpu-operator", "_build/docs/gpu-operator/latest"]
-#]
 
 
 [repo_docs.projects.container-toolkit]
