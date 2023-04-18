@@ -152,9 +152,9 @@ Perform the following steps to build and push a container image that includes th
 
         $ export CUDA_VERSION=11.8.0
 
-      The CUDA version only specifies which base image is used to build the driver container.
-      The version does not have any correlation to the version of CUDA that is associated with or supported by the
-      resulting driver container.
+     The CUDA version only specifies which base image is used to build the driver container.
+     The version does not have any correlation to the version of CUDA that is associated with or supported by the
+     resulting driver container.
 
    - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
 
@@ -174,23 +174,24 @@ Perform the following steps to build and push a container image that includes th
           --build-arg DRIVER_TYPE=vgpu \
           --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
           --build-arg CUDA_VERSION=$CUDA_VERSION \
+          --build-arg TARGETARCH=amd64 \  # amd64 or arm64
           -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
 #. Push the driver container image to your private registry.
 
-   - Log in to your private registry:
+   A. Log in to your private registry:
 
-     .. code-block:: console
+      .. code-block:: console
 
-        $ sudo docker login ${PRIVATE_REGISTRY} --username=<username>
+         $ sudo docker login ${PRIVATE_REGISTRY} --username=<username>
 
-     Enter your password when prompted.
+      Enter your password when prompted.
 
-   - Push the driver container image to your private registry:
+   B. Push the driver container image to your private registry:
 
-     .. code-block:: console
+      .. code-block:: console
 
-        $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
+         $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
 
 
 **************************************************************************************
@@ -235,20 +236,20 @@ Configure the Cluster with the vGPU License Information and the Driver Container
 #. Create an image pull secret in the ``gpu-operator`` namespace with the registry secret and private registry.
 
 
-   - Set an environment variable with the name of the secret:
+   A. Set an environment variable with the name of the secret:
 
-     .. code-block:: console
+      .. code-block:: console
 
-        $ export REGISTRY_SECRET_NAME=registry-secret
+         $ export REGISTRY_SECRET_NAME=registry-secret
 
-   - Create the secret:
+   B. Create the secret:
 
-     .. code-block:: console
+      .. code-block:: console
 
-        $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-            --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
-            --docker-password=<password> \
-            --docker-email=<email-id> -n gpu-operator
+         $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
+             --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
+             --docker-password=<password> \
+             --docker-email=<email-id> -n gpu-operator
 
    You need to specify the secret name ``REGISTRY_SECRET_NAME`` when you install the GPU Operator with Helm.
 
