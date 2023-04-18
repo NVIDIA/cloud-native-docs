@@ -1,3 +1,19 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
 .. Date: Jan 17 2021
 .. Author: smerla
 
@@ -7,194 +23,239 @@
 NVIDIA vGPU
 ##################
 
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
+
+*********************************************
+About Installing the Operator and NVIDIA vGPU
+*********************************************
+
 This document provides an overview of the workflow to getting started with using the GPU Operator with NVIDIA vGPU.
 
-.. note::
+NVIDIA vGPU is only supported with the NVIDIA License System.
 
-   NVIDIA vGPU is only supported with the NVIDIA License System.
+The installation steps assume ``gpu-operator`` as the default namespace for installing the NVIDIA GPU Operator.
+In case of Red Hat OpenShift Container Platform, the default namespace is ``nvidia-gpu-operator``.
+Change the namespace shown in the commands accordingly based on your cluster configuration.
+Also replace ``kubectl`` in the below commands with ``oc`` when running on RedHat OpenShift.
 
-.. note::
+The following list outlines the high-level steps to use the NVIDIA GPU Operator with NVIDIA vGPUs.
 
-    Below steps assume ``gpu-operator`` as the default namespace for installing the GPU Operator. In case of RedHat OpenShift, the default
-    namespace would be ``nvidia-gpu-operator``. Please change the namespace accordingly based on your cluster configuration. Also replace
-    ``kubectl`` in the below commands with ``oc`` when running on RedHat OpenShift.
 
-*********************
-High Level Workflow
-*********************
+****************
+Platform Support
+****************
 
-The following section outlines the high level workflow to use the GPU Operator with NVIDIA vGPUs.
+For information about the supported platforms, see :ref:`Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products`.
 
-#. Download the vGPU Software and latest NVIDIA vGPU Driver Catalog file.
-#. Clone driver container source repository for building private driver image.
-#. Build the driver container image.
-#. Push the driver container image to your private repository.
-#. Create a `ConfigMap` in the `gpu-operator` namespace with vGPU license configuration file.
-#. Create an `ImagePullSecret` in the `gpu-operator` namespace for your private repository.
-#. Install the GPU Operator.
+For Red Hat OpenShift Virtualization, see :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
 
-Detailed Workflow
-===================
 
-Download the vGPU Software and latest NVIDIA vGPU driver catalog file from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+*************
+Prerequisites
+*************
 
-#. Login to the NVIDIA Licensing Portal and navigate to the “Software Downloads” section.
-#. The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
-#. The NVIDIA vGPU catalog driver file is located in the “Additional Software” section.
-#. The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Linux guest driver (NVIDIA-Linux-x86_64-<version>-grid.run file)
+* You must have access to the NVIDIA Enterprise Application Hub at https://nvid.nvidia.com/dashboard/ and the NVIDIA Licensing Portal.
+* Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).
+* You must generate and download a client configuration token for your CLS instance or DLS instance.
+  Refer to the |license-system-qs-guide-link|_ for information about generating a token.
+* You have access to a private container registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
 
-Clone the driver container repository and build driver image
+.. _license-system-qs-guide-link: https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/
+.. |license-system-qs-guide-link| replace:: *NVIDIA License System Quick Start Guide*
 
-* Open a terminal and clone the driver container image repository
 
-.. code-block:: console
+**********************
+Download vGPU Software
+**********************
 
-    $ git clone https://gitlab.com/nvidia/container-images/driver
+Perform the following steps to download the vGPU software and the latest NVIDIA vGPU driver catalog file from the NVIDIA Licensing Portal.
 
-.. code-block:: console
+#. Log in to the NVIDIA Enterprise Application Hub at https://nvid.nvidia.com/dashboard and then click **NVIDIA LICENSING PORTAL**.
+#. In the left navigation pane of the NVIDIA Licensing Portal, click **SOFTWARE DOWNLOADS**.
+#. Locate **vGPU Driver Catalog** in the table of driver downloads and click **Download**.
+#. Click the **PRODUCT FAMILY** menu and select **vGPU** to filter the downloads to vGPU only.
+#. Locate the vGPU software for your platform in the table of software downloads and click **Download**.
 
-    $ cd driver
+The vGPU software is packaged as a ZIP file.
+Unzip the file to obtain the NVIDIA vGPU Linux guest driver.
+The guest driver file name follows the pattern ``NVIDIA-Linux-x86_64-<version>-grid.run``.
 
-* Change to the OS directory under the driver directory.
+**************************
+Build the Driver Container
+**************************
 
-.. code-block:: console
+Perform the following steps to build and push a container image that includes the vGPU Linux guest driver.
 
-    $ cd ubuntu20.04
+#. Clone the driver container repository and change directory into the repository:
 
-.. note::
+   .. code-block:: console
 
-    For RedHat OpenShift, run ``cd rhel`` to use ``rhel`` folder instead.
+      $ git clone https://gitlab.com/nvidia/container-images/driver
 
-* Copy the NVIDIA vGPU guest driver from your extracted zip file and the NVIDIA vGPU driver catalog file
+   .. code-block:: console
 
-.. code-block:: console
+      $ cd driver
 
-    $ cp <local-driver-download-directory>/*-grid.run drivers
+#. Change directory to the operating system name and version under the driver directory:
 
-.. code-block:: console
+   .. code-block:: console
 
-    $ cp vgpuDriverCatalog.yaml drivers
+      $ cd ubuntu20.04
 
-* Build the driver container image
+   For Red Hat OpenShift Container Platform, use a directory that includes ``rhel`` in the directory name.
 
-Set the private registry name using below command on the terminal
+#. Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file:
 
-.. code-block:: console
+   .. code-block:: console
 
-    $ export PRIVATE_REGISTRY=<private registry name>
+      $ cp <local-driver-download-directory>/*-grid.run drivers/
 
-Set the OS_TAG. The OS_TAG has to match the Guest OS version. Please refer to `OS Support <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/platform-support.html#linux-distributions>`_ for the list of supported OS distributions.
-In the below example ``ubuntu20.04`` is used, for RedHat OpenShift this should be ``rhcos4.x`` where ``x`` is the supported minor OCP version.
+   .. code-block:: console
 
-.. code-block:: console
+      $ cp vgpuDriverCatalog.yaml drivers/
 
-    $ export OS_TAG=ubuntu20.04
+#. Set environment variables for building the driver container image.
 
-Set the driver container image version to a user defined version number. For example, ``1.0.0``:
+   -  Specify your private registry URL:
 
-.. code-block:: console
+      .. code-block:: console
 
-    $ export VERSION=1.0.0
+         $ export PRIVATE_REGISTRY=<private-registry-url>
 
-.. note::
+   - Specify the ``OS_TAG`` environment variable to identify the guest operating system name and version:
 
-    ``VERSION`` can be any user defined value. Please note this value to use during operator installation command
 
-Set the version of the CUDA base image used when building the driver container:
+     .. code-block:: console
 
-.. code-block:: console
+        $ export OS_TAG=ubuntu20.04
 
-    $ export CUDA_VERSION=11.8.0
+     The value must match the guest operating system version.
+     For Red Hat OpenShift Container Platform, specify ``rhcos4.<x>`` where ``x`` is the supported minor OCP version.
+     Refer to :ref:`Supported Operating Systems and Kubernetes Platforms` for the list of supported OS distributions.
 
-.. note::
+   - Specify the driver container image tag, such as ``1.0.0``:
 
-   The ``CUDA_VERSION`` only dictates what base image is used when building the driver container,
-   and does not have any correlation to the version of CUDA associated with / supported by the
-   resulting driver container.
+     .. code-block:: console
 
-Replace the ``VGPU_DRIVER_VERSION`` below with the appropriate Linux guest vGPU driver version downloaded 
-from the NVIDIA software portal. In this example, the ``525.60.13`` driver has been downloaded. Note that 
-the ``-grid`` suffix needs to be added to the environment variable as shown:
+        $ export VERSION=1.0.0
 
-.. code-block:: console
+     The specified value can be any user-defined value.
+     The value is used to install the Operator in a subsequent step.
 
-    $ export VGPU_DRIVER_VERSION=525.60.13-grid 
+   - Specify the version of the CUDA base image to use when building the driver container:
 
-.. note::
+     .. code-block:: console
 
-    GPU Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
-    If version check is disabled with ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when building driver image, then 
-    ``VGPU_DRIVER_VERSION`` value is used as default.
+        $ export CUDA_VERSION=11.8.0
 
-Build the driver container image
+      The CUDA version only specifies which base image is used to build the driver container.
+      The version does not have any correlation to the version of CUDA that is associated with or supported by the
+      resulting driver container.
 
-.. code-block:: console
+   - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
 
-    $ sudo docker build \
-      --build-arg DRIVER_TYPE=vgpu \
-      --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
-      --build-arg CUDA_VERSION=$CUDA_VERSION \
-      -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
+     .. code-block:: console
 
-* Push the driver container image to your private repository
+        $ export VGPU_DRIVER_VERSION=525.60.13-grid
 
-.. code-block:: console
+     The Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
+     If you disable the version check by specifying ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when you build the driver image,
+     then the ``VGPU_DRIVER_VERSION`` value is used as default.
 
-    $ sudo docker login ${PRIVATE_REGISTRY} --username=<username> {enter password on prompt}
+#. Build the driver container image:
 
-.. code-block:: console
+   .. code-block:: console
 
-    $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
+      $ sudo docker build \
+          --build-arg DRIVER_TYPE=vgpu \
+          --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
+          --build-arg CUDA_VERSION=$CUDA_VERSION \
+          -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
 
-* Install the GPU Operator.
+#. Push the driver container image to your private registry.
 
-Create a NVIDIA vGPU license file named `gridd.conf` with the below content.
+   - Log in to your private registry:
 
-.. code-block:: text
+     .. code-block:: console
 
-    # Description: Set License Server Address
-    # Data type: string
-    # Format:  "<address>"
-    ServerAddress=<license server address>
+        $ sudo docker login ${PRIVATE_REGISTRY} --username=<username>
 
-Input the license server address of the License Server
+     Enter your password when prompted.
 
-.. note::
+   - Push the driver container image to your private registry:
 
-    Optionally add a backup/secondary license server address if one is configured. ``BackupServerAddress=<backup license server address>``
+     .. code-block:: console
 
-Create a ConfigMap `licensing-config` using `gridd.conf` file created above
+        $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
 
-.. code-block:: console
 
-    $ kubectl create namespace gpu-operator
+**************************************************************************************
+Configure the Cluster with the vGPU License Information and the Driver Container Image
+**************************************************************************************
 
-.. code-block:: console
+#. Create an NVIDIA vGPU license file named ``gridd.conf`` with contents like the following example:
 
-    $ kubectl create configmap licensing-config \
-      -n gpu-operator --from-file=gridd.conf
+   .. code-block:: text
 
-Creating an image pull secrets
+      # Description: Set Feature to be enabled
+      # Data type: integer
+      # Possible values:
+      # 0 => for unlicensed state
+      # 1 => for NVIDIA vGPU
+      # 2 => for NVIDIA RTX Virtual Workstation
+      # 4 => for NVIDIA Virtual Compute Server
+      FeatureType=1
 
-.. code-block:: console
+#. Rename the client configuration token file that you downloaded to ``client_configuration_token.tok``
+   using a command like the following example:
 
-    $ export REGISTRY_SECRET_NAME=registry-secret
+   .. code-block:: console
 
-.. code-block:: console
+      $ cp ~/Downloads/client_configuration_token_03-28-2023-16-16-36.tok client_configuration_token.tok
 
-    $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-      --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
-      --docker-password=<password> \
-      --docker-email=<email-id> -n gpu-operator
+   The file must be named ``client_configuraton_token.tok``.
 
-.. note::
+#. Create the ``gpu-operator`` namespace:
 
-    Please note the secret name ``REGISTRY_SECRET_NAME`` for using during operator installation command.
+   .. code-block:: console
 
-* Install GPU Operator via the Helm chart
+      $ kubectl create namespace gpu-operator
 
-Please refer to :ref:`install-gpu-operator` section for GPU operator installation command and options for vGPU on Kubernetes.
+#. Create a config map that is named ``licensing-config`` using the ``gridd.conf`` and ``client_configuration_token.tok`` files:
 
-* Install GPU Operator via OLM on RedHat OpenShift
+   .. code-block:: console
 
-Please refer to :ref:`install-nvidiagpu` section for GPU operator installation command and options for using NVIDIA vGPU on RedHat OpenShift.
+      $ kubectl create configmap licensing-config \
+          -n gpu-operator --from-file=gridd.conf --from-file=client_configuration_token.tok
+
+#. Create an image pull secret in the ``gpu-operator`` namespace with the registry secret and private registry.
+
+
+   - Set an environment variable with the name of the secret:
+
+     .. code-block:: console
+
+        $ export REGISTRY_SECRET_NAME=registry-secret
+
+   - Create the secret:
+
+     .. code-block:: console
+
+        $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
+            --docker-server=${PRIVATE_REGISTRY} --docker-username=<username> \
+            --docker-password=<password> \
+            --docker-email=<email-id> -n gpu-operator
+
+   You need to specify the secret name ``REGISTRY_SECRET_NAME`` when you install the GPU Operator with Helm.
+
+**********
+Next Steps
+**********
+
+Refer to :ref:`install-gpu-operator` to install the GPU Operator on Kubernetes using a Helm chart.
+
+Refer to :ref:`install-nvidiagpu` to install the GPU Operator using NVIDIA vGPU on Red Hat OpenShift Container Platform.
