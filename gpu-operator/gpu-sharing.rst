@@ -9,6 +9,11 @@
 Time-Slicing GPUs in Kubernetes
 ###############################
 
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
 
 *******************************
 Understanding Time-Slicing GPUs
@@ -79,6 +84,12 @@ with GPU passthrough, and virtual machines with NVIDIA vGPU.
 Currently, the only supported resource types are ``nvidia.com/gpu``
 and any of the resource types that emerge from configuring a node with
 the mixed MIG strategy.
+
+
+Limitations
+===========
+
+DGCM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
 
 
 Changes to Node Labels
