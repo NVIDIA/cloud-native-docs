@@ -66,7 +66,8 @@ New Features
   The :ref:`documentation for upgrading the Operator manually <operator-upgrades>`
   is updated to include applying the custom resource definitions for Node Feature Discovery.
 
-* Added support for running the NVIDIA GPU Operator in Amazon EKS and Google GKE.
+* Added support for running the NVIDIA GPU Operator in :doc:`Amazon EKS <amazon-eks>`
+  and :doc:`Google GKE <google-gke>`.
   You must configure the cluster with custom nodes that run a supported operating
   system, such as Ubuntu 22.04.
 
