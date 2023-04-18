@@ -24,7 +24,7 @@ Advanced Configurations
 #######################
 
 .. toctree::
-   :maxdepth: 1
+   :titlesonly:
 
    install-gpu-operator-proxy.rst
 
@@ -37,3 +37,7 @@ Advanced Configurations
    precompiled-drivers.rst
 
    Container Device Interface Support <cdi.rst>
+
+   GPU Operator with Amazon EKS <amazon-eks.rst>
+
+   GPU Operator with Google GKE <google-gke.rst>
