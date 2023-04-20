@@ -1,5 +1,5 @@
-.. Date: Oct 25 2021
-.. Author: kquinn
+.. Date: Jan232023
+.. Author: stesmith
 
 .. headings are # * - =
 
@@ -9,38 +9,49 @@
 Deploy GPU Operators in a disconnected or airgapped environment
 ###############################################################
 
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
 **************
 Introduction
 **************
 
-This page describes how to successfully deploy the **NVIDIA GPU Operator** on a Openshift Container Platform cluster in a disconnected or airgapped environment.
+This page describes how to successfully deploy the NVIDIA GPU Operator on a Openshift Container Platform cluster in a disconnected or airgapped environment.
 
-For an OpenShift Container Platform cluster that is installed on a disconnected cluster, the Operator Lifecycle Manager (OLM) by default cannot access the Red Hat-provided OperatorHub sources hosted on remote registries because those remote sources require full Internet connectivity.
+For OpenShift Container Platform clusters that are installed on restricted networks, also known as disconnected clusters, Operator Lifecycle Manager (OLM), by default, cannot access the Red Hat-provided OperatorHub sources hosted on remote registries because those remote sources require full Internet connectivity.
 
-However, as a cluster administrator you can still enable your cluster to use the OLM in a disconnected network if you have a workstation that has full Internet access. The workstation, which requires full Internet access to pull the remote OperatorHub content, is used to prepare local mirrors of the remote sources, and push the content to a mirror registry.
+However, as a cluster administrator you can still enable your cluster to use OLM in a restricted network if you have a workstation that has full Internet access. The workstation, which requires full Internet access to pull the remote OperatorHub content, is used to prepare local mirrors of the remote sources, and push the content to a mirror registry.
 
-This workstation for the purposes of the remainder of this document is referred to as the `jump host`. The mirror registry for the purposes of this illustrated example is located on the `jump host`, with connectivity to both your internet and the disconnected cluster.
+The mirror registry can be located on a bastion host, which requires connectivity to both your workstation and the disconnected cluster, or a completely disconnected, or *airgapped*, host, which requires removable media to physically move the mirrored content to the disconnected environment.
 
-In a completely disconnected (airgapped) environment a second `jump host` is needed. In this environment you need to:
+The following figure shows a typical topology of a disconnected cluster.
 
-#. Fetch all the resources on a removable disk
-#. Move the disk to a second jump host
-#. Set up the services from the second jump host
+.. image:: graphics/disconnected_cluster.png
+   :width: 600
 
-This guide describes how to prune the Operator catalog to the subset that enables the installation of the **NVIDIA GPU Operator** in a disconnected environment.
+This guide describes the process required to enable OLM in restricted networks:
 
-The `OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-restricted-networks.html>`_ provides generic guidance on using Operator Lifecycle Manager on restricted networks.
+* Disable the default remote OperatorHub sources for OLM.
+* Use a workstation with full Internet access to create and push local mirrors of the OperatorHub content to a mirror registry.
+* Configure OLM to install and manage Operators from local sources on the mirror registry instead of the default remote sources.
+* (Optional) Mirror yum repository required by the GPU operator.
+
+The `OpenShift Container Platform <https://docs.openshift.com/container-platform/4.12/operators/admin/olm-restricted-networks.html>`_ documentation
+provides generic guidance on using Operator Lifecycle Manager on restricted networks.
+
 
 **************
 Prerequisites
 **************
 
-* A working OpenShift cluster up and running with a GPU worker node. See, `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`_ for guidance on installing OpenShift Container Platform.
+* A working OpenShift cluster up and running with a GPU worker node. See `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`_ for guidance on installing OpenShift Container Platform.
 
   .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
 * Access to the cluster as a user with the ``cluster-admin`` role.
-* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the jump host. This can be one of the following registries:
+* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the bastion host. This can be one of the following registries:
 
   * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`_
   * `JFrog Artifactory <https://jfrog.com/artifactory/>`_
@@ -49,7 +60,7 @@ Prerequisites
 
   Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`_ and in the section :ref:`Creating a private registry`.
 
-  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information, see `about the mirror registry <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html#installation-about-mirror-registry_installing-mirroring-installation-images>`_.
+  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information, see `Creating a mirror registry with mirror registry for Red Hat OpenShift <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-creating-registry.html#installing-mirroring-creating-registry>`_.
 
    .. note::
 
@@ -102,19 +113,29 @@ Image mirroring require a simple HTTP server, follow the guidance below to setup
 
       $ systemctl enable httpd
 
-#. Open port 80 and 443 to allow web traffic to the Apache web server service, update the system firewall rules allowing inbound packets on HTTP and HTTPS using the commands below:
+#. Open port 80 and 443 to allow web traffic to the Apache web server service and
+   update the system firewall rules allowing inbound packets on HTTP and HTTPS.
 
-   .. code-block:: console
+   A. Update the system firewall rules for HTTP:
 
-      $ firewall-cmd --zone=public --permanent --add-service=http
+      .. code-block:: console
 
-   .. code-block:: console
+         $ firewall-cmd --zone=public --permanent --add-service=http
 
-      $ firewall-cmd --zone=public --permanent --add-service=https
 
-   .. code-block:: console
+   B. Update the system firewall rules for HTTPS:
 
-      $ firewall-cmd --reload
+      .. code-block:: console
+
+         $ firewall-cmd --zone=public --permanent --add-service=https
+
+
+   C. Reload the firewall:
+
+      .. code-block:: console
+
+         $ firewall-cmd --reload
+
 
 *****************************************************
 Optional: Check the version of RHEL being used in the cluster
@@ -124,13 +145,16 @@ These steps only need to be carried out if installing the **NVIDIA GPU Operator*
 
 Before mirroring the RPM packages check the version of RHEL being used in the cluster.
 
-#. To determine the RHEL version running on the cluster use the OpenShift CLI and run the following:
+-  To determine the RHEL version running on the cluster use the OpenShift CLI and run the following:
 
    .. code-block:: console
 
       $ oc debug  $(oc get nodes -oname -lnode-role.kubernetes.io/worker | head -1) -- cat /host/etc/os-release | grep RHEL
 
-   .. code-block:: console
+
+   **Example Output**
+
+   .. code-block:: output
 
       Starting pod/openshift-worker-0openshiftpool2practiceredhatcom-debug ...
       To use host binaries, run `chroot /host`
@@ -140,7 +164,7 @@ Before mirroring the RPM packages check the version of RHEL being used in the cl
 
 This gives you the ``releasever`` to supply as a command line argument to ``reposync``.
 
-For guidance on logging in to the OpenShift CLI see, `here <https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html>`_.
+For guidance on logging in to the OpenShift CLI see, `Getting started with the OpenShift CLI <https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html>`_.
 
 *****************************************************
 Optional: Mirror the RPM packages
@@ -172,7 +196,9 @@ Follow the guidance below to sync the required ``yum`` repositories:
 
       $ subscription-manager repos --list-enabled
 
-   .. code-block:: console
+   **Example Output**
+
+   .. code-block:: output
 
       +----------------------------------------------------------+
             Available Repositories in /etc/yum.repos.d/redhat.repo
@@ -187,7 +213,7 @@ Follow the guidance below to sync the required ``yum`` repositories:
       Repo URL:  https://cdn.redhat.com/content/dist/rhel8/$releasever/x86_64/baseos/os
       Enabled:   1
 
-   This supplies you with the ``repoid`` you need in step 4 and 5.
+   This supplies you with the ``repoid`` you need in steps 4 and 5.
 
 #. Run ``reposync`` to synchronize the BaseOS repos to the locally created directory:
 
@@ -223,15 +249,20 @@ Follow the guidance below to sync the required ``yum`` repositories:
 
       $ mkdir -p /var/www/html/content/dist/rhel8/8/x86_64/baseos/
 
-#. Create symbolic links between the downloaded repos and the document root directory on the jump host used to serve the RPMs.
+#. Create symbolic links between the downloaded repositories and the document root directory on the jump host used to serve the RPMs.
 
-   .. code-block:: console
+   A. Create a symbolic link between the downloaded BaseOS repository and the document root directory:
 
-      $ ln -s /opt/mirror-repos/rhel-8-for-x86_64-baseos-rpms/ /var/www/html/content/dist/rhel8/8/x86_64/baseos/os
+      .. code-block:: console
 
-   .. code-block:: console
+         $ ln -s /opt/mirror-repos/rhel-8-for-x86_64-baseos-rpms/ /var/www/html/content/dist/rhel8/8/x86_64/baseos/os
 
-      $ ln -s /opt/mirror-repos/rhel-8-for-x86_64-appstream-rpms /var/www/html/content/dist/rhel8/8/x86_64/appstream/os
+
+   B. Create a symbolic link between the downloaded AppStream repository and the document root directory:
+
+      .. code-block:: console
+
+         $ ln -s /opt/mirror-repos/rhel-8-for-x86_64-appstream-rpms /var/www/html/content/dist/rhel8/8/x86_64/appstream/os
 
 *****************************************************
 Creating a private registry
@@ -269,11 +300,15 @@ Configure a private registry on the the jump host, using the following steps:
 
       $ export JUMP_HOST=<Your_jump_hostname>
 
-#. Provide a certificate for the registry. If you do not have an existing, trusted certificate authority, you can generate a self-signed certificate:
+
+#. Access the ``cd /opt/registry/certs`` directory:
 
    .. code-block:: console
 
       $ cd /opt/registry/certs
+
+
+#. Provide a certificate for the registry. If you do not have an existing, trusted certificate authority, you can generate a self-signed certificate:
 
    .. code-block:: console
 
@@ -362,21 +397,29 @@ Configure a private registry on the the jump host, using the following steps:
 
 #. Open the required ports for your registry:
 
-   .. code-block:: console
+   A. Open the internal port:
 
-      $ firewall-cmd --add-port=$JUMP_HOST_PORT/tcp --zone=internal --permanent
+      .. code-block:: console
 
-   .. code-block:: console
+         $ firewall-cmd --add-port=$JUMP_HOST_PORT/tcp --zone=internal --permanent
 
-      $ firewall-cmd --add-port=$JUMP_HOST_PORT/tcp --zone=public --permanent
 
-   .. code-block:: console
+   B. Open the public port:
 
-      $ firewall-cmd --reload
+      .. code-block:: console
+
+         $ firewall-cmd --add-port=$JUMP_HOST_PORT/tcp --zone=public --permanent
+
+
+   C. Reload the firewall:
+
+      .. code-block:: console
+
+         $ firewall-cmd --reload
 
    .. note:: For ``$JUMP_HOST_PORT``, specify the port that your mirror registry uses to serve content shown in the examples below as 5000.
 
-  **Example**:
+   **Example**:
 
    .. code-block:: console
 
@@ -464,7 +507,10 @@ Create a container image registry credentials file that allows mirroring images 
 
       $ echo -n '<user_name>:<password>' | base64 -w0
 
-   .. code-block:: console
+
+   **Example Output**
+
+   .. code-block:: output
 
       BGVtbYk3ZHAtqXs=
 
@@ -478,9 +524,11 @@ Create a container image registry credentials file that allows mirroring images 
 
    .. note:: Specify the path to the folder to store the pull secret in and a name for the JSON file that you create.
 
+   **Example Output**
+
    The contents of the file resemble the following example:
 
-   .. code-block:: console
+   .. code-block:: output
 
       {
          "auths": {
@@ -515,9 +563,11 @@ Create a container image registry credentials file that allows mirroring images 
 
    .. note:: For <mirror_registry>, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. Following the logic of this example with the registry being setup on the hump host this is ``jump_hostname`` or ``jump_hostname:5000``. For <credentials>, specify the base64-encoded user name and password for the mirror registry.
 
+   **Example Output**
+
    The file resembles the following example:
 
-   .. code-block:: console
+   .. code-block:: output
 
       {
         "auths": {
@@ -582,154 +632,46 @@ Disabling the default OperatorHub sources
 
 Operator catalogs that source content provided by Red Hat and community projects are configured for OperatorHub by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator. You can then configure OperatorHub to use local catalog sources.
 
-#. Disable the sources for the default catalogs by adding ``disableAllDefaultSources: true`` to the OperatorHub object:
+* Disable the sources for the default catalogs by adding ``disableAllDefaultSources: true`` to the OperatorHub object:
 
    .. code-block:: console
 
       $ oc patch OperatorHub cluster --type json \
           -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
 
-*************************************************************
-Pruning an index image
-*************************************************************
-
-An index image, based on the Operator bundle format, is a containerized snapshot of an Operator catalog. You can prune an index of all but a specified list of packages, which creates a copy of the source index containing only the Operators that you want.
-
-When configuring Operator Lifecycle Manager (OLM) to use mirrored content on restricted network OpenShift Container Platform clusters, use this pruning method to only mirror the subset of Operators from the default catalogs required to successfully install the **NVIDIA GPU Operator**.
-
------------------------------------
-Determine the Operators of interest
------------------------------------
-
-The four primary official indexes the OpenShift Container Platform 4.9 uses are:
-
-   * ``registry.redhat.io/redhat/certified-operator-index:v4.9``
-   * ``registry.redhat.io/redhat/redhat-operator-index:v4.9``
-   * ``registry.redhat.io/redhat/community-operator-index:v4.9``
-   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.9``
-
-The four primary official indexes the OpenShift Container Platform 4.10 uses are:
-
-   * ``registry.redhat.io/redhat/certified-operator-index:v4.10``
-   * ``registry.redhat.io/redhat/redhat-operator-index:v4.10``
-   * ``registry.redhat.io/redhat/community-operator-index:v4.10``
-   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.10``
-
-The four primary official indexes the OpenShift Container Platform 4.11 uses are:
-
-   * ``registry.redhat.io/redhat/certified-operator-index:v4.11``
-   * ``registry.redhat.io/redhat/redhat-operator-index:v4.11``
-   * ``registry.redhat.io/redhat/community-operator-index:v4.11``
-   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.11``
-
-  .. note:: The procedure refers to OpenShift Container Platform 4.9. For 4.10 replace references to 4.9 with 4.10 and similarly for 4.11.
-
-This table provides the relevant information extracted from the steps below for the Operators of interest to this procedure.
-
-+---------------------+---------------------------------+---------------------------------------------------------+
-| CatalogSource Name  | Operator Name                   |      Index Image Name                                   |
-+=====================+=================================+=========================================================+
-| certified-operators | gpu-operator-certified          | registry.redhat.io/redhat/certified-operator-index:v4.9 |
-+---------------------+---------------------------------+---------------------------------------------------------+
-| redhat-operators    | nfd                             | registry.redhat.io/redhat/redhat-operator-index:v4.9    |
-+---------------------+---------------------------------+---------------------------------------------------------+
-
-How these are determined is illustrated below in steps 2,3 and 4.
-
-#. Authenticate with ``registry.redhat.io`` and your target registry as follows:
-
-   .. code-block:: console
-
-      $ export REGISTRY_AUTH_FILE=<path_to_pull_secret>/pull-secret.json
-
-#. Run the source index image that you want to prune in a container. For example:
-
-   .. code-block:: console
-
-      $ podman run -p50051:50051 \
-         -it registry.redhat.io/redhat/redhat-operator-index:v4.9
-
-   .. code-block:: console
-
-      Trying to pull registry.redhat.io/redhat/redhat-operator-index:v4.9...
-      Getting image source signatures
-      Copying blob ae8a0c23f5b1 done
-      ...
-      INFO[0000] serving registry                              database=/database/index.db port=50051
-
-#. In a separate terminal session, use the ``grpcurl`` command to get a list of the packages provided by the index:
-
-   .. code-block:: console
-
-      $ grpcurl -plaintext localhost:50051 api.Registry/ListPackages > packages.out
-
-#. Inspect the ``packages.out`` file and identify which package names from this list you want to keep in your pruned index. For example:
-
-   .. code-block:: console
-
-      {
-        "name": "advanced-cluster-management"
-      }
-      ...
-      {
-        "name": "jaeger-product"
-      }
-      ...
-      {
-      {
-        "name": "quay-operator"
-      }
-
------------------------------------
-Pruning index images
------------------------------------
-
-Use this pruning method to mirror only the subset of Operators required.
-
-#. Authenticate with ``registry.redhat.io`` and your target registry as follows:
-
-   .. code-block:: console
-
-      $ export REGISTRY_AUTH_FILE=<path_to_pull_secret>/pull-secret.json
-
-#. Set the following environment variable:
-
-   .. code-block:: console
-
-      $ export JUMP_HOST=<Your_jump_hostname>
-
-
-#. For the **NVIDIA GPU Operator** run the following command to prune the source index of all but the specified packages:
-
-   .. code-block:: console
-
-      $ opm index prune -f registry.redhat.io/redhat/certified-operator-index:v4.9 -p gpu-operator-certified -t ${JUMP_HOST}:5000/catalog/certified-operator-index:v4.9
-
-#. For the **Node Feature Discovery Operator** run the following command to prune the source index of all but the specified packages:
-
-   .. code-block:: console
-
-      $ opm index prune -f registry.redhat.io/redhat/redhat-operator-index:v4.9 -p nfd -t ${JUMP_HOST}:5000/catalog/redhat-operator-index:v4.9
-
-#. Run the following command to push the **NVIDIA GPU Operator** index image to your target registry:
-
-   .. code-block:: console
-
-      $ podman push ${JUMP_HOST}:5000/catalog/certified-operator-index:v4.9
-
-#. Run the following command to push the **Node Feature Discovery Operator** index images to your target registry:
-
-   .. code-block:: console
-
-      $ podman push ${JUMP_HOST}:5000/catalog/redhat-operator-index:v4.9
 
 **************************************************************************
-Mirror Node Feature Discovery and the NVIDIA GPU Operator Catalog
+Mirror Node Feature Discovery (NFD) and the NVIDIA GPU Operator Catalog
 **************************************************************************
 
-You can mirror the Operator content of a Red Hat-provided catalog, or a custom catalog, into a container image registry using the ``oc adm catalog mirror`` command. The target registry must support `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.
+You can mirror the Operator content of a Red Hat-provided catalog, or a custom catalog, into a
+container image registry using the ``oc-mirror`` commands.
+The target registry must support `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.
 
-The ``oc adm catalog mirror`` command also automatically mirrors the index image specified during the mirroring process, whether it be a Red Hat-provided index image or your own custom-built index image, to the target registry. You can then use the mirrored index image to create a catalog source that allows Operator Lifecycle Manager (OLM) to load the mirrored catalog onto your OpenShift Container Platform cluster.
+The ``oc-mirror`` commands also automatically mirrors the index
+image specified during the mirroring process, whether it be a Red Hat-provided index image or
+your own custom-built index image, to the target registry.
+You can then use the mirrored index image to create a catalog source that allows
+Operator Lifecycle Manager (OLM) to load the mirrored catalog onto your
+OpenShift Container Platform cluster.
+
+
+Prerequisites
+=============
+
+* Download oc-mirror tools:
+
+  .. code-block:: console
+     wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/oc-mirror.tar.gz
+
+  Copy the ``oc-mirror`` binary to a directory that is in your PATH environment variable, such as ``/usr/bin``. Run ``oc mirror help`` to confirm the plugin is installed.
+
+* Create ``pull-secret.json`` file:
+  Create the ``pull-secret.json`` file, then copy the file to  ``~/.docker/config.json cp ~/pull-secret.json ~/.docker/config.json``.
+
+
+Procedure
+=========
 
 #. Set the following environment variable:
 
@@ -743,125 +685,293 @@ The ``oc adm catalog mirror`` command also automatically mirrors the index image
 
    .. note:: Specify the fully qualified domain name (FQDN) for **<Your_jump_hostname>**.
 
-#. Run the following command to mirror the GPU content:
-
-   .. note:: The assumption here is your mirror registry is on the same network.
+#. Export ``JUMP_HOST=ec2-3-16-218-255.us-east-2.compute.amazonaws.com``. If you don’t know the catalog image index, use the following command:
 
    .. code-block:: console
 
-      $ oc adm catalog mirror \
-         --insecure=true \
-         --index-filter-by-os='linux/amd64' \
-         -a ${REGISTRY_AUTH_FILE} \
-         ${JUMP_HOST}:5000/catalog/certified-operator-index:v4.9 ${JUMP_HOST}:5000/operators
+      $ oc-mirror list operators --catalogs --version=4.12
 
-   .. note:: The namespace on your mirror registry used to store the mirrored Operator content is called `operators` above.
+   The available OpenShift OperatorHub catalogs include:
 
-#. Run the following command to mirror the **Node Feature Discovery Operator**:
+   * ``registry.redhat.io/redhat/redhat-operator-index:v4.12``
+   * ``registry.redhat.io/redhat/certified-operator-index:v4.12``
+   * ``registry.redhat.io/redhat/community-operator-index:v4.12``
+   * ``registry.redhat.io/redhat/redhat-marketplace-index:v4.12``
 
-   .. note:: The assumption here is your mirror registry is on the same network.
-
-   .. code-block:: console
-
-      $ oc adm catalog mirror \
-         --insecure=true \
-         --index-filter-by-os='linux/amd64' \
-         -a ${REGISTRY_AUTH_FILE} \
-         ${JUMP_HOST}:5000/catalog/redhat-operator-index:v4.9 ${JUMP_HOST}:5000/operators
-
-#. After mirroring the content to your registry, inspect the manifests directory that is generated in your current directory.
-
-   The manifest directory format is:
+#. Use the following command to check for the correct operator name in the image index:
 
    .. code-block:: console
 
-      manifests-<index_image_name>-<random_number>
+      $ oc-mirror list operators --catalog=registry.redhat.io/redhat/redhat-operator-index:v4.11 --version=4.11
 
-  **Example**:
 
-   .. code-block:: console
+*****************************************************
+Mirror the Node Feature Discovery (NFD) CatalogSource
+*****************************************************
 
-     manifests-certified-operator-index-1634633799
-
-   .. code-block:: console
-
-     manifests-redhat-operator-index-1634633663
-
-  Repeat the steps below for the different index images.
-
-#. On a host with access to the disconnected cluster, create the ImageContentSourcePolicy (ICSP) object by running the following command to specify the ``imageContentSourcePolicy.yaml`` file in your manifests directory:
+#. Export ``JUMP_HOST=ec2-3-16-218-255.us-east-2.compute.amazonaws.com``:
 
    .. code-block:: console
 
-      $ oc create -f <path/to/manifests/dir>/imageContentSourcePolicy.yaml
+      $ oc mirror init --registry ${JUMP_HOST}:5000/oc-mirror-nfd-metadata > imageset-config-nfd.yaml
 
-   where ``<path/to/manifests/dir>`` is the path to the manifests directory for your mirrored content.
+   .. note:: If you want to mirror other operators, you need to create different ``imageset-config.yaml`` files, using different metadata names. For example, NFD can use oc-mirror-nfd-metadata and GPU can use oc-mirror-gpu-metadata. Otherwise, the ``oc-mirror`` tool overwrites the previous mirrored images.
 
-   .. note:: Applying the ICSP causes all worker nodes in the cluster to restart. You must wait for this reboot process to finish cycling through each of your worker nodes before proceeding.
+#. Edit the ``imageset-config-nfd.yaml`` file as shown below:
 
-#. Customize the ``mapping.txt`` file with the ``REGISTRY_AUTH_FILE``.
-
-   .. code-block:: console
-
-      $ oc image mirror -f <path/to/manifests/dir>/mapping.txt -a ${REGISTRY_AUTH_FILE} --insecure
-
-*************************************************************
-Creating a catalog from an index image
-*************************************************************
-
-You can create an Operator catalog from an index image and apply it to an OpenShift Container Platform cluster for use with Operator Lifecycle Manager (OLM).
-
-Create a CatalogSource object that references your **Node Feature Discovery Operator** index images. Previously you used the ``oc adm catalog mirror`` command to mirror your catalog to a target registry, so you can use the generated ``catalogSource.yaml`` file in ``manifests-redhat-operator-index-<random_number>`` as a starting point.
-
-#. Modify the following to your specifications and save it as a ``catalogSource_redhat_operator.yaml`` file:
+   * Set ``skipTLS`` to ``true``.
+   * Set ``catalog`` to ``registry.redhat.io/redhat/redhat-operator-index:v4.12``.
+   * Set ``packages`` ``name`` to ``nfd``.
 
    .. code-block:: yaml
 
-      apiVersion: operators.coreos.com/v1alpha1
-      kind: CatalogSource
-      metadata:
-         name: redhat-operator-index
-         namespace: openshift-marketplace
-      spec:
-        image: ${JUMP_HOST}:5000/operators/catalog-redhat-operator-index:v4.9
-        sourceType: grpc
-        displayName: My Operator Catalog
-        publisher: <publisher_name>
-        updateStrategy:
-          registryPoll:
-            interval: 30m
+      kind: ImageSetConfiguration
+      apiVersion: mirror.openshift.io/v1alpha2
+      storageConfig:
+        registry:
+          imageURL: ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-nfd-metadata
+          skipTLS: true
+      mirror:
+      operators:
+      - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.11
+      packages:
+      - name: nfd
+      additionalImages:
+      - name: registry.redhat.io/ubi8/ubi:latest
+      helm: {}
 
-#. Use the file to create the ``CatalogSource`` object:
-
-   .. code-block:: console
-
-      $ oc apply -f catalogSource_redhat_operator.yaml
-
-Create a CatalogSource object that references your **NVIDIA GPU Operator** index image. Previously you used the ``oc adm catalog mirror`` command to mirror your catalog to a target registry, so you can use the generated ``catalogSource.yaml`` file in ``manifests-certified-operator-index-<random_number>`` as a starting point.
-
-#. Modify the following to your specifications and save it as a ``catalogSource_certified_operator.yaml`` file:
-
-   .. code-block:: yaml
-
-      apiVersion: operators.coreos.com/v1alpha1
-      kind: CatalogSource
-      metadata:
-        name: certified-operator-index
-        namespace: openshift-marketplace
-      spec:
-        image: ${JUMP_HOST}:5000/operators/catalog-certified-operator-index:v4.9
-        sourceType: grpc
-        displayName: My Operator Catalog
-        publisher: <publisher_name>
-        updateStrategy:
-          registryPoll:
-            interval: 30m
-
-#. Use the file to create the ``CatalogSource`` object:
+#. Mirror the image set to the private mirror registry:
 
    .. code-block:: console
 
-      $ oc apply -f catalogSource_certified_operator.yaml
+      $ oc-mirror --dest-skip-tls=true --config=./imageset-config-nfd.yaml docker://${JUMP_HOST}:5000
+
+
+   **Example Output**
+
+   .. code-block:: output
+
+      Rendering catalog image
+      "ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/redhat/redhat-operator-index:v4.11"
+      with file-based catalog
+
+      Writing image mapping to oc-mirror-workspace/results-1670391296/mapping.txt
+      Writing CatalogSource manifests to oc-mirror-workspace/results-1670391296
+      Writing ICSP manifests to oc-mirror-workspace/results-1670391296
+
+   One of the files that the ``oc-mirror`` command creates is ``mapping.txt``. The ``mapping.txt`` file contains the mapping of publicly available external image name to the private mirror registry name.
+
+#. Mirror the workspace images from public registries to the local private registry using the mapping in that file by using the following command:
+
+   .. code-block:: console
+
+      $ oc apply -f ./oc-mirror-workspace/results-1670391296/
+
+   .. code-block:: console
+
+      Warning: resource catalogsources/redhat-operator-index is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by oc apply. oc apply should only be used on resources created declaratively by either oc create --save-config or oc apply. The missing annotation will be patched automatically.
+      catalogsource.operators.coreos.com/redhat-operator-index configured
+      imagecontentsourcepolicy.operator.openshift.io/generic-0 created
+      imagecontentsourcepolicy.operator.openshift.io/operator-0 created
+      imagecontentsourcepolicy.operator.openshift.io/release-0 created
+
+
+#. The ``mapping.txt`` file contains the mapping of publicly available external image name to the internal private registry name.
+
+   .. code-block:: console
+
+      $ oc image mirror -f mapping.txt -a ${REGISTRY_AUTH_FILE} --insecure
+
+   .. code-block:: console
+
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release manifests:
+      sha256:01296142b77456d1a513ce92b6d1d0964cfb3e4565659da33979f4755f20e607 -> 4.10.45-x86_64-telemeter
+      sha256:035b1f48ff64b6c899a861e62b6f1641363caa3b0f4b8ce9ba413cb98c005b8d -> 4.10.45-x86_64-cli
+      sha256:03dd364864aa85a01e316db55f0fb23d95a8d276e521ba34ab359b9a01436786 -> 4.10.45-x86_64-gcp-machine-controllers
+      sha256:04a087af6c1a10d54e32ea1ed875970dc90e9934970f1d38c11d90fdc9126a22 -> 4.10.45-x86_64-machine-api-operator
+      sha256:066a32be9820c8191935c7351ad013eae7966a3248c3b3b4f7b9c16a54de2288 ->
+      .
+      .
+      .
+      .
+      sha256:fce9d5a42056d5db78343d7a3d643de941c8906e5c67d83da6717d91727010b4 -> 4.10.45-x86_64-libvirt-machine-controllers
+      sha256:fd375538a5d564710e073df41d1eedc4c6b44dc07d5ad9b60d275dce8751d1bd -> 4.10.45-x86_64-kube-proxy
+      sha256:fef1efe256b360a71c08ff853f98c5f0adc9d2d4dacb7e4da4e649bef9311f7d -> 4.10.45-x86_64-cluster-policy-controller
+      openshift/release-images manifests:
+      sha256:5f9ac79c9c257c28b8b51e79a0382de285d6e4c4e4537710b7c117601d320293 -> 4.10.45-x86_64
+      openshift4/ose-cluster-nfd-operator manifests:
+      sha256:18b25b256d3e8d0faa0d7b3adde3523530c0c3835ceafddf1644e8789245f99a -> 261da60b
+      openshift4/ose-cluster-nfd-operator-bundle manifests:
+      sha256:ef887a73afba03421fb8e521ab9b04b68e501345864f7c538e36c963d18a3a30 -> 1d4bfde1
+      openshift4/ose-kube-rbac-proxy manifests:
+      sha256:9958a0bf32e9d936366cd8d68306ef951e9a0da8b9a426454bd2dcd026b26260 -> eec3eee9
+      openshift4/ose-node-feature-discovery manifests:
+      sha256:f1e137e47da161d4f9e0d08fc9dc8e9fcfac83802136af4572906aa5a585513c -> 27356c40
+      redhat/redhat-operator-index blobs:
+      registry.redhat.io/redhat/redhat-operator-index sha256:f0e75f0712cb54427ddf23f001cb109d505557b677f932717bbd1e6219bcecb3 1.469KiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:76f350503d543ff41e7ce886825e5d294695df71693d7a187ff434b74bb178ef 23.98KiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:b3df9fea55ab39308e944627140218620ee2236bce74d76857856f90025d1e6d 7.484MiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:558efb586a99ff292b3bbbef6e0f8cf6ac35d526457dbc62e05af7cb7d3ee644 11.05MiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:26be6f36c89f3628abb68fef7b0f471945c70459cee10d3903ba2d59f8f6431d 36.6MiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:9df9aa2998cab73cb8c78646332865ce19dd4dc59f2d0d246b82d52befa48d22 81.72MiB
+      registry.redhat.io/redhat/redhat-operator-index sha256:9f58a5c0884cff9baed5059eae0dde7fa69fdef5d3aa3efd7a87891166d63d94 133MiB
+      manifests:
+      sha256:7f7318ee33093c95e0c641881c16b0fc683e028c7e8fdf4ce0bbb4e3cde77b1d -> v4.10
+      ubi8/ubi
+      manifests:
+      sha256:7772c4e458ad8e38d2b37916d0bb3d4d403e025b9148668152eb71c062a2c78d -> latest
+      stats: shared=0 unique=7 size=269.9MiB ratio=1.00
+      phase 0:
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-cluster-nfd-operator        blobs=0 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-node-feature-discovery      blobs=0 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 ubi8/ubi                                   blobs=0 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-kube-rbac-proxy             blobs=0 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift/release-images                   blobs=0 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 redhat/redhat-operator-index               blobs=7 mounts=0 manifests=1   shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift/release                          blobs=0 mounts=0 manifests=161 shared=0
+      ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-cluster-nfd-operator-bundle blobs=0 mounts=0 manifests=1   shared=0
+      info: Planning completed in 31.83s
+      sha256:7772c4e458ad8e38d2b37916d0bb3d4d403e025b9148668152eb71c062a2c78d ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/ubi8/ubi:latest
+      sha256:f1e137e47da161d4f9e0d08fc9dc8e9fcfac83802136af4572906aa5a585513c ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift4/ose-node-feature-discovery:27356c40
+      .
+      .
+      .
+      sha256:b497c394e241ae617b201019685e600c5c20fd7a47a39ff3db048a6fff48cc8e ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-ovirt-machine-controllers
+      sha256:3985503d42e64383dc1bae41a6746bad3d5130b354e4c579658491374eef0f5c ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-cluster-image-registry-operator
+      sha256:c5ef6f0e2424116f05316e25c4c86edee5e46a8151bbeaf2a041efb539416f15 ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-vsphere-csi-driver-operator
+      sha256:7f7318ee33093c95e0c641881c16b0fc683e028c7e8fdf4ce0bbb4e3cde77b1d ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/redhat/redhat-operator-index:v4.10
+      info: Mirroring completed in 1.24s (19.68kB/s)`
+
+
+#. Show the catalogsource pods in the namespace ``openshift-marketplace`` using the following command:
+
+   .. code-block:: console
+
+      $ oc get pods -n openshift-marketplace
+
+   **Example Output**
+
+   .. code-block:: output
+
+      NAME                                    READY   STATUS    RESTARTS   AGE
+      marketplace-operator-845d9d7557-hfzqp   1/1     Running   0          6d19h
+      qe-app-registry-lbdlp                   1/1     Running   0          4h40m
+      redhat-operator-index-gqvwn             1/1     Running   0          85s
+
+
+****************************
+Mirror the GPU CatalogSource
+****************************
+
+#. Check for the correct package name for the GPU Operator using the following commands:
+
+   .. code-block:: console
+
+      $ oc-mirror list operators --catalog=registry.redhat.io/redhat/certified-operator-index:v4.12 --version=4.12
+
+
+   .. code-block:: console
+
+      $ oc-mirror list operators --catalog=registry.redhat.io/redhat/certified-operator-index:v4.12 --package=gpu-operator-certified
+
+
+   **Example Output**
+
+   .. code-block:: output
+
+      NAME                    DISPLAY NAME         DEFAULT CHANNEL  PACKAGE   CHANNEL HEAD
+      gpu-operator-certified  NVIDIA   GPU Operator  v22.9
+      gpu-operator-certified  stable   gpu-operator-certified.v22.9.0
+      gpu-operator-certified  v1.10    gpu-operator-certified.v1.10.1
+      gpu-operator-certified  v1.11    gpu-operator-certified.v1.11.1
+      gpu-operator-certified  v22.9    gpu-operator-certified.v22.9.0
+
+
+#. Create the ``imageset-config-gpu.yaml`` file using the following command:
+
+   .. code-block:: console
+
+      oc-mirror init --registry ${JUMP_HOST}:5000/oc-mirror-gpu-metadata > imageset-config-gpu.yaml
+
+#. Edit the ``imageset-config-gpu.yaml`` file to mirror the Operator images that you want to mirror.
+
+   - To mirror all versions of the Operator, perform the following edits:
+
+     * Set ``skipTLS`` to ``true``.
+     * Set ``catalog`` to ``registry.redhat.io/redhat/redhat-operator-index:v4.12``.
+     * Set ``packages`` ``name`` to ``gpu-operator-certified``.
+
+     .. code-block:: yaml
+
+        kind: ImageSetConfiguration
+        apiVersion: mirror.openshift.io/v1alpha2
+        storageConfig:
+          registry:
+            imageURL: ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-gpu-metadata
+          skipTLS: true
+        mirror:
+          platform:
+            channels:
+            - name: stable-4.12
+              type: ocp
+        operators:
+        - catalog: registry.redhat.io/redhat/certified-operator-index:v4.12
+          packages:
+          - name: gpu-operator-certified
+        additionalImages:
+        - name: registry.redhat.io/ubi8/ubi:latest
+        helm: {}
+
+   - To mirror only v22.9.0, make the same edits as the preceding example and also specify the ``minversion`` value:
+
+     .. code-block:: yaml
+        :emphasize-lines: 16
+
+        kind: ImageSetConfiguration
+        apiVersion: mirror.openshift.io/v1alpha2
+        storageConfig:
+          registry:
+            imageURL: ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-gpu-metadata
+          skipTLS: true
+        mirror:
+          platform:
+            channels:
+            - name: stable-4.12
+              type: ocp
+        operators:
+        - catalog: registry.redhat.io/redhat/certified-operator-index:v4.12
+          packages:
+          - name: gpu-operator-certified
+            minversion: "22.9.0"
+        additionalImages:
+        - name: registry.redhat.io/ubi8/ubi:latest
+        helm: {}
+
+#. Mirror the GPU Operator CatalogSource using the following command:
+
+   .. code-block:: json
+
+      $ oc-mirror --dest-skip-tls=true --skip-missing --continue-on-error --config=./imageset-config-gpu.yaml docker://${JUMP_HOST}:5000
+
+
+   The ``oc-mirror`` tool generates a folder similar to ``oc-mirror-workspace/results-1670395763``.
+
+
+#. Create the catalog source for the GPU Operator using the following command:
+
+   .. code-block:: console
+
+      $ oc apply -f oc-mirror-workspace/results-1670395763
+
+   **Example Output**
+
+   .. code-block:: output
+
+      catalogsource.operators.coreos.com/certified-operator-index created
+      imagecontentsourcepolicy.operator.openshift.io/generic-0 unchanged
+      imagecontentsourcepolicy.operator.openshift.io/operator-0 configured
+      imagecontentsourcepolicy.operator.openshift.io/release-0 unchanged
+
 
 *************************************************************
 Verify the mirrored catalog source
@@ -875,7 +985,10 @@ Verify the following resources are successfully created.
 
           $ oc get pods -n openshift-marketplace
 
-   .. code-block:: console
+
+   **Example Output**
+
+   .. code-block:: output
 
       NAME                                   READY   STATUS             RESTARTS      AGE
       certified-operator-index-bq7bt         0/1     Running            0             17h
@@ -888,7 +1001,10 @@ Verify the following resources are successfully created.
 
       $ oc get packagemanifest -n openshift-marketplace
 
-   .. code-block:: console
+
+   **Example Output**
+
+   .. code-block:: output
 
       NAME                       DISPLAY                       TYPE   PUBLISHER        AGE
       certified-operator-index   Openshift Telco Docs          grpc   Openshift Docs   20h
@@ -912,24 +1028,25 @@ Verify the following resources are successfully created.
 Install the Node Feature Discovery Operator
 *************************************************************
 
-
 Follow the guidance :ref:`here <install-nfd>` to install the **Node Feature Discovery (NFD) Operator**. If you are installing on any Openshift Container Platform version other than ``4.8.19``, ``4.8.21`` or ``4.9.8`` proceed to :ref:`install-gpu-noworkaround`.
 
-------------------------------------------------
 Optional: Configure repoConfig using Local Yum Repository
-------------------------------------------------
+=========================================================
 
 These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
 Carry on the following steps on the jump host when it is connected to the cluster.
 
-#. Create a Local-Base.repo as below:
+-  Create a Local-Base.repo as below:
 
    .. code-block:: console
 
       $ export JUMP_HOST=<Your_jump_hostname>
 
-   .. code-block:: console
+
+   **Example Output**
+
+   .. code-block:: output
 
       $ cat <<EOF >Local-Base.repo
       [rhel-8-for-x86_64-baseos-rpms]
@@ -950,6 +1067,7 @@ Carry on the following steps on the jump host when it is connected to the cluste
       protect=1
       priority=1
       EOF
+
 ***************************************************************************************************
 Optional: Installing the NVIDIA GPU Operator on OpenShift version ``4.8.19``, ``4.8.21``, ``4.9.8``
 ***************************************************************************************************
