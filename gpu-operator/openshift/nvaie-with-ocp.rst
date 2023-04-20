@@ -27,7 +27,6 @@ For OpenShift Container Platform bare metal or VMware vSphere with GPU Passthrou
    The option exists to use the vGPU driver with bare metal and VMware vSphere VMs with GPU Passthrough. In this case, follow the guidance in the section “OpenShift Container Platform on VMware vSphere with NVIDIA vGPU”.
 
 
-
 ****************************************************************
 OpenShift Container Platform on VMware vSphere with NVIDIA vGPUs
 ****************************************************************
