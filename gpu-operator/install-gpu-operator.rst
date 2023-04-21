@@ -121,6 +121,9 @@ The following options are available when using the Helm chart. These options can
 
    * - ``driver.version``
      - Version of the NVIDIA datacenter driver supported by the Operator.
+
+       If you set ``driver.usePrecompiled`` to ``true``, then set this field to
+       a driver branch, such as ``525``.
      - Depends on the version of the Operator. See the Component Matrix
        for more information on supported drivers.
 

@@ -70,9 +70,9 @@ Determining if a Precompiled Driver Container is Available
 
 The precompiled driver containers are named according to the following pattern:
 
-<driver-version>-<linux-kernel-version>-<os-tag>
+   <driver-branch>-<linux-kernel-version>-<os-tag>
 
-For example, ``515.105.17-5.15.0-56-generic-ubuntu22.04``.
+For example, ``525-5.15.0-69-generic-ubuntu22.04``.
 
 Use one of the following ways to check if a driver container is available for your Linux kernel and driver branch:
 
@@ -99,15 +99,15 @@ Use one of the following ways to check if a driver container is available for yo
        Multinode Support: False
        Multi-Arch Support: True
        Logo: https://assets.nvidiagrid.net/ngc/logos/Infrastructure.png
-       Labels: NVIDIA AI Enterprise Supported, ARM, Kubernetes, Multi-Arch, X86, Infrastructure
+       Labels: Multi-Arch, NVIDIA AI Enterprise Supported, Infrastructure Software, Kubernetes Infrastructure
        Public: Yes
-       Last Updated: Mar 30, 2023
-       Latest Image Size: 620.18 MB
-       Latest Tag: 525.105.17-rhel8.7
+       Last Updated: Apr 20, 2023
+       Latest Image Size: 688.87 MB
+       Latest Tag: 525-5.15.0-69-generic-ubuntu22.04
        Tags:
-           525.105.17-rhel8.7
-           525.105.17-rhel8.6
-       ...
+           525-5.15.0-69-generic-ubuntu22.04
+           525-5.15.0-70-generic-ubuntu22.04
+           ...
 
 
 *****************************************************************
@@ -168,7 +168,7 @@ Perform the following steps to enable support for precompiled driver containers:
    .. literalinclude:: ./manifests/output/precomp-driver-running.txt
       :language: output
 
-   Ensure that the pod names include a Linux kernel semantic version number like ``5.15.0-69``.
+   Ensure that the pod names include a Linux kernel semantic version number like ``5.15.0-69-generic``.
 
 
 ***************************************************
@@ -229,20 +229,6 @@ you can perform the following steps to build and run a container image.
   Use the search field to filter the tags, such as ``base-ubuntu22.04``.
   The filtered results show the CUDA versions, such as ``12.1.0``, ``12.0.1``, ``12.0.0``, and so on.
 * You know the GPU driver branch, such as ``525``, that you want to use.
-* You know the GPU driver version for the driver branch, such as ``525.85.12``.
-
-  One way to find the driver version is to run the following command on a worker machine or other host with
-  the same operating system as the worker machine:
-
-  .. code-block:: console
-
-     $ apt-cache show nvidia-utils-${DRIVER_BRANCH}-server | grep Version | awk '{print $2}' | cut -d'-' -f1 | head -n 1
-
-  *Example Output*
-
-  .. code-block:: output
-
-     525.85.12
 
 .. rubric:: Procedure
 
@@ -288,12 +274,6 @@ you can perform the following steps to build and run a container image.
 
         $ export DRIVER_BRANCH=525
 
-   - Specify the driver version, such as ``525.85.12``:
-
-     .. code-block:: console
-
-        $ export DRIVER_VERSION=525.85.12
-
    - Specify the ``OS_TAG`` environment variable to identify the guest operating system name and version:
 
      .. code-block:: console
@@ -310,7 +290,7 @@ you can perform the following steps to build and run a container image.
           --build-arg KERNEL_VERSION=$KERNEL_VERSION \
           --build-arg CUDA_VERSION=$CUDA_VERSION \
           --build-arg DRIVER_BRANCH=$DRIVER_BRANCH \
-          -t ${PRIVATE_REGISTRY}/driver:${DRIVER_VERSION}-${KERNEL_VERSION}-${OS_TAG} .
+          -t ${PRIVATE_REGISTRY}/driver:${DRIVER_BRANCH}-${KERNEL_VERSION}-${OS_TAG} .
 
 #. Push the driver container image to your private registry.
 
@@ -326,14 +306,14 @@ you can perform the following steps to build and run a container image.
 
      .. code-block:: console
 
-        $ sudo docker push ${PRIVATE_REGISTRY}/driver:${DRIVER_VERSION}-${KERNEL_VERSION}-${OS_TAG}
+        $ sudo docker push ${PRIVATE_REGISTRY}/driver:${DRIVER_BRANCH}-${KERNEL_VERSION}-${OS_TAG}
 
 .. rubric:: Next Steps
 
 * To use the custom driver container image, follow the steps for enabling support during or after installation.
 
-  If you have not already installed the GPU Operator, in addition to the ``--set driver.usePrecompiled=true`` argument
-  for Helm, also specify the ``--set driver.repository="$PRIVATE_REGISTRY"`` argument.
+  If you have not already installed the GPU Operator, in addition to the ``--set driver.usePrecompiled=true``
+  and ``--set driver.version=${DRIVER_BRANCH}`` arguments for Helm, also specify the ``--set driver.repository="$PRIVATE_REGISTRY"`` argument.
 
   If the container registry is not public, you need to create an image pull secret in the GPU operator namespace
   and specify it in the ``--set driver.imagePullSecrets=<pull-secret>`` argument.
