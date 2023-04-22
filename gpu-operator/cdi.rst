@@ -47,7 +47,7 @@ legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
 machines or any architecture that has NVML libraries installed.
 
 Optionally, you can specify the runtime class for a workload.
-See :ref:`Specifying the Runtime Class for a Pod` for an example.
+See :ref:`Optional: Specifying the Runtime Class for a Pod` for an example.
 
 
 Support for Multi-Instance GPU
@@ -68,7 +68,7 @@ Refer to the :ref:`Supported Operating Systems and Kubernetes Platforms`.
 Enabling CDI During Installation
 ********************************
 
-Follow the instructions for installing the Operator with Helm on the :doc:`operator-install-guide` page.
+Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.
 
 When you install the Operator with Helm, specify the ``--set cdi.enabled=true`` argument.
 Optionally, also specify the ``--set cdi.default=true`` argument to use the CDI runtime class by default for all pods.
