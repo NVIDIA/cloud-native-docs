@@ -424,23 +424,49 @@ With this workflow, all existing GPU operator resources are updated inline and t
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v23.3.0
+      $ export RELEASE_TAG=v23.3.1
 
 #. Apply the custom resource definition for the cluster policy:
 
    .. code-block:: console
 
-      $  kubectl apply -f \
-           https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+      $ kubectl apply -f \
+          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+
+   *Example Output*
+
+   .. code-block:: output
+
+      customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured
 
 #. Apply the custom resource definition for Node Feature Discovery:
 
    .. code-block:: console
 
-      $  kubectl apply -f \
-           https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
+      $ kubectl apply -f \
+          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 
-#. Fetch the values from the chart (replace the ``.x`` below with the desired version)
+   *Example Output*
+
+   .. code-block:: output
+
+      customresourcedefinition.apiextensions.k8s.io/nodefeaturerules.nfd.k8s-sigs.io configured
+
+#. Update the information about the Operator chart:
+
+   .. code-block:: console
+
+      $ helm repo update nvidia
+
+   *Example Output*
+
+   .. code-block:: output
+
+      Hang tight while we grab the latest from your chart repositories...
+      ...Successfully got an update from the "nvidia" chart repository
+      Update Complete. ⎈Happy Helming!⎈
+
+#. Fetch the values from the chart:
 
    .. code-block:: console
 
@@ -452,7 +478,19 @@ With this workflow, all existing GPU operator resources are updated inline and t
 
    .. code-block:: console
 
-      $ helm upgrade gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml
+      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml
+
+   *Example Output*
+
+   .. code-block:: output
+
+      Release "gpu-operator" has been upgraded. Happy Helming!
+      NAME: gpu-operator
+      LAST DEPLOYED: Thu Apr 20 15:05:52 2023
+      NAMESPACE: gpu-operator
+      STATUS: deployed
+      REVISION: 2
+      TEST SUITE: None
 
 
 Option 2 - auto upgrade CRD using Helm hook
@@ -531,7 +569,7 @@ Thus ``clusterpolicy`` CRD will still remain by default.
    $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com
 
 To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``operator.cleanupCRD``
-is added to enable this hook. This is disabled by default. This paramter needs to be enabled with ``--set operator.cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
+is added to enable this hook. This is disabled by default. This parameter needs to be enabled with ``--set operator.cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
 
 .. note::
 
