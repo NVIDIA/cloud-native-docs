@@ -10,6 +10,30 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.13.1
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.13.1`` is a bugfix release.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.13.1``
+* ``libnvidia-container-tools 1.13.1``
+* ``libnvidia-container1 1.13.1``
+
+The following ``container-toolkit`` containers are included:
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.1-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.1-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.1-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.1``)
+
+Fixes and Features
+-------------------
+
+* Fixed a bug which would cause the update of an ldcache in the container to fail for images that do no use ldconfig (e.g. ``busybox``).
+* Fixed a bug where a failure to determine the CUDA driver version would cause the container to fail to start if ``NVIDIA_DRIVER_CAPABILITIES`` included ``graphics`` or ``display`` on Debian systems.
+* Fixed CDI specification generation on Debian systems.
+
 NVIDIA Container Toolkit 1.13.0
 ====================================
 
