@@ -38,7 +38,7 @@ using NVIDIA GPUs with Kubernetes.
    gpu-operator/gpu-driver-upgrades.rst
    gpu-operator/install-gpu-operator-vgpu.rst
    gpu-operator/install-gpu-operator-nvaie.rst
-   gpu-operator/openshift/contents.rst
+   GPU Operator on OpenShift <gpu-operator/openshift/contents.rst>
    gpu-operator/gpu-operator-mig.rst
    gpu-operator/gpu-sharing.rst
    gpu-operator/gpu-operator-rdma.rst

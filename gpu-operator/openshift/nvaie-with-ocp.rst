@@ -216,6 +216,10 @@ Now create the cluster policy, which is responsible for maintaining policy resou
    * **configMapName**: licensing-config
    * **nlsEnabled**: Enabled
 
+#. Expand the rdma menu and check **enabled** if you want to deploy GPUDirect RDMA:
+
+   .. image:: graphics/enable-gpu-direct-rdma.png
+
 #. Scroll down to specify repository path under the **NVIDIA GPU/vGPU Driver config** section. See the screenshot below for parameter examples and modify values accordingly.
 
    .. image:: graphics/createclusterpolicy2.png
@@ -223,9 +227,6 @@ Now create the cluster policy, which is responsible for maintaining policy resou
    * **enabled**: Enabled
    * **repository**: ``nvcr.io/nvaie``
 
-   #. Expand the rdma menu and check **enabled** if you want to deploy GPUDirect RDMA:
-
-      .. image:: graphics/enable-gpu-direct-rdma.png
 
 #. Scroll down further to image name and specifgy the NVIDIA vGPU driver version under the **NVIDIA GPU/vGPU Driver config** section.
 
