@@ -1,9 +1,9 @@
-**************************
-GPU Operator on OpenShift
-**************************
+################################
+NVIDIA GPU Operator on OpenShift
+################################
 
 .. toctree::
-   :maxdepth: 2
+   :titlesonly:
 
    introduction.rst
    prerequisites.rst

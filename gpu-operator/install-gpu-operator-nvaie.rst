@@ -1,17 +1,43 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings # #, * *, =, -, ^, "
+
 .. Date: Aug 18 2021
 .. Author: cdesiniotis
 
 .. _install-gpu-operator-nvaie:
 
-
 #####################
 NVIDIA AI Enterprise
 #####################
 
+.. contents::
+   :local:
+   :depth: 2
+   :backlinks: none
 
-NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with  NVIDIA-Certified  Systems. Additional information can be found at the `NVIDIA AI Enterprise web page <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/#benefits>`_.
 
- 
+**************************************************
+About NVIDIA AI Enterprise and Supported Platforms
+**************************************************
+
+NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
+Additional information can be found at the `NVIDIA AI Enterprise <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/>`_ web page.
+
 NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
 The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.
 
@@ -21,15 +47,18 @@ The pre-configured GPU Operator differs from the GPU Operator in the public NGC 
 
   * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
 
+The following sections apply to the following configurations:
 
-This page provides documentation for the following configurations:
+* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU
+* VMware vSphere with Tanzu
 
-* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
-* VMware vSphere with Tanzu.
-* Red Hat Openshift on bare metal and on vSphere VMs with GPU passthrough and vGPU.
+NVIDIA AI Enterprise includes support for Red Hat OpenShift Container Platform.
 
-The following sections are applicable to the first two configurations and describe how to deploy the GPU Operator using the Helm Chart.
-For Red Hat Openshift configurations, please follow this procedure `NVIDIA AI Enterprise with OpenShift <nvaie-ocp>`.
+* OpenShift Container Platform on bare metal or VMware vSphere with GPU Passthrough
+* OpenShift Container Platform on VMware vSphere with NVIDIA vGPU
+
+For Red Hat OpenShift, refer to :doc:`openshift/nvaie-with-ocp`.
+
 
 ***********************
 Installing GPU Operator
@@ -38,7 +67,7 @@ Installing GPU Operator
 To install GPU Operator with NVIDIA AI Enterprise, apply the following steps.
 
 .. note::
-    
+
    You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
 Create the ``gpu-operator`` namespace:
 
@@ -123,7 +152,7 @@ Installing GPU Operator with the NVIDIA Datacenter Driver
 To install GPU Operator on baremetal with the NVIDIA Datacenter Driver, apply the following steps.
 
 .. note::
-    
+
    You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
 Create the ``gpu-operator`` namespace:
 
@@ -209,7 +238,7 @@ Create a new ``licensing-config-new`` ConfigMap object in the ``gpu-operator`` n
     $ kubectl create configmap licensing-config-new \
         -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
-      
+
 Edit the clusterpolicies by using the command:
 
 .. code-block:: console
