@@ -34,7 +34,7 @@ build_builder:
     reports:
       dotenv: build.env
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - docker/Dockerfile
         - "deps/*"
@@ -61,7 +61,8 @@ build:
     reports:
       dotenv: build.env
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH =~ /-v[0-9]/
 
 
 
@@ -69,20 +70,30 @@ pages:
   image: "${CONTAINER_RELEASE_IMAGE}"
   stage: deploy
   script:
-  - ./repo docs --build internal
   - rm -rf public
-  - cp -r _build/docs/forge-docs/latest-internal public
+  - cp -r _build/docs/ public
   tags:
   - pages
   artifacts:
     paths:
     - public
+  dependencies:
+  - build
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+
+.ssh-setup:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
 
 
 # https://about.gitlab.com/blog/2016/12/07/building-a-new-gitlab-docs-site-with-nanoc-gitlab-ci-and-gitlab-pages/
 review:
+  extends: .ssh-setup
   stage: deploy
   cache: {}
   image: "${BUILDER_IMAGE}"
@@ -91,17 +102,23 @@ review:
     - type/docker
   environment:
     name: "review/${CI_MERGE_REQUEST_IID}"
-    url: "https://${STAGING_HOST}/datacenter/cloud-native-play/review/${CI_MERGE_REQUEST_IID}/review/latest/"
+    url: "https://${STAGING_HOST}/datacenter/cloud-native-play/review/${CI_MERGE_REQUEST_IID}/"
     on_stop: review_stop
   script:
     - ls _build/docs/
-    - eval $(ssh-agent -s)
-    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
     - cd _build/docs/
     - ssh "${STAGING_USER}@${STAGING_HOST}" mkdir -p "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-    - rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+    - |+
+      pushd review/latest
+        rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
+      popd
+    - |+
+      for x in gpu-operator container-toolkit driver-containers
+      do
+        pushd "${x}"
+        rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}/${x}"
+        popd
+      done
   dependencies:
     - build
   rules:
@@ -109,8 +126,10 @@ review:
 
 
 review_stop:
+  extends: .ssh-setup
   stage: deploy
   cache: {}
+  dependencies: []
   image: "${BUILDER_IMAGE}"
   tags:
     - os/linux
@@ -120,11 +139,40 @@ review_stop:
     action: stop
   script:
     - echo "Delete files from ${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-    - eval $(ssh-agent -s)
-    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
     - ssh "${STAGING_USER}@${STAGING_HOST}" rm -rf "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
   when: manual
+
+
+deploy_to_internal:
+  extends: .ssh-setup
+  stage: deploy
+  image:
+    name: "${CONTAINER_RELEASE_IMAGE}"
+  tags:
+    - os/linux
+    - type/docker
+  variables:
+    HTML_PATH: "_build/docs/"
+  script:
+    - find "${HTML_PATH}"
+    - export VERSION="${CI_COMMIT_BRANCH#*v}"
+    - export COMPONENT="${CI_COMMIT_BRANCH%-v*}"
+    - echo "Releasing internal docs for ${COMPONENT} and version ${VERSION}"
+    - |+
+      for x in "${COMPONENT}"
+      do
+        isnew=$(if ssh "${STAGING_USER}@${STAGING_HOST}" "ls ${STAGING_SRC_PATH}/${x}/${VERSION} 2> /dev/null"; then echo "false"; else echo "true"; fi)
+        echo "Uploading ${x} HTML as version...${VERSION} and is new...${isnew}"
+        pushd "${HTML_PATH}/${x}/latest"
+          rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/${VERSION}/"
+          if [ "true" == "${isnew}" ] || [ "true" == "${FORCE_LATEST}" ]; then
+            rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/latest/"
+          fi
+        popd
+      done
+  dependencies:
+    - build
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /.+-v[0-9]+.+/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web")

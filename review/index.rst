@@ -22,8 +22,8 @@ Technical Review
 
 Refer to the following URLs for the review HTML:
 
-* `NVIDIA Container Toolkit <../../container-toolkit/latest/index.html>`_
-* `NVIDIA Driver Containers <../../driver-containers/latest/index.html>`_
-* `NVIDIA GPU Operator <../../gpu-operator/latest/index.html>`_
+* `NVIDIA Container Toolkit <./container-toolkit/latest/index.html>`_
+* `NVIDIA Driver Containers <./driver-containers/latest/index.html>`_
+* `NVIDIA GPU Operator <./gpu-operator/latest/index.html>`_
 
 Add comments and corrections to the MR: |gitlab_mr_url|
