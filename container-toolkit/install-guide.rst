@@ -3,13 +3,13 @@
 
 .. _install-guide:
 
-#########################
+##################
 Installation Guide
-#########################
+##################
 
-*********************
+*******************
 Supported Platforms
-*********************
+*******************
 
 The NVIDIA Container Toolkit is available on a variety of Linux distributions and supports different container engines.
 
@@ -21,7 +21,7 @@ The NVIDIA Container Toolkit is available on a variety of Linux distributions an
 
 
 Linux Distributions
-=======================
+===================
 
 Supported Linux distributions are listed below:
 
@@ -70,7 +70,7 @@ Supported Linux distributions are listed below:
 (%) Ubuntu 20.04 and Ubuntu 22.04 packages are symlinked (redirected) to ``ubuntu18.04``
 
 Container Runtimes
-====================
+==================
 
 Supported container runtimes are listed below:
 
@@ -91,16 +91,17 @@ Supported container runtimes are listed below:
 +----------------------+-----------------+---------+-----------------+
 
 .. note::
+
     On Red Hat Enterprise Linux (RHEL) 8, Docker is no longer a supported container runtime. See
     `Building, Running and Managing Containers <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index>`_
     for more information on the container tools available on the distribution.
 
-********************
-Pre-Requisites
-********************
+*************
+Prerequisites
+*************
 
 NVIDIA Drivers
-================
+==============
 
 Before you get started, make sure you have installed the NVIDIA driver for your Linux distribution. The
 recommended way to install drivers is to use the package manager for your distribution but other installer
@@ -110,7 +111,7 @@ For instructions on using your package manager to install drivers from the offic
 the steps in this `guide <https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html>`_.
 
 Platform Requirements
-========================
+=====================
 
 The list of prerequisites for running NVIDIA Container Toolkit is described below:
 
@@ -129,9 +130,9 @@ The list of prerequisites for running NVIDIA Container Toolkit is described belo
 
 ----
 
-********************
+****************************************
 Container Device Interface (CDI) Support
-********************
+****************************************
 
 .. include:: cdi-support.rst
 

@@ -4,7 +4,7 @@
 Getting Started
 =======================
 
-For installing containerd, follow the official `instructions <https://containerd.io/docs/getting-started/>`_ for your supported Linux distribution.
+For installing containerd, follow the official `containerd documentation <https://containerd.io/docs/getting-started/>`_ for your supported Linux distribution.
 For convenience, the documentation below includes instructions on installing containerd for various Linux distributions supported by NVIDIA.
 
 Step 0: Pre-Requisites

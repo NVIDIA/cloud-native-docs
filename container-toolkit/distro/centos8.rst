@@ -1,9 +1,10 @@
 Installing on CentOS 7/8
---------------------------
+------------------------
+
 The following steps can be used to setup the NVIDIA Container Toolkit on CentOS 7/8.
 
 Setting up Docker on CentOS 7/8
-++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++
 
 .. note::
 
@@ -131,7 +132,7 @@ This should result in a console output shown below:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. include:: install/repo-yum.rst
+.. include:: /install/repo-yum.rst
 
 Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 

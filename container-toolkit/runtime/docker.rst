@@ -1,10 +1,9 @@
 .. Date: August 10 2020
 .. Author: pramarao
 
-.. _docker:
 
 Docker
--------
+------
 
 The NVIDIA Container Toolkit provides different options for enumerating GPUs and the capabilities that are supported
 for CUDA containers. This user guide demonstrates the following features of the NVIDIA Container Toolkit:
@@ -18,7 +17,7 @@ for CUDA containers. This user guide demonstrates the following features of the 
 
 
 Adding the NVIDIA Runtime
-++++++++++++++++++++++++++
++++++++++++++++++++++++++
 
 To register the ``nvidia`` runtime, use the method below that is best suited to your environment.
 You might need to merge the new argument with your existing configuration. Three options are available:
