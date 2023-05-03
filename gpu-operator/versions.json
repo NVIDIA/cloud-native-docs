@@ -1,15 +1,12 @@
 {
-    "latest": "23.0.0",
+    "latest": "22.9.2",
     "versions":
     [
         {
-            "version": "23.0.0"
+            "version": "22.9.2"
         },
         {
             "version": "22.9.1"
-        },
-        {
-            "version": "22.9.0"
         },
         {
             "version": "22.9.0"

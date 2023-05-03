@@ -156,23 +156,27 @@ deploy_to_internal:
   variables:
     HTML_PATH: "_build/docs/"
   script:
-    - find "${HTML_PATH}"
     - export VERSION="${CI_COMMIT_BRANCH#*v}"
     - export COMPONENT="${CI_COMMIT_BRANCH%-v*}"
+    - |+
+      if [[ "${CI_COMMIT_MESSAGE}" =~ "/latest" ]]; then
+        export FORCE_LATEST=true
+      fi
     - echo "Releasing internal docs for ${COMPONENT} and version ${VERSION}"
     - |+
       for x in "${COMPONENT}"
       do
         isnew=$(if ssh "${STAGING_USER}@${STAGING_HOST}" "ls ${STAGING_SRC_PATH}/${x}/${VERSION} 2> /dev/null"; then echo "false"; else echo "true"; fi)
-        echo "Uploading ${x} HTML as version...${VERSION} and is new...${isnew}"
+        echo "Uploading ${x} HTML as version...${VERSION} and is new...${isnew} or forcing_latest...${FORCE_LATEST}"
         pushd "${HTML_PATH}/${x}/latest"
           rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/${VERSION}/"
           if [ "true" == "${isnew}" ] || [ "true" == "${FORCE_LATEST}" ]; then
             rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/latest/"
+            rsync -avz ./versions.json "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/versions.json"
           fi
         popd
       done
   dependencies:
     - build
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /.+-v[0-9]+.+/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web")
+    - if: $CI_COMMIT_BRANCH =~ /[a-z-]+-v[0-9]+.+/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web")
