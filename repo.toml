@@ -1,0 +1,63 @@
+[repo]
+logging = "warn"
+
+[repo_docs]
+enabled = true
+social_media_set = []
+social_media = []
+favicon = "${root}/assets/favicon.ico"
+logo = "${root}/assets/nvidia-logo-white.png"
+
+sphinx_conf_py_extra = """
+  extensions.extend(["sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
+  blockdiag_antialias = True
+  pygments_style = 'sphinx'
+  html_theme_options = {
+    'titles_only': True,
+    'logo_only': True,
+  }
+  html_domain_indices = False
+  html_use_index = False
+  html_extra_path = ["versions.json"]
+  highlight_language = 'console'
+  if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
+    rst_epilog = ".. |gitlab_mr_url| replace:: {}/-/merge_requests/{}".format(
+      os.environ["CI_MERGE_REQUEST_PROJECT_URL"], os.environ["CI_MERGE_REQUEST_IID"])
+"""
+
+#deps = [
+#  ["container-toolkit", "_build/docs/container-toolkit/latest"],
+#  ["driver-containers", "_build/docs/driver-containers/latest"],
+#  ["gpu-operator", "_build/docs/gpu-operator/latest"]
+#]
+
+
+[repo_docs.projects.container-toolkit]
+docs_root = "${root}/container-toolkit"
+project = "container-toolkit"
+name = "NVIDIA Container Toolkit"
+version = "1.11.0"
+copyright_start = 2020
+
+
+[repo_docs.projects.driver-containers]
+docs_root = "${root}/driver-containers"
+project = "driver-containers"
+name = "NVIDIA Driver Containers"
+version = "1.0"
+copyright_start = 2020
+
+
+[repo_docs.projects.gpu-operator]
+docs_root = "${root}/gpu-operator"
+project = "gpu-operator"
+name = "NVIDIA GPU Operator"
+version = "23.0.0"
+copyright_start = 2020
+
+[repo_docs.projects.review]
+docs_root = "${root}/review"
+name = "Technical Review"
+version = "0.1.0"
+copyright_start = 2023
