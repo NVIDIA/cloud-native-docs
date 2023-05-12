@@ -500,23 +500,48 @@ Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh
 A new parameter ``operator.upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
 This parameter needs to be set using ``--set operator.upgradeCRD=true`` option during upgrade command as below.
 
-Fetch latest values from the chart (replace the ``.x`` below with the desired version)
+#. Specify the Operator release tag in an environment variable:
 
-.. code-block:: console
+   .. code-block:: console
 
-   $ helm show values nvidia/gpu-operator --version=v22.9.x > values-v22.9.x.yaml
+      $ export RELEASE_TAG=v23.3.1
 
-.. code-block:: console
+#. Update the information about the Operator chart:
 
-   $ helm upgrade gpu-operator -n gpu-operator --set operator.upgradeCRD=true --disable-openapi-validation -f values-v22.9.x.yaml
+   .. code-block:: console
 
-.. note::
+      $ helm repo update nvidia
 
-   * Option ``--disable-openapi-validation`` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
-     Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
+   *Example Output*
 
-   * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-     In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
+   .. code-block:: output
+
+      Hang tight while we grab the latest from your chart repositories...
+      ...Successfully got an update from the "nvidia" chart repository
+      Update Complete. ⎈Happy Helming!⎈
+
+#. Fetch the values from the chart:
+
+   .. code-block:: console
+
+      $ helm show values nvidia/gpu-operator --version=$RELEASE_TAG > values-$RELEASE_TAG.yaml
+
+#. Update the values file as needed.
+
+#. Upgrade the Operator:
+
+   .. code-block:: console
+
+      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
+          --set operator.upgradeCRD=true --disable-openapi-validation -f values-$RELEASE_TAG.yaml
+
+   .. note::
+
+      * Option ``--disable-openapi-validation`` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
+        Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
+
+      * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
+        In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
 
 Cluster Policy Updates
 ^^^^^^^^^^^^^^^^^^^^^^^
