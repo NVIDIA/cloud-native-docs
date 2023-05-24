@@ -33,6 +33,93 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+23.3.2
+======
+
+New Features
+------------
+
+* Added support for Kubernetes v1.27.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
+
+* Added support for Red Hat OpenShift Container Platform 4.13.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
+
+* Added support for KubeVirt v0.59 and Red Hat OpenShift Virtualization 4.13.
+  Starting with KubeVirt versions v0.58.2 and v0.59.1 and OpenShift Virtualization 4.12.3 and 4.13.0,
+  you must set the ``DisableMDEVConfiguration`` feature gate to use NVIDIA vGPU.
+  Refer to :ref:`GPU Operator with KubeVirt` or
+  :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
+
+* Added support for running the Operator with Microsoft Azure Kubernetes Service (AKS).
+  You must use an AKS image with a preinstalled NVIDIA GPU driver and a preinstalled
+  NVIDIA Container Toolkit.
+  Refer to :doc:`microsoft-aks` for more information.
+
+* Added support for VMWare vSphere 8.0 U1 with Tanzu.
+
+* Added support for CRI-0 v1.26 with Red Hat Enterprise Linux 8.7
+  and support for CRI-0 v1.27 with Ubuntu 20.04.
+
+
+Improvements
+------------
+
+* Increased the default timeout for the ``nvidia-smi`` command that is used by the
+  NVIDIA Driver Container startup probe and made the timeout configurable.
+  Previously, the timeout duration for the startup probe was ``30s``.
+  In this release, the default duration is ``60s``.
+  This change reduces the frequency of container restarts when ``nvidia-smi``
+  runs slowly.
+  Refer to :ref:`Chart Customization Options` for more information.
+
+
+Fixed issues
+------------
+
+* Fixed an issue with NVIDIA GPU Direct Storage (GDS) and Ubuntu 22.04.
+  The Operator was not able to deploy GDS and other daemon sets.
+
+  Previously, the Operator produced the following error log:
+
+  .. code-block:: output
+
+     {"level":"error","ts":1681889507.829097,"msg":"Reconciler error","controller":"clusterpolicy-controller","object":{"name":"cluster-policy"},"namespace":"","name":"cluster-policy","reconcileID":"c5d55183-3ce9-4376-9d20-e3d53dc441cb","error":"ERROR: failed to transform the Driver Toolkit Container: could not find the 'openshift-driver-toolkit-ctr' container"}
+
+
+Known Limitations
+------------------
+
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* Ubuntu 18.04 is scheduled to reach end of standard support in May of 2023.
+  When Ubuntu transitions it to end of life (EOL), the NVIDIA GPU Operator and
+  related projects plan to cease building containers for 18.04 and to
+  cease providing support.
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
+  Additionally, network-restricted environments are not supported.
+
+
 23.3.1
 ======
 

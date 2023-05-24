@@ -9,3 +9,4 @@ repos:
     rev: v2.2.2
     hooks:
     - id: codespell
+      args: [ "-x", ".codespell_exclude_lines.txt"]

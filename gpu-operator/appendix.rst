@@ -40,4 +40,6 @@ Advanced Configurations
 
    GPU Operator with Amazon EKS <amazon-eks.rst>
 
+   GPU Operator with Azure AKS <microsoft-aks.rst>
+
    GPU Operator with Google GKE <google-gke.rst>

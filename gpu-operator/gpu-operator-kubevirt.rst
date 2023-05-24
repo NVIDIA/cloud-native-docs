@@ -72,14 +72,28 @@ Prerequisites
 
 * KubeVirt is installed in the cluster.
 
+* Starting with KubeVirt v0.58.2 and v0.59.1, set the ``DisableMDEVConfiguration`` feature gate:
+
+  .. code-block:: console
+
+     $ kubectl patch kubevirt -n kubevirt kubevirt  --type='json' \
+         -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
+
+  *Example Output*
+
+  .. code-block:: output
+
+     kubevirt.kubevirt.io/kubevirt patched
+
 
 Getting Started
 ===============
 
 The high-level workflow for using the GPU Operator with KubeVirt is as follows:
 
-1. Label worker nodes based on the GPU workloads they will run.
-2. Install the GPU Operator and set ``sandboxWorkloads.enabled=true``
+#. Ensure the disable mediated devices configuration feature gate is set.
+#. Label worker nodes based on the GPU workloads they will run.
+#. Install the GPU Operator and set ``sandboxWorkloads.enabled=true``
 
 There are additional steps required if using NVIDIA vGPU, which will be covered in subsequent sections
 

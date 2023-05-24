@@ -112,6 +112,12 @@ The following options are available when using the Helm chart. These options can
      - Indicate if MOFED is directly pre-installed on the host. This is used to build and load ``nvidia-peermem`` kernel module.
      - ``false``
 
+   * - ``driver.startupProbe``
+     - By default, the driver container has an initial delay of ``60s`` before starting liveness probes.
+       The probe runs the ``nvidia-smi`` command with a timeout duration of ``60s``.
+       You can increase the ``timeoutSeconds`` duration if the ``nvidia-smi`` command
+       runs slowly in your cluster.
+
    * - ``driver.usePrecompiled``
      - When set to ``true``, the Operator attempts to deploy driver containers that have
        precompiled kernel drivers.
