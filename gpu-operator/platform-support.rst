@@ -229,8 +229,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.21---1.27
          -
          - 7.0 U3c, 8.0 U1
-         - | 1.21, 1.22, 1.23,
-           | 1.24, 1.25
+         - 1.21---1.27
          -
          -
 
@@ -243,8 +242,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.26
 
        * - CentOS 7
-         - | 1.21, 1.22, 1,23
-           | 1.24, 1.25, 1.26
+         - 1.21---1.27
          -
          -
          -
@@ -264,12 +262,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6, 8.7
-         - | 1.21, 1.22, 1,23
-           | 1.24, 1.25, 1.26
+         - 1.21---1.27
          -
          -
-         - | 1.21, 1.22, 1.23,
-           | 1.24, 1.25
+         - 1.21---1.27
          -
          -
 
@@ -352,12 +348,11 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6, 8.7
-         - | 1.21, 1.22, 1,23
-           | 1.24, 1.25, 1.26
+         - 1.21---1.27
          -
          -
-         - | 1.21, 1.22, 1.23,
-           | 1.24, 1.25
+         - 1.21---1.27
+
 
 Supported Container Runtimes
 ----------------------------
