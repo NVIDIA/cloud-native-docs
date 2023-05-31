@@ -117,6 +117,7 @@ The following options are available when using the Helm chart. These options can
        The probe runs the ``nvidia-smi`` command with a timeout duration of ``60s``.
        You can increase the ``timeoutSeconds`` duration if the ``nvidia-smi`` command
        runs slowly in your cluster.
+     - ``60s``
 
    * - ``driver.usePrecompiled``
      - When set to ``true``, the Operator attempts to deploy driver containers that have
