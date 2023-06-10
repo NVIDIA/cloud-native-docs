@@ -17,13 +17,6 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m pip install --no-cache-dir -U pip
-RUN python3 -m pip install --no-cache-dir "Sphinx<=4.6" Pillow
-RUN python3 -m pip install --no-cache-dir sphinx-copybutton
-RUN python3 -m pip install --no-cache-dir sphinx-tabs
-RUN python3 -m pip install --no-cache-dir sphinxcontrib-blockdiag
-RUN python3 -m pip install --no-cache-dir "sphinx_rtd_theme==1.0.0"
-
 # Install fonts for blockdiag
 #Download IBM Plex
 #curl -fOSsL https://github.com/IBM/plex/raw/v5.1.3/IBM-Plex-Mono/fonts/complete/ttf/IBMPlexMono-Regular.ttf
@@ -31,4 +24,17 @@ RUN python3 -m pip install --no-cache-dir "sphinx_rtd_theme==1.0.0"
 COPY assets/*.ttf /usr/share/fonts/truetype/
 RUN fc-cache
 
-CMD ["make", "html"]
+ENV PM_PACKAGES_ROOT=/var/tmp/packman
+COPY . /work
+RUN /work/repo docs -p review || true
+RUN /work/tools/packman/python.sh -m pip install --no-cache-dir --no-deps -U \
+   -t /tmp/extension \
+   sphinxcontrib-blockdiag \
+   blockdiag \
+   funcparserlib \
+   Pillow \
+   webcolors \
+   sphinx-copybutton \
+   sphinx-tabs
+RUN (cd /tmp/extension; tar cf - . ) | (cd /var/tmp/packman/chk/sphinx/4.5.0.2-py3.7-linux-x86_64/; tar xf -)
+RUN rm -rf /work /tmp/extension
