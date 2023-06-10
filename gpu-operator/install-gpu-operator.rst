@@ -559,7 +559,7 @@ These options are defined as follows:
       equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
       The default value is ``true``.
 
-For using with RKE2 (Rancher Kubernetes Engine 2) or K3s following settings needs to be set in `ClusterPolicy`.
+For Rancher Kubernetes Engine 2 (RKE2), set the following in the `ClusterPolicy`.
 
 .. code-block:: yaml
 
