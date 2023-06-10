@@ -13,6 +13,7 @@ RUN apt-get update \
       imagemagick \
       make \
       curl \
+      xsltproc \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
