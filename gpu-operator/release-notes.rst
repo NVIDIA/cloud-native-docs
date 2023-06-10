@@ -728,7 +728,7 @@ Improvements
   vGPU drivers via a configuration file. The driver container starts the ``nvidia-topologyd`` daemon in vGPU configurations.
 * Added support for specifying the ``RuntimeClass`` variable via Helm.
 * Added ``nvidia-container-toolkit`` images to support CentOS 7 and CentOS 8.
-* ``nvidia-container-toolkit`` now supports configuring `containerd` correctly for K3s.
+* ``nvidia-container-toolkit`` now supports configuring `containerd` correctly for RKE2.
 * Added new debug options (logging, verbosity levels) for ``nvidia-container-toolkit``
 
 
