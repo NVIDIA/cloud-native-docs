@@ -10,7 +10,7 @@ stages:
 - build_docs
 - publish_docs
 
-build_image:
+.build_image:
   image: docker:19.03.12
   stage: build_image
   services:
@@ -28,6 +28,8 @@ build_image:
   artifacts:
     reports:
       dotenv: build.env
+
+.build_image_rules:
   rules:
     - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
@@ -35,6 +37,22 @@ build_image:
         - "deps/*"
         - repo.toml
 
+build_image_ext:
+  extends: .build_image
+  rules:
+    - if: $INTERNAL != null
+      when: never
+    - !reference [.build_image_rules, rules]
+
+build_image_int:
+  extends: .build_image
+  tags:
+    - os/linux
+    - type/docker
+  rules:
+    - if: $INTERNAL == null
+      when: never
+    - !reference [.build_image_rules, rules]
 
 build:
   stage: build_docs
