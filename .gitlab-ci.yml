@@ -1,25 +1,20 @@
 variables:
-  STAGING_HOST: "sw-docs-dgx-station.nvidia.com"
-  STAGING_SRC_PATH: "/raid/webapps/ROOT/datacenter/cloud-native-play"
-  STAGING_USER: "swdocs"
   CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
   CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.1.0"
   BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
+  PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
+  PROJECTS: review gpu-operator container-toolkit driver-containers edge gpu-telemetry
 
 stages:
-  - .pre
-  - build
-  - deploy
+- build_image
+- build_docs
+- publish_docs
 
-
-build_builder:
+.build_image:
   image: docker:19.03.12
-  stage: .pre
+  stage: build_image
   services:
     - docker:19.03.12-dind
-  tags:
-    - os/linux
-    - type/docker
   script:
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
     - docker build -t "${CONTAINER_TEST_IMAGE}" . -f docker/Dockerfile
@@ -33,6 +28,8 @@ build_builder:
   artifacts:
     reports:
       dotenv: build.env
+
+.build_image_rules:
   rules:
     - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
@@ -40,19 +37,33 @@ build_builder:
         - "deps/*"
         - repo.toml
 
+build_image_ext:
+  extends: .build_image
+  rules:
+    - if: $INTERNAL != null
+      when: never
+    - !reference [.build_image_rules, rules]
 
-build:
-  stage: build
-  image: "${BUILDER_IMAGE}"
-  script:
-    - ./repo docs -p container-toolkit || true
-    - ./repo docs -p driver-containers || true
-    - ./repo docs -p gpu-operator || true
-    - ./repo docs -p review || true
-    - echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
+build_image_int:
+  extends: .build_image
   tags:
     - os/linux
     - type/docker
+  rules:
+    - if: $INTERNAL == null
+      when: never
+    - !reference [.build_image_rules, rules]
+
+.build:
+  stage: build_docs
+  image: "${BUILDER_IMAGE}"
+  script:
+    - |+
+      for x in ${PROJECTS}
+      do
+        ./repo docs -p "${x}" || true
+      done
+    - echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
   artifacts:
     name: ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}
     paths:
@@ -60,123 +71,71 @@ build:
     expire_in: 1h
     reports:
       dotenv: build.env
+
+.build_rules:
   rules:
     - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH =~ /-v[0-9]/
 
+build_ext:
+  extends: .build
+  rules:
+    - if: $INTERNAL != null
+      when: never
+    - !reference [.build_rules, rules]
 
+build_int:
+  extends: .build
+  tags:
+    - os/linux
+    - type/docker
+  rules:
+    - if: $INTERNAL == null
+      when: never
+    - !reference [.build_rules, rules]
 
 pages:
   image: "${CONTAINER_RELEASE_IMAGE}"
-  stage: deploy
+  stage: publish_docs
   script:
-  - rm -rf public
-  - cp -r _build/docs/ public
-  tags:
-  - pages
+    - rm -rf public
+    - cp -r _build/docs/ public
   artifacts:
     paths:
-    - public
+      - public
+    expire_in: 1 week
   dependencies:
-  - build
+    - build_ext
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
-
-.ssh-setup:
-  stage: deploy
-  before_script:
-    - eval $(ssh-agent -s)
-    - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh && chmod 0600 ~/.ssh
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push" && $INTERNAL != 'true'
 
 
-# https://about.gitlab.com/blog/2016/12/07/building-a-new-gitlab-docs-site-with-nanoc-gitlab-ci-and-gitlab-pages/
-review:
-  extends: .ssh-setup
-  stage: deploy
-  cache: {}
-  image: "${BUILDER_IMAGE}"
-  tags:
-    - os/linux
-    - type/docker
-  environment:
-    name: "review/${CI_MERGE_REQUEST_IID}"
-    url: "https://${STAGING_HOST}/datacenter/cloud-native-play/review/${CI_MERGE_REQUEST_IID}/"
-    on_stop: review_stop
-  script:
-    - ls _build/docs/
-    - cd _build/docs/
-    - ssh "${STAGING_USER}@${STAGING_HOST}" mkdir -p "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-    - |+
-      pushd review/latest
-        rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-      popd
-    - |+
-      for x in gpu-operator container-toolkit driver-containers
-      do
-        pushd "${x}"
-        rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}/${x}"
-        popd
-      done
-  dependencies:
-    - build
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-
-
-review_stop:
-  extends: .ssh-setup
-  stage: deploy
-  cache: {}
-  dependencies: []
-  image: "${BUILDER_IMAGE}"
-  tags:
-    - os/linux
-    - type/docker
-  environment:
-    name: "review/${CI_MERGE_REQUEST_IID}"
-    action: stop
-  script:
-    - echo "Delete files from ${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-    - ssh "${STAGING_USER}@${STAGING_HOST}" rm -rf "${STAGING_SRC_PATH}/review/${CI_MERGE_REQUEST_IID}"
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-  when: manual
-
-
-deploy_to_internal:
-  extends: .ssh-setup
-  stage: deploy
+publish_docs:
   image:
-    name: "${CONTAINER_RELEASE_IMAGE}"
+    name: "${PUBLISHER_IMAGE}"
+    entrypoint: [ "" ]
+  stage: publish_docs
   tags:
     - os/linux
     - type/docker
   variables:
-    HTML_PATH: "_build/docs/"
+    HTML_PATH: "_build/docs"
   script:
-    - export VERSION="${CI_COMMIT_BRANCH#*v}"
-    - export COMPONENT="${CI_COMMIT_BRANCH%-v*}"
-    - |+
-      if [[ "${CI_COMMIT_MESSAGE}" =~ "/latest" ]]; then
-        export FORCE_LATEST=true
-      fi
-    - echo "Releasing internal docs for ${COMPONENT} and version ${VERSION}"
-    - |+
-      for x in "${COMPONENT}"
-      do
-        isnew=$(if ssh "${STAGING_USER}@${STAGING_HOST}" "ls ${STAGING_SRC_PATH}/${x}/${VERSION} 2> /dev/null"; then echo "false"; else echo "true"; fi)
-        echo "Uploading ${x} HTML as version...${VERSION} and is new...${isnew} or forcing_latest...${FORCE_LATEST}"
-        pushd "${HTML_PATH}/${x}/latest"
-          rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/${VERSION}/"
-          if [ "true" == "${isnew}" ] || [ "true" == "${FORCE_LATEST}" ]; then
-            rsync -avz --delete . "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/latest/"
-            rsync -avz ./versions.json "${STAGING_USER}@${STAGING_HOST}:${STAGING_SRC_PATH}/${x}/versions.json"
-          fi
-        popd
-      done
+  - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
+  - export VERSION="${CI_COMMIT_BRANCH//*v}"
+  - export DOCSET="${CI_COMMIT_BRANCH%-v*}"
+  - |+
+    if [[ "${CI_COMMIT_MESSAGE}" =~ $'\n/latest\n' ]]; then
+      export FORCE_LATEST=true
+    fi
+  - echo "Publishing docs for ${DOCSET} and version ${VERSION}"
+  - pushd "${HTML_PATH}/${DOCSET}/latest"
+  - deploy_s3.sh --archive "${DOCSET}" "${VERSION}"
+  - |+
+    if [ "true" == "${FORCE_LATEST}" ]; then
+      deploy_s3.sh --latest "${DOCSET}"
+    fi
   dependencies:
-    - build
+    - build_int
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /[a-z-]+-v[0-9]+.+/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web")
+    - if: $CI_COMMIT_BRANCH =~ /-v[0-9]/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" ) && $INTERNAL
