@@ -3,7 +3,8 @@ NVIDIA GPU Operator
 
 .. toctree::
    :caption: NVIDIA GPU Operator
-   :maxdepth: 1
+   :titlesonly:
+   :hidden:
 
    About the Operator <about.rst>
    Platform Support <platform-support.rst>
@@ -23,9 +24,11 @@ NVIDIA GPU Operator
 
 .. toctree::
    :caption: Related Projects
+   :hidden:
 
-   NVIDIA Container Toolkit <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html>
-   Kubernetes with GPUs <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/install-k8s.html>
+   NVIDIA Container Toolkit <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html>
    GPU Telemetry <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>
-   Multi-Instance GPU <https://docs.nvidia.com/datacenter/cloud-native/mig/mig.html>
-   Driver Containers <https://docs.nvidia.com/datacenter/cloud-native/driver-containers/overview.html>
+
+
+.. include:: overview.rst
+   :start-line: 9
