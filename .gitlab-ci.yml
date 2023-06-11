@@ -54,7 +54,7 @@ build_image_int:
       when: never
     - !reference [.build_image_rules, rules]
 
-build:
+.build:
   stage: build_docs
   image: "${BUILDER_IMAGE}"
   script:
@@ -71,10 +71,28 @@ build:
     expire_in: 1h
     reports:
       dotenv: build.env
+
+.build_rules:
   rules:
     - if: ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH) || $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH =~ /-v[0-9]/
 
+build_ext:
+  extends: .build
+  rules:
+    - if: $INTERNAL != null
+      when: never
+    - !reference [.build_rules, rules]
+
+build_int:
+  extends: .build
+  tags:
+    - os/linux
+    - type/docker
+  rules:
+    - if: $INTERNAL == null
+      when: never
+    - !reference [.build_rules, rules]
 
 pages:
   image: "${CONTAINER_RELEASE_IMAGE}"
@@ -87,7 +105,7 @@ pages:
       - public
     expire_in: 1 week
   dependencies:
-    - build
+    - build_ext
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push" && '$INTERNAL == null'
 
@@ -97,6 +115,9 @@ publish_docs:
     name: "${PUBLISHER_IMAGE}"
     entrypoint: [ "" ]
   stage: publish_docs
+  tags:
+    - os/linux
+    - type/docker
   variables:
     HTML_PATH: "_build/docs"
   script:
@@ -115,6 +136,6 @@ publish_docs:
       deploy_s3.sh --latest "${DOCSET}"
     fi
   dependencies:
-    - build
+    - build_int
   rules:
     - if: $CI_COMMIT_BRANCH =~ /[a-z-]+v[0-9]+.+/ && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" ) && '$INTERNAL != null'
