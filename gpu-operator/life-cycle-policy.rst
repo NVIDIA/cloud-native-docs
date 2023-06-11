@@ -1,12 +1,30 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings # #, * *, =, -, ^, "
+
 .. Date: September 25 2022
 .. Author: ebohnhorst
 
-.. _gpu-operator-life-cycle-policy:
 
 .. _operator-versioning:
 
+******************************
 NVIDIA GPU Operator Versioning
-----
+******************************
 
 To understand the NVIDIA GPU Operator life cycle policy, it is important to know how the NVIDIA GPU Operator is versioned.
 
@@ -21,8 +39,9 @@ The third segment as in '.0' represents a dot release. Dot releases typically in
 
 .. _operator_life_cycle_policy:
 
+******************************
 NVIDIA GPU Operator Life Cycle
-------------------------------
+******************************
 
 The NVIDIA GPU Operator life cycle policy provides a predictable support policy and timeline of when new NVIDIA GPU Operator versions are released.
 
@@ -44,13 +63,14 @@ The product lifecycle and versioning are subject to change in the future.
 
 .. _operator-component-matrix:
 
+*****************************
 GPU Operator Component Matrix
------------------------------
+*****************************
 
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
-Refer to :ref:`upgrade` for information about upgrading the Operator.
+Refer to :ref:`Upgrading the GPU Operator` for more information.
 
   .. list-table::
       :header-rows: 1

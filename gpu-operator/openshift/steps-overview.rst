@@ -37,6 +37,7 @@ Preparing to Install the Operator
 You can deploy the Operator on a a newly deployed cluster that was not upgraded without entitlement on the following versions:
 
 * OpenShift 4.9.9 and above z-streams
+
 .. * OpenShift 4.8.22 and above z-streams
 .. * All the versions of OpenShift 4.9 except 4.9.8
 

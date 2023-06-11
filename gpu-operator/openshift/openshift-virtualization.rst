@@ -1,9 +1,9 @@
 .. Date: Sept 28 2022
 .. Author: kquinn
 
-.. headings are # * - =
+.. headings are # * =
 
-.. _nvidia-gpu-operator-openshift-virtualization-vgpu-enablement
+.. _nvidia-gpu-operator-openshift-virtualization-vgpu-enablement:
 
 #################################################
 NVIDIA GPU Operator with OpenShift Virtualization
@@ -180,9 +180,8 @@ Install the **NVIDIA GPU Operator** using the guidance :ref:`Installing the NVID
 
   .. note:: When prompted to create a cluster policy follow the guidance :ref:`Creating a ClusterPolicy for the GPU Operator<install-cluster-policy-vGPU>`.
 
-**********************
 Create the secret
-**********************
+=================
 
 OpenShift has a secret object type which provides a mechanism for holding sensitive information such as passwords and private source repository credentials. Next you will create a secret object for storing your registry API key (the mechanism used to authenticate your access to the
 private container registry).
@@ -219,9 +218,9 @@ private container registry).
 
 .. _install-cluster-policy-vGPU:
 
-**************************************************
+
 Creating a ClusterPolicy for the GPU Operator
-**************************************************
+=============================================
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI.
 Create the cluster policy using the CLI:
@@ -263,9 +262,8 @@ Enabling the IOMMU driver on hosts
 
 To enable the IOMMU (Input-Output Memory Management Unit) driver in the kernel, create the ``MachineConfig`` object and add the kernel arguments.
 
--------------
 Prerequisites
--------------
+=============
 
 * Administrative privilege to a working OpenShift Container Platform cluster.
 * Intel or AMD CPU hardware.
@@ -273,7 +271,7 @@ Prerequisites
 
 #. Create a ``MachineConfig`` object that identifies the kernel argument. The following example shows a kernel argument for an Intel CPU.
 
-   .. code-block:: json
+   .. code-block:: yaml
 
       apiVersion: machineconfiguration.openshift.io/v1
       kind: MachineConfig
@@ -320,9 +318,9 @@ Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machin
 
 .. note::
 
-To find the device ID for a particular GPU, search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
+   To find the device ID for a particular GPU, search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
 
-.. code-block:: json
+.. code-block:: yaml
 
      ...
      spec:
@@ -342,8 +340,7 @@ To find the device ID for a particular GPU, search by device name in the `PCI ID
      ...
 
 
-===============
-Mediated device
+Mediated Device
 ===============
 
 A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device
@@ -358,20 +355,19 @@ Creating a virtual machine with GPU
 
 Assign GPU devices, either passthrough or vGPU, to virtual machines.
 
--------------
 Prerequisites
--------------
+=============
 
 * The GPU devices are configured in the ``HyperConverged`` custom resource (CR).
 
 
 #. Assign the GPU device(s) to a virtual machine (VM) by editing the ``spec.domain.devices.gpus`` stanza of the ``VirtualMachine`` manifest:
 
-   .. code-block:: json
+   .. code-block:: yaml
 
       apiVersion: kubevirt.io/v1
       kind: VirtualMachine
-      . . . snip . . .
+      ...
       spec:
         domain:
           devices:
@@ -380,12 +376,13 @@ Prerequisites
               name: gpu1
             - deviceName: nvidia.com/GRID_T4-1Q
               name: gpu2
-      . . . snip . . .
+      ...
 
    * ``deviceName`` The resource name associated with the GPU.
    * ``name`` A name to identify the device on the VM.
 
-.. _vgpu-device-configuration:
+..
+  .. _vgpu-device-configuration:
 
 **************************
 vGPU Device Configuration
@@ -421,7 +418,7 @@ And then configure the GPU Operator to use it by setting ``vgpuDeviceManager.con
 
 
 Apply a New vGPU Device Configuration
---------------------------------------
+=====================================
 
 Apply a specific vGPU device configuration on a per-node basis by setting the ``nvidia.com/vgpu.config`` node label. It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.
 

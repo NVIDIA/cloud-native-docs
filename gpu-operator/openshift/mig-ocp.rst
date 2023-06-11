@@ -63,7 +63,7 @@ Prerequisites
 The deployment workflow requires these prerequisites.
 
 #. You already have a OpenShift Container Platform cluster up and running with access to at least one MIG-capable GPU.
-#. You have followed the guidance in :ref:`NVIDIA documentation <steps-overview>` proceeding as far as creating the `cluster policy <create-cluster-policy>`.
+#. You have followed the guidance in :doc:`steps-overview` proceeding as far as creating the `cluster policy <create-cluster-policy>`.
 
 .. note:: The node must be free (drained) of GPU workloads before any reconfiguration is triggered. For guidance on draining a node see, the OpenShift Container Platform documentation `Understanding how to evacuate pods on nodes <https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-evacuating_nodes-nodes-working>`_.
 
@@ -106,69 +106,69 @@ Version 1.8 and greater of the NVIDIA GPU Operator supports updating the **Strat
 The `default configmap <https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB. The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
 The tables below describe these configurations:
 
-.. list-table:: Single configuration
+.. table:: Single configuration
 
-+-------------+---------------+---------------+---------------+
-| GPU Type    | Custom label  |  Profile      | MIG instances |
-+=============+===============+===============+===============+
-| A100-40GB   |                                               |
-+-------------+---------------+---------------+---------------+
-|             |  all-1g.5gb   |   1g.5gb      |      7        |
-+-------------+---------------+---------------+---------------+
-|             |  all-2g.10gb  |   2g.10gb     |      3        |
-+-------------+---------------+---------------+---------------+
-|             |  all-3g.20gb  |   3g.20gb     |      2        |
-+-------------+---------------+---------------+---------------+
-|             |  all-7g.40gb  |   7g.40gb     |      1        |
-+-------------+---------------+---------------+---------------+
-|  A100-80GB  |                                               |
-+-------------+---------------+---------------+---------------+
-|             |  all-1g.10gb  |   1g.10gb     |      7        |
-+-------------+---------------+---------------+---------------+
-|             |  all-2g.20gb  |   2g.20gb     |      3        |
-+-------------+---------------+---------------+---------------+
-|             |  all-3g.40gb  |   3g.40gb     |      2        |
-+-------------+---------------+---------------+---------------+
-|             |  all-7g.80gb  |   7g.80gb     |      1        |
-+-------------+---------------+---------------+---------------+
-|  A30-24GB   |                                               |
-+-------------+---------------+---------------+---------------+
-|             |  all-1g.6gb   |   1g.6gb      |       4       |
-+-------------+---------------+---------------+---------------+
-|             |  all-2g.12gb  |   2g.12gb     |       2       |
-+-------------+---------------+---------------+---------------+
-|             |  all-4g.24gb  |   4g.24gb     |       1       |
-+-------------+---------------+---------------+---------------+
+   +-------------+---------------+---------------+---------------+
+   | GPU Type    | Custom label  |  Profile      | MIG instances |
+   +=============+===============+===============+===============+
+   | A100-40GB   |                                               |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-1g.5gb   |   1g.5gb      |      7        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-2g.10gb  |   2g.10gb     |      3        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-3g.20gb  |   3g.20gb     |      2        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-7g.40gb  |   7g.40gb     |      1        |
+   +-------------+---------------+---------------+---------------+
+   |  A100-80GB  |                                               |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-1g.10gb  |   1g.10gb     |      7        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-2g.20gb  |   2g.20gb     |      3        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-3g.40gb  |   3g.40gb     |      2        |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-7g.80gb  |   7g.80gb     |      1        |
+   +-------------+---------------+---------------+---------------+
+   |  A30-24GB   |                                               |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-1g.6gb   |   1g.6gb      |       4       |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-2g.12gb  |   2g.12gb     |       2       |
+   +-------------+---------------+---------------+---------------+
+   |             |  all-4g.24gb  |   4g.24gb     |       1       |
+   +-------------+---------------+---------------+---------------+
 
 All-balanced is composed of 3 distinct configurations, with a `device-filter` filtering, based on the device UID. The possible supported combinations are described below:
 
-.. list-table:: Balanced configuration
+.. table:: Balanced configuration
 
-+-------------+---------------+---------------------------+
-| GPU Type    | Custom label  |Profile and MIG instances  |
-+=============+===============+===========================+
-| A100-40GB   |                                           |
-+-------------+---------------+---------------------------+
-|             |  all-balanced |     1g.5gb: 2             |
-|             |               |                           |
-|             |               |     2g.10gb:1             |
-|             |               |                           |
-|             |               |     3g.20gb:1             |
-+-------------+---------------+---------------------------+
-|  A100-80GB  |                                           |
-+-------------+---------------+---------------------------+
-|             |  all-balanced |   1g.10gb:2               |
-|             |               |                           |
-|             |               |   2g.20gb:1               |
-|             |               |                           |
-|             |               |   3g.40gb:1               |
-+-------------+---------------+---------------------------+
-|  A30-24GB   |                                           |
-+-------------+---------------+---------------------------+
-|             |  all-balanced |   1g.6gb: 2               |
-|             |               |                           |
-|             |               |   2g.12gb:1               |
-+-------------+---------------+---------------------------+
+   +-------------+---------------+---------------------------+
+   | GPU Type    | Custom label  |Profile and MIG instances  |
+   +=============+===============+===========================+
+   | A100-40GB   |                                           |
+   +-------------+---------------+---------------------------+
+   |             |  all-balanced |     1g.5gb: 2             |
+   |             |               |                           |
+   |             |               |     2g.10gb:1             |
+   |             |               |                           |
+   |             |               |     3g.20gb:1             |
+   +-------------+---------------+---------------------------+
+   |  A100-80GB  |                                           |
+   +-------------+---------------+---------------------------+
+   |             |  all-balanced |   1g.10gb:2               |
+   |             |               |                           |
+   |             |               |   2g.20gb:1               |
+   |             |               |                           |
+   |             |               |   3g.40gb:1               |
+   +-------------+---------------+---------------------------+
+   |  A30-24GB   |                                           |
+   +-------------+---------------+---------------------------+
+   |             |  all-balanced |   1g.6gb: 2               |
+   |             |               |                           |
+   |             |               |   2g.12gb:1               |
+   +-------------+---------------+---------------------------+
 
 .. _MIG-partitioning:
 

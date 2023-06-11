@@ -6,6 +6,7 @@
 *****************************************
 Getting Started
 *****************************************
+
 This document provides instructions, including pre-requisites for getting started with the NVIDIA GPU Operator.
 
 ----
@@ -65,12 +66,6 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
 
 
 The rest of this document includes instructions for installing the GPU Operator on supported Linux distributions.
-
-Install Kubernetes
-===================
-.. Shared content for K8s
-
-Refer to :ref:`install-k8s` for getting started with setting up a Kubernetes cluster.
 
 .. Shared content for the GPU Operator install
 
@@ -276,7 +271,7 @@ The rest of this section walks through how to setup Prometheus, Grafana using Op
 
 .. Shared content for kube-prometheus
 
-.. include:: /kubernetes/kube-prometheus.rst
+.. include:: ../kubernetes/kube-prometheus.rst
 
 Now you can see the Prometheus and Grafana pods:
 
@@ -558,7 +553,7 @@ Additional Controls for Driver Upgrades
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
-Refer to :ref:`gpu_driver_upgrades` to learn more about how to upgrade drivers with the GPU Operator.
+Refer to :ref:`GPU Driver Upgrades` for more information.
 
 Using OLM in OpenShift
 -----------------------
@@ -599,11 +594,11 @@ is added to enable this hook. This is disabled by default. This parameter needs 
 .. note::
 
    * After un-install of GPU Operator, the NVIDIA driver modules might still be loaded.
-   Either reboot the node or unload them using the following command:
+     Either reboot the node or unload them using the following command:
 
-   .. code-block:: console
+     .. code-block:: console
 
-      $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
+        $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
 
    * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
      In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.

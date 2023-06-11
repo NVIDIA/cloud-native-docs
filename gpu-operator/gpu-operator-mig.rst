@@ -311,7 +311,7 @@ And the node labels have been updated appropriately:
 Verification: Running Sample CUDA Workloads
 *******************************************
 
-.. include:: /mig/mig-examples.rst
+.. include:: ../mig/mig-examples.rst
    :start-line: 11
 
 
@@ -336,7 +336,7 @@ MIG Manager with Preinstalled Drivers
 Starting with v1.9, MIG Manager supports preinstalled drivers. Everything detailed in this document
 still applies, however there are a few additional details to consider.
 
-=======
+
 Install
 =======
 
@@ -350,7 +350,7 @@ can be used to install the GPU Operator:
         nvidia/gpu-operator \
         --set driver.enabled=false
 
-=========================
+
 Managing Host GPU Clients
 =========================
 

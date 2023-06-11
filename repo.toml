@@ -9,7 +9,8 @@ favicon = "${root}/assets/favicon.ico"
 logo = "${root}/assets/nvidia-logo-white.png"
 
 sphinx_conf_py_extra = """
-  extensions.extend(["sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  extensions.extend(["sphinx.ext.autosectionlabel", "sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  suppress_warnings = [ 'autosectionlabel.*' ]
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
   blockdiag_antialias = True
   pygments_style = 'sphinx'
@@ -54,7 +55,7 @@ copyright_start = 2020
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "23.3.1"
+version = "23.3.2"
 copyright_start = 2020
 
 [repo_docs.projects.review]

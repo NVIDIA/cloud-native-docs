@@ -123,7 +123,7 @@ Known Limitations
 23.3.1
 ======
 
-This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub `issue #513 <https://github.com/NVIDIA/gpu-operator/issues/513>`_.
+This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub `issue #513 <https://github.com/NVIDIA/gpu-operator/issues/513>`__.
 
 23.3.0
 ======
@@ -344,7 +344,7 @@ Fixed issues
 
 * Fixed an issue where containers allocated GPU lose access to them when systemd is triggered to run some reevaluation of the cgroups it manages.
   The issue affects systems using runc configured with systemd cgroups.
-  Refer to Github `issue <https://github.com/NVIDIA/gpu-operator/issues/430>`_ for more details.
+  Refer to Github `issue #430 <https://github.com/NVIDIA/gpu-operator/issues/430>`_ for more details.
 * Fixed an issue that prevented the GPU operator from applying PSA labels on the namespace when no prior labels existed.
 
 Common Vulnerabilities and Exposures (CVEs)
@@ -402,15 +402,16 @@ Improvements
 Fixed issues
 ------------
 
-* Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to Github `issue <https://github.com/NVIDIA/gpu-operator/issues/432>`_ for more details.
+* Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to Github `issue #432 <https://github.com/NVIDIA/gpu-operator/issues/432>`_ for more details.
 * Disable creation of PodSecurityPolicies (PSP) with K8s versions ``1.25`` and above as it is removed.
 
 Common Vulnerabilities and Exposures (CVEs)
 -------------------------------------------
-* Fixed - Updated driver images for ``515.86.01``, ``510.108.03``, ``470.161.03``, ``450.216.04`` to address CVEs noted `here <https://nvidia.custhelp.com/app/answers/detail/a_id/5415>`_.
+* Fixed - Updated driver images for ``515.86.01``, ``510.108.03``, ``470.161.03``, ``450.216.04`` to address CVEs noted `here <https://nvidia.custhelp.com/app/answers/detail/a_id/5415>`__.
 * The ``gpu-operator:v22.9.1`` and ``gpu-operator:v22.9.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``krb5-libs`` - `CVE-2022-42898 <https://nvd.nist.gov/vuln/detail/CVE-2022-42898>`_
+
+  * ``krb5-libs`` - `CVE-2022-42898 <https://nvd.nist.gov/vuln/detail/CVE-2022-42898>`_
 
 Known Limitations
 ------------------
@@ -450,8 +451,8 @@ Improvements
 Fixed issues
 ------------
 
-* Remove CUDA compat libs from the operator and all operand images to avoid mismatch with installed CUDA driver version. More info `here <https://github.com/NVIDIA/gpu-operator/issues/391>`_ and `here <https://github.com/NVIDIA/gpu-operator/issues/389>`_.
-* Migrate to ``node.k8s.io/v1`` API for creation of ``RuntimeClass`` objects. More info `here <https://github.com/NVIDIA/gpu-operator/issues/409>`_.
+* Remove CUDA compat libs from the operator and all operand images to avoid mismatch with installed CUDA driver version. More info `here <https://github.com/NVIDIA/gpu-operator/issues/391>`__ and `here <https://github.com/NVIDIA/gpu-operator/issues/389>`__.
+* Migrate to ``node.k8s.io/v1`` API for creation of ``RuntimeClass`` objects. More info `here <https://github.com/NVIDIA/gpu-operator/issues/409>`__.
 * Remove PodSecurityPolicy (PSP) starting with Kubernetes v1.25. Setting ``psp.enabled`` will now enable Pod Security Admission (PSA) instead.
 
 Known Limitations
@@ -460,19 +461,20 @@ Known Limitations
 * All worker nodes within the Kubernetes cluster must use the same operating system version.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * ``nouveau`` driver has to be blacklisted when using NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``Init`` state.
-* When using ``CRI-O`` runtime with Kubernetes, the config file ``/etc/crio/crio.conf`` has to include ``/run/containers/oci/hooks.d`` as path for ``hooks_dir``. Refer :ref:`here<custom-runtime-options>` for steps to configure this.
+* When using ``CRI-O`` runtime with Kubernetes, the config file ``/etc/crio/crio.conf`` has to include ``/run/containers/oci/hooks.d`` as path for ``hooks_dir``. Refer :ref:`custom-runtime-options` for steps to configure this.
 * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
 * The ``gpu-operator:v22.9.0`` and ``gpu-operator:v22.9.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``expat`` - `CVE-2022-40674 <https://access.redhat.com/security/cve/CVE-2022-40674>`_
-    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+
+  * ``expat`` - `CVE-2022-40674 <https://access.redhat.com/security/cve/CVE-2022-40674>`_
+  * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+  * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+  * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
 
 ----
 
 1.11.1
-=====
+======
 
 Improvements
 ------------
@@ -484,8 +486,8 @@ Improvements
 Fixed issues
 ------------
 
-* Apply tolerations to ``cuda-validator`` and ``device-plugin-validator`` Pods based on ``deamonsets.tolerations`` in `ClusterPolicy`. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/360>`_.
-* Fixed an issue causing ``cuda-validator`` Pod to fail when ``accept-nvidia-visible-devices-envvar-when-unprivileged = false`` is set with NVIDIA Container Toolkit. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/365>`_.
+* Apply tolerations to ``cuda-validator`` and ``device-plugin-validator`` Pods based on ``deamonsets.tolerations`` in `ClusterPolicy`. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/360>`__.
+* Fixed an issue causing ``cuda-validator`` Pod to fail when ``accept-nvidia-visible-devices-envvar-when-unprivileged = false`` is set with NVIDIA Container Toolkit. For more info refer `here <https://github.com/NVIDIA/gpu-operator/issues/365>`__.
 * Fixed an issue which caused recursive mounts under ``/run/nvidia/driver`` when both ``driver.rdma.enabled`` and ``driver.rdma.useHostMofed`` are set to ``true``. This caused other GPU Pods to fail to start.
 
 ----
@@ -538,13 +540,14 @@ Known Limitations
 * ``nouveau`` driver has to be blacklisted when using the NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs and all GPU Operator pods will be stuck in ``init`` state.
 * The ``gpu-operator:v1.11.0`` and ``gpu-operator:v1.11.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
+  * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 
 ----
 
 1.10.1
-=====
+======
 
 Improvements
 ------------
@@ -560,14 +563,15 @@ Known Limitations
 
 * The ``gpu-operator:v1.10.1`` and ``gpu-operator:v1.10.1-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
-    * ``zlib`` - `CVE-2018-25032 <https://access.redhat.com/security/cve/CVE-2018-25032>`_
-    * ``gzip`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+
+  * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+  * ``zlib`` - `CVE-2018-25032 <https://access.redhat.com/security/cve/CVE-2018-25032>`_
+  * ``gzip`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
 
 ----
 
 1.10.0
-=====
+======
 
 New Features
 -------------
@@ -597,9 +601,10 @@ Fixed issues
 Known Limitations
 ------------------
 * Upgrading to a new NVIDIA AI Enterprise major branch:
-Upgrading the vGPU host driver to a newer major branch than the vGPU guest driver will result in GPU driver pod transitioning to a failed state. This happens for instance when the Host is upgraded to vGPU version 14.x while the Kubernetes nodes are still running with vGPU version 13.x.
 
-To overcome this situation, before upgrading the host driver to the new vGPU branch, apply the following steps:
+  Upgrading the vGPU host driver to a newer major branch than the vGPU guest driver will result in GPU driver pod transitioning to a failed state. This happens for instance when the Host is upgraded to vGPU version 14.x while the Kubernetes nodes are still running with vGPU version 13.x.
+
+  To overcome this situation, before upgrading the host driver to the new vGPU branch, apply the following steps:
 
   #. kubectl edit clusterpolicy
   #. modify the policy and set the environment variable DISABLE_VGPU_VERSION_CHECK to true as shown below:
@@ -612,9 +617,11 @@ To overcome this situation, before upgrading the host driver to the new vGPU bra
             value: "true"
 
   #. write and quit the clusterpolicy edit
+
 * The ``gpu-operator:v1.10.0`` and ``gpu-operator:v1.10.0-ubi8`` images have been released with the following known HIGH Vulnerability CVEs.
   These are from the base images and are not in libraries used by GPU Operator:
-    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+
+  * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
 
 ----
 
@@ -667,6 +674,7 @@ Known Limitations
 * Collection of GPU metrics in MIG mode is not supported with 470+ drivers.
 * The GPU Operator requires all MIG related configurations to be executed by MIG Manager. Enabling/Disabling MIG and other MIG related configurations directly on the host is discouraged.
 * Fabric Manager (required for NVSwitch based systems) with CentOS 7 is not supported.
+
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----
@@ -745,6 +753,7 @@ Known Limitations
 * Support for DGX A100 with GPU Operator 1.8 will be available in an upcoming patch release.
 * This version of GPU Operator does not work well on RedHat OpenShift when a cluster-wide proxy is configured and causes constant restarts of driver container.
   This will be fixed in an upcoming patch release `v1.8.2`.
+
 .. * See the :ref:`operator-known-limitations` at the bottom of this page.
 
 ----

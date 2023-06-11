@@ -3,7 +3,7 @@
 
 .. headings are # * - =
 
-.. _time-slicing-nvidia-gpus-in-openshift
+.. _time-slicing-nvidia-gpus-in-openshift:
 
 #####################################
 Time-slicing NVIDIA GPUs in OpenShift
@@ -32,9 +32,9 @@ Configuring GPUs with time slicing
 
 The following sections show you how to configure NVIDIA Tesla T4 GPUs, as they do not support MIG, but can easily accept multiple small jobs.
 
-----------------------------
+------------------------------
 Enabling GPU Feature Discovery
-----------------------------
+------------------------------
 
 The feature release on GPU Feature Discovery (GFD) exposes the GPU types as labels and allows users to create node selectors based on these labels to help the scheduler place the pods. By default, when you create a ``ClusterPolicy``
 custom resource, GFD is enabled. In case, you disabled it, you can re-enable it with the following command:

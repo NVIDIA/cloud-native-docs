@@ -275,7 +275,6 @@ Create the cluster policy using the web console
 
  .. image:: graphics/cluster-policy-state-ready.png
 
-.. _verify-gpu-operator-install-ocp:
 
 Create the cluster policy using the CLI
 ---------------------------------------
