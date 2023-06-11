@@ -128,7 +128,7 @@ publish_docs:
     if [[ "${CI_COMMIT_MESSAGE}" =~ $'\n/latest\n' ]]; then
       export FORCE_LATEST=true
     fi
-  - echo "Publishing dos for ${DOCSET} and version ${VERSION}"
+  - echo "Publishing docs for ${DOCSET} and version ${VERSION}"
   - pushd "${HTML_PATH}/${DOCSET}/latest"
   - deploy_s3.sh --archive "${DOCSET}" "${VERSION}"
   - |+
@@ -138,4 +138,4 @@ publish_docs:
   dependencies:
     - build_int
   rules:
-    - if: ("${PROJECTS}" =~ "${CI_COMMIT_BRANCH%-v*}") && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" ) && $INTERNAL == 'true'
+    - if: ("${PROJECTS}" =~ "${CI_COMMIT_BRANCH%-v*}") && ($CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" ) && $INTERNAL
