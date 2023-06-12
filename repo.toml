@@ -9,7 +9,7 @@ favicon = "${root}/assets/favicon.ico"
 logo = "${root}/assets/nvidia-logo-white.png"
 
 sphinx_conf_py_extra = """
-  templates_path = ['${root}/_templates']
+  templates_path = ['${root}/templates']
   extensions.extend(["sphinx.ext.autosectionlabel", "sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
   suppress_warnings = [ 'autosectionlabel.*' ]
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
