@@ -9,7 +9,9 @@ favicon = "${root}/assets/favicon.ico"
 logo = "${root}/assets/nvidia-logo-white.png"
 
 sphinx_conf_py_extra = """
-  extensions.extend(["sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  templates_path = ['${root}/templates']
+  extensions.extend(["sphinx.ext.autosectionlabel", "sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  suppress_warnings = [ 'autosectionlabel.*' ]
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
   blockdiag_antialias = True
   pygments_style = 'sphinx'
@@ -20,6 +22,8 @@ sphinx_conf_py_extra = """
   html_domain_indices = False
   html_use_index = False
   html_extra_path = ["versions.json"]
+  html_static_path.append("${root}/css/")
+  html_css_files.append("custom.css")
   highlight_language = 'console'
   rst_epilog = ".. |gitlab_mr_url| replace:: Sorry Charlie...not a merge request."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:

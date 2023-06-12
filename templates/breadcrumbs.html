@@ -1,0 +1,22 @@
+{% extends '!breadcrumbs.html' %}
+
+{% set docs_home = "https://docs.nvidia.com" %}
+{% set cloud_native_home = docs_home + "/datacenter/cloud-native/" %}
+
+{%- block breadcrumbs %}
+<li>
+    <a href="{{ docs_home }}">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="{{ cloud_native_home }}">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+{%- for doc in parents %}
+  <li>
+    <a href="{{ doc.link|e }}">{{ doc.title }}</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+  </li>
+{%- endfor %}
+<li>{{ title }}</li>
+{%- endblock %}
