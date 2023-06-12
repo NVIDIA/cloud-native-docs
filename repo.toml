@@ -54,12 +54,37 @@ version = "23.2.15"
 copyright_start = 2020
 
 
+[repo_docs.projects.edge]
+docs_root = "${root}/edge"
+project = "edge"
+name = "NVIDIA Cloud Native Reference Architectures"
+version = "23.2.15"
+copyright_start = 2020
+
+
 [repo_docs.projects.gpu-operator]
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "23.3.1"
 copyright_start = 2020
+
+
+[repo_docs.projects.gpu-telemetry]
+docs_root = "${root}/gpu-telemetry"
+project = "gpu-telemetry"
+name = "NVIDIA GPU Telemetry"
+version = "1.0.0"
+copyright_start = 2020
+
+
+[repo_docs.projects.kubernetes]
+docs_root = "${root}/kubernetes"
+project = "kubernetes"
+name = "Kubernetes with NVIDIA GPUs"
+version = "1.0.0"
+copyright_start = 2020
+
 
 [repo_docs.projects.review]
 docs_root = "${root}/review"
