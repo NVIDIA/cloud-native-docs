@@ -3,9 +3,10 @@
 
 Setting up Prometheus
 ---------------------
-Implementing a Prometheus stack can be complicated but can be managed by taking advantage of the ``Helm`` package manager and 
-the `Prometheus Operator <https://github.com/coreos/prometheus-operator>`_ and `kube-prometheus <https://github.com/coreos/kube-prometheus>`_ projects. 
-The Operator uses standard configurations and dashboards for Prometheus and Grafana and the Helm `prometheus-operator <https://github.com/helm/charts/tree/master/stable/prometheus-operator>`_ 
+
+Implementing a Prometheus stack can be complicated but can be managed by taking advantage of the ``Helm`` package manager and
+the `Prometheus Operator <https://github.com/coreos/prometheus-operator>`_ and `kube-prometheus <https://github.com/coreos/kube-prometheus>`_ projects.
+The Operator uses standard configurations and dashboards for Prometheus and Grafana and the Helm `prometheus-operator <https://github.com/helm/charts/tree/master/stable/prometheus-operator>`_
 chart allows you to get a full cluster monitoring solution up and running by installing Prometheus Operator and the rest of the components listed above.
 
 First, add the ``helm`` repo:
@@ -19,18 +20,18 @@ First, add the ``helm`` repo:
 Now, search for the available ``prometheus`` charts:
 
 .. code-block:: console
-   
+
    $ helm search repo kube-prometheus
 
-Once you’ve located which the version of the chart to use, inspect the chart so we can modify the settings:
+After you locate the version of the chart to use, inspect the chart so we can modify the settings:
 
 .. code-block:: console
 
    $ helm inspect values prometheus-community/kube-prometheus-stack > /tmp/kube-prometheus-stack.values
 
 
-Next, we’ll need to edit the values file to change the port at which the Prometheus server service is available. In the ``prometheus`` instance 
-section of the chart, change the service type from ``ClusterIP`` to ``NodePort``. This will allow the Prometheus server to be accessible at your 
+Next, edit the values file to change the port at which the Prometheus server service is available. In the ``prometheus`` instance
+section of the chart, change the service type from ``ClusterIP`` to ``NodePort``. This will allow the Prometheus server to be accessible at your
 machine ip address at port 30090 as ``http://<machine-ip>:30090/``
 
 .. code-block:: console
@@ -104,7 +105,7 @@ Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in
         target_label: kubernetes_node
 
 
-Finally, we can deploy the Prometheus and Grafana pods using the ``kube-prometheus-stack`` via Helm:
+Finally, deploy the Prometheus and Grafana pods using the ``kube-prometheus-stack`` via Helm:
 
 .. code-block:: console
 
@@ -113,7 +114,7 @@ Finally, we can deploy the Prometheus and Grafana pods using the ``kube-promethe
       --generate-name \
       --values /tmp/kube-prometheus-stack.values
 
-.. note:: 
+.. note::
 
    You can also override values in the Prometheus chart directly on the Helm command line:
 

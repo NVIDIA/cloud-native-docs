@@ -53,6 +53,12 @@ name = "NVIDIA Driver Containers"
 version = "23.2.15"
 copyright_start = 2020
 
+[repo_docs.projects.kubernetes]
+docs_root = "${root}/kubernetes"
+project = "kubernetes"
+name = "Kubernetes with NVIDIA GPUs"
+version = "1.0.0"
+copyright_start = 2020
 
 [repo_docs.projects.edge]
 docs_root = "${root}/edge"
