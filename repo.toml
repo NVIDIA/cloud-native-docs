@@ -25,6 +25,9 @@ sphinx_conf_py_extra = """
   html_static_path.append("${root}/css/")
   html_css_files.append("custom.css")
   highlight_language = 'console'
+  intersphinx_mapping = {
+    'dcgm': ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
+  }
   rst_epilog = ".. |gitlab_mr_url| replace:: Sorry Charlie...not a merge request."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
     rst_epilog = ".. |gitlab_mr_url| replace:: {}/-/merge_requests/{}".format(
