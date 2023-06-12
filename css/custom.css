@@ -1,5 +1,17 @@
 /* style field lists */
 
+img.broder {
+    border: 1px solid black;
+}
+
+.fa-chevron-right {
+    font-size: 10px;
+}
+
+ul.wy-breadcrumbs li {
+    font-size: 10pt;
+}
+
 /* adds scrollbar to sidenav */
 .wy-side-scroll {
   width: auto;
