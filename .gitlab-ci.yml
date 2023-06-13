@@ -3,7 +3,7 @@ variables:
   CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.1.0"
   BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
   PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
-  PROJECTS: review container-toolkit driver-containers edge gpu-operator gpu-telemetry kubernetes
+  PROJECTS: review container-toolkit driver-containers edge gpu-operator gpu-telemetry kubernetes partner-validated
 
 stages:
 - build_image
