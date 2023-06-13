@@ -1,9 +1,11 @@
 Installing on SUSE 15
------------------------
+---------------------
+
 The following steps can be used to setup the NVIDIA Container Toolkit on SUSE SLES 15 and OpenSUSE Leap 15.
 
 Setting up Docker on SUSE 15
 +++++++++++++++++++++++++++++
+
 To install the latest Docker 19.03 CE release on SUSE 15 (OpenSUSE Leap or SLES), you can use the ``Virtualization::containers``
 `project <https://software.opensuse.org/download.html?project=Virtualization%3Acontainers&package=docker>`_.
 
@@ -67,7 +69,7 @@ Setting up NVIDIA Container Toolkit
 
    You may have to set ``$distribution`` variable to ``opensuse-leap15.1`` explicitly when adding the repositories
 
-.. include:: install/repo-zypper.rst
+.. include:: /install/repo-zypper.rst
 
 
 Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:

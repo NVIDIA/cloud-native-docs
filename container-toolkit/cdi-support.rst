@@ -1,7 +1,9 @@
 .. Date: November 11 2022
 .. Author: elezar
 
-As of the ``v1.12.0`` release the NVIDIA Container Toolkit includes support for generating `Container Device Interface <https://github.com/container-orchestrated-devices/container-device-interface>_` (CDI) specificiations
+.. headings (h1/h2/h3/h4/h5) are # * = -
+
+As of the ``v1.12.0`` release the NVIDIA Container Toolkit includes support for generating `Container Device Interface <https://github.com/container-orchestrated-devices/container-device-interface>`_ (CDI) specificiations
 for use with CDI-enabled container engines and CLIs. These include:
 
 * `cri-o <https://github.com/container-orchestrated-devices/container-device-interface#cri-o-configuration>`_
@@ -11,7 +13,7 @@ for use with CDI-enabled container engines and CLIs. These include:
 The use of CDI greatly improves the compatibility of the NVIDIA container stack with certain features such as rootless containers.
 
 Step 1: Install NVIDIA Container Toolkit
--------------------------------------------
+========================================
 
 In order to generate CDI specifications for the NVIDIA devices available on a system, only the base components of the NVIDIA Container Toolkit are required.
 
@@ -42,7 +44,7 @@ This should include the NVIDIA Container Toolkit CLI (``nvidia-ctk``) and the ve
 
 
 Step 2: Generate a CDI specification
--------------------------------------------
+====================================
 
 In order to generate a CDI specification that refers to all devices, the following command is used:
 
@@ -71,7 +73,7 @@ To check the names of the generated devices the following command can be run:
 
 
 Step 3: Using the CDI specification
--------------------------------------------
+===================================
 
 .. note::
 
