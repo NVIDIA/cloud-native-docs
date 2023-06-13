@@ -495,5 +495,5 @@ Example Configurations
 References
 ***********
 
-1) `Blog post on GPU sharing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`_.
-2) `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing>`_.
+1) `Blog post on GPU sharing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`__.
+2) `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing>`__.

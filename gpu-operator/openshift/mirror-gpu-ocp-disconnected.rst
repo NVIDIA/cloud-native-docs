@@ -53,12 +53,12 @@ Prerequisites
 * Access to the cluster as a user with the ``cluster-admin`` role.
 * Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the bastion host. This can be one of the following registries:
 
-  * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`_
+  * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`__
   * `JFrog Artifactory <https://jfrog.com/artifactory/>`_
   * `Sonatype Nexus Repository <https://www.sonatype.com/products/repository-oss?topnav=true>`_
   * `Harbor <https://goharbor.io/>`_
 
-  Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`_ and in the section :ref:`Creating a private registry`.
+  Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`__ and in the section :ref:`Creating a private registry`.
 
   If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information, see `Creating a mirror registry with mirror registry for Red Hat OpenShift <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-creating-registry.html#installing-mirroring-creating-registry>`_.
 
@@ -75,7 +75,7 @@ Prerequisites
 
    .. note::
 
-      If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`_.
+      If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
 
 **On the jump host:**
 
@@ -87,7 +87,7 @@ Prerequisites
 * `grpcurl <https://github.com/fullstorydev/grpcurl>`_
 * Install the OpenShift CLI (``oc``).
 * Red Hat Enterprise Linux (RHEL) on your jump host. The jump host when configured becomes the private registry host.
-* Install the ``opm`` CLI (opm version 1.12.3+) used to prune the default catalog. Guidance on downloading this tool is `here <https://docs.openshift.com/container-platform/latest/cli_reference/opm-cli.html>`_.
+* Install the ``opm`` CLI (opm version 1.12.3+) used to prune the default catalog. Guidance on downloading this tool is `here <https://docs.openshift.com/container-platform/latest/cli_reference/opm-cli.html>`__.
 
 *****************************************************
 Set up a basic HTTP Server
@@ -137,9 +137,9 @@ Image mirroring require a simple HTTP server, follow the guidance below to setup
          $ firewall-cmd --reload
 
 
-*****************************************************
+*************************************************************
 Optional: Check the version of RHEL being used in the cluster
-*****************************************************
+*************************************************************
 
 These steps only need to be carried out if installing the **NVIDIA GPU Operator** on OpenShift Container Platform version ``4.8.19``, ``4.8.21`` or ``4.9.8``.
 
@@ -274,7 +274,7 @@ Create a private registry to host the mirrored content that you require for mirr
 
 
 .. note:: The following procedure creates a simple registry that stores data in the ``/opt/registry`` folder and runs in a ``podman`` container. You can use a different
-        registry solution, such as `Red Hat Quay <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`_.
+        registry solution, such as `Red Hat Quay <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`__.
 
 Configure a private registry on the the jump host, using the following steps:
 
@@ -594,7 +594,7 @@ Create a container image registry credentials file that allows mirroring images 
         }
       }
 
-Update the global pull secret for your cluster by either replacing the current pull secret or appending a new pull secret. For more information and generic instructions see, `here <https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets>`_.
+Update the global pull secret for your cluster by either replacing the current pull secret or appending a new pull secret. For more information and generic instructions see, `here <https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets>`__.
 
 .. warning:: Cluster resources must adjust to the new pull secret, which can temporarily limit the usability of the cluster.
 
@@ -662,7 +662,8 @@ Prerequisites
 * Download oc-mirror tools:
 
   .. code-block:: console
-     wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/oc-mirror.tar.gz
+
+     $ wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/oc-mirror.tar.gz
 
   Copy the ``oc-mirror`` binary to a directory that is in your PATH environment variable, such as ``/usr/bin``. Run ``oc mirror help`` to confirm the plugin is installed.
 
@@ -949,7 +950,7 @@ Mirror the GPU CatalogSource
 
 #. Mirror the GPU Operator CatalogSource using the following command:
 
-   .. code-block:: json
+   .. code-block:: console
 
       $ oc-mirror --dest-skip-tls=true --skip-missing --continue-on-error --config=./imageset-config-gpu.yaml docker://${JUMP_HOST}:5000
 
@@ -1028,7 +1029,7 @@ Verify the following resources are successfully created.
 Install the Node Feature Discovery Operator
 *************************************************************
 
-Follow the guidance :ref:`here <install-nfd>` to install the **Node Feature Discovery (NFD) Operator**. If you are installing on any Openshift Container Platform version other than ``4.8.19``, ``4.8.21`` or ``4.9.8`` proceed to :ref:`install-gpu-noworkaround`.
+Follow the guidance :ref:`install-nfd` to install the **Node Feature Discovery (NFD) Operator**. If you are installing on any Openshift Container Platform version other than ``4.8.19``, ``4.8.21`` or ``4.9.8`` proceed to :ref:`install-gpu-noworkaround`.
 
 Optional: Configure repoConfig using Local Yum Repository
 =========================================================
@@ -1076,7 +1077,7 @@ These steps only need to be carried out if installing the **NVIDIA GPU Operator*
 
 With the **Node Feature Discovery Operator** installed you can continue with the final step and install the **NVIDIA GPU Operator**.
 
-#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. In the OpenShift Container Platform web console from the side menu, select **Operators** > **OperatorHub**, then search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`__.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 

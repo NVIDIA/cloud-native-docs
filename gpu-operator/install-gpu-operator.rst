@@ -234,7 +234,7 @@ In this scenario, the default configuration options are used:
 
 .. note::
 
-   * For installing on Secure Boot systems or using Precompiled modules refer to :ref:`install-precompiled-signed-drivers`.
+   For installing on Secure Boot systems or using Precompiled modules refer to :doc:`precompiled-drivers`.
 
 
 Bare-metal/Passthrough with default configurations on Red Hat Enterprise Linux
@@ -267,7 +267,7 @@ In this scenario, the CentOS toolkit image is used:
 .. note::
 
    * For CentOS 8 systems, use `toolkit.version=1.7.1-centos8`.
-   * Replace `1.7.1` toolkit version used here with the latest one available `here <https://ngc.nvidia.com/catalog/containers/nvidia:k8s:container-toolkit/tags>`_.
+   * Replace `1.7.1` toolkit version used here with the latest one available `here <https://ngc.nvidia.com/catalog/containers/nvidia:k8s:container-toolkit/tags>`__.
 
 ----
 
@@ -482,7 +482,7 @@ If you want to use custom driver container images (for e.g. using 465.27), then
 you would need to build a new driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
-  reference, the driver container Dockerfiles are available on the Git repo `here <https://gitlab.com/nvidia/container-images/driver>`_
+  reference, the driver container Dockerfiles are available on the Git repo `here <https://gitlab.com/nvidia/container-images/driver>`__
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
@@ -508,9 +508,9 @@ Note that these instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
-.. _custom-runtime-options:
-
 ----
+
+.. _custom-runtime-options:
 
 Custom configuration for runtime ``containerd``
 """""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -619,7 +619,7 @@ KubeVirt / OpenShift Virtualization
 """"""""""""""""""""""""""""""""""""
 
 Refer to the document :ref:`gpu-operator-kubevirt` for more information on how to use the GPU Operator to provision GPU nodes for running KubeVirt virtual machines with access to GPU.
-For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :ref:`nvidia-gpu-operator-openshift-virtualization-vgpu-enablement`.
+For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :doc:`openshift/openshift-virtualization`.
 
 Outdated Kernels
 """"""""""""""""""""""""""
