@@ -1,29 +1,56 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings (h1/h2/h3/h4/h5) are # * = -
+
 .. Date: Sept 30 2020
 .. Author: pramarao
 
-*****************************************
-Overview
-*****************************************
+########################
+NVIDIA Driver Containers
+########################
+
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
+***************************
+About the Driver Containers
+***************************
 
 .. image:: graphics/nvidia-driver-container-image.png
    :width: 500
 
-The NVIDIA GPU driver container allows the provisioning of the `NVIDIA driver <https://www.nvidia.com/Download/index.aspx?lang=en-us>`_ 
+The NVIDIA GPU driver container allows the provisioning of the `NVIDIA driver <https://www.nvidia.com/Download/index.aspx?lang=en-us>`_
 through the use of containers. This provides a few benefits over a standard driver installation, for example:
 
 * Ease of deployment
 * Fast installation
 * Reproducibility
 
-The driver container can be used in standard Linux distributions and container operating system distributions 
-such as Red Hat CoreOS, Flatcar Linux or others that have immutable read-only file systems. 
+The driver container can be used in standard Linux distributions and container operating system distributions
+such as Red Hat CoreOS, Flatcar Linux or others that have immutable read-only file systems.
 
 For more details on the internals of the driver container, see this `presentation <https://docs.google.com/presentation/d/1NY4X2K6BMaByfnF9rMEcNq6hS3NtmOKGTfihZ44zfrw/edit?usp=sharing>`_.
 
-----
 
-Pre-requisites
-==============
+*************
+Prerequisites
+*************
 
 The list of prerequisites for running a driver container is described below:
 
@@ -32,8 +59,10 @@ The list of prerequisites for running a driver container is described below:
 * The `NVIDIA Container Toolkit for Docker <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html>`_ configured with the ``root`` option. See below for configuration.
 * If you are running Ubuntu 18.04 with an AWS kernel, you also need to enable the ``i2c_core`` kernel module
 
+
+*************
 Configuration
-===============
+*************
 
 You will need to update the NVIDIA Container Toolkit config file (``/etc/nvidia-container-runtime/config.toml``) so that the ``root`` directive points to the driver container as shown below:
 
@@ -57,13 +86,14 @@ You will need to update the NVIDIA Container Toolkit config file (``/etc/nvidia-
   #debug = "/var/log/nvidia-container-runtime.log"
 
 
+**********
 Quickstart
-===========
+**********
 
 Ubuntu 18.04
--------------
+============
 
-Follow the `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>`_ to get started with the NVIDIA Container Toolkit for Docker. 
+Follow the `guide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>`_ to get started with the NVIDIA Container Toolkit for Docker.
 
 Now modify the configuration to update the ``root`` directive:
 
@@ -94,7 +124,7 @@ Update the ``initramfs``:
 Optionally, if the kernel is not up to date
 
 .. code-block:: console
-  
+
   $ sudo apt-get dist-upgrade
 
 Reboot your system (or VM) if required:
@@ -107,9 +137,9 @@ Run the driver container:
 
 .. code-block:: console
 
-  $ sudo docker run --name nvidia-driver -d --privileged --pid=host \ 
-    -v /run/nvidia:/run/nvidia:shared \ 
-    -v /var/log:/var/log \ 
+  $ sudo docker run --name nvidia-driver -d --privileged --pid=host \
+    -v /run/nvidia:/run/nvidia:shared \
+    -v /var/log:/var/log \
     --restart=unless-stopped \
     nvidia/driver:450.80.02-ubuntu18.04
 
@@ -123,21 +153,25 @@ Once the driver container is running, try running a GPU container:
 .. image:: graphics/driver-container-demo.gif
    :width: 1440
 
+
+****************
 Container Images
-=================
+****************
 
 Driver containers are released for the NVIDIA datacenter driver `releases <https://docs.nvidia.com/datacenter/tesla/index.html>`_.
 
 The following tags are available on both `NVIDIA DockerHub <https://hub.docker.com/r/nvidia/driver/>`_ and `NGC <https://ngc.nvidia.com/containers/nvidia:driver>`_.
 
+
+*************************
 Licenses and Contributing
-=========================
+*************************
 
 By downloading and using the driver container, you accept the terms and conditions of these licenses:
 
-* NVIDIA Driver 
+* NVIDIA Driver
   The license for the NVIDIA datacenter drivers is available at this `link <https://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us>`_.
 
-Since the underlying images may include components licensed under open-source licenses such as GPL, 
+Since the underlying images may include components licensed under open-source licenses such as GPL,
 the sources for these components are archived on the CUDA opensource `index <https://developer.download.nvidia.com/compute/cuda/opensource/>`_.
 
