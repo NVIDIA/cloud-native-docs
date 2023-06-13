@@ -1,9 +1,11 @@
 Installing on Ubuntu and Debian
 -------------------------------
+
 The following steps can be used to setup NVIDIA Container Toolkit on Ubuntu LTS (18.04, 20.04, and 22.04) and Debian (Stretch, Buster) distributions.
 
 Setting up Docker
 +++++++++++++++++
+
 Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 
 .. code-block:: console
@@ -13,12 +15,12 @@ Docker-CE on Ubuntu can be setup using Docker's official convenience script:
 
 .. seealso::
 
-   Follow the official `instructions <https://docs.docker.com/engine/install/ubuntu/>`_ for more details and `post-install actions <https://docs.docker.com/engine/install/linux-postinstall/>`_.
+   Follow the official `Docker installation documentation <https://docs.docker.com/engine/install/ubuntu/>`_ for more details and the `post-install documentation <https://docs.docker.com/engine/install/linux-postinstall/>`_.
 
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-..  include:: install/repo-apt.rst
+..  include:: /install/repo-apt.rst
 
 Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 

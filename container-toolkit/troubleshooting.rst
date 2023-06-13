@@ -3,15 +3,16 @@
 
 .. _toolkit-troubleshooting:
 
-*****************************************
+***************
 Troubleshooting
-*****************************************
+***************
+
 This document describes common issues and known workarounds or solutions
 
-.. _conflicting_signed_by
+.. _conflicting_signed_by:
 
-Conflicting values set for option Signed-By error when running ``apt update``
-====================================
+Conflicting values set for option Signed-By error when running apt update
+=========================================================================
 
 When following the installation instructions on Ubuntu or Debian-based systems and updating the package repository, the following error could be triggered:
 
@@ -45,8 +46,8 @@ The list of files with (possibly)  conflicting references can be optained by run
 Deleting the listed files should resolve the original error.
 
 
-Permission denied error when running the ``nvidia-docker`` wrapper under SELinux
-====================================
+Permission denied error when running the nvidia-docker wrapper under SELinux
+============================================================================
 
 When running the ``nvidia-docker`` wrapper (provided by the ``nvidia-docker2`` package) on SELinux environments
 one may see the following error

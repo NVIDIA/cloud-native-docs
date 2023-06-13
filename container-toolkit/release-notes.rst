@@ -3,9 +3,10 @@
 
 .. _toolkit-release-notes:
 
-*****************************************
+*************
 Release Notes
-*****************************************
+*************
+
 This document describes the new features, improvements, fixed and known issues for the NVIDIA Container Toolkit.
 
 ----
@@ -178,7 +179,7 @@ Fixes and Features
 
 * Add ``nvidia-ctk cdi generate`` command to generate CDI specifications for available NVIDIA devices. The generated CDI specification can be used to provide access to NVIDIA devices in CDI-enabled container engines such as ``podman`` -- especially in the rootless case.
 * Add full support for headless Vulkan applications in containerized environments when ``NVIDIA_DRIVER_CAPABILITIES`` includes
- ``graphics`` or ``display``. This includes the injection of Vulkan ICD loaders as well as direct rendering devices.
+  ``graphics`` or ``display``. This includes the injection of Vulkan ICD loaders as well as direct rendering devices.
 * Improve the logging of errors in the NVIDIA Container Runtime.
 
 specific to libnvidia-container
@@ -195,7 +196,7 @@ Known Issues
 --------------
 
 * When running a container using CDI or if ``NVIDIA_DRIVER_CAPABILITIES`` includes ``graphics`` or ``display``, and error may be raised citing missing
- ``/dev/dri`` and / or ``/dev/nvidia-caps`` paths in container if the selected device does not have such nodes associated with it.
+  ``/dev/dri`` and / or ``/dev/nvidia-caps`` paths in container if the selected device does not have such nodes associated with it.
 
 
 .. code-block:: console
@@ -235,8 +236,8 @@ Packaging Changes
 ------------------
 
 * An ``nvidia-container-toolkit-base`` package has been introduced that allows for the higher-level components to be
-installed in cases where the NVIDIA Container Runtime Hook, NVIDIA Container CLI, and NVIDIA Container Library are not required.
-This includes Tegra-based systems where the CSV mode of the NVIDIA Container Runtime is used.
+  installed in cases where the NVIDIA Container Runtime Hook, NVIDIA Container CLI, and NVIDIA Container Library are not required.
+  This includes Tegra-based systems where the CSV mode of the NVIDIA Container Runtime is used.
 * The package repository includes support for Fedora 35 packages.
 * The package repository includes support for RHEL 8.6. This redirects to the Centos 8 packages.
 * Mirrors for older distributions have been removed to limit the size of the package repository.
@@ -246,7 +247,7 @@ Fixes and Features
 
 * Fix bug in CSV mode where libraries listed as ``sym`` entries in mount specification are not added to the LDCache.
 * Rename the ``nvidia-container-toolkit`` executable to ``nvidia-container-runtime-hook`` to better indicate intent.
-A symlink named ``nvidia-container-toolkit`` is created that points to the ``nvidia-container-runtime-hook`` executable.
+  A symlink named ``nvidia-container-toolkit`` is created that points to the ``nvidia-container-runtime-hook`` executable.
 * Inject platform files into container on Tegra-based systems to allow for future support of these systems in the GPU Device Plugin.
 * Add ``cdi`` mode to NVIDIA Container Runtime
 * Add discovery of GPUDirect Storage (``nvidia-fs*``) devices if the ``NVIDIA_GDS`` environment variable of the container is set to ``enabled``
@@ -267,29 +268,29 @@ Known Issues
 -------------
 
 * When upgrading from an earlier version of the NVIDIA Container Toolkit on RPM-based systems, a package manager such as ``yum`` may remove
-the installed ``/usr/bin/nvidia-container-runtime-hook`` executable due to the post-uninstall hooks defined in the older package version. To avoid this
-problem either remove the older version of the ``nvidia-container-toolkit`` before installing ``v1.11.0`` or **reinstall** the ``v1.11.0`` package if the
-``/usr/bin/nvidia-container-runtime-hook`` file is missing. For systems where the ``v1.11.0`` version of the package has already been installed and left
-in an unusable state, running ``yum reinstall -y nvidia-container-toolkit-1.11.0-1`` should address this issue.
+  the installed ``/usr/bin/nvidia-container-runtime-hook`` executable due to the post-uninstall hooks defined in the older package version. To avoid this
+  problem either remove the older version of the ``nvidia-container-toolkit`` before installing ``v1.11.0`` or **reinstall** the ``v1.11.0`` package if the
+  ``/usr/bin/nvidia-container-runtime-hook`` file is missing. For systems where the ``v1.11.0`` version of the package has already been installed and left
+  in an unusable state, running ``yum reinstall -y nvidia-container-toolkit-1.11.0-1`` should address this issue.
 
 
 * The ``container-toolkit:v1.11.0`` images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-centos7``:
 
-    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`__
+    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`__
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubi8``:
 
-    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
-    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`_
+    * ``systemd`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`__
+    * ``systemd-libs`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`__
+    * ``systemd-pam`` - `CVE-2022-2526 <https://access.redhat.com/security/cve/CVE-2022-2526>`__
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.11.0-ubuntu18.04``:
 
-    * ``libsystemd0`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`_
-    * ``libudev1`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`_
+    * ``libsystemd0`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`__
+    * ``libudev1`` - `CVE-2022-2526 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2022-2526>`__
 
 
 NVIDIA Container Toolkit 1.10.0
@@ -363,12 +364,12 @@ Known Issues
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-centos7``:
 
-    * ``xz`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
-    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+    * ``xz`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`__
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`__
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.10.0-ubi8``:
 
-    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`_
+    * ``xz-libs`` - `CVE-2022-1271 <https://access.redhat.com/security/cve/CVE-2022-1271>`__
 
 
 NVIDIA Container Toolkit 1.9.0
@@ -427,21 +428,21 @@ Known Issues
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos7``:
 
-    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
-    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
-    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`__
+    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`__
+    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`__
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-centos8``:
 
-    * ``cyrus-sasl-lib`` - `CVE-2022-24407 <https://access.redhat.com/security/cve/CVE-2022-24407>`_
-    * ``openssl``, ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
-    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`_
-    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`_
-    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`_
+    * ``cyrus-sasl-lib`` - `CVE-2022-24407 <https://access.redhat.com/security/cve/CVE-2022-24407>`__
+    * ``openssl``, ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`__
+    * ``expat`` - `CVE-2022-25235 <https://access.redhat.com/security/cve/CVE-2022-25235>`__
+    * ``expat`` - `CVE-2022-25236 <https://access.redhat.com/security/cve/CVE-2022-25236>`__
+    * ``expat`` - `CVE-2022-25315 <https://access.redhat.com/security/cve/CVE-2022-25315>`__
 
   * ``nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubi8``:
 
-    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`_
+    * ``openssl-libs`` - `CVE-2022-0778 <https://access.redhat.com/security/cve/CVE-2022-0778>`__
 
 
 NVIDIA Container Toolkit 1.8.1
@@ -668,4 +669,4 @@ Toolkit Container 1.7.0
 Known issues
 ------------
 
-* The ``container-toolkit:1.7.0-ubuntu18.04`` image contains the `CVE-2021-3711 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2021-3711>`_. This CVE affects ``libssl1.1`` and ``openssl`` included in the ubuntu-based CUDA `11.4.1` base image. The components of the NVIDIA Container Toolkit included in the container do not use ``libssl1.1`` or ``openssl`` and as such this is considered low risk if the container is used as intended; that is to install and configure the NVIDIA Container Toolkit in the context of the NVIDIA GPU Operator.
+* The ``container-toolkit:1.7.0-ubuntu18.04`` image contains the `CVE-2021-3711 <http://people.ubuntu.com/~ubuntu-security/cve/CVE-2021-3711>`__. This CVE affects ``libssl1.1`` and ``openssl`` included in the ubuntu-based CUDA `11.4.1` base image. The components of the NVIDIA Container Toolkit included in the container do not use ``libssl1.1`` or ``openssl`` and as such this is considered low risk if the container is used as intended; that is to install and configure the NVIDIA Container Toolkit in the context of the NVIDIA GPU Operator.

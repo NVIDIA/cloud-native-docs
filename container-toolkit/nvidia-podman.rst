@@ -4,7 +4,7 @@
 Getting Started
 =======================
 
-For installing podman, follow the official `instructions <https://podman.io/getting-started/installation>`_ for your supported Linux distribution.
+For installing podman, follow the official `Podman installation documentation <https://podman.io/getting-started/installation>`_ for your supported Linux distribution.
 For convenience, the documentation below includes instructions on installing podman on RHEL 8.
 
 Step 1: Install podman

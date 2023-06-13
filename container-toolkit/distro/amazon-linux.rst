@@ -1,9 +1,11 @@
 Installing on Amazon Linux
-----------------------------
+--------------------------
+
 The following steps can be used to setup the NVIDIA Container Toolkit on Amazon Linux 1 and Amazon Linux 2.
 
 Setting up Docker on Amazon Linux
-++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++
+
 Amazon Linux is available on Amazon EC2 instances. For full install instructions, see `Docker basics for Amazon ECS <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker>`_.
 
 After launching the official Amazon Linux EC2 image, update the installed packages and install the most recent Docker CE packages:
@@ -65,7 +67,7 @@ This should result in a console output shown below:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. include:: install/repo-yum.rst
+.. include:: /install/repo-yum.rst
 
 Install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 

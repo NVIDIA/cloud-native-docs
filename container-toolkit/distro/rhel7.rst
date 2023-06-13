@@ -1,5 +1,6 @@
 Installing on RHEL 7
 --------------------
+
 The following steps can be used to setup the NVIDIA Container Toolkit on RHEL 7.
 
 Setting up Docker on RHEL 7
@@ -19,7 +20,7 @@ Docker can then be installed using ``yum``
 
 .. seealso::
 
-   More information is available in the KB `article <https://access.redhat.com/solutions/3727511>`_.
+   More information is available in the `KB article 3727511 <https://access.redhat.com/solutions/3727511>`_.
 
 Ensure the Docker service is running with the following command:
 
@@ -75,7 +76,7 @@ Giving you the following result:
 Setting up NVIDIA Container Toolkit
 +++++++++++++++++++++++++++++++++++
 
-.. include:: install/repo-yum.rst
+.. include:: /install/repo-yum.rst
 
 On RHEL 7, install the ``nvidia-container-toolkit`` package (and dependencies) after updating the package listing:
 
