@@ -1,7 +1,7 @@
 .. Date: Mar 11 2022
 .. Author: cdesiniotis
 
-.. _custom-driver-params
+.. _custom-driver-params:
 
 Customizing NVIDIA GPU Driver Parameters during Installation
 ************************************************************

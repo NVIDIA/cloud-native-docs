@@ -114,8 +114,7 @@ Use one of the following ways to check if a driver container is available for yo
 Enabling Precompiled Driver Container Support During Installation
 *****************************************************************
 
-Follow the instructions for installing the Operator with Helm on the :doc:`operator-install-guide` page.
-
+Refer to the common instructions for installing the Operator with Helm at :ref:`install-gpu-operator`.
 Specify the ``--set driver.usePrecompiled=true`` and ``--set driver.version=<driver-branch>`` arguments like the following example command:
 
 .. code-block:: console
@@ -125,7 +124,7 @@ Specify the ``--set driver.usePrecompiled=true`` and ``--set driver.version=<dri
         nvidia/gpu-operator \
         --set driver.usePrecompiled=true \
         --set driver.version="<driver-branch>"
-    
+
 Specify a value like ``525`` for ``<driver-branch>``.
 Refer to :ref:`Chart Customization Options` for information about other installation options.
 
@@ -138,9 +137,9 @@ Perform the following steps to enable support for precompiled driver containers:
 
 #. Enable support by modifying the cluster policy:
 
-   .. code-block:: console
+   .. code-block:: shell
 
-     $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+      $ kubectl patch clusterpolicy/cluster-policy --type='json' \
          -p='[
            {"op":"replace", "path":"/spec/driver/usePrecompiled", "value":true},
            {"op":"replace", "path":"/spec/driver/version", "value":"<driver-branch>"}

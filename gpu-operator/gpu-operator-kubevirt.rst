@@ -211,7 +211,7 @@ Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machin
      ...
 
 Create a virtual machine with GPU
---------------------
+---------------------------------
 
 Assuming the GPU Operator has finished provisioning worker nodes and the GPU resources have been added to the
 KubeVirt allowlist, you can assign a GPU to a KubeVirt virtual machine by editing the ``spec.domain.devices.gpus`` stanza
