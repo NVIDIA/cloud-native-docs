@@ -53,7 +53,7 @@ copyright_start = 2020
 docs_root = "${root}/driver-containers"
 project = "driver-containers"
 name = "NVIDIA Driver Containers"
-version = "23.2.15"
+version = "1.0.0"
 copyright_start = 2020
 
 
@@ -61,7 +61,7 @@ copyright_start = 2020
 docs_root = "${root}/edge"
 project = "edge"
 name = "NVIDIA Cloud Native Reference Architectures"
-version = "23.2.15"
+version = "1.0.0"
 copyright_start = 2020
 
 
