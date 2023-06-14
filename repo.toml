@@ -26,7 +26,13 @@ sphinx_conf_py_extra = """
   html_css_files.append("custom.css")
   highlight_language = 'console'
   intersphinx_mapping = {
-    'dcgm': ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
+    "dcgm": ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
+    "gpuop": ("https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/",
+                ("_build/docs/gpu-operator/latest/objects.inv", None)),
+    "ctk": ("https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/",
+                ("_build/docs/container-toolkit/latest/objects.inv", None)),
+    "drv": ("https://docs.nvidia.com/datacenter/cloud-native/driver-containers/latest/",
+                ("_build/docs/driver-containers/latest/objects.inv", None)),
   }
   rst_epilog = ".. |gitlab_mr_url| replace:: Sorry Charlie...not a merge request."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
@@ -87,6 +93,18 @@ project = "kubernetes"
 name = "Kubernetes with NVIDIA GPUs"
 version = "1.0.0"
 copyright_start = 2020
+
+
+[repo_docs.projects.partner-validated]
+docs_root = "${root}/partner-validated"
+project = "partner-validated"
+name = "Partner Validated Configurations with NVIDIA GPU Operator"
+version = "1.0.0"
+copyright_start = 2023
+
+sphinx_exclude_patterns = [
+  "PARTNER-VALIDATED-TEMPLATE.rst"
+]
 
 
 [repo_docs.projects.review]
