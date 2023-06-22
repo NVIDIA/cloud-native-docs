@@ -11,6 +11,43 @@ This document describes the new features, improvements, fixed and known issues f
 
 ----
 
+NVIDIA Container Toolkit 1.13.2
+====================================
+
+This release of the NVIDIA Container Toolkit ``v1.13.2`` is a bugfix release.
+
+The following packages are included:
+
+* ``nvidia-container-toolkit 1.13.2``
+* ``libnvidia-container-tools 1.13.2``
+* ``libnvidia-container1 1.13.2``
+
+The following ``container-toolkit`` containers are included:
+
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.2-centos7``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.2-ubi8``
+* ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.2-ubuntu20.04`` (also as ``nvcr.io/nvidia/k8s/container-toolkit:v1.13.2``)
+
+Fixes and Features
+-------------------
+
+* Added `nvidia-container-runtime-hook.path` config option to specify NVIDIA Container Runtime Hook path explicitly.
+* Fixed a bug in creation of `/dev/char` symlinks by failing operation if kernel modules are not loaded.
+* Added an option to load kernel modules when creating device nodes
+* Added option to create device nodes when creating `/dev/char` symlinks
+* Fixed a bug where failures to open debug log files were considered fatal errors. This could cause failures in rootless environments when the user had insufficient permissions to open the log file.
+
+specific to libnvidia-container
+``````````````````````````````````
+
+* Added OpenSSL 3 support to the Encrypt / Decrypt library.
+
+specific to container-toolkit container images
+````````````````````````````````````````````````
+
+* Bumped CUDA base image version to 12.1.1.
+
+
 NVIDIA Container Toolkit 1.13.1
 ====================================
 
