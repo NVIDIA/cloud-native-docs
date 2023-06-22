@@ -9,6 +9,9 @@ favicon = "${root}/assets/favicon.ico"
 logo = "${root}/assets/nvidia-logo-white.png"
 
 sphinx_conf_py_extra = """
+  myst_enable_extensions = [
+    "colon_fence",
+  ]
   templates_path = ['${root}/templates']
   extensions.extend(["sphinx.ext.autosectionlabel", "sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
   suppress_warnings = [ 'autosectionlabel.*' ]
