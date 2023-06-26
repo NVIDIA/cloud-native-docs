@@ -198,9 +198,6 @@ Getting Support
 
 Refer to the MKE product documentation for information about working with MKE.
 
-If you experience an issue with the NVIDIA GPU Operator,
-open an issue on GitHub and request assistance from @FIXME: https://github.com/NVIDIA/gpu-operator/issues
-
 
 *******************
 Related information
