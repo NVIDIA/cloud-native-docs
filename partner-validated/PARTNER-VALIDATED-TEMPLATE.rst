@@ -148,8 +148,8 @@ Getting Support
 
 Indicate how end users can receive support from you regarding your product.
 
-Also indicate that end users can open issues on the NVIDIA GPU Operator
-repository on GitHub and indicate the user account to mention for assistance: https://github.com/NVIDIA/gpu-operator.
+* URL for product documentation.
+* Information to help an end user to open a support request with you.
 
 
 *******************
