@@ -10,6 +10,34 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.13.3
+
+This release of the NVIDIA Container Toolkit `v1.13.3` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.13.3`
+- `libnvidia-container-tools 1.13.3`
+- `libnvidia-container1 1.13.3`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.3-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.3-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.3-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.13.3`)
+
+### Fixes and Features
+
+- Fixed permissions in generated CDI specification files. Specifications files are now generated with `644` permissions to allow non-root users to read these. This means that rootless applications such as Podman can also read the specifications to inject CDI devices.
+- Fixed a bug that created an incorrect symlink to `nvidia-smi` on WSL2 systems with multiple driver stores. The bug was triggered sometimes when a system had an integrated GPU and a discrete NVIDIA GPU, for example.
+- Fixed a that caused CDI specification generation for managment containers to fail. The bug was triggered when the driver version did not include a patch component its semantic version number.
+- Fixed a bug where additional modifications -- such as the injection of graphics libraries and devices -- were applied in CDI mode.
+- Fixed loading of kernel modules and creation of device nodes in containerized use cases when using the `nvidia-ctk system create-dev-char-symlinks` command.
+
+#### specific to container-toolkit container images
+
+- Added support for specifying options using the same environment variable across supported container runtimes. This simplifies integration with the GPU Operator.
+
 ## NVIDIA Container Toolkit 1.13.2
 
 This release of the NVIDIA Container Toolkit `v1.13.2` is a bugfix release.
