@@ -203,6 +203,7 @@ Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU
 
 GPU Telemetry
 ==============
+
 To gather GPU telemetry in Kubernetes, the GPU Operator deploys the ``dcgm-exporter``. ``dcgm-exporter``, based
 on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
@@ -266,126 +267,9 @@ Verify `dcgm-exporter` pod is running after this change
 
    $ kubectl get pods -l app=nvidia-dcgm-exporter --all-namespaces
 
-
-The rest of this section walks through how to setup Prometheus, Grafana using Operators and using Prometheus with ``dcgm-exporter``.
-
-.. Shared content for kube-prometheus
-
-.. include:: ../kubernetes/kube-prometheus.rst
-
-Now you can see the Prometheus and Grafana pods:
-
-.. code-block:: console
-
-   $ kubectl get pods -n prometheus
-
-.. code-block:: console
-
-   NAME                                                              READY   STATUS    RESTARTS   AGE
-   alertmanager-kube-prometheus-stack-1637-alertmanager-0            2/2     Running   0          23s
-   kube-prometheus-stack-1637-operator-7bd6d6455c-pcv6n              1/1     Running   0          25s
-   kube-prometheus-stack-1637791640-grafana-f99f499df-kwm4f          2/2     Running   0          25s
-   kube-prometheus-stack-1637791640-kube-state-metrics-65bf4526xnl   1/1     Running   0          25s
-   kube-prometheus-stack-1637791640-prometheus-node-exporter-8pwc4   1/1     Running   0          25s
-   kube-prometheus-stack-1637791640-prometheus-node-exporter-nvzhq   1/1     Running   0          25s
-   prometheus-kube-prometheus-stack-1637-prometheus-0                2/2     Running   0          23s
-
-You can view the services setup as part of the operator and ``dcgm-exporter``:
-
-.. code-block:: console
-
-   $ kubectl get svc -A
-
-.. code-block:: console
-
-   NAMESPACE      NAME                                                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
-   default        kubernetes                                                  ClusterIP   10.96.0.1        <none>        443/TCP                        34d
-   gpu-operator   gpu-operator                                                ClusterIP   10.106.165.20    <none>        8080/TCP                       29m
-   gpu-operator   gpu-operator-node-feature-discovery-master                  ClusterIP   10.102.207.205   <none>        8080/TCP                       30m
-   gpu-operator   nvidia-dcgm-exporter                                        ClusterIP   10.108.99.82     <none>        9400/TCP                       29m
-   kube-system    kube-dns                                                    ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP         34d
-   kube-system    kube-prometheus-stack-1637-coredns                          ClusterIP   None             <none>        9153/TCP                       56s
-   kube-system    kube-prometheus-stack-1637-kube-controller-manager          ClusterIP   None             <none>        10252/TCP                      56s
-   kube-system    kube-prometheus-stack-1637-kube-etcd                        ClusterIP   None             <none>        2379/TCP                       56s
-   kube-system    kube-prometheus-stack-1637-kube-proxy                       ClusterIP   None             <none>        10249/TCP                      56s
-   kube-system    kube-prometheus-stack-1637-kube-scheduler                   ClusterIP   None             <none>        10251/TCP                      56s
-   kube-system    kube-prometheus-stack-1637-kubelet                          ClusterIP   None             <none>        10250/TCP,10255/TCP,4194/TCP   6m42s
-   prometheus     alertmanager-operated                                       ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP     54s
-   prometheus     kube-prometheus-stack-1637-alertmanager                     ClusterIP   10.99.137.105    <none>        9093/TCP                       56s
-   prometheus     kube-prometheus-stack-1637-operator                         ClusterIP   10.101.198.43    <none>        443/TCP                        56s
-   prometheus     kube-prometheus-stack-1637-prometheus                       NodePort    10.105.175.245   <none>        9090:30090/TCP                 56s
-   prometheus     kube-prometheus-stack-1637791640-grafana                    ClusterIP   10.111.115.192   <none>        80/TCP                         56s
-   prometheus     kube-prometheus-stack-1637791640-kube-state-metrics         ClusterIP   10.105.66.181    <none>        8080/TCP                       56s
-   prometheus     kube-prometheus-stack-1637791640-prometheus-node-exporter   ClusterIP   10.108.72.70     <none>        9100/TCP                       56s
-   prometheus     prometheus-operated                                         ClusterIP   None             <none>        9090/TCP                       54s
-
-You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``.
-It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL``
-in the event bar to determine if the GPU metrics are visible:
-
-.. image:: ../kubernetes/graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
-   :width: 800
-
-Using Grafana
----------------
-You can also launch the Grafana tools for visualizing the GPU metrics.
-
-There are two mechanisms for dealing with the ports on which Grafana is available - the service can be patched or port-forwarding can be used to reach the home page.
-Either option can be chosen based on preference.
-
-Patching the Grafana Service
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-By default, Grafana uses a ``ClusterIP`` to expose the ports on which the service is accessible. This can be changed to a ``NodePort`` instead, so the page is accessible
-from the browser, similar to the Prometheus dashboard.
-
-You can use `kubectl patch <https://kubernetes.io/docs/tasks/manage-kubernetes-objects/update-api-object-kubectl-patch/>`_ to update the service API
-object to expose a ``NodePort`` instead.
-
-First, modify the spec to change the service type:
-
-.. code-block:: console
-
-   $ cat << EOF | tee grafana-patch.yaml
-   spec:
-     type: NodePort
-     nodePort: 32322
-   EOF
-
-And now use ``kubectl patch``:
-
-.. code-block:: console
-
-   $ kubectl patch svc prometheus-operator-1637791640-grafana -n prometheus --patch "$(cat grafana-patch.yaml)"
-
-.. code-block:: console
-
-   service/prometheus-operator-1637791640-grafana patched
-
-You can verify that the service is now exposed at an externally accessible port:
-
-.. code-block:: console
-
-   $ kubectl get svc -A
-
-.. code-block:: console
-
-   NAMESPACE     NAME                                                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
-   <snip>
-   prometheus    prometheus-operator-1637791640-grafana                    NodePort    10.111.115.192   <none>        80:32258/TCP                   2m2s
-
-Open your browser to ``http://<machine-ip-address>:32258`` and view the Grafana login page. Access Grafana home using the ``admin`` username.
-The password credentials for the login are available in the ``prometheus.values`` file we edited in the earlier section of the doc:
-
-.. code-block:: console
-
-   ## Deploy default dashboards.
-   ##
-   defaultDashboardsEnabled: true
-
-   adminPassword: prom-operator
-
-.. image:: ../kubernetes/graphics/dcgm-e2e/002-dcgm-e2e-grafana-screenshot.png
-   :width: 800
+Refer to
+`Setting up Prometheus <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/kube-prometheus.html>`__
+to complete the installation.
 
 .. _operator-upgrades:
 
