@@ -5,9 +5,15 @@ build and run GPU accelerated containers with popular container runtimes such as
 
 The product documentation portal can be found at: https://docs.nvidia.com/datacenter/cloud-native/index.html
 
-## Building Documentation
+## Building the Container
 
-Use the `Dockerfile` in the repository (under the ``docker`` directory) to generate the custom doc build container.
+This step is optional if your only goal is to build the documentation.
+As an alternative to building the container, you can run `docker pull registry.gitlab.com/nvidia/cloud-native/cnt-docs:0.1.0`.
+
+Refer to <https://gitlab.com/nvidia/cloud-native/cnt-docs/container_registry> to find the most recent tag.
+
+If you change the `Dockerfile`, update `CONTAINER_RELEASE_IMAGE` in the `gitlab-ci.yml` file to the new tag and build the container.
+Use the `Dockerfile` in the repository (under the `docker` directory) to generate the custom doc build container.
 
 1. Build the container:
 
@@ -32,30 +38,79 @@ Use the `Dockerfile` in the repository (under the ``docker`` directory) to gener
    ./repo docs
    ```
 
-   Alternatively, you can build the docs for just one software component, such as ``gpu-operator``
-   or ``container-toolkit``:
+   Alternatively, you can build just one docset, such as `gpu-operator` or `container-toolkit`:
 
    ```bash
    ./repo docs -p gpu-operator
    ```
 
-The resulting HTML pages are located in the `_build/docs/...` directory of your repository clone.
+   You can determine the docsets by viewing the `[repo_docs.projects.<docset-name>]` tables in the `repo.toml` file.
 
-More information about the ``repo docs`` command is available from
+The resulting HTML pages are located in the `_build/docs/.../latest/` directory of your repository clone.
+
+More information about the `repo docs` command is available from
 <http://omniverse-docs.s3-website-us-east-1.amazonaws.com/repo_docs/0.20.3/index.html>.
 
-Additionally, the Gitlab CI for this project is configured to build and stage the documentation on every commit pushed to Gitlab. The staged documentation should be available to view via [Gitlab Pages](https://docs.gitlab.com/ee/user/project/pages/) for your repository. To find the pages url, visit `Settings > Pages` from the Gitlab UI. The url can also be found at the bottom of the logs for the `build_docs` stage of the CI.
+Additionally, the Gitlab CI for this project builds the documentation on every merge into the default branch (`master`).
+The documentation from the current default branch (`master`) is available at <https://nvidia.gitlab.io/cloud-native/cnt-docs/review/latest/>.
+Documentation in the default branch is under development and unstable.
 
 ## Releasing Documentation
 
-### Special Branch Naming
+### Configuration File Updates
 
-CI is under development, but the proposed idea is to perform development updates
-in the default branch and to release, create a branch with the following pattern:
+1. Update the version in `repo.toml`:
 
-   ```text
-   <component-name>-v<version>
+   ```diff
+   diff --git a/repo.toml b/repo.toml
+   index e7cd8db..e091d62 100644
+   --- a/repo.toml
+   +++ b/repo.toml
+   @@ -51,7 +51,7 @@ sphinx_conf_py_extra = """
+    docs_root = "${root}/container-toolkit"
+    project = "container-toolkit"
+    name = "NVIDIA Container Toolkit"
+   -version = "1.13.1"
+   +version = "NEW_VERSION"
+    copyright_start = 2020
    ```
+
+1. Update the version in `<component-name>/versions.json`:
+
+   ```diff
+   diff --git a/container-toolkit/versions.json b/container-toolkit/versions.json
+   index 334338a..b15af73 100644
+   --- a/container-toolkit/versions.json
+   +++ b/container-toolkit/versions.json
+   @@ -1,7 +1,10 @@
+    {
+   -    "latest": "1.13.1",
+   +    "latest": "NEW_VERSION",
+     "versions":
+        [
+   +        {
+   +            "version": "NEW_VERSION"
+   +        },
+            {
+                "version": "1.13.1"
+            },
+   ```
+
+   These values control the menu at the bottom of the table of contents and
+   whether pages show a warning banner when readers view an older release.
+   The warning banner directs readers to the latest version.
+
+   We can prune the list to the six most-recent releases.
+   The documentation for the older releases is not removed, readers are just
+   less likely to browse the older releases.
+
+### Tagging and Special Branch Naming
+
+Changes to the default branch are not published on docs.nvidia.com.
+
+Only tags or specially-named branches are published to docs.nvidia.com.
+
+1. Create a tag or specially-named branch from your commit with the following naming pattern: `<component-name>-v<version>`.
 
    *Example*
 
@@ -63,18 +118,22 @@ in the default branch and to release, create a branch with the following pattern
    gpu-operator-v23.3.1
    ```
 
-When a branch with that name is pushed to the repository, CI builds the documentation
-in that branch---currently for all software components.
-However, only the documentation for the `component-name` and specified version is
-updated on the web.
+   The first three fields of the semantic version are used.
+   For a "do over," push a tag like `gpu-operator-v23.3.1.1`.
 
-### Updating for the Latest Release
+1. Push the tag or specially-named branch to the repository.
 
-If documentation for the `version` portion of the branch does not exist, the
-documentation is also copied to the `latest` directory.
+CI builds the documentation for the Git ref---currently for all software components.
+However, only the documentation for the `component-name` and specified version is updated on the web.
+By default, the documentation for the "latest" URL is updated.
 
-You can also add a `/latest` comment in your commit message on its own line
-to force copying the documentation to the `latest` directory for the component.
+*Example*
+
+<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>
+
+If the commit message includes `/not-latest`, then only the documentation in the versioned URL is updated:
+
+<https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.3.1/index.html>
 
 ## License and Contributing
 
