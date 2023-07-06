@@ -1,6 +1,6 @@
 variables:
   CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.1.0"
+  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.2.0"
   BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
   PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
   PROJECTS: review container-toolkit driver-containers edge gpu-operator gpu-telemetry kubernetes partner-validated
@@ -22,7 +22,7 @@ stages:
     - apk add git
     - git fetch origin "${CI_DEFAULT_BRANCH}"
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
-    - if ! docker inspect "${BUILDER_IMAGE}" ; then export NEEDS_IMAGE=true ; fi
+    - if ! docker manifest inspect "${BUILDER_IMAGE}" 2>&1 > /dev/null ; then export NEEDS_IMAGE=true ; fi
     - FILES=$(git diff --name-only "${CI_COMMIT_SHA}" "origin/${CI_DEFAULT_BRANCH}" | tr '\n' ' ')
     - if echo "${FILES}" | grep -q "deps/\|Dockerfile\|repo.toml" ; then export NEEDS_IMAGE=true ; fi
     - >
@@ -30,6 +30,8 @@ stages:
         docker build -t "${CONTAINER_TEST_IMAGE}" . -f docker/Dockerfile
         docker push "${CONTAINER_TEST_IMAGE}"
         echo "BUILDER_IMAGE=${CONTAINER_TEST_IMAGE}" >> build.env
+      else
+        echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
       fi
     - >
       if [ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ] && [ "${CI_PIPELINE_SOURCE}" == "push" ]; then
