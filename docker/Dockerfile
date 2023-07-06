@@ -7,13 +7,12 @@ FROM python:3.9-slim
 LABEL maintainer="Pramod Ramarao <pramarao@nvidia>"
 
 WORKDIR /docs
-RUN apt-get update \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive \
  && apt-get install --no-install-recommends -y \
       graphviz \
       imagemagick \
       make \
       curl \
-      xsltproc \
  && apt-get autoremove \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
