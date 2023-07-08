@@ -34,7 +34,7 @@ stages:
         echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
       fi
     - >
-      if [ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ] && [ "${CI_PIPELINE_SOURCE}" == "push" ]; then
+      if [ "${NEEDS_IMAGE}" ] && [ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ] && [ "${CI_PIPELINE_SOURCE}" == "push" ]; then
         docker tag "${CONTAINER_TEST_IMAGE}" "${CONTAINER_RELEASE_IMAGE}"
         docker push "${CONTAINER_RELEASE_IMAGE}"
       fi
@@ -163,6 +163,7 @@ publish_docs:
     if [ "true" == "${FORCE_LATEST}" ]; then
       deploy_s3.sh --latest "${DOCSET}"
     fi
+  - deploy_s3.sh --flush "${DOCSET}"
   dependencies:
     - build_int
   rules:
