@@ -56,7 +56,7 @@ Validated Configuration Matrix
      - Mirantia Container Runtime (MCR) 20.10.15+ and 23.0.3+
      - 1.21.12+ and 1.24.6+
      - Helm v3
-       | NVIDIA HGX H100
+     - | NVIDIA HGX H100
        | NVIDIA H100
        | NVIDIA A100
      - | Dell PowerEdge R720
