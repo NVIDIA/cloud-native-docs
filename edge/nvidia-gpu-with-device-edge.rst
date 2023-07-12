@@ -31,7 +31,7 @@ Perform the procedures on this page to enable workloads to use NVIDIA GPUs on an
 Prerequisites
 ****************
 
-* Install `MicroShift from an RPM package <https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift/4.12/html/installing/microshift-install-rpm?extIdCarryOver=true&sc_cid=701f2000001Css5AAC>`_ on the Red Hat Enterprise Linux 8.7 machine.
+* Install `MicroShift from an RPM package <https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift/4.13/html/installing/microshift-install-rpm>`_ on the Red Hat Enterprise Linux 8.7 machine.
 * Verify an NVIDIA GPU is installed on the machine:
 
   .. code-block:: console
@@ -53,19 +53,20 @@ Installing the NVIDIA GPU driver
 NVIDIA provides a precompiled driver in RPM repositories that implement the modularity mechanism.
 For more information, see `Streamlining NVIDIA Driver Deployment on RHEL 8 with Modularity Streams <https://developer.nvidia.com/blog/streamlining-nvidia-driver-deployment-on-rhel-8-with-modularity-streams/>`_.
 
-#. At this stage, you should have already subscribed your machine and enabled the ``rhel-8-for-x86_64-baseos-rpms`` and ``rhel-8-for-x86_64-appstream-rpms`` repositories.
+#. At this stage, you should have already subscribed your machine and enabled the ``rhel-9-for-x86_64-baseos-rpms`` and ``rhel-9-for-x86_64-appstream-rpms`` repositories.
    Add the NVIDIA CUDA repository:
 
    .. code-block:: console
 
-      $ sudo dnf config-manager --add-repo=https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
+      $ sudo dnf config-manager --add-repo=https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
 
 #. NVIDIA provides different branches of their drivers, with different lifecycles, that are described in `NVIDIA Datacenter Drivers documentation <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
-   Use the latest version from the production branch, for example, version ``R525``. Install the driver:
+   Use the latest version from the production branch, for example, version ``R525``. Install the driver, fabric-manager and NSCQ:
 
    .. code-block:: console
 
       $ sudo dnf module install nvidia-driver:525
+      $ sudo dnf install nvidia-fabric-manager libnvidia-nscq-525
 
 #. After installing the driver, disable the ``nouveau`` driver because it conflict with the NVIDIA driver:
 
@@ -78,6 +79,13 @@ For more information, see `Streamlining NVIDIA Driver Deployment on RHEL 8 with 
    .. code-block:: console
 
       $ sudo dracut --force
+
+#. Enable the ``nvidia-fabricmanager`` and ``nvidia-persistenced`` services:
+
+   .. code-block:: console
+
+      $ sudo systemctl enable nvidia-fabricmanager.service
+      $ sudo systemctl enable nvidia-persistenced.service
 
 #. Reboot the machine:
 
@@ -95,9 +103,9 @@ For more information, see `Streamlining NVIDIA Driver Deployment on RHEL 8 with 
 
    .. code-block:: output
 
-      Fri Jan 13 14:29:53 2023
+      Thu Jun 22 14:29:53 2023
       +-----------------------------------------------------------------------------+
-      | NVIDIA-SMI 525.60.13    Driver Version: 525.60.13    CUDA Version: 12.0     |
+      | NVIDIA-SMI 525.105.17   Driver Version: 525.105.17   CUDA Version: 12.0     |
       |-------------------------------+----------------------+----------------------+
       | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
       | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
@@ -133,7 +141,7 @@ The NVIDIA container toolkit supports the distributions listed in the `NVIDIA Co
 
       $ curl -s -L https://nvidia.github.io/libnvidia-container/rhel8.7/libnvidia-container.repo | sudo tee /etc/yum.repos.d/libnvidia-container.repo
 
-#. Install the NVIDIA Container Toolkit for RHEL 8.7:
+#. Install the NVIDIA Container Toolkit for RHEL:
 
    .. code-block:: console
 
@@ -263,12 +271,12 @@ The deployment consists of adding manifests and a ``kustomize`` configuration to
    .. code-block:: output
 
       [...]
-      2022/12/13 04:17:38 Retreiving plugins.
-      2022/12/13 04:17:38 Detected NVML platform: found NVML library
-      2022/12/13 04:17:38 Detected non-Tegra platform: /sys/devices/soc0/family file not found
-      2022/12/13 04:17:38 Starting GRPC server for 'nvidia.com/gpu'
-      2022/12/13 04:17:38 Starting to serve 'nvidia.com/gpu' on /var/lib/kubelet/device-plugins/nvidia-gpu.sock
-      2022/12/13 04:17:38 Registered device plugin for 'nvidia.com/gpu' with Kubelet
+      2023/06/22 14:25:38 Retreiving plugins.
+      2023/06/22 14:25:38 Detected NVML platform: found NVML library
+      2023/06/22 14:25:38 Detected non-Tegra platform: /sys/devices/soc0/family file not found
+      2023/06/22 14:25:38 Starting GRPC server for 'nvidia.com/gpu'
+      2023/06/22 14:25:38 Starting to serve 'nvidia.com/gpu' on /var/lib/kubelet/device-plugins/nvidia-gpu.sock
+      2023/06/22 14:25:38 Registered device plugin for 'nvidia.com/gpu' with Kubelet
 
 #. You can also verify that the node exposes the ``nvidia.com/gpu`` resources in its capacity:
 
