@@ -27,6 +27,7 @@ About Partner-Validated Configurations
    :hidden:
 
    self
+   mirantis-mke.rst
 
 Partner-validated configurations help end users who want to use
 NVIDIA GPUs with a Kubernetes-based software stack that is not supported by NVIDIA.
