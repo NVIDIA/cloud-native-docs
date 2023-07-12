@@ -49,19 +49,25 @@ Validated Configuration Matrix
      - NVIDIA GPU
      - Hardware Model
 
-   * - FIXME
+   * - MKE 3.6.2+ and 3.5.7+
      - v23.3.1
-     - | FIXME
-       | FIXME 20.04
-     - FIXME
-     - FIXME
-     - FIXME
-     - | NVIDIA HGX H100
+     - | RHEL 8.7
+       | Ubuntu 20.04, 18.04
+     - Mirantia Container Runtime (MCR) 20.10.15+ and 23.0.3+
+     - 1.21.12+ and 1.24.6+
+     - Helm v3
+       | NVIDIA HGX H100
        | NVIDIA H100
        | NVIDIA A100
-     - | FIXME
-       | FIXME
-       | FIXME
+     - | Dell PowerEdge R720
+       | Dell CN-QVWT90-70163-2BJ-00LV-A02
+       | 2x Intel Xeon E5-2690
+       | 24x RAM 8GB
+       | 1x SSD 480GB Micron 5300 PRO
+       | 1x SSD 960GB Micron 5300 PRO
+       | 1x GPU NVIDIA P1001B A100 PCIe AMPERE 40GB
+       | 1x RAID Controller PERC H710
+       | 1x Network card FM487
 
 
 *************
