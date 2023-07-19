@@ -10,6 +10,26 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.13.4
+
+This release of the NVIDIA Container Toolkit `v1.13.4` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.13.4`
+- `libnvidia-container-tools 1.13.4`
+- `libnvidia-container1 1.13.4`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4`)
+
+#### specific to container-toolkit container images
+
+- Bumped the CUDA base image version to 12.1.0
+
 ## NVIDIA Container Toolkit 1.13.3
 
 This release of the NVIDIA Container Toolkit `v1.13.3` is a bugfix release.
