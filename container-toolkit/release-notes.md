@@ -10,6 +10,31 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.13.5
+
+This release of the NVIDIA Container Toolkit `v1.13.5` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.13.5`
+- `libnvidia-container-tools 1.13.5`
+- `libnvidia-container1 1.13.5`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.5-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.5-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.13.5-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.13.5`)
+
+### Fixes and Features
+
+* Removed the dependency on `coreutils` when installing the NVIDIA Container Toolkit on RPM-based systems. Now the packages can be installed on clean systems using, for example, Anaconda.
+* Added support for detecting GSP firmware at custom paths when generating CDI specifications.
+
+#### specific to libnvidia-container
+
+- Added the Shared Compiler Library, `libnvidia-gpucomp.so`, to the list of included compute libaries.
+
 ## NVIDIA Container Toolkit 1.13.4
 
 This release of the NVIDIA Container Toolkit `v1.13.4` is a bugfix release.
