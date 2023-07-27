@@ -138,52 +138,62 @@ In the first example, let's run a simple CUDA sample, which adds two vectors tog
 Jupyter Notebook
 ------------------
 
-In the next example, let's try running a TensorFlow Jupyter notebook.
+You can perform the following steps to deploy Jupyter Notebook in your cluster:
 
-First, deploy the pods:
+#. Create a file, such as ``tf-notebook.yaml``, with contents like the following example:
 
-.. code-block:: console
+   .. literalinclude:: ./manifests/input/tf-notebook.yaml
+      :language: yaml
 
-   $ kubectl apply -f https://nvidia.github.io/gpu-operator/notebook-example.yml
+#. Apply the manifest to deploy the pod and start the service:
 
-Check to determine if the pod has successfully started:
+   .. code-block:: console
 
-.. code-block:: console
+      $ kubectl apply -f tf-notebook.yaml
 
-   $ kubectl get pod tf-notebook
+#. Check the pod status:
 
-.. code-block:: console
+   .. code-block:: console
 
-   NAMESPACE                NAME                                                              READY   STATUS      RESTARTS   AGE
-   default                  tf-notebook                                                       1/1     Running     0          3m45s
+      $ kubectl get pod tf-notebook
 
-Since the example also includes a service, let's obtain the external port at which the notebook is accessible:
+   *Example Output*
 
-.. code-block:: console
+   .. code-block:: output
 
-   $ kubectl get svc -A
+      NAMESPACE   NAME          READY   STATUS      RESTARTS   AGE
+      default     tf-notebook   1/1     Running     0          3m45s
 
-.. code-block:: console
+#. Because the manifest includes a service, get the external port for the notebook:
 
-   NAMESPACE                NAME                                                    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
-   default                  tf-notebook                                             NodePort    10.106.229.20   <none>        80:30001/TCP             4m41s
-   ..
+   .. code-block:: console
 
-And the token for the Jupyter notebook:
+      $ kubectl get svc tf-notebook
 
-.. code-block:: console
+   *Example Output*
 
-   $ kubectl logs tf-notebook
+   .. code-block:: output
 
-.. code-block:: console
+      NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)       AGE
+      tf-notebook   NodePort    10.106.229.20   <none>        80:30001/TCP  4m41s
 
-   [I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
-   [I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf
-   [I 21:50:23.391 NotebookApp] The Jupyter Notebook is running at:
-   [I 21:50:23.391 NotebookApp] http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-   [I 21:50:23.391 NotebookApp]  or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-   [I 21:50:23.391 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-   [C 21:50:23.394 NotebookApp]
+#. Get the token for the Jupyter notebook:
+
+   .. code-block:: console
+
+      $ kubectl logs tf-notebook
+
+   *Example Output*
+
+   .. code-block:: output
+
+      [I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
+      [I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf
+      [I 21:50:23.391 NotebookApp] The Jupyter Notebook is running at:
+      [I 21:50:23.391 NotebookApp] http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+      [I 21:50:23.391 NotebookApp]  or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+      [I 21:50:23.391 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+      [C 21:50:23.394 NotebookApp]
 
       To access the notebook, open this file in a browser:
          file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
@@ -191,7 +201,8 @@ And the token for the Jupyter notebook:
          http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
       or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
 
-The notebook should now be accessible from your browser at this URL: ``http:://<your-machine-ip>:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9``
+The notebook should now be accessible from your browser at this URL:
+`http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9 <http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9>`_.
 
 Demo
 ======
