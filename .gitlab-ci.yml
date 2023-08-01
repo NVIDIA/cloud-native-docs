@@ -77,7 +77,7 @@ build_image_int:
     name: ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}
     paths:
       - _build
-    expire_in: 1h
+    expire_in: 4w
     reports:
       dotenv: build.env
 
