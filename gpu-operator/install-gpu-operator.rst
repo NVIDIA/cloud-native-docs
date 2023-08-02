@@ -71,6 +71,11 @@ The following options are available when using the Helm chart. These options can
      - Description
      - Default
 
+   * - ``ccManager.enabled``
+     - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
+       Refer to :doc:`confidential-containers` for more information.
+     - ``false``
+
    * - ``cdi.enabled``
      - When set to ``true``, the Operator installs two additional runtime classes,
        nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
@@ -148,6 +153,12 @@ The following options are available when using the Helm chart. These options can
      - Deploys Node Feature Discovery plugin as a daemonset.
        Set this variable to ``false`` if NFD is already running in the cluster.
      - ``true``
+
+   * - ``nfd.nodefeaturerules``
+     - Installs node feature rules that are related to confidential computing.
+       NFD uses the rules to detect security features in CPUs and NVIDIA GPUs.
+       Set this variable to ``true`` when you configure the Operator for Confidential Containers.
+     - ``false``
 
    * - ``operator.defaultRuntime``
      - **DEPRECATED as of v1.9**
