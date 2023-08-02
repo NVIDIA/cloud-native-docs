@@ -38,6 +38,8 @@ Advanced Configurations
 
    Container Device Interface Support <cdi.rst>
 
+   Confidential Containers <confidential-containers.rst>
+
    GPU Operator with Amazon EKS <amazon-eks.rst>
 
    GPU Operator with Azure AKS <microsoft-aks.rst>
