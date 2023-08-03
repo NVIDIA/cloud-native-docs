@@ -33,6 +33,117 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+23.6.0
+======
+
+New Features
+------------
+
+* Added support for configuring Kata Containers for GPU workloads.
+  This feature introduces NVIDIA Kata Manager for Kubernetes as an operand of GPU Operator.
+  Refer to :doc:`gpu-operator-kata` for more information.
+
+* Added support for configuring Confidential Containers for GPU workloads.
+  This feature builds on the work for configuring Kata Containers and
+  introduces NVIDIA Confidential Computing Manager for Kubernetes as an operand of GPU Operator.
+  Refer to :doc:`confidential-containers` for more information.
+
+* Added support for the NVIDIA Data Center GPU Driver version 535.86.10.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for NVIDIA vGPU 16.0.
+
+* Added support for new MIG profiles with the 535 driver.
+
+  * For H100 NVL and H800 NVL devices:
+
+    * ``1g.12gb.me``
+    * ``1g.24gb``
+    * ``2g.24gb``
+    * ``3g.47gb``
+    * ``4g.47gb``
+    * ``7g.94gb``
+
+
+Improvements
+------------
+
+* The Operator is updated to use the ``node-role.kubernetes.io/control-plane`` label
+  that is the default label for Kubernetes version 1.27.
+  As a fallback for older Kubernetes versions, the Operator runs on nodes with the
+  ``master`` label if the ``control-plane`` label is not available.
+
+* Added support for setting Pod Security Admission for the GPU Operator namespace.
+  Pod Security Admission applies to Kubernetes versions 1.25 and higher.
+  You can specify ``--set psa.enabled=true`` when you install or upgrade the Operator,
+  or you can patch the ``cluster-policy`` instance of the ``ClusterPolicy`` object.
+  The Operator sets the following standards:
+
+  .. code-block:: yaml
+
+     pod-security.kubernetes.io/audit=privileged
+     pod-security.kubernetes.io/enforce=privileged
+     pod-security.kubernetes.io/warn=privileged
+
+* The Operator performs plugin validation when the Operator is installed or upgraded.
+  Previously, the plugin validation ran a workload pod that requires access to a GPU.
+  On a busy node with the GPUs consumed by other workloads, the validation can falsely
+  report failure because it was not scheduled.
+  The plugin validation still confirms that GPUs are advertised to kubelet, but it no longer
+  runs a workload.
+  To override the new behavior and run a plugin validation workload, specify
+  ``--set validator.plugin.env.WITH_WORKLOAD=true`` when you install or upgrade the Operator.
+
+
+Fixed issues
+------------
+
+* In clusters that use a network proxy and configure GPU Direct Storage, the ``nvidia-fs-ctr``
+  container can use the network proxy and any other environment variable that you specify
+  with the ``--set gds.env=key1=val1,key2=val2`` option when you install or upgrade the Operator.
+
+* In previous releases, when you performed a GPU driver upgrade with the ``OnDelete`` strategy,
+  the status reported in the ``cluster-policy`` instance of the ``ClusterPolicy`` object could indicate
+  ``Ready`` even though the driver daemon set has not completed the upgrade of pods on all nodes.
+  In this release, the status is reported as ``notReady`` until the upgrade is complete.
+
+
+Known Limitations
+------------------
+
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* Ubuntu 18.04 is scheduled to reach end of standard support in May of 2023.
+  When Ubuntu transitions it to end of life (EOL), the NVIDIA GPU Operator and
+  related projects plan to cease building containers for 18.04 and to
+  cease providing support.
+* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
+  Additionally, network-restricted environments are not supported.
+
+
 23.3.2
 ======
 
