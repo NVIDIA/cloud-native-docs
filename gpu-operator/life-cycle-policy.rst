@@ -102,6 +102,30 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - | NVIDIA vGPU
           | Device Manager
         - NVIDIA GDS Driver
+        - | NVIDIA Kata Manager
+          | for Kubernetes
+        - | NVIDIA Confidential
+          | Computing Manager
+          | for Kubernetes
+
+      * - v23.6.0
+        - | `535.86.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-86-10/index.html>`_ (default),
+          | `525.125.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-125-06/index.html>`_,
+          | `470.199.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-199-02/index.html>`_,
+        - `v0.6.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+        - `1.13.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+        - `0.14.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+        - `3.1.8-3.1.5 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+        -  v0.13.1
+        - `0.8.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+        - `0.5.3 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
+        - | `3.1.8-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_ (default),
+        - v23.6.0
+        - `v1.2.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
+        - v0.2.3
+        - `2.16.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - v0.1.0
+        - v0.1.0
 
       * - v23.3.2
         - | `535.54.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-54-03/index.html>`_ (recommended),
@@ -125,6 +149,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.1
         - `2.15.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - N/A
+        - N/A
 
       * - v23.3.1
         - | `525.105.17 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-105-17/index.html>`_ (default),
@@ -144,6 +170,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.1
         - `2.15.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - N/A
+        - N/A
 
       * - v23.3.0
         - | `525.105.17 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-105-17/index.html>`_ (default),
@@ -163,6 +191,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.1
         - `2.15.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - N/A
+        - N/A
 
       * - v22.9.2
         - | `535.54.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-54-03/index.html>`_ (recommended),
@@ -188,6 +218,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - N/A
+        - N/A
 
       * - v22.9.1
         - | `525.60.13 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-60-13/index.html>`_ (default),
@@ -207,6 +239,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - `2.14.13 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+        - N/A
+        - N/A
 
       * - v22.9.0
         - | 520.61.05,
@@ -226,28 +260,13 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - `v1.2.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
         - v0.2.0
         - N/A
-
-      * - 1.11
-        - | `515.48.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-48-07/index.html>`_ (default),
-          | `510.47.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-47-03/index.html>`_,
-          | `470.129.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-129-06/index.html>`_,
-          | `450.191.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-450-191-01/index.html>`_
-        - `v0.4.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-        - `1.10.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-        - `0.12.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-        - `2.4.5-2.6.7 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-        -  v0.10.1
-        - `0.6.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-        - `0.4.2 <https://github.com/NVIDIA/mig-parted/tree/master/deployments/gpu-operator>`_
-        - `2.4.5-1 <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-release-notes/index.html>`_
-        - v1.11.0
-        - `v1.1.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
-        - v0.1.0
+        - N/A
         - N/A
 
   .. note::
 
       - Driver version could be different with NVIDIA vGPU, as it depends on the driver
         version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-      - The GPU Operator is supported on all the R450, R470, R510, 515, 520 and 525 NVIDIA datacenter production drivers. For a list of supported
-        datacenter drivers versions, visit this `link <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_.
+      - The GPU Operator is supported on all active NVIDIA datacenter production drivers.
+        Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_
+        for more information.
