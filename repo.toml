@@ -18,6 +18,7 @@ sphinx_conf_py_extra = """
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
   blockdiag_antialias = True
   pygments_style = 'sphinx'
+  copybutton_exclude = '.linenos, .gp'
   html_theme_options = {
     'titles_only': True,
     'logo_only': True,
