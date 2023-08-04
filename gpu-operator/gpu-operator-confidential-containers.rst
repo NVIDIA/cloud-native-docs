@@ -16,9 +16,9 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
-##########################################################
-GPU Operator Support for Confidential Containers with Kata
-##########################################################
+##################################################
+GPU Operator with Confidential Containers and Kata
+##################################################
 
 .. contents::
    :depth: 2
@@ -111,6 +111,7 @@ About NVIDIA Confidential Computing Manager
 
 You can set the default confidential computing mode of the NVIDIA GPUs by setting the
 ``ccManager.defaultMode=<on|off>`` option.
+The default value is ``off``.
 You can set this option when you install NVIDIA GPU Operator or afterward by modifying the
 ``cluster-policy`` instance of the ``ClusterPolicy`` object.
 
@@ -185,12 +186,15 @@ Node A receives the following software components:
 - ``NVIDIA Device Plugin for Kubernetes`` -- to discover and advertise GPU resources to kubelet.
 - ``NVIDIA DGCM and DGCM Exporter`` -- to monitor GPUs.
 - ``NVIDIA MIG Manager for Kubernetes`` -- to manage MIG-capable GPUs.
+- ``Node Feature Discovery`` -- to detect CPU, kernel, and host features and label worker nodes.
 - ``NVIDIA GPU Feature Discovery`` -- to detect NVIDIA GPUs and label worker nodes.
 
 Node B receives the following software components:
 
 - ``NVIDIA Kata Manager for Kubernetes`` -- to manage the NVIDIA artifacts such as the
   NVIDIA optimized Linux kernel image and initial RAM disk.
+- ``NVIDIA Confidential Computing Manager for Kubernetes`` -- to manage the confidential
+  computing mode of the NVIDIA GPU on the node.
 - ``NVIDIA Sandbox Device Plugin`` -- to discover and advertise the passthrough GPUs to kubelet.
 - ``NVIDIA VFIO Manager`` -- to load the vfio-pci device driver and bind it to all GPUs on the node.
 - ``Node Feature Discovery`` -- to detect CPU security features, NVIDIA GPUs, and label worker nodes.
@@ -241,7 +245,7 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
 #. Label the worker nodes that you want to use with confidential containers.
 
-   This step ensures that you can continue to run traditional container workloads and vGPU workloads on some nodes in your cluster.
+   This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
 
 #. Install the Confidential Containers Operator.
 
@@ -264,10 +268,8 @@ Label Nodes for Confidental Containers
 
      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
-..
-   .. include:: gpu-operator-kata.rst
-      :start-after: start-install-coco-operator
-      :end-before: end-install-coco-operator
+
+.. start-install-coco-operator
 
 ********************************************
 Install the Confidential Containers Operator
@@ -358,7 +360,7 @@ Perform the following steps to install and verify the Confidential Containers Op
 
          ccruntime.confidentialcontainers.org/ccruntime-sample created
 
-   Wait approximately 10 minutes for the Operator to create the base runtime classes.
+   Wait a few minutes for the Operator to create the base runtime classes.
 
 #. (Optional) View the runtime classes:
 
@@ -379,6 +381,7 @@ Perform the following steps to install and verify the Confidential Containers Op
       kata-qemu-snp   kata-qemu-snp   13m
       kata-qemu-tdx   kata-qemu-tdx   13m
 
+.. end-install-coco-operator
 
 *******************************
 Install the NVIDIA GPU Operator
@@ -482,12 +485,12 @@ Verification
       .. code-block:: output
          :emphasize-lines: 3
 
-         65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
-                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+         65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)
+                 Subsystem: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx]
                  Kernel driver in use: vfio-pci
                  Kernel modules: nvidiafb, nouveau
 
-   #. Confirm that Kata manager installed the ``kata-qemu-nvidia-gpu`` runtime class files:
+   #. Confirm that NVIDIA Kata Manager installed the ``kata-qemu-nvidia-gpu-snp`` runtime class files:
 
       .. code-block:: console
 
@@ -540,6 +543,7 @@ To set a node-level mode, apply the ``nvidia.com/cc.mode=<on|off|devtools>`` lab
 
    $ kubectl label node <node-name> nvidia.com/cc.mode=on --overwrite
 
+The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
 Verifying a Mode Change
 =======================
@@ -579,7 +583,7 @@ A pod specification for a confidential computing requires the following:
    .. code-block:: output
 
       {
-         "nvidia.com/GA102GL_A10": "1"
+         "nvidia.com/GH100_H100_PCIE": "1"
       }
 
 #. Create a file, such as ``cuda-vectoradd-coco.yaml``, like the following example:
@@ -599,9 +603,9 @@ A pod specification for a confidential computing requires the following:
         containers:
         - name: cuda-vectoradd
           image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
-        resources:
-          limits:
-            "nvidia.com/GA102GL_A10": 1
+          resources:
+            limits:
+              "nvidia.com/GH100_H100_PCIE": 1
 
 #. Create the pod:
 

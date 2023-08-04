@@ -73,7 +73,7 @@ The following options are available when using the Helm chart. These options can
 
    * - ``ccManager.enabled``
      - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-       Refer to :doc:`confidential-containers` for more information.
+       Refer to :doc:`gpu-operator-confidential-containers` for more information.
      - ``false``
 
    * - ``cdi.enabled``
@@ -139,6 +139,11 @@ The following options are available when using the Helm chart. These options can
      - Depends on the version of the Operator. See the Component Matrix
        for more information on supported drivers.
 
+   * - ``kataManager.enabled``
+     - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
+       Refer to :doc:`gpu-operator-kata` for more information.
+     - ``false``
+
    * - ``mig.strategy``
      - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
        are either ``mixed`` or ``single``.
@@ -159,20 +164,6 @@ The following options are available when using the Helm chart. These options can
        NFD uses the rules to detect security features in CPUs and NVIDIA GPUs.
        Set this variable to ``true`` when you configure the Operator for Confidential Containers.
      - ``false``
-
-   * - ``operator.defaultRuntime``
-     - **DEPRECATED as of v1.9**
-     - ``docker``
-
-   * - ``psp.enabled``
-     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
-     - ``false``
-
-   * - ``toolkit.enabled``
-     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
-       as a container on the system. Set this value to ``false`` when using the Operator on systems
-       with pre-installed NVIDIA runtimes.
-     - ``true``
 
    * - ``operator.defaultRuntime``
      - **DEPRECATED as of v1.9**
