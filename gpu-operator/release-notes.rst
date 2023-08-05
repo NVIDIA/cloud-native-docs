@@ -46,7 +46,7 @@ New Features
 * Added support for configuring Confidential Containers for GPU workloads.
   This feature builds on the work for configuring Kata Containers and
   introduces NVIDIA Confidential Computing Manager for Kubernetes as an operand of GPU Operator.
-  Refer to :doc:`confidential-containers` for more information.
+  Refer to :doc:`gpu-operator-confidential-containers` for more information.
 
 * Added support for the NVIDIA Data Center GPU Driver version 535.86.10.
   Refer to the :ref:`GPU Operator Component Matrix`

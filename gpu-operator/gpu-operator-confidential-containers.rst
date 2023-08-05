@@ -47,7 +47,7 @@ The TEE provides embedded encryption keys and an embedded attestation mechanism 
 The following high-level diagram shows some fundamental concepts for confidential containers with the NVIDIA GPU Operator:
 
 - containerd is configured to run a Kata runtime to start virtual machines.
-- Kata starts the virtual machines using an NVIDIA optmizied Linux kernel and NVIDIA provided initial RAM disk
+- Kata starts the virtual machines using an NVIDIA optimized Linux kernel and NVIDIA provided initial RAM disk
 - Before the containers run in the virtual machine, a guest pre-start hook runs the local verifier
   that is part of the NVIDIA Attestation SDK.
 
@@ -184,7 +184,7 @@ Node A receives the following software components:
 - ``NVIDIA Driver Manager for Kubernetes`` -- to install the data-center driver.
 - ``NVIDIA Container Toolkit`` -- to ensure that containers can access GPUs.
 - ``NVIDIA Device Plugin for Kubernetes`` -- to discover and advertise GPU resources to kubelet.
-- ``NVIDIA DGCM and DGCM Exporter`` -- to monitor GPUs.
+- ``NVIDIA DCGM and DCGM Exporter`` -- to monitor GPUs.
 - ``NVIDIA MIG Manager for Kubernetes`` -- to manage MIG-capable GPUs.
 - ``Node Feature Discovery`` -- to detect CPU, kernel, and host features and label worker nodes.
 - ``NVIDIA GPU Feature Discovery`` -- to detect NVIDIA GPUs and label worker nodes.
@@ -259,7 +259,7 @@ After installation, you can change the confidential computing mode and run a sam
 
 
 **************************************
-Label Nodes for Confidental Containers
+Label Nodes for Confidential Containers
 **************************************
 
 > Label the nodes to run Kata Containers and configure for confidential containers:
@@ -307,7 +307,7 @@ Perform the following steps to install and verify the Confidential Containers Op
       service/cc-operator-controller-manager-metrics-service created
       deployment.apps/cc-operator-controller-manager create
 
-#. (Optional) View the pods and services in the ``confidental-containers-system`` namespace:
+#. (Optional) View the pods and services in the ``confidential-containers-system`` namespace:
 
    .. code-block:: console
 
