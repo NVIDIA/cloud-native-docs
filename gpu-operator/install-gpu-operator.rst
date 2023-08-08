@@ -234,42 +234,47 @@ In this scenario, the default configuration options are used:
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator
 
-.. note::
-
-   For installing on Secure Boot systems or using Precompiled modules refer to :doc:`precompiled-drivers`.
+For installing on Secure Boot systems or using Precompiled modules refer to :doc:`precompiled-drivers`.
 
 
 Bare-metal/Passthrough with default configurations on Red Hat Enterprise Linux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-In this scenario, the default configuration options are used:
-
-.. code-block:: console
-
-   $ helm install --wait --generate-name \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator
-
-.. note::
-
-   * When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.
-
-Bare-metal/Passthrough with default configurations on CentOS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-In this scenario, the CentOS toolkit image is used:
+In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
 
 .. code-block:: console
 
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set toolkit.version=1.7.1-centos7
+        --set toolkit-version=1.13.4-ubi8
 
-.. note::
+Replace the ``1.13.4`` value in the preceding command with the version that is supported
+with the NVIDIA GPU Operator.
+Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
 
-   * For CentOS 8 systems, use `toolkit.version=1.7.1-centos8`.
-   * Replace `1.7.1` toolkit version used here with the latest one available `here <https://ngc.nvidia.com/catalog/containers/nvidia:k8s:container-toolkit/tags>`__.
+When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, network restricted environments are not supported.
+
+
+Bare-metal/Passthrough with default configurations on CentOS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In this scenario, use the NVIDIA Container Toolkit image that is build on CentOS:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set toolkit.version=1.13.4-centos7
+
+For CentOS 8 systems, use the UBI 8 image: ``toolkit.version=1.13.4-ubi8``.
+
+Replace the ``1.13.4`` value in the preceding command with the version that is supported with the NVIDIA GPU Operator.
+Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
+You can also refer to the `tags <https://ngc.nvidia.com/catalog/containers/nvidia:k8s:container-toolkit/tags>`__
+for the NVIDIA Container Toolkit image from the NVIDIA NGC Catalog.
 
 ----
 
@@ -568,7 +573,7 @@ For Rancher Kubernetes Engine 2 (RKE2), set the following in the `ClusterPolicy`
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl
+        value: /var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl
       - name: CONTAINERD_SOCKET
         value: /run/k3s/containerd/containerd.sock
       - name: CONTAINERD_RUNTIME_CLASS
@@ -580,10 +585,10 @@ These options can be passed to GPU Operator during install time as below.
 
 .. code-block:: console
 
-  helm install -n gpu-operator --create-namespace \
+  helm install gpu-operator -n gpu-operator --create-namespace \
     nvidia/gpu-operator $HELM_OPTIONS \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/lib/rancher/k3s/agent/etc/containerd/config.toml.tmpl \
+      --set toolkit.env[0].value=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \

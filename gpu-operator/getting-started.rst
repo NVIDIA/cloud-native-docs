@@ -41,6 +41,9 @@ Prerequisites
 
 Before installing the GPU Operator, you should ensure that the Kubernetes cluster meets some prerequisites.
 
+#. All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+
 #. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
 #. Node Feature Discovery (NFD) is a dependency for the Operator on each node.
