@@ -237,9 +237,9 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 After installation, you can run a sample workload.
 
 
-**************************************
-Label Nodes for Confidental Containers
-**************************************
+*******************************
+Label Nodes for Kata Containers
+*******************************
 
 > Label the nodes to run Kata Containers:
 

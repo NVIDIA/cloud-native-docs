@@ -39,11 +39,11 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 New Features
 ------------
 
-* Added support for configuring Kata Containers for GPU workloads.
+* Added support for configuring Kata Containers for GPU workloads as a technology preview feature.
   This feature introduces NVIDIA Kata Manager for Kubernetes as an operand of GPU Operator.
   Refer to :doc:`gpu-operator-kata` for more information.
 
-* Added support for configuring Confidential Containers for GPU workloads.
+* Added support for configuring Confidential Containers for GPU workloads as a technology preview feature.
   This feature builds on the work for configuring Kata Containers and
   introduces NVIDIA Confidential Computing Manager for Kubernetes as an operand of GPU Operator.
   Refer to :doc:`gpu-operator-confidential-containers` for more information.
@@ -128,11 +128,8 @@ Known Limitations
   pod security policy (PSP).
   If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
   argument so that the default value, ``false``, is used.
-* Ubuntu 18.04 is scheduled to reach end of standard support in May of 2023.
-  When Ubuntu transitions it to end of life (EOL), the NVIDIA GPU Operator and
-  related projects plan to cease building containers for 18.04 and to
-  cease providing support.
-* All worker nodes within the Kubernetes cluster must use the same operating system version.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
   in this case for the driver installation to succeed.

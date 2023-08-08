@@ -258,9 +258,9 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 After installation, you can change the confidential computing mode and run a sample workload.
 
 
-**************************************
+***************************************
 Label Nodes for Confidential Containers
-**************************************
+***************************************
 
 > Label the nodes to run Kata Containers and configure for confidential containers:
 
