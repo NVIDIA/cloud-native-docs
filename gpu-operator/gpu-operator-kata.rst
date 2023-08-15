@@ -248,7 +248,7 @@ Label Nodes for Kata Containers
      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
 
-.. include:: confidential-containers.rst
+.. include:: gpu-operator-confidential-containers.rst
    :start-after: start-install-coco-operator
    :end-before: end-install-coco-operator
 
