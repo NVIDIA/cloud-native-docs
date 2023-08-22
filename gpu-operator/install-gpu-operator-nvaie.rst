@@ -137,12 +137,12 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-3-0 -n gpu-operator
+   $ helm install --wait gpu-operator nvaie/gpu-operator-<M>-<m> -n gpu-operator
 
+Replace *M* and *m* with the major and minor release values, such as ``3-1``.
 
-.. note::
-  in case you need to deploy the Helm chart with some customizations, please refer to this link: :ref:`Chart Customization Options
-  <gpu-operator-helm-chart-options>`
+To deploy the Helm chart with some customizations, refer to
+:ref:`Chart Customization Options <gpu-operator-helm-chart-options>`.
 
 
 *********************************************************************
@@ -204,16 +204,17 @@ Install the NVIDIA GPU Operator:
 
 .. code-block:: console
 
-    $ helm install --wait gpu-operator nvaie/gpu-operator-3-0 -n gpu-operator \
+    $ helm install --wait gpu-operator nvaie/gpu-operator-<M>-<m> -n gpu-operator \
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
       --set driver.version=525.60.13 \
       --set driver.licensingConfig.configMapName=""
 
+Replace *M* and *m* with the major and minor release values, such as ``3-1``.
 
-.. note::
-  In case you need to deploy the Helm chart with some customizations, please refer to this link: :ref:`Chart Customization Options
-  <gpu-operator-helm-chart-options>`
+To deploy the Helm chart with some customizations, refer to
+:ref:`Chart Customization Options <gpu-operator-helm-chart-options>`.
+
 
 *********************************
 Updating NLS client license token
