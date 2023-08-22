@@ -519,10 +519,10 @@ support for such custom configurations.
 
 .. _custom-runtime-options:
 
-Custom configuration for runtime ``containerd``
-"""""""""""""""""""""""""""""""""""""""""""""""""""""
+Custom configuration for runtime containerd
+"""""""""""""""""""""""""""""""""""""""""""
 
-When `containerd` is the container runtime used, the following configuration
+When you use containerd as the container runtime, the following configuration
 options are used with the container-toolkit deployed with GPU Operator:
 
 .. code-block:: yaml
@@ -566,6 +566,8 @@ These options are defined as follows:
       equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
       The default value is ``true``.
 
+.. rubric:: Rancher Kubernetes Engine 2
+
 For Rancher Kubernetes Engine 2 (RKE2), set the following in the `ClusterPolicy`.
 
 .. code-block:: yaml
@@ -591,6 +593,38 @@ These options can be passed to GPU Operator during install time as below.
       --set toolkit.env[0].value=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
+      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
+      --set toolkit.env[2].value=nvidia \
+      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
+      --set-string toolkit.env[3].value=true
+
+.. rubric:: MicroK8s
+
+For MicroK8s, set the following in the `ClusterPolicy`.
+
+.. code-block:: yaml
+
+   toolkit:
+      env:
+      - name: CONTAINERD_CONFIG
+        value: /var/snap/microk8s/current/args/containerd-template.toml
+      - name: CONTAINERD_SOCKET
+        value: /var/snap/microk8s/common/run/containerd.sock
+      - name: CONTAINERD_RUNTIME_CLASS
+        value: nvidia
+      - name: CONTAINERD_SET_AS_DEFAULT
+        value: "true"
+
+These options can be passed to GPU Operator during install time as below.
+
+.. code-block:: console
+
+  helm install gpu-operator -n gpu-operator --create-namespace \
+    nvidia/gpu-operator $HELM_OPTIONS \
+      --set toolkit.env[0].name=CONTAINERD_CONFIG \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
+      --set toolkit.env[1].name=CONTAINERD_SOCKET \
+      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
       --set toolkit.env[2].value=nvidia \
       --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \

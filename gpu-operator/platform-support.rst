@@ -359,7 +359,7 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 8.4,
-           | 8.6, 8.7
+           | 8.6---8.8
          - 1.21---1.27
          -
          -
