@@ -35,6 +35,7 @@ RUN /work/tools/packman/python.sh -m pip install --no-cache-dir --no-deps -U \
    Pillow \
    webcolors \
    sphinx-copybutton \
-   sphinx-tabs
+   sphinx-tabs \
+   sphinx-reredirects
 RUN (cd /tmp/extension; tar cf - . ) | (cd /var/tmp/packman/chk/sphinx/4.5.0.2-py3.7-linux-x86_64/; tar xf -)
 RUN rm -rf /work /tmp/extension
