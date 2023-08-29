@@ -13,7 +13,13 @@ sphinx_conf_py_extra = """
     "colon_fence",
   ]
   templates_path = ['${root}/templates']
-  extensions.extend(["sphinx.ext.autosectionlabel", "sphinx_copybutton", "sphinx_tabs.tabs", "sphinxcontrib.blockdiag"])
+  extensions.extend([
+    "sphinx.ext.autosectionlabel",
+    "sphinx_copybutton",
+    "sphinx_tabs.tabs",
+    "sphinxcontrib.blockdiag",
+    "sphinx_reredirects",
+  ])
   suppress_warnings = [ 'autosectionlabel.*' ]
   blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
   blockdiag_antialias = True

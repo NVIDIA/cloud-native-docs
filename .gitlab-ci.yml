@@ -1,6 +1,6 @@
 variables:
   CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.2.0"
+  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.3.0"
   BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
   PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
   PROJECTS: review container-toolkit driver-containers edge gpu-operator gpu-telemetry kubernetes partner-validated
