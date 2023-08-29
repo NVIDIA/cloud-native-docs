@@ -125,6 +125,11 @@ intersphinx_mapping = {
     'dcgm': ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
 }
 
+
+source_parsers = {
+    '.md': 'myst_parser.sphinx_',
+}
+
 def setup(app):
     count_unique_visitor_script = os.getenv("ADD_NVIDIA_VISITS_COUNTING_SCRIPT")
     if count_unique_visitor_script:

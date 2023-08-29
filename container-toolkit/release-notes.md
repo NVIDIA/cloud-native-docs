@@ -51,6 +51,7 @@ The following `container-toolkit` containers are included:
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubi8`
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.13.4`)
 
+### Fixes and Features
 #### specific to container-toolkit container images
 
 - Bumped the CUDA base image version to 12.1.0
