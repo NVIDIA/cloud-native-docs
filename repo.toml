@@ -48,6 +48,18 @@ sphinx_conf_py_extra = """
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
     rst_epilog = ".. |gitlab_mr_url| replace:: {}/-/merge_requests/{}".format(
       os.environ["CI_MERGE_REQUEST_PROJECT_URL"], os.environ["CI_MERGE_REQUEST_IID"])
+
+  if project == "container-toolkit":
+    redirects = {
+      "concepts": "index.html",
+      "distro/*": "install-guide.html",
+      "install/*": "install-guide.html",
+      "nvidia-containerd.html": "install-guide.html",
+      "nvidia-docker.html": "install-guide.html",
+      "nvidia-podman.html": "install-guide.html",
+      "runtime/*": "docker-specialized.html",
+      "user-guide.html": "install-guide.html",
+    }
 """
 
 #deps = [
