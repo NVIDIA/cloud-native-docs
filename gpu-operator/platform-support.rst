@@ -51,9 +51,11 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA HGX H100         | NVIDIA Hopper and         |
     |                         | NVSwitch                  |
     +-------------------------+---------------------------+
-    | NVIDIA H100             | NVIDIA Hopper             |
+    | | NVIDIA H100,          | NVIDIA Hopper             |
+    | | NVIDIA H100 NVL       |                           |
     +-------------------------+---------------------------+
-    | NVIDIA L40              | NVIDIA Ada                |
+    | | NVIDIA L40,           | NVIDIA Ada                |
+    | | NVIDIA L40S           |                           |
     +-------------------------+---------------------------+
     | NVIDIA L4               | NVIDIA Ada                |
     +-------------------------+---------------------------+
