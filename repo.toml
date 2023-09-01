@@ -97,7 +97,7 @@ copyright_start = 2020
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "23.6.0"
+version = "23.6.1"
 copyright_start = 2020
 
 

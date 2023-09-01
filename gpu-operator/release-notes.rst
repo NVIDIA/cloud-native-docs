@@ -33,6 +33,41 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+23.6.1
+======
+
+New Features
+------------
+
+* Added support for NVIDIA L40S GPUs.
+
+* Added support for the NVIDIA Data Center GPU Driver version 535.104.05.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+Fixed issues
+------------
+
+* Previously, the NVIDIA Container Toolkit daemon set could fail when running on
+  nodes with certain types of GPUs.
+  The driver-validation init container would fail when iterating over NVIDIA PCI devices
+  if the device PCI ID was not in the PCI database.
+  The error message is similar to the following example:
+
+  .. code-block:: output
+
+     Error: error validating driver installation: error creating symlinks:
+     failed to get device nodes: failed to get GPU information: error getting
+     all NVIDIA devices: error constructing NVIDIA PCI device 0000:21:00.0:
+     unable to get device name: failed to find device with id '26b9'\n\n
+     Failed to create symlinks under /dev/char that point to all possible NVIDIA
+     character devices.\nThe existence of these symlinks is required to address
+     the following bug:\n\n    https://github.com/NVIDIA/gpu-operator/issues/430\n\n
+     This bug impacts container runtimes configured with systemd cgroup management
+     enabled.\nTo disable the symlink creation, set the following envvar in ClusterPolicy:\n\n
+     validator:\n    driver:\n     env:\n  - name: DISABLE_DEV_CHAR_SYMLINK_CREATION\n value: \"true\""
+
+
 23.6.0
 ======
 
