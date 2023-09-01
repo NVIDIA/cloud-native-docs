@@ -46,6 +46,15 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 
 #. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
    `instructions <https://docs.docker.com/engine/install/>`_.
+
+#. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
+   label the namespace for the Operator to set the enforcement policy to privileged:
+
+   .. code-block:: console
+
+      $ kubectl create ns gpu-operator
+      $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
+
 #. Node Feature Discovery (NFD) is a dependency for the Operator on each node.
    By default, NFD master and worker are automatically deployed by the Operator.
    If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.
@@ -299,6 +308,17 @@ to complete the installation.
 
 Upgrading the GPU Operator
 ==========================
+
+Prerequisites
+-------------
+
+- If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
+  label the namespace for the Operator to set the enforcement policy to privileged:
+
+  .. code-block:: console
+
+     $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
+
 
 Using Helm
 -----------
