@@ -54,6 +54,8 @@ New Features
 
 * Added support for NVIDIA vGPU 16.0.
 
+* Added support for NVIDIA Network Operator 23.7.0.
+
 * Added support for new MIG profiles with the 535 driver.
 
   * For H100 NVL and H800 NVL devices:
