@@ -16,6 +16,9 @@
 
 .. headings # #, * *, =, -, ^, "
 
+.. _nvaie-rn: https://docs.nvidia.com/ai-enterprise/latest/release-notes/index.html
+.. |nvaie-rn| replace:: *NVIDIA AI Enterprise Release Notes*
+
 .. Date: Aug 18 2021
 .. Author: cdesiniotis
 
@@ -207,10 +210,11 @@ Install the NVIDIA GPU Operator:
     $ helm install --wait gpu-operator nvaie/gpu-operator-<M>-<m> -n gpu-operator \
       --set driver.repository=nvcr.io/nvidia \
       --set driver.image=driver \
-      --set driver.version=525.60.13 \
+      --set driver.version=<driver-version> \
       --set driver.licensingConfig.configMapName=""
 
 Replace *M* and *m* with the major and minor release values, such as ``3-1``.
+Refer to the |nvaie-rn|_ for information about supported GPU Driver versions.
 
 To deploy the Helm chart with some customizations, refer to
 :ref:`Chart Customization Options <gpu-operator-helm-chart-options>`.
