@@ -10,6 +10,54 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.14
+
+This release of the NVIDIA Container Toolkit `v1.14` is a feature release.
+
+The following packages are included:
+
+- `libnvidia-container 1.14.0`
+- `nvidia-container-toolkit 1.14.0`
+- `nvidia-container-runtime 3.14.0`
+- `nvidia-docker2 2.14.0`
+
+   ```{note}
+   This is the last release that includes the `nvidia-container-runtime`
+   and `nvidia-docker2` packages.
+   All required functionality is included in the `nvidia-container-toolkit` package.
+   This toolkit package includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.
+   ```
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.0-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.0-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.0-ubuntu20.04`
+
+### Fixes and Features
+
+- Improved support for the Container Device Interface (CDI) on Tegra-based systems.
+
+- Simplified the packaging and distribution of the toolkit.
+
+  Beginning with this release, unified `.deb` and `.rpm` packages are distributed.
+  These packages are compatible with all supported distributions.
+  This enhancement simplifies the installation process instead of releasing distributions-specific packages.
+
+#### Enhancements to libnvidia-container
+
+- Added logic to generate the `nvc.h` header file automatically so that the version does not need to be updated explicitly.
+- Added the Shared Compiler Library, `libnvidia-gpucomp.so`, to the list of included compute libraries.
+- Added OpenSSL 3 support to the Encrypt / Decrypt library.
+
+#### Enhancements to container-toolkit container images
+
+- Updated the CUDA base image version to 12.2.0.
+- Standardized the environment variable names that are used to configure container engines.
+- Removed installation of the `nvidia-experimental` runtime.
+  This runtime is superceded by the NVIDIA Container Runtime in CDI mode.
+- Set `NVIDIA_VISIBLE_DEVICES=void` to prevent injection of NVIDIA devices and drivers into the NVIDIA Container Toolkit container.
+
 ## NVIDIA Container Toolkit 1.13.5
 
 This release of the NVIDIA Container Toolkit `v1.13.5` is a bugfix release.

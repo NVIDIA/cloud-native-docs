@@ -52,12 +52,19 @@ sphinx_conf_py_extra = """
   if project == "container-toolkit":
     redirects = {
       "concepts": "index.html",
-      "distro/*": "install-guide.html",
-      "install/*": "install-guide.html",
+      "distro/amazon-linux.html": "../install-guide.html",
+      "distro/centos8.html": "../install-guide.html",
+      "distro/rhel7.html": "../install-guide.html",
+      "distro/suse15.html": "../install-guide.html",
+      "distro/ubuntu.html": "../install-guide.html",
+      "install/nvidia-container-toolkit.html": "../install-guide.html",
+      "install/repo-apt.html": "../install-guide.html",
+      "install/repo-yum.html": "../install-guide.html",
+      "install/repo-zypper.html": "../install-guide.html",
       "nvidia-containerd.html": "install-guide.html",
       "nvidia-docker.html": "install-guide.html",
       "nvidia-podman.html": "install-guide.html",
-      "runtime/*": "docker-specialized.html",
+      "runtime/docker.html": "../docker-specialized.html",
       "user-guide.html": "install-guide.html",
     }
 """
@@ -73,7 +80,7 @@ sphinx_conf_py_extra = """
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.13.5"
+version = "1.14.0"
 copyright_start = 2020
 
 
