@@ -13,6 +13,9 @@ ______________________________________________________________________
 ## NVIDIA Container Toolkit 1.14
 
 This release of the NVIDIA Container Toolkit `v1.14` is a feature release.
+## NVIDIA Container Toolkit 1.14.0
+
+This release of the NVIDIA Container Toolkit `v1.14.0` is a feature release.
 
 The following packages are included:
 
