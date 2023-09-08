@@ -111,7 +111,7 @@ To use Kubernetes with Docker, you need to configure the Docker `daemon.json` to
 a reference to the NVIDIA Container Runtime and set this runtime as the default. The NVIDIA Container Toolkit contains a utility to update this file
 as highlighted in the `docker`-specific installation instructions.
 
-See the {ref}`install-guide` for more information on installing the NVIDIA Container Toolkit on various Linux distributions.
+See the {doc}`install-guide` for more information on installing the NVIDIA Container Toolkit on various Linux distributions.
 
 ### Package Repository
 
