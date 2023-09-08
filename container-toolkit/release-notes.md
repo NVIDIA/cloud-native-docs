@@ -10,9 +10,35 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
-## NVIDIA Container Toolkit 1.14
+## NVIDIA Container Toolkit 1.14.1
 
-This release of the NVIDIA Container Toolkit `v1.14` is a feature release.
+This release of the NVIDIA Container Toolkit `v1.14.1` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.14.1`
+- `libnvidia-container-tools 1.14.1`
+- `libnvidia-container1 1.14.1`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.1-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.1-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.1-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.14.1`)
+
+### Fixes and Features
+
+- Fixed a bug where the contents of `/etc/nvidia-container-runtime/config.toml` are ignored by the NVIDIA Container Runtime Hook.
+  This fix means that settings such as `no-cgroups` or a logfile path are now respected.
+
+#### Enhancements to libnvidia-container
+
+- Switched to using `libelf.so` from `elfutils-libelf-devel` on RPM-based systems.
+  This change is a build-only change.
+
+## NVIDIA Container Toolkit 1.14.0
+
+This release of the NVIDIA Container Toolkit `v1.14.0` is a feature release.
 
 The following packages are included:
 
