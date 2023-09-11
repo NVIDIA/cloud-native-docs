@@ -65,7 +65,7 @@ However, the path to create and use can depend on the container engine that you 
 1. (Optional) Check the names of the generated devices:
 
    ```console
-   $ nvida-ctk cdi list
+   $ nvidia-ctk cdi list
    ```
 
    The following example output is for a machine with a single GPU that does not support MIG.
