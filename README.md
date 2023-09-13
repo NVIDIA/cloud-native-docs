@@ -55,6 +55,36 @@ Additionally, the Gitlab CI for this project builds the documentation on every m
 The documentation from the current default branch (`master`) is available at <https://nvidia.gitlab.io/cloud-native/cnt-docs/review/latest/>.
 Documentation in the default branch is under development and unstable.
 
+## Checking for Broken Links
+
+Periodically, run a linkcheck build:
+
+```bash
+./repo docs -p <docset-name> -b linkcheck
+```
+
+To view the targets for `:ref:` and `:doc:` role links, run the following command:
+
+```bash
+python3 -m sphinx.ext.intersphinx _build/docs/gpu-operator/latest/objects.inv
+```
+
+In all likelihood, you will use `grep` to filter the results.
+
+*Example Output*
+
+```output
+supported container runtimes       Supported Container Runtimes     : platform-support.html#supported-container-runtimes
+install-gpu-operator               Install NVIDIA GPU Operator      : install-gpu-operator.html
+```
+
+If the third column includes a `#`, then use `:ref:`.
+Otherwise, use `:doc:`.
+In the preceding output, the markup would be as follows:
+
+- ``:ref:`supported container runtimes` ``
+- ``:doc:`install-gpu-operator` ``
+
 ## Releasing Documentation
 
 ### Configuration File Updates

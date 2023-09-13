@@ -652,7 +652,9 @@ Multi-Instance GPU (MIG)
 """"""""""""""""""""""""""
 
 Refer to the document :ref:`install-gpu-operator-mig` for more information on how use the Operator with Multi-Instance GPU (MIG)
-on NVIDIA Ampere products. For guidance on configuring MIG support for the **NVIDIA GPU Operator** in an OpenShift Container Platform cluster, see the `user guide <https://docs.nvidia.com/datacenter/cloud-native/openshift/mig-ocp.html>`_.
+on NVIDIA Ampere products.
+For information about configuring MIG support for the NVIDIA GPU Operator in an OpenShift Container Platform cluster,
+refer to :doc:`openshift/mig-ocp` for more information.
 
 ----
 

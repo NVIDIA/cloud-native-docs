@@ -487,13 +487,10 @@ Perform the following steps to verify that the time-slicing configuration is app
 
        deployment.apps "time-slicing-verification" deleted
 
-**********************
-Example Configurations
-**********************
 
 ***********
 References
 ***********
 
-1) `Blog post on GPU sharing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`__.
-2) `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin#shared-access-to-gpus-with-cuda-time-slicing>`__.
+- `Blog post on GPU sharing in Kubernetes <https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes>`__.
+- `NVIDIA Kubernetes Device Plugin <https://github.com/NVIDIA/k8s-device-plugin>`__ repository on GitHub.
