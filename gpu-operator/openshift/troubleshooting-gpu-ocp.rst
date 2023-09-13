@@ -69,7 +69,8 @@ GPU Operator checks
 
    .. note::
 
-      If missing, create the the custom resource (CR) described in `here <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/install-gpu-ocp.html#create-the-cluster-policy-for-the-nvidia-gpu-operator>`_.
+      If missing, create the custom resource (CR).
+      Refer to :ref:`create-cluster-policy` for more information.
 
 #. Verify that the Operator is running:
 
@@ -196,7 +197,8 @@ This is an illustrated example of a situation where the deployment of the Operat
    This message maybe associated with the unsuccessful deployment of the driver toolkit. To confirm the driver toolkit is successfully deployed follow the guidance in :ref:`verify_toolkit`.
    If you see this message a workaround is to edit the created ``gpu-cluster-policy`` YAML file in the OpenShift Container Platform console and set ``use_ocp_driver_toolkit`` to ``false``.
 
-   Proceed to set up the entitlement described in this `section <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/appendix-ocp.html#enabling-a-cluster-wide-entitlement>`_.
+   Set up the entitlement.
+   Refer to :doc:`openshift/cluster-entitlement` for more information.
 
 .. _verify_toolkit:
 
@@ -225,4 +227,6 @@ Verify the OpenShift Driver Toolkit is successfully deployed.
 
    .. image:: graphics/driver_toolkit_alert.png
 
-   The log entry and information from the alert indicates this version of OpenShift does not support a successful deployment of the OpenShift Driver Toolkit. For more details about the dependencies between the OpenShift Container Platform version and the OpenShift Driver Toolkit see `supported versions <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/openshift/steps-overview.html#supported-versions>`_.
+   The log entry and information from the alert indicates this version of OpenShift does not support a successful deployment of the OpenShift Driver Toolkit.
+   For more details about the dependencies between the OpenShift Container Platform version and the OpenShift Driver Toolkit,
+   refer to :doc:`openshift/steps-overview`.

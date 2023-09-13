@@ -60,7 +60,12 @@ Prerequisites
 
   Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`__ and in the section :ref:`Creating a private registry`.
 
-  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`_ or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`_. If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support. For more information, see `Creating a mirror registry with mirror registry for Red Hat OpenShift <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-creating-registry.html#installing-mirroring-creating-registry>`_.
+  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for
+  `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`__
+  or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`__.
+  If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
+  For more information, refer to `About disconnected install mirroring <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`__
+  in the Red Hat OpenShift Container Platform documentation.
 
    .. note::
 
@@ -87,7 +92,9 @@ Prerequisites
 * `grpcurl <https://github.com/fullstorydev/grpcurl>`_
 * Install the OpenShift CLI (``oc``).
 * Red Hat Enterprise Linux (RHEL) on your jump host. The jump host when configured becomes the private registry host.
-* Install the ``opm`` CLI (opm version 1.12.3+) used to prune the default catalog. Guidance on downloading this tool is `here <https://docs.openshift.com/container-platform/latest/cli_reference/opm-cli.html>`__.
+* Install the ``opm`` CLI (opm version 1.12.3+) used to prune the default catalog.
+  Refer to `opm CLI reference <https://docs.openshift.com/container-platform/latest/cli_reference/opm/cli-opm-ref.html>`__
+  in the Red Hat OpenShift Container Platform documentation for information about using the CLI.
 
 *****************************************************
 Set up a basic HTTP Server
@@ -270,11 +277,15 @@ Creating a private registry
 
 Create a private registry to host the mirrored content that you require for mirroring the Operator Catalog. The target registry must support `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. For a cluster on a restricted network, this registry can be one that the cluster has network access to.
 
-.. note:: Deploying a disconnected registry host based on the ``docker.io/library/registry:2`` API for is not officially supported by Red Hat. You can create a mirror host based on the ``docker.io/library/registry:2`` API with the following unsupported procedure.
+.. note::
 
+   Deploying a disconnected registry host based on the ``docker.io/library/registry:2`` API is not supported by Red Hat.
+   You can create a mirror host based on the ``docker.io/library/registry:2`` API with the following unsupported procedure.
 
-.. note:: The following procedure creates a simple registry that stores data in the ``/opt/registry`` folder and runs in a ``podman`` container. You can use a different
-        registry solution, such as `Red Hat Quay <https://docs.openshift.com/container-platform/latest/installing/installing-mirroring-installation-images.html>`__.
+   The following procedure creates a simple registry that stores data in the ``/opt/registry`` folder and runs in a ``podman`` container.
+   You can use a different registry solution, such as Red Hat Quay.
+   Refer to the Red Hat OpenShift Container Platform documentation that describes how to
+   `mirror images for a disconnected installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-installation-images.html>`__.
 
 Configure a private registry on the the jump host, using the following steps:
 

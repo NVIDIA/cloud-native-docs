@@ -84,6 +84,10 @@ name = "NVIDIA Container Toolkit"
 version = "1.14.1"
 copyright_start = 2020
 
+[repo_docs.projects.container-toolkit.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
 
 [repo_docs.projects.driver-containers]
 docs_root = "${root}/driver-containers"
@@ -91,6 +95,10 @@ project = "driver-containers"
 name = "NVIDIA Driver Containers"
 version = "1.0.0"
 copyright_start = 2020
+
+[repo_docs.projects.driver-containers.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
 
 
 [repo_docs.projects.edge]
@@ -100,6 +108,10 @@ name = "NVIDIA Cloud Native Reference Architectures"
 version = "1.0.0"
 copyright_start = 2020
 
+[repo_docs.projects.edge.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
 
 [repo_docs.projects.gpu-operator]
 docs_root = "${root}/gpu-operator"
@@ -107,6 +119,10 @@ project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "23.6.1"
 copyright_start = 2020
+
+[repo_docs.projects.gpu-operator.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
 
 
 [repo_docs.projects.gpu-telemetry]
@@ -116,6 +132,10 @@ name = "NVIDIA GPU Telemetry"
 version = "1.0.0"
 copyright_start = 2020
 
+[repo_docs.projects.gpu-telemetry.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
 
 [repo_docs.projects.kubernetes]
 docs_root = "${root}/kubernetes"
@@ -124,6 +144,10 @@ name = "Kubernetes with NVIDIA GPUs"
 version = "1.0.0"
 copyright_start = 2020
 
+[repo_docs.projects.kubernetes.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
 
 [repo_docs.projects.partner-validated]
 docs_root = "${root}/partner-validated"
@@ -131,10 +155,13 @@ project = "partner-validated"
 name = "Partner Validated Configurations with NVIDIA GPU Operator"
 version = "1.0.0"
 copyright_start = 2023
-
 sphinx_exclude_patterns = [
   "PARTNER-VALIDATED-TEMPLATE.rst"
 ]
+
+[repo_docs.projects.partner-validated.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
 
 
 [repo_docs.projects.review]

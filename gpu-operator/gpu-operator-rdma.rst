@@ -27,7 +27,7 @@ GPUDirect Storage (`GDS <https://docs.nvidia.com/gpudirect-storage/overview-guid
 GDS leverages direct memory access (DMA) transfers between GPU memory and storage, which avoids a bounce buffer through the CPU. This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.
 
 To support GPUDirect RDMA, a userspace CUDA APIs and kernel mode drivers are required. Starting with
-`CUDA 11.4 and R470 drivers <https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#new-in-cuda-114>`_, a
+`CUDA 11.4 and R470 drivers <https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#changes-in-cuda-11-4>`_, a
 new kernel module ``nvidia-peermem`` is included in the standard NVIDIA driver installers (e.g. ``.run``). The
 kernel module provides Mellanox Infiniband-based HCAs direct peer-to-peer read and write access to the GPU's memory.
 

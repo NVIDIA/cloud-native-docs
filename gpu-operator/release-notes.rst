@@ -869,7 +869,7 @@ New Features
 * Added support for :ref:`upgrades<operator-upgrades>` of the GPU Operator components. A new ``k8s-driver-manager`` component handles upgrades
   of the NVIDIA drivers on nodes in the cluster.
 * NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as
-  `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <http://docs.nvidia.com/datacenter/nvsm/nvsm-user-guide/index.html>`_
+  `DCGM-Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_ and `NVSM <https://docs.nvidia.com/nvidia-system-management-nvsm/>`_
   to be deployed and connect to the existing DCGM container.
 * Added a ``nodeStatusExporter`` component that exports operator and node metrics in a Prometheus format. The component provides
   information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).
