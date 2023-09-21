@@ -35,7 +35,7 @@ GPU Driver Upgrades
 About Upgrading the GPU Driver
 ******************************
 
-The NVIDIA driver daeamon set requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.
+The NVIDIA driver daemon set requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.
 Consequently, the following steps must occur across a driver upgrade:
 
 #. Disable all clients to the GPU driver.
@@ -105,7 +105,7 @@ You can set the following fields in the cluster policy to configure the upgrade 
 
      upgradePolicy:
        # autoUpgrade (default=true): Switch which enables / disables the driver upgrade controller.
-       #     If set to false all other options are ignored.
+       # If set to false all other options are ignored.
        autoUpgrade: true
        # maxParallelUpgrades (default=1): Number of nodes that can be upgraded in parallel. 0 means infinite.
        maxParallelUpgrades: 1
@@ -116,7 +116,7 @@ You can set the following fields in the cluster policy to configure the upgrade 
        # up. By default, a fixed value of 25% is used.'
        maxUnavailable: 25%
        # waitForCompletion: Options for the 'wait-for-completion' state, which will wait for a user-defined group of pods
-       #    to complete before upgrading the driver on a node.
+       # to complete before upgrading the driver on a node.
        waitForCompletion:
          # timeoutSeconds (default=0): The length of time to wait before giving up. 0 means infinite.
          timeoutSeconds: 0
@@ -126,26 +126,26 @@ You can set the following fields in the cluster policy to configure the upgrade 
        # gpuPodDeletion: Options for the 'pod-deletion' state, which will evict all pods on the node allocated a GPU.
        gpuPodDeletion:
          # force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,
-         #    Job, DaemonSet or StatefulSet).
+         # Job, DaemonSet or StatefulSet).
          force: false
          # timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,
-         #    the GPU  pod(s) will be forcefully deleted.
+         # the GPU  pod(s) will be forcefully deleted.
          timeoutSeconds: 300
          # deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).
          deleteEmptyDir: false
 
        # drain: Options for the 'drain' state, which will drain the node (i.e. 'kubectl drain'). This is only performed if
-       #    enabled and the 'pod-deletion' state cannot successfully remove all pods using GPU.
+       # enabled and the 'pod-deletion' state cannot successfully remove all pods using GPU.
        drain:
          # enable (default=false): Switch for allowing node drain during the upgrade process
          enable: false
          # force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,
-         #    Job, DaemonSet or StatefulSet).
+         # Job, DaemonSet or StatefulSet).
          force: false
          # podSelector (default=""): The label selector to filter pods on the node. "" will drain all pods.
          podSelector: ""
          # timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,
-         #    the GPU  pod(s) will be forcefully deleted.
+         # the GPU  pod(s) will be forcefully deleted.
          timeoutSeconds: 300
          # deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).
          deleteEmptyDir: false
@@ -155,7 +155,7 @@ the ``maxUnavailable`` value applies an additional constraint on the value of
 ``maxParallelUpgrades`` to ensure that the number of parallel upgrades does not
 cause more than the intended number of nodes to become unavailable during the upgrade.
 For example, if you specify ``maxUnavailable=100%`` and ``maxParallelUpgrades=1``,
-one node at a time is upgraded.
+one node is upgraded at a time .
 
 The ``maxUnavailable`` value also applies to the currently unavailable nodes in the cluster.
 If you cordoned nodes in the cluster and the ``maxUnavailable`` value is already met by the number of cordoned nodes,
@@ -173,7 +173,7 @@ The set of possible states are:
 * ``upgrade-required``: NVIDIA driver pod is not up-to-date and requires an upgrade. No actions are performed at this stage.
 * ``cordon-required``: Node will be marked Unschedulable in preparation for the driver upgrade.
 * ``wait-for-jobs-required``: Node will wait on the completion of a group of pods/jobs before proceeding.
-* ``pod-deletion-required``: Pods allocated GPU will be deleted from the node. If pod deletion fails, node moves to ``drain-required``
+* ``pod-deletion-required``: Pods allocated with GPUs are deleted from the node. If pod deletion fails, the node state is set to ``drain-required``
   if drain is enabled in ClusterPolicy.
 * ``drain-required``: Node will be drained. This state is skipped if all GPU pods are successfully deleted from the node.
 * ``pod-restart-required``: The NVIDIA driver pod running on the node will be restarted and upgraded to the new version.
