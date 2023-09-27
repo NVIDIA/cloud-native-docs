@@ -104,7 +104,8 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - NVIDIA GDS Driver
 
       * - v23.3.2
-        - | `525.105.17 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-105-17/index.html>`_ (default),
+        - | `535.104.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-12/index.html>`_ (recommended),
+          | `525.105.17 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-105-17/index.html>`_ (default),
           | `515.86.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-515-86-01/index.html>`_,
           | `510.108.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-510-108-03/index.html>`_,
           | `470.161.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-161-03/index.html>`_,
