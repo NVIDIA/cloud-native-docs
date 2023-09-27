@@ -19,7 +19,7 @@
 .. Date: July 30 2020
 .. Author: pramarao
 
-.. |ocp_csp_support| replace:: Red Hat OpenShift is supported on the AWS (G4, G5, P3, P4), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.
+.. |ocp_csp_support| replace:: Red Hat OpenShift Container Platform is supported on the AWS (G4, G5, P3, P4, P5), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.
 
 .. _operator-platform-support:
 
