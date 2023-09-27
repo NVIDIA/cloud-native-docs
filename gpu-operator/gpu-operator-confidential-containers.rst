@@ -258,17 +258,6 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 After installation, you can change the confidential computing mode and run a sample workload.
 
 
-***************************************
-Label Nodes for Confidential Containers
-***************************************
-
-> Label the nodes to run Kata Containers and configure for confidential containers:
-
-  .. code-block:: console
-
-     $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
-
-
 .. start-install-coco-operator
 
 ********************************************
@@ -348,6 +337,10 @@ Perform the following steps to install and verify the Confidential Containers Op
                nvidia.com/gpu.workload.config: "vm-passthrough"
          ...
 
+      .. tip::
+
+         Label the nodes with ``vm-passthrough`` when you install the NVIDIA GPU Operator.
+
    #. Apply the modified manifests:
 
       .. code-block:: console
@@ -391,6 +384,14 @@ Procedure
 =========
 
 Perform the following steps to install the Operator for use with confidential containers:
+
+#. Label the nodes to run virtual machines in containers.
+   Label only the nodes that you want to run with confidental containers.
+
+   .. code-block:: console
+
+      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
+
 
 #. Add and update the NVIDIA Helm repository:
 
@@ -472,7 +473,7 @@ Verification
       nvidia                     nvidia                     97s
 
 
-#. (Optional) If you have host access to the worker node, you can perform the following steps:
+#. Optional: If you have host access to the worker node, you can perform the following steps:
 
    #. Confirm that the host uses the ``vfio-pci`` device driver for GPUs:
 
@@ -639,6 +640,25 @@ A pod specification for a confidential computing requires the following:
 
 Refer to :ref:`About the Pod Annotation` for information about the pod annotation.
 
+Troubleshooting Workloads
+=========================
+
+If the sample workload does not run, confirm that you labelled nodes to run virtual machines in containers:
+
+.. code-block:: console
+
+   $ kubectl get nodes -l nvidia.com/gpu.workload.config=vm-passthrough
+
+*Example Output*
+
+.. code-block:: output
+
+   NAME               STATUS   ROLES    AGE   VERSION
+   kata-worker-1      Ready    <none>   10d   v1.27.3
+   kata-worker-2      Ready    <none>   10d   v1.27.3
+   kata-worker-3      Ready    <none>   10d   v1.27.3
+
+
 
 ***********
 Attestation
@@ -761,8 +781,8 @@ After you access the VM, you can run the following commands to verify that attes
          True
 
 
-Troubleshooting
-===============
+Troubleshooting Attestation
+===========================
 
 To troubleshoot attestation failures, access the VM and view the logs in the ``/var/log/`` directory.
 
