@@ -39,9 +39,9 @@ Supported NVIDIA GPUs and Systems
 
 The following NVIDIA data center GPUs are supported on x86 based platforms:
 
-.. tabs::
+.. tab-set::
 
-  .. tab:: Data Center A, H and L-series Products
+  .. tab-item:: Data Center A, H and L-series Products
 
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
@@ -87,7 +87,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
       * Hopper (H100) GPU is only supported on x86 servers.
       * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
 
-  .. tab:: Data Center D,T and V-series Products
+  .. tab-item:: Data Center D,T and V-series Products
 
     +-----------------------+------------------------+
     | Product               | Architecture           |
@@ -103,7 +103,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA P4             | Pascal                 |
     +-----------------------+------------------------+
 
-  .. tab:: Data Center RTX / T-series Products
+  .. tab-item:: Data Center RTX / T-series Products
 
     +-------------------------+------------------------+
     | Product                 | Architecture           |
@@ -137,9 +137,9 @@ Supported ARM Based Platforms
 
 The following NVIDIA data center GPUs are supported:
 
-.. tabs::
+.. tab-set::
 
-  .. tab:: ARM platforms
+  .. tab-item:: ARM platforms
 
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
@@ -216,9 +216,9 @@ The GPU Operator has been validated in the following scenarios:
    The Kubernetes community supports only the last three minor releases as of v1.17. Older releases
    may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
 
-.. tabs::
+.. tab-set::
 
-  .. tab:: Bare Metal / Virtual Machines with GPU Passthrough
+  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough
 
     .. list-table::
        :header-rows: 1
@@ -297,7 +297,7 @@ The GPU Operator has been validated in the following scenarios:
 
       |ocp_csp_support|
 
-  .. tab:: Cloud Service Providers
+  .. tab-item:: Cloud Service Providers
 
     .. list-table::
        :header-rows: 1
@@ -322,7 +322,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.24, 1.25
          - 1.25
 
-  .. tab:: Virtual Machines with NVIDIA vGPU
+  .. tab-item:: Virtual Machines with NVIDIA vGPU
 
     .. list-table::
        :header-rows: 1

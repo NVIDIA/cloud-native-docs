@@ -332,14 +332,15 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.
 Option 1 - manually upgrade CRD
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. blockdiag::
+   .. mermaid::
 
-   blockdiag admin {
-      A [label = "Update CRD from the latest chart", color = "#00CC00"];
-      B [label = "Upgrade via Helm"];
+      flowchart LR
 
-      A -> B;
-   }
+         A["Update CRD from
+           the latest chart"]
+         -->
+         B["Upgrade by
+           using Helm"]
 
 With this workflow, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from ``values.yaml``.
 

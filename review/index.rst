@@ -25,6 +25,8 @@ Refer to the following URLs for the review HTML:
 * `NVIDIA Container Toolkit <../../container-toolkit/latest/index.html>`__
 * `NVIDIA Driver Containers <../../driver-containers/latest/index.html>`__
 * `NVIDIA GPU Operator <../../gpu-operator/latest/index.html>`__
+* `NVIDIA GPU Operator on Red Hat OpenShift Container Platform <../../openshift/latest/index.html>`__
 * `NVIDIA GPUs and Edge Computing <../../edge/latest/index.html>`__
+* `Partner-Validated Configurations <../../partner-validated/latest/index.html>`__
 
 Add comments and corrections to the MR: |gitlab_mr_url|

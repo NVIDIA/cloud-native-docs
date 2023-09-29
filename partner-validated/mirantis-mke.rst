@@ -195,7 +195,7 @@ Verifying |prod-name-short| with the GPU Operator
    operands are running correctly.
 
 
-Refer to :ref:`gpuop:running-sample-app` to verify the installation.
+Refer to :external+gpuop:ref:`running sample gpu applications` to verify the installation.
 
 
 ***************

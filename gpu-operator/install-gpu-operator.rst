@@ -45,16 +45,16 @@ Install the GPU Operator
 
 The GPU Operator Helm chart offers a number of customizable options that can be configured depending on your environment.
 
-.. blockdiag::
+.. mermaid::
 
-   blockdiag admin {
-      A [label = "Install Helm", color = "#00CC00"];
-      B [label = "Customize options \n in Helm chart"];
-      C [label = "Use Helm to deploy \n the GPU Operator", color = pink];
-
-      A -> B;
-      B -> C;
-   }
+   flowchart LR
+      A["Install Helm"]
+      -->
+      B["Customize options
+         in Helm chart"]
+      -->
+      C["Use Helm to deploy
+         the GPU Operator"]
 
 .. _gpu-operator-helm-chart-options:
 
@@ -654,7 +654,7 @@ Multi-Instance GPU (MIG)
 Refer to the document :ref:`install-gpu-operator-mig` for more information on how use the Operator with Multi-Instance GPU (MIG)
 on NVIDIA Ampere products.
 For information about configuring MIG support for the NVIDIA GPU Operator in an OpenShift Container Platform cluster,
-refer to :doc:`openshift/mig-ocp` for more information.
+refer to :external+ocp:doc:`mig-ocp` for more information.
 
 ----
 
@@ -662,7 +662,7 @@ KubeVirt / OpenShift Virtualization
 """"""""""""""""""""""""""""""""""""
 
 Refer to the document :ref:`gpu-operator-kubevirt` for more information on how to use the GPU Operator to provision GPU nodes for running KubeVirt virtual machines with access to GPU.
-For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :doc:`openshift/openshift-virtualization`.
+For guidance on using the GPU Operator with OpenShift Virtualization, refer to the document :external+ocp:doc:`openshift-virtualization`.
 
 Outdated Kernels
 """"""""""""""""""""""""""

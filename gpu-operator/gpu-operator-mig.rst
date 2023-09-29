@@ -422,39 +422,36 @@ MIG geometry.
 The MIG manager relies on the `mig-parted <https://github.com/NVIDIA/mig-parted>`_ tool to apply the configuration
 changes to the GPU, including enabling MIG mode (with a node reboot as required by some scenarios).
 
-.. blockdiag::
+.. mermaid::
 
-   blockdiag admin {
-      group mm_group {
-        label = "MIG Manager";
-        fontsize = 14; //default is 11
-        color = "#00CC00";
-        orientation = portrait;
-      }
-      A [label = "controller", group = mm_group];
-      B [label = "mig-parted", group = mm_group];
+   flowchart
 
-      A <-> B;
-      group reconfig {
-        label = "Reconfiguration";
-        fontsize = 14;
-        color = pink;
-      }
+   subgraph mig[MIG Manager]
+     direction TB
+     A[Controller] <--> B[MIG-Parted]
+   end
 
-      A -> C [label = "changed", fontsize = 9];
-      C [label = "Config is \n Pending/Rebooting", group = reconfig];
-      D [label = "Stop operator pods", group = reconfig];
-      E [label = "Enable MIG mode \n Reboot if required", group = reconfig];
-      F [label = "Use mig-parted to \n configure MIG geometry", group = reconfig];
-      G [label = "Restart operator pods", group = reconfig];
+   A -- on change --> C
 
-      C -> D -> E -> F;
-      E -> F [folded];
-      F -> G;
-      H [label = "Set mig.config label \n to success", color = "#10a4de"];
-      G -> H [folded];
+   subgraph recon[Reconfiguration]
+     C["Config is Pending
+        or Rebooting"]
+     -->
+     D["Stop Operator Pods"]
+     -->
+     E["Enable MIG Mode and
+        Reboot if Required"]
+     -->
+     F["Use mig-parted to
+        Configure MIG Geometry"]
+     -->
+     G["Restart Operator Pods"]
+   end
 
-      I [label = "Set mig.config label \n to failed", color = "#87232d", textcolor = "#f5f5f5"];
-      G -> I [style = dashed, color = "#87232d", folded, label ="on failure", fontsize = 9];
+   H["Set mig.config label
+      to Success"]
+   I["Set mig.config label
+      to Failed"]
 
-    }
+   G --> H
+   G -- on failure --> I

@@ -3,6 +3,7 @@ logging = "warn"
 
 [repo_docs]
 enabled = true
+# keep_sphinx_conf_py = true
 social_media_set = []
 social_media = []
 favicon = "${root}/assets/favicon.ico"
@@ -16,13 +17,8 @@ sphinx_conf_py_extra = """
   extensions.extend([
     "sphinx.ext.autosectionlabel",
     "sphinx_copybutton",
-    "sphinx_tabs.tabs",
-    "sphinxcontrib.blockdiag",
-    "sphinx_reredirects",
   ])
   suppress_warnings = [ 'autosectionlabel.*' ]
-  blockdiag_fontpath = '/usr/share/fonts/truetype/Roboto-Regular.ttf'
-  blockdiag_antialias = True
   pygments_style = 'sphinx'
   copybutton_exclude = '.linenos, .gp'
   html_theme_options = {
@@ -43,38 +39,36 @@ sphinx_conf_py_extra = """
                 ("_build/docs/container-toolkit/latest/objects.inv", None)),
     "drv": ("https://docs.nvidia.com/datacenter/cloud-native/driver-containers/latest/",
                 ("_build/docs/driver-containers/latest/objects.inv", None)),
+    "ocp": ("https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/",
+                ("_build/docs/openshift/latest/objects.inv", None)),
+    "edge": ("https://docs.nvidia.com/datacenter/cloud-native/edge/latest/",
+                ("_build/docs/edge/latest/objects.inv", None)),
   }
   rst_epilog = ".. |gitlab_mr_url| replace:: Sorry Charlie...not a merge request."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
     rst_epilog = ".. |gitlab_mr_url| replace:: {}/-/merge_requests/{}".format(
       os.environ["CI_MERGE_REQUEST_PROJECT_URL"], os.environ["CI_MERGE_REQUEST_IID"])
-
-  if project == "container-toolkit":
-    redirects = {
-      "concepts": "index.html",
-      "distro/amazon-linux.html": "../install-guide.html",
-      "distro/centos8.html": "../install-guide.html",
-      "distro/rhel7.html": "../install-guide.html",
-      "distro/suse15.html": "../install-guide.html",
-      "distro/ubuntu.html": "../install-guide.html",
-      "install/nvidia-container-toolkit.html": "../install-guide.html",
-      "install/repo-apt.html": "../install-guide.html",
-      "install/repo-yum.html": "../install-guide.html",
-      "install/repo-zypper.html": "../install-guide.html",
-      "nvidia-containerd.html": "install-guide.html",
-      "nvidia-docker.html": "install-guide.html",
-      "nvidia-podman.html": "install-guide.html",
-      "overview.html": "index.html",
-      "runtime/docker.html": "../docker-specialized.html",
-      "user-guide.html": "install-guide.html",
-    }
 """
 
-#deps = [
-#  ["container-toolkit", "_build/docs/container-toolkit/latest"],
-#  ["driver-containers", "_build/docs/driver-containers/latest"],
-#  ["gpu-operator", "_build/docs/gpu-operator/latest"]
-#]
+project_build_order = [
+  "driver-containers",
+  "gpu-telemetry",
+  "openshift",
+  "gpu-operator",
+  "edge",
+  "kubernetes",
+  "partner-validated",
+  "container-toolkit",
+  "review",
+]
+
+# deps = [
+#  ["ctk", "_build/docs/container-toolkit/latest"],
+#  ["drv", "_build/docs/driver-containers/latest"],
+#  ["gpuop", "_build/docs/gpu-operator/latest"],
+#  ["ocp", "_build/docs/openshift/latest"],
+#  ["edge", "_build/docs/edge/latest"],
+# ]
 
 
 [repo_docs.projects.container-toolkit]
@@ -83,6 +77,24 @@ project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
 version = "1.14.1"
 copyright_start = 2020
+redirects = [
+  { path="concepts.html", target="index.html" },
+  { path="distro/amazon-linux.html", target="install-guide.html" },
+  { path="distro/centos8.html", target="install-guide.html" },
+  { path="distro/rhel7.html", target="install-guide.html" },
+  { path="distro/suse15.html", target="install-guide.html" },
+  { path="distro/ubuntu.html", target="install-guide.html" },
+  { path="install/nvidia-container-toolkit.html", target="install-guide.html" },
+  { path="install/repo-apt.html", target="install-guide.html" },
+  { path="install/repo-yum.html", target="install-guide.html" },
+  { path="install/repo-zypper.html", target="install-guide.html" },
+  { path="nvidia-containerd.html", target="install-guide.html" },
+  { path="nvidia-docker.html", target="install-guide.html" },
+  { path="nvidia-podman.html", target="install-guide.html" },
+  { path="overview.html", target="index.html" },
+  { path="runtime/docker.html", target="docker-specialized.html" },
+  { path="user-guide.html", target="install-guide.html" },
+]
 
 [repo_docs.projects.container-toolkit.builds.linkcheck]
 build_by_default = false
@@ -119,6 +131,30 @@ project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "23.6.1"
 copyright_start = 2020
+sphinx_exclude_patterns = [
+  "troubleshootings.rst",
+  "install-gpu-operator.rst",
+  "life-cycle-policy.rst",
+]
+redirects = [
+  { path="openshift/introduction.html", project="openshift", target="introduction.html" },
+  { path="openshift/time-slicing-gpus-in-openshift.html", project="openshift", target="time-slicing-gpus-in-openshift.html" },
+  { path="openshift/enable-gpu-monitoring-dashboard.html", project="openshift", target="enable-gpu-monitoring-dashboard.html" },
+  { path="openshift/nvaie-with-ocp.html", project="openshift", target="nvaie-with-ocp.html" },
+  { path="openshift/install-nfd.html", project="openshift", target="install-nfd.html" },
+  { path="openshift/steps-overview.html", project="openshift", target="steps-overview.html" },
+  { path="openshift/mig-ocp.html", project="openshift", target="mig-ocp.html" },
+  { path="openshift/mirror-gpu-ocp-disconnected.html", project="openshift", target="mirror-gpu-ocp-disconnected.html" },
+  { path="openshift/prerequisites.html", project="openshift", target="prerequisites.html" },
+  { path="openshift/openshift-virtualization.html", project="openshift", target="openshift-virtualization.html" },
+  { path="openshift/troubleshooting-gpu-ocp.html", project="openshift", target="troubleshooting-gpu-ocp.html" },
+  { path="openshift/cluster-entitlement.html", project="openshift", target="appendix-ocp.html#cluster-entitlement" },
+  { path="openshift/get-entitlement.html", project="openshift", target="appendix-ocp.html#get-entitlement" },
+  { path="openshift/contents.html", project="openshift", target="index.html" },
+  { path="openshift/appendix-ocp.html", project="openshift", target="appendix-ocp.html" },
+  { path="openshift/clean-up.html", project="openshift", target="clean-up.html" },
+  { path="openshift/install-gpu-ocp.html", project="openshift", target="install-gpu-ocp.html" },
+]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
 build_by_default = false
@@ -145,6 +181,21 @@ version = "1.0.0"
 copyright_start = 2020
 
 [repo_docs.projects.kubernetes.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
+
+[repo_docs.projects.openshift]
+docs_root = "${root}/openshift"
+project = "gpu-operator-openshift"
+name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
+version = "23.6.1"
+copyright_start = 2020
+sphinx_exclude_patterns = [
+  "get-entitlement.rst",
+]
+
+[repo_docs.projects.openshift.builds.linkcheck]
 build_by_default = false
 output_format = "linkcheck"
 

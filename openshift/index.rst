@@ -1,6 +1,6 @@
-################################
-NVIDIA GPU Operator on OpenShift
-################################
+###########################################################
+NVIDIA GPU Operator on Red Hat OpenShift Container Platform
+###########################################################
 
 .. toctree::
    :titlesonly:
