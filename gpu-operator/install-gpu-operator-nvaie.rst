@@ -60,7 +60,7 @@ NVIDIA AI Enterprise includes support for Red Hat OpenShift Container Platform.
 * OpenShift Container Platform on bare metal or VMware vSphere with GPU Passthrough
 * OpenShift Container Platform on VMware vSphere with NVIDIA vGPU
 
-For Red Hat OpenShift, refer to :doc:`openshift/nvaie-with-ocp`.
+For Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
 
 
 ***********************

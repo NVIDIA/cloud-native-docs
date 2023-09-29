@@ -8,7 +8,7 @@ The product documentation portal can be found at: https://docs.nvidia.com/datace
 ## Building the Container
 
 This step is optional if your only goal is to build the documentation.
-As an alternative to building the container, you can run `docker pull registry.gitlab.com/nvidia/cloud-native/cnt-docs:0.1.0`.
+As an alternative to building the container, you can run `docker pull registry.gitlab.com/nvidia/cloud-native/cnt-docs:0.4.0`.
 
 Refer to <https://gitlab.com/nvidia/cloud-native/cnt-docs/container_registry> to find the most recent tag.
 
@@ -41,10 +41,11 @@ Use the `Dockerfile` in the repository (under the `docker` directory) to generat
    Alternatively, you can build just one docset, such as `gpu-operator` or `container-toolkit`:
 
    ```bash
-   ./repo docs -p gpu-operator
+   ./repo docs -p gpu-operator -p openshift
    ```
 
    You can determine the docsets by viewing the `[repo_docs.projects.<docset-name>]` tables in the `repo.toml` file.
+   For the GPU Operator, always build it with the OCP docset as well, as shown in the preceding command.
 
 The resulting HTML pages are located in the `_build/docs/.../latest/` directory of your repository clone.
 

@@ -80,7 +80,7 @@ The supported use cases/environments are listed in the below table:
 .. note::
 
    For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b),
-   refer to :doc:`openshift/mirror-gpu-ocp-disconnected`.
+   refer to :external+ocp:doc:`mirror-gpu-ocp-disconnected`.
 
 .. note::
 
