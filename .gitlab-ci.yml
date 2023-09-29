@@ -1,9 +1,8 @@
 variables:
   CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.3.0"
+  CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.4.0"
   BUILDER_IMAGE: "${CONTAINER_RELEASE_IMAGE}"
   PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
-  PROJECTS: review container-toolkit driver-containers edge gpu-operator gpu-telemetry kubernetes partner-validated
 
 stages:
 - .pre
@@ -67,11 +66,7 @@ build_image_int:
   stage: build_docs
   image: "${BUILDER_IMAGE}"
   script:
-    - |+
-      for x in ${PROJECTS}
-      do
-        ./repo docs -p "${x}" || true
-      done
+    - ./repo docs
     - echo "BUILDER_IMAGE=${BUILDER_IMAGE}" >> build.env
   artifacts:
     name: ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}

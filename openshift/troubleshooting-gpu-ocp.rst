@@ -198,7 +198,7 @@ This is an illustrated example of a situation where the deployment of the Operat
    If you see this message a workaround is to edit the created ``gpu-cluster-policy`` YAML file in the OpenShift Container Platform console and set ``use_ocp_driver_toolkit`` to ``false``.
 
    Set up the entitlement.
-   Refer to :doc:`openshift/cluster-entitlement` for more information.
+   Refer to :ref:`cluster-entitlement` for more information.
 
 .. _verify_toolkit:
 
@@ -229,4 +229,4 @@ Verify the OpenShift Driver Toolkit is successfully deployed.
 
    The log entry and information from the alert indicates this version of OpenShift does not support a successful deployment of the OpenShift Driver Toolkit.
    For more details about the dependencies between the OpenShift Container Platform version and the OpenShift Driver Toolkit,
-   refer to :doc:`openshift/steps-overview`.
+   refer to :doc:`steps-overview`.

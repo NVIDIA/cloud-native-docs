@@ -216,9 +216,9 @@ correctly and that pods can perform RDMA data transfers.
 
 #. Start two pods that run the ``mellanox/cuda-perftest`` container on two different nodes in the cluster.
 
-   .. tabs::
+   .. tab-set::
 
-      .. tab:: demo-pod-1
+      .. tab-item:: demo-pod-1
 
          - Create a file, such as ``demo-pod-1.yaml``, for the first pod with contents like the following:
 
@@ -232,7 +232,7 @@ correctly and that pods can perform RDMA data transfers.
 
               $ kubectl apply -f demo-pod-1.yaml
 
-      .. tab:: demo-pod-2
+      .. tab-item:: demo-pod-2
 
          - Create a file, such as ``demo-pod-2.yaml``, for the second pod with contents like the following:
 

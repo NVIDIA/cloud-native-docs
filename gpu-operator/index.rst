@@ -28,11 +28,36 @@
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
-   openshift/contents.rst
    gpu-operator-mig.rst
    gpu-sharing.rst
    gpu-operator-rdma.rst
    gpu-operator-kubevirt.rst
-   appendix.rst
+
+.. toctree::
+   :caption: Advanced configurations
+   :titlesonly:
+   :hidden:
+
+   install-gpu-operator-proxy.rst
+
+   install-gpu-operator-air-gapped.rst
+
+   install-gpu-operator-outdated-kernels.rst
+
+   custom-driver-params.rst
+
+   precompiled-drivers.rst
+
+   Container Device Interface Support <cdi.rst>
+
+   gpu-operator-kata.rst
+
+   gpu-operator-confidential-containers.rst
+
+   GPU Operator with Amazon EKS <amazon-eks.rst>
+
+   GPU Operator with Azure AKS <microsoft-aks.rst>
+
+   GPU Operator with Google GKE <google-gke.rst>
 
 .. include:: overview.rst

@@ -33,7 +33,7 @@ Installing the NVIDIA GPU Operator by using the web console
 
                $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
-Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator<create-cluster-policy>`.
+Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator <create-cluster-policy>`.
 
 *************************************************
 Installing the NVIDIA GPU Operator using the CLI
@@ -196,6 +196,10 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
 .. _create-cluster-policy:
 
+*********************************
+Create the ClusterPolicy instance
+*********************************
+
 When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.
 
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
@@ -203,9 +207,6 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
 when using **NVIDIA vGPU**. Please refer to appropriate sections below.
 
-*****************************************************
-Create the ClusterPolicy instance
-*****************************************************
 
 Create the cluster policy using the web console
 -----------------------------------------------

@@ -13,6 +13,7 @@ This documentation is authored using [reStructuredText](http://docutils.sourcefo
 [Sphinx](https://www.sphinx-doc.org/en/master/) documentation generator.
 
 ### Filenames
+
 Use only lowercase alphanumeric characters and hyphens `-` where required. Filenames are suffixed with the `.rst` extension.
 
 ### Headings
@@ -41,11 +42,14 @@ For example, "Delete the ``Pod`` object..."
 However, that example is not compelling and is just as clear when written as "Delete the pod..."
 
 ### Console Outputs
+
 #### Directives
+
 For console outputs in this document, use `code-block:: console` directive. This results in a red prompt, which makes it easy to distinguish between the prompt
 and the command.
 
 #### Commands
+
 Separate each command into its own `code-block`. Since this repository uses the Sphinx `copy-button` to allow for easy copy/pasting of commands
 by users, it makes sense to separate each command for readability and usage.
 
@@ -57,13 +61,9 @@ $ command1 \
 ```
 
 #### Outputs
+
 Separate outputs and commands into their own `code-block` sequence. Since the repository is configured to copy everything (including items after the prompt lines by
 setting `copybutton_only_copy_prompt_lines` to false), it is desirable to only copy commands.
-
-### Block Diagrams
-
-The repo includes the [blockdiag](http://blockdiag.com/en/) plugin to allow diagrams to be generated using text. For examples on how to use blockdiag,
-refer to this [page](http://blockdiag.com/en/blockdiag/examples.html).
 
 ## Sign your work
 
