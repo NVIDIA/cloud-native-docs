@@ -207,6 +207,7 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
 when using **NVIDIA vGPU**. Please refer to appropriate sections below.
 
+.. _create-cluster-policy-web-console:
 
 Create the cluster policy using the web console
 -----------------------------------------------
