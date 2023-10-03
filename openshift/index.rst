@@ -17,5 +17,6 @@ NVIDIA GPU Operator on Red Hat OpenShift Container Platform
    enable-gpu-monitoring-dashboard.rst
    time-slicing-gpus-in-openshift.rst
    openshift-virtualization.rst
+   gpu-operator-with-precompiled-drivers.rst
    troubleshooting-gpu-ocp.rst
    appendix-ocp.rst
