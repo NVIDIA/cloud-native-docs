@@ -45,20 +45,44 @@ NVIDIA GPU Operator Life Cycle
 
 The NVIDIA GPU Operator life cycle policy provides a predictable support policy and timeline of when new NVIDIA GPU Operator versions are released.
 
-Starting with the NVIDIA GPU Operator v22.9.0, a new major GPU Operator version will be released every 6 months.
-Therefore, the next major release of the NVIDIA GPU Operator will be released in March 2023 and will be named v23.3.0.
+Starting with the NVIDIA GPU Operator v23.3.0, a new major GPU Operator version is released every three months.
+Therefore, the next major release of the NVIDIA GPU Operator is scheduled for June 2023 and will be named v23.6.0.
 
-Every major release of the NVIDIA GPU Operator, starting with v22.9.0, is maintained for 12 months.
-Bug fixes and CVEs are released throughout the 12 months while minor feature updates are only released within the first six months.
+Every major release of the NVIDIA GPU Operator, starting with v23.3.0, is maintained for six months.
+Bug fixes and CVEs are released throughout the six months while minor feature updates are only released within the first three months.
 
-This life cycle allows NVIDIA GPU Operator users to use a given NVIDIA GPU Operator version for up to 12 months.
-It also provides users a 6 month period where they can plan the transition to the next major NVIDIA GPU Operator version.
+This life cycle allows NVIDIA GPU Operator users to use a given NVIDIA GPU Operator version for up to six months.
+It also provides users a three month period where they can plan the transition to the next major NVIDIA GPU Operator version.
 
-The product lifecycle and versioning are subject to change in the future.
+The product life cycle and versioning are subject to change in the future.
 
 .. note::
 
     - Upgrades are only supported within a major release or to the next major release.
+
+.. list-table:: Support Status for Releases
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - GPU Operator Version
+     - Status
+     - Details
+
+   * - 23.6.x
+     - Generally Available
+     - Enters maintenance when v23.9.0 is released.
+
+   * - 23.3.x
+     - Maintenance
+     - Enters EOL when v23.9.0 is released.
+
+   * - 22.9.x
+     - EOL
+     -
+
+   * - 1.11.x and lower
+     - EOL
+     -
 
 
 .. _operator-component-matrix:
