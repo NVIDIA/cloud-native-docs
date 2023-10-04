@@ -71,14 +71,21 @@ Installing the Operator
 After you start your Azure AKS cluster, you are ready to install the NVIDIA GPU Operator.
 
 When you install the Operator, you must prevent the Operator from automatically
-deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit:
+deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
+
+#. Add the NVIDIA Helm repository:
+
+   .. code-block:: console
+
+      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+         && helm repo update
 
 #. Install the Operator without the driver containers and toolkit:
 
    .. code-block:: console
 
       $ helm install gpu-operator nvidia/gpu-operator \
-          -n gpu-operator --create namespace \
+          -n gpu-operator --create-namespace \
           --set driver.enabled=false \
           --set toolkit.enabled=false \
           --set operator.runtimeClass=nvidia-container-runtime
