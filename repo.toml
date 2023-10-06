@@ -81,7 +81,7 @@ sphinx_conf_py_extra = """
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.14.1"
+version = "1.14.2"
 copyright_start = 2020
 
 [repo_docs.projects.container-toolkit.builds.linkcheck]

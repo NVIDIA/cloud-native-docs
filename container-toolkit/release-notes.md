@@ -10,6 +10,26 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.14.2
+
+This release of the NVIDIA Container Toolkit `v1.14.2` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.14.2`
+- `libnvidia-container-tools 1.14.2`
+- `libnvidia-container1 1.14.2`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.2-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.2-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.2-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.14.2`)
+
+### Fixes and Features
+
+- Fixed a bug on Tegra-based systems where expected symlinks were not created in a container. This could cause certain applications to fail to start.
+
 ## NVIDIA Container Toolkit 1.14.1
 
 This release of the NVIDIA Container Toolkit `v1.14.1` is a bugfix release.
