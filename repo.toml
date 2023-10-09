@@ -103,10 +103,20 @@ output_format = "linkcheck"
 
 [repo_docs.projects.driver-containers]
 docs_root = "${root}/driver-containers"
+root_doc = "redirected"
 project = "driver-containers"
 name = "NVIDIA Driver Containers"
 version = "1.0.0"
 copyright_start = 2020
+extra_content_head = [
+  """
+  <meta name="robots" content="noindex"/>
+  """
+]
+redirects = [
+  { path="index.html", project="gpu-operator", target="index.html" },
+  { path="overview.html", project="gpu-operator", target="index.html" },
+]
 
 [repo_docs.projects.driver-containers.builds.linkcheck]
 build_by_default = false
