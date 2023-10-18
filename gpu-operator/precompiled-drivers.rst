@@ -55,6 +55,9 @@ Limitations and Restrictions
 * Support for deploying the driver containers with precompiled drivers is limited to
   hosts with the Ubuntu 22.04 operating system and x86_64 architecture.
 
+  For information about using precompiled drivers with OpenShift Container Platform,
+  refer to :external+ocp:doc:`gpu-operator-with-precompiled-drivers`.
+
 * NVIDIA supports precompiled driver containers for the most recently released long-term
   servicing branch (LTSB) driver branch, 525.
 
