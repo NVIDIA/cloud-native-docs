@@ -1,0 +1,18 @@
+apiVersion: nvidia.com/v1alpha1
+kind: NVIDIADriver
+metadata:
+  name: demo-precomp
+spec:
+  driverType: gpu
+  env: []
+  image: driver
+  imagePullPolicy: IfNotPresent
+  imagePullSecrets: []
+  manager: {}
+  nodeSelector:
+    driver.precompiled: "true"
+    driver.version: "535"
+  repository: nvcr.io/nvidia
+  resources: {}
+  usePrecompiled: true
+  version: "535"

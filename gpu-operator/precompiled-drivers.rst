@@ -47,6 +47,7 @@ to compile the kernel drivers with the conventional driver containers.
 These two benefits are valuable to most sites, but are especially beneficial to sites
 with restricted internet access or sites with resource-constrained hardware.
 
+.. _precomp-limitations-restrictions:
 
 Limitations and Restrictions
 ============================

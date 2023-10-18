@@ -494,24 +494,51 @@ https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-
 Uninstall
 ===========================
 
-To uninstall the operator:
+Perform the following steps to uninstall the Operator.
 
-.. code-block:: console
+#. Optional: List and delete NVIDIA driver custom resources.
 
-   $ helm delete -n gpu-operator $(helm list -n gpu-operator | grep gpu-operator | awk '{print $1}')
+   .. code-block:: console
 
-You should now see all the pods being deleted:
+      $ kubectl get nvidiadrivers
 
-.. code-block:: console
+   *Example Output*
 
-   $ kubectl get pods -n gpu-operator
+   .. code-block:: output
 
-.. code-block:: console
+      NAME          STATUS   AGE
+      demo-gold     ready    2023-10-16T17:57:12Z
+      demo-silver   ready    2023-10-16T17:57:12Z
 
-   No resources found.
+   .. code-block:: console
 
-By default, Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ deletion of existing CRDs when the Chart is deleted.
-Thus ``clusterpolicy`` CRD will still remain by default.
+      $ kubectl delete nvidiadriver demo-gold
+      $ kubectl delete nvidiadriver demo-silver
+
+   .. code-block:: console
+
+      $ kubectl delete crd nvidiadrivers.nvidia.com
+
+#. Delete the Operator:
+
+   .. code-block:: console
+
+      $ helm delete -n gpu-operator $(helm list -n gpu-operator | grep gpu-operator | awk '{print $1}')
+
+#. Optional: List the pods in the Operator namespace to confirm the pods are deleted or in the process of deleting:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n gpu-operator
+
+   *Example Output*
+
+   .. code-block:: output
+
+      No resources found.
+
+By default, Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ deletion of existing CRDs when you delete the chart.
+Thus the ``clusterpolicy`` CRD and ``nvidiadrivers`` CRD will still remain, by default.
 
 .. code-block:: console
 
@@ -520,14 +547,21 @@ Thus ``clusterpolicy`` CRD will still remain by default.
 To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``operator.cleanupCRD``
 is added to enable this hook. This is disabled by default. This parameter needs to be enabled with ``--set operator.cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
 
+Alternatively, delete the custom resource definition:
+
+.. code-block:: console
+
+   $ kubectl delete crd clusterpolicies.nvidia.com
+
 .. note::
 
-   * After un-install of GPU Operator, the NVIDIA driver modules might still be loaded.
+   * After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
      Either reboot the node or unload them using the following command:
 
      .. code-block:: console
 
         $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
 
-   * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-     In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
+   * Helm hooks used with the GPU Operator use the Operator image itself.
+     If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
+     In this case, delete the chart and specify the ``--no-hooks`` argument to avoid hanging on hook failures.
