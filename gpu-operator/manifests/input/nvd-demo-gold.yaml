@@ -1,0 +1,24 @@
+apiVersion: nvidia.com/v1alpha1
+kind: NVIDIADriver
+metadata:
+  name: demo-gold
+spec:
+  driverType: gpu
+  image: driver
+  imagePullPolicy: IfNotPresent
+  imagePullSecrets: []
+  manager: {}
+  nodeSelector: {}
+  rdma:
+    enabled: false
+    useHostMofed: false
+  gds:
+    enabled: false
+  repository: nvcr.io/nvidia
+  startupProbe:
+    failureThreshold: 120
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 60
+  usePrecompiled: false
+  version: 535.104.12

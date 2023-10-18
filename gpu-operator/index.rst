@@ -25,6 +25,7 @@
    getting-started.rst
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
+   GPU Driver CRD <gpu-driver-configuration.rst>
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
