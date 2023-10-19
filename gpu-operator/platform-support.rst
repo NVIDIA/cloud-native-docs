@@ -137,28 +137,29 @@ Supported ARM Based Platforms
 
 The following NVIDIA data center GPUs are supported:
 
-.. tab-set::
++-------------------------+---------------------------+
+| Product                 | Architecture              |
++=========================+===========================+
+| NVIDIA A100X            | Ampere                    |
++-------------------------+---------------------------+
+| NVIDIA A30X             | Ampere                    |
++-------------------------+---------------------------+
+| AWS EC2 G5g instances   | Turing                    |
++-------------------------+---------------------------+
 
-  .. tab-item:: ARM platforms
+In addition to the products specified in the preceding table, any ARM based
+system that meets the following requirements is supported:
 
-    +-------------------------+---------------------------+
-    | Product                 | Architecture              |
-    +=========================+===========================+
-    | NVIDIA A100X            | Ampere                    |
-    +-------------------------+---------------------------+
-    | NVIDIA A30X             | Ampere                    |
-    +-------------------------+---------------------------+
-    | AWS EC2 G5g instances   | Turing                    |
-    +-------------------------+---------------------------+
+- NVIDIA GPUs connected to the PCI bus.
+- A :ref:`supported operating system <container-platforms>`
+  such as Ubuntu or Red Hat Enterprise Linux.
 
-    .. note::
+.. note::
 
-      The GPU Operator only supports platforms using discrete GPUs.
-      NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
+   The GPU Operator only supports platforms using discrete GPUs.
+   NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
 
-    .. note::
-
-      The R520 Data Center Driver is not supported for ARM.
+   The R520 Data Center Driver is not supported for ARM.
 
 
 Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products
@@ -424,11 +425,11 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 1.4
-- Red Hat OpenShift 4.10 and 4.11 with Network Operator 1.4
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.7.0
+- Red Hat OpenShift 4.9 and higher with Network Operator 23.7.0
 - CentOS 7 with MOFED installed on the node
 
-For more information on GPUDirect RDMA refer to :ref:`this document <operator-rdma>`.
+For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
 
 Support for GPUDirect Storage
@@ -436,9 +437,8 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 20.04 LTS with Network Operator 1.4
-- Ubuntu 22.04 LTS with Network Operator 1.4
-- Red Hat OpenShift Container Platform 4.11
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.7.0
+- Red Hat OpenShift Container Platform 4.11 and higher
 
 .. note::
 
