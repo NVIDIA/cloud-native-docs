@@ -55,6 +55,26 @@ Platform Support
 
 The :ref:`operator-platform-support` describes the supported platform configurations.
 
+Pod Security Context of the Operator and Operands
+=================================================
+
+Several of the NVIDIA GPU Operator operands, such as the driver containers and container toolkit,
+require the following elevated privileges:
+
+- ``privileged: true``
+- ``hostPID: true``
+- ``hostIPC: true``
+
+The elevated privileges are required for the following reasons:
+
+- Access to the host file system and hardware devices, such as NVIDIA GPUs.
+- Restart system services such as containerd.
+- Permit users to list all GPU clients using the ``nvidia-smi`` utility.
+
+Only the Kubernetes cluster administrator needs to access or manage the Operator namespace.
+As a best practice, establish proper security policies and prevent any other users from accessing the Operator namespace.
+
+
 Licenses and Contributing
 =========================
 
