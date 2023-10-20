@@ -33,6 +33,103 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+23.9.0
+======
+
+New Features
+------------
+
+* Added support for an NVIDIA driver custom resource definition that enables
+  running multiple GPU driver types and versions on the same cluster and adds
+  support for multiple operating system versions.
+  This feature is a technology preview.
+  Refer to :doc:`gpu-driver-configuration` for more information.
+
+* Added support for additional Linux kernel variants for precompiled driver containers.
+
+  - driver:535-5.15.0-xxxx-nvidia-ubuntu22.04
+  - driver:535-5.15.0-xxxx-azure-ubuntu22.04
+  - driver:535-5.15.0-xxxx-aws-ubuntu22.04
+
+  Refer to the **Tags** tab of the `NVIDIA GPU Driver <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver>`__
+  page in the NGC catalog to determine if a container for your kernel is built.
+  Refer to :doc:`precompiled-drivers` for information about using precompiled driver containers
+  and steps to build your own driver container.
+
+* The API for the NVIDIA cluster policy custom resource definition is enhanced to include
+  the current state of the cluster policy.
+  When you view the cluster policy with a command like ``kubectl get cluster-policy``, the response
+  now includes a ``Status.Conditions`` field.
+
+* Added support for the following software component versions:
+
+  - NVIDIA Data Center GPU Driver version 535.104.12.
+  - NVIDIA Driver Manager for Kubernetes v0.6.4
+  - NVIDIA Container Toolkit v1.14.3
+  - NVIDIA Kubernetes Device Plugin v1.14.2
+  - NVIDIA DCGM Exporter 3.2.6-3.1.9
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.8.2
+  - NVIDIA MIG Manager for Kubernetes v0.5.5
+  - NVIDIA Data Center GPU Manager (DCGM) v3.2.6-1
+  - NVIDIA KubeVirt GPU Device Plugin v1.2.3
+  - NVIDIA vGPU Device Manager v0.2.4
+  - NVIDIA Kata Manager for Kubernetes v0.1.2
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.1.1
+  - Node Feature Discovery v0.14.2
+
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+Fixed issues
+------------
+
+* Previously, if the ``RHEL_VERSION`` environment variable was set for the Operator, the variable was
+  propagated to the driver container and used in the ``--releasever`` argument to the ``dnf`` command.
+  With this release, you can specify the ``DNF_RELEASEVER`` environment variable for the driver container
+  to override the value of the ``--releasever`` argument.
+
+* Previously, stale node feature and node feature topology objects could remain in the Kubernetes API
+  server after a node is deleted from the cluster.
+  The upgrade to Node Feature Discovery v0.14.2 includes an enhancement to garbage collection that
+  ensures the objects are removed after a node is deleted.
+
+Known Limitations
+------------------
+
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+  Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
+  The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
+  at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
+  configuration option.
+  Additionally, network-restricted environments are not supported.
+
+
 23.6.1
 ======
 

@@ -241,15 +241,15 @@ The GPU Operator has been validated in the following scenarios:
            | MicroK8s
 
        * - Ubuntu 20.04 LTS
-         - 1.21---1.27
+         - 1.25---1.28
          -
-         - 7.0 U3c, 8.0 U1
-         - 1.21---1.27
+         - 7.0 U3c, 8.0 U2
+         - 1.25---1.28
          -
          -
 
        * - Ubuntu 22.04 LTS
-         - 1.21---1.27
+         - 1.25---1.28
          -
          -
          -
@@ -257,7 +257,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.26
 
        * - CentOS 7
-         - 1.21---1.27
+         - 1.25---1.28
          -
          -
          -
@@ -266,8 +266,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.9, 4.10, 4.11
-           | 4.12, 4.13
+         - | 4.9---4.14
          -
          -
          -
@@ -277,10 +276,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6, 8.7, 8.8
-         - 1.21---1.27
+         - 1.25---1.28
          -
          -
-         - 1.21---1.27
+         - 1.25---1.28
          -
          -
 
@@ -342,7 +341,7 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 20.04 LTS
          - 1.21--1.27
          -
-         - 7.0 U3c, 8.0 U1
+         - 7.0 U3c, 8.0 U2
          - | 1.21, 1.22, 1.23,
            | 1.24, 1.25
 
@@ -354,8 +353,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.9, 4.10, 4.11
-           | 4.12, 4.13
+         - 4.9---4.14
          -
          -
 
