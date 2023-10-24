@@ -348,20 +348,24 @@ With this workflow, all existing GPU operator resources are updated inline and t
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v23.3.1
+      $ export RELEASE_TAG=v23.9.0
 
-#. Apply the custom resource definition for the cluster policy:
+#. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
 
    .. code-block:: console
 
       $ kubectl apply -f \
           https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
 
+      $ kubectl apply -f \
+          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+
    *Example Output*
 
    .. code-block:: output
 
       customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured
+      customresourcedefinition.apiextensions.k8s.io/nvidiadrivers.nvidia.com created
 
 #. Apply the custom resource definition for Node Feature Discovery:
 
@@ -428,7 +432,7 @@ This parameter needs to be set using ``--set operator.upgradeCRD=true`` option d
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v23.3.1
+      $ export RELEASE_TAG=v23.9.0
 
 #. Update the information about the Operator chart:
 
