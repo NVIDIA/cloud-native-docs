@@ -68,19 +68,18 @@ The product life cycle and versioning are subject to change in the future.
      - Status
      - Details
 
-   * - 23.6.x
+   * - 23.9.x
      - Generally Available
-     - Enters maintenance when v23.9.0 is released.
+     - Enters maintenance when v23.12.0 is released.
 
-   * - 23.3.x
+   * - 23.6.x
      - Maintenance
-     - Enters EOL when v23.9.0 is released.
+     - Enters EOL when v23.12.0 is released.
 
-   * - 22.9.x
-     - EOL
-     -
+   * - 23.3.x and lower,
 
-   * - 1.11.x and lower
+       1.11.x and lower
+
      - EOL
      -
 
