@@ -9,7 +9,7 @@ For convenience, the documentation below includes instructions on installing Doc
 
 .. warning::
 
-    If you are migrating fron ``nvidia-docker`` 1.0, then follow the instructions in the :ref:`migration-1.0` guide.
+    If you are migrating from ``nvidia-docker`` 1.0, then follow the instructions in the :ref:`migration-1.0` guide.
 
 .. Ubuntu instructions
 
