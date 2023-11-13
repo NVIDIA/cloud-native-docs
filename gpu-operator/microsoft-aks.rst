@@ -30,7 +30,25 @@ NVIDIA GPU Operator with Azure Kubernetes Service
 Approaches for Working with Azure AKS
 *************************************
 
-You can approach running workloads in Azure AKS with NVIDIA GPUs in at least two ways.
+Create AKS Cluster with Node Pool Tags to Prevent Driver installation
+=====================================================================
+
+When you create an AKS cluster, you can specify the ``--nodepool-tags`` argument to the Azure CLI
+command to customize the nodes.
+If you specify ``--nodepool-tags SkipGPUDriverInstall=true``, AKS does not install
+the NVIDIA GPU Driver in the stock Ubuntu operating system.
+
+This approach enables you to take advantage of the lifecycle management
+that the NVIDIA GPU Operator provides for managing your cluster.
+
+.. code-block:: console
+   :caption: Sample Cluster Create Command
+
+   $ az aks create -g <rg-name> -n <cluster-name> ... --nodepool-tags SkipGPUDriverInstall=true
+
+When you follow this approach, you can install the Operator without any special
+considerations or arguments.
+Refer to :ref:`Install NVIDIA GPU Operator`.
 
 
 Default AKS configuration without the GPU Operator
@@ -64,11 +82,12 @@ manage the lifecycle of these software components and others.
 However, using the Operator can overcome the limitations identified in the preceding section.
 
 
-***********************
-Installing the Operator
-***********************
+***********************************************************
+Installing the Operator for Preinstalled Driver and Toolkit
+***********************************************************
 
-After you start your Azure AKS cluster, you are ready to install the NVIDIA GPU Operator.
+After you start your Azure AKS cluster with an image that includes a preinstalled NVIDIA GPU Driver
+and NVIDIA Container Toolkit, you are ready to install the NVIDIA GPU Operator.
 
 When you install the Operator, you must prevent the Operator from automatically
 deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
