@@ -9,6 +9,11 @@
 NVIDIA GPU Operator with OpenShift Virtualization
 #################################################
 
+.. contents::
+   :depth: 2
+   :backlinks: none
+   :local:
+
 ************
 Introduction
 ************
@@ -31,9 +36,9 @@ is needed for GPU passthrough, and the NVIDIA vGPU Manager is needed for creatin
 The GPU Operator can now be configured to deploy different software components on worker nodes depending
 on what GPU workload is configured to run on those nodes. Consider the following example.
 
-* Node A is configured to run containers.
-* Node B is configured to run VMs with Passthrough GPU.
-* Node C is configured to run VMs with vGPU.
+| Node A is configured to run containers.
+| Node B is configured to run VMs with Passthrough GPU.
+| Node C is configured to run VMs with vGPU.
 
 Node A receives the following software components:
 
@@ -92,6 +97,52 @@ Prerequisites
      hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged annotated
 
 
+**********************************
+Enabling the IOMMU driver on hosts
+**********************************
+
+To enable the IOMMU (Input-Output Memory Management Unit) driver in the kernel, create the ``MachineConfig`` object and add the kernel arguments.
+
+Prerequisites
+=============
+
+* Administrative privilege to a working OpenShift Container Platform cluster.
+* Intel or AMD CPU hardware.
+* Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS (Basic Input/Output System) is enabled.
+
+Procedure
+=========
+
+#. Create a ``MachineConfig`` object that identifies the kernel argument.
+   The following example shows a kernel argument for an Intel CPU:
+
+   .. code-block:: yaml
+
+      apiVersion: machineconfiguration.openshift.io/v1
+      kind: MachineConfig
+      metadata:
+        labels:
+          machineconfiguration.openshift.io/role: worker
+        name: 100-worker-iommu
+      spec:
+        config:
+          ignition:
+            version: 3.2.0
+        kernelArguments:
+            - intel_iommu=on
+
+#. Create the new ``MachineConfig`` object:
+
+   .. code-block:: console
+
+      $ oc create -f 100-worker-kernel-arg-iommu.yaml
+
+#. Verify that the new ``MachineConfig`` object was added:
+
+   .. code-block:: console
+
+      $ oc get machineconfig
+
 
 *********************
 Labeling worker nodes
@@ -103,9 +154,10 @@ Use the following command to add a label to a worker node:
 
    $ oc label node <node-name> --overwrite nvidia.com/gpu.workload.config=vm-vgpu
 
-You can assign the following values to the label - ``container``, ``vm-passthrough``, and ``vm-vgpu``. The GPU Operator uses the value of this label when determining which operands to deploy.
+You can assign the following values to the label: ``container``, ``vm-passthrough``, and ``vm-vgpu``.
+The GPU Operator uses the value of this label to determine which operands to deploy.
 
-If the node label ``nvidia.com/gpu.workload.config`` does not exist on the node, the GPU Operator will assume the default GPU workload configuration, ``container``, and will deploy the software components needed to support this workload type.
+If the node label ``nvidia.com/gpu.workload.config`` does not exist on the node, the GPU Operator assumes the default GPU workload configuration, ``container``, and deploys the software components needed to support this workload type.
 To change the default GPU workload configuration, set the following value in ``ClusterPolicy``: ``sandboxWorkloads.defaultWorkload=<config>``.
 
 
@@ -113,15 +165,20 @@ To change the default GPU workload configuration, set the following value in ``C
 Building the vGPU Manager image
 *******************************
 
-.. note: Building a vGPU Manager image is only required for NVIDIA vGPU. If you are only planning to use GPU Passthrough, skip this section.
+.. note::
+
+   Building a vGPU Manager image is only required for NVIDIA vGPU.
+   If you plan to use GPU Passthrough only, skip this section.
 
 Use the following steps to build the vGPU Manager container and push it to a private registry.
 
 #. Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
-   * Login to the NVIDIA Licensing Portal and navigate to the Software Downloads section.
-   * The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
-   * The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` file)
+   * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
+   * The NVIDIA vGPU Software is located on the **Driver downloads** tab of the **Software Downloads** page.
+   * Click the **Download** link for the Linux KVM complete vGPU package.
+     Confirm that the **Product Version** column shows the vGPU version to install.
+     Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` file)
 
    Use the following steps to clone the driver container repository and build the driver image.
 
@@ -132,7 +189,7 @@ Use the following steps to build the vGPU Manager container and push it to a pri
       $ git clone https://gitlab.com/nvidia/container-images/driver
       $ cd driver
 
-#. Change to the ``vgpu-manager`` directory for your OS.
+#. Change to the ``vgpu-manager`` directory for your OS:
 
    .. code-block:: console
 
@@ -148,14 +205,18 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    * ``PRIVATE_REGISTRY`` - Name of the private registry used to store the driver image.
    * ``VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
-   * ``OS_TAG`` - This must match the Guest OS version. For RedHat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
+   * ``OS_TAG`` - This must match the Guest OS version.
+     For RedHat OpenShift, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
    * ``CUDA_VERSION`` - CUDA base image version to build the driver image with.
-
-   .. note:: The recommended registry to use is the Integrated OpenShift Container Platform registry. For more information about the registry, see `Accessing the registry <https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html>`_.
 
    .. code-block:: console
 
       $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11 CUDA_VERSION=11.7.1
+
+   .. note::
+
+      The recommended registry to use is the Integrated OpenShift Container Platform registry.
+      For more information about the registry, see `Accessing the registry <https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html>`_.
 
 #. Build the NVIDIA vGPU Manager image:
 
@@ -176,7 +237,7 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 Installing the NVIDIA GPU Operator using the CLI
 ************************************************
 
-Install the **NVIDIA GPU Operator** using the guidance :ref:`Installing the NVIDIA GPU Operator<install-nvidiagpu>`.
+Install the NVIDIA GPU Operator using the guidance at :ref:`Installing the NVIDIA GPU Operator <install-nvidiagpu>`.
 
   .. note:: When prompted to create a cluster policy follow the guidance :ref:`Creating a ClusterPolicy for the GPU Operator<install-cluster-policy-vGPU>`.
 
@@ -256,92 +317,83 @@ The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGP
 Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
 To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to :ref:`vGPU Device Configuration<vgpu-device-configuration>`.
 
-**********************************
-Enabling the IOMMU driver on hosts
-**********************************
 
-To enable the IOMMU (Input-Output Memory Management Unit) driver in the kernel, create the ``MachineConfig`` object and add the kernel arguments.
+*******************************************************
+Add GPU Resources to the HyperConverged Custom Resource
+*******************************************************
 
-Prerequisites
-=============
+Update the ``HyperConverged`` custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.
 
-* Administrative privilege to a working OpenShift Container Platform cluster.
-* Intel or AMD CPU hardware.
-* Intel Virtualization Technology for Directed I/O extensions or AMD IOMMU in the BIOS (Basic Input/Output System) is enabled.
+The following example permits the A10 GPU device and A10-24Q vGPU device.
 
-#. Create a ``MachineConfig`` object that identifies the kernel argument. The following example shows a kernel argument for an Intel CPU.
+#. Determine the resource names for the GPU devices:
+
+   .. code-block:: console
+
+      $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+
+   *Example Output*
+
+   .. code-blocK:: output
+
+      {
+        "nvidia.com/NVIDIA_A10-12Q": "4"
+      }
+
+#. Determine the PCI device IDs for the GPUs.
+
+   * You can search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
+
+   * If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:
+
+     .. code-block:: console
+
+        $ lspci -nnk -d 10de:
+
+     *Example Output*
+
+     .. code-block:: output
+        :emphasize-lines: 1
+
+        65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
+                Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+                Kernel modules: nvidiafb, nouveau
+
+#. Modify the ``HyperConvered`` custom resource like the following partial example:
 
    .. code-block:: yaml
 
-      apiVersion: machineconfiguration.openshift.io/v1
-      kind: MachineConfig
-      metadata:
-        labels:
-          machineconfiguration.openshift.io/role: worker
-        name: 100-worker-iommu
+      ...
       spec:
-        config:
-          ignition:
-            version: 3.2.0
-        kernelArguments:
-            - intel_iommu=on
+        configuration:
+          developerConfiguration:
+            featureGates:
+            - GPU
+            - DisableMDEVConfiguration
+          permittedHostDevices:
+            pciHostDevices:
+            - externalResourceProvider: true
+              pciDeviceSelector: 10DE:2236
+              resourceName: nvidia.com/GA102GL_A10
+          mediatedDevices:
+          - externalResourceProvider: true
+            mdevNameSelector: NVIDIA A10-24Q
+            resourceName: nvidia.com/NVIDIA_A10-24Q
+      ...
 
-#. Create the new ``MachineConfig`` object:
+   Replace the values in the YAML as follows:
 
-   .. code-block:: console
+   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
 
-      $ oc create -f 100-worker-kernel-arg-iommu.yaml
+   * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
 
-#. Verify that the new ``MachineConfig`` object was added:
-
-   .. code-block:: console
-
-      $ oc get MachineConfig
-
-*******************************************
-Add GPU resources to the HyperConverged CR
-*******************************************
-
-Update the ``HyperConverged`` Custom Resource, so that all GPU/vGPU devices in your cluster are permitted and can be assigned to OpenShift Virtualization VMs.
-
-In the example below, the **A10** GPU device and **A10-24Q** vGPU device are being permitting .
-
-* Replace the values of the:
-
-  * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
-
-  * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
-
-* Set ``externalResourceProvider=true`` to indicate that this resource is being provided by an external device plugin, in this case the ``sandbox-device-plugin`` which is deployed by the GPU Operator.
+   * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
 
 Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information on the configuration options.
 
-.. note::
 
-   To find the device ID for a particular GPU, search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
-
-.. code-block:: yaml
-
-     ...
-     spec:
-      configuration:
-      developerConfiguration:
-        featureGates:
-        - GPU
-      permittedHostDevices:
-        pciHostDevices:
-        - externalResourceProvider: true
-          pciDeviceSelector: 10DE:2236
-          resourceName: nvidia.com/GA102GL_A10
-        mediatedDevices:
-        - externalResourceProvider: true
-          mdevNameSelector: NVIDIA A10-24Q
-          resourceName: nvidia.com/NVIDIA_A10-24Q
-     ...
-
-
-Mediated Device
-===============
+About Mediated Devices
+======================
 
 A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device
 (mdev); the performance of the physical GPU is divided among the virtual devices. You can assign mediated
@@ -361,7 +413,10 @@ Prerequisites
 * The GPU devices are configured in the ``HyperConverged`` custom resource (CR).
 
 
-#. Assign the GPU device(s) to a virtual machine (VM) by editing the ``spec.domain.devices.gpus`` stanza of the ``VirtualMachine`` manifest:
+Procedure
+=========
+
+#. Assign the GPU devices to a virtual machine (VM) by editing the ``spec.domain.devices.gpus`` field of the ``VirtualMachine`` manifest:
 
    .. code-block:: yaml
 
@@ -372,7 +427,7 @@ Prerequisites
         domain:
           devices:
             gpus:
-            - deviceName: nvidia.com/TU104GL_Tesla_T4
+            - deviceName: nvidia.com/GA102GL_A10
               name: gpu1
             - deviceName: nvidia.com/GRID_T4-1Q
               name: gpu2

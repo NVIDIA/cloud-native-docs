@@ -8,6 +8,11 @@
 GPU Operator with KubeVirt
 **************************
 
+.. contents::
+   :depth: 2
+   :backlinks: none
+   :local:
+
 .. _gpu-operator-kubevirt-introduction:
 
 Introduction
@@ -180,55 +185,94 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 Add GPU resources to KubeVirt CR
 --------------------------------
 
-Next, update the KubeVirt Custom Resource, as documented in the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_, so that all GPU/vGPU devices in your cluster are permitted and can be assigned to KubeVirt virtual machines.
-In the below example, we are permitting the **A10** GPU device and **A10-24Q** vGPU device.
-Replace the values for ``pciVendorSelector`` and ``resourceName`` to correspond to your GPU model, and replace ``mdevNameSelector`` and ``resourceName`` to correspond to your vGPU type.
-We set ``externalResourceProvider=true`` to indicate that this resource is being provided by an external device plugin, in this case the ``sandbox-device-plugin`` which is deployed by the GPU Operator.
+Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.
+
+The following example shows how to permit the A10 GPU device and A10-24Q vGPU device.
+
+#. Determine the resource names for the GPU devices:
+
+   .. code-block:: console
+
+      $ kubectl get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+
+   *Example Output*
+
+   .. code-block:: output
+
+      {
+        "nvidia.com/NVIDIA_A10-12Q": "4"
+      }
+
+#. Determine the PCI device IDs for the GPUs.
+
+   * You can search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
+
+   * If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:
+
+     .. code-block:: console
+
+        $ lspci -nnk -d 10de:
+
+     *Example Output*
+
+     .. code-block:: output
+        :emphasize-lines: 1
+
+        65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
+                Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+                Kernel modules: nvidiafb, nouveau
+
+#. Modify the ``KubeVirt`` custom resource like the following partial example:
+
+   .. code-block:: yaml
+
+      ...
+      spec:
+        configuration:
+          developerConfiguration:
+            featureGates:
+            - GPU
+            - DisableMDEVConfiguration
+          permittedHostDevices:
+            pciHostDevices:
+            - externalResourceProvider: true
+              pciVendorSelector: 10DE:2236
+              resourceName: nvidia.com/GA102GL_A10
+            mediatedDevices:
+            - externalResourceProvider: true
+              mdevNameSelector: NVIDIA A10-24Q
+              resourceName: nvidia.com/NVIDIA_A10-24Q
+      ...
+
+   Replace the values in the YAML as follows:
+
+   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
+
+   * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
+
+   * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
+
 Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information on the configuration options.
-
-.. note::
-
-   To find the device ID for a particular GPU, search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
-
-.. code-block:: console
-
-   $ kubectl edit kubevirt -n kubevirt
-     ...
-     spec:
-       configuration:
-       developerConfiguration:
-         featureGates:
-         - GPU
-       permittedHostDevices:
-         pciHostDevices:
-         - externalResourceProvider: true
-           pciVendorSelector: 10DE:2236
-           resourceName: nvidia.com/GA102GL_A10
-         mediatedDevices:
-         - externalResourceProvider: true
-           mdevNameSelector: NVIDIA A10-24Q
-           resourceName: nvidia.com/NVIDIA_A10-24Q
-     ...
 
 Create a virtual machine with GPU
 ---------------------------------
 
-Assuming the GPU Operator has finished provisioning worker nodes and the GPU resources have been added to the
-KubeVirt allowlist, you can assign a GPU to a KubeVirt virtual machine by editing the ``spec.domain.devices.gpus`` stanza
+After the GPU Operator finishes deploying the sandbox device plugin and VFIO manager pods on worker nodes and the GPU resources are added to the
+KubeVirt allowlist, you can assign a GPU to a virtual machine by editing the ``spec.domain.devices.gpus`` field
 in the ``VirtualMachineInstance`` manifest.
 
 .. code-block:: yaml
 
    apiVersion: kubevirt.io/v1alpha3
    kind: VirtualMachineInstance
-   . . . snip . . .
+   ...
    spec:
      domain:
        devices:
          gpus:
          - deviceName: nvidia.com/GA102GL_A10
            name: gpu1
-   . . . snip . . .
+   ...
 
 * ``deviceName`` is the resource name representing the device.
 
