@@ -158,6 +158,10 @@ The following table describes some of the fields in the custom resource.
      - Specifies the name of the NVIDIA driver custom resource.
      - None
 
+   * - ``annotations``
+     - Specifies a map of key and value pairs to add as custom annotations to the driver pod.
+     - None
+
    * - ``driverType``
      - Specifies one of the following:
 
@@ -184,11 +188,19 @@ The following table describes some of the fields in the custom resource.
      - Specifies the credentials to provide to the registry if the registry is secured.
      - None
 
+   * - ``labels``
+     - Specifies a map of key and value pairs to add as custom labels to the driver pod.
+     - None
+
    * - ``nodeSelector``
      - Specifies one or more node labels to match.
        The driver container is scheduled to nodes that match all the labels.
      - None.
        When you do not specify this field, the driver custom resource selects all nodes.
+
+   * - ``priorityClassName``
+     - Specifies the priority class for the driver pod.
+     - ``system-node-critical``
 
    * - ``repository``
      - Specifies the container registry that contains the driver container.
@@ -197,6 +209,10 @@ The following table describes some of the fields in the custom resource.
    * - ``useOpenKernelModules``
      - Specifies to use the NVIDIA Open GPU Kernel modules.
      - ``false``
+
+   * - ``tolerations``
+     - Specifies a set of tolerations to apply to the driver pod.
+     - None
 
    * - ``usePrecompiled``
      - When set to ``true``, the Operator deploys a driver container image
