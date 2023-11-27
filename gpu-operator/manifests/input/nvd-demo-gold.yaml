@@ -8,7 +8,8 @@ spec:
   imagePullPolicy: IfNotPresent
   imagePullSecrets: []
   manager: {}
-  nodeSelector: {}
+  nodeSelector:
+    driver.config: "gold"
   rdma:
     enabled: false
     useHostMofed: false
@@ -20,5 +21,6 @@ spec:
     initialDelaySeconds: 60
     periodSeconds: 10
     timeoutSeconds: 60
+  useOpenKernelModules: false
   usePrecompiled: false
   version: 535.104.12

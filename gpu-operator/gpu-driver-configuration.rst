@@ -194,6 +194,10 @@ The following table describes some of the fields in the custom resource.
      - Specifies the container registry that contains the driver container.
      - ``nvcr.io/nvidia``
 
+   * - ``useOpenKernelModules``
+     - Specifies to use the NVIDIA Open GPU Kernel modules.
+     - ``false``
+
    * - ``usePrecompiled``
      - When set to ``true``, the Operator deploys a driver container image
        with a precompiled driver.
