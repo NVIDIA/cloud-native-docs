@@ -132,9 +132,10 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
           | for Kubernetes
 
       * - v23.9.0
-        - | `535.104.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-12/index.html>`_ (default),
-          | `525.125.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-125-06/index.html>`_,
-          | `470.199.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-199-02/index.html>`_,
+        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
+          | `535.104.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-12/index.html>`_ (default),
+          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
+          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
         - `v0.6.4 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.14.3 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.14.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
@@ -151,10 +152,10 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - v0.1.1
 
       * - v23.6.1
-        - | `535.104.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-12/index.html>`_ (recommended),
+        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
           | `535.104.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-05/index.html>`_ (default),
-          | `525.125.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-125-06/index.html>`_,
-          | `470.199.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-199-02/index.html>`_,
+          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
+          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
         - `v0.6.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.13.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.14.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
@@ -171,9 +172,10 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
         - v0.1.0
 
       * - v23.6.0
-        - | `535.86.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-86-10/index.html>`_ (default),
-          | `525.125.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-125-06/index.html>`_,
-          | `470.199.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-199-02/index.html>`_,
+        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
+          | `535.86.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-86-10/index.html>`_ (default),
+          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
+          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
         - `v0.6.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
         - `1.13.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
         - `0.14.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
