@@ -11,8 +11,11 @@
 MIG Support in Kubernetes
 #########################
 
-The Multi-Instance GPU (MIG) feature allows the NVIDIA A100 GPU to be securely partitioned into up to
-seven separate GPU Instances for CUDA applications, providing multiple users with separate GPU resources for
+The Multi-Instance GPU (MIG) feature enables securely partitioning GPUs such as the NVIDIA A100 into
+several separate GPU instances for CUDA applications.
+For example, the NVIDIA A100 supports up to seven separate GPU instances.
+
+MIG provides multiple users with separate GPU resources for
 optimal GPU utilization. This feature is particularly beneficial for workloads that do not fully saturate the GPU's
 compute capacity and therefore users may want to run different workloads in parallel to maximize utilization.
 
