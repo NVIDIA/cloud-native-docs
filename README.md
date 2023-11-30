@@ -90,6 +90,8 @@ In the preceding output, the markup would be as follows:
 
 ### Configuration File Updates
 
+Always update the openshift docset when there is a new gpu-operator docset version.
+
 1. Update the version in `repo.toml`:
 
    ```diff
@@ -151,6 +153,8 @@ Only tags or specially-named branches are published to docs.nvidia.com.
 
    The first three fields of the semantic version are used.
    For a "do over," push a tag like `gpu-operator-v23.3.1.1`.
+
+   Always tag the openshift docset and driver-containers docset for each new gpu-operator docset release.
 
 1. Push the tag or specially-named branch to the repository.
 
