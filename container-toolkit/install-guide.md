@@ -16,21 +16,30 @@ backlinks: none
 
 ### Installing with Apt
 
-1. Configure the repository:
+1. Configure the production repository:
 
    ```console
    $ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
      && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
        sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-       sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list \
-     && \
-       sudo apt-get update
+       sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   ```
+
+   Optionally, configure the repository to use experimental packages:
+
+   ```console
+   $ sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   ```
+
+1. Update the packages list from the repository:
+
+   ```console
+   $ sudo apt-get update
    ```
 
    <!--
    TODO:
    - [ ] If running `apt-get update` after configuring repositories raises an error regarding a conflict in the Signed-By option, see the :ref:`troubleshooting section <conflicting_signed_by>`.
-   - [ ] Experimental repos
    -->
 
 1. Install the NVIDIA Container Toolkit packages:
@@ -41,17 +50,18 @@ backlinks: none
 
 ### Installing with Yum or Dnf
 
-1. Configure the repository:
+1. Configure the production repository:
 
    ```console
    $ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
      sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
    ```
 
-   <!--
-   TODO:
-   - [ ] Experimental repos: yum-config-manager --enable libnvidia-container-experimental
-   -->
+   Optionally, configure the repository to use experimental packages:
+
+   ```console
+   $ sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+   ```
 
 1. Install the NVIDIA Container Toolkit packages:
 
@@ -61,10 +71,16 @@ backlinks: none
 
 ### Installing with Zypper
 
-1. Configure the repository:
+1. Configure the production repository:
 
    ```console
    $ sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+   ```
+
+   Optionally, configure the repository to use experimental packages:
+
+   ```console
+   $ sudo zypper modifyrepo --enable nvidia-container-toolkit-experimental
    ```
 
    <!--
