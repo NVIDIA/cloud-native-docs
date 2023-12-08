@@ -33,6 +33,149 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+.. _v23.9.1:
+
+23.9.1
+======
+
+.. _v23.9.1-new-features:
+
+New Features
+------------
+
+* Added support for NVIDIA GH200 Grace Hopper Superchip.
+  Refer to :ref:`supported-nvidia-gpus-and-systems`.
+
+  The following prerequisites are required for using the Operator with GH200:
+
+  - Run Ubuntu 22.04 and an NVIDIA Linux kernel, such as one provided with a ``linux-nvidia-<x.x>`` package.
+  - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
+
+* Added support for configuring the driver container to use the NVIDIA open kernel modules.
+  For clusters that use GPUDirect Storage (GDS), beginning with CUDA toolkit 12.2.2 and
+  the NVIDIA GPUDirect Storage kernel driver version v2.17.5, are only supported
+  with the open kernel modules.
+
+  - Refer to :ref:`gpu-operator-helm-chart-options` for information about setting
+    ``useOpenKernelModules`` if you manage the driver containers with the NVIDIA cluster policy custom resource definition.
+  - Refer to :doc:`gpu-driver-configuration` for information about setting ``spec.useOpenKernelModules``
+    if you manage the driver containers with the technology preview NVIDIA driver custom resource.
+
+* Added support for the following software component versions:
+
+  - NVIDIA Data Center GPU Driver version 535.129.03
+  - NVIDIA Driver Manager for Kubernetes v0.6.5
+  - NVIDIA Kubernetes Device Plugin v1.14.3
+  - NVIDIA DCGM Exporter 3.3.0-3.2.0
+  - NVIDIA Data Center GPU Manager (DCGM) v3.3.0-1
+  - NVIDIA KubeVirt GPU Device Plugin v1.2.4
+  - NVIDIA GPUDirect Storage (GDS) Driver v2.17.5
+
+    .. important::
+
+       This version, and newer versions of the NVIDIA GDS kernel driver, require that you use the NVIDIA open kernel modules.
+
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+.. _v23.9.1-improvements:
+
+Improvements
+------------
+
+* The ``must-gather.sh`` script that is used for support is enhanced to collect logs
+  from NVIDIA vGPU Manager pods.
+
+.. _v23.9.1-fixed-issues:
+
+Fixed issues
+------------
+
+* Previously, the technical preview NVIDIA driver custom resource did not support adding
+  custom labels, annotations, or tolerations to the pods that run as part of the driver daemon set.
+  This limitation prevented scheduling the driver daemon set in some environments.
+  Refer to GitHub `issue #602 <https://github.com/NVIDIA/gpu-operator/issues/602>`_ for more details.
+
+* Previously, when you specified the ``operator.upgradeCRD=true`` argument to the ``helm upgrade``
+  command, the pre-upgrade hook ran with the ``gpu-operator`` service account.
+  Now, the Operator is enhanced to run the hook with a new service account, ``gpu-operator-upgrade-crd-hook-sa``.
+  This fix creates the new service account, a new cluster role, and a new cluster role binding.
+
+* Previously, duplicate image pull secrets were added to some daemon sets and caused an error
+  like the following when a node is deleted and the controller manager deleted the pods.
+
+  .. code-block:: output
+
+     I1031 00:09:44.553742       1 gc_controller.go:329] "PodGC is force deleting Pod" pod="gpu-operator/nvidia-driver-daemonset-k69f2"
+     E1031 00:09:44.556500       1 gc_controller.go:255] failed to create manager for existing fields: failed to convert new object (gpu-operator/nvidia-driver-daemonset-k69f2; /v1, Kind=Pod) to smd typed: .spec.imagePullSecrets: duplicate entries for key [name="ngc-secret"]
+
+* Previously, adding an NVIDIA driver custom resource with a node selector that conflicts with another
+  driver custom resource, the controller failed to set the error condition in the custom resource status.
+  The issue produced an error message like the following example:
+
+  .. code-block:: output
+
+     {"level":"error","ts":1698702848.8472972,"msg":"NVIDIADriver.nvidia.com \"<conflicting-cr-name>"\" is invalid: state: Unsupported value: \"\": supported values: \"ignored\", \"ready\", \"notReady\"","controller":"nvidia-driver-\
+     controller","object":{"name":"<conflicting-cr-name>"},"namespace":"","name":"<conflicting-cr-name>","reconcileID":"78d58d7b-cd94-4849-a292-391da9a0b049"}
+
+* Previously, the NVIDIA KubeVirt GPU Device Plugin could have a GLIBC mismatch error and produce a log
+  message like the following example:
+
+  .. code-block:: output
+
+     nvidia-kubevirt-gpu-device-plugin: /lib64/libc.so.6: version `GLIBC_2.32` not found (required by nvidia-kubevirt-gpu-device-plugin)
+
+  This issue is fixed by including v1.2.4 of the plugin in this release.
+
+* Previously, on some machines and Linux kernel versions, GPU Feature Discovery was unable to determine
+  the machine type because the ``/sys/class/dmi/id/product_name`` file did not exist on the host.
+  Now, accessing the file is performed by mounting ``/sys`` instead of the fully-qualified path and
+  if the file does not exist, GPU Feature Discovery is able to label the node with ``nvidia.com/gpu.machine=unknown``.
+
+* Previously, enabling GPUDirect RDMA on Red Hat OpenShift Container Platform clusters could
+  experience an error with the nvidia-peermem container.
+  The error was related to the ``RHEL_VERSION`` variable being unbound.
+
+.. _v23.9.1-known-limitations:
+
+Known Limitations
+------------------
+
+* The ``1g.12gb`` MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to ``all-balanced``.
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+  Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
+  The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
+  at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
+  configuration option.
+  Additionally, network-restricted environments are not supported.
+
+
 23.9.0
 ======
 
