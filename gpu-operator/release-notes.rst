@@ -43,7 +43,7 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 New Features
 ------------
 
-* Added support for NVIDIA GH200 Grace Hopper Superchip.
+* Added support for NVIDIA GH200 Grace Hopper Superchip as a technology preview feature.
   Refer to :ref:`supported-nvidia-gpus-and-systems`.
 
   The following prerequisites are required for using the Operator with GH200:
@@ -52,6 +52,9 @@ New Features
   - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
 
 * Added support for configuring the driver container to use the NVIDIA open kernel modules.
+  Support is limited to installation using the runfile installer.
+  Support for precompiled driver containers with open kernel modules is not available.
+
   For clusters that use GPUDirect Storage (GDS), beginning with CUDA toolkit 12.2.2 and
   the NVIDIA GPUDirect Storage kernel driver version v2.17.5, are only supported
   with the open kernel modules.
@@ -77,6 +80,8 @@ New Features
 
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
+
+* Added support for NVIDIA Network Operator v23.10.0.
 
 .. _v23.9.1-improvements:
 
