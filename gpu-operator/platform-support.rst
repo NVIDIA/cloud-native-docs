@@ -34,7 +34,7 @@ Platform Support
 
 .. include:: life-cycle-policy.rst
 
-.. _supported-nvidia-gpus-and-systems:
+.. _supported nvidia gpus and systems:
 
 Supported NVIDIA Data Center GPUs and Systems
 ---------------------------------------------
