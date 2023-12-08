@@ -95,106 +95,68 @@ The following table shows the operands and default operand versions that corresp
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
 Refer to :ref:`Upgrading the GPU Operator` for more information.
 
-  .. list-table::
-      :header-rows: 1
-      :align: center
+.. list-table::
+   :header-rows: 1
 
-      * - Release
-        - | NVIDIA
-          | GPU
-          | Driver
-        - | NVIDIA Driver
-          | Manager for K8s
-        - | NVIDIA
-          | Container
-          | Toolkit
-        - | NVIDIA Kubernetes
-          | Device Plugin
-        - DCGM Exporter
-        - | Node Feature
-          | Discovery
-        - | NVIDIA GPU Feature
-          | Discovery for Kubernetes
-        - | NVIDIA MIG Manager
-          | for Kubernetes
-        - DCGM
-        - | Validator for
-          | NVIDIA GPU Operator
-        - | NVIDIA KubeVirt
-          | GPU Device Plugin
-        - | NVIDIA vGPU
-          | Device Manager
-        - NVIDIA GDS Driver
-        - | NVIDIA Kata Manager
-          | for Kubernetes
-        - | NVIDIA Confidential
-          | Computing Manager
-          | for Kubernetes
+   * - Component
+     - Version
 
-      * - v23.9.0
-        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
-          | `535.104.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-12/index.html>`_ (default),
-          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
-          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
-        - `v0.6.4 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-        - `1.14.3 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-        - `0.14.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-        - `3.2.6-3.1.9 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-        -  v0.14.2
-        - `0.8.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-        - `0.5.5 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
-        - `3.2.6-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_,
-        - v23.9.0
-        - `v1.2.3 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
-        - v0.2.4
-        - `2.16.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
-        - v0.1.2
-        - v0.1.1
+   * - NVIDIA GPU Operator
+     - v23.9.1
 
-      * - v23.6.1
-        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
-          | `535.104.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-05/index.html>`_ (default),
-          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
-          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
-        - `v0.6.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-        - `1.13.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-        - `0.14.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-        - `3.1.8-3.1.5 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-        -  v0.13.1
-        - `0.8.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-        - `0.5.3 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
-        - | `3.1.8-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_ (default),
-        - v23.6.1
-        - `v1.2.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
-        - v0.2.3
-        - `2.16.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
-        - v0.1.0
-        - v0.1.0
+   * - NVIDIA GPU Driver
+     - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (default),
+       | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
+       | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_,
 
-      * - v23.6.0
-        - | `535.129.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-129-03/index.html>`_ (recommended),
-          | `535.86.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-86-10/index.html>`_ (default),
-          | `525.147.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-147-05/index.html>`_,
-          | `470.223.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-223-02/index.html>`_
-        - `v0.6.2 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
-        - `1.13.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
-        - `0.14.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
-        - `3.1.8-3.1.5 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
-        -  v0.13.1
-        - `0.8.1 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
-        - `0.5.3 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
-        - | `3.1.8-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_ (default),
-        - v23.6.0
-        - `v1.2.2 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
-        - v0.2.3
-        - `2.16.1 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
-        - v0.1.0
-        - v0.1.0
+   * - NVIDIA Driver Manager for K8s
+     - `v0.6.5 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
 
-  .. note::
+   * - NVIDIA Container Toolkit
+     - `1.14.3 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
 
-      - Driver version could be different with NVIDIA vGPU, as it depends on the driver
-        version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
-      - The GPU Operator is supported on all active NVIDIA datacenter production drivers.
-        Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_
-        for more information.
+   * - NVIDIA Kubernetes Device Plugin
+     - `0.14.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+
+   * - DCGM Exporter
+     - `3.3.0-3.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+
+   * - Node Feature Discovery
+     - v0.14.2
+
+   * - | NVIDIA GPU Feature Discovery
+       | for Kubernetes
+     - `0.8.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+
+   * - NVIDIA MIG Manager for Kubernetes
+     - `0.5.5 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
+
+   * - DCGM
+     - `3.3.0-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_
+
+   * - Validator for NVIDIA GPU Operator
+     - v23.9.1
+
+   * - NVIDIA KubeVirt GPU Device Plugin
+     - `v1.2.4 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
+
+   * - NVIDIA vGPU Device Manager
+     - v0.2.4
+
+   * - NVIDIA GDS Driver
+     - `2.17.5 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+
+   * - NVIDIA Kata Manager for Kubernetes
+     - v0.1.2
+
+   * - | NVIDIA Confidential Computing
+       | Manager for Kubernetes
+     - v0.1.1
+
+.. note::
+
+   - Driver version could be different with NVIDIA vGPU, as it depends on the driver
+     version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+   - The GPU Operator is supported on all active NVIDIA datacenter production drivers.
+     Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_
+     for more information.
