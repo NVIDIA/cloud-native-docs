@@ -124,6 +124,10 @@ The following options are available when using the Helm chart. These options can
        runs slowly in your cluster.
      - ``60s``
 
+   * - ``driver.useOpenKernelModules``
+     - When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
+     - ``false``
+
    * - ``driver.usePrecompiled``
      - When set to ``true``, the Operator attempts to deploy driver containers that have
        precompiled kernel drivers.
