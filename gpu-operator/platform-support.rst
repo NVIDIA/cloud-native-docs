@@ -34,14 +34,27 @@ Platform Support
 
 .. include:: life-cycle-policy.rst
 
-Supported NVIDIA GPUs and Systems
----------------------------------
+.. _supported-nvidia-gpus-and-systems:
+
+Supported NVIDIA Data Center GPUs and Systems
+---------------------------------------------
 
 The following NVIDIA data center GPUs are supported on x86 based platforms:
 
 .. tab-set::
 
-  .. tab-item:: Data Center A, H and L-series Products
+  .. tab-item:: GH-series Products
+
+     .. list-table::
+        :header-rows: 1
+
+        * - Product
+          - Architecture
+
+        * - NVIDIA GH200
+          - NVIDIA Grace Hopper
+
+  .. tab-item:: A, H and L-series Products
 
     +-------------------------+---------------------------+
     | Product                 | Architecture              |
@@ -90,7 +103,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
       * Hopper (H100) GPU is only supported on x86 servers.
       * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
 
-  .. tab-item:: Data Center D,T and V-series Products
+  .. tab-item:: D,T and V-series Products
 
     +-----------------------+------------------------+
     | Product               | Architecture           |
@@ -106,7 +119,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA P4             | Pascal                 |
     +-----------------------+------------------------+
 
-  .. tab-item:: Data Center RTX / T-series Products
+  .. tab-item:: RTX / T-series Products
 
     +-------------------------+------------------------+
     | Product                 | Architecture           |
@@ -244,28 +257,20 @@ The GPU Operator has been validated in the following scenarios:
            | MicroK8s
 
        * - Ubuntu 20.04 LTS
-         - 1.25---1.28
+         - 1.22---1.28
          -
          - 7.0 U3c, 8.0 U2
-         - 1.25---1.28
+         - 1.22---1.28
          -
          -
 
        * - Ubuntu 22.04 LTS
-         - 1.25---1.28
+         - 1.22---1.28
          -
          -
          -
          -
          - 1.26
-
-       * - CentOS 7
-         - 1.25---1.28
-         -
-         -
-         -
-         -
-         -
 
        * - Red Hat Core OS
          -
@@ -279,10 +284,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.25---1.28
+         - 1.22---1.28
          -
          -
-         - 1.25---1.28
+         - 1.22---1.28
          -
          -
 
@@ -407,8 +412,8 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ========
 Ubuntu 20.04 LTS    1.22---1.28   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.22---1.28   0.36+           0.59.1+
-Red Hat Core OS                                                4.11, 4.12,      4.13
-                                                               4.13
+Red Hat Core OS                                                4.11---4.14      4.13,
+                                                                                4.14
 ================    ===========   =============   =========    =============    ========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -426,9 +431,8 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.7.0
-- Red Hat OpenShift 4.9 and higher with Network Operator 23.7.0
-- CentOS 7 with MOFED installed on the node
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.10.0
+- Red Hat OpenShift 4.9 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -438,13 +442,19 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.7.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.10.0
 - Red Hat OpenShift Container Platform 4.11 and higher
 
 .. note::
 
-      Not supported with secure boot.
-      Supported storage types are local NVMe and remote NFS.
+   Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, ``nvidia-fs``,
+   requires the NVIDIA open kernel modules.
+   You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
+   argument to the ``helm`` command.
+   Refer to :ref:`chart customization options` for more information.
+
+   Not supported with secure boot.
+   Supported storage types are local NVMe and remote NFS.
 
 Additional Supported Container Management Tools
 -----------------------------------------------
