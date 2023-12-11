@@ -101,6 +101,8 @@ backlinks: none
 * You installed a supported container engine (Docker, Containerd, CRI-O, Podman).
 * You installed the NVIDIA Container Toolkit.
 
+(setting-up-docker)=
+
 ### Configuring Docker
 
 1. Configure the container runtime by using the `nvidia-ctk` command:
