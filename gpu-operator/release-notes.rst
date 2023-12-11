@@ -44,7 +44,7 @@ New Features
 ------------
 
 * Added support for NVIDIA GH200 Grace Hopper Superchip as a technology preview feature.
-  Refer to :ref:`supported-nvidia-gpus-and-systems`.
+  Refer to :ref:`supported nvidia gpus and systems`.
 
   The following prerequisites are required for using the Operator with GH200:
 
