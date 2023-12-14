@@ -32,6 +32,20 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ----
+23.6.2
+======
+
+Fixed issues
+------------
+
+NOTE: This release only includes fixes in the helm chart
+
+* Previously, the CRD upgrade helm hook depended on the service account `gpu-operator` created during the time of helm install.
+  With this release, we have created a dedicated Service Account, Cluster Role and Cluster Role Binding for the CRD upgrade helm hook.
+  This fixes a known issue for ArgoCD users, as pre-install and pre-upgrade hooks are treated the same by ArgoCD as pre-sync hooks.
+  This leads to failures in ArgoCD, as the helm hook is executed during install time and it depends on the `gpu-operator` service account
+  which does not exist in the pre-install phase creating a chicken-and-egg problem. With the helm hooks having their own Service Accounts, 
+  they no longer have a depedency on the `gpu-operator` service account created during the helm install phase.
 
 23.6.1
 ======
