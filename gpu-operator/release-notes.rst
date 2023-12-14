@@ -102,9 +102,15 @@ Fixed issues
   Refer to GitHub `issue #602 <https://github.com/NVIDIA/gpu-operator/issues/602>`_ for more details.
 
 * Previously, when you specified the ``operator.upgradeCRD=true`` argument to the ``helm upgrade``
-  command, the pre-upgrade hook ran with the ``gpu-operator`` service account.
+  command, the pre-upgrade hook ran with the ``gpu-operator`` service account
+  that is added by running ``helm install``.
+  This dependency is a known issue for Argo CD users.
+  Argo CD treats pre-install and pre-upgrade hooks the same as pre-sync hooks and leads to failures
+  because the hook depends on the ``gpu-operator`` service account that does not exist on an initial installation.
+
   Now, the Operator is enhanced to run the hook with a new service account, ``gpu-operator-upgrade-crd-hook-sa``.
   This fix creates the new service account, a new cluster role, and a new cluster role binding.
+  The update prevents failures with Argo CD.
 
 * Previously, duplicate image pull secrets were added to some daemon sets and caused an error
   like the following when a node is deleted and the controller manager deleted the pods.
@@ -277,6 +283,29 @@ Known Limitations
   configuration option.
   Additionally, network-restricted environments are not supported.
 
+
+.. _v23.6.2:
+
+23.6.2
+======
+
+This patch release back ports a fix that was introduced in the v23.9.1 release.
+
+.. _v23.6.2-fixed-issues:
+
+Fixed Issues
+------------
+
+* Previously, when you specified the ``operator.upgradeCRD=true`` argument to the ``helm upgrade``
+  command, the pre-upgrade hook ran with the ``gpu-operator`` service account
+  that is added by running ``helm install``.
+  This dependency is a known issue for Argo CD users.
+  Argo CD treats pre-install and pre-upgrade hooks the same as pre-sync hooks and leads to failures
+  because the hook depends on the ``gpu-operator`` service account that does not exist on an initial installation.
+
+  Now, the Operator is enhanced to run the hook with a new service account, ``gpu-operator-upgrade-crd-hook-sa``.
+  This fix creates the new service account, a new cluster role, and a new cluster role binding.
+  The update prevents failures with Argo CD.
 
 23.6.1
 ======
