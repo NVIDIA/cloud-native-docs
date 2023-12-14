@@ -32,20 +32,29 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ----
+
+.. _v23.6.2:
+
 23.6.2
 ======
 
-Fixed issues
+This patch release back ports a fix that was introduced in the v23.9.1 release.
+
+.. _v23.6.2-fixed-issues:
+
+Fixed Issues
 ------------
 
-NOTE: This release only includes fixes in the helm chart
+* Previously, when you specified the ``operator.upgradeCRD=true`` argument to the ``helm upgrade``
+  command, the pre-upgrade hook ran with the ``gpu-operator`` service account
+  that is added by running ``helm install``.
+  This dependency is a known issue for Argo CD users.
+  Argo CD treats pre-install and pre-upgrade hooks the same as pre-sync hooks and leads to failures
+  because the hook depends on the ``gpu-operator`` service account that does not exist on an initial installation.
 
-* Previously, the CRD upgrade helm hook depended on the service account `gpu-operator` created during the time of helm install.
-  With this release, we have created a dedicated Service Account, Cluster Role and Cluster Role Binding for the CRD upgrade helm hook.
-  This fixes a known issue for ArgoCD users, as pre-install and pre-upgrade hooks are treated the same by ArgoCD as pre-sync hooks.
-  This leads to failures in ArgoCD, as the helm hook is executed during install time and it depends on the `gpu-operator` service account
-  which does not exist in the pre-install phase creating a chicken-and-egg problem. With the helm hooks having their own Service Accounts, 
-  they no longer have a depedency on the `gpu-operator` service account created during the helm install phase.
+  Now, the Operator is enhanced to run the hook with a new service account, ``gpu-operator-upgrade-crd-hook-sa``.
+  This fix creates the new service account, a new cluster role, and a new cluster role binding.
+  The update prevents failures with Argo CD.
 
 23.6.1
 ======

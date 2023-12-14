@@ -129,7 +129,7 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "23.6.1"
+version = "23.6.2"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "troubleshootings.rst",
