@@ -191,8 +191,9 @@ Node B receives the following software components:
 Prerequisites
 *************
 
-* Your hosts are configured to enable hardware virtualization.
-  Enabling this feature is typically performed by configuring the host BIOS.
+* Your hosts are configured to enable hardware virtualization and Access Control Services (ACS).
+  With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
+  Enabling these features is typically performed by configuring the host BIOS.
 
 * Your hosts are configured to support IOMMU.
 
