@@ -1,7 +1,7 @@
 .. Date: November 16 2021
 .. Author: kquinn
 
-.. headings are # * - =
+.. headings are ## ** * - =
 
 .. _mig-ocp:
 
@@ -9,13 +9,17 @@
 MIG Support in OpenShift Container Platform
 ############################################
 
-This document provides guidance on setting up Multi-Instance GPU (MIG) in an OpenShift Container Platform cluster.
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
 
 ************
 Introduction
 ************
 
-MIG is useful anytime you have an application that does not require the full power of an entire GPU.
+NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
 The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.
 
@@ -319,6 +323,571 @@ Follow the guidance below to create a new slicing profile.
               name: custom-mig-parted-config
 
 #. Label the node with this newly created profile following the guidance in :ref:`MIG-partitioning`.
+
+
+***************************
+Example: Mixed MIG strategy
+***************************
+
+Introduction and default MIG configuration
+******************************************
+
+For each MIG configuration, you specify a strategy and a MIG configuration label.
+
+This example shows how to configure a ``mixed`` strategy with the ``all-balanced`` configuration on one NVIDIA DGX H100 host with 8 x H100 80GB GPUs.
+The DGX H100 host runs a single node installation of OpenShift.
+
+By default, MIG is disabled and is configured with the ``single`` strategy:
+
+.. code-block:: console
+
+   $ oc describe node | grep nvidia.com/mig
+
+*Example Output*
+
+.. code-block:: output
+
+   nvidia.com/mig.capable=true
+   nvidia.com/mig.config=all-disabled
+   nvidia.com/mig.config.state=success
+   nvidia.com/mig.strategy=single
+
+With the default configuration, the host supports up to 8 pods with GPUs:
+
+.. code-block:: console
+
+   $ oc describe node | egrep "Name:|Roles:|Capacity|nvidia.com/gpu|Allocatable:|Requests +Limits"
+
+*Example Output*
+
+.. code-block:: output
+   :emphasize-lines: 5,6
+
+   Name:               myworker.redhat.com
+   Roles:              control-plane,master,worker
+   Capacity:
+   nvidia.com/gpu:     8
+   Allocatable:
+   nvidia.com/gpu:     8
+   Resource           Requests      Limits
+   nvidia.com/gpu     0             0
+
+Procedure
+*********
+
+The following steps show how to apply the ``mixed`` strategy with the MIG configuration label ``all-balanced``.
+
+With this strategy and label, each H100 GPU enables these MIG profiles:
+
+* 2 x 1g.10gb
+* 1 x 2g.20gb
+* 1 x 3g.40g
+
+For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in the following GPU capacity on the cluster:
+
+* 16 x 1g.10gb (8 x 2)
+* 8 x 2g.20gb (8 x 1)
+* 8 x 3g.40gb (8 x 1)
+
+#. Specify the host name, strategy, and configuration label in environment variables:
+
+   .. code-block:: console
+
+      $ NODE_NAME=myworker.redhat.com
+      $ STRATEGY=mixed
+      $ MIG_CONFIGURATION=all-balanced
+
+#. Apply the strategy:
+
+   .. code-block:: console
+
+      $ oc patch clusterpolicy/gpu-cluster-policy --type='json' \
+          -p='[{"op": "replace", "path": "/spec/mig/strategy", "value": '$STRATEGY'}]'
+
+#. Label the node with the configuration label:
+
+   .. code-block:: console
+
+      $ oc label node $NODE_NAME nvidia.com/mig.config=$MIG_CONFIGURATION --overwrite
+
+   MIG manager applies a ``mig.config.state`` label to the GPU and then terminates all the GPU pods
+   in preparation to enable MIG mode and configure the GPU into the specified configuration.
+   
+
+#. Optional: Verify that MIG manager configured the GPUs:
+
+   .. code-block:: console
+
+      $ oc describe node | grep nvidia.com/mig.config
+
+   *Example Output*
+
+   .. code-block:: output
+
+      nvidia.com/mig.config=all-balanced
+      nvidia.com/mig.config.state=success
+
+#. Confirm that the GPU resources are available:
+
+   .. code-block:: console
+
+      $ oc describe node | egrep "Name:|Roles:|Capacity|nvidia.com/gpu:|nvidia.com/mig-.* |Allocatable:|Requests +Limits"
+
+   The following sample output shows the expected 32 GPU resources:
+
+   * 16 x 1g.10gb
+   * 8 x 1g.10gb
+   * 8 x 3g.40gb
+
+   .. code-block:: output
+      :emphasize-lines: 10-12
+
+      Name:               myworker.redhat.com
+      Roles:              control-plane,master,worker
+      Capacity:
+      nvidia.com/gpu:          0
+      nvidia.com/mig-1g.10gb:  16
+      nvidia.com/mig-2g.20gb:  8
+      nvidia.com/mig-3g.40gb:  8
+      Allocatable:
+      nvidia.com/gpu:          0
+      nvidia.com/mig-1g.10gb:  16
+      nvidia.com/mig-2g.20gb:  8
+      nvidia.com/mig-3g.40gb:  8
+      Resource                Requests      Limits
+      nvidia.com/mig-1g.10gb  0             0
+      nvidia.com/mig-2g.20gb  0             0
+      nvidia.com/mig-3g.40gb  0             0 
+
+
+#. Optional: Start a pod to run the ``nvidia-smi`` command and display the GPU resources.
+
+   #. Start the pod:
+
+      .. code-block:: console
+
+         $ cat <<EOF | oc apply -f -
+         apiVersion: v1
+         kind: Pod
+         metadata:
+           name: command-nvidia-smi
+         spec:
+           restartPolicy: Never
+           containers:
+           - name: cuda-container
+             image: nvcr.io/nvidia/cuda:12.1.0-base-ubi8
+             command: ["/bin/sh","-c"]
+             args: ["nvidia-smi"]
+         EOF
+
+   #. Confirm the pod ran successfully:
+
+      .. code-block:: console
+
+         $ oc get pods
+
+      *Example Output*
+
+      .. code-block:: output
+
+         NAME                 READY   STATUS      RESTARTS   AGE
+         command-nvidia-smi   0/1     Completed   0          3m34s
+
+   #. Confirm that the ``nvidia-smi`` output includes 32 MIG devices:
+
+      .. code-block:: console
+
+         $ oc logs command-nvidia-smi
+
+      *Example Output*
+      
+      .. code-block:: output
+
+         +---------------------------------------------------------------------------------------+
+         | NVIDIA-SMI 535.104.12             Driver Version: 535.104.12   CUDA Version: 12.2     |
+         |-----------------------------------------+----------------------+----------------------+
+         | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+         | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+         |                                         |                      |               MIG M. |
+         |=========================================+======================+======================|
+         |   0  NVIDIA H100 80GB HBM3          On  | 00000000:1B:00.0 Off |                   On |
+         | N/A   25C    P0              71W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   1  NVIDIA H100 80GB HBM3          On  | 00000000:43:00.0 Off |                   On |
+         | N/A   26C    P0              70W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   2  NVIDIA H100 80GB HBM3          On  | 00000000:52:00.0 Off |                   On |
+         | N/A   31C    P0              72W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   3  NVIDIA H100 80GB HBM3          On  | 00000000:61:00.0 Off |                   On |
+         | N/A   29C    P0              71W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   4  NVIDIA H100 80GB HBM3          On  | 00000000:9D:00.0 Off |                   On |
+         | N/A   26C    P0              71W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   5  NVIDIA H100 80GB HBM3          On  | 00000000:C3:00.0 Off |                   On |
+         | N/A   25C    P0              70W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   6  NVIDIA H100 80GB HBM3          On  | 00000000:D1:00.0 Off |                   On |
+         | N/A   29C    P0              73W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   7  NVIDIA H100 80GB HBM3          On  | 00000000:DF:00.0 Off |                   On |
+         | N/A   31C    P0              72W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+      
+         +---------------------------------------------------------------------------------------+
+         | MIG devices:                                                                          |
+         +------------------+--------------------------------+-----------+-----------------------+
+         | GPU  GI  CI  MIG |                   Memory-Usage |        Vol|      Shared           |
+         |      ID  ID  Dev |                     BAR1-Usage | SM     Unc| CE ENC DEC OFA JPG    |
+         |                  |                                |        ECC|                       |
+         |==================+================================+===========+=======================|
+         |  0    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  0    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  0    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  0   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4    5   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4   13   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4   14   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5    5   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5   13   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5   14   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |
+         |                  |               0MiB / 32767MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
+         |                  |               0MiB / 16383MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+      
+         +---------------------------------------------------------------------------------------+
+         | Processes:                                                                            |
+         |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+         |        ID   ID                                                             Usage      |
+         |=======================================================================================|
+         |  No running processes found                                                           |
+         +---------------------------------------------------------------------------------------+
+
+   #. Delete the sample pod:
+
+      .. code-block:: console
+
+         $ oc delete pod command-nvidia-smi
+
+      *Example Output*
+
+      .. code-block:: output
+
+         pod "command-nvidia-smi" deleted
+
+****************************
+Example: Single MIG strategy
+****************************
+
+This example shows how to configure a ``single`` strategy with the ``all-3g.40gb`` configuration on one NVIDIA DGX H100 host with 8 x H100 80GB GPUs.
+The DGX H100 host runs a single node installation of OpenShift.
+
+For information about the initial default MIG configuration and viewing it, refer to the beginning of
+:ref:`Example: Mixed MIG strategy`.
+
+#. Specify the host name, strategy, and configuration label in environment variables:
+
+   .. code-block:: console
+
+      $ NODE_NAME=myworker.redhat.com
+      $ STRATEGY=single
+      $ MIG_CONFIGURATION=all-3g.40gb
+
+#. Apply the strategy:
+
+   .. code-block:: console
+
+      $ oc patch clusterpolicy/gpu-cluster-policy --type='json' \
+          -p='[{"op": "replace", "path": "/spec/mig/strategy", "value": '$STRATEGY'}]'
+
+#. Label the node with the configuration label:
+
+   .. code-block:: console
+
+      $ oc label node $NODE_NAME nvidia.com/mig.config=$MIG_CONFIGURATION --overwrite
+
+   MIG manager applies a ``mig.config.state`` label to the GPU and then terminates all the GPU pods
+   in preparation to enable MIG mode and configure the GPU into the specified configuration.
+
+#. Confirm that the GPU resources are available:
+
+   .. code-block:: console
+
+      $ oc describe node | egrep "Name:|Roles:|Capacity|nvidia.com/gpu:|nvidia.com/mig-.* |Allocatable:|Requests +Limits"
+
+   The following sample output shows the expected 16 GPUs:
+
+   .. code-block:: output
+      :emphasize-lines: 8,9
+
+      Name:               myworker.redhat.com
+      Roles:              control-plane,master,worker
+      Capacity:
+      nvidia.com/gpu:          16
+      nvidia.com/mig-1g.10gb:  0
+      nvidia.com/mig-2g.20gb:  0
+      nvidia.com/mig-3g.40gb:  0
+      Allocatable:
+      nvidia.com/gpu:          16
+      nvidia.com/mig-1g.10gb:  0
+      nvidia.com/mig-2g.20gb:  0
+      nvidia.com/mig-3g.40gb:  0
+      Resource                Requests      Limits
+      nvidia.com/mig-1g.10gb  0             0
+      nvidia.com/mig-2g.20gb  0             0
+      nvidia.com/mig-3g.40gb  0             0
+
+#. Optional: Start a pod to run the ``nvidia-smi`` command and display the GPU resources.
+
+   #. Start the pod:
+
+      .. code-block:: console
+
+         $ cat <<EOF | oc apply -f -
+         apiVersion: v1
+         kind: Pod
+         metadata:
+           name: command-nvidia-smi
+         spec:
+           restartPolicy: Never
+           containers:
+           - name: cuda-container
+             image: nvcr.io/nvidia/cuda:12.1.0-base-ubi8
+             command: ["/bin/sh","-c"]
+             args: ["nvidia-smi"]
+         EOF
+
+   #. Confirm the pod ran successfully:
+
+      .. code-block:: console
+
+         $ oc get pods
+
+      *Example Output*
+
+      .. code-block:: output
+
+         NAME                 READY   STATUS      RESTARTS   AGE
+         command-nvidia-smi   0/1     Completed   0          3m34s
+
+   #. Confirm that the ``nvidia-smi`` output includes 16 MIG devices:
+
+      .. code-block:: console
+
+         $ oc logs command-nvidia-smi
+
+      *Example Output*
+      
+      .. code-block:: output
+         :emphasize-lines: 42,47-94
+
+         +---------------------------------------------------------------------------------------+
+         | NVIDIA-SMI 535.104.12             Driver Version: 535.104.12   CUDA Version: 12.2     |
+         |-----------------------------------------+----------------------+----------------------+
+         | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+         | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+         |                                         |                      |               MIG M. |
+         |=========================================+======================+======================|
+         |   0  NVIDIA H100 80GB HBM3          On  | 00000000:1B:00.0 Off |                   On |
+         | N/A   25C    P0              75W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   1  NVIDIA H100 80GB HBM3          On  | 00000000:43:00.0 Off |                   On |
+         | N/A   27C    P0              74W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   2  NVIDIA H100 80GB HBM3          On  | 00000000:52:00.0 Off |                   On |
+         | N/A   32C    P0              75W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   3  NVIDIA H100 80GB HBM3          On  | 00000000:61:00.0 Off |                   On |
+         | N/A   30C    P0              74W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   4  NVIDIA H100 80GB HBM3          On  | 00000000:9D:00.0 Off |                   On |
+         | N/A   27C    P0              75W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   5  NVIDIA H100 80GB HBM3          On  | 00000000:C3:00.0 Off |                   On |
+         | N/A   25C    P0              73W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   6  NVIDIA H100 80GB HBM3          On  | 00000000:D1:00.0 Off |                   On |
+         | N/A   30C    P0              77W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+         |   7  NVIDIA H100 80GB HBM3          On  | 00000000:DF:00.0 Off |                   On |
+         | N/A   31C    P0              76W / 700W |                  N/A |     N/A      Default |
+         |                                         |                      |              Enabled |
+         +-----------------------------------------+----------------------+----------------------+
+      
+         +---------------------------------------------------------------------------------------+
+         | MIG devices:                                                                          |
+         +------------------+--------------------------------+-----------+-----------------------+
+         | GPU  GI  CI  MIG |                   Memory-Usage |        Vol|      Shared           |
+         |      ID  ID  Dev |                     BAR1-Usage | SM     Unc| CE ENC DEC OFA JPG    |
+         |                  |                                |        ECC|                       |
+         |==================+================================+===========+=======================|
+         |  0    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  0    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  1    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  2    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  3    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  4    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  5    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  6    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+         |  7    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
+         |                  |               0MiB / 65535MiB  |           |                       |
+         +------------------+--------------------------------+-----------+-----------------------+
+      
+         +---------------------------------------------------------------------------------------+
+         | Processes:                                                                            |
+         |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+         |        ID   ID                                                             Usage      |
+         |=======================================================================================|
+         |  No running processes found                                                           |
+         +---------------------------------------------------------------------------------------+
+
+   #. Delete the sample pod:
+
+      .. code-block:: console
+
+         $ oc delete pod command-nvidia-smi
+
+      *Example Output*
+
+      .. code-block:: output
+
+         pod "command-nvidia-smi" deleted
 
 *************************************************************
 Running a sample GPU application
