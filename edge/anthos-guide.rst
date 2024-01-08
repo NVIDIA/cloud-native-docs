@@ -702,9 +702,16 @@ If vSphere presents you with **Power On Recommendations** then select **OK**.
 
 The following steps should be performed from your Admin Workstation or other Linux system which has the ability to use ``kubectl`` to work with the cluster.
 
-.. Shared content for setting up the Operator
+Install the NVIDIA GPU Operator:
 
-.. include:: ../gpu-operator/install-gpu-operator.rst
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+     -n gpu-operator --create-namespace \
+     nvidia/gpu-operator
+
+Refer to :external+gpuop:doc:`getting-started`
+in the NVIDIA GPU Operator documentation for installation options.
 
 Running GPU Applications
 ==========================

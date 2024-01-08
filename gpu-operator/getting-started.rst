@@ -1,45 +1,51 @@
-.. Date: July 30 2020
-.. Author: pramarao
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings (h1/h2/h3/h4/h5) are # * = -
+
+.. _nvaie-tanzu: https://docs.nvidia.com/ai-enterprise/deployment-guide-vmware/0.1.0/index.html
+.. |nvaie-tanzu| replace:: *NVIDIA AI Enterprise VMware vSphere Deployment Guide*
+
+
+.. _install-gpu-operator:
 .. _operator-install-guide:
 
-*****************************************
-Getting Started
-*****************************************
+==================================
+Installing the NVIDIA GPU Operator
+==================================
 
-This document provides instructions, including pre-requisites for getting started with the NVIDIA GPU Operator.
-
-----
-
-Red Hat OpenShift 4
-====================
-
-For installing the GPU Operator on clusters with Red Hat OpenShift using RHCOS worker nodes,
-follow the :ref:`user guide <openshift-introduction>`.
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
 
 
-----
-
-VMware vSphere with Tanzu
-=========================
-
-For installing the GPU Operator on VMware vSphere with Tanzu leveraging NVIDIA AI Enterprise,
-follow the :ref:`NVIDIA AI Enterprise document <install-gpu-operator-nvaie>`.
-
-----
-
-Google Cloud Anthos
-====================
-
-For getting started with NVIDIA GPUs for Google Cloud Anthos, follow the getting started
-`document <https://docs.nvidia.com/datacenter/cloud-native/kubernetes/anthos-guide.html>`_.
-
-----
-
+*************
 Prerequisites
-=============
+*************
 
-Before installing the GPU Operator, you should ensure that the Kubernetes cluster meets some prerequisites.
+#. You have the ``kubectl`` and ``helm`` CLIs available on a client machine.
+
+   You can run the following commands to install the Helm CLI:
+
+   .. code-block:: console
+
+      $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+          && chmod 700 get_helm.sh \
+          && ./get_helm.sh
 
 #. All worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
    Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
@@ -47,8 +53,7 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-#. Nodes must be configured with a container engine such as Docker CE/EE, ``cri-o``, or ``containerd``. For **docker**, follow the official install
-   `instructions <https://docs.docker.com/engine/install/>`_.
+#. Nodes must be configured with a container engine such CRI-O or containerd.
 
 #. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
    label the namespace for the Operator to set the enforcement policy to privileged:
@@ -70,37 +75,443 @@ Before installing the GPU Operator, you should ensure that the Kubernetes cluste
 
    If the command output is ``true``, then NFD is already running in the cluster.
 
-#. For monitoring in Kubernetes 1.13 and 1.14, enable the kubelet ``KubeletPodResources`` `feature <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_
-   gate. From Kubernetes 1.15 onwards, its enabled by default.
+*********
+Procedure
+*********
 
-.. note::
+#. Add the NVIDIA Helm repository:
 
-   To enable the ``KubeletPodResources`` feature gate, run the following command: ``echo -e "KUBELET_EXTRA_ARGS=--feature-gates=KubeletPodResources=true" | sudo tee /etc/default/kubelet``
+   .. code-block:: console
 
-Before installing the GPU Operator on NVIDIA vGPU, ensure the following.
+      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+          && helm repo update
 
-#. The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines. Please refer to `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/12.0/index.html>`_ for details.
-#. A NVIDIA vGPU License Server is installed and reachable from all Kubernetes worker node virtual machines.
-#. A private registry is available to upload the NVIDIA vGPU specific driver container image.
-#. Each Kubernetes worker node in the cluster has access to the private registry. Private registry access is usually managed through imagePullSecrets. See the Kubernetes Documentation for more information. The user is required to provide these secrets to the NVIDIA GPU-Operator in the driver section of the values.yaml file.
-#. Git and Docker/Podman are required to build the vGPU driver image from source repository and push to local registry.
+#. Install the GPU Operator.
 
-.. note::
+   - Install the Operator with the default configuration:
 
-    Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
+     .. code-block:: console
+
+        $ helm install --wait --generate-name \
+            -n gpu-operator --create-namespace \
+            nvidia/gpu-operator
+
+   - Install the Operator and specify configuration options:
+
+     .. code-block:: console
+
+        $ helm install --wait --generate-name \
+            -n gpu-operator --create-namespace \
+            nvidia/gpu-operator \
+            --set <option-name>=<option-value>
+
+     Refer to the :ref:`gpu-operator-helm-chart-options`
+     and :ref:`common deployment scenarios` for more information.
 
 
-The rest of this document includes instructions for installing the GPU Operator on supported Linux distributions.
+.. _gpu-operator-helm-chart-options:
 
-.. Shared content for the GPU Operator install
+***************************
+Chart Customization Options
+***************************
 
-.. include:: install-gpu-operator.rst
+The following options are available when using the Helm chart.
+These options can be used with ``--set`` when installing with Helm.
 
-Running Sample GPU Applications
+.. list-table::
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+     - Default
+
+   * - ``ccManager.enabled``
+     - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
+       Refer to :doc:`gpu-operator-confidential-containers` for more information.
+     - ``false``
+
+   * - ``cdi.enabled``
+     - When set to ``true``, the Operator installs two additional runtime classes,
+       nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
+       for making GPUs accessible to containers.
+       Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
+       are exposed to containerized environments.
+
+       Pods can specify ``spec.runtimeClassName`` as ``nvidia-cdi`` to use the functionality or
+       specify ``nvidia-legacy`` to prevent using CDI to perform device injection.
+     - ``false``
+
+   * - ``cdi.default``
+     - When set to ``true``, the container runtime uses CDI to perform device injection by default.
+     - ``false``
+
+   * - ``daemonsets.annotations``
+     - Map of custom annotations to add to all GPU Operator managed pods.
+     - ``{}``
+
+   * - ``daemonsets.labels``
+     - Map of custom labels to add to all GPU Operator managed pods.
+     - ``{}``
+
+   * - ``driver.enabled``
+     - By default, the Operator deploys NVIDIA drivers as a container on the system.
+       Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
+     - ``true``
+
+   * - ``driver.repository``
+     - The images are downloaded from NGC. Specify another image repository when using
+       custom driver images.
+     - ``nvcr.io/nvidia``
+
+   * - ``driver.rdma.enabled``
+     - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module.
+     - ``false``
+
+   * - ``driver.rdma.useHostMofed``
+     - Indicate if MOFED is directly pre-installed on the host. This is used to build and load ``nvidia-peermem`` kernel module.
+     - ``false``
+
+   * - ``driver.startupProbe``
+     - By default, the driver container has an initial delay of ``60s`` before starting liveness probes.
+       The probe runs the ``nvidia-smi`` command with a timeout duration of ``60s``.
+       You can increase the ``timeoutSeconds`` duration if the ``nvidia-smi`` command
+       runs slowly in your cluster.
+     - ``60s``
+
+   * - ``driver.useOpenKernelModules``
+     - When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
+     - ``false``
+
+   * - ``driver.usePrecompiled``
+     - When set to ``true``, the Operator attempts to deploy driver containers that have
+       precompiled kernel drivers.
+       This option is available as a technology preview feature for select operating systems.
+       Refer to the :doc:`precompiled driver containers <precompiled-drivers>` page for the supported operating systems.
+     - ``false``
+
+   * - ``driver.version``
+     - Version of the NVIDIA datacenter driver supported by the Operator.
+
+       If you set ``driver.usePrecompiled`` to ``true``, then set this field to
+       a driver branch, such as ``525``.
+     - Depends on the version of the Operator. See the Component Matrix
+       for more information on supported drivers.
+
+   * - ``kataManager.enabled``
+     - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
+       Refer to :doc:`gpu-operator-kata` for more information.
+     - ``false``
+
+   * - ``mig.strategy``
+     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
+       are either ``mixed`` or ``single``.
+     - ``single``
+
+   * - ``migManager.enabled``
+     - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
+       default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
+     - ``true``
+
+   * - ``nfd.enabled``
+     - Deploys Node Feature Discovery plugin as a daemonset.
+       Set this variable to ``false`` if NFD is already running in the cluster.
+     - ``true``
+
+   * - ``nfd.nodefeaturerules``
+     - Installs node feature rules that are related to confidential computing.
+       NFD uses the rules to detect security features in CPUs and NVIDIA GPUs.
+       Set this variable to ``true`` when you configure the Operator for Confidential Containers.
+     - ``false``
+
+   * - ``operator.labels``
+     - Map of custom labels that will be added to all GPU Operator managed pods.
+     - ``{}``
+
+   * - ``psp.enabled``
+     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
+     - ``false``
+
+   * - ``toolkit.enabled``
+     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
+       as a container on the system. Set this value to ``false`` when using the Operator on systems
+       with pre-installed NVIDIA runtimes.
+     - ``true``
+
+***************************
+Common Deployment Scenarios
+***************************
+
+The following common deployment scenarios and sample commands apply best to
+bare metal hosts or virtual machines with GPU passthrough.
+
+Specifying the Operator Namespace
 =================================
 
+Both the Operator and operands are installed in the same namespace.
+The namespace is configurable and is specified during installation.
+For example, to install the GPU Operator in the ``nvidia-gpu-operator`` namespace:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n nvidia-gpu-operator --create-namespace \
+        nvidia/gpu-operator
+
+If you do not specify a namespace during installation, all GPU Operator components are installed in the ``default`` namespace.
+
+Preventing Installation of Operands on Some Nodes
+=================================================
+
+By default, the GPU Operator operands are deployed on all GPU worker nodes in the cluster.
+GPU worker nodes are identified by the presence of the label ``feature.node.kubernetes.io/pci-10de.present=true``.
+The value ``0x10de`` is the PCI vendor ID that is assigned to NVIDIA.
+
+To disable operands from getting deployed on a GPU worker node, label the node with ``nvidia.com/gpu.deploy.operands=false``.
+
+.. code-block:: console
+
+   $ kubectl label nodes $NODE nvidia.com/gpu.deploy.operands=false
+
+
+Installation on Red Hat Enterprise Linux
+========================================
+
+In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set toolkit-version=1.13.4-ubi8
+
+Replace the ``1.13.4`` value in the preceding command with the version that is supported
+with the NVIDIA GPU Operator.
+Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
+
+When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, network restricted environments are not supported.
+
+
+Pre-Installed NVIDIA GPU Drivers
+================================
+
+In this scenario, the NVIDIA GPU driver is already installed on the worker nodes that have GPUs:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+        nvidia/gpu-operator \
+        --set driver.enabled=false
+
+
+.. _preinstalled-drivers-and-toolkit:
+
+Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit
+=============================================================
+
+In this scenario, the NVIDIA GPU driver and the NVIDIA Container Toolkit are already installed on
+the worker nodes that have GPUs.
+
+.. tip::
+
+   This scenario applies to NVIDIA DGX Systems that run NVIDIA Base OS.
+
+Before installing the Operator, ensure that the default runtime is set to ``nvidia``.
+Refer to :external+ctk:ref:`configuration` in the NVIDIA Container Toolkit documentation for more information.
+
+Install the Operator with the following options:
+
+.. code-block:: console
+
+   $ helm install --wait --generate-name \
+        -n gpu-operator --create-namespace \
+         nvidia/gpu-operator \
+         --set driver.enabled=false \
+         --set toolkit.enabled=false
+
+
+Pre-Installed NVIDIA Container Toolkit (but no drivers)
+=======================================================
+
+In this scenario, the NVIDIA Container Toolkit is already installed on the worker nodes that have GPUs.
+
+1. Configure toolkit to use the ``root`` directory of the driver installation as ``/run/nvidia/driver``, because this is the path mounted by driver container.
+
+   .. code-block:: console
+
+      $ sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
+
+1. Install the Operator with the following options (which will provision a driver):
+
+   .. code-block:: console
+
+      $ helm install --wait --generate-name \
+          -n gpu-operator --create-namespace \
+          nvidia/gpu-operator \
+          --set toolkit.enabled=false
+
+Running a Custom Driver Image
+=============================
+
+If you want to use custom driver container images, such as version 465.27, then
+you can build a custom driver container image. Follow these steps:
+
+- Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
+  reference, the driver container Dockerfiles are available on the Git repository at https://gitlab.com/nvidia/container-images/driver.
+- Build the container using the appropriate Dockerfile. For example:
+
+  .. code-block:: console
+
+    $ docker build --pull -t \
+        --build-arg DRIVER_VERSION=455.28 \
+        nvidia/driver:455.28-ubuntu20.04 \
+        --file Dockerfile .
+
+  Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema.
+- Specify the new driver image and repository by overriding the defaults in
+  the Helm install command. For example:
+
+  .. code-block:: console
+
+     $ helm install --wait --generate-name \
+          -n gpu-operator --create-namespace \
+          nvidia/gpu-operator \
+          --set driver.repository=docker.io/nvidia \
+          --set driver.version="465.27"
+
+These instructions are provided for reference and evaluation purposes.
+Not using the standard releases of the GPU Operator from NVIDIA would mean limited
+support for such custom configurations.
+
+***********************************************
+Specifying Configuration Options for containerd
+***********************************************
+
+When you use containerd as the container runtime, the following configuration
+options are used with the container-toolkit deployed with GPU Operator:
+
+.. code-block:: yaml
+
+   toolkit:
+      env:
+      - name: CONTAINERD_CONFIG
+        value: /etc/containerd/config.toml
+      - name: CONTAINERD_SOCKET
+        value: /run/containerd/containerd.sock
+      - name: CONTAINERD_RUNTIME_CLASS
+        value: nvidia
+      - name: CONTAINERD_SET_AS_DEFAULT
+        value: true
+
+These options are defined as follows:
+
+CONTAINERD_CONFIG
+  The path on the host to the ``containerd`` config
+  you would like to have updated with support for the ``nvidia-container-runtime``.
+  By default this will point to ``/etc/containerd/config.toml`` (the default
+  location for ``containerd``). It should be customized if your ``containerd``
+  installation is not in the default location.
+
+CONTAINERD_SOCKET
+  The path on the host to the socket file used to
+  communicate with ``containerd``. The operator will use this to send a
+  ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
+  default this will point to ``/run/containerd/containerd.sock``
+  (the default location for ``containerd``). It should be customized if
+  your ``containerd`` installation is not in the default location.
+
+CONTAINERD_RUNTIME_CLASS
+  The name of the
+  `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_
+  you would like to associate with the ``nvidia-container-runtime``.
+  Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS
+  will always run with the ``nvidia-container-runtime``. The default
+  CONTAINERD_RUNTIME_CLASS is ``nvidia``.
+
+CONTAINERD_SET_AS_DEFAULT
+  A flag indicating whether you want to set
+  ``nvidia-container-runtime`` as the default runtime used to launch all
+  containers. When set to false, only containers in pods with a ``runtimeClassName``
+  equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
+  The default value is ``true``.
+
+Rancher Kubernetes Engine 2
+===========================
+
+For Rancher Kubernetes Engine 2 (RKE2), set the following in the ``ClusterPolicy``.
+
+.. code-block:: yaml
+
+   toolkit:
+      env:
+      - name: CONTAINERD_CONFIG
+        value: /var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl
+      - name: CONTAINERD_SOCKET
+        value: /run/k3s/containerd/containerd.sock
+      - name: CONTAINERD_RUNTIME_CLASS
+        value: nvidia
+      - name: CONTAINERD_SET_AS_DEFAULT
+        value: "true"
+
+These options can be passed to GPU Operator during install time as below.
+
+.. code-block:: console
+
+  helm install gpu-operator -n gpu-operator --create-namespace \
+    nvidia/gpu-operator $HELM_OPTIONS \
+      --set toolkit.env[0].name=CONTAINERD_CONFIG \
+      --set toolkit.env[0].value=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl \
+      --set toolkit.env[1].name=CONTAINERD_SOCKET \
+      --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
+      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
+      --set toolkit.env[2].value=nvidia \
+      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
+      --set-string toolkit.env[3].value=true
+
+MicroK8s
+========
+
+For MicroK8s, set the following in the ``ClusterPolicy``.
+
+.. code-block:: yaml
+
+   toolkit:
+      env:
+      - name: CONTAINERD_CONFIG
+        value: /var/snap/microk8s/current/args/containerd-template.toml
+      - name: CONTAINERD_SOCKET
+        value: /var/snap/microk8s/common/run/containerd.sock
+      - name: CONTAINERD_RUNTIME_CLASS
+        value: nvidia
+      - name: CONTAINERD_SET_AS_DEFAULT
+        value: "true"
+
+These options can be passed to GPU Operator during install time as below.
+
+.. code-block:: console
+
+  helm install gpu-operator -n gpu-operator --create-namespace \
+    nvidia/gpu-operator $HELM_OPTIONS \
+      --set toolkit.env[0].name=CONTAINERD_CONFIG \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
+      --set toolkit.env[1].name=CONTAINERD_SOCKET \
+      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
+      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
+      --set toolkit.env[2].value=nvidia \
+      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
+      --set-string toolkit.env[3].value=true
+
+.. _running sample gpu applications:
+
+*********************************************
+Verification: Running Sample GPU Applications
+*********************************************
+
 CUDA VectorAdd
---------------
+==============
 
 In the first example, let's run a simple CUDA sample, which adds two vectors together:
 
@@ -161,7 +572,7 @@ In the first example, let's run a simple CUDA sample, which adds two vectors tog
 
 
 Jupyter Notebook
-------------------
+================
 
 You can perform the following steps to deploy Jupyter Notebook in your cluster:
 
@@ -229,346 +640,24 @@ You can perform the following steps to deploy Jupyter Notebook in your cluster:
 The notebook should now be accessible from your browser at this URL:
 `http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9 <http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9>`_.
 
-Demo
-======
-
-Check out the demo below where we scale GPU nodes in a K8s cluster using the GPU Operator:
-
-.. image:: graphics/gpu-operator-demo.gif
-   :width: 1440
-
-GPU Telemetry
-==============
-
-To gather GPU telemetry in Kubernetes, the GPU Operator deploys the ``dcgm-exporter``. ``dcgm-exporter``, based
-on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes GPU metrics for Prometheus and can be visualized using Grafana. ``dcgm-exporter`` is architected to take advantage of
-``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
-scraped by Prometheus.
-
-Custom Metrics Config
----------------------
-
-With GPU Operator users can customize the metrics to be collected by ``dcgm-exporter``. Below are the steps for this
-
- 1. Fetch the metrics file and save as dcgm-metrics.csv
-
-   .. code-block:: console
-
-      $ curl https://raw.githubusercontent.com/NVIDIA/dcgm-exporter/main/etc/dcp-metrics-included.csv > dcgm-metrics.csv
-
- 2. Edit the metrics file as required to add/remove any metrics to be collected.
-
- 3. Create a Namespace ``gpu-operator`` if one is not already present.
-
-  .. code-block:: console
-
-     $ kubectl create namespace gpu-operator
-
- 4. Create a ConfigMap using the file edited above.
-
-   .. code-block:: console
-
-      $ kubectl create configmap metrics-config -n gpu-operator --from-file=dcgm-metrics.csv
-
- 5. Install GPU Operator with additional options ``--set dcgmExporter.config.name=metrics-config`` and
-    ``--set dcgmExporter.env[0].name=DCGM_EXPORTER_COLLECTORS --set dcgmExporter.env[0].value=/etc/dcgm-exporter/dcgm-metrics.csv``
-
-
-Collecting Metrics on NVIDIA DGX A100 with DGX OS
-----------------------------------------------------
-
-NVIDIA DGX systems running with DGX OS bundles drivers, DCGM, etc. in the system image and have `nv-hostengine` running already.
-To avoid any compatibility issues, it is recommended to have `dcgm-exporter` connect to the existing `nv-hostengine` daemon to gather/publish
-GPU telemetry data.
-
-.. warning::
-
-   The `dcgm-exporter` container image includes a DCGM client library (``libdcgm.so``) to communicate with
-   `nv-hostengine`. In this deployment scenario we have `dcgm-exporter` (or rather ``libdcgm.so``) connect
-   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange
-   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library
-   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which `dcgm-exporter` is based is
-   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by
-   comparing the version tags of the `dcgm-exporter` image and by running ``nv-hostengine --version`` on the host.
-
-In this scenario, we need to set ``DCGM_REMOTE_HOSTENGINE_INFO`` to ``localhost:5555`` for `dcgm-exporter` to connect to `nv-hostengine` running on the host.
-
-.. code-block:: console
-
-   $ kubectl patch clusterpolicy/cluster-policy --type='json' -p='[{"op": "add", "path": "/spec/dcgmExporter/env/-", "value":{"name":"DCGM_REMOTE_HOSTENGINE_INFO", "value":"localhost:5555"}}]'
-
-Verify `dcgm-exporter` pod is running after this change
-
-.. code-block:: console
-
-   $ kubectl get pods -l app=nvidia-dcgm-exporter --all-namespaces
-
-Refer to
-`Setting up Prometheus <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/kube-prometheus.html>`__
-to complete the installation.
-
-.. _operator-upgrades:
-
-Upgrading the GPU Operator
-==========================
-
-Prerequisites
--------------
-
-- If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
-  label the namespace for the Operator to set the enforcement policy to privileged:
-
-  .. code-block:: console
-
-     $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
-
-
-Using Helm
------------
-
-The GPU Operator supports dynamic updates to existing resources.
-This ability enables the GPU Operator to ensure settings from the cluster policy specification are always applied and current.
-
-Because Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ automatic upgrade of existing CRDs,
-you can upgrade the GPU Operator chart manually or by enabling a Helm hook.
-
-Option 1 - manually upgrade CRD
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-   .. mermaid::
-
-      flowchart LR
-
-         A["Update CRD from
-           the latest chart"]
-         -->
-         B["Upgrade by
-           using Helm"]
-
-With this workflow, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from ``values.yaml``.
-
-#. Specify the Operator release tag in an environment variable:
-
-   .. code-block:: console
-
-      $ export RELEASE_TAG=v23.9.0
-
-#. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
-
-   .. code-block:: console
-
-      $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
-
-      $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-      customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured
-      customresourcedefinition.apiextensions.k8s.io/nvidiadrivers.nvidia.com created
-
-#. Apply the custom resource definition for Node Feature Discovery:
-
-   .. code-block:: console
-
-      $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-      customresourcedefinition.apiextensions.k8s.io/nodefeaturerules.nfd.k8s-sigs.io configured
-
-#. Update the information about the Operator chart:
-
-   .. code-block:: console
-
-      $ helm repo update nvidia
-
-   *Example Output*
-
-   .. code-block:: output
-
-      Hang tight while we grab the latest from your chart repositories...
-      ...Successfully got an update from the "nvidia" chart repository
-      Update Complete. ⎈Happy Helming!⎈
-
-#. Fetch the values from the chart:
-
-   .. code-block:: console
-
-      $ helm show values nvidia/gpu-operator --version=$RELEASE_TAG > values-$RELEASE_TAG.yaml
-
-#. Update the values file as needed.
-
-#. Upgrade the Operator:
-
-   .. code-block:: console
-
-      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-      Release "gpu-operator" has been upgraded. Happy Helming!
-      NAME: gpu-operator
-      LAST DEPLOYED: Thu Apr 20 15:05:52 2023
-      NAMESPACE: gpu-operator
-      STATUS: deployed
-      REVISION: 2
-      TEST SUITE: None
-
-
-Option 2 - auto upgrade CRD using Helm hook
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is utilized to automatically upgrade to latest CRD.
-A new parameter ``operator.upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
-This parameter needs to be set using ``--set operator.upgradeCRD=true`` option during upgrade command as below.
-
-#. Specify the Operator release tag in an environment variable:
-
-   .. code-block:: console
-
-      $ export RELEASE_TAG=v23.9.0
-
-#. Update the information about the Operator chart:
-
-   .. code-block:: console
-
-      $ helm repo update nvidia
-
-   *Example Output*
-
-   .. code-block:: output
-
-      Hang tight while we grab the latest from your chart repositories...
-      ...Successfully got an update from the "nvidia" chart repository
-      Update Complete. ⎈Happy Helming!⎈
-
-#. Fetch the values from the chart:
-
-   .. code-block:: console
-
-      $ helm show values nvidia/gpu-operator --version=$RELEASE_TAG > values-$RELEASE_TAG.yaml
-
-#. Update the values file as needed.
-
-#. Upgrade the Operator:
-
-   .. code-block:: console
-
-      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
-          --set operator.upgradeCRD=true --disable-openapi-validation -f values-$RELEASE_TAG.yaml
-
-   .. note::
-
-      * Option ``--disable-openapi-validation`` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
-        Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
-
-      * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-        In this case, chart needs to be deleted using ``--no-hooks`` option to avoid deletion to be hung on hook failures.
-
-Cluster Policy Updates
-^^^^^^^^^^^^^^^^^^^^^^^
-
-The GPU Operator also supports dynamic updates to the ``ClusterPolicy`` CustomResource using ``kubectl``:
-
-.. code-block:: console
-
-   $ kubectl edit clusterpolicy
-
-After the edits are complete, Kubernetes will automatically apply the updates to cluster.
-
-Additional Controls for Driver Upgrades
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
-Refer to :ref:`GPU Driver Upgrades` for more information.
-
-Using OLM in OpenShift
------------------------
-
-For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators:
-https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html
-
-
-Uninstall
-===========================
-
-Perform the following steps to uninstall the Operator.
-
-#. Optional: List and delete NVIDIA driver custom resources.
-
-   .. code-block:: console
-
-      $ kubectl get nvidiadrivers
-
-   *Example Output*
-
-   .. code-block:: output
-
-      NAME          STATUS   AGE
-      demo-gold     ready    2023-10-16T17:57:12Z
-      demo-silver   ready    2023-10-16T17:57:12Z
-
-   .. code-block:: console
-
-      $ kubectl delete nvidiadriver demo-gold
-      $ kubectl delete nvidiadriver demo-silver
-
-   .. code-block:: console
-
-      $ kubectl delete crd nvidiadrivers.nvidia.com
-
-#. Delete the Operator:
-
-   .. code-block:: console
-
-      $ helm delete -n gpu-operator $(helm list -n gpu-operator | grep gpu-operator | awk '{print $1}')
-
-#. Optional: List the pods in the Operator namespace to confirm the pods are deleted or in the process of deleting:
-
-   .. code-block:: console
-
-      $ kubectl get pods -n gpu-operator
-
-   *Example Output*
-
-   .. code-block:: output
-
-      No resources found.
-
-By default, Helm does not `support <https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations>`_ deletion of existing CRDs when you delete the chart.
-Thus the ``clusterpolicy`` CRD and ``nvidiadrivers`` CRD will still remain, by default.
-
-.. code-block:: console
-
-   $ kubectl get crds -A | grep -i clusterpolicies.nvidia.com
-
-To overcome this, a ``post-delete`` `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is used in the GPU Operator to perform the CRD cleanup. A new parameter ``operator.cleanupCRD``
-is added to enable this hook. This is disabled by default. This parameter needs to be enabled with ``--set operator.cleanupCRD=true`` during install or upgrade for automatic CRD cleanup to happen on chart deletion.
-
-Alternatively, delete the custom resource definition:
-
-.. code-block:: console
-
-   $ kubectl delete crd clusterpolicies.nvidia.com
-
-.. note::
-
-   * After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
-     Either reboot the node or unload them using the following command:
-
-     .. code-block:: console
-
-        $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
-
-   * Helm hooks used with the GPU Operator use the Operator image itself.
-     If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-     In this case, delete the chart and specify the ``--no-hooks`` argument to avoid hanging on hook failures.
+***********************************************************
+Installation on Commercially Supported Kubernetes Platforms
+***********************************************************
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Product
+     - Documentation
+
+   * - | Red Hat OpenShift 4
+       | using RHCOS worker nodes
+     - :external+ocp:doc:`index`
+
+   * - | VMware vSphere with Tanzu
+       | and NVIDIA AI Enterprise
+     - |nvaie-tanzu|_
+
+   * - Google Cloud Anthos
+     - :external+edge:doc:`anthos-guide`

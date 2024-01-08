@@ -19,9 +19,9 @@
 
 .. _install-gpu-operator-vgpu:
 
-##################
-NVIDIA vGPU
-##################
+#################
+Using NVIDIA vGPU
+#################
 
 .. contents::
    :depth: 2
@@ -33,17 +33,19 @@ NVIDIA vGPU
 About Installing the Operator and NVIDIA vGPU
 *********************************************
 
-This document provides an overview of the workflow to getting started with using the GPU Operator with NVIDIA vGPU.
+NVIDIA Virtual GPU (vGPU) enables multiple virtual machines (VMs) to have simultaneous,
+direct access to a single physical GPU, using the same NVIDIA graphics drivers that are
+deployed on non-virtualized operating systems.
 
-NVIDIA vGPU is only supported with the NVIDIA License System.
+The GPU Operator can install the 
+
 
 The installation steps assume ``gpu-operator`` as the default namespace for installing the NVIDIA GPU Operator.
 In case of Red Hat OpenShift Container Platform, the default namespace is ``nvidia-gpu-operator``.
 Change the namespace shown in the commands accordingly based on your cluster configuration.
 Also replace ``kubectl`` in the below commands with ``oc`` when running on RedHat OpenShift.
 
-The following list outlines the high-level steps to use the NVIDIA GPU Operator with NVIDIA vGPUs.
-
+NVIDIA vGPU is only supported with the NVIDIA License System.
 
 ****************
 Platform Support
@@ -58,11 +60,23 @@ For Red Hat OpenShift Virtualization, see :ref:`NVIDIA GPU Operator with OpenShi
 Prerequisites
 *************
 
+Before installing the GPU Operator on NVIDIA vGPU, ensure the following:
+
+* The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines.
+  Refer to `NVIDIA Virtual GPU Software Documentation <https://docs.nvidia.com/grid/>`_ for details.
 * You must have access to the NVIDIA Enterprise Application Hub at https://nvid.nvidia.com/dashboard/ and the NVIDIA Licensing Portal.
 * Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).
 * You must generate and download a client configuration token for your CLS instance or DLS instance.
   Refer to the |license-system-qs-guide-link|_ for information about generating a token.
-* You have access to a private container registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
+* You have access to a private registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
+* Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.
+* Each Kubernetes worker node in the cluster has access to the private registry.
+  Private registry access is usually managed through image pull secrets.
+  You specify the secrets to the NVIDIA GPU Operator when you install the Operator with Helm.
+
+  .. note::
+
+     Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
 
 .. _license-system-qs-guide-link: https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/
 .. |license-system-qs-guide-link| replace:: *NVIDIA License System Quick Start Guide*
@@ -179,7 +193,7 @@ Perform the following steps to build and push a container image that includes th
 
 #. Push the driver container image to your private registry.
 
-   A. Log in to your private registry:
+   #. Log in to your private registry:
 
       .. code-block:: console
 
@@ -187,7 +201,7 @@ Perform the following steps to build and push a container image that includes th
 
       Enter your password when prompted.
 
-   B. Push the driver container image to your private registry:
+   #. Push the driver container image to your private registry:
 
       .. code-block:: console
 
@@ -236,13 +250,13 @@ Configure the Cluster with the vGPU License Information and the Driver Container
 #. Create an image pull secret in the ``gpu-operator`` namespace with the registry secret and private registry.
 
 
-   A. Set an environment variable with the name of the secret:
+   #. Set an environment variable with the name of the secret:
 
       .. code-block:: console
 
          $ export REGISTRY_SECRET_NAME=registry-secret
 
-   B. Create the secret:
+   #. Create the secret:
 
       .. code-block:: console
 
@@ -253,10 +267,30 @@ Configure the Cluster with the vGPU License Information and the Driver Container
 
    You need to specify the secret name ``REGISTRY_SECRET_NAME`` when you install the GPU Operator with Helm.
 
+
+********************
+Install the Operator
+********************
+
+- Install the Operator:
+
+  .. code-block:: console
+
+     $ helm install --wait --generate-name \
+          -n gpu-operator --create-namespace \
+          nvidia/gpu-operator \
+          --set driver.repository=${PRIVATE_REGISTRY} \
+          --set driver.version=${VERSION} \
+          --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
+          --set driver.licensingConfig.configMapName=licensing-config
+
+The preceding command installs the Operator with the default configuration.
+Refer to :ref:`gpu-operator-helm-chart-options` for information about configuration options.
+
+
 **********
 Next Steps
 **********
 
-Refer to :ref:`install-gpu-operator` to install the GPU Operator on Kubernetes using a Helm chart.
-
-Refer to :ref:`install-nvidiagpu` to install the GPU Operator using NVIDIA vGPU on Red Hat OpenShift Container Platform.
+- :ref:`verify gpu operator install`
+- :ref:`running sample gpu applications`
