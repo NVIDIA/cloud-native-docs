@@ -142,8 +142,6 @@ name = "NVIDIA GPU Operator"
 version = "23.9.1"
 copyright_start = 2020
 sphinx_exclude_patterns = [
-  "troubleshootings.rst",
-  "install-gpu-operator.rst",
   "life-cycle-policy.rst",
 ]
 redirects = [

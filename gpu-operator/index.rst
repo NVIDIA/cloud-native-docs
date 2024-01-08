@@ -22,7 +22,9 @@
    :hidden:
 
    About the Operator <overview.rst>
-   getting-started.rst
+   Install <getting-started.rst>
+   Upgrade <upgrade.rst>
+   Uninstall <uninstall.rst>
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
    Troubleshooting <troubleshooting.rst>
@@ -30,36 +32,46 @@
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
-   gpu-operator-mig.rst
-   gpu-sharing.rst
-   gpu-operator-rdma.rst
-   gpu-operator-kubevirt.rst
+
+
 
 .. toctree::
-   :caption: Advanced configurations
+   :caption: Advanced Operator configurations
    :titlesonly:
    :hidden:
 
-   install-gpu-operator-proxy.rst
-
-   install-gpu-operator-air-gapped.rst
-
-   install-gpu-operator-outdated-kernels.rst
-
-   custom-driver-params.rst
-
+   Multi-Instance GPU <gpu-operator-mig.rst>
+   Time-Slicing GPUs <gpu-sharing.rst>
+   gpu-operator-rdma.rst
+   Outdated Kernels <install-gpu-operator-outdated-kernels.rst>
+   Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
-
    Container Device Interface Support <cdi.rst>
 
-   gpu-operator-kata.rst
+.. toctree::
+   :caption:  Sandboxed Workloads
+   :titlesonly:
+   :hidden:
 
-   gpu-operator-confidential-containers.rst
+   KubeVirt <gpu-operator-kubevirt.rst>
+   Kata Containers <gpu-operator-kata.rst>
+   Confidential Containers and Kata <gpu-operator-confidential-containers.rst>
 
-   GPU Operator with Amazon EKS <amazon-eks.rst>
+.. toctree::
+   :caption: Specialized Networks
+   :titlesonly:
+   :hidden:
 
-   GPU Operator with Azure AKS <microsoft-aks.rst>
+   HTTP Proxy <install-gpu-operator-proxy.rst>
+   Air-Gapped Network <install-gpu-operator-air-gapped.rst>
 
-   GPU Operator with Google GKE <google-gke.rst>
+.. toctree::
+   :caption: CSP configurations
+   :titlesonly:
+   :hidden:
+
+   Amazon EKS <amazon-eks.rst>
+   Azure AKS <microsoft-aks.rst>
+   Google GKE <google-gke.rst>
 
 .. include:: overview.rst
