@@ -237,6 +237,7 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
 After installation, you can run a sample workload.
 
+.. |project-name| replace:: Kata Containers
 
 .. include:: gpu-operator-confidential-containers.rst
    :start-after: start-install-coco-operator
@@ -251,13 +252,6 @@ Procedure
 =========
 
 Perform the following steps to install the Operator for use with Kata Containers:
-
-#. Label the nodes to run virtual machines in containers.
-   Label only the nodes that you want to run with Kata Containers.
-
-   .. code-block:: console
-
-      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
 #. Add and update the NVIDIA Helm repository:
 
