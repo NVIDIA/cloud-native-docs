@@ -258,6 +258,7 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
 After installation, you can change the confidential computing mode and run a sample workload.
 
+.. |project-name| replace:: Confidential Containers
 
 .. start-install-coco-operator
 
@@ -266,6 +267,13 @@ Install the Confidential Containers Operator
 ********************************************
 
 Perform the following steps to install and verify the Confidential Containers Operator:
+
+#. Label the nodes to run virtual machines in containers.
+   Label only the nodes that you want to run with |project-name|.
+
+   .. code-block:: console
+
+      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
 #. Set the Operator version in an environment variable:
 
@@ -338,10 +346,6 @@ Perform the following steps to install and verify the Confidential Containers Op
                nvidia.com/gpu.workload.config: "vm-passthrough"
          ...
 
-      .. tip::
-
-         Label the nodes with ``vm-passthrough`` when you install the NVIDIA GPU Operator.
-
    #. Apply the modified manifests:
 
       .. code-block:: console
@@ -385,14 +389,6 @@ Procedure
 =========
 
 Perform the following steps to install the Operator for use with confidential containers:
-
-#. Label the nodes to run virtual machines in containers.
-   Label only the nodes that you want to run with confidental containers.
-
-   .. code-block:: console
-
-      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
-
 
 #. Add and update the NVIDIA Helm repository:
 
