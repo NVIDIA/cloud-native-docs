@@ -98,8 +98,6 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      +-------------------------+---------------------------+
      | NVIDIA A2               | NVIDIA Ampere             |
      +-------------------------+---------------------------+
-     | NVIDIA RTX A4500        | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
 
      .. note::
 
@@ -131,6 +129,8 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |
     +-------------------------+------------------------+
     | NVIDIA RTX A5000        | NVIDIA Ampere          |
+    +-------------------------+------------------------+
+    | NVIDIA RTX A4500        | NVIDIA Ampere          |
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
