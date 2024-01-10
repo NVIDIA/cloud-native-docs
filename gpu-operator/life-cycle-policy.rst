@@ -93,7 +93,7 @@ GPU Operator Component Matrix
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
-Refer to :ref:`Upgrading the GPU Operator` for more information.
+Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
 .. list-table::
    :header-rows: 1
