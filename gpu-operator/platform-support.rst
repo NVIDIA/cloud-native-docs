@@ -55,53 +55,57 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
           - NVIDIA Grace Hopper
 
   .. tab-item:: A, H and L-series Products
+     :selected:
 
-    +-------------------------+---------------------------+
-    | Product                 | Architecture              |
-    +=========================+===========================+
-    | NVIDIA H800             | NVIDIA Hopper             |
-    +-------------------------+---------------------------+
-    | NVIDIA DGX H100         | NVIDIA Hopper and         |
-    |                         | NVSwitch                  |
-    +-------------------------+---------------------------+
-    | NVIDIA HGX H100         | NVIDIA Hopper and         |
-    |                         | NVSwitch                  |
-    +-------------------------+---------------------------+
-    | | NVIDIA H100,          | NVIDIA Hopper             |
-    | | NVIDIA H100 NVL       |                           |
-    +-------------------------+---------------------------+
-    | | NVIDIA L40,           | NVIDIA Ada                |
-    | | NVIDIA L40S           |                           |
-    +-------------------------+---------------------------+
-    | NVIDIA L4               | NVIDIA Ada                |
-    +-------------------------+---------------------------+
-    | NVIDIA DGX A100         | A100 and NVSwitch         |
-    +-------------------------+---------------------------+
-    | NVIDIA HGX A100         | A100 and NVSwitch         |
-    +-------------------------+---------------------------+
-    | NVIDIA A800             | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A100             | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A100X            | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A40              | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A30              | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A30X             | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A16              | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A10              | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
-    | NVIDIA A2               | NVIDIA Ampere             |
-    +-------------------------+---------------------------+
+     +-------------------------+---------------------------+
+     | Product                 | Architecture              |
+     +=========================+===========================+
+     | NVIDIA H800             | NVIDIA Hopper             |
+     +-------------------------+---------------------------+
+     | NVIDIA DGX H100         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
+     | NVIDIA HGX H100         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
+     | | NVIDIA H100,          | NVIDIA Hopper             |
+     | | NVIDIA H100 NVL       |                           |
+     +-------------------------+---------------------------+
+     | | NVIDIA L40,           | NVIDIA Ada                |
+     | | NVIDIA L40S           |                           |
+     +-------------------------+---------------------------+
+     | NVIDIA L4               | NVIDIA Ada                |
+     +-------------------------+---------------------------+
+     | NVIDIA DGX A100         | A100 and NVSwitch         |
+     +-------------------------+---------------------------+
+     | NVIDIA HGX A100         | A100 and NVSwitch         |
+     +-------------------------+---------------------------+
+     | NVIDIA A800             | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A100             | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A100X            | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A40              | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A30              | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A30X             | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A16              | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A10              | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA A2               | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
+     | NVIDIA RTX A4500        | NVIDIA Ampere             |
+     +-------------------------+---------------------------+
 
-    .. note::
+     .. note::
 
-      * Hopper (H100) GPU is only supported on x86 servers.
-      * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS. For installation instructions, see :ref:`here <preinstalled-drivers-and-toolkit>` for DGX OS 5.1+ and :ref:`here <openshift-introduction>` for Red Hat OpenShift.
+       * Hopper (H100) GPU is only supported on x86 servers.
+       * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
+         For installation instructions, see :ref:`preinstalled-drivers-and-toolkit` for DGX OS 5.1+ and :ref:`openshift-introduction` for Red Hat OpenShift.
 
   .. tab-item:: D,T and V-series Products
 
