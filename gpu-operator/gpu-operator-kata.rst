@@ -401,6 +401,7 @@ A pod specification for a Kata container requires the following:
         name: cuda-vectoradd-kata
         annotations:
           cdi.k8s.io/gpu: "nvidia.com/pgpu=0"
+          io.katacontainers.config.hypervisor.default_memory: "16384"
       spec:
         runtimeClassName: kata-qemu-nvidia-gpu
         restartPolicy: OnFailure
@@ -410,6 +411,9 @@ A pod specification for a Kata container requires the following:
           resources:
             limits:
               "nvidia.com/GA102GL_A10": 1
+
+   The ``io.katacontainers.config.hypervisor.default_memory`` annotation starts the VM with 16 GB of memory.
+   Modify the value to accommodate your workload.
 
 #. Create the pod:
 
