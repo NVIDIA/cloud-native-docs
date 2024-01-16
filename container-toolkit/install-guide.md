@@ -159,7 +159,7 @@ follow these steps:
     #user = "root:video"
    ```
 
-### Configuring containerd
+### Configuring containerd (for Kubernetes)
 
 1. Configure the container runtime by using the `nvidia-ctk` command:
 
@@ -175,6 +175,14 @@ follow these steps:
    ```console
    $ sudo systemctl restart containerd
    ```
+
+### Configuring containerd (for nerdctl)
+
+No additional configuration is needed.
+You can just run `nerdctl run --gpus=all`, with root or without root.
+You do not need to run the `nvidia-ctk` command mentioned above for Kubernetes.
+
+See also the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md).
 
 ### Configuring CRI-O
 
