@@ -28,7 +28,6 @@
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
    Troubleshooting <troubleshooting.rst>
-   GPU Driver CRD <gpu-driver-configuration.rst>
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
@@ -46,6 +45,7 @@
    Outdated Kernels <install-gpu-operator-outdated-kernels.rst>
    Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
+   GPU Driver CRD <gpu-driver-configuration.rst>
    Container Device Interface Support <cdi.rst>
 
 .. toctree::
