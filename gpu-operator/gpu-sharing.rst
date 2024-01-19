@@ -89,7 +89,7 @@ the mixed MIG strategy.
 Limitations
 ===========
 
-DGCM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
+DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
 
 
 Changes to Node Labels

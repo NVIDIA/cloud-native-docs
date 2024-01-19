@@ -173,7 +173,7 @@ Node A receives the following software components:
 - ``NVIDIA Driver Manager for Kubernetes`` -- to install the data-center driver.
 - ``NVIDIA Container Toolkit`` -- to ensure that containers can access GPUs.
 - ``NVIDIA Device Plugin for Kubernetes`` -- to discover and advertise GPU resources to kubelet.
-- ``NVIDIA DGCM and DGCM Exporter`` -- to monitor GPUs.
+- ``NVIDIA DCGM and DCGM Exporter`` -- to monitor GPUs.
 - ``NVIDIA MIG Manager for Kubernetes`` -- to manage MIG-capable GPUs.
 - ``Node Feature Discovery`` -- to detect CPU, kernel, and host features and label worker nodes.
 - ``NVIDIA GPU Feature Discovery`` -- to detect NVIDIA GPUs and label worker nodes.
