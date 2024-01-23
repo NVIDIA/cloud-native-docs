@@ -230,6 +230,9 @@ NVIDIA vGPU based products
 Supported Operating Systems and Kubernetes Platforms
 ----------------------------------------------------
 
+.. _fn1: #ubuntu-kernel
+.. |fn1| replace:: :sup:`1`
+
 The GPU Operator has been validated in the following scenarios:
 
 .. note::
@@ -260,7 +263,7 @@ The GPU Operator has been validated in the following scenarios:
          - | Canonical
            | MicroK8s
 
-       * - Ubuntu 20.04 LTS
+       * - Ubuntu 20.04 LTS |fn1|_
          - 1.22---1.28
          -
          - 7.0 U3c, 8.0 U2
@@ -268,7 +271,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
 
-       * - Ubuntu 22.04 LTS
+       * - Ubuntu 22.04 LTS |fn1|_
          - 1.22---1.28
          -
          -
@@ -304,6 +307,17 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 5.5
          -
+
+    .. _ubuntu-kernel:
+
+    :sup:`1`
+    For Ubuntu 22.04 LTS, kernel version 5.15 is an LTS ESM kernel.
+    For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
+    The GPU Driver containers support these Linux kernels.
+    Refer to the Kernel release schedule on Canonical's
+    `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
+    NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
+    by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
 
     .. note::
 
