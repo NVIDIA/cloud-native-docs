@@ -37,11 +37,11 @@ with the lowest level component and working up
 The main packages of the NVIDIA Container Toolkit are:
 
 - `nvidia-container-toolkit`
-- `nvidia-cotnainer-toolkit-base`
+- `nvidia-container-toolkit-base`
 - `libnvidia-container-tools`
 - `libnvidia-container1`
 
-With the dedpendencies between these packages shown below:
+With the dependencies between these packages shown below:
 
 ```bash
 ├─ nvidia-container-toolkit (version)
@@ -59,7 +59,7 @@ where `version` is used to represent the NVIDIA Container Toolkit version.
 In the past the `nvidia-docker2` and `nvidia-container-runtime` packages were also discussed as part of the NVIDIA container stack.
 These **packages** should be considered deprecated as their functionality has been merged with the `nvidia-container-toolkit` package.
 The packages may still be available to introduce dependencies on `nvidia-container-toolkit` and ensure that older workflows continue to function.
-For more information on these packages see the documentation archive for version older than `v1.12.0`.
+For more information on these packages, see the documentation archive for version older than `v1.12.0`.
 :::
 
 ### The NVIDIA Container Library and CLI
