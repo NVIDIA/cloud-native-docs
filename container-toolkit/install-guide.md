@@ -120,7 +120,46 @@ backlinks: none
    $ sudo systemctl restart docker
    ```
 
-### Configuring containerd
+#### Rootless mode
+
+To configure the container runtime for Docker running in [Rootless mode](https://docs.docker.com/engine/security/rootless/),
+follow these steps:
+
+1. Configure the container runtime by using the `nvidia-ctk` command:
+
+   ```console
+   $ nvidia-ctk runtime configure --runtime=docker --config=$HOME/.config/docker/daemon.json
+   ```
+
+2. Restart the Rootless Docker daemon:
+
+   ```console
+   $ systemctl --user restart docker
+   ```
+
+3. Open `/etc/nvidia-container-runtime/config.toml` in an editor, as the root:
+
+   ```console
+   $ sudo vi /etc/nvidia/container-runtime/config.toml
+   ```
+
+4. Apply the following change:
+
+   ```diff
+   --- /etc/nvidia-container-runtime/config.toml.BAK	2024-01-16 07:02:05.606573439 +0000
+   +++ /etc/nvidia-container-runtime/config.toml	2024-01-16 07:02:11.114549694 +0000
+   @@ -10,7 +10,7 @@
+    #ldcache = "/etc/ld.so.cache"
+    ldconfig = "@/sbin/ldconfig.real"
+    load-kmods = true
+   -#no-cgroups = false
+   +no-cgroups = true
+    #path = "/usr/bin/nvidia-container-cli"
+    #root = "/run/nvidia/driver"
+    #user = "root:video"
+   ```
+
+### Configuring containerd (for Kubernetes)
 
 1. Configure the container runtime by using the `nvidia-ctk` command:
 
@@ -136,6 +175,14 @@ backlinks: none
    ```console
    $ sudo systemctl restart containerd
    ```
+
+### Configuring containerd (for nerdctl)
+
+No additional configuration is needed.
+You can just run `nerdctl run --gpus=all`, with root or without root.
+You do not need to run the `nvidia-ctk` command mentioned above for Kubernetes.
+
+See also the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md).
 
 ### Configuring CRI-O
 
