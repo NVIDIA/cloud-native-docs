@@ -90,6 +90,9 @@ The product life cycle and versioning are subject to change in the future.
 GPU Operator Component Matrix
 *****************************
 
+.. _gds: #gds-open-kernel
+.. |gds| replace:: :sup:`1`
+
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
@@ -143,7 +146,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - NVIDIA vGPU Device Manager
      - v0.2.4
 
-   * - NVIDIA GDS Driver
+   * - NVIDIA GDS Driver |gds|_
      - `2.17.5 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
 
    * - NVIDIA Kata Manager for Kubernetes
@@ -152,6 +155,12 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
      - v0.1.1
+
+.. _gds-open-kernel:
+
+   :sup:`1`
+   This release of the GDS driver requires that you use the NVIDIA open kernel driver for the GPUs.
+   Refer to :doc:`gpu-operator-rdma` for more information.
 
 .. note::
 
