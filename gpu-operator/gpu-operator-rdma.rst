@@ -3,6 +3,9 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
+.. _net-op: https://docs.nvidia.com/networking/display/cokan10/network+operator
+.. |net-op| replace:: *NVIDIA Network Operator Deployment Guide*
+
 .. _operator-rdma:
 
 ####################################
@@ -30,6 +33,11 @@ To support GPUDirect RDMA, a userspace CUDA APIs and kernel mode drivers are req
 `CUDA 11.4 and R470 drivers <https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#changes-in-cuda-11-4>`_, a
 new kernel module ``nvidia-peermem`` is included in the standard NVIDIA driver installers (e.g. ``.run``). The
 kernel module provides Mellanox Infiniband-based HCAs direct peer-to-peer read and write access to the GPU's memory.
+
+Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
+This version and higher is only supported with the NVIDIA open kernel driver.
+The sample commands for installing the Operator include the ``--set useOpenKernelModules=true``
+command-line argument for Helm.
 
 In conjunction with the `Network Operator <https://github.com/Mellanox/network-operator>`_, the GPU Operator can be used to
 set up the networking related components such as Mellanox drivers, ``nvidia-peermem`` and Kubernetes device plugins to enable
@@ -366,7 +374,8 @@ See :ref:`Support for GPUDirect Storage` on the platform support page.
 Prerequisites
 ===============
 
-Make sure that `MOFED <https://github.com/Mellanox/ofed-docker>`_ drivers are installed through `Network Operator <https://github.com/Mellanox/network-operator>`_.
+Make sure that MLNX_OFED drivers are installed by NVIDIA Network Operator.
+Refer to the |net-op|_.
 
 
 Installation
@@ -376,37 +385,36 @@ The following section is applicable to the following configurations and describe
 
 * Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
 
-
 Starting with v22.9.1, the GPU Operator provides an option to load the ``nvidia-fs`` kernel module during the bootstrap of the NVIDIA driver daemonset.
-Please refer to below install commands based on Mellanox OFED (MOFED) drivers are installed through Network-Operator.
+Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA open kernel driver.
 
-
-MOFED drivers installed with Network-Operator:
+The following sample command applies to clusters that use the Network Operator to install the MLNX_OFED drivers.
 
 .. code-block:: console
 
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set driver.rdma.enabled=true
+        --set driver.rdma.enabled=true \
+        --set driver.useOpenKernelModules=true \
         --set gds.enabled=true
-
-
-For detailed information on how to deploy Network Operator and GPU Operator for GPU Direct Storage, please use this `link <https://docs.nvidia.com/ai-enterprise/deployment-guide-bare-metal/0.1.0/gds-overview.html>`_.
 
 
 Verification
 ==============
 
-During the installation, an `initContainer` is used with the driver daemonset to wait on the Mellanox OFED (MOFED) drivers to be ready.
-This initContainer checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported MOFED kernel drivers.
-Once everything is in place, the containers nvidia-peermem-ctr and nvidia-fs-ctr will be instantiated inside the driver daemonset.
-
+During the installation, an init container is used with the driver daemon set to wait on the Mellanox OFED (MLNX_OFED) drivers to be ready.
+This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the MLNX_OFED kernel drivers.
+After the verification completes, the nvidia-peermem-ctr and nvidia-fs-ctr containers start inside the driver pods.
 
 
 .. code-block:: console
 
    $ kubectl get pod -n gpu-operator
+
+*Example Output*
+
+.. code-block:: output
 
    gpu-operator   gpu-feature-discovery-pktzg                                       1/1     Running     0          11m
    gpu-operator   gpu-operator-1672257888-node-feature-discovery-master-7ccb7txmc   1/1     Running     0          12m
@@ -422,12 +430,9 @@ Once everything is in place, the containers nvidia-peermem-ctr and nvidia-fs-ctr
    gpu-operator   nvidia-operator-validator-b8nz2                                   1/1     Running     0          11m
 
 
-
-
-
 .. code-block:: console
 
-   $ kubectl describe pod -n <Operator Namespace> nvidia-driver-daemonset-xxxx
+   $ kubectl describe pod -n gpu-operator nvidia-driver-daemonset-xxxx
    <snip>
     Init Containers:
      mofed-validation:
@@ -474,13 +479,9 @@ Lastly, verify that NVIDIA kernel modules have been successfully loaded on the w
    drm                   491520  6 drm_kms_helper,drm_vram_helper,nvidia,mgag200,ttm
 
 
-
-
-
-
-*****************
-Further Reading
-*****************
+*******************
+Related Information
+*******************
 
 Refer to the following resources for more information:
 
