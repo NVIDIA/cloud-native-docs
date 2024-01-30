@@ -2,11 +2,11 @@ name: docs-build
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
     types: [ opened, synchronize ]
 
   push:
-    branches: [ master ]
+    branches: [ master, main ]
     tags:
       - v*
   workflow_dispatch:
@@ -15,6 +15,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   TAG: 0.1.0
+  GH_TOKEN: ${{ github.token }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -36,14 +37,22 @@ jobs:
       - name: Detect change
         id: change
         run: |
-          first_commit=$(git rev-list HEAD | tail -n 1)
-          diff=$(git diff --name-only HEAD..${first_commit})
-          if [[ "${diff}" =~ docker/Dockerfile ]] && [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u "${{ github.actor }}" --password-stdin "${{env.REGISTRY}}"
+          if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME}:${TAG}" 2>&1 > /dev/null ; then export NEEDS_IMAGE=true ; fi
+          def_branch=$(gh api "repos/${GITHUB_REPOSITORY}" -q '.default_branch')
+          git fetch origin "${def_branch}"
+          files=$(git diff --name-only "${GITHUB_SHA}" "origin/${def_branch}" | tr '\n' ' ')
+          if echo "${files}" | grep -q "deps/\|Dockerfile\|repo.toml"; then export NEEDS_IMAGE=true ; fi
+          if [[ "${NEEDS_IMAGE}" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "image=${REGISTRY}/${IMAGE_NAME}:${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+            if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+              echo "image=${REGISTRY}/${IMAGE_NAME,,}:${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+            else
+              echo "image=${REGISTRY}/${IMAGE_NAME,,}:${TAG}" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "image=${REGISTRY}/${IMAGE_NAME}:${TAG}" >> "$GITHUB_OUTPUT"
+            echo "image=${REGISTRY}/${IMAGE_NAME,,}:${TAG}" >> "$GITHUB_OUTPUT"
           fi
         shell: bash
 
@@ -82,23 +91,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
       - name: Set ownership
         run: |
           chown -R $(id -u):$(id -g) $PWD
       - name: Build docs
         run: |
-          make html
+          ./repo docs
       - name: Delete unnecessary files
         run: |
-          find _build/html -name .doctrees -prune -exec rm -rf {} \;
-          find _build/html -name .buildinfo -exec rm {} \;
+          find _build -name .doctrees -prune -exec rm -rf {} \;
+          find _build -name .buildinfo -exec rm {} \;
       - name: Upload HTML
         uses: actions/upload-artifact@v3
         with:
           name: html-build-artifact
-          path: _build/html
+          path: _build/docs
           if-no-files-found: error
           retention-days: 1
       - name: Store PR information
