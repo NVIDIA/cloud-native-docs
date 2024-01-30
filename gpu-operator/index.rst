@@ -64,6 +64,7 @@
 
    HTTP Proxy <install-gpu-operator-proxy.rst>
    Air-Gapped Network <install-gpu-operator-air-gapped.rst>
+   Service Mesh <install-gpu-operator-service-mesh.rst>
 
 .. toctree::
    :caption: CSP configurations
