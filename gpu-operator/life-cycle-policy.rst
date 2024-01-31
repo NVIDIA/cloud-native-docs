@@ -159,7 +159,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 .. _gds-open-kernel:
 
    :sup:`1`
-   This release of the GDS driver requires that you use the NVIDIA open kernel driver for the GPUs.
+   This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
    Refer to :doc:`gpu-operator-rdma` for more information.
 
 .. note::

@@ -50,14 +50,17 @@ New Features
 
   - Run Ubuntu 22.04 and an NVIDIA Linux kernel, such as one provided with a ``linux-nvidia-<x.x>`` package.
   - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
+  - Run the NVIDIA Open GPU Kernel module driver.
 
-* Added support for configuring the driver container to use the NVIDIA open kernel modules.
+* Added support for configuring the driver container to use the NVIDIA Open GPU Kernel module driver.
   Support is limited to installation using the runfile installer.
   Support for precompiled driver containers with open kernel modules is not available.
 
   For clusters that use GPUDirect Storage (GDS), beginning with CUDA toolkit 12.2.2 and
   the NVIDIA GPUDirect Storage kernel driver version v2.17.5, are only supported
   with the open kernel modules.
+
+  NVIDIA GH200 Grace Hopper Superchip systems are only supported with the open kernel modules.
 
   - Refer to :ref:`gpu-operator-helm-chart-options` for information about setting
     ``useOpenKernelModules`` if you manage the driver containers with the NVIDIA cluster policy custom resource definition.

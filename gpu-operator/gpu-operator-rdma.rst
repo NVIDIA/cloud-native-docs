@@ -35,7 +35,7 @@ new kernel module ``nvidia-peermem`` is included in the standard NVIDIA driver i
 kernel module provides Mellanox Infiniband-based HCAs direct peer-to-peer read and write access to the GPU's memory.
 
 Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
-This version and higher is only supported with the NVIDIA open kernel driver.
+This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
 The sample commands for installing the Operator include the ``--set useOpenKernelModules=true``
 command-line argument for Helm.
 
@@ -386,7 +386,7 @@ The following section is applicable to the following configurations and describe
 * Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
 
 Starting with v22.9.1, the GPU Operator provides an option to load the ``nvidia-fs`` kernel module during the bootstrap of the NVIDIA driver daemonset.
-Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA open kernel driver.
+Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA Open GPU Kernel module driver.
 
 The following sample command applies to clusters that use the Network Operator to install the MLNX_OFED drivers.
 
