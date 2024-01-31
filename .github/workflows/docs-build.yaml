@@ -37,6 +37,7 @@ jobs:
       - name: Detect change
         id: change
         run: |
+          export COMMIT_SHORT_SHA="${GITHUB_SHA:0:8}"
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u "${{ github.actor }}" --password-stdin "${{env.REGISTRY}}"
           if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME}:${TAG}" 2>&1 > /dev/null ; then export NEEDS_IMAGE=true ; fi
           def_branch=$(gh api "repos/${GITHUB_REPOSITORY}" -q '.default_branch')
@@ -46,7 +47,7 @@ jobs:
           if [[ "${NEEDS_IMAGE}" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
             if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
-              echo "image=${REGISTRY}/${IMAGE_NAME,,}:${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+              echo "image=${REGISTRY}/${IMAGE_NAME,,}:${COMMIT_SHORT_SHA}" >> "$GITHUB_OUTPUT"
             else
               echo "image=${REGISTRY}/${IMAGE_NAME,,}:${TAG}" >> "$GITHUB_OUTPUT"
             fi
@@ -101,6 +102,10 @@ jobs:
         run: |
           find _build -name .doctrees -prune -exec rm -rf {} \;
           find _build -name .buildinfo -exec rm {} \;
+      - name: Copy review page
+        run: |
+          mv _build/docs/review/latest/* _build/docs
+          rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
       - name: Upload HTML
         uses: actions/upload-artifact@v3
         with:
