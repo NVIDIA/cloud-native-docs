@@ -30,14 +30,15 @@ Install GPU Operator with Service Mesh
 Special Considerations for Service Meshes
 *****************************************
 
-This page describes how to successfully deploy the NVIDIA GPU Operator in clusters that use service meshes such as
-Istio and Linkerd.
+You can use NVIDIA GPU Operator in a cluster that uses a service mesh provided by Istio CNI or Linkerd CNI.
 
-The typical consideration for using the Operator with a service mesh is that the init container
-for the ``driver`` container needs to download several OS packages prior to driver installation.
+The typical consideration for using the Operator with a service mesh is that the ``k8s-driver-manager`` init container
+for the ``driver`` container needs network access to the Kubernetes API server of the cluster.
 
-The Istio CNI plugin and Linkerd CNI plugin can cause networking connectivity problems with application init containers.
-To address the connectivity problems, NVIDIA recommends disabling injection for the GPU Operator namespace.
+The data plane---implemented by Istio CNI or Linkerd CNI as proxies running as sidecar containers---must be running for any pod networking to work.
+The proxy sidecar containers start only after the init phase of the pod, so init containers are not able to communicate with the API server.
+
+To address the connectivity challenge, NVIDIA recommends disabling injection for the GPU Operator namespace.
 Refer to the following documentation for more information:
 
 - `Controlling the injection policy <https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#controlling-the-injection-policy>`_
@@ -46,36 +47,23 @@ Refer to the following documentation for more information:
   in the Linkerd documentation.
 
 
-***************************************
-Deploy GPU Operator with a Service Mesh
-***************************************
+****************************************
+Label the Namespace to Disable Injection
+****************************************
 
-#. Create the GPU Operator namespace:
+- Label the Operator namespace to prevent automatic injection:
 
-   .. code-block:: console
+  .. code-block:: console
 
-      $ kubectl create namespace gpu-operator
+     $ kubectl label namespace gpu-operator istio-injection=disabled
 
-#. Label the Operator namespace to prevent automatic injection:
+  Or, for Linkerd:
 
-   .. code-block:: console
+  .. code-block:: console
 
-      $ kubectl label namespace gpu-operator istio-injection=disabled
-
-   Or, for Linkerd:
-
-   .. code-block:: console
-
-      $ kubectl label namespace gpu-operator linkerd.io/inject=disabled
+     $ kubectl label namespace gpu-operator linkerd.io/inject=disabled
 
 
-#. Install the Operator with Helm:
-
-   .. code-block:: console
-
-      $ helm install --wait --generate-name \
-          -n gpu-operator --create-namespace \
-          nvidia/gpu-operator
-
-   Refer to the common :doc:`installation <getting-started>` documentation
-   for information about custom options and common installation scenarios.
+If the GPU Operator is not already installed, refer to
+:doc:`getting-started`
+for information about custom options and common installation scenarios.
