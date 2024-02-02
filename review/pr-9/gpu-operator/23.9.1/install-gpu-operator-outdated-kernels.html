@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Considerations when Installing with Outdated Kernels in Cluster &mdash; NVIDIA GPU Operator 23.9.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Customizing NVIDIA GPU Driver Parameters during Installation" href="custom-driver-params.html" />
+    <link rel="prev" title="GPUDirect RDMA and GPUDirect Storage" href="gpu-operator-rdma.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Considerations when Installing with Outdated Kernels in Cluster</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="considerations-when-installing-with-outdated-kernels-in-cluster">
+<span id="install-gpu-operator-outdated-kernels"></span><h1>Considerations when Installing with Outdated Kernels in Cluster<a class="headerlink" href="#considerations-when-installing-with-outdated-kernels-in-cluster" title="Permalink to this headline"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">driver</span></code> container deployed as part of the GPU Operator requires certain packages to be available as part of the driver installation.
+On GPU nodes where the running kernel is not the latest, the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container may fail to find the right version of these packages
+(e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container logs, you will most likely
+see the following error message: <code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">resolve</span> <span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">version</span></code>.</p>
+<p>In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
+workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.</p>
+<section id="add-archived-package-repositories">
+<h2>Add Archived Package Repositories<a class="headerlink" href="#add-archived-package-repositories" title="Permalink to this headline"></a></h2>
+<p>The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package
+manager running inside the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container. To achieve this, we can simply mount a repository list file into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container using a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> containing the repository list file needs to be created in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace.</p>
+<p>Let us demonstrate this workaround via an example. The system used in this example is running CentOS 7 with an outdated kernel:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uname -r
+<span class="go">3.10.0-1062.12.1.el7.x86_64</span>
+</pre></div>
+</div>
+<p>The official archive for older CentOS packages is <a class="reference external" href="https://vault.centos.org/">https://vault.centos.org/</a>. Typically, most archived CentOS repositories
+are found in <code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d/CentOS-Vault.repo</span></code> but they are disabled by default. If the appropriate archive repository
+was enabled, then the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container would resolve the kernel version and be able to install the correct versions
+of the prerequisite packages.</p>
+<p>We can simply drop in a replacement of <code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d/CentOS-Vault.repo</span></code> to ensure the appropriate CentOS archive is enabled.
+For the kernel running in this example, the <code class="docutils literal notranslate"><span class="pre">CentOS-7.7.1908</span></code> archive contains the kernel-headers version we are looking for.
+Here is our example drop-in replacement file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[C7.7.1908-base]</span>
+<span class="go">name=CentOS-7.7.1908 - Base</span>
+<span class="gp">baseurl=http://vault.centos.org/7.7.1908/os/$</span>basearch/
+<span class="go">gpgcheck=1</span>
+<span class="go">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</span>
+<span class="go">enabled=1</span>
+
+<span class="go">[C7.7.1908-updates]</span>
+<span class="go">name=CentOS-7.7.1908 - Updates</span>
+<span class="gp">baseurl=http://vault.centos.org/7.7.1908/updates/$</span>basearch/
+<span class="go">gpgcheck=1</span>
+<span class="go">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</span>
+<span class="go">enabled=1</span>
+</pre></div>
+</div>
+<p>Once the repo list file is created, we can create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> for it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap repo-config -n gpu-operator --from-file<span class="o">=</span>&lt;path-to-repo-list-file&gt;
+</pre></div>
+</div>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> is created using the above command, update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with this information, to let the GPU Operator mount the repo configuration
+within the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to pull required packages.</p>
+<p>For Ubuntu:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repoConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">configMapName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">repo-config</span><span class="w"></span>
+<span class="w">      </span><span class="nt">destinationDir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/apt/sources.list.d</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For RHEL/Centos/RHCOS:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repoConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">configMapName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">repo-config</span><span class="w"></span>
+<span class="w">      </span><span class="nt">destinationDir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/yum.repos.d</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Deploy GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     -f values.yaml
+</pre></div>
+</div>
+<p>Check the status of the pods to ensure all the containers are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpu-operator-rdma.html" class="btn btn-neutral float-left" title="GPUDirect RDMA and GPUDirect Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="custom-driver-params.html" class="btn btn-neutral float-right" title="Customizing NVIDIA GPU Driver Parameters during Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2024, NVIDIA.
+      <span class="lastupdated">Last updated on Feb 02, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
