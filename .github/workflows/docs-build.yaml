@@ -112,7 +112,7 @@ jobs:
           mv _build/docs/review/latest/* _build/docs
           rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
       - name: Upload HTML
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: html-build-artifact
           path: _build/docs
@@ -127,7 +127,7 @@ jobs:
           echo ${{ github.event.action }}              > ./pr/action.txt
       - name: Upload PR information
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pr
           path: pr/
