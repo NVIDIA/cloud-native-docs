@@ -31,7 +31,7 @@ jobs:
       image: ${{ steps.change.outputs.image }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Log in to Container Registry
@@ -71,7 +71,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Log in to Container Registry
@@ -96,7 +96,7 @@ jobs:
       image: ${{ needs.dockerfile-changed.outputs.image }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set ownership
         run: |
           chown -R $(id -u):$(id -g) $PWD
@@ -137,7 +137,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: "gh-pages"
       - name: Initialize Git configuration
