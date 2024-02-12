@@ -137,26 +137,10 @@ follow these steps:
    $ systemctl --user restart docker
    ```
 
-3. Open `/etc/nvidia-container-runtime/config.toml` in an editor, as the root:
+3. Configure `/etc/nvidia-container-runtime/config.toml` by using the `sudo nvidia-ctk` command:
 
    ```console
-   $ sudo vi /etc/nvidia/container-runtime/config.toml
-   ```
-
-4. Apply the following change:
-
-   ```diff
-   --- /etc/nvidia-container-runtime/config.toml.BAK	2024-01-16 07:02:05.606573439 +0000
-   +++ /etc/nvidia-container-runtime/config.toml	2024-01-16 07:02:11.114549694 +0000
-   @@ -10,7 +10,7 @@
-    #ldcache = "/etc/ld.so.cache"
-    ldconfig = "@/sbin/ldconfig.real"
-    load-kmods = true
-   -#no-cgroups = false
-   +no-cgroups = true
-    #path = "/usr/bin/nvidia-container-cli"
-    #root = "/run/nvidia/driver"
-    #user = "root:video"
+   $ sudo nvidia-ctk config --set nvidia-container-cli.no-cgroups --in-place
    ```
 
 ### Configuring containerd (for Kubernetes)
