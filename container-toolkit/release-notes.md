@@ -10,6 +10,28 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.14.5
+
+This release of the NVIDIA Container Toolkit `v1.14.5` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.14.5`
+- `libnvidia-container-tools 1.14.5`
+- `libnvidia-container1 1.14.5`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.5-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.5-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.5-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.14.5`)
+
+### Fixes and Features
+
+* Fixed the `nvidia-ctk runtime configure --cdi.enabled` command for Docker.
+  This was incorrectly setting `experimental = true` instead of setting
+  `features.cdi = true` for CDI support in Docker >= 25.
+
 ## NVIDIA Container Toolkit 1.14.4
 
 This release of the NVIDIA Container Toolkit `v1.14.4` is a bugfix and minor feature release.
