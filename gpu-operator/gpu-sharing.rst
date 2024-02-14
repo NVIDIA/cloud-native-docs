@@ -250,7 +250,7 @@ and want to apply the same time-slicing configuration on all nodes in the cluste
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy \
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           -n gpu-operator --type merge \
           -p '{"spec": {"devicePlugin": {"config": {"name": "time-slicing-config-all", "default": "any"}}}}'
 
@@ -292,7 +292,7 @@ control which configuration is applied to which nodes.
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy \
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           -n gpu-operator --type merge \
           -p '{"spec": {"devicePlugin": {"config": {"name": "time-slicing-config-fine"}}}}'
 

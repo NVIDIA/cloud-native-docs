@@ -528,7 +528,7 @@ To set a cluster-wide mode, specify the ``ccManager.defaultMode`` field like the
 
 .. code-block:: console
 
-   $ kubectl patch clusterpolicy/cluster-policy \
+   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           -p '{"spec": {"ccManager": {"defaultMode": "on"}}}'
 
 
