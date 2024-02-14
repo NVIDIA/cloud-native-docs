@@ -134,7 +134,7 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="#approaches-for-working-with-azure-aks" id="id2">Approaches for Working with Azure AKS</a></p>
 <ul>
-<li><p><a class="reference internal" href="#create-aks-cluster-with-node-pool-tags-to-prevent-driver-installation" id="id3">Create AKS Cluster with Node Pool Tags to Prevent Driver installation</a></p></li>
+<li><p><a class="reference internal" href="#create-aks-cluster-with-a-node-pool-to-skip-gpu-driver-installation" id="id3">Create AKS Cluster with a Node Pool to Skip GPU Driver installation</a></p></li>
 <li><p><a class="reference internal" href="#default-aks-configuration-without-the-gpu-operator" id="id4">Default AKS configuration without the GPU Operator</a></p></li>
 <li><p><a class="reference internal" href="#gpu-operator-with-preinstalled-driver-and-container-toolkit" id="id5">GPU Operator with Preinstalled Driver and Container Toolkit</a></p></li>
 </ul>
@@ -145,23 +145,29 @@
 </div>
 <section id="approaches-for-working-with-azure-aks">
 <h2>Approaches for Working with Azure AKS<a class="headerlink" href="#approaches-for-working-with-azure-aks" title="Permalink to this headline"></a></h2>
-<section id="create-aks-cluster-with-node-pool-tags-to-prevent-driver-installation">
-<h3>Create AKS Cluster with Node Pool Tags to Prevent Driver installation<a class="headerlink" href="#create-aks-cluster-with-node-pool-tags-to-prevent-driver-installation" title="Permalink to this headline"></a></h3>
-<p>When you create an AKS cluster, you can specify the <code class="docutils literal notranslate"><span class="pre">--nodepool-tags</span></code> argument to the Azure CLI
-command to customize the nodes.
-If you specify <code class="docutils literal notranslate"><span class="pre">--nodepool-tags</span> <span class="pre">SkipGPUDriverInstall=true</span></code>, AKS does not install
+<section id="create-aks-cluster-with-a-node-pool-to-skip-gpu-driver-installation">
+<h3>Create AKS Cluster with a Node Pool to Skip GPU Driver installation<a class="headerlink" href="#create-aks-cluster-with-a-node-pool-to-skip-gpu-driver-installation" title="Permalink to this headline"></a></h3>
+<p>Azure Kubernetes Service has a preview feature that enables a <code class="docutils literal notranslate"><span class="pre">--skip-gpu-driver-install</span></code>
+command-line argument to the <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">aks</span> <span class="pre">nodepool</span> <span class="pre">add</span></code> command.
+This argument prevents installing
 the NVIDIA GPU Driver in the stock Ubuntu operating system.</p>
 <p>This approach enables you to take advantage of the lifecycle management
 that the NVIDIA GPU Operator provides for managing your cluster.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Sample Cluster Create Command</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>az aks create -g &lt;rg-name&gt; -n &lt;cluster-name&gt; ... --nodepool-tags <span class="nv">SkipGPUDriverInstall</span><span class="o">=</span><span class="nb">true</span>
+<div class="code-block-caption"><span class="caption-text">Sample Node Pool Add Command</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>az aks nodepool add --resource-group &lt;rg-name&gt; --name gpunodes --cluster-name &lt;cluster-name&gt; <span class="se">\</span>
+     --node-count &lt;n&gt; <span class="se">\</span>
+     --skip-gpu-driver-install <span class="se">\</span>
+     ...
 </pre></div>
 </div>
 </div>
 <p>When you follow this approach, you can install the Operator without any special
 considerations or arguments.
 Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html#install-nvidia-gpu-operator" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Install NVIDIA GPU Operator</span></a>.</p>
+<p>For more information about this preview feature, see
+<a class="reference external" href="https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&amp;tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview">Skip GPU driver installation (preview)</a>
+in the Azure Kubernetes Service documentation.</p>
 </section>
 <section id="default-aks-configuration-without-the-gpu-operator">
 <h3>Default AKS configuration without the GPU Operator<a class="headerlink" href="#default-aks-configuration-without-the-gpu-operator" title="Permalink to this headline"></a></h3>
@@ -254,7 +260,7 @@ for an example of running workloads on NVIDIA GPUs.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 12, 2024.
+      <span class="lastupdated">Last updated on Feb 14, 2024.
       </span></p>
   </div>
 
