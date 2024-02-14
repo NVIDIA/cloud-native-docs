@@ -44,7 +44,7 @@ that the NVIDIA GPU Operator provides for managing your cluster.
 .. code-block:: console
    :caption: Sample Node Pool Add Command
 
-   $ az aks nodepool add -g <rg-name> -n gpunodes --cluster-name <cluster-name> \
+   $ az aks nodepool add --resource-group <rg-name> --name gpunodes --cluster-name <cluster-name> \
         --node-count <n> \
         --skip-gpu-driver-install \
         ...
