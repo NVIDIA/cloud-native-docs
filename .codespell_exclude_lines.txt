@@ -6,9 +6,14 @@ You can approach running workloads in Azure AKS with NVIDIA GPUs in at least two
 Default AKS configuration without the GPU Operator
 By default, you can run Azure AKS images on GPU-enabled virtual machines with NVIDIA GPUs,
 AKS images include a preinstalled NVIDIA GPU Driver and preinstalled NVIDIA Container Toolkit.
-`Use GPUs for compute-intensive workloads on Azure Kubernetes Services <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster>`_
+`Use GPUs for compute-intensive workloads on Azure Kubernetes Services <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster>`__
 The images that are available in AKS always include a preinstalled NVIDIA GPU driver
 After you start your Azure AKS cluster, you are ready to install the NVIDIA GPU Operator.
    GPU Operator with Azure AKS <microsoft-aks.rst>
 * Added support for running the Operator with Microsoft Azure Kubernetes Service (AKS).
   You must use an AKS image with a preinstalled NVIDIA GPU driver and a preinstalled
+Create AKS Cluster with a Node Pool to Skip GPU Driver installation
+command-line argument to the ``az aks nodepool add`` command.
+   $ az aks nodepool add --resource-group <rg-name> --name gpunodes --cluster-name <cluster-name> \
+`Skip GPU driver installation (preview) <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview>`__
+After you start your Azure AKS cluster with an image that includes a preinstalled NVIDIA GPU Driver
