@@ -155,7 +155,7 @@ the NVIDIA GPU Driver in the stock Ubuntu operating system.</p>
 that the NVIDIA GPU Operator provides for managing your cluster.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Sample Node Pool Add Command</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>az aks nodepool add -g &lt;rg-name&gt; -n gpunodes --cluster-name &lt;cluster-name&gt; <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>az aks nodepool add --resource-group &lt;rg-name&gt; --name gpunodes --cluster-name &lt;cluster-name&gt; <span class="se">\</span>
      --node-count &lt;n&gt; <span class="se">\</span>
      --skip-gpu-driver-install <span class="se">\</span>
      ...
@@ -260,7 +260,7 @@ for an example of running workloads on NVIDIA GPUs.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 13, 2024.
+      <span class="lastupdated">Last updated on Feb 14, 2024.
       </span></p>
   </div>
 
