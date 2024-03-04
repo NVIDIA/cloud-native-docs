@@ -65,7 +65,7 @@ The controller automates the upgrade process and generates metrics and events so
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy \
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
 
@@ -292,7 +292,7 @@ In addition, no new features will be added to the ``k8s-driver-manager`` moving 
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
 
 2. (Optional) To monitor the status of the upgrade, watch the deployment of the new driver pod on GPU worker nodes:
 

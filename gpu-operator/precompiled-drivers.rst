@@ -143,7 +143,7 @@ Perform the following steps to enable support for precompiled driver containers:
 
    .. code-block:: shell
 
-      $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
          -p='[
            {"op":"replace", "path":"/spec/driver/usePrecompiled", "value":true},
            {"op":"replace", "path":"/spec/driver/version", "value":"<driver-branch>"}
@@ -193,7 +193,7 @@ Perform the following steps to disable support for precompiled driver containers
 
    .. code-block:: console
 
-     $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
          -p='[{"op": "replace", "path": "/spec/driver/usePrecompiled", "value":false}]'
 
    *Example Output*
@@ -334,5 +334,5 @@ you can perform the following steps to build and run a container image.
 
   .. code-block:: console
 
-     $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
          -p='[{"op": "replace", "path": "/spec/driver/repository", "value":"$PRIVATE_REGISTRY"}]'

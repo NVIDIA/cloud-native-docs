@@ -103,7 +103,7 @@ To enable CDI support, perform the following steps:
 
    .. code-block:: console
 
-     $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
          -p='[{"op": "replace", "path": "/spec/cdi/enabled", "value":true}]'
 
    *Example Output*
@@ -116,7 +116,7 @@ To enable CDI support, perform the following steps:
 
    .. code-block:: console
 
-     $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
          -p='[{"op": "replace", "path": "/spec/cdi/default", "value":true}]'
 
    *Example Output*
@@ -174,7 +174,7 @@ To disable CDI support, perform the following steps:
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicy/cluster-policy --type='json' \
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
           -p='[{"op": "replace", "path": "/spec/cdi/enabled", "value":false}]'
 
    *Example Output*
