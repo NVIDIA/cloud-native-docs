@@ -10,6 +10,27 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.14.6
+
+This release of the NVIDIA Container Toolkit `v1.14.6` adds support for certain features of the the 550.x CUDA driver.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.14.6`
+- `libnvidia-container-tools 1.14.6`
+- `libnvidia-container1 1.14.6`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.6-centos7`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.6-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.14.6-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.14.6`)
+
+### Fixes and Features
+
+* Add support for extracting device major number from `/proc/devices` if `nvidia` is used as a device name over `nvidia-frontend`. This fixes the creation of `/dev/char` symlinks for `550.x` drivers.
+* Add support for selecting IMEX channels using the `NVIDIA_IMEX_CHANNELS` environement variable.
+
 ## NVIDIA Container Toolkit 1.14.5
 
 This release of the NVIDIA Container Toolkit `v1.14.5` is a bugfix release.
