@@ -44,10 +44,14 @@ jobs:
         id: change
         run: |
           export COMMIT_SHORT_SHA="${GITHUB_SHA:0:8}"
-          if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME}:${TAG}" 2>&1 > /dev/null ; then export NEEDS_IMAGE=true ; fi
+          if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME,,}:${TAG}" 2>&1 > /dev/null ; then
+            echo "image not found...${REGISTRY}/${IMAGE_NAME,,}:${TAG}"
+            export NEEDS_IMAGE=true
+          fi
           def_branch=$(gh api "repos/${GITHUB_REPOSITORY}" -q '.default_branch')
           git fetch origin "${def_branch}"
           files=$(git diff --name-only "${GITHUB_SHA}" "origin/${def_branch}" | tr '\n' ' ')
+          echo "${files}"
           if echo "${files}" | grep -q "deps/\|Dockerfile\|repo.toml"; then export NEEDS_IMAGE=true ; fi
           if [[ "${NEEDS_IMAGE}" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
