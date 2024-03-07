@@ -14,6 +14,17 @@ backlinks: none
 
 ## Installation
 
+### Prerequisites
+
+Install the NVIDIA GPU driver for your Linux distribution.
+NVIDIA recommends installing the driver by using the package manager for your distribution.
+
+For information about installing the driver with a package manager, refer to
+the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
+
+Alternatively, you can install the driver by downloading a `.run` installer.
+Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.aspx?lang=en-us) page.
+
 ### Installing with Apt
 
 1. Configure the production repository:
@@ -196,12 +207,5 @@ For Podman, NVIDIA recommends using [CDI](./cdi-support.md) for accessing NVIDIA
 
 
 ## Next Steps
-
-- Install an NVIDIA GPU Driver if you do not already have one installed.
-  You can install a driver by using the package manager for your distribution, but other installation
-  methods, such as downloading a `.run` file intaller, are available.
-  Refer to the
-  _[NVIDIA Driver Installation Quickstart Guide](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html)_
-  for more information.
 
 - [](./sample-workload.md)
