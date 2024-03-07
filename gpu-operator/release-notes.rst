@@ -59,7 +59,7 @@ New Features
 
     - NVIDIA Data Center GPU Driver version 550.54.14
     - NVIDIA Container Toolkit version v1.14.6
-    - NVIDIA Kubernetes Device Plugin version v1.14.4
+    - NVIDIA Kubernetes Device Plugin version v1.14.5
     - NVIDIA MIG Manager version v0.6.0
 
 .. _v23.9.2-fixed-issues:

@@ -119,7 +119,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `1.14.6 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.14.4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+     - `0.14.5 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
 
    * - DCGM Exporter
      - `3.3.0-3.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_

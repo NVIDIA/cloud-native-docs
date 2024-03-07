@@ -442,7 +442,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.22---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.22---1.29   0.36+           0.59.1+
-Red Hat Core OS                                                4.11---4.15      4.13, 4.15
+Red Hat Core OS                                                4.11---4.15      4.13---4.15
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
