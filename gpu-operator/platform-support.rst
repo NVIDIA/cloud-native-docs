@@ -293,7 +293,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.9---4.15
+         - | 4.12---4.15
          -
          -
          -
@@ -391,7 +391,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.9---4.15
+         - 4.12---4.15
          -
          -
 
@@ -442,7 +442,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.22---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.22---1.29   0.36+           0.59.1+
-Red Hat Core OS                                                4.11---4.15      4.13---4.15
+Red Hat Core OS                                                4.12---4.15      4.13---4.15
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -461,7 +461,7 @@ Support for GPUDirect RDMA
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.0
-- Red Hat OpenShift 4.9 and higher with Network Operator 23.10.0
+- Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -472,7 +472,7 @@ Support for GPUDirect Storage
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 23.10.0
-- Red Hat OpenShift Container Platform 4.11 and higher
+- Red Hat OpenShift Container Platform 4.12 and higher
 
 .. note::
 
