@@ -33,6 +33,115 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+.. _v23.9.2:
+
+23.9.2
+======
+
+.. _v23.9.2-new-features:
+
+New Features
+------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 550.54.14.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for Kubernetes v1.29.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
+
+* Added support for Red Hat OpenShift Container Platform 4.15.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Data Center GPU Driver version 550.54.14
+    - NVIDIA Container Toolkit version v1.14.6
+    - NVIDIA Kubernetes Device Plugin version v1.14.5
+    - NVIDIA MIG Manager version v0.6.0
+
+.. _v23.9.2-fixed-issues:
+
+Fixed issues
+------------
+
+* Previously, duplicate image pull secrets were added to some daemon sets and caused an error
+  like the following when a node is deleted and the controller manager deleted the pods.
+
+  .. code-block:: output
+
+     I1031 00:09:44.553742       1 gc_controller.go:329] "PodGC is force deleting Pod" pod="gpu-operator/nvidia-driver-daemonset-k69f2"
+     E1031 00:09:44.556500       1 gc_controller.go:255] failed to create manager for existing fields: failed to convert new object (gpu-operator/nvidia-driver-daemonset-k69f2; /v1, Kind=Pod) to smd typed: .spec.imagePullSecrets: duplicate entries for key [name="ngc-secret"]
+
+* Previously, common daemon set labels, annotations, and tolerations configured in ClusterPolicy were not
+  also applied to the default NVIDIADriver CR instance.
+  Refer to Github `issue #665 <https://github.com/NVIDIA/gpu-operator/issues/665>`__ for more details.
+
+* Previously, the technical preview NVIDIA driver custom resource was failing to render the ``licensing-config``
+  volume mount that is required for licensing a vGPU guest driver.
+  Refer to Github `issue #672 <https://github.com/NVIDIA/gpu-operator/issues/672>`__ for more details.
+
+* Previously, the technical preview NVIDIA driver custom resource was broken when GDS was enabled.
+  An OS suffix was not appended to the image path of the GDS driver container image.
+  Refer to GitHub `issue #608 <https://github.com/NVIDIA/gpu-operator/issues/608>`__ for more details.
+
+* Previously, the technical preview NVIDIA driver custom resource failed to render daemon sets
+  when ``additionalConfig`` volumes were configured that were host path volumes. This issue
+  prevented users from mounting entitlements on RHEL systems.
+
+* Previously, it was not possible to disable the CUDA workload validation pod that the ``operator-validator`` pod
+  deploys. You can now disable this pod by setting the following environment variable in ClusterPolicy:
+
+  .. code-block:: yaml
+
+     validator:
+       cuda:
+         env:
+         - name: "WITH_WORKLOAD"
+           value: "false"
+
+.. _v23.9.2-known-limitations:
+
+Known Limitations
+------------------
+
+* The ``1g.12gb`` MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to ``all-balanced``.
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+  Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
+  The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
+  at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
+  configuration option.
+  Additionally, network-restricted environments are not supported.
+
+
 .. _v23.9.1:
 
 23.9.1
@@ -114,14 +223,6 @@ Fixed issues
   Now, the Operator is enhanced to run the hook with a new service account, ``gpu-operator-upgrade-crd-hook-sa``.
   This fix creates the new service account, a new cluster role, and a new cluster role binding.
   The update prevents failures with Argo CD.
-
-* Previously, duplicate image pull secrets were added to some daemon sets and caused an error
-  like the following when a node is deleted and the controller manager deleted the pods.
-
-  .. code-block:: output
-
-     I1031 00:09:44.553742       1 gc_controller.go:329] "PodGC is force deleting Pod" pod="gpu-operator/nvidia-driver-daemonset-k69f2"
-     E1031 00:09:44.556500       1 gc_controller.go:255] failed to create manager for existing fields: failed to convert new object (gpu-operator/nvidia-driver-daemonset-k69f2; /v1, Kind=Pod) to smd typed: .spec.imagePullSecrets: duplicate entries for key [name="ngc-secret"]
 
 * Previously, adding an NVIDIA driver custom resource with a node selector that conflicts with another
   driver custom resource, the controller failed to set the error condition in the custom resource status.
