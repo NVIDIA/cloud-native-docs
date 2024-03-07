@@ -14,6 +14,8 @@ backlinks: none
 
 ## Installation
 
+(pre-requisites)=
+
 ### Prerequisites
 
 Install the NVIDIA GPU driver for your Linux distribution.
