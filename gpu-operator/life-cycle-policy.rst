@@ -133,7 +133,7 @@ Refer to :ref:`Upgrading the GPU Operator` for more information.
           | for Kubernetes
 
       * - v23.6.2
-        - | `535.154.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-154-05/index.html>`_ (recommended),
+        - | `535.161.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-161-07/index.html>`_ (recommended),
           | `535.104.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-104-05/index.html>`_ (default),
           | `525.125.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-525-125-06/index.html>`_,
           | `470.199.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-199-02/index.html>`_,
