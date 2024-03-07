@@ -44,12 +44,12 @@ New Features
 ------------
 
 * Added support for the NVIDIA Data Center GPU Driver version 550.54.14.
-    Refer to the :ref:`GPU Operator Component Matrix`
-    on the platform support page.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
 
 * Added support for Kubernetes v1.29.
-    Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
-    on the platform support page.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
+  on the platform support page.
 
 * Added support for Red Hat OpenShift Container Platform 4.15.
   Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`
@@ -75,32 +75,32 @@ Fixed issues
      I1031 00:09:44.553742       1 gc_controller.go:329] "PodGC is force deleting Pod" pod="gpu-operator/nvidia-driver-daemonset-k69f2"
      E1031 00:09:44.556500       1 gc_controller.go:255] failed to create manager for existing fields: failed to convert new object (gpu-operator/nvidia-driver-daemonset-k69f2; /v1, Kind=Pod) to smd typed: .spec.imagePullSecrets: duplicate entries for key [name="ngc-secret"]
 
-* Previously, common daemonset labels, annotations, and tolerations configured in ClusterPolicy were not
+* Previously, common daemon set labels, annotations, and tolerations configured in ClusterPolicy were not
   also applied to the default NVIDIADriver CR instance.
-  Refer to Github `issue #665 <https://github.com/NVIDIA/gpu-operator/issues/665>`_ for more details.
+  Refer to Github `issue #665 <https://github.com/NVIDIA/gpu-operator/issues/665>`__ for more details.
 
-* Previously, the technical preview NVIDIA driver custom resource was failing to render the `licensing-config`
-  volume mount required for licensing a vGPU guest driver.
-  Refer to Github `issue #672 <https://github.com/NVIDIA/gpu-operator/issues/672>`_ for more details.
+* Previously, the technical preview NVIDIA driver custom resource was failing to render the ``licensing-config``
+  volume mount that is required for licensing a vGPU guest driver.
+  Refer to Github `issue #672 <https://github.com/NVIDIA/gpu-operator/issues/672>`__ for more details.
 
 * Previously, the technical preview NVIDIA driver custom resource was broken when GDS was enabled.
-  An OS suffix was not being appended to the image path of the GDS driver container image.
-  Refer to GitHub `issue #608 <https://github.com/NVIDIA/gpu-operator/issues/608>`_ for more details.
+  An OS suffix was not appended to the image path of the GDS driver container image.
+  Refer to GitHub `issue #608 <https://github.com/NVIDIA/gpu-operator/issues/608>`__ for more details.
 
-* Previously, the technical preview NVIDIA driver custom resource failed to render daemonsets
-  when `additionalConfig` volumes were configured that were `hostPath` volumes. This issue
+* Previously, the technical preview NVIDIA driver custom resource failed to render daemon sets
+  when ``additionalConfig`` volumes were configured that were host path volumes. This issue
   prevented users from mounting entitlements on RHEL systems.
 
-* Previously, it was not possible to disable the CUDA workload validation pod that the `operator-validator` pod
-  deploys. This pod can now be disabled by setting the following environment variable in ClusterPolicy:
+* Previously, it was not possible to disable the CUDA workload validation pod that the ``operator-validator`` pod
+  deploys. You can now disable this pod by setting the following environment variable in ClusterPolicy:
 
   .. code-block:: yaml
 
-    validator:
-      cuda:
-        env:
-        - name: "WITH_WORKLOAD"
-          value: "false"
+     validator:
+       cuda:
+         env:
+         - name: "WITH_WORKLOAD"
+           value: "false"
 
 .. _v23.9.2-known-limitations:
 
