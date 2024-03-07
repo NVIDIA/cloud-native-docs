@@ -71,7 +71,7 @@ To install GPU Operator with NVIDIA AI Enterprise, apply the following steps.
 
 .. note::
 
-   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
+   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/gpu-operator-nvaie.sh>`__, which automates the below installation instructions.
    Create the ``gpu-operator`` namespace:
 
 .. code-block:: console
@@ -156,7 +156,7 @@ To install GPU Operator on baremetal with the NVIDIA Datacenter Driver, apply th
 
 .. note::
 
-   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`_, which automates the below installation instructions.
+   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`__, which automates the below installation instructions.
    Create the ``gpu-operator`` namespace:
 
 .. code-block:: console
