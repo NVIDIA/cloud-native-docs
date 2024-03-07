@@ -199,7 +199,7 @@ Optionally, also specify the <code class="docutils literal notranslate"><span cl
 <p>To enable CDI support, perform the following steps:</p>
 <ol class="arabic">
 <li><p>Enable CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:true}]&#39;</span>
 </pre></div>
 </div>
@@ -209,7 +209,7 @@ Optionally, also specify the <code class="docutils literal notranslate"><span cl
 </div>
 </li>
 <li><p>(Optional) Set the default container runtime mode to CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/default&quot;, &quot;value&quot;:true}]&#39;</span>
 </pre></div>
 </div>
@@ -271,7 +271,7 @@ column to determine if your nodes use CRI-O.</p>
 </div>
 </li>
 <li><p>Disable CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:false}]&#39;</span>
 </pre></div>
 </div>
@@ -393,7 +393,7 @@ on GitHub.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 14, 2024.
+      <span class="lastupdated">Last updated on Mar 07, 2024.
       </span></p>
   </div>
 

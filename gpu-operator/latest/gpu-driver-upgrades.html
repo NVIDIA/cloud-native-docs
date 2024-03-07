@@ -175,7 +175,7 @@ The controller automates the upgrade process and generates metrics and events so
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Upgrade the driver by changing the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;}]&#39;</span>
 </pre></div>
@@ -373,7 +373,7 @@ In addition, no new features will be added to the <code class="docutils literal 
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Upgrade the driver by changing <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;}]&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;}]&#39;</span>
 </pre></div>
 </div>
 </li>
@@ -434,7 +434,7 @@ For more information on DaemonSet update strategies, refer to the <a class="refe
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 14, 2024.
+      <span class="lastupdated">Last updated on Mar 07, 2024.
       </span></p>
   </div>
 

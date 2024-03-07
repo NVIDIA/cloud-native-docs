@@ -380,7 +380,7 @@ and want to apply the same time-slicing configuration on all nodes in the cluste
 </div>
 </li>
 <li><p>Configure the device plugin with the config map and set the default time-slicing configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     -n gpu-operator --type merge <span class="se">\</span>
     -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;time-slicing-config-all&quot;, &quot;default&quot;: &quot;any&quot;}}}}&#39;</span>
 </pre></div>
@@ -470,7 +470,7 @@ control which configuration is applied to which nodes.</p>
 </div>
 </li>
 <li><p>Configure the device plugin with the config map and set the default time-slicing configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     -n gpu-operator --type merge <span class="se">\</span>
     -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;time-slicing-config-fine&quot;}}}}&#39;</span>
 </pre></div>
@@ -737,7 +737,7 @@ specified number of GPU replicas to create.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 14, 2024.
+      <span class="lastupdated">Last updated on Mar 07, 2024.
       </span></p>
   </div>
 

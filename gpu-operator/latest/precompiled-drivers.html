@@ -236,7 +236,7 @@ Refer to <a class="reference internal" href="getting-started.html#chart-customiz
 <p>Perform the following steps to enable support for precompiled driver containers:</p>
 <ol class="arabic">
 <li><p>Enable support by modifying the cluster policy:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
    -p<span class="o">=</span><span class="s1">&#39;[</span>
 <span class="s1">     {&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/driver/usePrecompiled&quot;, &quot;value&quot;:true},</span>
 <span class="s1">     {&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;&lt;driver-branch&gt;&quot;}</span>
@@ -287,7 +287,7 @@ Refer to <a class="reference internal" href="getting-started.html#chart-customiz
 <p>Perform the following steps to disable support for precompiled driver containers:</p>
 <ol class="arabic">
 <li><p>Disable support by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/usePrecompiled&quot;, &quot;value&quot;:false}]&#39;</span>
 </pre></div>
 </div>
@@ -409,7 +409,7 @@ and <code class="docutils literal notranslate"><span class="pre">--set</span> <s
 <p>If the container registry is not public, you need to create an image pull secret in the GPU operator namespace
 and specify it in the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.imagePullSecrets=&lt;pull-secret&gt;</span></code> argument.</p>
 <p>If you already installed the GPU Operator, specify the private registry for the driver in the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;$PRIVATE_REGISTRY&quot;}]&#39;</span>
 </pre></div>
 </div>
@@ -430,7 +430,7 @@ and specify it in the <code class="docutils literal notranslate"><span class="pr
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Feb 14, 2024.
+      <span class="lastupdated">Last updated on Mar 07, 2024.
       </span></p>
   </div>
 
