@@ -250,7 +250,7 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 22.04 LTS
          - 1.21---1.27
          -
-         -
+         - 8.0 U2
          -
          -
          - 1.26
@@ -348,7 +348,7 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 22.04 LTS
          - 1.21--1.27
          -
-         -
+         - 8.0 U2
          -
 
        * - Red Hat Core OS
