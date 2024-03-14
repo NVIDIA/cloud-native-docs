@@ -114,11 +114,24 @@ backlinks: none
    The `nvidia-ctk` command modifies the `/etc/docker/daemon.json` file on the host.
    The file is updated so that Docker can use the NVIDIA Container Runtime.
 
-1. Restart the Docker daemon:
+2. Restart the Docker daemon:
 
    ```console
    $ sudo systemctl restart docker
    ```
+
+#### On WSL
+
+With docker installed on windows running with the WSL backend the container runtime for Docker can be configured as
+ 
+1. Configure the container runtime by using the `nvidia-ctk` command:
+   ```console
+   $ sudo nvidia-ctk runtime configure --runtime=docker --config /mnt/<windows drive>/Users/<your user>/.docker/daemon.json
+   ```
+   
+   If your daemon configuration on windows is locate elsewhere the `--config` argument should be updated accordingly.
+   
+2. Restart the Docker daemon from windows
 
 #### Rootless mode
 
