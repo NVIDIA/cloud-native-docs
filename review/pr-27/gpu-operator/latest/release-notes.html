@@ -200,6 +200,9 @@ deploys. You can now disable this pod by setting the following environment varia
 <section id="known-limitations">
 <span id="v23-9-2-known-limitations"></span><h3>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline"></a></h3>
 <ul class="simple">
+<li><p>When installing on Red Hat OpenShift Container Platform 4.15 clusters that disable the integrated image registry,
+secrets are no longer automatically generated and this change causes installation of the Operator to stall.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/steps-overview.html#special-considerations-for-openshift-4-15" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Special Considerations for OpenShift 4.15</span></a> for more information.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">1g.12gb</span></code> MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code>.</p></li>
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
 because of the missing <code class="docutils literal notranslate"><span class="pre">kernel-headers</span></code> package within the container.
@@ -1773,7 +1776,7 @@ would not be available after reboot.</p></li>
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 08, 2024.
+      <span class="lastupdated">Last updated on Mar 14, 2024.
       </span></p>
   </div>
 

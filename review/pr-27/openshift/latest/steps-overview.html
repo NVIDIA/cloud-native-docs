@@ -108,14 +108,15 @@
 <span id="steps-overview"></span><h1>Installation and Upgrade Overview<a class="headerlink" href="#installation-and-upgrade-overview" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#high-level-steps" id="id1">High-Level Steps</a></p></li>
-<li><p><a class="reference internal" href="#preparing-to-install-the-operator" id="id2">Preparing to Install the Operator</a></p>
+<li><p><a class="reference internal" href="#high-level-steps" id="id2">High-Level Steps</a></p></li>
+<li><p><a class="reference internal" href="#preparing-to-install-the-operator" id="id3">Preparing to Install the Operator</a></p>
 <ul>
-<li><p><a class="reference internal" href="#special-considerations-for-openshift-4-15" id="id3">Special Considerations for OpenShift 4.15</a></p></li>
+<li><p><a class="reference internal" href="#special-considerations-for-openshift-4-15" id="id4">Special Considerations for OpenShift 4.15</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#preparing-to-upgrade-the-operator" id="id4">Preparing to Upgrade the Operator</a></p></li>
-<li><p><a class="reference internal" href="#about-the-broken-driver-toolkit" id="id5">About the Broken Driver Toolkit</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id5">Preparing to Install the Operator</a></p></li>
+<li><p><a class="reference internal" href="#preparing-to-upgrade-the-operator" id="id6">Preparing to Upgrade the Operator</a></p></li>
+<li><p><a class="reference internal" href="#about-the-broken-driver-toolkit" id="id7">About the Broken Driver Toolkit</a></p></li>
 </ul>
 </div>
 <section id="high-level-steps">
@@ -141,98 +142,23 @@ Refer to <a class="reference internal" href="nvaie-with-ocp.html"><span class="d
 <section id="special-considerations-for-openshift-4-15">
 <h3>Special Considerations for OpenShift 4.15<a class="headerlink" href="#special-considerations-for-openshift-4-15" title="Permalink to this headline"></a></h3>
 <p>In OpenShift 4.15, secrets are no longer automatically generated when the integrated OpenShift image registry is disabled.
-For more information, see <a class="reference external" href="https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets">OpenShift 4.15 Release notes</a>.</p>
-<p>This affects the NVIDIA GPU Operator, where the lack of registry enabled blocks the creation of
-the <code class="docutils literal notranslate"><span class="pre">DriverToolkit</span> <span class="pre">DaemonSet</span></code> when it checks for the existence of a <code class="docutils literal notranslate"><span class="pre">build-dockercfg</span></code> secret for
-the Driver Toolkit service account. This results in a stalled state for the NVIDIA GPU Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>oc get pods  -n nvidia-gpu-operator
+For more information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets">OpenShift 4.15 Release Notes</a>.</p>
+<p>This change affects the instatllation of NVIDIA GPU Operator.
+During installation, the Driver Toolkit daemon set checks for the existence of a <code class="docutils literal notranslate"><span class="pre">build-dockercfg</span></code> secret for the Driver Toolkit service account.
+When the secret does not exist, the installation stalls.</p>
+<p>You can run the following command to determine if your cluster is affected.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get configs.imageregistry.operator.openshift.io cluster -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.storage}{&quot;\n&quot;}&#39;</span>
 </pre></div>
 </div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                  READY   STATUS            RESTARTS   AGE</span>
-<span class="go">gpu-feature-discovery-sdqsz                           0/1     Init:0/1          0          21s</span>
-<span class="go">gpu-operator-76d46f779b-6p8bl                         1/1     Running           0          5d15h</span>
-<span class="go">nvidia-container-toolkit-daemonset-pxwdm              0/1     Init:0/1          0          21s</span>
-<span class="go">nvidia-dcgm-exporter-g78h4                            0/1     Init:0/2          0          20s</span>
-<span class="go">nvidia-dcgm-j5bsj                                     0/1     Init:0/1          0          20s</span>
-<span class="go">nvidia-device-plugin-daemonset-b5lrj                  0/1     Init:0/1          0          20s</span>
-<span class="go">nvidia-driver-daemonset-415.92.202402201450-0-ggztt   0/2     PodInitializing   0          69s</span>
-<span class="go">nvidia-node-status-exporter-6lt9p                     1/1     Running           0          5d15h</span>
-<span class="go">nvidia-operator-validator-wpcq6                       0/1     Init:0/4          0          20s</span>
-</pre></div>
-</div>
-<p>To ensure the NVIDIA GPU Operator runs on OpenShift 4.15 you need to have a registry setup.
-You should configure a registry with a PVC openshift-image-registry, as explained in
-<a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/configuring-registry-operator.html">Image Registry Operator in OpenShift Container Platform</a>.</p>
-<p>If your storage registry is not configured and for non-production cluster, you can use an ephemeral
-storage (emptyDir):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch <span class="s1">&#39;{&quot;spec&quot;:{&quot;storage&quot;:{&quot;emptyDir&quot;:{}}}}&#39;</span>
-</pre></div>
-</div>
-<p>You can switch the registry in Managed state:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<p>% oc patch configs.imageregistry.operator.openshift.io cluster –type merge –patch ‘{“spec”:{“managementState”:”Managed”}}’</p>
-<p>When the registry is in Managed state, the NVIDIA GPU Operator creates the secrets:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>oc get secrets -n nvidia-gpu-operator
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                         TYPE                                    DATA   AGE</span>
-<span class="go">builder-dockercfg-rnt7v                      kubernetes.io/dockercfg                 1      59s</span>
-<span class="go">builder-token-wt69b                          kubernetes.io/service-account-token 4      63s</span>
-<span class="go">default-dockercfg-qmkpw                      kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">default-token-fv25v                          kubernetes.io/service-account-token 4            63s</span>
-<span class="go">deployer-dockercfg-bl9k4                     kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">deployer-token-7mbpl                         kubernetes.io/service-account-token 4      63s</span>
-<span class="go">gpu-operator-dockercfg-8q6kv                 kubernetes.io/dockercfg                 1      59s</span>
-<span class="go">gpu-operator-token-s74gl                     kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-container-toolkit-dockercfg-vxbjl     kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-container-toolkit-token-rjl4d         kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-dcgm-dockercfg-wbrhq                  kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-dcgm-exporter-dockercfg-b9r67         kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-dcgm-exporter-token-fbhjr             kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-dcgm-token-9dcdh                      kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-device-plugin-dockercfg-k9zzj         kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-device-plugin-token-lpt7v             kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-driver-dockercfg-lkpj9                kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-driver-token-7hw7h                    kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-gpu-feature-discovery-dockercfg-bhm2s   kubernetes.io/dockercfg           1      59s</span>
-<span class="go">nvidia-gpu-feature-discovery-token-m25nq     kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-mig-manager-dockercfg-vv8sg           kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-mig-manager-token-rqpnl               kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-node-status-exporter-dockercfg-wzlfm  kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-node-status-exporter-token-mjcvh      kubernetes.io/service-account-token 4      63s</span>
-<span class="go">nvidia-operator-validator-dockercfg-glr5p    kubernetes.io/dockercfg                 1          59s</span>
-<span class="go">nvidia-operator-validator-token-fx52q        kubernetes.io/service-account-token 4      63s</span>
-</pre></div>
-</div>
-<p>After few minutes, the NVIDIA GPU Operator is fully installed:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>oc get pods -n nvidia-gpu-operator
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                 READY   STATUS          RESTARTS   AGE</span>
-<span class="go">gpu-feature-discovery-sdqsz                          1/1     Running           0              3m22s</span>
-<span class="go">gpu-operator-76d46f779b-6p8bl                        1/1     Running           0                5d15h</span>
-<span class="go">nvidia-container-toolkit-daemonset-pxwdm             1/1     Running           0                3m22s</span>
-<span class="go">nvidia-cuda-validator-7j2p9                          0/1     Completed   0              45s</span>
-<span class="go">nvidia-dcgm-exporter-g78h4                           1/1     Running           0                3m21s</span>
-<span class="go">nvidia-dcgm-j5bsj                                    1/1     Running           0                3m21s</span>
-<span class="go">nvidia-device-plugin-daemonset-b5lrj                 1/1     Running           0                3m21s</span>
-<span class="go">nvidia-driver-daemonset-415.92.202402201450-0-ggztt   2/2    Running         0          4m10s</span>
-<span class="go">nvidia-node-status-exporter-6lt9p                    1/1     Running           0                5d15h</span>
-<span class="go">nvidia-operator-validator-wpcq6                      1/1     Running           0                3m21s</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Driver Toolkit, which enables entitlement-free deployments of the Operator, is available for certain z-streams on OpenShift
-4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
-all OpenShift versions prior to 4.9.9. See <a class="reference internal" href="#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a> for more information.</p>
-<p>You do not need an entitlement on OpenShift Container Platform versions greater than 4.9.9.</p>
-</div>
+<p>If the output from the preceding command is empty, <code class="docutils literal notranslate"><span class="pre">{}</span></code>, then your cluster is affected and you must configure your registry to use storage.
+Refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html">Configuring the registry for bare metal</a>
+for information about configuring the registry with a PVC.
+For platforms other than bare metal, refer to the additional resources section of the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/configuring-registry-operator.html">Image Registry Operator in OpenShift Container Platform</a> page.</p>
+<p>If the output from the preceding command is any value other than empty, your cluster is not affected.</p>
+</section>
+</section>
+<section id="id1">
+<h2>Preparing to Install the Operator<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
 <ul>
 <li><p>Verify your cluster has the OpenShift Driver toolkit:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get -n openshift is/driver-toolkit
@@ -245,7 +171,6 @@ all OpenShift versions prior to 4.9.9. See <a class="reference internal" href="#
 </div>
 </li>
 </ul>
-</section>
 </section>
 <section id="preparing-to-upgrade-the-operator">
 <h2>Preparing to Upgrade the Operator<a class="headerlink" href="#preparing-to-upgrade-the-operator" title="Permalink to this headline"></a></h2>
@@ -340,7 +265,7 @@ Also, we recommend maintaining entitlements for OpenShift versions &lt; 4.9.9.</
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 08, 2024.
+      <span class="lastupdated">Last updated on Mar 14, 2024.
       </span></p>
   </div>
 
