@@ -41,13 +41,34 @@ You can deploy the Operator on a a newly deployed cluster that was not upgraded 
 .. * OpenShift 4.8.22 and above z-streams
 .. * All the versions of OpenShift 4.9 except 4.9.8
 
-.. note::
+=========================================
+Special Considerations for OpenShift 4.15
+=========================================
 
-   The Driver Toolkit, which enables entitlement-free deployments of the Operator, is available for certain z-streams on OpenShift
-   4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
-   all OpenShift versions prior to 4.9.9. See :ref:`broken driver toolkit <broken-dtk>` for more information.
+In OpenShift 4.15, secrets are no longer automatically generated when the integrated OpenShift image registry is disabled.
+For more information, refer to the `OpenShift 4.15 Release Notes <https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets>`__.
 
-   You do not need an entitlement on OpenShift Container Platform versions greater than 4.9.9.
+This change affects the installation of NVIDIA GPU Operator.
+During installation, the Driver Toolkit daemon set checks for the existence of a ``build-dockercfg`` secret for the Driver Toolkit service account.
+When the secret does not exist, the installation stalls.
+
+You can run the following command to determine if your cluster is affected.
+
+.. code-block:: console
+
+   $ oc get configs.imageregistry.operator.openshift.io cluster -o jsonpath='{.spec.storage}{"\n"}'
+
+If the output from the preceding command is empty, ``{}``, then your cluster is affected and you must configure your registry to use storage.
+Refer to `Configuring the registry for bare metal <https://docs.openshift.com/container-platform/latest/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html>`__
+for information about configuring the registry with a PVC.
+For platforms other than bare metal, refer to the additional resources section of the `Image Registry Operator in OpenShift Container Platform <https://docs.openshift.com/container-platform/latest/registry/configuring-registry-operator.html>`__ page.
+
+If the output from the preceding command is any value other than empty, your cluster is not affected.
+
+
+*********************************
+Preparing to Install the Operator
+*********************************
 
 -  Verify your cluster has the OpenShift Driver toolkit:
 

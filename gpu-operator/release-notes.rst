@@ -107,6 +107,10 @@ Fixed issues
 Known Limitations
 ------------------
 
+* When installing on Red Hat OpenShift Container Platform 4.15 clusters that disable the integrated image registry,
+  secrets are no longer automatically generated and this change causes installation of the Operator to stall.
+  Refer to :ref:`special considerations for openshift 4.15` for more information.
+
 * The ``1g.12gb`` MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to ``all-balanced``.
 * The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
   because of the missing ``kernel-headers`` package within the container.
