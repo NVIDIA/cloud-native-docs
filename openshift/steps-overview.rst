@@ -48,7 +48,7 @@ Special Considerations for OpenShift 4.15
 In OpenShift 4.15, secrets are no longer automatically generated when the integrated OpenShift image registry is disabled.
 For more information, refer to the `OpenShift 4.15 Release Notes <https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets>`__.
 
-This change affects the instatllation of NVIDIA GPU Operator.
+This change affects the installation of NVIDIA GPU Operator.
 During installation, the Driver Toolkit daemon set checks for the existence of a ``build-dockercfg`` secret for the Driver Toolkit service account.
 When the secret does not exist, the installation stalls.
 
