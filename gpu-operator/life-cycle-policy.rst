@@ -108,8 +108,9 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - v23.9.2
 
    * - NVIDIA GPU Driver
-     - | `550.54.14 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-14/index.html>`_ (default),
-       | `535.161.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-161-07/index.html>`_,
+     - | `550.54.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-15/index.html>`_ (recommended),
+       | `550.54.14 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-14/index.html>`_ (default),
+       | `535.161.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-161-08/index.html>`_,
        | `470.239.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-239-06/index.html>`_,
 
    * - NVIDIA Driver Manager for K8s
