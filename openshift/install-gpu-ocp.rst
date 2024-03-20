@@ -366,7 +366,7 @@ Disable cluster monitoring in the ``nvidia-gpu-operator`` namespace by setting `
 
    .. code-block:: console
 
-       $ oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring=true
+       $ oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring=false
 
 If the GPU Operator is not installed in the suggested namespace, the GPU Operator will not automatically enable monitoring. Set the label manually as shown:
 
