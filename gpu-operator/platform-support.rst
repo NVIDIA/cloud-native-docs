@@ -351,12 +351,12 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.25, 1.26
+         - 1.25---1.28
          - 1.24, 1.25
          - 1.25
 
        * - Ubuntu 22.04 LTS
-         - 1.25, 1.26
+         - 1.25---1.28
          - 1.24, 1.25
          - 1.25
 
