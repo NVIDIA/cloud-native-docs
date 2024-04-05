@@ -406,6 +406,23 @@ options are used with the container-toolkit deployed with GPU Operator:
       - name: CONTAINERD_SET_AS_DEFAULT
         value: true
 
+
+If you need to specify custom values, refer to the following sample command for the syntax:
+
+
+.. code-block:: console
+
+  helm install gpu-operator -n gpu-operator --create-namespace \
+    nvidia/gpu-operator $HELM_OPTIONS \
+      --set toolkit.env[0].name=CONTAINERD_CONFIG \
+      --set toolkit.env[0].value=/etc/containerd/config.toml \
+      --set toolkit.env[1].name=CONTAINERD_SOCKET \
+      --set toolkit.env[1].value=/run/containerd/containerd.sock \
+      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
+      --set toolkit.env[2].value=nvidia \
+      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
+      --set-string toolkit.env[3].value=true
+
 These options are defined as follows:
 
 CONTAINERD_CONFIG
