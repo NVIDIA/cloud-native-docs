@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About GPU Telemetry &mdash; NVIDIA GPU Telemetry 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About GPU Telemetry" href="about-telemetry.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="#">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">DCGM Exporter</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about-telemetry.html">About GPU Telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dcgm-exporter.html">DCGM Exporter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integrating-telemetry-kubernetes.html">Integrating GPU Telemetry into Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kube-prometheus.html">Setting up Prometheus</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">NVIDIA GPU Telemetry</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>About GPU Telemetry</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+</div>
+<section id="about-gpu-telemetry">
+<h1>About GPU Telemetry<a class="headerlink" href="#about-gpu-telemetry" title="Permalink to this headline"></a></h1>
+<p>Monitoring stacks usually consist of a collector, a time-series database to store metrics and a visualization layer.
+A popular open-source stack is <a class="reference external" href="https://prometheus.io/">Prometheus</a> used along with <a class="reference external" href="https://grafana.com/">Grafana</a> as
+the visualization tool to create rich dashboards. Prometheus also includes an <a class="reference external" href="https://github.com/prometheus/alertmanager">Alertmanager</a>,
+to create and manage alerts. Prometheus is deployed along with <a class="reference external" href="https://github.com/kubernetes/kube-state-metrics">kube-state-metrics</a> and
+<a class="reference external" href="https://github.com/prometheus/node_exporter">node_exporter</a> to expose cluster-level metrics for Kubernetes API objects and node-level
+metrics such as CPU utilization.</p>
+<p>An architecture of Prometheus is shown in the figure below:</p>
+<a class="reference internal image-reference" href="https://boxboat.com/2019/08/08/monitoring-kubernetes-with-prometheus/prometheus-architecture.png"><img alt="https://boxboat.com/2019/08/08/monitoring-kubernetes-with-prometheus/prometheus-architecture.png" src="https://boxboat.com/2019/08/08/monitoring-kubernetes-with-prometheus/prometheus-architecture.png" style="width: 800px;" /></a>
+<p>To gather GPU telemetry in Kubernetes, its recommended to use DCGM Exporter.  DCGM Exporter, based on <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> exposes
+GPU metrics for Prometheus and can be visualized using Grafana.  DCGM Exporter is architected to take advantage of
+<code class="docutils literal notranslate"><span class="pre">KubeletPodResources</span></code> <a class="reference external" href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/">API</a> and exposes GPU metrics in a format that can be
+scraped by Prometheus. A <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> is also included to expose endpoints.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="about-telemetry.html" class="btn btn-neutral float-right" title="About GPU Telemetry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2024, NVIDIA.
+      <span class="lastupdated">Last updated on Apr 05, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
