@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
     outputs:
       changed: ${{ steps.change.outputs.changed }}
       image: ${{ steps.change.outputs.image }}
@@ -42,12 +43,17 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Detect change
         id: change
+        shell: bash
         run: |
           export COMMIT_SHORT_SHA="${GITHUB_SHA:0:8}"
-          if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME}:${TAG}" 2>&1 > /dev/null ; then export NEEDS_IMAGE=true ; fi
+          if ! docker manifest inspect "${REGISTRY}/${IMAGE_NAME,,}:${TAG}" 2>&1 > /dev/null ; then
+            echo "image not found...${REGISTRY}/${IMAGE_NAME,,}:${TAG}"
+            export NEEDS_IMAGE=true
+          fi
           def_branch=$(gh api "repos/${GITHUB_REPOSITORY}" -q '.default_branch')
           git fetch origin "${def_branch}"
-          files=$(git diff --name-only "${GITHUB_SHA}" "origin/${def_branch}" | tr '\n' ' ')
+          files=$(git diff --name-only "${GITHUB_SHA}" FETCH_HEAD | tr '\n' ' ')
+          echo "${files}"
           if echo "${files}" | grep -q "deps/\|Dockerfile\|repo.toml"; then export NEEDS_IMAGE=true ; fi
           if [[ "${NEEDS_IMAGE}" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -60,7 +66,6 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "image=${REGISTRY}/${IMAGE_NAME,,}:${TAG}" >> "$GITHUB_OUTPUT"
           fi
-        shell: bash
 
   build-and-push-image:
     needs: dockerfile-changed
