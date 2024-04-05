@@ -89,7 +89,9 @@ the mixed MIG strategy.
 Limitations
 ===========
 
-DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
+- DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
+- The Operator does not monitor changes to a time-slicing config map.
+  Refer to :ref:`time-slicing-update-config-map`.
 
 
 Changes to Node Labels
@@ -254,7 +256,7 @@ and want to apply the same time-slicing configuration on all nodes in the cluste
           -n gpu-operator --type merge \
           -p '{"spec": {"devicePlugin": {"config": {"name": "time-slicing-config-all", "default": "any"}}}}'
 
-#. (Optional) Confirm that the ``gpu-feature-discovery`` and
+#. Optional: Confirm that the ``gpu-feature-discovery`` and
    ``nvidia-device-plugin-daemonset`` pods restart.
 
    .. code-block:: console
@@ -300,7 +302,7 @@ control which configuration is applied to which nodes.
    when the device plugin pods redeploy, they do not automatically apply the time-slicing
    configuration to all nodes.
 
-#. (Optional) Confirm that the ``gpu-feature-discovery`` and
+#. Optional: Confirm that the ``gpu-feature-discovery`` and
    ``nvidia-device-plugin-daemonset`` pods restart.
 
    .. code-block:: console
@@ -373,6 +375,23 @@ Perform the following steps to configure time-slicing before installing the oper
 After installation, refer to :ref:`time-slicing-verify`.
 
 
+.. _time-slicing-update-config-map:
+
+Updating a Time-Slicing Config Map
+==================================
+
+The Operator does not monitor the time-slicing config maps.
+As a result, if you modify a config map, the device plugin pods do not restart and do not apply the modified configuration.
+
+To apply the modified config map, manually restart the device plugin pods:
+
+.. code-block:: console
+
+   $ kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-daemonset
+
+Currently running workloads are not affected and continue to run, though NVIDIA recommends performing the restart during a maintenance period.
+
+
 .. _time-slicing-verify:
 
 ********************************************
@@ -440,7 +459,7 @@ Perform the following steps to verify that the time-slicing configuration is app
         nvidia.com/gpu.shared: 16
         ...
 
-#. (Optional) Deploy a workload to validate GPU time-slicing:
+#. Optional: Deploy a workload to validate GPU time-slicing:
 
    * Create a file, such as ``time-slicing-verification.yaml``, with contents like the following:
 
