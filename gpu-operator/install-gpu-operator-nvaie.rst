@@ -39,18 +39,15 @@ About NVIDIA AI Enterprise and Supported Platforms
 **************************************************
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
-Additional information can be found at the `NVIDIA AI Enterprise <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/>`_ web page.
 
-NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
-The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.
+Deploying the GPU Operator with NVIDIA AI Enterprise differs from the GPU Operator in the public NGC catalog.
+The differences are:
 
-The pre-configured GPU Operator differs from the GPU Operator in the public NGC catalog. The differences are:
+  * It is configured to use a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.
 
-  * It is configured to use a prebuilt vGPU driver image (Only available to NVIDIA AI Enterprise customers)
+  * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_.
 
-  * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_
-
-The following sections apply to the following configurations:
+The GPU Operator with NVIDIA AI Enterprise is supported with the following platforms:
 
 * Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU
 * VMware vSphere with Tanzu
@@ -67,85 +64,45 @@ For Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
 Installing GPU Operator
 ***********************
 
-To install GPU Operator with NVIDIA AI Enterprise, apply the following steps.
+The GPU Operator is installed using Bash script.
 
-.. note::
+Prerequisites
+=============
 
-   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/gpu-operator-nvaie.sh>`__, which automates the below installation instructions.
-   Create the ``gpu-operator`` namespace:
+- A client configuration token has been generated for the client on which the script will install the vGPU guest driver.
+  Refer to `Generating a Client Configuration Token <https://docs.nvidia.com/license-system/latest/nvidia-license-system-user-guide/index.html#generating-client-configuration-token>`__
+  in the *NVIDIA License System User Guide* for more information.
+- An NGC CLI API key that is used to create an image pull secret.
+  The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
+  Refer to `Generating Your NGC API Key <https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key>`__
+  in the *NVIDIA NGC Private Registry User Guide* for more information.
 
-.. code-block:: console
+Procedure
+=========
 
-    $ kubectl create namespace gpu-operator
+#. Export the NGC CLI API key and your email address as environment variables:
 
-Create an empty vGPU license configuration file:
+   .. code-block:: console
+    
+      $ export NGC_API_KEY="M2Vub3QxYmgyZ..."
+      $ export NGC_USER_EMAIL="user@example.com"
 
-.. code-block:: console
+#. Go to the `NVIDIA GPU Operator - Deploy Installer Script <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5>`__ web page
+   on NVIDIA NGC.
 
-  $ sudo touch gridd.conf
+   - Click **
 
-Generate and download a NLS client license token. Please refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+   Copy the downloaded script to the same directory as the client configuration token.
 
-Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
+#. Rename the client configuration token that you downloaded to ``client_configuration_token.tok``.
 
-Create the ``licensing-config`` ConfigMap object in the ``gpu-operator`` namespace. Both the vGPU license
-configuration file and the NLS client license token will be added to this ConfigMap:
+   Originally, the client configuration token is named to match the pattern: ``client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok``.
 
-.. code-block:: console
+#. From the directory that contains the downloaded script and the client configuration token, run the script:
 
-    $ kubectl create configmap licensing-config \
-        -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
+   .. code-block:: console
 
-Create an image pull secret in the ``gpu-operator`` namespace for the private
-registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for
-use with NVIDIA GPU Operator:
-
-  * Set the registry secret name:
-
-  .. code-block:: console
-
-    $ export REGISTRY_SECRET_NAME=ngc-secret
-
-
-  * Set the private registry name:
-
-  .. code-block:: console
-
-    $ export PRIVATE_REGISTRY=nvcr.io/nvaie
-
-  * Create an image pull secret in the ``gpu-operator`` namespace with the registry
-    secret name and the private registry name that you set. Replace ``password``,
-    and ``email-address`` with your NGC API key and email address respectively:
-
-  .. code-block:: console
-
-    $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-        --docker-server=${PRIVATE_REGISTRY} \
-        --docker-username='$oauthtoken' \
-        --docker-password='<password>' \
-        --docker-email='<email-address>' \
-        -n gpu-operator
-
-
-Add the NVIDIA AI Enterprise Helm repository, where password is the NGC API key for accessing the NVIDIA Enterprise Collection that you generated:
-
-.. code-block:: console
-
-  $ helm repo add nvaie https://helm.ngc.nvidia.com/nvaie \
-    --username='$oauthtoken' --password='<password>' \
-    && helm repo update
-
-
-Install the NVIDIA GPU Operator:
-
-.. code-block:: console
-
-   $ helm install --wait gpu-operator nvaie/gpu-operator-<M>-<m> -n gpu-operator
-
-Replace *M* and *m* with the major and minor release values, such as ``3-1``.
-
-To deploy the Helm chart with some customizations, refer to
-:ref:`Chart Customization Options <gpu-operator-helm-chart-options>`.
+      $ bash gpu-operator-nvaie.sh install
 
 
 *********************************************************************
@@ -269,3 +226,9 @@ with
 Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
 
 GPU Operator will redeploy sequentially all the driver pods with this new licensing information.
+
+*******************
+Related Information
+*******************
+
+-  `NVIDIA AI Enterprise <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/>`_ web page.
