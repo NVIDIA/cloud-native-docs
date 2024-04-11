@@ -19,6 +19,11 @@
 .. _nvaie-rn: https://docs.nvidia.com/ai-enterprise/latest/release-notes/index.html
 .. |nvaie-rn| replace:: *NVIDIA AI Enterprise Release Notes*
 
+.. |ellipses-img| image:: https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg
+    :width: 14px
+    :height: 14px
+    :alt: Actions button
+
 .. Date: Aug 18 2021
 .. Author: cdesiniotis
 
@@ -87,15 +92,19 @@ Procedure
       $ export NGC_API_KEY="M2Vub3QxYmgyZ..."
       $ export NGC_USER_EMAIL="user@example.com"
 
-#. Go to the `NVIDIA GPU Operator - Deploy Installer Script <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5>`__ web page
-   on NVIDIA NGC.
+#. Go to the
+   `NVIDIA GPU Operator - Deploy Installer Script <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5>`__
+   web page on NVIDIA NGC.
 
-   - Click **
+   Click the **File Browser** tab, identify your NVIDIA AI Enterprise release, click |ellipses-img|, and select **Download File**.
 
    Copy the downloaded script to the same directory as the client configuration token.
 
-#. Rename the client configuration token that you downloaded to ``client_configuration_token.tok``.
+   If your NVIDIA AI Enterprise release is older than the minimum shown, refer to an older version of the documentation,
+   such as the `23.9.1 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html>`__
+   version.
 
+#. Rename the client configuration token that you downloaded to ``client_configuration_token.tok``.
    Originally, the client configuration token is named to match the pattern: ``client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok``.
 
 #. From the directory that contains the downloaded script and the client configuration token, run the script:
