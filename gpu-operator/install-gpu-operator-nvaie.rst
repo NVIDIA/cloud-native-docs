@@ -69,7 +69,12 @@ For Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
 Installing GPU Operator
 ***********************
 
-The GPU Operator is installed using Bash script.
+Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.
+
+To deploy an earlier version of NVIDIA AI Enterprise, refer to the documentation for the GPU Operator version specified in the NVIDIA AI Enterprise documentation
+or an earlier version of the GPU Operator documentation, such as the 
+`23.9.1 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html>`__
+version.
 
 Prerequisites
 =============
@@ -100,10 +105,6 @@ Procedure
 
    Copy the downloaded script to the same directory as the client configuration token.
 
-   If your NVIDIA AI Enterprise release is older than the minimum shown, refer to an older version of the documentation,
-   such as the `23.9.1 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html>`__
-   version.
-
 #. Rename the client configuration token that you downloaded to ``client_configuration_token.tok``.
    Originally, the client configuration token is named to match the pattern: ``client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok``.
 
@@ -112,78 +113,6 @@ Procedure
    .. code-block:: console
 
       $ bash gpu-operator-nvaie.sh install
-
-
-*********************************************************************
-Installing GPU Operator with the NVIDIA Datacenter Driver
-*********************************************************************
-
-To install GPU Operator on baremetal with the NVIDIA Datacenter Driver, apply the following steps.
-
-.. note::
-
-   You can also use the following `script <https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh>`__, which automates the below installation instructions.
-   Create the ``gpu-operator`` namespace:
-
-.. code-block:: console
-
-    $ kubectl create namespace gpu-operator
-
-
-Create an image pull secret in the ``gpu-operator`` namespace for the private
-registry that contains the NVIDIA GPU Operator:
-
-  * Set the registry secret name:
-
-  .. code-block:: console
-
-    $ export REGISTRY_SECRET_NAME=ngc-secret
-
-
-  * Set the private registry name:
-
-  .. code-block:: console
-
-    $ export PRIVATE_REGISTRY=nvcr.io/nvaie
-
-  * Create an image pull secret in the ``gpu-operator`` namespace with the registry
-    secret name and the private registry name that you set. Replace ``password``,
-    and ``email-address`` with your NGC API key and email address respectively:
-
-  .. code-block:: console
-
-    $ kubectl create secret docker-registry ${REGISTRY_SECRET_NAME} \
-        --docker-server=${PRIVATE_REGISTRY} \
-        --docker-username='$oauthtoken' \
-        --docker-password='<password>' \
-        --docker-email='<email-address>' \
-        -n gpu-operator
-
-
-Add the NVIDIA AI Enterprise Helm repository, where password is the NGC API key for accessing the NVIDIA Enterprise Collection that you generated:
-
-.. code-block:: console
-
-  $ helm repo add nvaie https://helm.ngc.nvidia.com/nvaie \
-    --username='$oauthtoken' --password='<password>' \
-    && helm repo update
-
-
-Install the NVIDIA GPU Operator:
-
-.. code-block:: console
-
-    $ helm install --wait gpu-operator nvaie/gpu-operator-<M>-<m> -n gpu-operator \
-      --set driver.repository=nvcr.io/nvidia \
-      --set driver.image=driver \
-      --set driver.version=<driver-version> \
-      --set driver.licensingConfig.configMapName=""
-
-Replace *M* and *m* with the major and minor release values, such as ``3-1``.
-Refer to the |nvaie-rn|_ for information about supported GPU Driver versions.
-
-To deploy the Helm chart with some customizations, refer to
-:ref:`Chart Customization Options <gpu-operator-helm-chart-options>`.
 
 
 *********************************
