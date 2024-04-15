@@ -62,6 +62,9 @@ New Features
     - NVIDIA Kubernetes Device Plugin version v1.14.5
     - NVIDIA MIG Manager version v0.6.0
 
+* Added support for NVIDIA AI Enterprise release 5.0.
+  Refer to :doc:`install-gpu-operator-nvaie` for information about installing the Operator with a Bash script.
+
 .. _v23.9.2-fixed-issues:
 
 Fixed issues
