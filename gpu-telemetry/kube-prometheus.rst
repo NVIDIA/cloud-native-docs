@@ -6,7 +6,7 @@ Setting up Prometheus
 #####################
 
 .. contents::
-   :depth: 5
+   :depth: 2
    :local:
    :backlinks: none
 
@@ -111,6 +111,9 @@ Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in
           names:
           - gpu-operator
       relabel_configs:
+      - source_labels: [__meta_kubernetes_endpoints_name]
+        action: drop
+        regex: .*-node-feature-discovery-master
       - source_labels: [__meta_kubernetes_pod_node_name]
         action: replace
         target_label: kubernetes_node
