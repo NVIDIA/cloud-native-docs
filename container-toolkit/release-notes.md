@@ -10,6 +10,50 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.15.0
+
+This release of the NVIDIA Container Toolkit `v1.15.0` is a major feature release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.15.0`
+- `libnvidia-container-tools 1.15.0`
+- `libnvidia-container1 1.15.0`
+
+   ```{note}
+   The `v1.14.0` release was the last release to include the `nvidia-container-runtime`
+   and `nvidia-docker2` packages.
+   All required functionality is included in the `nvidia-container-toolkit` package.
+   This toolkit package includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.
+   ```
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.15.0-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.15.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.15.0`)
+
+### Packaging Changes
+
+* Removed the `nvidia-container-runtime` and `nvidia-docker2` packages.
+* Removed the `libseccomp` dependency from the `nvidia-container-toolkit` package.
+* Added a `libnvidia-container-libseccomp2` meta package to allow for the `libseccomp` dependency to be satisfied by `libseccomp2` on SUSE-based systems.
+* Removed the `libnvidia-container0` jetpack dependency included for legacy Tegra-based systems.
+
+### Fixes and Features
+
+* Included `nvidia/nvoptix.bin` and `vulkan/icd.d/nvidia_layers.json` in list of graphics mounts.
+* Fixed a bug in `nvidia-ctk config` command when using `--set`. The types of applied config options are now applied correctly.
+* Added logging of the explicitly requested runtime mode.
+* Added detection of `libnvdxgdmal.so.1` on WSL2 systems. This library is required for newer driver versions.
+* Fixed a bug in determining default `nvidia-container-runtime.user` config value on SUSE-based systems. The incorrect default value caused permission errors when launching containers.
+* Added `crun` to the list of configured low-level runtimes. This enhancement improves CRI-O support.
+* Added a `--cdi.enabled` option to `nvidia-ctk runtime configure` command to enable CDI in containerd and Docker. For CDI support, Docker 25 or later is required.
+
+### Enhancements to container-toolkit Container Images
+
+* Updated the CUDA base image version to 12.4.1.
+* Removed the centos7 image. The ubi8 image can be used on all RPM-based platforms.
+
 ## NVIDIA Container Toolkit 1.14.6
 
 This release of the NVIDIA Container Toolkit `v1.14.6` adds support for certain features of the the 550.x CUDA driver.
