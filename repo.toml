@@ -75,7 +75,11 @@ project_build_order = [
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
+<<<<<<< HEAD
 version = "1.14.6"
+=======
+version = "1.15.0"
+>>>>>>> b1486c8 (Add release notes for v1.15.0 release)
 copyright_start = 2020
 redirects = [
   { path="concepts.html", target="index.html" },
