@@ -247,6 +247,7 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 #. Label the worker nodes that you want to use with confidential containers.
 
    This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
+   Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes.
 
 #. Install the Confidential Containers Operator.
 
@@ -274,6 +275,13 @@ Perform the following steps to install and verify the Confidential Containers Op
    .. code-block:: console
 
       $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
+
+   Alternatively, set the default sandbox workload to ``vm-passthrough`` to run |project-name| on all worker nodes:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
+          -p='[{"op": "replace", "path": "/spec/sandboxWorkloads/defaultWorkload", "value": "vm-passthrough"}]'
 
 #. Set the Operator version in an environment variable:
 
@@ -305,7 +313,7 @@ Perform the following steps to install and verify the Confidential Containers Op
       service/cc-operator-controller-manager-metrics-service created
       deployment.apps/cc-operator-controller-manager create
 
-#. (Optional) View the pods and services in the ``confidential-containers-system`` namespace:
+#. Optional: View the pods and services in the ``confidential-containers-system`` namespace:
 
    .. code-block:: console
 
@@ -360,7 +368,7 @@ Perform the following steps to install and verify the Confidential Containers Op
 
    Wait a few minutes for the Operator to create the base runtime classes.
 
-#. (Optional) View the runtime classes:
+#. Optional: View the runtime classes:
 
    .. code-block:: console
 
