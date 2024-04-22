@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using NVIDIA vGPU &mdash; NVIDIA GPU Operator 23.9.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NVIDIA AI Enterprise" href="install-gpu-operator-nvaie.html" />
+    <link rel="prev" title="GPU Driver Upgrades" href="gpu-driver-upgrades.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Using NVIDIA vGPU</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-nvidia-vgpu">
+<span id="install-gpu-operator-vgpu"></span><h1>Using NVIDIA vGPU<a class="headerlink" href="#using-nvidia-vgpu" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-installing-the-operator-and-nvidia-vgpu" id="id1">About Installing the Operator and NVIDIA vGPU</a></p></li>
+<li><p><a class="reference internal" href="#platform-support" id="id2">Platform Support</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id3">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#download-vgpu-software" id="id4">Download vGPU Software</a></p></li>
+<li><p><a class="reference internal" href="#build-the-driver-container" id="id5">Build the Driver Container</a></p></li>
+<li><p><a class="reference internal" href="#configure-the-cluster-with-the-vgpu-license-information-and-the-driver-container-image" id="id6">Configure the Cluster with the vGPU License Information and the Driver Container Image</a></p></li>
+<li><p><a class="reference internal" href="#install-the-operator" id="id7">Install the Operator</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id8">Next Steps</a></p></li>
+</ul>
+</div>
+<section id="about-installing-the-operator-and-nvidia-vgpu">
+<h2>About Installing the Operator and NVIDIA vGPU<a class="headerlink" href="#about-installing-the-operator-and-nvidia-vgpu" title="Permalink to this headline"></a></h2>
+<p>NVIDIA Virtual GPU (vGPU) enables multiple virtual machines (VMs) to have simultaneous,
+direct access to a single physical GPU, using the same NVIDIA graphics drivers that are
+deployed on non-virtualized operating systems.</p>
+<p>The GPU Operator can install the</p>
+<p>The installation steps assume <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> as the default namespace for installing the NVIDIA GPU Operator.
+In case of Red Hat OpenShift Container Platform, the default namespace is <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>.
+Change the namespace shown in the commands accordingly based on your cluster configuration.
+Also replace <code class="docutils literal notranslate"><span class="pre">kubectl</span></code> in the below commands with <code class="docutils literal notranslate"><span class="pre">oc</span></code> when running on RedHat OpenShift.</p>
+<p>NVIDIA vGPU is only supported with the NVIDIA License System.</p>
+</section>
+<section id="platform-support">
+<h2>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline"></a></h2>
+<p>For information about the supported platforms, see <a class="reference internal" href="platform-support.html#supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products"><span class="std std-ref">Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products</span></a>.</p>
+<p>For Red Hat OpenShift Virtualization, see <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html#nvidia-gpu-operator-with-openshift-virtualization" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA GPU Operator with OpenShift Virtualization</span></a>.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<p>Before installing the GPU Operator on NVIDIA vGPU, ensure the following:</p>
+<ul>
+<li><p>The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines.
+Refer to <a class="reference external" href="https://docs.nvidia.com/grid/">NVIDIA Virtual GPU Software Documentation</a> for details.</p></li>
+<li><p>You must have access to the NVIDIA Enterprise Application Hub at <a class="reference external" href="https://nvid.nvidia.com/dashboard/">https://nvid.nvidia.com/dashboard/</a> and the NVIDIA Licensing Portal.</p></li>
+<li><p>Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).</p></li>
+<li><p>You must generate and download a client configuration token for your CLS instance or DLS instance.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/"><em>NVIDIA License System Quick Start Guide</em></a> for information about generating a token.</p></li>
+<li><p>You have access to a private registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.</p></li>
+<li><p>Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.</p></li>
+<li><p>Each Kubernetes worker node in the cluster has access to the private registry.
+Private registry access is usually managed through image pull secrets.
+You specify the secrets to the NVIDIA GPU Operator when you install the Operator with Helm.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.</p>
+</div>
+</li>
+</ul>
+</section>
+<section id="download-vgpu-software">
+<h2>Download vGPU Software<a class="headerlink" href="#download-vgpu-software" title="Permalink to this headline"></a></h2>
+<p>Perform the following steps to download the vGPU software and the latest NVIDIA vGPU driver catalog file from the NVIDIA Licensing Portal.</p>
+<ol class="arabic simple">
+<li><p>Log in to the NVIDIA Enterprise Application Hub at <a class="reference external" href="https://nvid.nvidia.com/dashboard">https://nvid.nvidia.com/dashboard</a> and then click <strong>NVIDIA LICENSING PORTAL</strong>.</p></li>
+<li><p>In the left navigation pane of the NVIDIA Licensing Portal, click <strong>SOFTWARE DOWNLOADS</strong>.</p></li>
+<li><p>Locate <strong>vGPU Driver Catalog</strong> in the table of driver downloads and click <strong>Download</strong>.</p></li>
+<li><p>Click the <strong>PRODUCT FAMILY</strong> menu and select <strong>vGPU</strong> to filter the downloads to vGPU only.</p></li>
+<li><p>Locate the vGPU software for your platform in the table of software downloads and click <strong>Download</strong>.</p></li>
+</ol>
+<p>The vGPU software is packaged as a ZIP file.
+Unzip the file to obtain the NVIDIA vGPU Linux guest driver.
+The guest driver file name follows the pattern <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-grid.run</span></code>.</p>
+</section>
+<section id="build-the-driver-container">
+<h2>Build the Driver Container<a class="headerlink" href="#build-the-driver-container" title="Permalink to this headline"></a></h2>
+<p>Perform the following steps to build and push a container image that includes the vGPU Linux guest driver.</p>
+<ol class="arabic">
+<li><p>Clone the driver container repository and change directory into the repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> driver
+</pre></div>
+</div>
+</li>
+<li><p>Change directory to the operating system name and version under the driver directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> ubuntu20.04
+</pre></div>
+</div>
+<p>For Red Hat OpenShift Container Platform, use a directory that includes <code class="docutils literal notranslate"><span class="pre">rhel</span></code> in the directory name.</p>
+</li>
+<li><p>Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-grid.run drivers/
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp vgpuDriverCatalog.yaml drivers/
+</pre></div>
+</div>
+</li>
+<li><p>Set environment variables for building the driver container image.</p>
+<ul>
+<li><p>Specify your private registry URL:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>&lt;private-registry-url&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Specify the <code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> environment variable to identify the guest operating system name and version:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu20.04
+</pre></div>
+</div>
+<p>The value must match the guest operating system version.
+For Red Hat OpenShift Container Platform, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.&lt;x&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">x</span></code> is the supported minor OCP version.
+Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a> for the list of supported OS distributions.</p>
+</li>
+<li><p>Specify the driver container image tag, such as <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.0.0
+</pre></div>
+</div>
+<p>The specified value can be any user-defined value.
+The value is used to install the Operator in a subsequent step.</p>
+</li>
+<li><p>Specify the version of the CUDA base image to use when building the driver container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.8.0
+</pre></div>
+</div>
+<p>The CUDA version only specifies which base image is used to build the driver container.
+The version does not have any correlation to the version of CUDA that is associated with or supported by the
+resulting driver container.</p>
+</li>
+<li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append <code class="docutils literal notranslate"><span class="pre">-grid</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">525</span>.60.13-grid
+</pre></div>
+</div>
+<p>The Operator automatically selects the compatible guest driver version from the drivers bundled with the <code class="docutils literal notranslate"><span class="pre">driver</span></code> image.
+If you disable the version check by specifying <code class="docutils literal notranslate"><span class="pre">--build-arg</span> <span class="pre">DISABLE_VGPU_VERSION_CHECK=true</span></code> when you build the driver image,
+then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVER_VERSION</span></code> value is used as default.</p>
+</li>
+</ul>
+</li>
+<li><p>Build the driver container image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker build <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_TYPE</span><span class="o">=</span>vgpu <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="nv">$VGPU_DRIVER_VERSION</span> <span class="se">\</span>
+    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="nv">$CUDA_VERSION</span> <span class="se">\</span>
+    --build-arg <span class="nv">TARGETARCH</span><span class="o">=</span>amd64 <span class="se">\ </span> <span class="c1"># amd64 or arm64</span>
+<span class="go">    -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .</span>
+</pre></div>
+</div>
+</li>
+<li><p>Push the driver container image to your private registry.</p>
+<ol class="arabic">
+<li><p>Log in to your private registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker login <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> --username<span class="o">=</span>&lt;username&gt;
+</pre></div>
+</div>
+<p>Enter your password when prompted.</p>
+</li>
+<li><p>Push the driver container image to your private registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="configure-the-cluster-with-the-vgpu-license-information-and-the-driver-container-image">
+<h2>Configure the Cluster with the vGPU License Information and the Driver Container Image<a class="headerlink" href="#configure-the-cluster-with-the-vgpu-license-information-and-the-driver-container-image" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Create an NVIDIA vGPU license file named <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> with contents like the following example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Description: Set Feature to be enabled
+# Data type: integer
+# Possible values:
+# 0 =&gt; for unlicensed state
+# 1 =&gt; for NVIDIA vGPU
+# 2 =&gt; for NVIDIA RTX Virtual Workstation
+# 4 =&gt; for NVIDIA Virtual Compute Server
+FeatureType=1
+</pre></div>
+</div>
+</li>
+<li><p>Rename the client configuration token file that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>
+using a command like the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp ~/Downloads/client_configuration_token_03-28-2023-16-16-36.tok client_configuration_token.tok
+</pre></div>
+</div>
+<p>The file must be named <code class="docutils literal notranslate"><span class="pre">client_configuraton_token.tok</span></code>.</p>
+</li>
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Create a config map that is named <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> using the <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config <span class="se">\</span>
+    -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>client_configuration_token.tok
+</pre></div>
+</div>
+</li>
+<li><p>Create an image pull secret in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace with the registry secret and private registry.</p>
+<ol class="arabic">
+<li><p>Set an environment variable with the name of the secret:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">REGISTRY_SECRET_NAME</span><span class="o">=</span>registry-secret
+</pre></div>
+</div>
+</li>
+<li><p>Create the secret:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret docker-registry <span class="si">${</span><span class="nv">REGISTRY_SECRET_NAME</span><span class="si">}</span> <span class="se">\</span>
+    --docker-server<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> --docker-username<span class="o">=</span>&lt;username&gt; <span class="se">\</span>
+    --docker-password<span class="o">=</span>&lt;password&gt; <span class="se">\</span>
+    --docker-email<span class="o">=</span>&lt;email-id&gt; -n gpu-operator
+</pre></div>
+</div>
+</li>
+</ol>
+<p>You need to specify the secret name <code class="docutils literal notranslate"><span class="pre">REGISTRY_SECRET_NAME</span></code> when you install the GPU Operator with Helm.</p>
+</li>
+</ol>
+</section>
+<section id="install-the-operator">
+<h2>Install the Operator<a class="headerlink" href="#install-the-operator" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>Install the Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --set driver.repository<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
+     --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
+     --set driver.imagePullSecrets<span class="o">={</span><span class="nv">$REGISTRY_SECRET_NAME</span><span class="o">}</span> <span class="se">\</span>
+     --set driver.licensingConfig.configMapName<span class="o">=</span>licensing-config
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The preceding command installs the Operator with the default configuration.
+Refer to <a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Chart Customization Options</span></a> for information about configuration options.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html#verify-gpu-operator-install" title="(in edge)"><span>Verify GPU Operator Install</span></a></p></li>
+<li><p><a class="reference internal" href="getting-started.html#running-sample-gpu-applications"><span class="std std-ref">Verification: Running Sample GPU Applications</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpu-driver-upgrades.html" class="btn btn-neutral float-left" title="GPU Driver Upgrades" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install-gpu-operator-nvaie.html" class="btn btn-neutral float-right" title="NVIDIA AI Enterprise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2024, NVIDIA.
+      <span class="lastupdated">Last updated on Apr 22, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
