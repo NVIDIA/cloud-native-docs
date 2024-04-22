@@ -4,6 +4,15 @@ metadata:
   name: demo-gold
 spec:
   driverType: gpu
+  gdrcopy:
+    enabled: false
+    repository: nvcr.io/nvidia/cloud-native
+    image: gdrdrv
+    version: v2.4.1
+    imagePullPolicy: IfNotPresent
+    imagePullSecrets: []
+    env: []
+    args: []
   image: driver
   imagePullPolicy: IfNotPresent
   imagePullSecrets: []

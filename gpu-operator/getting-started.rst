@@ -198,6 +198,14 @@ These options can be used with ``--set`` when installing with Helm.
      - Depends on the version of the Operator. See the Component Matrix
        for more information on supported drivers.
 
+   * - ``gdrcopy.enabled``
+     - Enables support for GDRCopy.
+       When set to ``true``, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
+       For information about GDRCopy, refer to the `gdrcopy <https://developer.nvidia.com/gdrcopy>`__ page.
+
+       You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
+     - ``false``
+
    * - ``kataManager.enabled``
      - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
        Refer to :doc:`gpu-operator-kata` for more information.

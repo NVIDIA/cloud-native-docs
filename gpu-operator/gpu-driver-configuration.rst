@@ -118,6 +118,9 @@ GPUDirect RDMA and GPUDirect Storage
   Each NVIDIA driver custom resource can specify how to configure GPUDirect RDMA and GPUDirect Storage (GDS).
   Refer to :ref:`GPUDirect RDMA and GPUDirect Storage` for the platform support and prerequisites.
 
+GDRCopy
+  Each NVIDIA driver custom resource can enable the GDRCopy sidecar container in the driver pod.
+
 Precompiled and signed drivers
   You can run the default driver type that is compiled when the driver pod starts on some nodes
   and precompiled driver containers on other nodes.
@@ -174,6 +177,15 @@ The following table describes some of the fields in the custom resource.
      - Specifies environment variables to pass to the driver container.
      - None
 
+   * - ``gdrcopy.enabled``
+     - Specifies whether to deploy the GDRCopy Driver.
+       When set to ``true`` the GDRCopy Driver image runs as a sidecar container.
+     - ``false``
+
+   * - ``gds.enabled``
+     - Specifies whether to enable GPUDirect Storage.
+     - ``false``
+
    * - ``image``
      - Specifies the driver container image name.
      - ``driver``
@@ -201,6 +213,10 @@ The following table describes some of the fields in the custom resource.
    * - ``priorityClassName``
      - Specifies the priority class for the driver pod.
      - ``system-node-critical``
+
+   * - ``rdma.enabled``
+     - Specifies whether to configure GPUDirect RDMA.
+     - ``false``
 
    * - ``repository``
      - Specifies the container registry that contains the driver container.
