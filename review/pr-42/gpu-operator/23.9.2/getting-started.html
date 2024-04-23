@@ -351,7 +351,14 @@ Set this variable to <code class="docutils literal notranslate"><span class="pre
 <td><p>The GPU operator deploys <code class="docutils literal notranslate"><span class="pre">PodSecurityPolicies</span></code> if enabled.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">toolkit.enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
+<td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.
+Refer to <a class="reference internal" href="gpu-operator-kubevirt.html"><span class="doc">KubeVirt</span></a>, <a class="reference internal" href="gpu-operator-kata.html"><span class="doc">Kata Containers</span></a>, or <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">Confidential Containers</span></a>.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">toolkit.enabled</span></code></p></td>
 <td><p>By default, the Operator deploys the NVIDIA Container Toolkit (<code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> stack)
 as a container on the system. Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using the Operator on systems
 with pre-installed NVIDIA runtimes.</p></td>
@@ -497,6 +504,19 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
+<span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
+<span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
+<span class="go">    --set toolkit.env[0].value=/etc/containerd/config.toml \</span>
+<span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
+<span class="go">    --set toolkit.env[1].value=/run/containerd/containerd.sock \</span>
+<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
+<span class="go">    --set toolkit.env[2].value=nvidia \</span>
+<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
+<span class="go">    --set-string toolkit.env[3].value=true</span>
 </pre></div>
 </div>
 <p>These options are defined as follows:</p>
@@ -781,7 +801,7 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 
   <div role="contentinfo">
     <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Apr 20, 2024.
+      <span class="lastupdated">Last updated on Apr 23, 2024.
       </span></p>
   </div>
 
