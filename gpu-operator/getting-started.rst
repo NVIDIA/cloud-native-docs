@@ -386,6 +386,8 @@ These instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
+.. _custom-runtime-options:
+
 ***********************************************
 Specifying Configuration Options for containerd
 ***********************************************
@@ -522,6 +524,7 @@ These options can be passed to GPU Operator during install time as below.
       --set-string toolkit.env[3].value=true
 
 .. _running sample gpu applications:
+.. _verify gpu operator install:
 
 *********************************************
 Verification: Running Sample GPU Applications
