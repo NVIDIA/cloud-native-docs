@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troubleshooting the NVIDIA GPU Operator &mdash; NVIDIA GPU Operator 23.9.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPU Driver Upgrades" href="gpu-driver-upgrades.html" />
+    <link rel="prev" title="Release Notes" href="release-notes.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Troubleshooting the NVIDIA GPU Operator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="troubleshooting-the-nvidia-gpu-operator">
+<h1>Troubleshooting the NVIDIA GPU Operator<a class="headerlink" href="#troubleshooting-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h1>
+<section id="gpu-operator-pods-stuck-in-crash-loop">
+<h2>GPU Operator Pods Stuck in Crash Loop<a class="headerlink" href="#gpu-operator-pods-stuck-in-crash-loop" title="Permalink to this headline"></a></h2>
+<p class="h4 rubric">Issue</p>
+<p>On large clusters, such as 300 or more nodes, the GPU Operator pods
+can get stuck in a crash loop.</p>
+<p class="h4 rubric">Observation</p>
+<ul>
+<li><p>The GPU Operator pod is not running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                            READY   STATUS             RESTARTS      AGE</span>
+<span class="go">gpu-operator-568c7ff7f6-chg5b   0/1     CrashLoopBackOff   4 (85s ago)   4m42s</span>
+</pre></div>
+</div>
+</li>
+<li><p>The node that is running the GPU Operator pod has sufficient resources and the node is <code class="docutils literal notranslate"><span class="pre">Ready</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt;
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Conditions:</span>
+<span class="go">  Type                 Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message</span>
+<span class="go">  ----                 ------  -----------------                 ------------------                ------                       -------</span>
+<span class="go">  MemoryPressure       False   Tue, 26 Dec 2023 14:01:31 +0000   Tue, 12 Dec 2023 19:47:47 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available</span>
+<span class="go">  DiskPressure         False   Tue, 26 Dec 2023 14:01:31 +0000   Thu, 14 Dec 2023 19:15:03 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure</span>
+<span class="go">  PIDPressure          False   Tue, 26 Dec 2023 14:01:31 +0000   Tue, 12 Dec 2023 19:47:47 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available</span>
+<span class="go">  Ready                True    Tue, 26 Dec 2023 14:01:31 +0000   Thu, 14 Dec 2023 19:15:13 +0000   KubeletReady                 kubelet is posting ready status</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="h4 rubric">Root Cause</p>
+<p>The memory resource limit for the GPU Operator is too low for the cluster size.</p>
+<p class="h4 rubric">Action</p>
+<p>Increase the memory request and limit for the GPU Operator pod:</p>
+<ul class="simple">
+<li><p>Set the memory request to a value that matches the average memory consumption over an large time window.</p></li>
+<li><p>Set the memory limit to match the spikes in memory consumption that occur occasionally.</p></li>
+</ul>
+<ol class="arabic">
+<li><p>Increase the memory resource limit for the GPU Operator pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch deployment gpu-operator -n gpu-operator --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/template/spec/containers/0/resources/limits/memory&quot;, &quot;value&quot;:&quot;1400Mi&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Increase the memory resource request for the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch deployment gpu-operator -n gpu-operator --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/template/spec/containers/0/resources/requests/memory&quot;, &quot;value&quot;:&quot;600Mi&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Monitor the GPU Operator pod.
+Increase the memory request and limit again if the pod remains stuck in a crash loop.</p>
+</section>
+<section id="inforom-is-corrupted-nvidia-smi-return-code-14">
+<h2>infoROM is corrupted (nvidia-smi return code 14)<a class="headerlink" href="#inforom-is-corrupted-nvidia-smi-return-code-14" title="Permalink to this headline"></a></h2>
+<p class="h4 rubric">Issue</p>
+<p>The nvidia-operator-validator pod fails and nvidia-driver-daemonsets fails as well.</p>
+<p class="h4 rubric">Observation</p>
+<p>The output from the driver validation container indicates that the infoROM is corrupt:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator nvidia-operator-validator-xxxxx -c driver-validation
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">| NVIDIA-SMI 470.82.01    Driver Version: 470.82.01    CUDA Version: 11.4     |</span>
+<span class="go">|-------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                               |                      |               MIG M. |</span>
+<span class="go">|===============================+======================+======================|</span>
+<span class="go">|   0  Tesla P100-PCIE...  On   | 00000000:0B:00.0 Off |                    0 |</span>
+<span class="go">| N/A   42C    P0    29W / 250W |      0MiB / 16280MiB |      0%      Default |</span>
+<span class="go">|                               |                      |                  N/A |</span>
+<span class="go">+-------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                  |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span>
+<span class="go">|        ID   ID                                                   Usage      |</span>
+<span class="go">|=============================================================================|</span>
+<span class="go">|  No running processes found                                                 |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">WARNING: infoROM is corrupted at gpu 0000:0B:00.0</span>
+<span class="go">14</span>
+</pre></div>
+</div>
+<p>The GPU emits some warning messages related to infoROM.
+The return values for the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command are listed below.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">RETURN VALUE</span>
+
+<span class="go">Return code reflects whether the operation succeeded or failed and what</span>
+<span class="go">was the reason of failure.</span>
+
+<span class="go">Â·      Return code 0 - Success</span>
+
+<span class="go">Â·      Return code 2 - A supplied argument or flag is invalid</span>
+<span class="go">Â·      Return code 3 - The requested operation is not available on target device</span>
+<span class="go">Â·      Return code 4 - The current user does  not  have permission  to access this device or perform this operation</span>
+<span class="go">Â·      Return code 6 - A query to find an object was unsuccessful</span>
+<span class="go">Â·      Return code 8 - A device&#39;s external power cables are not properly attached</span>
+<span class="go">Â·      Return code 9 - NVIDIA driver is not loaded</span>
+<span class="go">Â·      Return code 10 - NVIDIA Kernel detected an interrupt issue  with a GPU</span>
+<span class="go">Â·      Return code 12 - NVML Shared Library couldn&#39;t be found or loaded</span>
+<span class="go">Â·      Return code 13 - Local version of NVML  doesn&#39;t  implement  this function</span>
+<span class="go">Â·      Return code 14 - infoROM is corrupted</span>
+<span class="go">Â·      Return code 15 - The GPU has fallen off the bus or has otherwise become inaccessible</span>
+<span class="go">Â·      Return code 255 - Other error or internal driver error occurred</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Root Cause</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidi-smi</span></code> command should return a success code (return code 0) for the driver-validator container to pass and GPU operator to successfully deploy driver pod on the node.</p>
+<p class="h4 rubric">Action</p>
+<p>Replace the faulty GPU.</p>
+</section>
+<section id="efi-secure-boot">
+<h2>EFI + Secure Boot<a class="headerlink" href="#efi-secure-boot" title="Permalink to this headline"></a></h2>
+<p class="h4 rubric">Issue</p>
+<p>GPU Driver pod fails to deploy.</p>
+<p class="h4 rubric">Root Cause</p>
+<p>EFI Secure Boot is currently not supported with GPU Operator</p>
+<p class="h4 rubric">Action</p>
+<p>Disable EFI Secure Boot on the server.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="release-notes.html" class="btn btn-neutral float-left" title="Release Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-driver-upgrades.html" class="btn btn-neutral float-right" title="GPU Driver Upgrades" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Apr 26, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
