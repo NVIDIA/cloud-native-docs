@@ -196,7 +196,7 @@ In this release, the init container no longer runs because the MOFED installatio
 In this release, the Kernel version is determined from the running kernel to prevent the issue.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/617">issue #617</a> for more details.</p></li>
 <li><p>Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
-specified the name of the config map in the <cite>DCGM_EXPORTER_CONFIGMAP_DATA</cite> environment variable, the exporter
+specified the name of the config map as <cite>&lt;namespace&gt;:&lt;config-map&gt;</cite> in the <cite>DCGM_EXPORTER_CONFIGMAP_DATA</cite> environment variable, the exporter
 pods could not read the configuration from the config map.
 In this release, the role used by the exporter is granted access to read from config maps.</p></li>
 <li><p>Previously, the GPU Driver container on a Ubuntu 22.04 node supported the 5.15 LTS Linux kernel only.
