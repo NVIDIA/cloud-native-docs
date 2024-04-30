@@ -84,6 +84,7 @@ New Features
   - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
   - Run the NVIDIA Open GPU Kernel module driver.
 
+
 .. _v24.3.0-fixed-issues:
 
 Fixed Issues
@@ -91,6 +92,7 @@ Fixed Issues
 
 * Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
   secrets and storage for the integrated image registry.
+* Fixed an issue with vGPU Device Manager that was triggered if no NVIDIA devices were found in `/sys/class/mdev_bus`.
 
 .. _v24.3.0-known-limitations:
 
