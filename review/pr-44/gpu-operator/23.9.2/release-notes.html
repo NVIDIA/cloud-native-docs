@@ -171,6 +171,15 @@ on the platform support page.</p></li>
 </li>
 <li><p>Added support for Kubernetes v1.29 and v1.30.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p></li>
+<li><p>Added support for NVIDIA GH200 Grace Hopper Superchip as a generally available feature.
+Refer to <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a>.</p>
+<p>The following prerequisites are required for using the Operator with GH200:</p>
+<ul class="simple">
+<li><p>Run Ubuntu 22.04, the 550.54.15 GPU driver, and an NVIDIA Linux kernel, such as one provided with a <code class="docutils literal notranslate"><span class="pre">linux-nvidia-&lt;x.x&gt;</span></code> package.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">init_on_alloc=0</span></code> and <code class="docutils literal notranslate"><span class="pre">memhp_default_state=online_movable</span></code> as Linux kernel boot parameters.</p></li>
+<li><p>Run the NVIDIA Open GPU Kernel module driver.</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="fixed-issues">
@@ -178,6 +187,9 @@ Refer to <a class="reference internal" href="platform-support.html#supported-ope
 <ul class="simple">
 <li><p>Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
 secrets and storage for the integrated image registry.</p></li>
+<li><p>Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in <cite>/sys/class/mdev_bus</cite>.</p></li>
+<li><p>Previously, the MOFED validation init container would run for the GPU driver pod.
+In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.</p></li>
 </ul>
 </section>
 <section id="known-limitations">
