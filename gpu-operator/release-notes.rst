@@ -72,6 +72,9 @@ New Features
     - NVIDIA KubeVirt GPU Device Plugin v1.2.6
     - NVIDIA vGPU Device Manager v0.2.5
 
+* Added support for Kubernetes v1.29 and v1.30.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`.
+
 
 .. _v24.3.0-fixed-issues:
 

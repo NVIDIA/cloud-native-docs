@@ -276,15 +276,15 @@ The GPU Operator has been validated in the following scenarios:
            | MicroK8s
 
        * - Ubuntu 20.04 LTS |fn1|_
-         - 1.22---1.29
+         - 1.22---1.30
          -
          - 7.0 U3c, 8.0 U2
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
 
        * - Ubuntu 22.04 LTS |fn1|_
-         - 1.22---1.29
+         - 1.22---1.30
          -
          - 8.0 U2
          -
@@ -303,10 +303,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
 
