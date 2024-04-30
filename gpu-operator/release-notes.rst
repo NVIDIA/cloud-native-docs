@@ -108,6 +108,9 @@ Fixed Issues
   In this release, Ubuntu 22.04 is supported with 5.15, 5.19, 6.2, and 6.5.
 * Previously, configuring the GPU Driver container for GPUDirect RDMA on an NVIDIA Grace Hopper system failed.
   In this release, the driver container detects the architecture correctly and configuration succeeds.
+* Previously, under load, the Operator could fail with the message `fatal error: concurrent map read and map write`.
+  In this release, the Operator controller is refactored to prevent the race condition.
+  Refer to Github `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
 
 
 .. _v24.3.0-known-limitations:
