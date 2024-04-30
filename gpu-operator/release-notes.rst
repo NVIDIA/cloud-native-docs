@@ -84,6 +84,8 @@ New Features
   - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
   - Run the NVIDIA Open GPU Kernel module driver.
 
+* Removed support for Kubernetes pod security policy (PSP).
+  PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.
 
 .. _v24.3.0-fixed-issues:
 
@@ -95,6 +97,9 @@ Fixed Issues
 * Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in `/sys/class/mdev_bus`.
 * Previously, the MOFED validation init container would run for the GPU driver pod.
   In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
+* Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the `/etc/os-release` file.
+  In this release, the Kernel version is determined from the running kernel to prevent the issue.
+  Refer to Github `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
 
 
 .. _v24.3.0-known-limitations:
