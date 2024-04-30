@@ -94,29 +94,29 @@ Fixed Issues
 
 * Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
   secrets and storage for the integrated image registry.
-* Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in `/sys/class/mdev_bus`.
+* Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in ``/sys/class/mdev_bus``.
 * Previously, the MOFED validation init container would run for the GPU driver pod.
   In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
-* Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the `/etc/os-release` file.
+* Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the ``/etc/os-release`` file.
   In this release, the Kernel version is determined from the running kernel to prevent the issue.
   Refer to Github `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
 * Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
-  specified the name of the config map as `<namespace>:<config-map>` in the `DCGM_EXPORTER_CONFIGMAP_DATA` environment variable, the exporter
+  specified the name of the config map as ``<namespace>:<config-map>`` in the ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable, the exporter
   pods could not read the configuration from the config map.
   In this release, the role used by the exporter is granted access to read from config maps.
 * Previously, the GPU Driver container on a Ubuntu 22.04 node supported the 5.15 LTS Linux kernel only.
   In this release, Ubuntu 22.04 is supported with 5.15, 5.19, 6.2, and 6.5.
 * Previously, configuring the GPU Driver container for GPUDirect RDMA on an NVIDIA Grace Hopper system failed.
   In this release, the driver container detects the architecture correctly and configuration succeeds.
-* Previously, under load, the Operator could fail with the message `fatal error: concurrent map read and map write`.
+* Previously, under load, the Operator could fail with the message ``fatal error: concurrent map read and map write``.
   In this release, the Operator controller is refactored to prevent the race condition.
   Refer to Github `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
-* Previously, if any node in the cluster was in the `NotReady` state, the GPU driver upgrade controller failed to make progress.
+* Previously, if any node in the cluster was in the ``NotReady`` state, the GPU driver upgrade controller failed to make progress.
   In this release, the upgrade library is updated and skips unhealthy nodes.
   Refer to Github `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
 * Previously, specifying an alternative network port for DGCM was ignored.
-  In this release, you can specify `spec.dcgm.hostPort: <port>` and `spec.dcgmExporter.env.DCGM_REMOTE_HOSTENGINE_INFO`
-  with a value like `localhost:<port>`.
+  In this release, you can specify ``spec.dcgm.hostPort: <port>`` and ``spec.dcgmExporter.env.DCGM_REMOTE_HOSTENGINE_INFO``
+  with a value like ``localhost:<port>``.
 
 
 .. _v24.3.0-known-limitations:
