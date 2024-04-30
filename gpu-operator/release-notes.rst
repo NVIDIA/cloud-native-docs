@@ -100,6 +100,10 @@ Fixed Issues
 * Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the `/etc/os-release` file.
   In this release, the Kernel version is determined from the running kernel to prevent the issue.
   Refer to Github `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
+* Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
+  specified the name of the config map in the `DCGM_EXPORTER_CONFIGMAP_DATA` environment variable, the exporter
+  pods could not read the configuration from the config map.
+  In this release, the role used by the exporter is granted access to read from config maps.
 
 
 .. _v24.3.0-known-limitations:
