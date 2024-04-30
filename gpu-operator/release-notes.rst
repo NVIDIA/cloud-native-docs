@@ -111,6 +111,9 @@ Fixed Issues
 * Previously, under load, the Operator could fail with the message `fatal error: concurrent map read and map write`.
   In this release, the Operator controller is refactored to prevent the race condition.
   Refer to Github `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
+* Previously, if any node in the cluster was in the `NotReady` state, the GPU driver upgrade controller failed to make progress.
+  In this release, the upgrade library is updated and skips unhealthy nodes.
+  Refer to Github `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
 
 
 .. _v24.3.0-known-limitations:
