@@ -92,7 +92,10 @@ Fixed Issues
 
 * Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
   secrets and storage for the integrated image registry.
-* Fixed an issue with vGPU Device Manager that was triggered if no NVIDIA devices were found in `/sys/class/mdev_bus`.
+* Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in `/sys/class/mdev_bus`.
+* Previously, the MOFED validation init container would run for the GPU driver pod.
+  In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
+
 
 .. _v24.3.0-known-limitations:
 
