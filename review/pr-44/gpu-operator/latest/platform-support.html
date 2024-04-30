@@ -305,8 +305,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline"></a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="f86a2488-5412-463e-b870-2d71da9e461a" name="176aa1ed-9937-46a1-bd95-8a596b3d10ed" type="radio">
-</input><label class="sd-tab-label" for="f86a2488-5412-463e-b870-2d71da9e461a">
+<input id="c0a432c9-6e37-4038-ad1e-37e6a30d9c87" name="98135730-3ae0-4fd0-8747-fc9b0ff3d1d0" type="radio">
+</input><label class="sd-tab-label" for="c0a432c9-6e37-4038-ad1e-37e6a30d9c87">
 GH-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -330,8 +330,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#chart-customization-options"><span class="std std-ref">Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="5781e9ef-0d3d-4557-b5a0-4de611be8899" name="176aa1ed-9937-46a1-bd95-8a596b3d10ed" type="radio">
-</input><label class="sd-tab-label" for="5781e9ef-0d3d-4557-b5a0-4de611be8899">
+<input checked="checked" id="5c4928a4-dcc3-4e2c-aa19-2a46bfd407a0" name="98135730-3ae0-4fd0-8747-fc9b0ff3d1d0" type="radio">
+</input><label class="sd-tab-label" for="5c4928a4-dcc3-4e2c-aa19-2a46bfd407a0">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -416,8 +416,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="7da305cd-62f8-48e5-beaf-bf4b0e05055c" name="176aa1ed-9937-46a1-bd95-8a596b3d10ed" type="radio">
-</input><label class="sd-tab-label" for="7da305cd-62f8-48e5-beaf-bf4b0e05055c">
+<input id="0fe695e1-1092-4f14-af7c-a66efd949d31" name="98135730-3ae0-4fd0-8747-fc9b0ff3d1d0" type="radio">
+</input><label class="sd-tab-label" for="0fe695e1-1092-4f14-af7c-a66efd949d31">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -448,8 +448,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="1d91d2f9-23f8-42c9-ad69-b0e8d42a0d1d" name="176aa1ed-9937-46a1-bd95-8a596b3d10ed" type="radio">
-</input><label class="sd-tab-label" for="1d91d2f9-23f8-42c9-ad69-b0e8d42a0d1d">
+<input id="2209bfb5-1982-467a-b912-70ea7c118660" name="98135730-3ae0-4fd0-8747-fc9b0ff3d1d0" type="radio">
+</input><label class="sd-tab-label" for="2209bfb5-1982-467a-b912-70ea7c118660">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -609,8 +609,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.</p>
 </div>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="6482e3da-cbae-4396-a00d-3d46c28c6d03" name="b3f72b82-5761-4f51-b569-4bc84a7bb9c1" type="radio">
-</input><label class="sd-tab-label" for="6482e3da-cbae-4396-a00d-3d46c28c6d03">
+<input checked="checked" id="153a7e82-252a-4e94-a263-6afae5d60e4f" name="663be57b-5ff7-4eac-bb22-d85b827ca676" type="radio">
+</input><label class="sd-tab-label" for="153a7e82-252a-4e94-a263-6afae5d60e4f">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -715,20 +715,21 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 </tbody>
 </table>
 <p id="ubuntu-kernel"><sup>1</sup>
-For Ubuntu 22.04 LTS, kernel version 5.15 is an LTS ESM kernel.
+For Ubuntu 22.04 LTS, kernel versions 6.5 and 5.15 are LTS ESM kernels.
 For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
 The GPU Driver containers support these Linux kernels.
 Refer to the Kernel release schedule on Canonical’s
-<a class="reference external" href="https://ubuntu.com/kernel/lifecycle">Ubuntu kernel lifecycle and enablement stack</a> page for more information.
-NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
+<a class="reference external" href="https://ubuntu.com/kernel/lifecycle">Ubuntu kernel lifecycle and enablement stack</a> page for more information.</p>
+<p>For Ubuntu 22.04 LTS, the GPU Driver containers also support the 6.2 kernel.</p>
+<p>NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
 by the <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code> package to prevent an upgrade to an unsupported kernel version.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Red Hat OpenShift Container Platform is supported on the AWS (G4, G5, P3, P4, P5), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.</p>
 </div>
 </div>
-<input id="49f900fe-45e1-4c32-95bd-aac3dc64dbc6" name="b3f72b82-5761-4f51-b569-4bc84a7bb9c1" type="radio">
-</input><label class="sd-tab-label" for="49f900fe-45e1-4c32-95bd-aac3dc64dbc6">
+<input id="8b07333a-958c-47d7-8651-4325e199a87a" name="663be57b-5ff7-4eac-bb22-d85b827ca676" type="radio">
+</input><label class="sd-tab-label" for="8b07333a-958c-47d7-8651-4325e199a87a">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -774,8 +775,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="a7928a47-5af2-4e22-bd79-de4c4c9f91a3" name="b3f72b82-5761-4f51-b569-4bc84a7bb9c1" type="radio">
-</input><label class="sd-tab-label" for="a7928a47-5af2-4e22-bd79-de4c4c9f91a3">
+<input id="cbaba772-07fd-4c97-8a9b-a4ef21a696f7" name="663be57b-5ff7-4eac-bb22-d85b827ca676" type="radio">
+</input><label class="sd-tab-label" for="cbaba772-07fd-4c97-8a9b-a4ef21a696f7">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>

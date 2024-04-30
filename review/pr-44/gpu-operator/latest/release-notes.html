@@ -199,6 +199,16 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 specified the name of the config map in the <cite>DCGM_EXPORTER_CONFIGMAP_DATA</cite> environment variable, the exporter
 pods could not read the configuration from the config map.
 In this release, the role used by the exporter is granted access to read from config maps.</p></li>
+<li><p>Previously, the GPU Driver container on a Ubuntu 22.04 node supported the 5.15 LTS Linux kernel only.
+In this release, Ubuntu 22.04 is supported with 5.15, 5.19, 6.2, and 6.5.</p></li>
+<li><p>Previously, configuring the GPU Driver container for GPUDirect RDMA on an NVIDIA Grace Hopper system failed.
+In this release, the driver container detects the architecture correctly and configuration succeeds.</p></li>
+<li><p>Previously, under load, the Operator could fail with the message <cite>fatal error: concurrent map read and map write</cite>.
+In this release, the Operator controller is refactored to prevent the race condition.
+Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/689">issue #689</a> for more details.</p></li>
+<li><p>Previously, if any node in the cluster was in the <cite>NotReady</cite> state, the GPU driver upgrade controller failed to make progress.
+In this release, the upgrade library is updated and skips unhealthy nodes.
+Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/688">issue #688</a> for more details.</p></li>
 </ul>
 </section>
 <section id="known-limitations">
