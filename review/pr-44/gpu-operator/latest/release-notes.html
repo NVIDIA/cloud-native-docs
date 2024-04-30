@@ -180,6 +180,8 @@ Refer to <a class="reference internal" href="platform-support.html#supported-nvi
 <li><p>Run the NVIDIA Open GPU Kernel module driver.</p></li>
 </ul>
 </li>
+<li><p>Removed support for Kubernetes pod security policy (PSP).
+PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
@@ -190,6 +192,13 @@ secrets and storage for the integrated image registry.</p></li>
 <li><p>Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in <cite>/sys/class/mdev_bus</cite>.</p></li>
 <li><p>Previously, the MOFED validation init container would run for the GPU driver pod.
 In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.</p></li>
+<li><p>Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the <cite>/etc/os-release</cite> file.
+In this release, the Kernel version is determined from the running kernel to prevent the issue.
+Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/617">issue #617</a> for more details.</p></li>
+<li><p>Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
+specified the name of the config map in the <cite>DCGM_EXPORTER_CONFIGMAP_DATA</cite> environment variable, the exporter
+pods could not read the configuration from the config map.
+In this release, the role used by the exporter is granted access to read from config maps.</p></li>
 </ul>
 </section>
 <section id="known-limitations">
