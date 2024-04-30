@@ -75,6 +75,14 @@ New Features
 * Added support for Kubernetes v1.29 and v1.30.
   Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`.
 
+* Added support for NVIDIA GH200 Grace Hopper Superchip as a generally available feature.
+  Refer to :ref:`supported nvidia gpus and systems`.
+
+  The following prerequisites are required for using the Operator with GH200:
+
+  - Run Ubuntu 22.04, the 550.54.15 GPU driver, and an NVIDIA Linux kernel, such as one provided with a ``linux-nvidia-<x.x>`` package.
+  - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
+  - Run the NVIDIA Open GPU Kernel module driver.
 
 .. _v24.3.0-fixed-issues:
 
