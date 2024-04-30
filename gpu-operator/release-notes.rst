@@ -104,6 +104,8 @@ Fixed Issues
   specified the name of the config map in the `DCGM_EXPORTER_CONFIGMAP_DATA` environment variable, the exporter
   pods could not read the configuration from the config map.
   In this release, the role used by the exporter is granted access to read from config maps.
+* Previously, the GPU Driver container on a Ubuntu 22.04 node supported the 5.15 LTS Linux kernel only.
+  In this release, Ubuntu 22.04 is supported with 5.15, 5.19, 6.2, and 6.5.
 
 
 .. _v24.3.0-known-limitations:
