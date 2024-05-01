@@ -323,14 +323,11 @@ The GPU Operator has been validated in the following scenarios:
     .. _ubuntu-kernel:
 
     :sup:`1`
-    For Ubuntu 22.04 LTS, kernel versions 6.5 and 5.15 are LTS ESM kernels.
+    For Ubuntu 22.04 LTS, kernel version 5.15 is an LTS ESM kernel.
     For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
     Refer to the Kernel release schedule on Canonical's
     `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
-
-    For Ubuntu 22.04 LTS, the GPU Driver containers also support the 6.2 kernel.
-
     NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
     by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
 
