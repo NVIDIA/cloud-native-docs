@@ -61,16 +61,17 @@ New Features
 * Added support for the following software component versions:
 
     - NVIDIA Container Toolkit version v1.15.0
-    - NVIDIA MIG Manager version v0.6.0
+    - NVIDIA MIG Manager version v0.7.0
     - NVIDIA Driver Manager for K8s v0.6.8
     - NVIDIA Kubernetes Device Plugin v0.15.0
-    - DCGM 3.3.3-1
-    - DCGM Exporter 3.3.5-3.4.0
+    - DCGM 3.3.5-1
+    - DCGM Exporter 3.3.5-3.4.1
     - Node Feature Discovery v0.15.4
     - NVIDIA GPU Feature Discovery for Kubernetes v0.15.0
     - NVIDIA MIG Manager for Kubernetes v0.6.0
-    - NVIDIA KubeVirt GPU Device Plugin v1.2.6
-    - NVIDIA vGPU Device Manager v0.2.5
+    - NVIDIA KubeVirt GPU Device Plugin v1.2.7
+    - NVIDIA vGPU Device Manager v0.2.6
+    - NVIDIA Kata Manager for Kubernetes v0.2.0
 
 * Added support for Kubernetes v1.29 and v1.30.
   Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`.
