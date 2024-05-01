@@ -143,7 +143,7 @@
 <span id="v24-3-0-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>Added support to enable NVIDIA GDRCopy v2.4.1.</p>
-<p>When you enable support for GDRCopy, the Operator configures the GPUCopy Driver container image
+<p>When you enable support for GDRCopy, the Operator configures the GDRCopy Driver container image
 as a sidecar container in the GPU driver pod.
 The sidecar container compiles and installs the gdrdrv Linux kernel module.
 This feature is supported on Ubuntu 22.04 and RHCOS operating systems and on X86_64 and ARM64 architectures.</p>
@@ -156,30 +156,21 @@ on the platform support page.</p></li>
 <blockquote>
 <div><ul class="simple">
 <li><p>NVIDIA Container Toolkit version v1.15.0</p></li>
-<li><p>NVIDIA MIG Manager version v0.6.0</p></li>
+<li><p>NVIDIA MIG Manager version v0.7.0</p></li>
 <li><p>NVIDIA Driver Manager for K8s v0.6.8</p></li>
 <li><p>NVIDIA Kubernetes Device Plugin v0.15.0</p></li>
-<li><p>DCGM 3.3.3-1</p></li>
-<li><p>DCGM Exporter 3.3.5-3.4.0</p></li>
+<li><p>DCGM 3.3.5-1</p></li>
+<li><p>DCGM Exporter 3.3.5-3.4.1</p></li>
 <li><p>Node Feature Discovery v0.15.4</p></li>
 <li><p>NVIDIA GPU Feature Discovery for Kubernetes v0.15.0</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes v0.6.0</p></li>
-<li><p>NVIDIA KubeVirt GPU Device Plugin v1.2.6</p></li>
-<li><p>NVIDIA vGPU Device Manager v0.2.5</p></li>
+<li><p>NVIDIA KubeVirt GPU Device Plugin v1.2.7</p></li>
+<li><p>NVIDIA vGPU Device Manager v0.2.6</p></li>
+<li><p>NVIDIA Kata Manager for Kubernetes v0.2.0</p></li>
 </ul>
 </div></blockquote>
 </li>
 <li><p>Added support for Kubernetes v1.29 and v1.30.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p></li>
-<li><p>Added support for NVIDIA GH200 Grace Hopper Superchip as a generally available feature.
-Refer to <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a>.</p>
-<p>The following prerequisites are required for using the Operator with GH200:</p>
-<ul class="simple">
-<li><p>Run Ubuntu 22.04, the 550.54.15 GPU driver, and an NVIDIA Linux kernel, such as one provided with a <code class="docutils literal notranslate"><span class="pre">linux-nvidia-&lt;x.x&gt;</span></code> package.</p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">init_on_alloc=0</span></code> and <code class="docutils literal notranslate"><span class="pre">memhp_default_state=online_movable</span></code> as Linux kernel boot parameters.</p></li>
-<li><p>Run the NVIDIA Open GPU Kernel module driver.</p></li>
-</ul>
-</li>
 <li><p>Removed support for Kubernetes pod security policy (PSP).
 PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.</p></li>
 </ul>
@@ -189,7 +180,7 @@ PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.</p></li
 <ul class="simple">
 <li><p>Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
 secrets and storage for the integrated image registry.</p></li>
-<li><p>Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in <code class="docutils literal notranslate"><span class="pre">/sys/class/mdev_bus</span></code>.</p></li>
+<li><p>Previously, the vGPU Device Manager would panic if no NVIDIA devices were found in <code class="docutils literal notranslate"><span class="pre">/sys/class/mdev_bus</span></code>.</p></li>
 <li><p>Previously, the MOFED validation init container would run for the GPU driver pod.
 In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.</p></li>
 <li><p>Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the <code class="docutils literal notranslate"><span class="pre">/etc/os-release</span></code> file.
@@ -199,19 +190,12 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 specified the name of the config map as <code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;:&lt;config-map&gt;</span></code> in the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_CONFIGMAP_DATA</span></code> environment variable, the exporter
 pods could not read the configuration from the config map.
 In this release, the role used by the exporter is granted access to read from config maps.</p></li>
-<li><p>Previously, the GPU Driver container on a Ubuntu 22.04 node supported the 5.15 LTS Linux kernel only.
-In this release, Ubuntu 22.04 is supported with 5.15, 5.19, 6.2, and 6.5.</p></li>
-<li><p>Previously, configuring the GPU Driver container for GPUDirect RDMA on an NVIDIA Grace Hopper system failed.
-In this release, the driver container detects the architecture correctly and configuration succeeds.</p></li>
 <li><p>Previously, under load, the Operator could fail with the message <code class="docutils literal notranslate"><span class="pre">fatal</span> <span class="pre">error:</span> <span class="pre">concurrent</span> <span class="pre">map</span> <span class="pre">read</span> <span class="pre">and</span> <span class="pre">map</span> <span class="pre">write</span></code>.
 In this release, the Operator controller is refactored to prevent the race condition.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/689">issue #689</a> for more details.</p></li>
 <li><p>Previously, if any node in the cluster was in the <code class="docutils literal notranslate"><span class="pre">NotReady</span></code> state, the GPU driver upgrade controller failed to make progress.
 In this release, the upgrade library is updated and skips unhealthy nodes.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/688">issue #688</a> for more details.</p></li>
-<li><p>Previously, specifying an alternative network port for DGCM was ignored.
-In this release, you can specify <code class="docutils literal notranslate"><span class="pre">spec.dcgm.hostPort:</span> <span class="pre">&lt;port&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter.env.DCGM_REMOTE_HOSTENGINE_INFO</span></code>
-with a value like <code class="docutils literal notranslate"><span class="pre">localhost:&lt;port&gt;</span></code>.</p></li>
 </ul>
 </section>
 <section id="known-limitations">
@@ -1917,7 +1901,7 @@ would not be available after reboot.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Apr 30, 2024.
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
 
   </div>
