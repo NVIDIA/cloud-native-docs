@@ -484,7 +484,7 @@ support for such custom configurations.</p>
 </section>
 </section>
 <section id="specifying-configuration-options-for-containerd">
-<h2>Specifying Configuration Options for containerd<a class="headerlink" href="#specifying-configuration-options-for-containerd" title="Permalink to this headline"></a></h2>
+<span id="custom-runtime-options"></span><h2>Specifying Configuration Options for containerd<a class="headerlink" href="#specifying-configuration-options-for-containerd" title="Permalink to this headline"></a></h2>
 <p>When you use containerd as the container runtime, the following configuration
 options are used with the container-toolkit deployed with GPU Operator:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
@@ -497,6 +497,19 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
+<span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
+<span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
+<span class="go">    --set toolkit.env[0].value=/etc/containerd/config.toml \</span>
+<span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
+<span class="go">    --set toolkit.env[1].value=/run/containerd/containerd.sock \</span>
+<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
+<span class="go">    --set toolkit.env[2].value=nvidia \</span>
+<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
+<span class="go">    --set-string toolkit.env[3].value=true</span>
 </pre></div>
 </div>
 <p>These options are defined as follows:</p>
@@ -588,7 +601,7 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 </section>
 </section>
 <section id="verification-running-sample-gpu-applications">
-<span id="running-sample-gpu-applications"></span><h2>Verification: Running Sample GPU Applications<a class="headerlink" href="#verification-running-sample-gpu-applications" title="Permalink to this headline"></a></h2>
+<span id="verify-gpu-operator-install"></span><span id="running-sample-gpu-applications"></span><h2>Verification: Running Sample GPU Applications<a class="headerlink" href="#verification-running-sample-gpu-applications" title="Permalink to this headline"></a></h2>
 <section id="cuda-vectoradd">
 <h3>CUDA VectorAdd<a class="headerlink" href="#cuda-vectoradd" title="Permalink to this headline"></a></h3>
 <p>In the first example, let’s run a simple CUDA sample, which adds two vectors together:</p>
@@ -762,7 +775,7 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 <td><p><a class="reference external" href="https://docs.nvidia.com/ai-enterprise/deployment-guide-vmware/0.1.0/index.html"><em>NVIDIA AI Enterprise VMware vSphere Deployment Guide</em></a></p></td>
 </tr>
 <tr class="row-even"><td><p>Google Cloud Anthos</p></td>
-<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html" title="(in edge)"><span>NVIDIA GPUs with Google Anthos</span></a></p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html" title="(in NVIDIA Cloud Native Reference Architectures)"><span>NVIDIA GPUs with Google Anthos</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -780,9 +793,33 @@ The default value is <code class="docutils literal notranslate"><span class="pre
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 07, 2024.
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
+
   </div>
 
    

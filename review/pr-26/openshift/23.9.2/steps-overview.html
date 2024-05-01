@@ -108,10 +108,15 @@
 <span id="steps-overview"></span><h1>Installation and Upgrade Overview<a class="headerlink" href="#installation-and-upgrade-overview" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#high-level-steps" id="id1">High-Level Steps</a></p></li>
-<li><p><a class="reference internal" href="#preparing-to-install-the-operator" id="id2">Preparing to Install the Operator</a></p></li>
-<li><p><a class="reference internal" href="#preparing-to-upgrade-the-operator" id="id3">Preparing to Upgrade the Operator</a></p></li>
-<li><p><a class="reference internal" href="#about-the-broken-driver-toolkit" id="id4">About the Broken Driver Toolkit</a></p></li>
+<li><p><a class="reference internal" href="#high-level-steps" id="id2">High-Level Steps</a></p></li>
+<li><p><a class="reference internal" href="#preparing-to-install-the-operator" id="id3">Preparing to Install the Operator</a></p>
+<ul>
+<li><p><a class="reference internal" href="#special-considerations-for-openshift-4-15" id="id4">Special Considerations for OpenShift 4.15</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id1" id="id5">Preparing to Install the Operator</a></p></li>
+<li><p><a class="reference internal" href="#preparing-to-upgrade-the-operator" id="id6">Preparing to Upgrade the Operator</a></p></li>
+<li><p><a class="reference internal" href="#about-the-broken-driver-toolkit" id="id7">About the Broken Driver Toolkit</a></p></li>
 </ul>
 </div>
 <section id="high-level-steps">
@@ -134,13 +139,26 @@ Refer to <a class="reference internal" href="nvaie-with-ocp.html"><span class="d
 <ul class="simple">
 <li><p>OpenShift 4.9.9 and above z-streams</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The Driver Toolkit, which enables entitlement-free deployments of the Operator, is available for certain z-streams on OpenShift
-4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
-all OpenShift versions prior to 4.9.9. See <a class="reference internal" href="#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a> for more information.</p>
-<p>You do not need an entitlement on OpenShift Container Platform versions greater than 4.9.9.</p>
+<section id="special-considerations-for-openshift-4-15">
+<h3>Special Considerations for OpenShift 4.15<a class="headerlink" href="#special-considerations-for-openshift-4-15" title="Permalink to this headline"></a></h3>
+<p>In OpenShift 4.15, secrets are no longer automatically generated when the integrated OpenShift image registry is disabled.
+For more information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets">OpenShift 4.15 Release Notes</a>.</p>
+<p>This change affects the installation of NVIDIA GPU Operator.
+During installation, the Driver Toolkit daemon set checks for the existence of a <code class="docutils literal notranslate"><span class="pre">build-dockercfg</span></code> secret for the Driver Toolkit service account.
+When the secret does not exist, the installation stalls.</p>
+<p>You can run the following command to determine if your cluster is affected.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get configs.imageregistry.operator.openshift.io cluster -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.storage}{&quot;\n&quot;}&#39;</span>
+</pre></div>
 </div>
+<p>If the output from the preceding command is empty, <code class="docutils literal notranslate"><span class="pre">{}</span></code>, then your cluster is affected and you must configure your registry to use storage.
+Refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html">Configuring the registry for bare metal</a>
+for information about configuring the registry with a PVC.
+For platforms other than bare metal, refer to the additional resources section of the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/configuring-registry-operator.html">Image Registry Operator in OpenShift Container Platform</a> page.</p>
+<p>If the output from the preceding command is any value other than empty, your cluster is not affected.</p>
+</section>
+</section>
+<section id="id1">
+<h2>Preparing to Install the Operator<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
 <ul>
 <li><p>Verify your cluster has the OpenShift Driver toolkit:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get -n openshift is/driver-toolkit
@@ -246,9 +264,33 @@ Also, we recommend maintaining entitlements for OpenShift versions &lt; 4.9.9.</
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 07, 2024.
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
+
   </div>
 
    

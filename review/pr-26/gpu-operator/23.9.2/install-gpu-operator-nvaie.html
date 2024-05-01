@@ -132,26 +132,29 @@
 <span id="install-gpu-operator-nvaie"></span><h1>NVIDIA AI Enterprise<a class="headerlink" href="#nvidia-ai-enterprise" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#about-nvidia-ai-enterprise-and-supported-platforms" id="id3">About NVIDIA AI Enterprise and Supported Platforms</a></p></li>
-<li><p><a class="reference internal" href="#installing-gpu-operator" id="id4">Installing GPU Operator</a></p></li>
-<li><p><a class="reference internal" href="#installing-gpu-operator-with-the-nvidia-datacenter-driver" id="id5">Installing GPU Operator with the NVIDIA Datacenter Driver</a></p></li>
+<li><p><a class="reference internal" href="#about-nvidia-ai-enterprise-and-supported-platforms" id="id2">About NVIDIA AI Enterprise and Supported Platforms</a></p></li>
+<li><p><a class="reference internal" href="#installing-gpu-operator" id="id3">Installing GPU Operator</a></p>
+<ul>
+<li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#procedure" id="id5">Procedure</a></p></li>
+</ul>
+</li>
 <li><p><a class="reference internal" href="#updating-nls-client-license-token" id="id6">Updating NLS client license token</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id7">Related Information</a></p></li>
 </ul>
 </div>
 <section id="about-nvidia-ai-enterprise-and-supported-platforms">
 <h2>About NVIDIA AI Enterprise and Supported Platforms<a class="headerlink" href="#about-nvidia-ai-enterprise-and-supported-platforms" title="Permalink to this headline"></a></h2>
-<p>NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
-Additional information can be found at the <a class="reference external" href="https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/">NVIDIA AI Enterprise</a> web page.</p>
-<p>NVIDIA AI Enterprise customers have access to a pre-configured GPU Operator within the NVIDIA Enterprise Catalog.
-The GPU Operator is pre-configured to simplify the provisioning experience with NVIDIA AI Enterprise deployments.</p>
-<p>The pre-configured GPU Operator differs from the GPU Operator in the public NGC catalog. The differences are:</p>
+<p>NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.</p>
+<p>Deploying the GPU Operator with NVIDIA AI Enterprise differs from the GPU Operator in the public NGC catalog.
+The differences are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>It is configured to use a prebuilt vGPU driver image (Only available to NVIDIA AI Enterprise customers)</p></li>
-<li><p>It is configured to use the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/">NVIDIA License System (NLS)</a></p></li>
+<li><p>It is configured to use a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.</p></li>
+<li><p>It is configured to use the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/">NVIDIA License System (NLS)</a>.</p></li>
 </ul>
 </div></blockquote>
-<p>The following sections apply to the following configurations:</p>
+<p>The GPU Operator with NVIDIA AI Enterprise is supported with the following platforms:</p>
 <ul class="simple">
 <li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU</p></li>
 <li><p>VMware vSphere with Tanzu</p></li>
@@ -165,129 +168,47 @@ The GPU Operator is pre-configured to simplify the provisioning experience with 
 </section>
 <section id="installing-gpu-operator">
 <h2>Installing GPU Operator<a class="headerlink" href="#installing-gpu-operator" title="Permalink to this headline"></a></h2>
-<p>To install GPU Operator with NVIDIA AI Enterprise, apply the following steps.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You can also use the following <a class="reference external" href="https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/gpu-operator-nvaie.sh">script</a>, which automates the below installation instructions.
-Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
-</pre></div>
-</div>
-<p>Create an empty vGPU license configuration file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo touch gridd.conf
-</pre></div>
-</div>
-<p>Generate and download a NLS client license token. Please refer to Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NLS User Guide</a> for instructions.</p>
-<p>Rename the NLS client license token that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.</p>
-<p>Create the <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> ConfigMap object in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace. Both the vGPU license
-configuration file and the NLS client license token will be added to this ConfigMap:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config <span class="se">\</span>
-    -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>&lt;path&gt;/client_configuration_token.tok
-</pre></div>
-</div>
-<p>Create an image pull secret in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace for the private
-registry that contains the containerized NVIDIA vGPU software graphics driver for Linux for
-use with NVIDIA GPU Operator:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Set the registry secret name:</p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">REGISTRY_SECRET_NAME</span><span class="o">=</span>ngc-secret
-</pre></div>
-</div>
+<p>Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.</p>
+<p>To deploy an earlier version of NVIDIA AI Enterprise, refer to the documentation for the GPU Operator version specified in the NVIDIA AI Enterprise documentation
+or an earlier version of the GPU Operator documentation, such as the
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html">23.9.1</a>
+version.</p>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
 <ul class="simple">
-<li><p>Set the private registry name:</p></li>
+<li><p>A client configuration token has been generated for the client on which the script will install the vGPU guest driver.
+Refer to <a class="reference external" href="https://docs.nvidia.com/license-system/latest/nvidia-license-system-user-guide/index.html#generating-client-configuration-token">Generating a Client Configuration Token</a>
+in the <em>NVIDIA License System User Guide</em> for more information.</p></li>
+<li><p>An NGC CLI API key that is used to create an image pull secret.
+The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
+Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key">Generating Your NGC API Key</a>
+in the <em>NVIDIA NGC Private Registry User Guide</em> for more information.</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>nvcr.io/nvaie
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Create an image pull secret in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace with the registry
-secret name and the private registry name that you set. Replace <code class="docutils literal notranslate"><span class="pre">password</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">email-address</span></code> with your NGC API key and email address respectively:</p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret docker-registry <span class="si">${</span><span class="nv">REGISTRY_SECRET_NAME</span><span class="si">}</span> <span class="se">\</span>
-    --docker-server<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
-    --docker-username<span class="o">=</span><span class="s1">&#39;$oauthtoken&#39;</span> <span class="se">\</span>
-    --docker-password<span class="o">=</span><span class="s1">&#39;&lt;password&gt;&#39;</span> <span class="se">\</span>
-    --docker-email<span class="o">=</span><span class="s1">&#39;&lt;email-address&gt;&#39;</span> <span class="se">\</span>
-    -n gpu-operator
-</pre></div>
-</div>
-</div></blockquote>
-<p>Add the NVIDIA AI Enterprise Helm repository, where password is the NGC API key for accessing the NVIDIA Enterprise Collection that you generated:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvaie https://helm.ngc.nvidia.com/nvaie <span class="se">\</span>
-  --username<span class="o">=</span><span class="s1">&#39;$oauthtoken&#39;</span> --password<span class="o">=</span><span class="s1">&#39;&lt;password&gt;&#39;</span> <span class="se">\</span>
-  <span class="o">&amp;&amp;</span> helm repo update
-</pre></div>
-</div>
-<p>Install the NVIDIA GPU Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator nvaie/gpu-operator-&lt;M&gt;-&lt;m&gt; -n gpu-operator
-</pre></div>
-</div>
-<p>Replace <em>M</em> and <em>m</em> with the major and minor release values, such as <code class="docutils literal notranslate"><span class="pre">3-1</span></code>.</p>
-<p>To deploy the Helm chart with some customizations, refer to
-<a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Chart Customization Options</span></a>.</p>
 </section>
-<section id="installing-gpu-operator-with-the-nvidia-datacenter-driver">
-<h2>Installing GPU Operator with the NVIDIA Datacenter Driver<a class="headerlink" href="#installing-gpu-operator-with-the-nvidia-datacenter-driver" title="Permalink to this headline"></a></h2>
-<p>To install GPU Operator on baremetal with the NVIDIA Datacenter Driver, apply the following steps.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You can also use the following <a class="reference external" href="https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/scripts/install-gpu-operator-nvaie.sh">script</a>, which automates the below installation instructions.
-Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+<section id="procedure">
+<h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h3>
+<ol class="arabic">
+<li><p>Export the NGC CLI API key and your email address as environment variables:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;M2Vub3QxYmgyZ...&quot;</span>
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">NGC_USER_EMAIL</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span>
 </pre></div>
 </div>
-<p>Create an image pull secret in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace for the private
-registry that contains the NVIDIA GPU Operator:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Set the registry secret name:</p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">REGISTRY_SECRET_NAME</span><span class="o">=</span>ngc-secret
+</li>
+<li><p>Go to the
+<a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5">NVIDIA GPU Operator - Deploy Installer Script</a>
+web page on NVIDIA NGC.</p>
+<p>Click the <strong>File Browser</strong> tab, identify your NVIDIA AI Enterprise release, click <a class="reference internal" href="https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg"><img alt="Actions button" height="14px" src="https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg" width="14px" /></a>, and select <strong>Download File</strong>.</p>
+<p>Copy the downloaded script to the same directory as the client configuration token.</p>
+</li>
+<li><p>Rename the client configuration token that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.
+Originally, the client configuration token is named to match the pattern: <code class="docutils literal notranslate"><span class="pre">client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok</span></code>.</p></li>
+<li><p>From the directory that contains the downloaded script and the client configuration token, run the script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash gpu-operator-nvaie.sh install
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Set the private registry name:</p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>nvcr.io/nvaie
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Create an image pull secret in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace with the registry
-secret name and the private registry name that you set. Replace <code class="docutils literal notranslate"><span class="pre">password</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">email-address</span></code> with your NGC API key and email address respectively:</p></li>
-</ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret docker-registry <span class="si">${</span><span class="nv">REGISTRY_SECRET_NAME</span><span class="si">}</span> <span class="se">\</span>
-    --docker-server<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
-    --docker-username<span class="o">=</span><span class="s1">&#39;$oauthtoken&#39;</span> <span class="se">\</span>
-    --docker-password<span class="o">=</span><span class="s1">&#39;&lt;password&gt;&#39;</span> <span class="se">\</span>
-    --docker-email<span class="o">=</span><span class="s1">&#39;&lt;email-address&gt;&#39;</span> <span class="se">\</span>
-    -n gpu-operator
-</pre></div>
-</div>
-</div></blockquote>
-<p>Add the NVIDIA AI Enterprise Helm repository, where password is the NGC API key for accessing the NVIDIA Enterprise Collection that you generated:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvaie https://helm.ngc.nvidia.com/nvaie <span class="se">\</span>
-  --username<span class="o">=</span><span class="s1">&#39;$oauthtoken&#39;</span> --password<span class="o">=</span><span class="s1">&#39;&lt;password&gt;&#39;</span> <span class="se">\</span>
-  <span class="o">&amp;&amp;</span> helm repo update
-</pre></div>
-</div>
-<p>Install the NVIDIA GPU Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator nvaie/gpu-operator-&lt;M&gt;-&lt;m&gt; -n gpu-operator <span class="se">\</span>
-  --set driver.repository<span class="o">=</span>nvcr.io/nvidia <span class="se">\</span>
-  --set driver.image<span class="o">=</span>driver <span class="se">\</span>
-  --set driver.version<span class="o">=</span>&lt;driver-version&gt; <span class="se">\</span>
-  --set driver.licensingConfig.configMapName<span class="o">=</span><span class="s2">&quot;&quot;</span>
-</pre></div>
-</div>
-<p>Replace <em>M</em> and <em>m</em> with the major and minor release values, such as <code class="docutils literal notranslate"><span class="pre">3-1</span></code>.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/latest/release-notes/index.html"><em>NVIDIA AI Enterprise Release Notes</em></a> for information about supported GPU Driver versions.</p>
-<p>To deploy the Helm chart with some customizations, refer to
-<a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Chart Customization Options</span></a>.</p>
+</li>
+</ol>
+</section>
 </section>
 <section id="updating-nls-client-license-token">
 <h2>Updating NLS client license token<a class="headerlink" href="#updating-nls-client-license-token" title="Permalink to this headline"></a></h2>
@@ -320,6 +241,12 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-ente
 <p>Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)</p>
 <p>GPU Operator will redeploy sequentially all the driver pods with this new licensing information.</p>
 </section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/">NVIDIA AI Enterprise</a> web page.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -333,9 +260,33 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-ente
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 07, 2024.
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
+
   </div>
 
    

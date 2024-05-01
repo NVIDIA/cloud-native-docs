@@ -146,10 +146,11 @@
 <li><p><a class="reference internal" href="#applying-one-cluster-wide-configuration" id="id8">Applying One Cluster-Wide Configuration</a></p></li>
 <li><p><a class="reference internal" href="#applying-multiple-node-specific-configurations" id="id9">Applying Multiple Node-Specific Configurations</a></p></li>
 <li><p><a class="reference internal" href="#configuring-time-slicing-before-installing-the-nvidia-gpu-operator" id="id10">Configuring Time-Slicing Before Installing the NVIDIA GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#updating-a-time-slicing-config-map" id="id11">Updating a Time-Slicing Config Map</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#verifying-the-gpu-time-slicing-configuration" id="id11">Verifying the GPU Time-Slicing Configuration</a></p></li>
-<li><p><a class="reference internal" href="#references" id="id12">References</a></p></li>
+<li><p><a class="reference internal" href="#verifying-the-gpu-time-slicing-configuration" id="id12">Verifying the GPU Time-Slicing Configuration</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id13">References</a></p></li>
 </ul>
 </div>
 <section id="understanding-time-slicing-gpus">
@@ -211,7 +212,11 @@ the mixed MIG strategy.</p>
 </section>
 <section id="limitations">
 <h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h3>
-<p>DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.</p>
+<ul class="simple">
+<li><p>DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.</p></li>
+<li><p>The Operator does not monitor changes to a time-slicing config map.
+Refer to <a class="reference internal" href="#time-slicing-update-config-map"><span class="std std-ref">Updating a Time-Slicing Config Map</span></a>.</p></li>
+</ul>
 </section>
 <section id="changes-to-node-labels">
 <h3>Changes to Node Labels<a class="headerlink" href="#changes-to-node-labels" title="Permalink to this headline"></a></h3>
@@ -386,7 +391,7 @@ and want to apply the same time-slicing configuration on all nodes in the cluste
 </pre></div>
 </div>
 </li>
-<li><p>(Optional) Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
 <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
 </pre></div>
@@ -479,7 +484,7 @@ control which configuration is applied to which nodes.</p>
 when the device plugin pods redeploy, they do not automatically apply the time-slicing
 configuration to all nodes.</p>
 </li>
-<li><p>(Optional) Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
 <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
 </pre></div>
@@ -569,6 +574,16 @@ configuration to all nodes.</p>
 </ol>
 <p>After installation, refer to <a class="reference internal" href="#time-slicing-verify"><span class="std std-ref">Verifying the GPU Time-Slicing Configuration</span></a>.</p>
 </section>
+<section id="updating-a-time-slicing-config-map">
+<span id="time-slicing-update-config-map"></span><h3>Updating a Time-Slicing Config Map<a class="headerlink" href="#updating-a-time-slicing-config-map" title="Permalink to this headline"></a></h3>
+<p>The Operator does not monitor the time-slicing config maps.
+As a result, if you modify a config map, the device plugin pods do not restart and do not apply the modified configuration.</p>
+<p>To apply the modified config map, manually restart the device plugin pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-daemonset
+</pre></div>
+</div>
+<p>Currently running workloads are not affected and continue to run, though NVIDIA recommends performing the restart during a maintenance period.</p>
+</section>
 </section>
 <section id="verifying-the-gpu-time-slicing-configuration">
 <span id="time-slicing-verify"></span><h2>Verifying the GPU Time-Slicing Configuration<a class="headerlink" href="#verifying-the-gpu-time-slicing-configuration" title="Permalink to this headline"></a></h2>
@@ -626,7 +641,7 @@ specified number of GPU replicas to create.</p></li>
 </pre></div>
 </div>
 </li>
-<li><p>(Optional) Deploy a workload to validate GPU time-slicing:</p>
+<li><p>Optional: Deploy a workload to validate GPU time-slicing:</p>
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">time-slicing-verification.yaml</span></code>, with contents like the following:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
@@ -736,9 +751,33 @@ specified number of GPU replicas to create.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Mar 07, 2024.
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
+
   </div>
 
    
