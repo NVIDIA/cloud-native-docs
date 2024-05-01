@@ -62,6 +62,54 @@
   }
 }
 
+/* Set up for old browsers*/
+@supports not (font-variation-settings: normal) {
+  @font-face {
+    font-family: "RobotoMono";
+    src: url("https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/static/RobotoMono-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "RobotoMono";
+    src: url("https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/static/RobotoMono-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "RobotoMono";
+    src: url("https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/static/RobotoMono-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "RobotoMono";
+    src: url("https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/static/RobotoMono-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+}
+
+/* Set up for modern browsers, all weights */
+@supports (font-variation-settings: normal) {
+  @font-face {
+    font-family: 'RobotoMono';
+    src: url('https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf') format('truetype supports variations'),
+    url('https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 1000;
+    font-stretch: 25% 151%;
+    font-style: normal;
+  }
+  @font-face{
+    font-family: 'RobotoMono';
+    src: url('https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/RobotoMono-Italic-VariableFont_wght.ttf') format('truetype supports variations'),
+    url('https://images.nvidia.com/etc/designs/nvidiaGDC/clientlibs_base/fonts/Roboto_Mono/RobotoMono-Italic-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight:100 1000;
+    font-stretch:25% 151%;
+    font-style:italic;
+  }
+}
+
 :root
 {
     /* nv branding */
@@ -75,7 +123,7 @@
     --nv-error: #f44336;
 
     --nv-font-face: NVIDIA,Arial,Helvetica,Sans-Serif;
-    --nv-font-face-mono: SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,Courier,monospace;
+    --nv-font-face-mono: RobotoMono,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,Courier,monospace;
 
     /* nv branding: light theme */
     --text: #1a1a1a;
@@ -429,7 +477,7 @@
 /**********************************************************************************************************************/
 
 
-/* Replace majority of Fonts in RTD with DIN Pro*/
+/* Replace majority of Fonts in RTD */
 body
 {
     font-family: var(--nv-font-face);
@@ -580,6 +628,22 @@ a:hover
     color: var(--link-hover-color);
 }
 
+/* fix API links */
+.rst-content a code.xref,
+.rst-content a tt.xref {
+    color: var(--link-color);
+    border: none;
+}
+
+/* decorate external links with an icon */
+a.external::after
+{
+    font-family: "FontAwesome";
+    content: "\f08e";
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
 /* follow branding guide for small footer text */
 footer p
 {
@@ -589,15 +653,34 @@ footer p
     line-height: var(--small-line-height);
 }
 
-/* add nvidia logo (like www.nvidia.com) */
-footer p:first-child::before
+footer p:not(.notices)
 {
-    content: url(../_static/NVIDIA-LogoBlack.svg);
-    display: block;
+    display: inline;
+    margin: 0;
+}
+
+footer p a,
+footer p a:visited {
+    color: var(--small-font-color);
+}
+
+footer p a:hover {
+    color: var(--text);
+}
+
+footer img {
     width: 110px;
-    margin: 0px;
     position: relative;
     left: -9px;
+    margin: 0 0 15px 0;
+}
+
+footer img.only-light {
+    display: block;
+}
+
+footer img.only-dark {
+    display: none;
 }
 
 /* fun role for self-made footnotes */
@@ -617,6 +700,23 @@ footer p:first-child::before
     font-weight: var(--body-font-weight);
     font-size: var(--body-font-size);
     line-height: var(--body-line-height);
+}
+
+/* set all code fonts */
+.rst-content pre.literal-block,
+.rst-content .linenodiv pre,
+.rst-content div[class^='highlight'] pre,
+.rst-content tt,
+.rst-content code,
+.rst-content pre,
+.rst-content kbd,
+.rst-content samp,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .descname,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .descclassname,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) .sig-name,
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.glossary):not(.simple) > dt:first-child
+{
+    font-family: var(--nv-font-face-mono);
 }
 
 /**********************************************************************************************************************/
@@ -669,6 +769,31 @@ footer p:first-child::before
 .rst-content table.docutils.table-no-stripes:not(.field-list) tr:nth-child(2n-1) td
 {
     background-color: var(--table-background);
+}
+
+/* optional table with no borders */
+.rst-content table.docutils.table-no-borders:not(.field-list),
+.rst-content table.docutils.table-no-borders:not(.field-list) td
+{
+    border: none;
+}
+
+/* optional table right align first column */
+.rst-content table.docutils.table-right-align-first-column:not(.field-list) tr td:first-of-type
+{
+    text-align: right;
+}
+
+.rst-content table.docutils.table-compact-cells td,
+.rst-content table.docutils.table-compact-cells th
+{
+    padding: 4px 4px;
+}
+
+.rst-content table.docutils.table-compact-cells td p,
+.rst-content table.docutils.table-compact-cells th p
+{
+    margin-top: 0px;
 }
 
 /* table header is white on black */
@@ -748,7 +873,7 @@ html.writer-html5 .rst-content table.docutils.table-compact th > p {
 /**********************************************************************************************************************/
 
 /* unordered list should have a nv-green > */
-.rst-content section ul:not(.treeView):not(.collapsibleList) li:not(.collapsibleListClosed):not(.collapsibleListOpen):not(.lastChild)::marker,
+.rst-content section ul li::marker,
 .rst-content .toctree-wrapper ul li::marker,
 .wy-plain-list-disc li::marker,
 article ul li::marker
@@ -765,6 +890,8 @@ article ul li::marker
 .wy-plain-list-decimal li::marker,
 article ol li::marker
 {
+    font-family: inherit;
+    content: inherit;
     color: var(--nv-green);
     font-weight: 600;
     list-style: var(--ol-list-style-type);
@@ -786,6 +913,22 @@ article ol ol li
 article ol ol ol li
 {
     list-style: var(--ol-ol-ol-list-style-type);
+}
+
+/* fix legacy exhale hierarchy trees */
+.rst-content section .treeView li::marker
+{
+    content: url(collapsible-lists/css/button.png) !important;
+}
+
+.rst-content section .treeView li.collapsibleListClosed::marker
+{
+    content: url(collapsible-lists/css/button-closed.png) !important;
+}
+
+.rst-content section .treeView li.collapsibleListOpen::marker
+{
+    content: url(collapsible-lists/css/button-open.png) !important;
 }
 
 /* start the first paragraph immediately (don't add space at the top) */
@@ -1038,7 +1181,6 @@ html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(
     margin-bottom: 15px;
     margin-right: 0px;
     margin-left: 0px;
-    font-family: var(--nv-font-face-mono);
     letter-spacing: -0.5px;
     font-weight: 500;
     font-style: normal;
@@ -1052,7 +1194,6 @@ dl.py
 }
 
 dl.py .sig.sig-object.py {
-    font-family: var(--nv-font-face-mono);
     font-weight: 400;
 }
 dl.py .sig.sig-object.py span.sig-name.descname
@@ -1098,7 +1239,6 @@ html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(
 {
     color: var(--api-header-text-color);
     padding: 0px;
-    font-family: var(--nv-font-face-mono);
 }
 
 /* make anchor in class/struct header proper size and color */
@@ -1402,4 +1542,52 @@ details.sd-dropdown .sd-summary-down svg {
 {
     content: ': ';
     margin-left: -0.25rem;
+}
+
+/* text transformations */
+.text-rotate-90
+{
+    writing-mode: vertical-rl;
+}
+
+.text-rotate-270
+{
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+/* styling definition lists as tables for API docs */
+.dl-as-table
+{
+    display: table;
+}
+
+.dl-as-table > dl
+{
+    display: table-row-group;
+}
+
+.dl-as-table > dl > dt,
+.dl-as-table > dl > dd
+{
+    display: table-row;
+}
+
+.dl-as-table > dl > dd > p
+{
+    display: table-cell;
+}
+
+.dl-as-table > dl > dd::before
+{
+    content: "";  /* add a fake cell */
+}
+
+.tag-as-table-cell
+{
+    display: table-cell;
+    width: auto;
+    text-align: right;
+    white-space: nowrap;
+    padding-right: 0.5em;
 }

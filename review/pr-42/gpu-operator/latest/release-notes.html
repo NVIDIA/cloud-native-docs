@@ -1058,7 +1058,7 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>All worker nodes within the Kubernetes cluster must use the same operating system version.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver has to be blacklisted when using NVIDIA vGPU. Otherwise the driver will fail to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs and all GPU Operator pods will be stuck in <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
-<li><p>When using <code class="docutils literal notranslate"><span class="pre">CRI-O</span></code> runtime with Kubernetes, the config file <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> has to include <code class="docutils literal notranslate"><span class="pre">/run/containers/oci/hooks.d</span></code> as path for <code class="docutils literal notranslate"><span class="pre">hooks_dir</span></code>. Refer <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html#custom-runtime-options" title="(in edge)"><span>Custom configuration for runtime containerd</span></a> for steps to configure this.</p></li>
+<li><p>When using <code class="docutils literal notranslate"><span class="pre">CRI-O</span></code> runtime with Kubernetes, the config file <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> has to include <code class="docutils literal notranslate"><span class="pre">/run/containers/oci/hooks.d</span></code> as path for <code class="docutils literal notranslate"><span class="pre">hooks_dir</span></code>. Refer <a class="reference internal" href="getting-started.html#custom-runtime-options"><span class="std std-ref">Specifying Configuration Options for containerd</span></a> for steps to configure this.</p></li>
 <li><p>When using RHEL8 with Kubernetes, SELinux has to be enabled (either in permissive or enforcing mode) for use with the GPU Operator. Additionally, network restricted environments are not supported.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.0</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.0-ubi8</span></code> images have been released with the following known HIGH Vulnerability CVEs.
 These are from the base images and are not in libraries used by GPU Operator:</p>
@@ -1777,9 +1777,33 @@ would not be available after reboot.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2024, NVIDIA.
-      <span class="lastupdated">Last updated on Apr 23, 2024.
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on May 01, 2024.
       </span></p>
+
   </div>
 
    
