@@ -215,7 +215,7 @@ The following table describes some of the fields in the custom resource.
      - ``system-node-critical``
 
    * - ``rdma.enabled``
-     - Specifies whether to configure GPUDirect RDMA.
+     - Specifies whether to enable GPUDirect RDMA.
      - ``false``
 
    * - ``repository``
