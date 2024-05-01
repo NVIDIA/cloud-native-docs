@@ -47,7 +47,7 @@ New Features
 
 * Added support to enable NVIDIA GDRCopy v2.4.1.
 
-  When you enable support for GDRCopy, the Operator configures the GPUCopy Driver container image
+  When you enable support for GDRCopy, the Operator configures the GDRCopy Driver container image
   as a sidecar container in the GPU driver pod.
   The sidecar container compiles and installs the gdrdrv Linux kernel module.
   This feature is supported on Ubuntu 22.04 and RHCOS operating systems and on X86_64 and ARM64 architectures.
@@ -68,7 +68,6 @@ New Features
     - DCGM Exporter 3.3.5-3.4.1
     - Node Feature Discovery v0.15.4
     - NVIDIA GPU Feature Discovery for Kubernetes v0.15.0
-    - NVIDIA MIG Manager for Kubernetes v0.6.0
     - NVIDIA KubeVirt GPU Device Plugin v1.2.7
     - NVIDIA vGPU Device Manager v0.2.6
     - NVIDIA Kata Manager for Kubernetes v0.2.0
@@ -95,7 +94,7 @@ Fixed Issues
 
 * Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
   secrets and storage for the integrated image registry.
-* Previously, the vGPU Device Manager encountered an error if no NVIDIA devices were found in ``/sys/class/mdev_bus``.
+* Previously, the vGPU Device Manager would panic if no NVIDIA devices were found in ``/sys/class/mdev_bus``.
 * Previously, the MOFED validation init container would run for the GPU driver pod.
   In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
 * Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the ``/etc/os-release`` file.
