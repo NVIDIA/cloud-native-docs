@@ -104,9 +104,6 @@ Fixed Issues
 * Previously, if any node in the cluster was in the ``NotReady`` state, the GPU driver upgrade controller failed to make progress.
   In this release, the upgrade library is updated and skips unhealthy nodes.
   Refer to Github `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
-* Previously, specifying an alternative network port for DGCM was ignored.
-  In this release, you can specify ``spec.dcgm.hostPort: <port>`` and ``spec.dcgmExporter.env.DCGM_REMOTE_HOSTENGINE_INFO``
-  with a value like ``localhost:<port>``.
 
 
 .. _v24.3.0-known-limitations:
