@@ -261,7 +261,8 @@ Perform the following steps to install the Operator for use with Kata Containers
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
 
-#. Specify at least the following options when you install the Operator:
+#. Specify at least the following options when you install the Operator.
+   If you want to run |project-name| by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
 
    .. code-block:: console
 

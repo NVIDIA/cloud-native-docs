@@ -247,7 +247,7 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 #. Label the worker nodes that you want to use with confidential containers.
 
    This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
-   Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes.
+   Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes when you install the GPU Operator.
 
 #. Install the Confidential Containers Operator.
 
@@ -275,13 +275,6 @@ Perform the following steps to install and verify the Confidential Containers Op
    .. code-block:: console
 
       $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
-
-   Alternatively, set the default sandbox workload to ``vm-passthrough`` to run |project-name| on all worker nodes:
-
-   .. code-block:: console
-
-      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-          -p='[{"op": "replace", "path": "/spec/sandboxWorkloads/defaultWorkload", "value": "vm-passthrough"}]'
 
 #. Set the Operator version in an environment variable:
 
@@ -406,7 +399,8 @@ Perform the following steps to install the Operator for use with confidential co
          && helm repo update
 
 
-#. Specify at least the following options when you install the Operator:
+#. Specify at least the following options when you install the Operator.
+   If you want to run |project-name| by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
 
    .. code-block:: console
 
@@ -417,6 +411,7 @@ Perform the following steps to install the Operator for use with confidential co
          --set kataManager.enabled=true \
          --set ccManager.enabled=true \
          --set nfd.nodefeaturerules=true
+
 
    *Example Output*
 
