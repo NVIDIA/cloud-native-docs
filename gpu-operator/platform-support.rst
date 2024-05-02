@@ -176,6 +176,8 @@ The following NVIDIA data center GPUs are supported:
 +-------------------------+---------------------------+
 | NVIDIA A30X             | Ampere                    |
 +-------------------------+---------------------------+
+| NVIDIA IGX Orin         | Ampere                    |
++-------------------------+---------------------------+
 | AWS EC2 G5g instances   | Turing                    |
 +-------------------------+---------------------------+
 
@@ -191,7 +193,7 @@ system that meets the following requirements is supported:
    The GPU Operator only supports platforms using discrete GPUs.
    NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
 
-   The R520 Data Center Driver is not supported for ARM.
+   NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
 
 
 Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products
