@@ -105,28 +105,38 @@
 <span id="toolkit-install"></span><h1>Installing the NVIDIA Container Toolkit<a class="headerlink" href="#installing-the-nvidia-container-toolkit" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#installation" id="id1">Installation</a></p>
+<li><p><a class="reference internal" href="#installation" id="id2">Installation</a></p>
 <ul>
-<li><p><a class="reference internal" href="#installing-with-apt" id="id2">Installing with Apt</a></p></li>
-<li><p><a class="reference internal" href="#installing-with-yum-or-dnf" id="id3">Installing with Yum or Dnf</a></p></li>
-<li><p><a class="reference internal" href="#installing-with-zypper" id="id4">Installing with Zypper</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id3">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#installing-with-apt" id="id4">Installing with Apt</a></p></li>
+<li><p><a class="reference internal" href="#installing-with-yum-or-dnf" id="id5">Installing with Yum or Dnf</a></p></li>
+<li><p><a class="reference internal" href="#installing-with-zypper" id="id6">Installing with Zypper</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#configuration" id="id5">Configuration</a></p>
+<li><p><a class="reference internal" href="#configuration" id="id7">Configuration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#prerequisites" id="id6">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#configuring-docker" id="id7">Configuring Docker</a></p></li>
-<li><p><a class="reference internal" href="#configuring-containerd-for-kubernetes" id="id8">Configuring containerd (for Kubernetes)</a></p></li>
-<li><p><a class="reference internal" href="#configuring-containerd-for-nerdctl" id="id9">Configuring containerd (for nerdctl)</a></p></li>
-<li><p><a class="reference internal" href="#configuring-cri-o" id="id10">Configuring CRI-O</a></p></li>
-<li><p><a class="reference internal" href="#configuring-podman" id="id11">Configuring Podman</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id8">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#configuring-docker" id="id9">Configuring Docker</a></p></li>
+<li><p><a class="reference internal" href="#configuring-containerd-for-kubernetes" id="id10">Configuring containerd (for Kubernetes)</a></p></li>
+<li><p><a class="reference internal" href="#configuring-containerd-for-nerdctl" id="id11">Configuring containerd (for nerdctl)</a></p></li>
+<li><p><a class="reference internal" href="#configuring-cri-o" id="id12">Configuring CRI-O</a></p></li>
+<li><p><a class="reference internal" href="#configuring-podman" id="id13">Configuring Podman</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#next-steps" id="id12">Next Steps</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id14">Next Steps</a></p></li>
 </ul>
 </div>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<section id="prerequisites">
+<span id="pre-requisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
+<p>Install the NVIDIA GPU driver for your Linux distribution.
+NVIDIA recommends installing the driver by using the package manager for your distribution.</p>
+<p>For information about installing the driver with a package manager, refer to
+the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html"><em>NVIDIA Driver Installation Quickstart Guide</em></a>.</p>
+<p>Alternatively, you can install the driver by downloading a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.
+Refer to the NVIDIA <a class="reference external" href="https://www.nvidia.com/Download/index.aspx?lang=en-us">Official Drivers</a> page.</p>
+</section>
 <section id="installing-with-apt">
 <h3>Installing with Apt<a class="headerlink" href="#installing-with-apt" title="Permalink to this headline"></a></h3>
 <ol class="arabic">
@@ -204,8 +214,8 @@ TODO:
 </section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h2>
-<section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h3>Prerequisites<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>You installed a supported container engine (Docker, Containerd, CRI-O, Podman).</p></li>
 <li><p>You installed the NVIDIA Container Toolkit.</p></li>
@@ -303,12 +313,6 @@ TODO:
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p>Install an NVIDIA GPU Driver if you do not already have one installed.
-You can install a driver by using the package manager for your distribution, but other installation
-methods, such as downloading a <code class="docutils literal notranslate"><span class="pre">.run</span></code> file intaller, are available.
-Refer to the
-<em><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html">NVIDIA Driver Installation Quickstart Guide</a></em>
-for more information.</p></li>
 <li><p><a class="reference internal" href="sample-workload.html"><span class="doc std std-doc">Running a Sample Workload</span></a></p></li>
 </ul>
 </section>
@@ -349,7 +353,7 @@ for more information.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on May 01, 2024.
+      <span class="lastupdated">Last updated on May 02, 2024.
       </span></p>
 
   </div>

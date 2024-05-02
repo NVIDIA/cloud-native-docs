@@ -171,6 +171,19 @@ on the platform support page.</p></li>
 </li>
 <li><p>Added support for Kubernetes v1.29 and v1.30.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p></li>
+<li><p>Added support for NVIDIA GH200 Grace Hopper Superchip as a generally available feature.
+Refer to <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a>.</p>
+<p>The following prerequisites are required for using the Operator with GH200:</p>
+<ul class="simple">
+<li><p>Run Ubuntu 22.04, the 550.54.15 GPU driver, and an NVIDIA Linux kernel, such as one provided with a <code class="docutils literal notranslate"><span class="pre">linux-nvidia-&lt;x.x&gt;</span></code> package.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">init_on_alloc=0</span></code> and <code class="docutils literal notranslate"><span class="pre">memhp_default_state=online_movable</span></code> as Linux kernel boot parameters.</p></li>
+<li><p>Run the NVIDIA Open GPU Kernel module driver.</p></li>
+</ul>
+</li>
+<li><p>Added support for NVIDIA Network Operator v24.4.1.
+Refer to <a class="reference internal" href="platform-support.html#support-for-gpudirect-rdma"><span class="std std-ref">Support for GPUDirect RDMA</span></a> and <a class="reference internal" href="platform-support.html#support-for-gpudirect-storage"><span class="std std-ref">Support for GPUDirect Storage</span></a>.</p></li>
+<li><p>Added support for the NVIDIA IGX Orin platform when configured to use the discrete GPU.
+Refer to <a class="reference internal" href="platform-support.html#gpu-operator-arm-platforms"><span class="std std-ref">Supported ARM Based Platforms</span></a>.</p></li>
 <li><p>Removed support for Kubernetes pod security policy (PSP).
 PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.</p></li>
 </ul>
@@ -1901,7 +1914,7 @@ would not be available after reboot.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on May 01, 2024.
+      <span class="lastupdated">Last updated on May 02, 2024.
       </span></p>
 
   </div>
