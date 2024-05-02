@@ -176,6 +176,8 @@ The following NVIDIA data center GPUs are supported:
 +-------------------------+---------------------------+
 | NVIDIA A30X             | Ampere                    |
 +-------------------------+---------------------------+
+| NVIDIA IGX Orin         | Ampere                    |
++-------------------------+---------------------------+
 | AWS EC2 G5g instances   | Turing                    |
 +-------------------------+---------------------------+
 
@@ -191,7 +193,7 @@ system that meets the following requirements is supported:
    The GPU Operator only supports platforms using discrete GPUs.
    NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
 
-   The R520 Data Center Driver is not supported for ARM.
+   NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
 
 
 Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products
@@ -276,15 +278,15 @@ The GPU Operator has been validated in the following scenarios:
            | MicroK8s
 
        * - Ubuntu 20.04 LTS |fn1|_
-         - 1.22---1.29
+         - 1.22---1.30
          -
          - 7.0 U3c, 8.0 U2
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
 
        * - Ubuntu 22.04 LTS |fn1|_
-         - 1.22---1.29
+         - 1.22---1.30
          -
          - 8.0 U2
          -
@@ -303,10 +305,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
 
@@ -377,14 +379,14 @@ The GPU Operator has been validated in the following scenarios:
            | Engine 2
 
        * - Ubuntu 20.04 LTS
-         - 1.22--1.29
+         - 1.22--1.30
          -
          - 7.0 U3c, 8.0 U2
          - | 1.22, 1.23,
            | 1.24, 1.25
 
        * - Ubuntu 22.04 LTS
-         - 1.22--1.29
+         - 1.22--1.30
          -
          - 8.0 U2
          -
@@ -399,10 +401,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.22---1.29
+         - 1.22---1.30
          -
          -
-         - 1.22---1.29
+         - 1.22---1.30
 
 
 Supported Container Runtimes
@@ -460,7 +462,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.1
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
@@ -471,7 +473,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 23.10.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.1
 - Red Hat OpenShift Container Platform 4.12 and higher
 
 .. note::

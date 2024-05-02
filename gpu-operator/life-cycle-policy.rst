@@ -105,57 +105,59 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - Version
 
    * - NVIDIA GPU Operator
-     - v23.9.2
+     - v24.3.0
 
    * - NVIDIA GPU Driver
-     - | `550.54.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-15/index.html>`_ (recommended),
-       | `550.54.14 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-14/index.html>`_ (default),
+     - | `550.54.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-15/index.html>`_ (default),
        | `535.161.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-161-08/index.html>`_,
        | `470.239.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-470-239-06/index.html>`_,
 
    * - NVIDIA Driver Manager for K8s
-     - `v0.6.5 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`_
+     - `v0.6.8 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
-     - `1.14.6 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`_
+     - `1.15.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.14.5 <https://github.com/NVIDIA/k8s-device-plugin/releases>`_
+     - `0.15.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `3.3.0-3.2.0 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`_
+     - `3.3.5-3.4.1 <https://github.com/NVIDIA/gpu-monitoring-tools/releases>`__
 
    * - Node Feature Discovery
-     - v0.14.2
+     - v0.15.4
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.8.2 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`_
+     - `0.15.0 <https://github.com/NVIDIA/gpu-feature-discovery/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
-     - `0.6.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`_
+     - `0.7.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
 
    * - DCGM
-     - `3.3.0-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`_
+     - `3.3.5-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
-     - v23.9.2
+     - v24.3.0
 
    * - NVIDIA KubeVirt GPU Device Plugin
-     - `v1.2.4 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`_
+     - `v1.2.7 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
-     - v0.2.4
+     - v0.2.6
 
    * - NVIDIA GDS Driver |gds|_
-     - `2.17.5 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`_
+     - `2.17.5 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
 
    * - NVIDIA Kata Manager for Kubernetes
-     - v0.1.2
+     - v0.2.0
 
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
      - v0.1.1
+
+   * - NVIDIA GDRCopy Driver
+     - `v2.4.1 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
 .. _gds-open-kernel:
 

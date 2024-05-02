@@ -31,7 +31,132 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
+
 ----
+
+.. _v24.3.0:
+
+24.3.0
+======
+
+.. _v24.3.0-new-features:
+
+New Features
+------------
+
+
+* Added support to enable NVIDIA GDRCopy v2.4.1.
+
+  When you enable support for GDRCopy, the Operator configures the GDRCopy Driver container image
+  as a sidecar container in the GPU driver pod.
+  The sidecar container compiles and installs the gdrdrv Linux kernel module.
+  This feature is supported on Ubuntu 22.04 and RHCOS operating systems and on X86_64 and ARM64 architectures.
+
+  Refer to :ref:`Chart Customization Options` for more information about the ``driver.gdrcopy`` field.
+
+* Added support for the NVIDIA Data Center GPU Driver version 550.54.15.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Container Toolkit version v1.15.0
+    - NVIDIA MIG Manager version v0.7.0
+    - NVIDIA Driver Manager for K8s v0.6.8
+    - NVIDIA Kubernetes Device Plugin v0.15.0
+    - DCGM 3.3.5-1
+    - DCGM Exporter 3.3.5-3.4.1
+    - Node Feature Discovery v0.15.4
+    - NVIDIA GPU Feature Discovery for Kubernetes v0.15.0
+    - NVIDIA KubeVirt GPU Device Plugin v1.2.7
+    - NVIDIA vGPU Device Manager v0.2.6
+    - NVIDIA Kata Manager for Kubernetes v0.2.0
+
+* Added support for Kubernetes v1.29 and v1.30.
+  Refer to :ref:`Supported Operating Systems and Kubernetes Platforms`.
+
+* Added support for NVIDIA GH200 Grace Hopper Superchip as a generally available feature.
+  Refer to :ref:`supported nvidia gpus and systems`.
+
+  The following prerequisites are required for using the Operator with GH200:
+
+  - Run Ubuntu 22.04, the 550.54.15 GPU driver, and an NVIDIA Linux kernel, such as one provided with a ``linux-nvidia-<x.x>`` package.
+  - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
+  - Run the NVIDIA Open GPU Kernel module driver.
+
+* Added support for NVIDIA Network Operator v24.4.1.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added support for the NVIDIA IGX Orin platform when configured to use the discrete GPU.
+  Refer to :ref:`gpu-operator-arm-platforms`.
+
+* Removed support for Kubernetes pod security policy (PSP).
+  PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.
+
+.. _v24.3.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
+  secrets and storage for the integrated image registry.
+* Previously, the vGPU Device Manager would panic if no NVIDIA devices were found in ``/sys/class/mdev_bus``.
+* Previously, the MOFED validation init container would run for the GPU driver pod.
+  In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
+* Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the ``/etc/os-release`` file.
+  In this release, the Kernel version is determined from the running kernel to prevent the issue.
+  Refer to Github `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
+* Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
+  specified the name of the config map as ``<namespace>:<config-map>`` in the ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable, the exporter
+  pods could not read the configuration from the config map.
+  In this release, the role used by the exporter is granted access to read from config maps.
+* Previously, under load, the Operator could fail with the message ``fatal error: concurrent map read and map write``.
+  In this release, the Operator controller is refactored to prevent the race condition.
+  Refer to Github `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
+* Previously, if any node in the cluster was in the ``NotReady`` state, the GPU driver upgrade controller failed to make progress.
+  In this release, the upgrade library is updated and skips unhealthy nodes.
+  Refer to Github `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
+
+
+.. _v24.3.0-known-limitations:
+
+Known Limitations
+------------------
+
+
+* The ``1g.12gb`` MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to ``all-balanced``.
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* When installing the Operator on Amazon EKS and using Kubernetes versions lower than
+  ``1.25``, specify the ``--set psp.enabled=true`` Helm argument because EKS enables
+  pod security policy (PSP).
+  If you use Kubernetes version ``1.25`` or higher, do not specify the ``psp.enabled``
+  argument so that the default value, ``false``, is used.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+  Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
+  in this case for the driver installation to succeed.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
+  The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
+  at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
+  configuration option.
+  Additionally, network-restricted environments are not supported.
 
 .. _v23.9.2:
 
