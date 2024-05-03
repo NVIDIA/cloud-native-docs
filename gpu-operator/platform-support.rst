@@ -456,6 +456,16 @@ Starting with KubeVirt v0.58.2 and v0.59.1, and OpenShift Virtualization 4.12.3 
 you must set the ``DisableMDEVConfiguration`` feature gate.
 Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
 
+KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
+
+- GA10x: A40, RTX A6000, RTX A5500, RTX A5000, A16, A10, A2.
+
+  The A10G and A10M GPUs are excluded.
+
+- AD10x: L40, RTX 6000 Ada, L4.
+
+  The L40G GPU is excluded.
+
 
 Support for GPUDirect RDMA
 --------------------------
