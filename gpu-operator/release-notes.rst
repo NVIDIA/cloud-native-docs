@@ -84,7 +84,7 @@ New Features
   - Add ``init_on_alloc=0`` and ``memhp_default_state=online_movable`` as Linux kernel boot parameters.
   - Run the NVIDIA Open GPU Kernel module driver.
 
-* Added support for NVIDIA Network Operator v24.4.1.
+* Added support for NVIDIA Network Operator v24.1.1.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
 * Added support for the NVIDIA IGX Orin platform when configured to use the discrete GPU.
