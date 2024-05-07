@@ -240,6 +240,13 @@ These options can be used with ``--set`` when installing with Helm.
      - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
      - ``false``
 
+   * - ``sandboxWorkloads.defaultWorkload``
+     - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
+       
+       Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <gpu-operator-kata>`, or :doc:`Confidential Containers <gpu-operator-confidential-containers>`.
+     - ``container``
+
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
        as a container on the system. Set this value to ``false`` when using the Operator on systems
