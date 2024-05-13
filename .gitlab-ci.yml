@@ -1,7 +1,7 @@
 variables:
   CONTAINER_TEST_IMAGE: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
   CONTAINER_RELEASE_IMAGE: "${CI_REGISTRY_IMAGE}:0.5.0"
-  BUILDER_IMAGE: ghcr.io/nvidia/cloud-native-docs:0.2.0
+  BUILDER_IMAGE: ghcr.io/nvidia/cloud-native-docs:0.3.0
   PUBLISHER_IMAGE: "${CI_REGISTRY_PUBLISHER}/publisher:2.0.0"
 
 stages:
