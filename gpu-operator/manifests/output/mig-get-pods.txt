@@ -1,0 +1,13 @@
+NAME                                                          READY   STATUS      RESTARTS   AGE
+gpu-feature-discovery-qmwb2                                   1/1     Running     0          14m
+gpu-operator-7bbf8bb6b7-xz664                                 1/1     Running     0          14m
+gpu-operator-node-feature-discovery-gc-79d6d968bb-sg4t6       1/1     Running     0          14m
+gpu-operator-node-feature-discovery-master-6d9f8d497c-7cwrp   1/1     Running     0          14m
+gpu-operator-node-feature-discovery-worker-x5z62              1/1     Running     0          14m
+nvidia-container-toolkit-daemonset-pkcpr                      1/1     Running     0          14m
+nvidia-cuda-validator-wt6bc                                   0/1     Completed   0          12m
+nvidia-dcgm-exporter-zsskv                                    1/1     Running     0          14m
+nvidia-device-plugin-daemonset-924x6                          1/1     Running     0          14m
+nvidia-driver-daemonset-klj5s                                 1/1     Running     0          14m
+nvidia-mig-manager-8d6wz                                      1/1     Running     0          12m
+nvidia-operator-validator-fnsmk                               1/1     Running     0          14m
