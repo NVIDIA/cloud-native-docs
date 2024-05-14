@@ -2,7 +2,6 @@ name: docs-build
 
 on:
   pull_request:
-    branches: [ master, main ]
     types: [ opened, synchronize ]
 
   push:
@@ -14,7 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 0.2.0
+  TAG: 0.3.0
   GH_TOKEN: ${{ github.token }}
 
 concurrency:
