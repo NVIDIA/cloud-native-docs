@@ -289,7 +289,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.22---1.30
          -
          - 8.0 U2
-         -
+         - 1.22---1.30
          -
          - 1.26
 
