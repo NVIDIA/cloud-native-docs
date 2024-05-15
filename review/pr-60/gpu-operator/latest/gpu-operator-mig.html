@@ -238,8 +238,8 @@ before changing the MIG mode or the MIG geometry on the GPUs.</p>
 </section>
 <section id="configuring-mig-profiles">
 <h2>Configuring MIG Profiles<a class="headerlink" href="#configuring-mig-profiles" title="Permalink to this headline"></a></h2>
-<p>By default, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> to require you to specify the profile to apply.</p>
-<p>MIG Manager uses a config map called <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> in the GPU Operator namespace to identify supported MIG profiles.
+<p>By default, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> and you must specify the MIG configuration to apply.</p>
+<p>MIG Manager uses the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map in the GPU Operator namespace to identify supported MIG profiles.
 Refer to the config map when you label the node or customize the config map.</p>
 <section id="example-single-mig-strategy">
 <h3>Example: Single MIG Strategy<a class="headerlink" href="#example-single-mig-strategy" title="Permalink to this headline"></a></h3>
@@ -281,10 +281,8 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 </pre></div>
 </div>
 <p>Check for the following labels:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count:</span> <span class="pre">7</span></code></p>
-<p>This value differs according to the GPU model.</p>
-</li>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count:</span> <span class="pre">7</span></code>, this value differs according to the GPU model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.ci:</span> <span class="pre">1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.gi:</span> <span class="pre">1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">success</span></code></p></li>
@@ -302,7 +300,7 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the GPU has been configured:</p>
+<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the MIG configuration:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
 </pre></div>
 </div>
@@ -322,7 +320,7 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 </section>
 <section id="example-mixed-mig-strategy">
 <h3>Example: Mixed MIG Strategy<a class="headerlink" href="#example-mixed-mig-strategy" title="Permalink to this headline"></a></h3>
-<p>The following steps show how to use the mixed MIG strategy and configure the <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile on one node.</p>
+<p>The following steps show how to use the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> MIG strategy and configure the <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile on one node.</p>
 <ol class="arabic">
 <li><p>Configure the MIG strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> if you are unsure of the current strategy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
@@ -342,7 +340,8 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
 </pre></div>
 </div>
-<p>Check for labels like the following, profiles and GPU counts will differ according to hardware:</p>
+<p>Check for labels like the following.
+The profiles and GPU counts differ according to the GPU model.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-1g.10gb.count:</span> <span class="pre">2</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-2g.20gb.count:</span> <span class="pre">1</span></code></p></li>
@@ -503,7 +502,7 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
 <span class="w">          </span><span class="no">mig-enabled: false</span><span class="w"></span>
 <span class="w">    </span><span class="no">  </span><span class="w"></span>
-<span class="w">      </span><span class="no">five-1g-two-2g:</span><span class="w"></span>
+<span class="w">      </span><span class="no">five-1g-one-2g:</span><span class="w"></span>
 <span class="w">        </span><span class="no">- devices: all </span><span class="w"></span>
 <span class="w">          </span><span class="no">mig-enabled: true</span><span class="w"></span>
 <span class="w">          </span><span class="no">mig-devices:</span><span class="w"></span>
@@ -532,7 +531,7 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </div>
 </li>
 <li><p>Label the nodes with the profile to configure:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-two-2g --overwrite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-one-2g --overwrite
 </pre></div>
 </div>
 </li>
