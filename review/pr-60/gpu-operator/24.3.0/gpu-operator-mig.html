@@ -517,6 +517,13 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
+<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
 <li><p>Patch the cluster policy so MIG Manager uses the custom config map:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
