@@ -16,7 +16,12 @@ backlinks: none
 
 ## Linux Distributions
 
-Supported Linux distributions are listed below:
+The NVIDIA Container Toolkit has been qualified against the following platforms.
+
+Note that the installation packages are generally forward-compatible and the
+omission of newer distributions from this list below does not indicate that the
+NVIDIA Container Toolkit cannot be used there. Specific issues with newer
+distributions should be reported.
 
 | OS Name / Version        | amd64 / x86_64 | ppc64le | arm64 / aarch64 |
 | ------------------------ | -------------- | ------- | --------------- |
@@ -33,7 +38,6 @@ Supported Linux distributions are listed below:
 | Ubuntu 18.04             | X              | X       | X               |
 | Ubuntu 20.04             | X              | X       | X               |
 | Ubuntu 22.04             | X              | X       | X               |
-| Ubuntu 24.04             | X              | X       | X               |
 
 The `arm64` / `aarch64` architecture includes support for Tegra-based systems.
 
