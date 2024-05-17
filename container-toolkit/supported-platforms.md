@@ -33,6 +33,7 @@ Supported Linux distributions are listed below:
 | Ubuntu 18.04             | X              | X       | X               |
 | Ubuntu 20.04             | X              | X       | X               |
 | Ubuntu 22.04             | X              | X       | X               |
+| Ubuntu 24.04             | X              | X       | X               |
 
 The `arm64` / `aarch64` architecture includes support for Tegra-based systems.
 
