@@ -82,5 +82,5 @@ Or launch an interactive session within an interactive session, Inception style!
    |  No running processes found                                                 |
    +-----------------------------------------------------------------------------+
 
-What other cool stuff can you do? Send us details via GitHub `issues <https://github.com/NVIDIA/nvidia-docker/issues>`_! 
+What other cool stuff can you do? Send us details via GitHub `issues <https://github.com/NVIDIA/nvidia-container-toolkit/issues>`_! 
 
