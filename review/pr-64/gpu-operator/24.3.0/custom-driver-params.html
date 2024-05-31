@@ -131,8 +131,8 @@
   <section id="customizing-nvidia-gpu-driver-parameters-during-installation">
 <span id="custom-driver-params"></span><h1>Customizing NVIDIA GPU Driver Parameters during Installation<a class="headerlink" href="#customizing-nvidia-gpu-driver-parameters-during-installation" title="Permalink to this headline"></a></h1>
 <p>The NVIDIA Driver kernel modules accept a number of parameters which can be used to customize the behavior of the driver.
-Most of the parameters are documented in the <a class="reference external" href="https://download.nvidia.com/XFree86/Linux-x86_64/550.78/README/">NVIDIA Driver README</a>.
 By default, the GPU Operator loads the kernel modules with default values.
+On a machine with the driver already installed, you can list the parameter names and values with the <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/driver/nvidia/params</span></code> command.
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (<code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-modeset</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code>).</p>
 <p>To pass custom parameters, execute the following steps.</p>
