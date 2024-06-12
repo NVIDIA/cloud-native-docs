@@ -440,7 +440,7 @@ Perform the following steps to verify that the MPS configuration is applied succ
    * The ``nvidia.com/gpu.sharing-strategy`` label is set to ``mps``.
 
    .. code-block:: output
-      :emphasize-lines: 3,8,9
+      :emphasize-lines: 4,9
 
       ...
       Labels:
@@ -485,12 +485,36 @@ Perform the following steps to verify that the MPS configuration is applied succ
 
      .. code-block:: console
 
-        $ kubectl logs deploy/time-slicing-verification
+        $ kubectl logs deploy/mps-verification
 
      *Example Output*
 
      .. literalinclude:: ./manifests/output/mps-logs-pods.txt
         :language: output
+
+   * View the default active thread percentage from one of the pods:
+
+     .. code-block:: console
+
+        $ kubectl exec deploy/mps-verification -- bash -c "echo get_default_active_thread_percentage | nvidia-cuda-mps-control"
+
+     *Example Output*
+
+     .. code-block:: output
+
+        25.0
+
+   * View the default pinned memory limit from one of the pods:
+
+     .. code-block:: console
+
+        $ kubectl exec deploy/mps-verification -- bash -c "echo get_default_device_pinned_mem_limit | nvidia-cuda-mps-control"
+
+     *Example Output*
+
+     .. code-block:: output
+
+        3G
 
    * Stop the deployment:
 
@@ -498,11 +522,11 @@ Perform the following steps to verify that the MPS configuration is applied succ
 
         $ kubectl delete -f mps-verification.yaml
 
-    *Example Output*
+     *Example Output*
 
-    .. code-block:: output
+     .. code-block:: output
 
-       deployment.apps "mps-verification" deleted
+        deployment.apps "mps-verification" deleted
 
 
 ***********
