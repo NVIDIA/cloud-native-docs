@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Process Service in Kubernetes &mdash; NVIDIA GPU Operator 24.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Time-Slicing GPUs in Kubernetes" href="gpu-sharing.html" />
+    <link rel="prev" title="GPU Operator with MIG" href="gpu-operator-mig.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MPS GPU Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Multi-Process Service in Kubernetes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multi-process-service-in-kubernetes">
+<span id="gpu-mps"></span><h1>Multi-Process Service in Kubernetes<a class="headerlink" href="#multi-process-service-in-kubernetes" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-multi-process-service" id="id1">About Multi-Process Service</a></p>
+<ul>
+<li><p><a class="reference internal" href="#support-platforms-and-resource-types" id="id2">Support Platforms and Resource Types</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id3">Limitations</a></p></li>
+<li><p><a class="reference internal" href="#changes-to-node-labels" id="id4">Changes to Node Labels</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration" id="id5">Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#about-configuring-multi-process-service" id="id6">About Configuring Multi-Process Service</a></p></li>
+<li><p><a class="reference internal" href="#applying-one-cluster-wide-configuration" id="id7">Applying One Cluster-Wide Configuration</a></p></li>
+<li><p><a class="reference internal" href="#applying-multiple-node-specific-configurations" id="id8">Applying Multiple Node-Specific Configurations</a></p></li>
+<li><p><a class="reference internal" href="#configuring-multi-process-server-before-installing-the-nvidia-gpu-operator" id="id9">Configuring Multi-Process Server Before Installing the NVIDIA GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#updating-an-mps-config-map" id="id10">Updating an MPS Config Map</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#verifying-the-mps-configuration" id="id11">Verifying the MPS Configuration</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id12">References</a></p></li>
+</ul>
+</div>
+<section id="about-multi-process-service">
+<h2>About Multi-Process Service<a class="headerlink" href="#about-multi-process-service" title="Permalink to this headline"></a></h2>
+<p>NVIDIA Multi-Process Service (MPS) provides the ability to share a GPU with multiple containers.</p>
+<p>The NVIDIA GPU Operator enables configuring MPS on a node by using
+options for the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/k8s-device-plugin">NVIDIA Kubernetes Device Plugin</a>.
+Using MPS, you can configure the number of <em>replicas</em> to create for each GPU on a node.
+Each replica is allocatable by the kubelet to a container.</p>
+<p>You can apply a cluster-wide default MPS configuration and you can apply node-specific configurations.
+For example, a cluster-wide configuration could create two replicas for each GPU on each node.
+A node-specific configuration could be to create two replicas on some nodes and four replicas on other nodes.</p>
+<p>You can combine the two approaches by applying a cluster-wide default configuration
+and then label nodes so that those nodes receive a node-specific configuration.</p>
+<p>Refer to <a class="reference internal" href="gpu-sharing.html#comparison-ts-mps-mig"><span class="std std-ref">Comparison: Time-Slicing, Multi-Process Service, and Multi-Instance GPU</span></a> for information about the available GPU sharing technologies.</p>
+<section id="support-platforms-and-resource-types">
+<h3>Support Platforms and Resource Types<a class="headerlink" href="#support-platforms-and-resource-types" title="Permalink to this headline"></a></h3>
+<p>MPS is supported on bare-metal applications, virtual machines
+with GPU passthrough, and virtual machines with NVIDIA vGPU.</p>
+<p>The only supported resource type is <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>.</p>
+</section>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h3>
+<ul>
+<li><p>DCGM-Exporter does not support associating metrics to containers when MPS is enabled with the NVIDIA Kubernetes Device Plugin.</p></li>
+<li><p>The Operator does not monitor changes to the config map that configures the device plugin.</p></li>
+<li><p>MPS is not supported on GPU instances from Multi-Instance GPU (MIG) devices.</p></li>
+<li><p>MPS does not support requesting more than one GPU device.
+Only one device resource request is supported:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<span class="w">  </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="changes-to-node-labels">
+<h3>Changes to Node Labels<a class="headerlink" href="#changes-to-node-labels" title="Permalink to this headline"></a></h3>
+<p>In addition to the standard node labels that GPU Feature Discovery (GFD)
+applies to nodes, the following label is also applied after you configure
+MPS for a node:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/&lt;resource-name&gt;.replicas = &lt;replicas-count&gt;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;replicas-count&gt;</span></code> is the factor by which each resource of <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;</span></code> is equally divided.</p>
+<p>Additionally, by default, the <code class="docutils literal notranslate"><span class="pre">nvidia.com/&lt;resource-name&gt;.product</span></code> label is modified:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/&lt;resource-name&gt;.product = &lt;product-name&gt;-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For example, on an NVIDIA DGX A100 machine, depending on the MPS configuration,
+the labels can be similar to the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.replicas = 8</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.product = A100-SXM4-40GB-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Using these labels, you can request access to a GPU replica or exclusive access to a GPU
+in the same way that you traditionally specify a node selector to request one GPU model over another.
+The <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> product name suffix ensures that you can specify a
+node selector to assign pods to nodes with GPU replicas.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">migStrategy</span></code> configuration option has an effect on the node label for the product name.
+When <code class="docutils literal notranslate"><span class="pre">renameByDefault=false</span></code>, the default value, and <code class="docutils literal notranslate"><span class="pre">migStrategy=single</span></code>, both the MIG profile name
+and the <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix are appended to the product name, such as the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.product = A100-SXM4-40GB-MIG-1g.5gb-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you set <code class="docutils literal notranslate"><span class="pre">renameByDefault=true</span></code>, then the value of the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> node
+label is not modified.</p>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h2>
+<section id="about-configuring-multi-process-service">
+<h3>About Configuring Multi-Process Service<a class="headerlink" href="#about-configuring-multi-process-service" title="Permalink to this headline"></a></h3>
+<p>You configure Multi-Process Service (MPS) by performing the following high-level steps:</p>
+<ul class="simple">
+<li><p>Add a config map to the namespace that is used by the GPU Operator.</p></li>
+<li><p>Configure the cluster policy so that the device plugin uses the config map.</p></li>
+<li><p>Apply a label to the nodes that you want to configure for MPS.</p></li>
+</ul>
+<p>On a machine with one GPU, the following config map configures Kubernetes so that
+the node advertises either two or four GPU resources.</p>
+<p class="rubric">Sample Config Map</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-config-all</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mps-any</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">mps:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 4</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The following table describes the key fields in the config map.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 10%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">data.&lt;key&gt;</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies the time-slicing configuration name.</p>
+<p>You can specify multiple configurations if you want to assign node-specific configurations.
+In the preceding example, the values for <code class="docutils literal notranslate"><span class="pre">key</span></code> are <code class="docutils literal notranslate"><span class="pre">mps-two</span></code> and <code class="docutils literal notranslate"><span class="pre">mps-four</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flags.migStrategy</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies how to label MIG devices for the nodes that receive the MPS configuration.
+Specify one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">single</span></code>, or <code class="docutils literal notranslate"><span class="pre">mixed</span></code>.</p>
+<p>The default value is <code class="docutils literal notranslate"><span class="pre">none</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, each resource is advertised under the name <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;.shared</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;</span></code>.</p>
+<p>For example, if this field is set to <code class="docutils literal notranslate"><span class="pre">true</span></code> and the resource is typically <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>,
+the nodes that are configured for MPS then advertise the resource as
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.shared</span></code>.
+Setting this field to true can be helpful if you want to schedule pods on GPUs with shared
+access by specifying <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;.shared</span></code> in the resource request.</p>
+<p>When this field is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the advertised resource name, such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>,
+is not modified.
+However, the label for the product name is suffixed with <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code>.
+For example, if the output of <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">node</span></code> shows the node label
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product=Tesla-T4</span></code>, then after the node is configured for MPS,
+the label becomes <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product=Tesla-T4-SHARED</span></code>.
+In this case, you can specify a node selector that includes the <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix to
+schedule pods on GPUs with shared access.</p>
+<p>The default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">failRequestsGreaterThanOne</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>This field is used with time-slicing GPUs and is ignored for MPS.</p>
+<p>For MPS, resource requests for GPUs must be set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.
+Refer to the manifest examples or <a class="reference internal" href="#limitations"><span class="std std-ref">Limitations</span></a>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resources.name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies the resource type to make available with MPS, <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resources.replicas</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>Specifies the number of MPS GPU replicas to make available for shared access to GPUs of the
+specified resource type.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="applying-one-cluster-wide-configuration">
+<span id="mps-cluster-wide-config"></span><h3>Applying One Cluster-Wide Configuration<a class="headerlink" href="#applying-one-cluster-wide-configuration" title="Permalink to this headline"></a></h3>
+<p>Perform the following steps to configure GPU sharing with MPS if you already installed the GPU operator
+and want to apply the same MPS configuration on all nodes in the cluster.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">mps-config-all.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-config-all</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mps-any</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">mps:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 4</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the config map to the same namespace as the GPU operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -n gpu-operator -f mps-config-all.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Configure the device plugin with the config map and set the default GPU sharing configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    -n gpu-operator --type merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;mps-config-all&quot;, &quot;default&quot;: &quot;mps-any&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST SEEN   TYPE     REASON             OBJECT                                              MESSAGE                                                                               </span>
+<span class="go">38s         Normal   SuccessfulDelete   daemonset/nvidia-device-plugin-daemonset            Deleted pod: nvidia-device-plugin-daemonset-l86fw                                     </span>
+<span class="go">38s         Normal   SuccessfulDelete   daemonset/gpu-feature-discovery                     Deleted pod: gpu-feature-discovery-shj2m</span>
+<span class="go">38s         Normal   Killing            pod/gpu-feature-discovery-shj2m                     Stopping container gpu-feature-discovery                                              </span>
+<span class="go">38s         Normal   Killing            pod/nvidia-device-plugin-daemonset-l86fw            Stopping container nvidia-device-plugin</span>
+<span class="go">37s         Normal   Scheduled          pod/nvidia-device-plugin-daemonset-lcklx            Successfully assigned gpu-operator/nvidia-device-plugin-daemonset-lcklx to worker-1</span>
+<span class="go">37s         Normal   SuccessfulCreate   daemonset/gpu-feature-discovery                     Created pod: gpu-feature-discovery-pgx9l</span>
+<span class="go">37s         Normal   Scheduled          pod/gpu-feature-discovery-pgx9l                     Successfully assigned gpu-operator/gpu-feature-discovery-pgx9l to worker-0            </span>
+<span class="go">37s         Normal   SuccessfulCreate   daemonset/nvidia-device-plugin-daemonset            Created pod: nvidia-device-plugin-daemonset-lcklx                                     </span>
+<span class="go">36s         Normal   Created            pod/nvidia-device-plugin-daemonset-lcklx            Created container config-manager-init                                                 </span>
+<span class="go">36s         Normal   Pulled             pod/nvidia-device-plugin-daemonset-lcklx            Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v24.3.0&quot; already present on machine </span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: After a few minutes, confirm that the Operator starts an MPS control daemon pod for each
+node in the cluster that has a GPU.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-device-plugin-mps-control-daemon
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                            READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvidia-device-plugin-mps-control-daemon-9pq7z   2/2     Running   0          4m20s</span>
+<span class="go">nvidia-device-plugin-mps-control-daemon-kbwgp   2/2     Running   0          4m20s</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Refer to <a class="reference internal" href="#mps-verify"><span class="std std-ref">Verifying the MPS Configuration</span></a>.</p>
+</section>
+<section id="applying-multiple-node-specific-configurations">
+<span id="mps-node-specific-config"></span><h3>Applying Multiple Node-Specific Configurations<a class="headerlink" href="#applying-multiple-node-specific-configurations" title="Permalink to this headline"></a></h3>
+<p>An alternative to applying one cluster-wide configuration is to specify multiple
+MPS configurations in the config map and to apply labels node-by-node to
+control which configuration is applied to which nodes.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">mps-config-fine.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-config-fine</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mps-four</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">mps:</span><span class="w"></span>
+<span class="w">        </span><span class="no">renameByDefault: false</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mps-two</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">mps:</span><span class="w"></span>
+<span class="w">        </span><span class="no">renameByDefault: false</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 2</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the config map to the same namespace as the GPU operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -n gpu-operator -f mps-config-fine.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Configure the device plugin with the config map:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    -n gpu-operator --type merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;mps-config-fine&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+<p>Because the specification does not include the <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.default</span></code> field,
+when the device plugin pods redeploy, they do not automatically apply the MPS
+configuration to all nodes.</p>
+</li>
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST SEEN   TYPE     REASON             OBJECT                                              MESSAGE                                                                               </span>
+<span class="go">38s         Normal   SuccessfulDelete   daemonset/nvidia-device-plugin-daemonset            Deleted pod: nvidia-device-plugin-daemonset-l86fw                                     </span>
+<span class="go">38s         Normal   SuccessfulDelete   daemonset/gpu-feature-discovery                     Deleted pod: gpu-feature-discovery-shj2m</span>
+<span class="go">38s         Normal   Killing            pod/gpu-feature-discovery-shj2m                     Stopping container gpu-feature-discovery                                              </span>
+<span class="go">38s         Normal   Killing            pod/nvidia-device-plugin-daemonset-l86fw            Stopping container nvidia-device-plugin</span>
+<span class="go">37s         Normal   Scheduled          pod/nvidia-device-plugin-daemonset-lcklx            Successfully assigned gpu-operator/nvidia-device-plugin-daemonset-lcklx to worker-1</span>
+<span class="go">37s         Normal   SuccessfulCreate   daemonset/gpu-feature-discovery                     Created pod: gpu-feature-discovery-pgx9l</span>
+<span class="go">37s         Normal   Scheduled          pod/gpu-feature-discovery-pgx9l                     Successfully assigned gpu-operator/gpu-feature-discovery-pgx9l to worker-0            </span>
+<span class="go">37s         Normal   SuccessfulCreate   daemonset/nvidia-device-plugin-daemonset            Created pod: nvidia-device-plugin-daemonset-lcklx                                     </span>
+<span class="go">36s         Normal   Created            pod/nvidia-device-plugin-daemonset-lcklx            Created container config-manager-init                                                 </span>
+<span class="go">36s         Normal   Pulled             pod/nvidia-device-plugin-daemonset-lcklx            Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v24.3.0&quot; already present on machine </span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: After a few minutes, confirm that the Operator starts an MPS control daemon pod for each
+node in the cluster that has a GPU.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-device-plugin-mps-control-daemon
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                            READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvidia-device-plugin-mps-control-daemon-9pq7z   2/2     Running   0          4m20s</span>
+<span class="go">nvidia-device-plugin-mps-control-daemon-kbwgp   2/2     Running   0          4m20s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply a label to the nodes by running one or more of the following commands:</p>
+<ul>
+<li><p>Apply a label to nodes one-by-one by specifying the node name:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/device-plugin.config<span class="o">=</span>mps-two
+</pre></div>
+</div>
+</li>
+<li><p>Apply a label to several nodes at one time by specifying a label selector:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="se">\</span>
+    --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4 <span class="se">\</span>
+    nvidia.com/device-plugin.config<span class="o">=</span>mps-two
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<p>Refer to <a class="reference internal" href="#mps-verify"><span class="std std-ref">Verifying the MPS Configuration</span></a>.</p>
+</section>
+<section id="configuring-multi-process-server-before-installing-the-nvidia-gpu-operator">
+<h3>Configuring Multi-Process Server Before Installing the NVIDIA GPU Operator<a class="headerlink" href="#configuring-multi-process-server-before-installing-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h3>
+<p>You can enable MPS with the NVIDIA GPU Operator by passing the
+<code class="docutils literal notranslate"><span class="pre">devicePlugin.config.name=&lt;config-map-name&gt;</span></code> parameter during installation.</p>
+<p>Perform the following steps to configure MPS before installing the Operator:</p>
+<ol class="arabic">
+<li><p>Create the namespace for the Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">mps-config.yaml</span></code>, with the config map contents.</p>
+<p>Refer to the <a class="reference internal" href="#mps-cluster-wide-config"><span class="std std-ref">Applying One Cluster-Wide Configuration</span></a> or
+<a class="reference internal" href="#mps-node-specific-config"><span class="std std-ref">Applying Multiple Node-Specific Configurations</span></a> sections.</p>
+</li>
+<li><p>Add the config map to the same namespace as the Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f mps-config.yaml -n gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Install the operator with Helm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
+    -n gpu-operator <span class="se">\</span>
+    --set devicePlugin.config.name<span class="o">=</span>mps-config
+</pre></div>
+</div>
+</li>
+<li><p>Refer to either <a class="reference internal" href="#mps-cluster-wide-config"><span class="std std-ref">Applying One Cluster-Wide Configuration</span></a> or
+<a class="reference internal" href="#mps-node-specific-config"><span class="std std-ref">Applying Multiple Node-Specific Configurations</span></a> and perform the following tasks:</p>
+<ul class="simple">
+<li><p>Configure the device plugin by running the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">patch</span></code> command.</p></li>
+<li><p>Apply labels to nodes if you added a config map with node-specific configurations.</p></li>
+</ul>
+</li>
+</ol>
+<p>After installation, refer to <a class="reference internal" href="#mps-verify"><span class="std std-ref">Verifying the MPS Configuration</span></a>.</p>
+</section>
+<section id="updating-an-mps-config-map">
+<span id="mps-update-config-map"></span><h3>Updating an MPS Config Map<a class="headerlink" href="#updating-an-mps-config-map" title="Permalink to this headline"></a></h3>
+<p>The Operator does not monitor the config map with the MPS configuration.
+As a result, if you modify a config map, the device plugin pods do not restart and do not apply the modified configuration.</p>
+<ol class="arabic">
+<li><p>To apply the modified config map, manually restart the device plugin pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-daemonset
+</pre></div>
+</div>
+</li>
+<li><p>Manually restart the MPS control daemon pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-mps-control-daemon
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Currently running workloads are not affected and continue to run, though NVIDIA recommends performing the restart during a maintenance period.</p>
+</section>
+</section>
+<section id="verifying-the-mps-configuration">
+<span id="mps-verify"></span><h2>Verifying the MPS Configuration<a class="headerlink" href="#verifying-the-mps-configuration" title="Permalink to this headline"></a></h2>
+<p>Perform the following steps to verify that the MPS configuration is applied successfully:</p>
+<ol class="arabic">
+<li><p>Confirm that the node advertises additional GPU resources:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt;
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<p>The example output varies according to the GPU in your node and the configuration
+that you apply.</p>
+<p>The following output applies when <code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the default value.
+The key considerations are as follows:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count</span></code> label reports the number of physical GPUs in the machine.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> label includes a <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix to the product name.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.replicas</span></code> label matches the reported capacity.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.sharing-strategy</span></code> label is set to <code class="docutils literal notranslate"><span class="pre">mps</span></code>.</p></li>
+</ul>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">Labels:</span>
+<span class="hll"><span class="go">                  nvidia.com/gpu.count=4</span>
+</span><span class="hll"><span class="go">                  nvidia.com/gpu.product=Tesla-T4-SHARED</span>
+</span><span class="hll"><span class="go">                  nvidia.com/gpu.replicas=4</span>
+</span><span class="hll"><span class="go">                  nvidia.com/gpu.sharing-strategy=mps</span>
+</span><span class="go">Capacity:</span>
+<span class="hll"><span class="go">  nvidia.com/gpu: 16</span>
+</span><span class="go">  ...</span>
+<span class="go">Allocatable:</span>
+<span class="go">  nvidia.com/gpu: 16</span>
+<span class="go">  ...</span>
+</pre></div>
+</div>
+<p>The following output applies when <code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+The key considerations are as follows:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count</span></code> label reports the number of physical GPUs in the machine.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> capacity reports <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.shared</span></code> capacity equals the number of physical GPUs multiplied by the
+specified number of GPU replicas to create.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.sharing-strategy</span></code> label is set to <code class="docutils literal notranslate"><span class="pre">mps</span></code>.</p></li>
+</ul>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">Labels:</span>
+<span class="hll"><span class="go">                  nvidia.com/gpu.count=4</span>
+</span><span class="go">                  nvidia.com/gpu.product=Tesla-T4</span>
+<span class="go">                  nvidia.com/gpu.replicas=4</span>
+<span class="go">                  nvidia.com/gpu.sharing-strategy=mps</span>
+<span class="go">Capacity:</span>
+<span class="hll"><span class="go">  nvidia.com/gpu:        0</span>
+</span><span class="hll"><span class="go">  nvidia.com/gpu.shared: 16</span>
+</span><span class="go">  ...</span>
+<span class="go">Allocatable:</span>
+<span class="go">  nvidia.com/gpu:        0</span>
+<span class="go">  nvidia.com/gpu.shared: 16</span>
+<span class="go">  ...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Deploy a workload to validate GPU sharing:</p>
+<ul>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">mps-verification.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-verification</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-verification</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-verification</span><span class="w"></span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps-verification</span><span class="w"></span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
+<span class="w">          </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hostPID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-sample-vector-add</span><span class="w"></span>
+<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;/bin/bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">          </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">while true; do /cuda-samples/vectorAdd; done</span><span class="w"></span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">           </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">             </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">      </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">nvidia.com/gpu.sharing-strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mps</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the deployment with multiple replicas:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f mps-verification.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Verify that all five replicas are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                READY   STATUS    RESTARTS   AGE</span>
+<span class="go">mps-verification-86c99b5666-hczcn   1/1     Running   0          3s</span>
+<span class="go">mps-verification-86c99b5666-sj8z5   1/1     Running   0          3s</span>
+<span class="go">mps-verification-86c99b5666-tnjwx   1/1     Running   0          3s</span>
+<span class="go">mps-verification-86c99b5666-82hxj   1/1     Running   0          3s</span>
+<span class="go">mps-verification-86c99b5666-9lhh6   1/1     Running   0          3s</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs from one of the pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs deploy/time-slicing-verification
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Found 5 pods, using pod/mps-verification-86c99b5666-tnjwx</span>
+<span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+<span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Stop the deployment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f mps-verification.yaml
+</pre></div>
+</div>
+</li>
+</ul>
+<blockquote>
+<div><p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">deployment.apps &quot;mps-verification&quot; deleted</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/deploy/mps/index.html">Multi-Process Service</a> documentation.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpu-operator-mig.html" class="btn btn-neutral float-left" title="GPU Operator with MIG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-sharing.html" class="btn btn-neutral float-right" title="Time-Slicing GPUs in Kubernetes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Jun 12, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
