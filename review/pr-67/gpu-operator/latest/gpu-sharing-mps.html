@@ -583,13 +583,13 @@ specified number of GPU replicas to create.</p></li>
 </ul>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
 <span class="go">Labels:</span>
-<span class="hll"><span class="go">                  nvidia.com/gpu.count=4</span>
-</span><span class="go">                  nvidia.com/gpu.product=Tesla-T4</span>
-<span class="go">                  nvidia.com/gpu.replicas=4</span>
+<span class="go">                  nvidia.com/gpu.count=4</span>
+<span class="hll"><span class="go">                  nvidia.com/gpu.product=Tesla-T4</span>
+</span><span class="go">                  nvidia.com/gpu.replicas=4</span>
 <span class="go">                  nvidia.com/gpu.sharing-strategy=mps</span>
 <span class="go">Capacity:</span>
-<span class="hll"><span class="go">  nvidia.com/gpu:        0</span>
-</span><span class="hll"><span class="go">  nvidia.com/gpu.shared: 16</span>
+<span class="go">  nvidia.com/gpu:        0</span>
+<span class="hll"><span class="go">  nvidia.com/gpu.shared: 16</span>
 </span><span class="go">  ...</span>
 <span class="go">Allocatable:</span>
 <span class="go">  nvidia.com/gpu:        0</span>
@@ -656,7 +656,7 @@ specified number of GPU replicas to create.</p></li>
 </div>
 </li>
 <li><p>View the logs from one of the pods:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs deploy/time-slicing-verification
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs deploy/mps-verification
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -676,18 +676,34 @@ specified number of GPU replicas to create.</p></li>
 </pre></div>
 </div>
 </li>
+<li><p>View the default active thread percentage from one of the pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> deploy/mps-verification -- bash -c <span class="s2">&quot;echo get_default_active_thread_percentage | nvidia-cuda-mps-control&quot;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">25.0</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the default pinned memory limit from one of the pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> deploy/mps-verification -- bash -c <span class="s2">&quot;echo get_default_device_pinned_mem_limit | nvidia-cuda-mps-control&quot;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">3G</span>
+</pre></div>
+</div>
+</li>
 <li><p>Stop the deployment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f mps-verification.yaml
 </pre></div>
 </div>
-</li>
-</ul>
-<blockquote>
-<div><p><em>Example Output</em></p>
+<p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">deployment.apps &quot;mps-verification&quot; deleted</span>
 </pre></div>
 </div>
-</div></blockquote>
+</li>
+</ul>
 </li>
 </ol>
 </section>
