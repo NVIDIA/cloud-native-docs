@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integrating GPU Telemetry into Kubernetes &mdash; NVIDIA GPU Telemetry 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setting up Prometheus" href="kube-prometheus.html" />
+    <link rel="prev" title="DCGM Exporter" href="dcgm-exporter.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">DCGM Exporter</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about-telemetry.html">About GPU Telemetry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dcgm-exporter.html">DCGM Exporter</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integrating GPU Telemetry into Kubernetes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kube-prometheus.html">Setting up Prometheus</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Telemetry</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Integrating GPU Telemetry into Kubernetes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="integrating-gpu-telemetry-into-kubernetes">
+<h1>Integrating GPU Telemetry into Kubernetes<a class="headerlink" href="#integrating-gpu-telemetry-into-kubernetes" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#benefits-of-gpu-telemetry" id="id1">Benefits of GPU Telemetry</a></p></li>
+<li><p><a class="reference internal" href="#nvidia-drivers" id="id2">NVIDIA Drivers</a></p></li>
+<li><p><a class="reference internal" href="#install-docker" id="id3">Install Docker</a></p></li>
+<li><p><a class="reference internal" href="#install-nvidia-container-toolkit" id="id4">Install NVIDIA Container Toolkit</a></p></li>
+<li><p><a class="reference internal" href="#install-nvidia-device-plugin" id="id5">Install NVIDIA Device Plugin</a></p></li>
+</ul>
+</div>
+<section id="benefits-of-gpu-telemetry">
+<h2>Benefits of GPU Telemetry<a class="headerlink" href="#benefits-of-gpu-telemetry" title="Permalink to this headline"></a></h2>
+<p>Understanding GPU usage provides important insights for IT administrators managing a data center.
+Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
+diagnose anomalies, and increase overall data center efficiency. As GPUs become more mainstream in
+Kubernetes environments, users would like to get access to GPU metrics to monitor GPU resources, just
+like they do today for CPUs.</p>
+<p>The purpose of this document is to enumerate an end-to-end (e2e) workflow
+for setting up and using <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> within a Kubernetes environment.</p>
+<p>For simplicity, the base environment being used in this guide is Ubuntu 18.04 LTS and
+a native installation of the NVIDIA drivers on the GPU enabled nodes (i.e. neither
+the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator">NVIDIA GPU Operator</a> nor containerized drivers are used
+in this document).</p>
+</section>
+<section id="nvidia-drivers">
+<h2>NVIDIA Drivers<a class="headerlink" href="#nvidia-drivers" title="Permalink to this headline"></a></h2>
+<p>This section provides a summary of the steps for installing the driver using the <code class="docutils literal notranslate"><span class="pre">apt</span></code> package manager on Ubuntu LTS.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For complete instructions on setting up NVIDIA drivers, visit the quickstart guide at <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html">https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html</a>.
+The guide covers a number of pre-installation requirements and steps on supported Linux distributions for a successful install of the driver.</p>
+</div>
+<p>Install the kernel headers and development packages for the currently running kernel:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install linux-headers-<span class="k">$(</span>uname -r<span class="k">)</span>
+</pre></div>
+</div>
+<p>Setup the CUDA network repository and ensure packages on the CUDA network repository have priority over the Canonical repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">distribution</span><span class="o">=</span><span class="k">$(</span>. /etc/os-release<span class="p">;</span><span class="nb">echo</span> <span class="nv">$ID$VERSION_ID</span> <span class="p">|</span> sed -e <span class="s1">&#39;s/\.//g&#39;</span><span class="k">)</span> <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> wget https://developer.download.nvidia.com/compute/cuda/repos/<span class="nv">$distribution</span>/x86_64/cuda-<span class="nv">$distribution</span>.pin <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> sudo mv cuda-<span class="nv">$distribution</span>.pin /etc/apt/preferences.d/cuda-repository-pin-600
+</pre></div>
+</div>
+<p>Install the CUDA repository GPG key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/<span class="nv">$distribution</span>/x86_64/7fa2af80.pub <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;deb http://developer.download.nvidia.com/compute/cuda/repos/</span><span class="nv">$distribution</span><span class="s2">/x86_64 /&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/cuda.list
+</pre></div>
+</div>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">apt</span></code> repository cache and install the driver using the <code class="docutils literal notranslate"><span class="pre">cuda-drivers</span></code> meta-package. Use the <code class="docutils literal notranslate"><span class="pre">--no-install-recommends</span></code> option for a lean driver install
+without any dependencies on X packages. This is particularly useful for headless installations on cloud instances:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> sudo apt-get -y install cuda-drivers
+</pre></div>
+</div>
+</section>
+<section id="install-docker">
+<h2>Install Docker<a class="headerlink" href="#install-docker" title="Permalink to this headline"></a></h2>
+<p>Use the official Docker script to install the latest release of Docker:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl https://get.docker.com <span class="p">|</span> sh
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl --now <span class="nb">enable</span> docker
+</pre></div>
+</div>
+</section>
+<section id="install-nvidia-container-toolkit">
+<h2>Install NVIDIA Container Toolkit<a class="headerlink" href="#install-nvidia-container-toolkit" title="Permalink to this headline"></a></h2>
+<p>To run GPU accelerated containers in Docker, NVIDIA Container Toolkit for Docker is required.</p>
+<p>Setup the <code class="docutils literal notranslate"><span class="pre">stable</span></code> repository and the GPG key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">distribution</span><span class="o">=</span><span class="k">$(</span>. /etc/os-release<span class="p">;</span><span class="nb">echo</span> <span class="nv">$ID$VERSION_ID</span><span class="k">)</span> <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey <span class="p">|</span> sudo apt-key add - <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> curl -s -L https://nvidia.github.io/nvidia-docker/<span class="nv">$distribution</span>/nvidia-docker.list <span class="p">|</span> sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+</pre></div>
+</div>
+<p>Install the NVIDIA runtime packages (and their dependencies) after updating the package listing:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> sudo apt-get install -y nvidia-docker2
+</pre></div>
+</div>
+<p>Since Kubernetes does not support the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> option with Docker yet, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime should be setup as the
+default container runtime for Docker on the GPU node. This can be done by adding the <code class="docutils literal notranslate"><span class="pre">default-runtime</span></code> line into the Docker daemon
+config file, which is usually located on the system at <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">   &quot;default-runtime&quot;: &quot;nvidia&quot;,</span>
+<span class="go">   &quot;runtimes&quot;: {</span>
+<span class="go">        &quot;nvidia&quot;: {</span>
+<span class="go">            &quot;path&quot;: &quot;/usr/bin/nvidia-container-runtime&quot;,</span>
+<span class="go">            &quot;runtimeArgs&quot;: []</span>
+<span class="go">      }</span>
+<span class="go">   }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>Restart the Docker daemon to complete the installation after setting the default runtime:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart docker
+</pre></div>
+</div>
+<p>At this point, a working setup can be tested by running a base CUDA container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+</pre></div>
+</div>
+<p>You should observe an output as shown below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |</span>
+<span class="go">|-------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                               |                      |               MIG M. |</span>
+<span class="go">|===============================+======================+======================|</span>
+<span class="go">|   0  Tesla T4            On   | 00000000:00:1E.0 Off |                    0 |</span>
+<span class="go">| N/A   34C    P8     9W /  70W |      0MiB / 15109MiB |      0%      Default |</span>
+<span class="go">|                               |                      |                  N/A |</span>
+<span class="go">+-------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                  |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span>
+<span class="go">|        ID   ID                                                   Usage      |</span>
+<span class="go">|=============================================================================|</span>
+<span class="go">|  No running processes found                                                 |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</section>
+<section id="install-nvidia-device-plugin">
+<h2>Install NVIDIA Device Plugin<a class="headerlink" href="#install-nvidia-device-plugin" title="Permalink to this headline"></a></h2>
+<p>To use GPUs in Kubernetes, the <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/">NVIDIA Device Plugin</a> is required.
+The NVIDIA Device Plugin is a daemonset that automatically enumerates the number of GPUs on each node of the cluster
+and allows pods to be run on GPUs.</p>
+<p>The preferred method to deploy the device plugin is as a daemonset using <code class="docutils literal notranslate"><span class="pre">helm</span></code>. First, install Helm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> chmod <span class="m">700</span> get_helm.sh <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> ./get_helm.sh
+</pre></div>
+</div>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code> <code class="docutils literal notranslate"><span class="pre">helm</span></code> repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvdp https://nvidia.github.io/k8s-device-plugin <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+<p>Deploy the device plugin:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --generate-name nvdp/nvidia-device-plugin
+</pre></div>
+</div>
+<p>For more user configurable options while deploying the daemonset, refer to the <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/#deployment-via-helm">documentation</a></p>
+<p>At this point, all the pods should be deployed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAMESPACE     NAME                                       READY   STATUS      RESTARTS   AGE</span>
+<span class="go">kube-system   calico-kube-controllers-5fbfc9dfb6-2ttkk   1/1     Running     3          9d</span>
+<span class="go">kube-system   calico-node-5vfcb                          1/1     Running     3          9d</span>
+<span class="go">kube-system   coredns-66bff467f8-jzblc                   1/1     Running     4          9d</span>
+<span class="go">kube-system   coredns-66bff467f8-l85sz                   1/1     Running     3          9d</span>
+<span class="go">kube-system   etcd-ip-172-31-81-185                      1/1     Running     4          9d</span>
+<span class="go">kube-system   kube-apiserver-ip-172-31-81-185            1/1     Running     3          9d</span>
+<span class="go">kube-system   kube-controller-manager-ip-172-31-81-185   1/1     Running     3          9d</span>
+<span class="go">kube-system   kube-proxy-86vlr                           1/1     Running     3          9d</span>
+<span class="go">kube-system   kube-scheduler-ip-172-31-81-185            1/1     Running     4          9d</span>
+<span class="go">kube-system   nvidia-device-plugin-1595448322-42vgf      1/1     Running     2          9d</span>
+</pre></div>
+</div>
+<p>To test whether CUDA jobs can be deployed, run a sample CUDA <code class="docutils literal notranslate"><span class="pre">vectorAdd</span></code> application:</p>
+<p>The pod spec is shown for reference below, which requests 1 GPU:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: gpu-operator-test</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-vector-add</span>
+<span class="go">    image: &quot;nvidia/samples:vectoradd-cuda10.2&quot;</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">         nvidia.com/gpu: 1</span>
+</pre></div>
+</div>
+<p>Save this podspec as <code class="docutils literal notranslate"><span class="pre">gpu-pod.yaml</span></code>. Now, deploy the application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f gpu-pod.yaml
+</pre></div>
+</div>
+<p>Check the logs to ensure the app completed successfully:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods gpu-operator-test
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                READY   STATUS      RESTARTS   AGE</span>
+<span class="go">gpu-operator-test   0/1     Completed   0          9d</span>
+</pre></div>
+</div>
+<p>And check the logs of the <code class="docutils literal notranslate"><span class="pre">gpu-operator-test</span></code> pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs gpu-operator-test
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dcgm-exporter.html" class="btn btn-neutral float-left" title="DCGM Exporter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="kube-prometheus.html" class="btn btn-neutral float-right" title="Setting up Prometheus" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Jun 17, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
