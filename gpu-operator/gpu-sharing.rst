@@ -54,12 +54,17 @@ and not modify nodes with other GPU models.
 You can combine the two approaches by applying a cluster-wide default configuration
 and then label nodes so that those nodes receive a node-specific configuration.
 
-Comparison: Time-Slicing and Multi-Instance GPU
-===============================================
+.. _comparison-ts-mps-mig:
 
-The latest generations of NVIDIA GPUs provide an operation mode called
-Multi-Instance GPU (MIG). MIG allows you to partition a GPU
-into several smaller, predefined instances, each of which looks like a
+Comparison: Time-Slicing, Multi-Process Service, and Multi-Instance GPU
+=======================================================================
+
+Each of the technologies, time-slicing, Multi-Process Service (MPS), and Multi-Instance GPU (MIG)
+enable sharing a physical GPU with more than one workload.
+
+NVIDIA A100 and newer GPUs provide an operation mode called MIG.
+MIG enables you to partition a GPU into *slices*.
+A slice is a smaller, predefined GPU instance that looks like a
 mini-GPU that provides memory and fault isolation at the hardware layer.
 You can share access to a GPU by running workloads on one of
 these predefined instances instead of the full native GPU.
@@ -67,8 +72,17 @@ these predefined instances instead of the full native GPU.
 MIG support was added to Kubernetes in 2020. Refer to `Supporting MIG in Kubernetes <https://www.google.com/url?q=https://docs.google.com/document/d/1mdgMQ8g7WmaI_XVVRrCvHPFPOMCm5LQD5JefgAh6N8g/edit&sa=D&source=editors&ust=1655578433019961&usg=AOvVaw1F-OezvM-Svwr1lLsdQmu3>`_
 for details on how this works.
 
-Time-slicing trades the memory and fault-isolation that is provided by MIG
-for the ability to share a GPU by a larger number of users.
+NVIDIA V100 and newer GPUs support MPS.
+MPS enables dividing a physical GPU into *replicas* and assigning workloads to a replica.
+While MIG provides fault isolation in hardware, MPS uses software to divide the GPU into replicas.
+Each replica receives an equal portion of memory and thread percentage.
+For example, if you configure two replicas, each replica has access to 50% of GPU memory and 50% of compute capacity.
+
+Time-slicing is available with all GPUs supported by the Operator.
+Unlike MIG, time-slicing has no special memory or fault-isolation.
+Like MPS, time-slicing uses the term *replica*, however, the GPU is not divided between workloads.
+The GPU performs a context switch and swaps resources on and off the GPU when a workload is scheduled.
+
 Time-slicing also provides a way to provide shared access to a GPU for
 older generation GPUs that do not support MIG.
 However, you can combine MIG and time-slicing to provide shared access to
@@ -234,7 +248,7 @@ The following table describes the key fields in the config map.
 Applying One Cluster-Wide Configuration
 =======================================
 
-Perform the following steps to configure GPU time-slicing if you already installed the GPU operator
+Perform the following steps to configure GPU time-slicing if you already installed the GPU Operator
 and want to apply the same time-slicing configuration on all nodes in the cluster.
 
 #. Create a file, such as ``time-slicing-config-all.yaml``, with contents like the following example:
@@ -242,7 +256,7 @@ and want to apply the same time-slicing configuration on all nodes in the cluste
    .. literalinclude:: ./manifests/input/time-slicing-config-all.yaml
       :language: yaml
 
-#. Add the config map to the same namespace as the GPU operator:
+#. Add the config map to the same namespace as the GPU Operator:
 
    .. code-block:: console
 
@@ -284,7 +298,7 @@ control which configuration is applied to which nodes.
    .. literalinclude:: ./manifests/input/time-slicing-config-fine.yaml
       :language: yaml
 
-#. Add the config map to the same namespace as the GPU operator:
+#. Add the config map to the same namespace as the GPU Operator:
 
    .. code-block:: console
 
@@ -339,9 +353,9 @@ Configuring Time-Slicing Before Installing the NVIDIA GPU Operator
 You can enable time-slicing with the NVIDIA GPU Operator by passing the
 ``devicePlugin.config.name=<config-map-name>`` parameter during installation.
 
-Perform the following steps to configure time-slicing before installing the operator:
+Perform the following steps to configure time-slicing before installing the Operator:
 
-#. Create the namespace for the operator:
+#. Create the namespace for the Operator:
 
    .. code-block:: console
 
@@ -418,15 +432,17 @@ Perform the following steps to verify that the time-slicing configuration is app
    * The ``nvidia.com/gpu.count`` label reports the number of physical GPUs in the machine.
    * The ``nvidia.com/gpu.product`` label includes a ``-SHARED`` suffix to the product name.
    * The ``nvidia.com/gpu.replicas`` label matches the reported capacity.
+   * The ``nvidia.com/gpu.sharing-strategy`` label is set to ``time-slicing``.
 
    .. code-block:: output
-      :emphasize-lines: 3,4,5,7
+      :emphasize-lines: 3-6,8
 
       ...
       Labels:
                         nvidia.com/gpu.count=4
                         nvidia.com/gpu.product=Tesla-T4-SHARED
                         nvidia.com/gpu.replicas=4
+                        nvidia.com/gpu.sharing-strategy=time-slicing
       Capacity:
         nvidia.com/gpu: 16
         ...
@@ -441,15 +457,17 @@ Perform the following steps to verify that the time-slicing configuration is app
    * The ``nvidia.com/gpu`` capacity reports ``0``.
    * The ``nvidia.com/gpu.shared`` capacity equals the number of physical GPUs multiplied by the
      specified number of GPU replicas to create.
+   * The ``nvidia.com/gpu.sharing-strategy`` label is set to ``time-slicing``.
 
    .. code-block:: output
-      :emphasize-lines: 3,7,8
+      :emphasize-lines: 3,8,9
 
       ...
       Labels:
                         nvidia.com/gpu.count=4
                         nvidia.com/gpu.product=Tesla-T4
                         nvidia.com/gpu.replicas=4
+                        nvidia.com/gpu.sharing-strategy=time-slicing
       Capacity:
         nvidia.com/gpu:        0
         nvidia.com/gpu.shared: 16
