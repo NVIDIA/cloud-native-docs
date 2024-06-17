@@ -47,6 +47,7 @@ Limitations
 
 - DCGM-Exporter does not support associating metrics to containers when MPS is enabled with the NVIDIA Kubernetes Device Plugin.
 - The Operator does not monitor changes to the config map that configures the device plugin.
+- The maximum number of replicas that you can request is ``16`` for pre-Volta devices and ``48`` for newer devices.
 - MPS is not supported on GPU instances from Multi-Instance GPU (MIG) devices.
 - MPS does not support requesting more than one GPU device.
   Only one device resource request is supported:
