@@ -177,6 +177,7 @@ with GPU passthrough, and virtual machines with NVIDIA vGPU.</p>
 <ul>
 <li><p>DCGM-Exporter does not support associating metrics to containers when MPS is enabled with the NVIDIA Kubernetes Device Plugin.</p></li>
 <li><p>The Operator does not monitor changes to the config map that configures the device plugin.</p></li>
+<li><p>The maximum number of replicas that you can request is <code class="docutils literal notranslate"><span class="pre">16</span></code> for pre-Volta devices and <code class="docutils literal notranslate"><span class="pre">48</span></code> for newer devices.</p></li>
 <li><p>MPS is not supported on GPU instances from Multi-Instance GPU (MIG) devices.</p></li>
 <li><p>MPS does not support requesting more than one GPU device.
 Only one device resource request is supported:</p>
@@ -750,7 +751,7 @@ specified number of GPU replicas to create.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jun 12, 2024.
+      <span class="lastupdated">Last updated on Jun 17, 2024.
       </span></p>
 
   </div>
