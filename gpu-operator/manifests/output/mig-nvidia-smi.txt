@@ -1,0 +1,8 @@
+GPU 0: NVIDIA H100 80GB HBM3 (UUID: GPU-b4895dbf-9350-2524-a89b-98161ddd9fe4)
+  MIG 1g.10gb     Device  0: (UUID: MIG-3f6f389f-b0cc-5e5c-8e32-eaa8fd067902)
+  MIG 1g.10gb     Device  1: (UUID: MIG-35f93699-4b53-5a19-8289-80b8418eec60)
+  MIG 1g.10gb     Device  2: (UUID: MIG-9d14fb21-4ae1-546f-a636-011582899c39)
+  MIG 1g.10gb     Device  3: (UUID: MIG-0f709664-740c-52b0-ae79-3e4c9ede6d3b)
+  MIG 1g.10gb     Device  4: (UUID: MIG-5d23f73a-d378-50ac-a6f5-3bf5184773bb)
+  MIG 1g.10gb     Device  5: (UUID: MIG-6cea15c7-8a56-578c-b965-0e73cb6dfc10)
+  MIG 1g.10gb     Device  6: (UUID: MIG-981c86e9-3607-57d7-9426-295347e4b925)

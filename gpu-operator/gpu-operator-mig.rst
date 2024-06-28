@@ -35,276 +35,366 @@ GPU Operator with MIG
 About Multi-Instance GPU
 ************************
 
-Multi-Instance GPU (MIG) allows GPUs based on the NVIDIA Ampere architecture
-(such as NVIDIA A100) to be securely partitioned into separate GPU Instances for
-CUDA applications. Refer to the
-`MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_
-for more details on MIG.
+Multi-Instance GPU (MIG) enables GPUs based on the NVIDIA Ampere and later architectures, such as NVIDIA A100, to be partitioned into separate and secure GPU instances for CUDA applications.
+Refer to the `MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`__ for more information about MIG.
 
-This documents provides an overview of how to use the GPU Operator with nodes that support
-MIG.
+GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.
 
 
 ********************************
 Enabling MIG During Installation
 ********************************
 
-In this example workflow, we start with a MIG strategy of ``single``. The ``mixed`` strategy can also be
-specified and used in a similar manner.
+The following steps use the ``single`` MIG strategy.
+Alternatively, you can specify the ``mixed`` strategy.
 
-.. note::
+Perform the following steps to install the Operator and configure MIG:
 
-    In a CSP IaaS environment such as Google Cloud, ensure that the ``mig-manager`` variable
-    ``WITH_REBOOT`` is set to "true".
-    Refer to the `note <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#enable-mig-mode>`_
-    in the MIG User Guide for more information on the constraints with enabling MIG mode.
+#. Install the Operator:
 
-We can use the following option to install the GPU Operator:
+   .. code-block:: console
 
-.. code-block:: console
+      $ helm install --wait --generate-name \
+          -n gpu-operator --create-namespace \
+          nvidia/gpu-operator \
+          --set mig.strategy=single
 
-    $ helm install --wait --generate-name \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --set mig.strategy=single
+   Set ``mig.strategy`` to ``mixed`` when MIG mode is not enabled on all GPUs on a node.
 
-.. note::
+   In a CSP environment such as Google Cloud, also specify
+   ``--set migManager.env[0].name=WITH_REBOOT --set-string migManager.env[0].value=true``
+   to ensure that the node reboots and can apply the MIG configuration.
 
-   ``mig.strategy`` should be set to ``mixed`` when MIG mode is not enabled on all GPUs on a node.
+   MIG Manager supports preinstalled drivers.
+   If drivers are preinstalled, also specify ``--set driver.enabled=false``.
+   Refer to :ref:`mig-with-preinstalled-drivers` for more details.
 
-.. note::
+   After several minutes, all the pods, including the ``nvidia-mig-manager`` are deployed on nodes that have MIG capable GPUs.
 
-   Starting with v1.9, MIG Manager supports preinstalled drivers. If drivers are preinstalled, use
-   an additional option during installation ``--set driver.enabled=false``. See :ref:`mig-with-preinstalled-drivers`
-   for more details.
+#. Optional: Display the pods in the Operator namespace:
 
-At this point, all the pods, including the ``nvidia-mig-manager`` will be deployed on nodes that have MIG capable GPUs:
+   .. code-block:: console
 
-.. code-block:: console
+      $ kubectl get pods -n gpu-operator
 
-    $ kubectl get pods -n gpu-operator
+   *Example Output*
 
-.. code-block:: console
+   .. literalinclude:: manifests/output/mig-get-pods.txt
+      :language: output
+      :emphasize-lines: 12
 
-    NAME                                                          READY   STATUS      RESTARTS   AGE
-    gpu-operator-d6ccd4d8d-9cgzr                                  1/1     Running     2          6m58s
-    gpu-operator-node-feature-discovery-master-867c4f7bfb-4nlq7   1/1     Running     0          6m58s
-    gpu-operator-node-feature-discovery-worker-6rvr2              1/1     Running     1          6m58s
-    gpu-feature-discovery-sclxr                                   1/1     Running     0          6m39s
-    nvidia-container-toolkit-daemonset-tnh82                      1/1     Running     0          6m39s
-    nvidia-cuda-validator-qt6wq                                   0/1     Completed   0          3m11s
-    nvidia-dcgm-exporter-dh46q                                    1/1     Running     0          6m39s
-    nvidia-device-plugin-daemonset-t6qkz                          1/1     Running     0          6m39s
-    nvidia-device-plugin-validator-sd5f7                          0/1     Completed   0          105s
-    nvidia-driver-daemonset-f7ktr                                 1/1     Running     0          6m40s
-    nvidia-mig-manager-gzg8n                                      1/1     Running     0          79s
-    nvidia-operator-validator-vsccj                               1/1     Running     0          6m39s
+#. Optional: Display the labels applied to the node:
 
-You can also check the labels applied to the node:
+   .. code-block:: console
 
-.. code-block:: console
+      $ kubectl get node -o json | jq '.items[].metadata.labels'
 
-    $ kubectl get node -o json | jq '.items[].metadata.labels'
+   *Partial Output*
 
-.. code-block:: console
+   .. literalinclude:: manifests/output/mig-node-labels.json
+      :language: json
+      :start-after: nvidia.com/gpu.memory
 
-    "nvidia.com/cuda.driver.major": "460",
-    "nvidia.com/cuda.driver.minor": "73",
-    "nvidia.com/cuda.driver.rev": "01",
-    "nvidia.com/cuda.runtime.major": "11",
-    "nvidia.com/cuda.runtime.minor": "2",
-    "nvidia.com/gfd.timestamp": "1621375725",
-    "nvidia.com/gpu.compute.major": "8",
-    "nvidia.com/gpu.compute.minor": "0",
-    "nvidia.com/gpu.count": "1",
-    "nvidia.com/gpu.deploy.container-toolkit": "true",
-    "nvidia.com/gpu.deploy.dcgm-exporter": "true",
-    "nvidia.com/gpu.deploy.device-plugin": "true",
-    "nvidia.com/gpu.deploy.driver": "true",
-    "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
-    "nvidia.com/gpu.deploy.mig-manager": "true",
-    "nvidia.com/gpu.deploy.operator-validator": "true",
-    "nvidia.com/gpu.family": "ampere",
-    "nvidia.com/gpu.machine": "Google-Compute-Engine",
-    "nvidia.com/gpu.memory": "40536",
-    "nvidia.com/gpu.present": "true",
-    "nvidia.com/gpu.product": "A100-SXM4-40GB",
-    "nvidia.com/mig.strategy": "single"
+   .. important::
 
-.. warning::
-
-    The MIG Manager currently requires that all user workloads on the GPUs being configured be stopped.
-    In some cases, the node may need to be rebooted (esp. in CSP IaaS), so the node may need to be cordoned
-    before changing the MIG mode or the MIG geometry on the GPUs.
-
-    This requirement may be relaxed in future releases.
+      MIG Manager requires that no user workloads are running on the GPUs being configured.
+      In some cases, the node may need to be rebooted, such as a CSP, so the node might need to be cordoned
+      before changing the MIG mode or the MIG geometry on the GPUs.
 
 
 ************************
 Configuring MIG Profiles
 ************************
 
-Now, let's configure the GPU into a supported by setting the ``mig.config`` label on the
-GPU node.
+By default, nodes are labeled with ``nvidia.com/mig.config: all-disabled`` and you must specify the MIG configuration to apply.
 
-.. note::
+MIG Manager uses the ``default-mig-parted-config`` config map in the GPU Operator namespace to identify supported MIG profiles.
+Refer to the config map when you label the node or customize the config map.
 
-    The ``mig-manager`` uses a `ConfigMap` called ``mig-parted-config`` in the GPU Operator
-    namespace in the daemonset to include supported MIG profiles. Refer to the `ConfigMap` to use when
-    changing the label below or modify the `ConfigMap` appropriately for your use-case.
+Example: Single MIG Strategy
+============================
 
-In this example, we use the ``1g.5gb`` profile:
+The following steps show how to use the single MIG strategy and configure the ``1g.10gb`` profile on one node.
 
-.. code-block:: console
+#. Configure the MIG strategy to ``single`` if you are unsure of the current strategy:
 
-    $ kubectl label nodes $NODE nvidia.com/mig.config=all-1g.5gb
+   .. code-block:: console
+    
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"single"}]'
 
-The MIG manager will proceed to apply a ``mig.config.state`` label to the GPU and then terminate all
-the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry:
+#. Label the nodes with the profile to configure:
 
-.. code-block:: console
+   .. code-block:: console
 
-    "nvidia.com/mig.config": "all-1g.5gb",
-    "nvidia.com/mig.config.state": "pending"
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=all-1g.10gb --overwrite
 
-.. code-block:: console
+   MIG Manager proceeds to apply a ``mig.config.state`` label to the node and terminates all
+   the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry.
 
-    kube-system              kube-scheduler-a100-mig-k8s                                   1/1     Running       1          45m
-    gpu-operator             nvidia-dcgm-exporter-dh46q                                    1/1     Terminating   0          13m
-    gpu-operator             gpu-feature-discovery-sclxr                                   1/1     Terminating   0          13m
-    gpu-operator             nvidia-device-plugin-daemonset-t6qkz                          1/1     Terminating   0          13m
+#. Optional: Display the node labels:
 
-.. note::
+   .. code-block:: console
 
-    As described above, if the ``WITH_REBOOT`` option is set then the MIG manager will proceed to reboot the node:
+      $ kubectl get node <node-name> -o=jsonpath='{.metadata.labels}' | jq .
 
-    .. code-block:: console
+   *Partial Output*
 
-        "nvidia.com/mig.config": "all-1g.5gb",
-        "nvidia.com/mig.config.state": "rebooting"
+   .. code-block:: json
+      :emphasize-lines: 5,6
 
-Once the MIG manager has completed applying the configuration changes (including a node reboot if required), the node
-labels should appear as shown below:
+        "nvidia.com/gpu.product": "NVIDIA-H100-80GB-HBM3",
+        "nvidia.com/gpu.replicas": "1",
+        "nvidia.com/gpu.sharing-strategy": "none",
+        "nvidia.com/mig.capable": "true",
+        "nvidia.com/mig.config": "all-1g.10gb",
+        "nvidia.com/mig.config.state": "pending",
+        "nvidia.com/mig.strategy": "single"
+      }
 
-.. code-block:: console
+   As described above, if the ``WITH_REBOOT`` option is set then MIG Manager sets the label to ``nvidia.com/mig.config.state: rebooting``.
 
-    "nvidia.com/cuda.driver.major": "460",
-    "nvidia.com/cuda.driver.minor": "73",
-    "nvidia.com/cuda.driver.rev": "01",
-    "nvidia.com/cuda.runtime.major": "11",
-    "nvidia.com/cuda.runtime.minor": "2",
-    "nvidia.com/gfd.timestamp": "1621442537",
-    "nvidia.com/gpu.compute.major": "8",
-    "nvidia.com/gpu.compute.minor": "0",
-    "nvidia.com/gpu.count": "7",
-    "nvidia.com/gpu.deploy.container-toolkit": "true",
-    "nvidia.com/gpu.deploy.dcgm-exporter": "true",
-    "nvidia.com/gpu.deploy.device-plugin": "true",
-    "nvidia.com/gpu.deploy.driver": "true",
-    "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
-    "nvidia.com/gpu.deploy.mig-manager": "true",
-    "nvidia.com/gpu.deploy.operator-validator": "true",
-    "nvidia.com/gpu.engines.copy": "1",
-    "nvidia.com/gpu.engines.decoder": "0",
-    "nvidia.com/gpu.engines.encoder": "0",
-    "nvidia.com/gpu.engines.jpeg": "0",
-    "nvidia.com/gpu.engines.ofa": "0",
-    "nvidia.com/gpu.family": "ampere",
-    "nvidia.com/gpu.machine": "Google-Compute-Engine",
-    "nvidia.com/gpu.memory": "4864",
-    "nvidia.com/gpu.multiprocessors": "14",
-    "nvidia.com/gpu.present": "true",
-    "nvidia.com/gpu.product": "A100-SXM4-40GB-MIG-1g.5gb",
-    "nvidia.com/gpu.slices.ci": "1",
-    "nvidia.com/gpu.slices.gi": "1",
-    "nvidia.com/mig.config": "all-1g.5gb",
-    "nvidia.com/mig.config.state": "success",
-    "nvidia.com/mig.strategy": "single"
+#. Confirm that MIG Manager completed the configuration by checking the node labels:
 
-The labels ``gpu.count`` and ``gpu.slices`` indicate that the devices are configured. We can also run ``nvidia-smi``
-in the driver container to verify that the GPU has been configured:
+   .. code-block:: console
 
-.. code-block:: console
+      $ kubectl get node <node-name> -o=jsonpath='{.metadata.labels}' | jq .
 
-    $ sudo docker exec 629b93e200d9eea35be35a1b30991d007e48497d52a38e18a472945e44e52a8e nvidia-smi -L
-    GPU 0: A100-SXM4-40GB (UUID: GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f)
-      MIG 1g.5gb Device 0: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/7/0)
-      MIG 1g.5gb Device 1: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/8/0)
-      MIG 1g.5gb Device 2: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/9/0)
-      MIG 1g.5gb Device 3: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/11/0)
-      MIG 1g.5gb Device 4: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/12/0)
-      MIG 1g.5gb Device 5: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/13/0)
-      MIG 1g.5gb Device 6: (UUID: MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/14/0)
+   Check for the following labels:
 
-Finally, verify that the GPU Operator pods are in running state:
+   * ``nvidia.com/gpu.count: 7``, this value differs according to the GPU model.
+   * ``nvidia.com/gpu.slices.ci: 1``
+   * ``nvidia.com/gpu.slices.gi: 1``
+   * ``nvidia.com/mig.config.state: success``
+
+   *Partial Output*
+
+   .. code-block:: json
+
+     "nvidia.com/gpu.count": "7",
+     "nvidia.com/gpu.present": "true",
+     "nvidia.com/gpu.product": "NVIDIA-H100-80GB-HBM3-MIG-1g.10gb",
+     "nvidia.com/gpu.slices.ci": "1",
+     "nvidia.com/gpu.slices.gi": "1",
+     "nvidia.com/mig.capable": "true",
+     "nvidia.com/mig.config": "all-1g.10gb",
+     "nvidia.com/mig.config.state": "success",
+     "nvidia.com/mig.strategy": "single"
+
+#. Optional: Run the ``nvidia-smi`` command in the driver container to verify that the MIG configuration:
+
+   .. code-block:: console
+
+      $ kubectl exec -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
+
+   *Example Output*
+
+   .. literalinclude:: manifests/output/mig-nvidia-smi.txt
+      :language: output
 
 
-.. code-block:: console
+Example: Mixed MIG Strategy
+===========================
 
-    NAME                                                          READY   STATUS      RESTARTS   AGE
-    gpu-operator-d6ccd4d8d-hhhq4                                  1/1     Running     4          38m
-    gpu-operator-node-feature-discovery-master-867c4f7bfb-jt95x   1/1     Running     1          38m
-    gpu-operator-node-feature-discovery-worker-rjpfb              1/1     Running     3          38m
-    gpu-feature-discovery-drzft                                   1/1     Running     0          97s
-    nvidia-container-toolkit-daemonset-885b5                      1/1     Running     1          38m
-    nvidia-cuda-validator-kh4tv                                   0/1     Completed   0          94s
-    nvidia-dcgm-exporter-6d5kd                                    1/1     Running     0          97s
-    nvidia-device-plugin-daemonset-kspv5                          1/1     Running     0          97s
-    nvidia-device-plugin-validator-mpgv9                          0/1     Completed   0          83s
-    nvidia-driver-daemonset-mgmdb                                 1/1     Running     3          38m
-    nvidia-mig-manager-svv7b                                      1/1     Running     1          35m
-    nvidia-operator-validator-w44q8                               1/1     Running     0          97s
+The following steps show how to use the ``mixed`` MIG strategy and configure the ``all-balanced`` profile on one node.
+
+#. Configure the MIG strategy to ``mixed`` if you are unsure of the current strategy:
+
+   .. code-block:: console
+    
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+#. Label the nodes with the profile to configure:
+
+   .. code-block:: console
+
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=all-balanced --overwrite
+
+   MIG Manager proceeds to apply a ``mig.config.state`` label to the node and terminates all
+   the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry.
+
+#. Confirm that MIG Manager completed the configuration by checking the node labels:
+
+   .. code-block:: console
+
+      $ kubectl get node <node-name> -o=jsonpath='{.metadata.labels}' | jq .
+
+   Check for labels like the following.
+   The profiles and GPU counts differ according to the GPU model.
+
+   * ``nvidia.com/mig-1g.10gb.count: 2``
+   * ``nvidia.com/mig-2g.20gb.count: 1``
+   * ``nvidia.com/mig-3g.40gb.count: 1``
+   * ``nvidia.com/mig.config.state: success``
+
+   *Partial Output*
+
+   .. literalinclude:: manifests/output/mig-mixed-node-labels.json
+      :language: json
+      :start-after: nvidia.com/gpu.memory
+
+#. Optional: Run the ``nvidia-smi`` command in the driver container to verify that the GPU has been configured:
+
+   .. code-block:: console
+
+      $ kubectl exec -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
+
+   *Example Output*
+
+   .. literalinclude:: manifests/output/mig-mixed-nvidia-smi.txt
+      :language: output
 
 
-**************************
-Reconfiguring MIG Profiles
-**************************
+Example: Reconfiguring MIG Profiles
+===================================
 
-The MIG manager supports dynamic reconfiguration of the MIG geometry. In this example, let's reconfigure the
-GPU into a ``3g.20gb`` profile:
+MIG Manager supports dynamic reconfiguration of the MIG geometry.
+The following steps show how to update a GPU on a node to the ``3g.40gb`` profile with the single MIG strategy.
 
-.. code-block:: console
+#. Label the node with the profile:
 
-    $ kubectl label nodes $NODE nvidia.com/mig.config=all-3g.20gb --overwrite
+   .. code-block:: console
 
-We can see from the logs of the MIG manager that it has reconfigured the GPU into the new MIG geometry:
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=all-3g.40gb --overwrite
 
-.. code-block:: console
+#. Optional: Monitor the MIG Manager logs to confirm the new MIG geometry is applied:
 
-    Applying the selected MIG config to the node
-    time="2021-05-19T16:42:14Z" level=debug msg="Parsing config file..."
-    time="2021-05-19T16:42:14Z" level=debug msg="Selecting specific MIG config..."
-    time="2021-05-19T16:42:14Z" level=debug msg="Running apply-start hook"
-    time="2021-05-19T16:42:14Z" level=debug msg="Checking current MIG mode..."
-    time="2021-05-19T16:42:14Z" level=debug msg="Walking MigConfig for (devices=all)"
-    time="2021-05-19T16:42:14Z" level=debug msg="  GPU 0: 0x20B010DE"
-    time="2021-05-19T16:42:14Z" level=debug msg="    Asserting MIG mode: Enabled"
-    time="2021-05-19T16:42:14Z" level=debug msg="    MIG capable: true\n"
-    time="2021-05-19T16:42:14Z" level=debug msg="    Current MIG mode: Enabled"
-    time="2021-05-19T16:42:14Z" level=debug msg="Checking current MIG device configuration..."
-    time="2021-05-19T16:42:14Z" level=debug msg="Walking MigConfig for (devices=all)"
-    time="2021-05-19T16:42:14Z" level=debug msg="  GPU 0: 0x20B010DE"
-    time="2021-05-19T16:42:14Z" level=debug msg="    Asserting MIG config: map[1g.5gb:7]"
-    time="2021-05-19T16:42:14Z" level=debug msg="Running pre-apply-config hook"
-    time="2021-05-19T16:42:14Z" level=debug msg="Applying MIG device configuration..."
-    time="2021-05-19T16:42:14Z" level=debug msg="Walking MigConfig for (devices=all)"
-    time="2021-05-19T16:42:14Z" level=debug msg="  GPU 0: 0x20B010DE"
-    time="2021-05-19T16:42:14Z" level=debug msg="    MIG capable: true\n"
-    time="2021-05-19T16:42:14Z" level=debug msg="    Updating MIG config: map[1g.5gb:7]"
-    time="2021-05-19T16:42:14Z" level=debug msg="Running apply-exit hook"
-    MIG configuration applied successfully
-    Restarting all GPU clients previouly shutdown by reenabling their component-specific nodeSelector labels
-    node/pramarao-a100-mig-k8s labeled
-    Changing the 'nvidia.com/mig.config.state' node label to 'success'
+   .. code-block:: console
 
-And the node labels have been updated appropriately:
+      $ kubectl logs -n gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager
 
-.. code-block:: console
+   *Example Output*
 
-    "nvidia.com/gpu.product": "A100-SXM4-40GB-MIG-3g.20gb",
-    "nvidia.com/gpu.slices.ci": "3",
-    "nvidia.com/gpu.slices.gi": "3",
-    "nvidia.com/mig.config": "all-3g.20gb",
+   .. code-block:: console
+   
+      Applying the selected MIG config to the node
+      time="2024-05-14T18:31:26Z" level=debug msg="Parsing config file..."
+      time="2024-05-14T18:31:26Z" level=debug msg="Selecting specific MIG config..."
+      time="2024-05-14T18:31:26Z" level=debug msg="Running apply-start hook"
+      time="2024-05-14T18:31:26Z" level=debug msg="Checking current MIG mode..."
+      time="2024-05-14T18:31:26Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-14T18:31:26Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-14T18:31:26Z" level=debug msg="    Asserting MIG mode: Enabled"
+      time="2024-05-14T18:31:26Z" level=debug msg="    MIG capable: true\n"
+      time="2024-05-14T18:31:26Z" level=debug msg="    Current MIG mode: Enabled"
+      time="2024-05-14T18:31:26Z" level=debug msg="Checking current MIG device configuration..."
+      time="2024-05-14T18:31:26Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-14T18:31:26Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-14T18:31:26Z" level=debug msg="    Asserting MIG config: map[3g.40gb:2]"
+      time="2024-05-14T18:31:26Z" level=debug msg="Running pre-apply-config hook"
+      time="2024-05-14T18:31:26Z" level=debug msg="Applying MIG device configuration..."
+      time="2024-05-14T18:31:26Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-14T18:31:26Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-14T18:31:26Z" level=debug msg="    MIG capable: true\n"
+      time="2024-05-14T18:31:26Z" level=debug msg="    Updating MIG config: map[3g.40gb:2]"
+      MIG configuration applied successfully
+      time="2024-05-14T18:31:27Z" level=debug msg="Running apply-exit hook"
+      Restarting validator pod to re-run all validations
+      pod "nvidia-operator-validator-kmncw" deleted
+      Restarting all GPU clients previously shutdown in Kubernetes by reenabling their component-specific nodeSelector labels
+      node/node-name labeled
+      Changing the 'nvidia.com/mig.config.state' node label to 'success'
+
+#. Optional: Display the node labels to confirm the GPU count (``2``), slices (``3``), and profile are set:
+
+   .. code-block:: console
+    
+      $ kubectl get node <node-name> -o=jsonpath='{.metadata.labels}' | jq .
+
+   *Partial Output*
+
+   .. code-block:: json
+
+        "nvidia.com/gpu.count": "2",
+        "nvidia.com/gpu.present": "true",
+        "nvidia.com/gpu.product": "NVIDIA-H100-80GB-HBM3-MIG-3g.40gb",
+        "nvidia.com/gpu.replicas": "1",
+        "nvidia.com/gpu.sharing-strategy": "none",
+        "nvidia.com/gpu.slices.ci": "3",
+        "nvidia.com/gpu.slices.gi": "3",
+        "nvidia.com/mig.capable": "true",
+        "nvidia.com/mig.config": "all-3g.40gb",
+        "nvidia.com/mig.config.state": "success",
+        "nvidia.com/mig.strategy": "single",
+        "nvidia.com/mps.capable": "false"
+      }
+
+
+Example: Custom MIG Configuration
+=================================
+
+By default, the Operator creates the ``default-mig-parted-config`` config map and MIG Manager is configured to read profiles from that config map.
+
+You can create a config map with a custom configuration if the default profiles do not meet your business needs.
+
+#. Create a file, such as ``custom-mig-config.yaml``, with contents like the following example:
+
+   .. literalinclude:: manifests/input/custom-mig-config.yaml
+      :language: yaml
+
+#. Apply the manifest:
+
+   .. code-block:: console
+
+      $ kubectl apply -n gpu-operator -f custom-mig-config.yaml
+
+#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+#. Patch the cluster policy so MIG Manager uses the custom config map:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op":"replace", "path":"/spec/migManager/config/name", "value":"custom-mig-config"}]'
+
+#. Label the nodes with the profile to configure:
+
+   .. code-block:: console
+
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=five-1g-one-2g --overwrite
+
+#. Optional: Monitor the MIG Manager logs to confirm the new MIG geometry is applied:
+
+   .. code-block:: console
+
+      $ kubectl logs -n gpu-operator -l app=nvidia-mig-manager -c nvidia-mig-manager
+
+   *Example Output*
+
+   .. code-block:: console
+
+      Applying the selected MIG config to the node
+      time="2024-05-15T13:40:08Z" level=debug msg="Parsing config file..."
+      time="2024-05-15T13:40:08Z" level=debug msg="Selecting specific MIG config..."
+      time="2024-05-15T13:40:08Z" level=debug msg="Running apply-start hook"
+      time="2024-05-15T13:40:08Z" level=debug msg="Checking current MIG mode..."
+      time="2024-05-15T13:40:08Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-15T13:40:08Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-15T13:40:08Z" level=debug msg="    Asserting MIG mode: Enabled"
+      time="2024-05-15T13:40:08Z" level=debug msg="    MIG capable: true\n"
+      time="2024-05-15T13:40:08Z" level=debug msg="    Current MIG mode: Enabled"
+      time="2024-05-15T13:40:08Z" level=debug msg="Checking current MIG device configuration..."
+      time="2024-05-15T13:40:08Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-15T13:40:08Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-15T13:40:08Z" level=debug msg="    Asserting MIG config: map[1g.10gb:5 2g.20gb:1]"
+      time="2024-05-15T13:40:08Z" level=debug msg="Running pre-apply-config hook"
+      time="2024-05-15T13:40:08Z" level=debug msg="Applying MIG device configuration..."
+      time="2024-05-15T13:40:08Z" level=debug msg="Walking MigConfig for (devices=all)"
+      time="2024-05-15T13:40:08Z" level=debug msg="  GPU 0: 0x233010DE"
+      time="2024-05-15T13:40:08Z" level=debug msg="    MIG capable: true\n"
+      time="2024-05-15T13:40:08Z" level=debug msg="    Updating MIG config: map[1g.10gb:5 2g.20gb:1]"
+      time="2024-05-15T13:40:09Z" level=debug msg="Running apply-exit hook"
+      MIG configuration applied successfully
 
 
 *******************************************
@@ -319,12 +409,10 @@ Verification: Running Sample CUDA Workloads
 Disabling MIG
 *************
 
-You can disable MIG on a node by setting the ``nvidia.con/mig.config`` label
-to ``all-disabled``:
-
+You can disable MIG on a node by setting the ``nvidia.con/mig.config`` label to ``all-disabled``:
 .. code-block:: console
 
-   $ kubectl label nodes $NODE nvidia.com/mig.config=all-disabled --overwrite
+   $ kubectl label nodes <node-name> nvidia.com/mig.config=all-disabled --overwrite
 
 
 .. _mig-with-preinstalled-drivers:
@@ -333,8 +421,8 @@ to ``all-disabled``:
 MIG Manager with Preinstalled Drivers
 **************************************
 
-Starting with v1.9, MIG Manager supports preinstalled drivers. Everything detailed in this document
-still applies, however there are a few additional details to consider.
+MIG Manager supports preinstalled drivers.
+Information in the preceding sections still applies, however there are a few additional details to consider.
 
 
 Install
@@ -354,14 +442,13 @@ can be used to install the GPU Operator:
 Managing Host GPU Clients
 =========================
 
-The MIG Manager stops all operator-managed pods that have access to GPUs when applying a MIG reconfiguration.
+MIG Manager stops all operator-managed pods that have access to GPUs when applying a MIG reconfiguration.
 When drivers are preinstalled, there may be GPU clients on the host that also need to be stopped.
 
-When drivers are preinstalled, the MIG Manager will try stopping and restarting a list of systemd services on the host across
-a MIG reconfiguration. The list of services are specified in a ``ConfigMap`` to the MIG Manager daemonset. By default,
-the GPU Operator creates a ``ConfigMap``, named ``default-gpu-clients``, containing a default list of systemd services.
+When drivers are preinstalled, MIG Manager attempts to stop and restart a list of systemd services on the host across a MIG reconfiguration.
+The list of services are specified in the ``default-gpu-clients`` config map.
 
-Below is a sample GPU clients file, ``clients.yaml``, used when creating the ``default-gpu-clients`` ``ConfigMap``:
+The following sample GPU clients file, ``clients.yaml``, is used to create the ``default-gpu-clients`` config map:
 
 .. code-block:: yaml
 
@@ -377,50 +464,48 @@ Below is a sample GPU clients file, ``clients.yaml``, used when creating the ``d
       - dcgm.service
       - dcgm-exporter.service
 
-In the future, the GPU clients file will be extended to allow specifying more than just systemd services.
+You can modify the list by editing the config map after installation.
+Alternatively, you can create a custom config map for use by MIG Manager by performing the following steps:
 
-The user may modify the default list by directly editing the ``default-gpu-clients`` ``ConfigMap`` post-install. The user can also create their own
-custom ``ConfigMap`` to be used by the MIG Manager by performing the following steps:
+#. Create the ``gpu-operator`` namespace:
 
-* Create the ``gpu-operator`` namespace:
+   .. code-block:: console
 
-  .. code-block:: console
+      $ kubectl create namespace gpu-operator
 
-     $ kubectl create namespace gpu-operator
+#. Create a ``ConfigMap`` containing the custom `clients.yaml` file with a list of GPU clients:
 
-* Create a ``ConfigMap`` containing the custom `clients.yaml` file with a list of GPU clients:
+   .. code-block:: console
 
-  .. code-block:: console
+      $ kubectl create configmap -n gpu-operator gpu-clients --from-file=clients.yaml
 
-     $ kubectl create configmap -n gpu-operator gpu-clients --from-file=clients.yaml
+#. Install the GPU Operator:
 
-* Install the GPU Operator:
+   .. code-block:: console
 
-  .. code-block:: console
-
-    $ helm install gpu-operator \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --set migManager.gpuClientsConfig.name=gpu-clients
-        --set driver.enabled=false
+     $ helm install gpu-operator \
+         -n gpu-operator --create-namespace \
+         nvidia/gpu-operator \
+         --set migManager.gpuClientsConfig.name=gpu-clients
+         --set driver.enabled=false
 
 *****************
 Architecture
 *****************
 
-The MIG manager is designed as a controller within Kubernetes. It watches for changes to the
-``nvidia.com/mig.config`` label on the node and then applies the user requested MIG configuration
-When the label changes, the MIG Manager first stops all GPU pods (including the `device plugin`, `gfd`
-and `dcgm-exporter`). It then stops all host GPU clients listed in the ``clients.yaml`` ConfigMap
-if drivers are preinstalled. Finally, it applies the MIG reconfiguration and restarts the GPU pods (and possibly host GPU clients).
-The MIG reconfiguration may also involve a node reboot if required for enabling MIG mode.
+MIG Manager is designed as a controller within Kubernetes. It watches for changes to the
+``nvidia.com/mig.config`` label on the node and then applies the user-requested MIG configuration
+When the label changes, MIG Manager first stops all GPU pods, including device plugin, GPU feature discovery,
+and DCGM exporter.
+MIG Manager then stops all host GPU clients listed in the ``clients.yaml`` config map if drivers are preinstalled.
+Finally, it applies the MIG reconfiguration and restarts the GPU pods and possibly, host GPU clients.
+The MIG reconfiguration can also involve rebooting a node if a reboot is required to enable MIG mode.
 
-The available MIG profiles are specified in a ``ConfigMap`` to the MIG manager daemonset. The user may
-choose one of these profiles to apply to the ``mig.config`` label to trigger a reconfiguration of the
-MIG geometry.
+The default MIG profiles are specified in the ``default-mig-parted-config`` config map.
+You can specify one of these profiles to apply to the ``mig.config`` label to trigger a reconfiguration of the MIG geometry.
 
-The MIG manager relies on the `mig-parted <https://github.com/NVIDIA/mig-parted>`_ tool to apply the configuration
-changes to the GPU, including enabling MIG mode (with a node reboot as required by some scenarios).
+MIG Manager uses the `mig-parted <https://github.com/NVIDIA/mig-parted>`__ tool to apply the configuration
+changes to the GPU, including enabling MIG mode, with a node reboot as required by some scenarios.
 
 .. mermaid::
 

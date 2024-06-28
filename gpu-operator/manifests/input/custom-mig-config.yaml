@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-mig-config
+data:
+  config.yaml: |
+    version: v1
+    mig-configs:
+      all-disabled:
+        - devices: all
+          mig-enabled: false
+      
+      five-1g-one-2g:
+        - devices: all 
+          mig-enabled: true
+          mig-devices:
+            "1g.10gb": 5
+            "2g.20gb": 1
