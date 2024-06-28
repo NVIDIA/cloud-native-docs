@@ -110,13 +110,17 @@ Procedure
 
 
 .. _gpu-operator-helm-chart-options:
+.. _chart-customization-options:
 
-***************************
-Chart Customization Options
-***************************
+**********************************
+Common Chart Customization Options
+**********************************
 
 The following options are available when using the Helm chart.
 These options can be used with ``--set`` when installing with Helm.
+
+The following table identifies the most frequently used options.
+To view all the options, run ``helm show values nvidia/gpu-operator``.
 
 .. list-table::
    :widths: 20 50 30
@@ -152,6 +156,13 @@ These options can be used with ``--set`` when installing with Helm.
 
    * - ``daemonsets.labels``
      - Map of custom labels to add to all GPU Operator managed pods.
+     - ``{}``
+
+   * - ``devicePlugin.config``
+     - Specifies the configuration for the NVIDIA Device Plugin as a config map.
+
+       In most cases, this field is configured after installing the Operator, such as
+       to configure :doc:`gpu-sharing`.
      - ``{}``
 
    * - ``driver.enabled``
