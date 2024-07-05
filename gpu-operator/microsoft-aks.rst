@@ -116,7 +116,7 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
           --set toolkit.enabled=false \
           --set operator.runtimeClass=nvidia-container-runtime
 
-   Refer to :ref:`Chart Customization Options` for more information about installation options.
+   Refer to :ref:`Common Chart Customization Options` for more information about installation options.
 
    *Example Output*
 
