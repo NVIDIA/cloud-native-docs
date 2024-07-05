@@ -64,7 +64,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      NVIDIA GH200 systems require the NVIDIA Open GPU Kernel module driver.
      You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
      argument to the ``helm`` command.
-     Refer to :ref:`chart customization options` for more information.
+     Refer to :ref:`Common Chart Customization Options` for more information.
 
   .. tab-item:: A, H and L-series Products
      :selected:
@@ -295,7 +295,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.12---4.15
+         - | 4.12---4.16
          -
          -
          -
@@ -393,7 +393,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.12---4.15
+         - 4.12---4.16
          -
          -
 
@@ -444,7 +444,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.22---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.22---1.29   0.36+           0.59.1+
-Red Hat Core OS                                                4.12---4.15      4.13---4.15
+Red Hat Core OS                                                4.12---4.16      4.13---4.16
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -492,7 +492,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
    requires the NVIDIA Open GPU Kernel module driver.
    You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
    argument to the ``helm`` command.
-   Refer to :ref:`chart customization options` for more information.
+   Refer to :ref:`Common Chart Customization Options` for more information.
 
    Not supported with secure boot.
    Supported storage types are local NVMe and remote NFS.

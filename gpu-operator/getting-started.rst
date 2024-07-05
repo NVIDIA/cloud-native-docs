@@ -111,6 +111,7 @@ Procedure
 
 .. _gpu-operator-helm-chart-options:
 .. _chart-customization-options:
+.. _chart customization options:
 
 **********************************
 Common Chart Customization Options

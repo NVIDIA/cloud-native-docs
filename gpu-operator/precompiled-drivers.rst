@@ -130,7 +130,7 @@ Specify the ``--set driver.usePrecompiled=true`` and ``--set driver.version=<dri
         --set driver.version="<driver-branch>"
 
 Specify a value like ``525`` for ``<driver-branch>``.
-Refer to :ref:`Chart Customization Options` for information about other installation options.
+Refer to :ref:`Common Chart Customization Options` for information about other installation options.
 
 
 ***********************************
