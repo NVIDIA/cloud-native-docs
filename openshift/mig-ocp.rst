@@ -917,6 +917,7 @@ If the cluster is configured with the ``mixed`` advertisement strategy.
           resources:
             limits:
               nvidia.com/mig-2g.10gb: 1
+      EOF
 
    .. code-block:: console
 
