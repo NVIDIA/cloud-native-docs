@@ -76,7 +76,7 @@ project_build_order = [
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.15.0"
+version = "1.16.0"
 copyright_start = 2020
 redirects = [
   { path="concepts.html", target="index.html" },
