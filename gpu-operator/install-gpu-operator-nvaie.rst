@@ -16,9 +16,6 @@
 
 .. headings # #, * *, =, -, ^, "
 
-.. _nvaie-rn: https://docs.nvidia.com/ai-enterprise/latest/release-notes/index.html
-.. |nvaie-rn| replace:: *NVIDIA AI Enterprise Release Notes*
-
 .. |ellipses-img| image:: https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg
     :width: 14px
     :height: 14px
@@ -45,12 +42,26 @@ About NVIDIA AI Enterprise and Supported Platforms
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
 
-Deploying the GPU Operator with NVIDIA AI Enterprise differs from the GPU Operator in the public NGC catalog.
-The differences are:
+Deploying the GPU Operator with NVIDIA AI Enterprise offers two installation options.
 
-  * It is configured to use a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.
+.. list-table::
+   :header-rows: 1
 
-  * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_.
+   * - vGPU Guest Driver
+     - Data Center Driver
+
+   * - Uses a a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.
+
+       It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_.
+       Installations on virtualization platforms must use the vGPU driver installation.
+
+       Installation is performed by downloading a Bash script from NVIDIA NGC and running the script.
+
+     - Uses the GPU Operator Helm chart that is publicly available and GPU driver containers that are publicly available.
+
+       You must determine the supported driver branch, such as 550, for your NVIDIA AI Enterprise release.
+
+       Installation is performed by running the ``helm`` command.
 
 The GPU Operator with NVIDIA AI Enterprise is supported with the following platforms:
 
@@ -65,9 +76,9 @@ NVIDIA AI Enterprise includes support for Red Hat OpenShift Container Platform.
 For Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
 
 
-***********************
-Installing GPU Operator
-***********************
+*********************************************
+Installing GPU Operator Using the vGPU Driver
+*********************************************
 
 Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.
 
@@ -116,7 +127,7 @@ Procedure
 
 
 *********************************
-Updating NLS client license token
+Updating NLS Client License Token
 *********************************
 
 In case the NLS client license token needs to be updated, please use the following procedure:
@@ -163,7 +174,37 @@ with
 
 Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
 
-GPU Operator will redeploy sequentially all the driver pods with this new licensing information.
+GPU Operator sequentially redeploys all the driver pods with this new licensing information.
+
+****************************************************
+Installing GPU Operator Using the Data Center Driver
+****************************************************
+
+This installation method is available for bare metal clusters or any cluster that does not use virtualization.
+
+You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
+The following list summarizes the default driver version for each release.
+
+* v5.1: 550.90.07
+* v5.0: 550.54.15 
+* v4.2: 535.154.05
+* v3.3: 525.147.05
+* v1.8: 470.239.06
+
+You can confirm the the supported branches for your release by performing the following steps:
+
+#. Refer to the `release documentation <https://docs.nvidia.com/ai-enterprise/#release-documentation>`__
+   for NVIDIA AI Enterprise and access the documentation for your release.
+   
+#. In the release notes, identify the supported NVIDIA Data Center GPU Driver branches for your release.
+
+   For example, the `Supoorted Hardware and Software <https://docs.nvidia.com/ai-enterprise/#release-documentation>`__ for the 5.1 release 
+   indicates that the release uses the 550.90.07 version of the Linux driver.
+
+#. Refer to :ref:`operator-component-matrix` to identify the recommended driver version that uses the same driver branch, 550, in this case.
+
+After identifying the correct driver version, refer to :ref:`install-gpu-operator` to install the Operator by using Helm.
+
 
 *******************
 Related Information
