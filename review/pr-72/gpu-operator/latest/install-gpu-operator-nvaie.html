@@ -133,14 +133,14 @@
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#about-nvidia-ai-enterprise-and-supported-platforms" id="id2">About NVIDIA AI Enterprise and Supported Platforms</a></p></li>
-<li><p><a class="reference internal" href="#installing-gpu-operator-using-vgpu" id="id3">Installing GPU Operator Using vGPU</a></p>
+<li><p><a class="reference internal" href="#installing-gpu-operator-using-the-vgpu-driver" id="id3">Installing GPU Operator Using the vGPU Driver</a></p>
 <ul>
 <li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
 <li><p><a class="reference internal" href="#procedure" id="id5">Procedure</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#updating-nls-client-license-token" id="id6">Updating NLS Client License Token</a></p></li>
-<li><p><a class="reference internal" href="#installing-gpu-operator-using-data-center-driver" id="id7">Installing GPU Operator Using Data Center Driver</a></p></li>
+<li><p><a class="reference internal" href="#installing-gpu-operator-using-the-data-center-driver" id="id7">Installing GPU Operator Using the Data Center Driver</a></p></li>
 <li><p><a class="reference internal" href="#related-information" id="id8">Related Information</a></p></li>
 </ul>
 </div>
@@ -161,12 +161,12 @@
 <tbody>
 <tr class="row-even"><td><p>Uses a a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.</p>
 <p>It is configured to use the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/">NVIDIA License System (NLS)</a>.
-Installations that use VMware VMs must use the vGPU driver installation.</p>
+Installations on virtualization platforms must use the vGPU driver installation.</p>
 <p>Installation is performed by downloading a Bash script from NVIDIA NGC and running the script.</p>
 </td>
-<td><p>Uses the GPU Operator Helm chart that is publicly available.</p>
-<p>You must specify the driver branch to install, such as 550, that matches the supported branch for your NVIDIA AI Enterprise release.</p>
-<p>Installation is performed by running the <cite>helm</cite> command.</p>
+<td><p>Uses the GPU Operator Helm chart that is publicly available and GPU driver containers that are publicly available.</p>
+<p>You must determine the supported driver branch, such as 550, for your NVIDIA AI Enterprise release.</p>
+<p>Installation is performed by running the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.</p>
 </td>
 </tr>
 </tbody>
@@ -183,8 +183,8 @@ Installations that use VMware VMs must use the vGPU driver installation.</p>
 </ul>
 <p>For Red Hat OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA AI Enterprise with OpenShift</span></a>.</p>
 </section>
-<section id="installing-gpu-operator-using-vgpu">
-<h2>Installing GPU Operator Using vGPU<a class="headerlink" href="#installing-gpu-operator-using-vgpu" title="Permalink to this headline"></a></h2>
+<section id="installing-gpu-operator-using-the-vgpu-driver">
+<h2>Installing GPU Operator Using the vGPU Driver<a class="headerlink" href="#installing-gpu-operator-using-the-vgpu-driver" title="Permalink to this headline"></a></h2>
 <p>Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.</p>
 <p>To deploy an earlier version of NVIDIA AI Enterprise, refer to the documentation for the GPU Operator version specified in the NVIDIA AI Enterprise documentation
 or an earlier version of the GPU Operator documentation, such as the
@@ -258,8 +258,8 @@ Originally, the client configuration token is named to match the pattern: <code 
 <p>Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)</p>
 <p>GPU Operator sequentially redeploys all the driver pods with this new licensing information.</p>
 </section>
-<section id="installing-gpu-operator-using-data-center-driver">
-<h2>Installing GPU Operator Using Data Center Driver<a class="headerlink" href="#installing-gpu-operator-using-data-center-driver" title="Permalink to this headline"></a></h2>
+<section id="installing-gpu-operator-using-the-data-center-driver">
+<h2>Installing GPU Operator Using the Data Center Driver<a class="headerlink" href="#installing-gpu-operator-using-the-data-center-driver" title="Permalink to this headline"></a></h2>
 <p>This installation method is available for bare metal clusters or any cluster that does not use virtualization.</p>
 <p>You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
 The following list summarizes the default driver version for each release.</p>
