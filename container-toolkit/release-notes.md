@@ -10,6 +10,46 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.16.0
+
+This release of the NVIDIA Container Toolkit `v1.16.0` is a major feature release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.16.0`
+- `libnvidia-container-tools 1.16.0`
+- `libnvidia-container1 1.16.0`
+
+   ```{note}
+   The `v1.14.0` release was the last release to include the `nvidia-container-runtime`
+   and `nvidia-docker2` packages.
+   All required functionality is included in the `nvidia-container-toolkit` package.
+   This toolkit package includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.
+   ```
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.0-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.16.0`)
+
+### Fixes and Features
+
+* Added the injection of additional graphics libraries for improved X11 functionality.
+* Added support for extracting runtime options from the default runtime instead of assuming `runc`.
+* Reduced the verbosity of logging for the NVIDIA Container Runtime.
+* Fixed a bug in argument parsing for logger creation.
+* Increase priority of the `ld.so.conf.d` config file injected into container. This ensures that injected libraries are preferred over libraries present in the container.
+* Updated the default CDI spec permissions to 644. This fixes permission issues when using the `nvidia-ctk cdi transform` functions while specifying an output.
+* Fixed the discovery of `libnvidia-ml.so.1` when a non-standard driver root is used. This enabled CDI spec generation when using the driver container on a host.
+* Added support to recalculate minimum required CDI spec version on save. This ensures that version changes due to spec transforms are accounted for.
+* Moved the `nvidia-ctk hook` commands to a separate `nvidia-cdi-hook` binary (the same subcommands are supported). This allows for cleaner mapping to non-OCI-compliant use cases of generated CDI specifications.
+- Switched to using `:` as list separator in the `nvidia-ctk config --set` command. This fixes a bug when trying to set config options that are lists.
+
+### Enhancements to container-toolkit Container Images
+
+* Updated the CUDA base image version to 12.5.1.
+* Added support for custom driver installation paths.
+
 ## NVIDIA Container Toolkit 1.15.0
 
 This release of the NVIDIA Container Toolkit `v1.15.0` is a major feature release.
