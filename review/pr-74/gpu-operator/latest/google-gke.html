@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVIDIA GPU Operator with Google GKE &mdash; NVIDIA GPU Operator 24.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="NVIDIA GPU Operator with Azure Kubernetes Service" href="microsoft-aks.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>NVIDIA GPU Operator with Google GKE</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nvidia-gpu-operator-with-google-gke">
+<h1>NVIDIA GPU Operator with Google GKE<a class="headerlink" href="#nvidia-gpu-operator-with-google-gke" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-using-the-operator-with-google-gke" id="id1">About Using the Operator with Google GKE</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id2">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#procedure" id="id3">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id4">Next Steps</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id5">Related Information</a></p></li>
+</ul>
+</div>
+<section id="about-using-the-operator-with-google-gke">
+<h2>About Using the Operator with Google GKE<a class="headerlink" href="#about-using-the-operator-with-google-gke" title="Permalink to this headline"></a></h2>
+<p>You can use the NVIDIA GPU Operator with Google Kubernetes Engine (GKE),
+but you must use an operating system that is supported by the Operator.</p>
+<p>By default, Google GKE configures nodes with the Container-Optimized OS with Containerd from Google.
+This operating system is not supported by the Operator.</p>
+<p>To use a supported operating system, such as Ubuntu 22.04 or 20.04, configure your
+GKE cluster entirely with Ubuntu containerd nodes images or with a node pool
+that uses Ubuntu containerd node images.</p>
+<p>By selecting a supported operating system rather than Container-Optimized OS with Containerd,
+you can customize which NVIDIA software components are installed by the GPU Operator at deployment time.
+For example, the Operator can deploy GPU driver containers and use the Operator
+to manage the lifecycle of the NVIDIA software components.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>You installed and initialized the Google Cloud CLI.
+Refer to
+<a class="reference external" href="https://cloud.google.com/sdk/gcloud">gcloud CLI overview</a>
+in the Google Cloud documentation.</p></li>
+<li><p>You have a Google Cloud project to use for your GKE cluster.
+Refer to
+<a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects">Creating and managing projects</a>
+in the Google Cloud documentation.</p></li>
+<li><p>You have the project ID for your Google Cloud project.
+Refer to <a class="reference external" href="https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects">Identifying projects</a>
+in the Google Cloud documentation.</p></li>
+<li><p>You know the machine type for the node pool and that the machine type is supported
+in your region and zone.
+Refer to <a class="reference external" href="https://cloud.google.com/compute/docs/gpus">GPU platforms</a>
+in the Google Cloud documentation.</p></li>
+</ul>
+</section>
+<section id="procedure">
+<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h2>
+<p>Perform the following steps to create a GKE cluster with the <code class="docutils literal notranslate"><span class="pre">gcloud</span></code> CLI.
+The steps create the cluster with a node pool that uses a Ubuntu and containerd node image.</p>
+<ol class="arabic">
+<li><p>Create the cluster by running a command that is similar to the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">  $ </span>gcloud beta container clusters create demo-cluster <span class="se">\</span>
+      --project &lt;project-id&gt; <span class="se">\</span>
+      --zone us-west1-a <span class="se">\</span>
+      --release-channel <span class="s2">&quot;regular&quot;</span> <span class="se">\</span>
+      --machine-type <span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
+      --accelerator <span class="s2">&quot;type=nvidia-tesla-t4,count=1&quot;</span> <span class="se">\</span>
+      --image-type <span class="s2">&quot;UBUNTU_CONTAINERD&quot;</span> <span class="se">\</span>
+      --disk-type <span class="s2">&quot;pd-standard&quot;</span> <span class="se">\</span>
+      --disk-size <span class="s2">&quot;1000&quot;</span> <span class="se">\</span>
+      --no-enable-intra-node-visibility <span class="se">\</span>
+      --metadata disable-legacy-endpoints<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+      --max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
+      --num-nodes <span class="s2">&quot;1&quot;</span> <span class="se">\</span>
+      --logging<span class="o">=</span>SYSTEM,WORKLOAD <span class="se">\</span>
+      --monitoring<span class="o">=</span>SYSTEM <span class="se">\</span>
+      --enable-ip-alias <span class="se">\</span>
+      --no-enable-intra-node-visibility <span class="se">\</span>
+      --default-max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
+      --no-enable-master-authorized-networks <span class="se">\</span>
+      --tags<span class="o">=</span>nvidia-ingress-all
+
+<span class="go">Creating the cluster requires several minutes.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the authentication credentials for the cluster:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">USE_GKE_GCLOUD_AUTH_PLUGIN</span><span class="o">=</span>True <span class="se">\</span>
+    gcloud container clusters get-credentials demo-cluster --zone us-west1-a
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Verify that you can connect to the cluster:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -o wide
+</pre></div>
+</div>
+</li>
+<li><p>Create the namespace for the NVIDIA GPU Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">gpu-operator-quota.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceQuota</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-quota</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hard</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pods</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
+<span class="w">  </span><span class="nt">scopeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span><span class="w"></span>
+<span class="w">      </span><span class="nt">scopeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PriorityClass</span><span class="w"></span>
+<span class="w">      </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system-node-critical</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system-cluster-critical</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the resource quota:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f gpu-operator-quota.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Optional: View the resource quota:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get -n gpu-operator resourcequota
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                  AGE     REQUEST</span>
+<span class="go">gke-resource-quotas   6m56s   count/ingresses.extensions: 0/100, count/ingresses.networking.k8s.io: 0/100, count/jobs.batch: 0/5k, pods: 2/1500, services: 1/500</span>
+<span class="go">gpu-operator-quota    38s     pods: 0/100</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>You are ready to <a class="reference internal" href="getting-started.html#install-gpu-operator"><span class="std std-ref">install the NVIDIA GPU Operator</span></a>
+with Helm.</p></li>
+</ul>
+</section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>If you have an existing GKE cluster, refer to
+<a class="reference external" href="https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools">Add and manage node pools</a>
+in the Google Kubernetes Engine documentation.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="microsoft-aks.html" class="btn btn-neutral float-left" title="NVIDIA GPU Operator with Azure Kubernetes Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Jul 22, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
