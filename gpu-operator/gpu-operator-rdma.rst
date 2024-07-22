@@ -41,12 +41,32 @@ command-line argument for Helm.
 
 In conjunction with the `Network Operator <https://github.com/Mellanox/network-operator>`_, the GPU Operator can be used to
 set up the networking related components such as Mellanox drivers, ``nvidia-peermem`` and Kubernetes device plugins to enable
-workloads to take advantage of GPUDirect RDMA and GPUDirect Storage. Refer to the Network Operator `documentation <https://docs.nvidia.com/networking/display/COKAN10>`_
-on installing the Network Operator.
+workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
+Refer to the Network Operator `documentation <https://docs.nvidia.com/networking/software/cloud-orchestration/index.html>`_ for installation information.
+
+**********************************************************
+Special Considerations for NVIDIA Peermem vs Linux DMA-BUF
+**********************************************************
+
+Beginning with the v24.6.0 release, NVIDIA recommends using the DMA buffer sharing and synchronization (dma-buf subsystem) that is available from the Linux kernel rather than using the ``nvidia-peermem`` kernel module from the GPU Driver.
+
+To use DMA-BUF, you must meet the following requirements:
+
+- NVIDIA Open GPU Kernel module driver version 535 or higher.
+- Linux kernel 5.12 or higher.
+
+If your cluster meets the preceding requirements, no special configuration is required to use GPUDirect RDMA.
+
+If your cluster does not meet the preceding requirements, you must specify the ``--set driver.rdma.enabled=true`` argument when you install the Operator with Helm.
+
 
 ***********************************************
 Configuring GPUDirect RDMA Using nvidia-peermem
 ***********************************************
+
+.. important::
+
+   If your cluster meets the requirements to use Linux DMA-BUF, you do not need to perform any configuration to use GPUDirect RDMA.
 
 Platform Support
 ================
@@ -88,8 +108,7 @@ If the MOFED drivers were installed with the Network Operator, run the following
 
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --set driver.rdma.enabled=true
+        nvidia/gpu-operator
 
 If the MOFED drivers were installed directly on host, run the following command:
 
@@ -98,17 +117,18 @@ If the MOFED drivers were installed directly on host, run the following command:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set driver.rdma.enabled=true --set driver.rdma.useHostMofed=true
+        --set driver.rdma.useHostMofed=true
 
 Verifying the Installation of GPUDirect with RDMA
 =================================================
 
 During the installation, the NVIDIA driver daemonset runs an `init container` to wait on the Mellanox OFED (MOFED) drivers to be ready.
-This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported MOFED kernel drivers.
-After the verfication is complete by the init container, the nvidia-peermem-ctr container is started inside each driver pod.
+This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the MOFED kernel drivers.
+
+If you were required to use the ``driver.rdma.enabled=true`` argument when you installed the Operator, the nvidia-peermem-ctr container is started inside each driver pod after the verification.
 
 #. Confirm that the pod template for the driver daemonset includes the mofed-validation init container and
-   the nvidia-driver-ctr and nvidia-peermem-ctr containers:
+   the nvidia-driver-ctr containers:
 
    .. code-block:: console
 
@@ -139,7 +159,9 @@ After the verfication is complete by the init container, the nvidia-peermem-ctr 
         Image ID:      nvcr.io/nvaie/vgpu-guest-driver@sha256:a1b7d2c8e1bad9bb72d257ddfc5cec341e790901e7574ba2c32acaddaaa94625
       ...
 
-#. Confirm that the nvidia-peermem-ctr container successfully loaded the nvidia-peermem kernel module:
+   The nvidia-peermem-ctr container is present only if you were required to specify the ``driver.rdma.enabled=true`` argument when you installed the Operator.
+
+#. Optional: Confirm that the nvidia-peermem-ctr container successfully loaded the nvidia-peermem kernel module:
 
    .. code-block:: console
 
@@ -174,7 +196,7 @@ correctly and that pods can perform RDMA data transfers.
 
       mlx5_0 port 1 ==> ens64np1 (Up)
 
-#. Configure a secondary network on the device using MACVLAN:
+#. Configure a secondary network on the device using a macvlan network attachment:
 
    - Create a file, such as ``demo-macvlannetwork.yaml``, with contents like the following example:
 
