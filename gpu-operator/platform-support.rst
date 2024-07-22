@@ -80,8 +80,12 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      | NVIDIA HGX H100         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
+     | NVIDIA H200             | NVIDIA Hopper             |
+     +-------------------------+---------------------------+
      | | NVIDIA H100,          | NVIDIA Hopper             |
      | | NVIDIA H100 NVL       |                           |
+     +-------------------------+---------------------------+
+     | NVIDIA H20              | NVIDIA Hopper             |
      +-------------------------+---------------------------+
      | | NVIDIA L40,           | NVIDIA Ada                |
      | | NVIDIA L40S           |                           |
@@ -472,7 +476,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.1
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.4.0
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
@@ -483,7 +487,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.1.1
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.4.0
 - Red Hat OpenShift Container Platform 4.12 and higher
 
 .. note::

@@ -59,9 +59,9 @@ Limitations and Restrictions
   refer to :external+ocp:doc:`gpu-operator-with-precompiled-drivers`.
 
 * NVIDIA supports precompiled driver containers for the most recently released long-term
-  servicing branch (LTSB) driver branch, 525.
+  servicing branch (LTSB) driver branch.
 
-* NVIDIA builds images for the ``generic`` kernel variant.
+* NVIDIA builds images for the ``aws``, ``azure``, ``generic``, ``nvidia``, and ``oracle`` kernel variants.
   If your hosts run a different kernel variant, you can build a precompiled driver image
   and use your own container registry.
 
@@ -157,7 +157,7 @@ Perform the following steps to enable support for precompiled driver containers:
 
     clusterpolicy.nvidia.com/cluster-policy patched
 
-#. (Optional) Confirm that the driver daemonset pods terminate:
+#. Optional: Confirm that the driver daemon set pods terminate:
 
    .. code-block:: console
 
@@ -191,10 +191,13 @@ Perform the following steps to disable support for precompiled driver containers
 
 #. Disable support by modifying the cluster policy:
 
-   .. code-block:: console
+   .. code-block:: shell
 
-     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-         -p='[{"op": "replace", "path": "/spec/driver/usePrecompiled", "value":false}]'
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
+          -p='[
+            {"op": "replace", "path": "/spec/driver/usePrecompiled", "value":false},
+            {"op": "replace", "path": "/spec/driver/version", "value":"550.90.07"},
+          ]'
 
    *Example Output*
 
@@ -327,7 +330,7 @@ you can perform the following steps to build and run a container image.
   If you have not already installed the GPU Operator, in addition to the ``--set driver.usePrecompiled=true``
   and ``--set driver.version=${DRIVER_BRANCH}`` arguments for Helm, also specify the ``--set driver.repository="$PRIVATE_REGISTRY"`` argument.
 
-  If the container registry is not public, you need to create an image pull secret in the GPU operator namespace
+  If the container registry is not public, you need to create an image pull secret in the GPU Operator namespace
   and specify it in the ``--set driver.imagePullSecrets=<pull-secret>`` argument.
 
   If you already installed the GPU Operator, specify the private registry for the driver in the cluster policy:

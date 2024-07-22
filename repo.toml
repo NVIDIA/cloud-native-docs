@@ -12,7 +12,7 @@ author = "NVIDIA Corporation"
 
 sphinx_conf_py_extra = """
   myst_enable_extensions = [
-    "colon_fence",
+    "colon_fence", "dollarmath",
   ]
   templates_path = ['${root}/templates']
   extensions.extend([
@@ -140,7 +140,7 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "24.3.0"
+version = "24.6.0"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
