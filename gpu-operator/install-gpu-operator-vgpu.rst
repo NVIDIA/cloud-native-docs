@@ -37,9 +37,6 @@ NVIDIA Virtual GPU (vGPU) enables multiple virtual machines (VMs) to have simult
 direct access to a single physical GPU, using the same NVIDIA graphics drivers that are
 deployed on non-virtualized operating systems.
 
-The GPU Operator can install the 
-
-
 The installation steps assume ``gpu-operator`` as the default namespace for installing the NVIDIA GPU Operator.
 In case of Red Hat OpenShift Container Platform, the default namespace is ``nvidia-gpu-operator``.
 Change the namespace shown in the commands accordingly based on your cluster configuration.
