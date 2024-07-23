@@ -171,25 +171,13 @@ Installations on virtualization platforms must use the vGPU driver installation.
 </tr>
 </tbody>
 </table>
-<p>The GPU Operator with NVIDIA AI Enterprise is supported with the following platforms:</p>
-<ul class="simple">
-<li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU</p></li>
-<li><p>VMware vSphere with Tanzu</p></li>
-</ul>
-<p>NVIDIA AI Enterprise includes support for Red Hat OpenShift Container Platform.</p>
-<ul class="simple">
-<li><p>OpenShift Container Platform on bare metal or VMware vSphere with GPU Passthrough</p></li>
-<li><p>OpenShift Container Platform on VMware vSphere with NVIDIA vGPU</p></li>
-</ul>
-<p>For Red Hat OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA AI Enterprise with OpenShift</span></a>.</p>
+<p>For information about supported platforms, hypervisors, and operating systems, refer to the
+<a class="reference external" href="https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html">Product Support Matrix</a>
+in the NVIDIA AI Enterprise documentation.</p>
+<p>For information about using vGPU with Red Hat OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA AI Enterprise with OpenShift</span></a>.</p>
 </section>
 <section id="installing-gpu-operator-using-the-vgpu-driver">
 <h2>Installing GPU Operator Using the vGPU Driver<a class="headerlink" href="#installing-gpu-operator-using-the-vgpu-driver" title="Permalink to this headline"></a></h2>
-<p>Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.</p>
-<p>To deploy an earlier version of NVIDIA AI Enterprise, refer to the documentation for the GPU Operator version specified in the NVIDIA AI Enterprise documentation
-or an earlier version of the GPU Operator documentation, such as the
-<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html">23.9.1</a>
-version.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
 <ul class="simple">
@@ -262,20 +250,19 @@ Originally, the client configuration token is named to match the pattern: <code 
 <h2>Installing GPU Operator Using the Data Center Driver<a class="headerlink" href="#installing-gpu-operator-using-the-data-center-driver" title="Permalink to this headline"></a></h2>
 <p>This installation method is available for bare metal clusters or any cluster that does not use virtualization.</p>
 <p>You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
-The following list summarizes the default driver version for each release.</p>
+The following list summarizes the driver branches for each release.</p>
 <ul class="simple">
-<li><p>v5.1: 550.90.07</p></li>
-<li><p>v5.0: 550.54.15</p></li>
-<li><p>v4.2: 535.154.05</p></li>
-<li><p>v3.3: 525.147.05</p></li>
-<li><p>v1.8: 470.239.06</p></li>
+<li><p>v5.x: 550 branch</p></li>
+<li><p>v4.x: 535 branch</p></li>
+<li><p>v3.x: 525 branch</p></li>
+<li><p>v1.x: 470 branch</p></li>
 </ul>
-<p>You can confirm the the supported branches for your release by performing the following steps:</p>
+<p>For newer releases, you can confirm the the supported driver branch by performing the following steps:</p>
 <ol class="arabic">
 <li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#release-documentation">release documentation</a>
 for NVIDIA AI Enterprise and access the documentation for your release.</p></li>
-<li><p>In the release notes, identify the supported NVIDIA Data Center GPU Driver branches for your release.</p>
-<p>For example, the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#release-documentation">Supoorted Hardware and Software</a> for the 5.1 release
+<li><p>In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.</p>
+<p>For example, the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software">Supported Hardware and Software</a> for the 5.1 release
 indicates that the release uses the 550.90.07 version of the Linux driver.</p>
 </li>
 <li><p>Refer to <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> to identify the recommended driver version that uses the same driver branch, 550, in this case.</p></li>
@@ -325,7 +312,7 @@ indicates that the release uses the 550.90.07 version of the Linux driver.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 21, 2024.
+      <span class="lastupdated">Last updated on Jul 23, 2024.
       </span></p>
 
   </div>
