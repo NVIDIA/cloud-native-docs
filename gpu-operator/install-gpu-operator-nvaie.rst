@@ -16,9 +16,6 @@
 
 .. headings # #, * *, =, -, ^, "
 
-.. _nvaie-rn: https://docs.nvidia.com/ai-enterprise/latest/release-notes/index.html
-.. |nvaie-rn| replace:: *NVIDIA AI Enterprise Release Notes*
-
 .. |ellipses-img| image:: https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg
     :width: 14px
     :height: 14px
@@ -45,36 +42,37 @@ About NVIDIA AI Enterprise and Supported Platforms
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
 
-Deploying the GPU Operator with NVIDIA AI Enterprise differs from the GPU Operator in the public NGC catalog.
-The differences are:
+Deploying the GPU Operator with NVIDIA AI Enterprise offers two installation options.
 
-  * It is configured to use a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.
+.. list-table::
+   :header-rows: 1
 
-  * It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_.
+   * - vGPU Guest Driver
+     - Data Center Driver
 
-The GPU Operator with NVIDIA AI Enterprise is supported with the following platforms:
+   * - Uses a a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.
 
-* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU
-* VMware vSphere with Tanzu
+       It is configured to use the `NVIDIA License System (NLS) <https://docs.nvidia.com/license-system/latest/>`_.
+       Installations on virtualization platforms must use the vGPU driver installation.
 
-NVIDIA AI Enterprise includes support for Red Hat OpenShift Container Platform.
+       Installation is performed by downloading a Bash script from NVIDIA NGC and running the script.
 
-* OpenShift Container Platform on bare metal or VMware vSphere with GPU Passthrough
-* OpenShift Container Platform on VMware vSphere with NVIDIA vGPU
+     - Uses the GPU Operator Helm chart that is publicly available and GPU driver containers that are publicly available.
 
-For Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
+       You must determine the supported driver branch, such as 550, for your NVIDIA AI Enterprise release.
+
+       Installation is performed by running the ``helm`` command.
+
+For information about supported platforms, hypervisors, and operating systems, refer to the
+`Product Support Matrix <https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html>`__
+in the NVIDIA AI Enterprise documentation.
+
+For information about using vGPU with Red Hat OpenShift, refer to :external+ocp:doc:`nvaie-with-ocp`.
 
 
-***********************
-Installing GPU Operator
-***********************
-
-Beginning with the NVIDIA AI Enterprise release 5.0, the GPU Operator is installed using Bash script.
-
-To deploy an earlier version of NVIDIA AI Enterprise, refer to the documentation for the GPU Operator version specified in the NVIDIA AI Enterprise documentation
-or an earlier version of the GPU Operator documentation, such as the 
-`23.9.1 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.9.1/install-gpu-operator-nvaie.html>`__
-version.
+*********************************************
+Installing GPU Operator Using the vGPU Driver
+*********************************************
 
 Prerequisites
 =============
@@ -93,7 +91,7 @@ Procedure
 #. Export the NGC CLI API key and your email address as environment variables:
 
    .. code-block:: console
-    
+
       $ export NGC_API_KEY="M2Vub3QxYmgyZ..."
       $ export NGC_USER_EMAIL="user@example.com"
 
@@ -116,7 +114,7 @@ Procedure
 
 
 *********************************
-Updating NLS client license token
+Updating NLS Client License Token
 *********************************
 
 In case the NLS client license token needs to be updated, please use the following procedure:
@@ -163,7 +161,36 @@ with
 
 Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
 
-GPU Operator will redeploy sequentially all the driver pods with this new licensing information.
+GPU Operator sequentially redeploys all the driver pods with this new licensing information.
+
+****************************************************
+Installing GPU Operator Using the Data Center Driver
+****************************************************
+
+This installation method is available for bare metal clusters or any cluster that does not use virtualization.
+
+You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
+The following list summarizes the driver branches for each release.
+
+* v5.x: 550 branch
+* v4.x: 535 branch
+* v3.x: 525 branch
+* v1.x: 470 branch
+
+For newer releases, you can confirm the the supported driver branch by performing the following steps:
+
+#. Refer to the `release documentation <https://docs.nvidia.com/ai-enterprise/#release-documentation>`__
+   for NVIDIA AI Enterprise and access the documentation for your release.
+
+#. In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.
+
+   For example, the `Supported Hardware and Software <https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software>`__ for the 5.1 release
+   indicates that the release uses the 550.90.07 version of the Linux driver.
+
+#. Refer to :ref:`operator-component-matrix` to identify the recommended driver version that uses the same driver branch, 550, in this case.
+
+After identifying the correct driver version, refer to :ref:`install-gpu-operator` to install the Operator by using Helm.
+
 
 *******************
 Related Information
