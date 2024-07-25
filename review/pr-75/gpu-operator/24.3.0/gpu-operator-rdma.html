@@ -132,27 +132,25 @@
 <span id="operator-rdma"></span><h1>GPUDirect RDMA and GPUDirect Storage<a class="headerlink" href="#gpudirect-rdma-and-gpudirect-storage" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#about-gpudirect-rdma-and-gpudirect-storage" id="id5">About GPUDirect RDMA and GPUDirect Storage</a></p></li>
-<li><p><a class="reference internal" href="#special-considerations-for-nvidia-peermem-vs-linux-dma-buf" id="id6">Special Considerations for NVIDIA Peermem vs Linux DMA-BUF</a></p></li>
-<li><p><a class="reference internal" href="#configuring-gpudirect-rdma-using-nvidia-peermem" id="id7">Configuring GPUDirect RDMA Using nvidia-peermem</a></p>
+<li><p><a class="reference internal" href="#about-gpudirect-rdma-and-gpudirect-storage" id="id2">About GPUDirect RDMA and GPUDirect Storage</a></p></li>
+<li><p><a class="reference internal" href="#common-prerequisites" id="id3">Common Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#configuring-gpudirect-rdma" id="id4">Configuring GPUDirect RDMA</a></p>
 <ul>
-<li><p><a class="reference internal" href="#platform-support" id="id8">Platform Support</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id9">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#installing-the-gpu-operator-and-enabling-gpudirect-rdma" id="id10">Installing the GPU Operator and Enabling GPUDirect RDMA</a></p></li>
-<li><p><a class="reference internal" href="#verifying-the-installation-of-gpudirect-with-rdma" id="id11">Verifying the Installation of GPUDirect with RDMA</a></p></li>
-<li><p><a class="reference internal" href="#verifying-the-installation-by-performing-a-data-transfer" id="id12">Verifying the Installation by Performing a Data Transfer</a></p></li>
-<li><p><a class="reference internal" href="#related-information" id="id13">Related Information</a></p></li>
+<li><p><a class="reference internal" href="#platform-support" id="id5">Platform Support</a></p></li>
+<li><p><a class="reference internal" href="#installing-the-gpu-operator-and-enabling-gpudirect-rdma" id="id6">Installing the GPU Operator and Enabling GPUDirect RDMA</a></p></li>
+<li><p><a class="reference internal" href="#verifying-the-installation-of-gpudirect-with-rdma" id="id7">Verifying the Installation of GPUDirect with RDMA</a></p></li>
+<li><p><a class="reference internal" href="#verifying-the-installation-by-performing-a-data-transfer" id="id8">Verifying the Installation by Performing a Data Transfer</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#using-gpudirect-storage" id="id14">Using GPUDirect Storage</a></p>
+<li><p><a class="reference internal" href="#using-gpudirect-storage" id="id9">Using GPUDirect Storage</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id2" id="id15">Platform Support</a></p></li>
-<li><p><a class="reference internal" href="#id3" id="id16">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#installation" id="id17">Installation</a></p></li>
-<li><p><a class="reference internal" href="#verification" id="id18">Verification</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id10">Platform Support</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id11">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#installation" id="id12">Installation</a></p></li>
+<li><p><a class="reference internal" href="#verification" id="id13">Verification</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#id4" id="id19">Related Information</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id14">Related Information</a></p></li>
 </ul>
 </div>
 <section id="about-gpudirect-rdma-and-gpudirect-storage">
@@ -160,56 +158,75 @@
 <p><a class="reference external" href="https://docs.nvidia.com/cuda/gpudirect-rdma/index.html">GPUDirect RDMA</a> is a technology in NVIDIA GPUs that enables direct
 data exchange between GPUs and a third-party peer device using PCI Express. The third-party devices could be network interfaces
 such as NVIDIA ConnectX SmartNICs or BlueField DPUs, or video acquisition adapters.</p>
-<p>GPUDirect Storage (<a class="reference external" href="https://docs.nvidia.com/gpudirect-storage/overview-guide/index.html">GDS</a>) enables a direct data path between local or remote storage, like NFS server or NVMe/NVMe over Fabric (NVMe-oF), and GPU memory.
-GDS leverages direct memory access (DMA) transfers between GPU memory and storage, which avoids a bounce buffer through the CPU. This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.</p>
-<p>To support GPUDirect RDMA, a userspace CUDA APIs and kernel mode drivers are required. Starting with
-<a class="reference external" href="https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#changes-in-cuda-11-4">CUDA 11.4 and R470 drivers</a>, a
-new kernel module <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> is included in the standard NVIDIA driver installers (e.g. <code class="docutils literal notranslate"><span class="pre">.run</span></code>). The
-kernel module provides Mellanox Infiniband-based HCAs direct peer-to-peer read and write access to the GPU’s memory.</p>
+<p><a class="reference external" href="https://docs.nvidia.com/gpudirect-storage/overview-guide/index.html">GPUDirect Storage</a> enables a direct data path between local or remote storage, such as NFS servers or NVMe/NVMe over Fabric (NVMe-oF), and GPU memory.
+GDS performs direct memory access (DMA) transfers between GPU memory and storage.
+DMA avoids a bounce buffer through the CPU.
+This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.</p>
+<p>To support GPUDirect RDMA, userspace CUDA APIs are required.
+The kernel mode support is provided by one of two approaches: DMA-BUF from the Linux kernel or the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.
+NVIDIA recommends using the DMA-BUF rather than using the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module from the GPU Driver.</p>
 <p>Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
 The sample commands for installing the Operator include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">useOpenKernelModules=true</span></code>
 command-line argument for Helm.</p>
-<p>In conjunction with the <a class="reference external" href="https://github.com/Mellanox/network-operator">Network Operator</a>, the GPU Operator can be used to
-set up the networking related components such as Mellanox drivers, <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> and Kubernetes device plugins to enable
+<p>In conjunction with the Network Operator, the GPU Operator can be used to
+set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
 Refer to the Network Operator <a class="reference external" href="https://docs.nvidia.com/networking/software/cloud-orchestration/index.html">documentation</a> for installation information.</p>
 </section>
-<section id="special-considerations-for-nvidia-peermem-vs-linux-dma-buf">
-<h2>Special Considerations for NVIDIA Peermem vs Linux DMA-BUF<a class="headerlink" href="#special-considerations-for-nvidia-peermem-vs-linux-dma-buf" title="Permalink to this headline"></a></h2>
-<p>Beginning with the v24.6.0 release, NVIDIA recommends using the DMA buffer sharing and synchronization (dma-buf subsystem) that is available from the Linux kernel rather than using the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module from the GPU Driver.</p>
-<p>To use DMA-BUF, you must meet the following requirements:</p>
-<ul class="simple">
-<li><p>NVIDIA Open GPU Kernel module driver version 535 or higher.</p></li>
-<li><p>Linux kernel 5.12 or higher.</p></li>
-</ul>
-<p>If your cluster meets the preceding requirements, no special configuration is required to use GPUDirect RDMA.</p>
-<p>If your cluster does not meet the preceding requirements, you must specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> argument when you install the Operator with Helm.</p>
-</section>
-<section id="configuring-gpudirect-rdma-using-nvidia-peermem">
-<h2>Configuring GPUDirect RDMA Using nvidia-peermem<a class="headerlink" href="#configuring-gpudirect-rdma-using-nvidia-peermem" title="Permalink to this headline"></a></h2>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>If your cluster meets the requirements to use Linux DMA-BUF, you do not need to perform any configuration to use GPUDirect RDMA.</p>
-</div>
-<section id="platform-support">
-<h3>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline"></a></h3>
-<p>The following platforms are supported for GPUDirect with RDMA:</p>
-<ul class="simple">
-<li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.</p></li>
-<li><p>VMware vSphere with Tanzu.</p></li>
-<li><p>For Red Hat Openshift on bare metal and on vSphere VMs with GPU passthrough and vGPU configurations,
-see the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html#nvaie-ocp" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span class="xref std std-ref">NVIDIA AI Enterprise with OpenShift</span></a> information.</p></li>
-</ul>
-<p>For information about the supported versions, see <a class="reference internal" href="platform-support.html#support-for-gpudirect-rdma"><span class="std std-ref">Support for GPUDirect RDMA</span></a> on the platform support page.</p>
-</section>
-<section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
+<section id="common-prerequisites">
+<h2>Common Prerequisites<a class="headerlink" href="#common-prerequisites" title="Permalink to this headline"></a></h2>
+<p>The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on whether you use DMA-BUF from the Linux kernel or the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>Technology</p></th>
+<th class="head"><p>DMA-BUF</p></th>
+<th class="head"><p>Legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>GPU Driver</p></th>
+<td><p>Branch 515, 535 or higher.
+Open kernel module driver is required.</p></td>
+<td><p>Branch 470, 535 or higher.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>CUDA</p></th>
+<td><p>CUDA 11.7 or higher.
+The CUDA runtime is provided by the driver.</p></td>
+<td><p>CUDA 11.3 or higher.
+The CUDA runtime is provided by the driver.</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>GPU</p></th>
+<td><p>Turing architecture data center, Quadro RTX, and RTX GPU or higher.</p></td>
+<td><p>All data center, Quadro RTX, and RTX GPU or higher.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Network Device Drivers</p></th>
+<td><p>MLNX_OFED or DOCA-OFED are optional.
+You can use the Linux driver packages from the package manager.</p></td>
+<td><p>MLNX_OFED or DOCA-OFED are required.</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Linux Kernel</p></th>
+<td><p>5.12 or higher.</p></td>
+<td><p>No requirement.</p></td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li><p>Make sure that <a class="reference external" href="https://github.com/Mellanox/ofed-docker">MOFED</a> drivers are installed either through <a class="reference external" href="https://github.com/Mellanox/network-operator">Network Operator</a> or directly on the host.</p></li>
-<li><p>For installations on VMWare vSphere, refer to the following additional prerequisites:</p>
+<li><p>Make sure the network device drivers are installed.</p>
+<p>You can use the <a class="reference external" href="https://docs.nvidia.com/networking/software/cloud-orchestration/index.html">Network Operator</a>
+to manage the driver lifecycle for MLNX_OFED drivers.</p>
+<p>You can install the drivers on each host.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/networking/software/adapter-software/index.html">Adapter Software</a>
+for information about the MLNX_OFED, DOCA-OFED, and Linux inbox drivers.</p>
+</li>
+<li><p>For installations on VMware vSphere, refer to the following additional prerequisites:</p>
 <ul>
-<li><p>Make sure the Mellanox network interface controller and the NVIDIA GPU are in the same PCIe IO root complex.</p></li>
+<li><p>Make sure the network interface controller and the NVIDIA GPU are in the same PCIe IO root complex.</p></li>
 <li><p>Enable the following PCI options:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pciPassthru.allowP2P</span> <span class="pre">=</span> <span class="pre">true</span></code></p></li>
@@ -225,29 +242,46 @@ document from VMWare.</p>
 </li>
 </ul>
 </section>
+<section id="configuring-gpudirect-rdma">
+<h2>Configuring GPUDirect RDMA<a class="headerlink" href="#configuring-gpudirect-rdma" title="Permalink to this headline"></a></h2>
+<section id="platform-support">
+<h3>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline"></a></h3>
+<p>The following platforms are supported for GPUDirect with RDMA:</p>
+<ul class="simple">
+<li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.</p></li>
+<li><p>VMware vSphere with Tanzu.</p></li>
+<li><p>For Red Hat OpenShift Container Platform on bare metal and on vSphere VMs with GPU passthrough and vGPU configurations,
+refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html#nvaie-ocp" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span class="xref std std-ref">NVIDIA AI Enterprise with OpenShift</span></a>.</p></li>
+</ul>
+<p>For information about the supported versions, refer to <a class="reference internal" href="platform-support.html#support-for-gpudirect-rdma"><span class="std std-ref">Support for GPUDirect RDMA</span></a> on the platform support page.</p>
+</section>
 <section id="installing-the-gpu-operator-and-enabling-gpudirect-rdma">
 <h3>Installing the GPU Operator and Enabling GPUDirect RDMA<a class="headerlink" href="#installing-the-gpu-operator-and-enabling-gpudirect-rdma" title="Permalink to this headline"></a></h3>
-<p>If the MOFED drivers were installed with the Network Operator, run the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
-     -n gpu-operator --create-namespace <span class="se">\</span>
-     nvidia/gpu-operator
-</pre></div>
-</div>
-<p>If the MOFED drivers were installed directly on host, run the following command:</p>
+<p>To use DMA-BUF and network device drivers that are installed by the Network Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
+     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>To use DMA-BUF and network device drivers that are installed on the host:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
+<p>To use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module instead of DMA-BUF, add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to either of the preceding commands.
+The <code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules=true</span></code> argument is optional for using the legacy kernel driver.</p>
 </section>
 <section id="verifying-the-installation-of-gpudirect-with-rdma">
 <h3>Verifying the Installation of GPUDirect with RDMA<a class="headerlink" href="#verifying-the-installation-of-gpudirect-with-rdma" title="Permalink to this headline"></a></h3>
-<p>During the installation, the NVIDIA driver daemonset runs an <cite>init container</cite> to wait on the Mellanox OFED (MOFED) drivers to be ready.
-This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the MOFED kernel drivers.</p>
+<p>During the installation, the NVIDIA driver daemon set runs an <cite>init container</cite> to wait on the network device kernel drivers to be ready.
+This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the kernel drivers.</p>
 <p>If you were required to use the <code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled=true</span></code> argument when you installed the Operator, the nvidia-peermem-ctr container is started inside each driver pod after the verification.</p>
 <ol class="arabic">
-<li><p>Confirm that the pod template for the driver daemonset includes the mofed-validation init container and
+<li><p>Confirm that the pod template for the driver daemon set includes the mofed-validation init container and
 the nvidia-driver-ctr containers:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe ds -n gpu-operator nvidia-driver-daemonset
 </pre></div>
@@ -276,7 +310,7 @@ the nvidia-driver-ctr containers:</p>
 </div>
 <p>The nvidia-peermem-ctr container is present only if you were required to specify the <code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled=true</span></code> argument when you installed the Operator.</p>
 </li>
-<li><p>Optional: Confirm that the nvidia-peermem-ctr container successfully loaded the nvidia-peermem kernel module:</p>
+<li><p>Legacy only: Confirm that the nvidia-peermem-ctr container successfully loaded the nvidia-peermem kernel module:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator ds/nvidia-driver-daemonset -c nvidia-peermem-ctr
 </pre></div>
 </div>
@@ -295,7 +329,7 @@ the nvidia-driver-ctr containers:</p>
 <p>You can perform the following steps to verify that GPUDirect with RDMA is configured
 correctly and that pods can perform RDMA data transfers.</p>
 <ol class="arabic">
-<li><p>Get the network interface name of the Infiniband device on the host:</p>
+<li><p>Get the network interface name of the InfiniBand device on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n network-operator mofed-ubuntu22.04-ds-xxxxx -- ibdev2netdev
 </pre></div>
 </div>
@@ -349,8 +383,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="df7d26aa-2ae0-4378-a339-4fcd4e111f5e" name="59abe8d7-d65e-45ef-8af3-2f4dcfc5cca5" type="radio">
-</input><label class="sd-tab-label" for="df7d26aa-2ae0-4378-a339-4fcd4e111f5e">
+<input checked="checked" id="85a087cf-d3b4-4e60-98fd-cc32ddd0cb66" name="72ad173c-d8e6-4b47-9574-438292b95c93" type="radio">
+</input><label class="sd-tab-label" for="85a087cf-d3b4-4e60-98fd-cc32ddd0cb66">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -395,8 +429,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="3b923637-712f-4438-b6a2-0edba5cc91f8" name="59abe8d7-d65e-45ef-8af3-2f4dcfc5cca5" type="radio">
-</input><label class="sd-tab-label" for="3b923637-712f-4438-b6a2-0edba5cc91f8">
+<input id="70b75a0b-e25b-4b85-a835-8eedc77bcf6f" name="72ad173c-d8e6-4b47-9574-438292b95c93" type="radio">
+</input><label class="sd-tab-label" for="70b75a0b-e25b-4b85-a835-8eedc77bcf6f">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -455,7 +489,8 @@ demo-pod-2</label><div class="sd-tab-content docutils">
 </div>
 </li>
 <li><p>From one terminal, open a shell in the container on the first pod and start the performance test server:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it demo-pod-1 -- ib_write_bw -d mlx5_0 -a -F --report_gbits -q <span class="m">1</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it demo-pod-1 -- ib_write_bw --use_cuda<span class="o">=</span><span class="m">0</span> --use_cuda_dmabuf <span class="se">\</span>
+    -d mlx5_0 -a -F --report_gbits -q <span class="m">1</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -466,7 +501,8 @@ demo-pod-2</label><div class="sd-tab-content docutils">
 </div>
 </li>
 <li><p>From another terminal, open a shell in the container on the second pod and run the performance client:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it demo-pod-2 -- ib_write_bw -d mlx5_0 -a -F --report_gbits -q <span class="m">1</span> <span class="m">192</span>.168.38.90
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it demo-pod-2 -- ib_write_bw -n <span class="m">5000</span> --use_cuda<span class="o">=</span><span class="m">0</span> --use_cuda_dmabuf <span class="se">\</span>
+    -d mlx5_0 -a -F --report_gbits -q <span class="m">1</span> <span class="m">192</span>.168.38.90
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -532,21 +568,15 @@ demo-pod-2</label><div class="sd-tab-content docutils">
 </li>
 </ol>
 </section>
-<section id="related-information">
-<h3>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h3>
-<p>For more information about nvidia-peermem, refer to
-<a class="reference external" href="https://docs.nvidia.com/cuda/gpudirect-rdma/index.html#using-nvidia-peermem">Using nvidia-peermem</a>
-in the NVIDIA CUDA documentation.</p>
-</section>
 </section>
 <section id="using-gpudirect-storage">
 <h2>Using GPUDirect Storage<a class="headerlink" href="#using-gpudirect-storage" title="Permalink to this headline"></a></h2>
-<section id="id2">
-<h3>Platform Support<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<section id="id1">
+<h3>Platform Support<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>See <a class="reference internal" href="platform-support.html#support-for-gpudirect-storage"><span class="std std-ref">Support for GPUDirect Storage</span></a> on the platform support page.</p>
 </section>
-<section id="id3">
-<h3>Prerequisites<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
 <p>Make sure that MLNX_OFED drivers are installed by NVIDIA Network Operator.
 Refer to the <a class="reference external" href="https://docs.nvidia.com/networking/display/cokan10/network+operator"><em>NVIDIA Network Operator Deployment Guide</em></a>.</p>
 </section>
@@ -556,23 +586,24 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/network
 <ul class="simple">
 <li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.</p></li>
 </ul>
-<p>Starting with v22.9.1, the GPU Operator provides an option to load the <code class="docutils literal notranslate"><span class="pre">nvidia-fs</span></code> kernel module during the bootstrap of the NVIDIA driver daemonset.
-Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA Open GPU Kernel module driver.</p>
-<p>The following sample command applies to clusters that use the Network Operator to install the MLNX_OFED drivers.</p>
+<p>Starting with v22.9.1, the GPU Operator provides an option to load the <code class="docutils literal notranslate"><span class="pre">nvidia-fs</span></code> kernel module during the bootstrap of the NVIDIA driver daemon set.
+Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA Open Kernel module driver.</p>
+<p>The following sample command applies to clusters that use the Network Operator to install the network device kernel drivers.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --set driver.rdma.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to the command to use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
 </section>
 <section id="verification">
 <h3>Verification<a class="headerlink" href="#verification" title="Permalink to this headline"></a></h3>
-<p>During the installation, an init container is used with the driver daemon set to wait on the Mellanox OFED (MLNX_OFED) drivers to be ready.
-This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the MLNX_OFED kernel drivers.
-After the verification completes, the nvidia-peermem-ctr and nvidia-fs-ctr containers start inside the driver pods.</p>
+<p>During the installation, an init container is used with the driver daemon set to wait on the network device kernel drivers to be ready.
+This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the kernel drivers.
+After the verification completes, the nvidia-fs-ctr container starts inside the driver pods.</p>
+<p>If you were required to use the <code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled=true</span></code> argument when you installed the Operator, the nvidia-peermem-ctr container is started inside each driver pod after the verification.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod -n gpu-operator
 </pre></div>
 </div>
@@ -622,22 +653,22 @@ After the verification completes, the nvidia-peermem-ctr and nvidia-fs-ctr conta
 <span class="go"> &lt;snip&gt;</span>
 </pre></div>
 </div>
-<p>Lastly, verify that NVIDIA kernel modules have been successfully loaded on the worker node:</p>
+<p>Lastly, verify that NVIDIA kernel modules are loaded on the worker node:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep nvidia
 
 <span class="go">nvidia_fs             245760  0</span>
 <span class="go">nvidia_peermem         16384  0</span>
 <span class="go">nvidia_modeset       1159168  0</span>
 <span class="go">nvidia_uvm           1048576  0</span>
-<span class="go">nvidia              39059456  115 nvidia_uvm,nvidia_peermem,nvidia_modeset</span>
-<span class="go">ib_core               319488  9 rdma_cm,ib_ipoib,nvidia_peermem,iw_cm,ib_umad,rdma_ucm,ib_uverbs,mlx5_ib,ib_cm</span>
+<span class="go">nvidia              39059456  115 nvidia_uvm,nvidia_modeset</span>
+<span class="go">ib_core               319488  9 rdma_cm,ib_ipoib,iw_cm,ib_umad,rdma_ucm,ib_uverbs,mlx5_ib,ib_cm</span>
 <span class="go">drm                   491520  6 drm_kms_helper,drm_vram_helper,nvidia,mgag200,ttm</span>
 </pre></div>
 </div>
 </section>
 </section>
-<section id="id4">
-<h2>Related Information<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h2>
 <p>Refer to the following resources for more information:</p>
 <blockquote>
 <div><ul class="simple">
@@ -684,7 +715,7 @@ After the verification completes, the nvidia-peermem-ctr and nvidia-fs-ctr conta
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 22, 2024.
+      <span class="lastupdated">Last updated on Jul 25, 2024.
       </span></p>
 
   </div>
