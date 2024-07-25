@@ -145,12 +145,11 @@
 <li><p><a class="reference internal" href="#using-gpudirect-storage" id="id9">Using GPUDirect Storage</a></p>
 <ul>
 <li><p><a class="reference internal" href="#id1" id="id10">Platform Support</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id11">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#installation" id="id12">Installation</a></p></li>
-<li><p><a class="reference internal" href="#verification" id="id13">Verification</a></p></li>
+<li><p><a class="reference internal" href="#installing-the-gpu-operator-and-enabling-gpudirect-storage" id="id11">Installing the GPU Operator and Enabling GPUDirect Storage</a></p></li>
+<li><p><a class="reference internal" href="#verification" id="id12">Verification</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#related-information" id="id14">Related Information</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id13">Related Information</a></p></li>
 </ul>
 </div>
 <section id="about-gpudirect-rdma-and-gpudirect-storage">
@@ -177,28 +176,28 @@ Refer to the Network Operator <a class="reference external" href="https://docs.n
 <section id="common-prerequisites">
 <h2>Common Prerequisites<a class="headerlink" href="#common-prerequisites" title="Permalink to this headline"></a></h2>
 <p>The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on whether you use DMA-BUF from the Linux kernel or the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
-<table class="docutils align-default">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 20%" />
+<col style="width: 40%" />
+<col style="width: 40%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head stub"><p>Technology</p></th>
 <th class="head"><p>DMA-BUF</p></th>
-<th class="head"><p>Legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code></p></th>
+<th class="head"><p>Legacy Nvidia-peermem</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>GPU Driver</p></th>
 <td><p>Branch 515, 535 or higher.
-Open kernel module driver is required.</p></td>
+An Open Kernel module driver is required.</p></td>
 <td><p>Branch 470, 535 or higher.</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>CUDA</p></th>
 <td><p>CUDA 11.7 or higher.
 The CUDA runtime is provided by the driver.</p></td>
-<td><p>CUDA 11.3 or higher.
+<td><p>No minimum version.
 The CUDA runtime is provided by the driver.</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>GPU</p></th>
@@ -212,17 +211,17 @@ You can use the Linux driver packages from the package manager.</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Linux Kernel</p></th>
 <td><p>5.12 or higher.</p></td>
-<td><p>No requirement.</p></td>
+<td><p>No minimum version.</p></td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><p>Make sure the network device drivers are installed.</p>
 <p>You can use the <a class="reference external" href="https://docs.nvidia.com/networking/software/cloud-orchestration/index.html">Network Operator</a>
-to manage the driver lifecycle for MLNX_OFED drivers.</p>
+to manage the driver lifecycle for MLNX_OFED and DOCA-OFED drivers.</p>
 <p>You can install the drivers on each host.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/networking/software/adapter-software/index.html">Adapter Software</a>
-for information about the MLNX_OFED, DOCA-OFED, and Linux inbox drivers.</p>
+Refer to <a class="reference external" href="https://docs.nvidia.com/networking/software/adapter-software/index.html">Adapter Software</a>
+in the networking documentation for information about the MLNX_OFED, DOCA-OFED, and Linux inbox drivers.</p>
 </li>
 <li><p>For installations on VMware vSphere, refer to the following additional prerequisites:</p>
 <ul>
@@ -383,8 +382,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="85a087cf-d3b4-4e60-98fd-cc32ddd0cb66" name="72ad173c-d8e6-4b47-9574-438292b95c93" type="radio">
-</input><label class="sd-tab-label" for="85a087cf-d3b4-4e60-98fd-cc32ddd0cb66">
+<input checked="checked" id="d425fb5f-aa2e-4cc2-b49d-1ee9b0316bcb" name="a49b7080-5e61-41bd-9d58-270eea991459" type="radio">
+</input><label class="sd-tab-label" for="d425fb5f-aa2e-4cc2-b49d-1ee9b0316bcb">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -429,8 +428,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="70b75a0b-e25b-4b85-a835-8eedc77bcf6f" name="72ad173c-d8e6-4b47-9574-438292b95c93" type="radio">
-</input><label class="sd-tab-label" for="70b75a0b-e25b-4b85-a835-8eedc77bcf6f">
+<input id="2fc7b87f-f912-4f35-8ef2-c25d95d9b3a9" name="a49b7080-5e61-41bd-9d58-270eea991459" type="radio">
+</input><label class="sd-tab-label" for="2fc7b87f-f912-4f35-8ef2-c25d95d9b3a9">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -575,13 +574,8 @@ demo-pod-2</label><div class="sd-tab-content docutils">
 <h3>Platform Support<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <p>See <a class="reference internal" href="platform-support.html#support-for-gpudirect-storage"><span class="std std-ref">Support for GPUDirect Storage</span></a> on the platform support page.</p>
 </section>
-<section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
-<p>Make sure that MLNX_OFED drivers are installed by NVIDIA Network Operator.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/networking/display/cokan10/network+operator"><em>NVIDIA Network Operator Deployment Guide</em></a>.</p>
-</section>
-<section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h3>
+<section id="installing-the-gpu-operator-and-enabling-gpudirect-storage">
+<h3>Installing the GPU Operator and Enabling GPUDirect Storage<a class="headerlink" href="#installing-the-gpu-operator-and-enabling-gpudirect-storage" title="Permalink to this headline"></a></h3>
 <p>The following section is applicable to the following configurations and describe how to deploy the GPU Operator using the Helm Chart:</p>
 <ul class="simple">
 <li><p>Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.</p></li>
