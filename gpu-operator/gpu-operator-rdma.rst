@@ -26,7 +26,7 @@ About GPUDirect RDMA and GPUDirect Storage
 data exchange between GPUs and a third-party peer device using PCI Express. The third-party devices could be network interfaces
 such as NVIDIA ConnectX SmartNICs or BlueField DPUs, or video acquisition adapters.
 
-`GPUDirect Storage <https://docs.nvidia.com/gpudirect-storage/overview-guide/index.html>`__ enables a direct data path between local or remote storage, such as NFS servers or NVMe/NVMe over Fabric (NVMe-oF), and GPU memory.
+`GPUDirect Storage <https://docs.nvidia.com/gpudirect-storage/overview-guide/index.html>`__ (GDS) enables a direct data path between local or remote storage, such as NFS servers or NVMe/NVMe over Fabric (NVMe-oF), and GPU memory.
 GDS performs direct memory access (DMA) transfers between GPU memory and storage.
 DMA avoids a bounce buffer through the CPU.
 This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.
@@ -58,10 +58,10 @@ The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on 
 
    * - Technology
      - DMA-BUF
-     - Legacy Nvidia-peermem
+     - Legacy NVIDIA-peermem
 
    * - GPU Driver
-     - Branch 515, 535 or higher.
+     - Branch 535 or higher.
        An Open Kernel module driver is required.
      - Branch 470, 535 or higher.
 
