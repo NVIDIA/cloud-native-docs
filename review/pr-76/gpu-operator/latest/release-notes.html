@@ -222,7 +222,7 @@ The logs for vGPU Device Manager pods include lines like the following example:<
 <span class="go">time=&quot;2024-07-23T08:50:11Z&quot; level=info msg=&quot;Waiting for change to &#39;nvidia.com/vgpu.config&#39; label&quot;</span>
 </pre></div>
 </div>
-<p>The output of the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">nvidia-vgpu-manager-daemonset-xxxxx</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span> <span class="pre">--</span> <span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'dmesg</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">nvrm'</span></code>
+<p>The output of the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">nvidia-vgpu-manager-daemonset-xxxxx</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span> <span class="pre">--</span> <span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'dmesg</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">nvrm'</span></code> command
 resembles the following example:</p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kernel: NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  550.90.05  Release Build  (dvs-builder@U16-I1-N08-05-1)</span>
 <span class="go">kernel: NVRM: RmFetchGspRmImages: No firmware image found</span>
