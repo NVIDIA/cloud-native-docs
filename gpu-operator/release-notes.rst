@@ -124,16 +124,26 @@ Known Limitations
 ------------------
 
 * NVIDIA vGPU Manager does not work correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
-  The logs for vGPU Manager pods include lines like the following example:
+  The logs for vGPU Device Manager pods include lines like the following example:
 
-  .. code-block:: text
+  .. code-block:: output
 
      time="2024-07-23T08:50:11Z" level=fatal msg="error setting VGPU config: no parent devices found for GPU at index '1'"
      time="2024-07-23T08:50:11Z" level=error msg="Failed to apply vGPU config: unable to apply config 'default': exit status 1"
      time="2024-07-23T08:50:11Z" level=info msg="Setting node label: nvidia.com/vgpu.config.state=failed"
      time="2024-07-23T08:50:11Z" level=info msg="Waiting for change to 'nvidia.com/vgpu.config' label"
 
-  The vGPU device manager pods do not mount the ``/sys/module/firmware_class/parameters/path`` and ``/lib/firmware``
+  The output of the ``kubectl exec -it nvidia-vgpu-manager-daemonset-xxxxx -n gpu-operator -- bash -c 'dmesg | grep -i nvrm'`` command
+  resembles the following example:
+
+  .. code-block:: output
+
+     kernel: NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  550.90.05  Release Build  (dvs-builder@U16-I1-N08-05-1)
+     kernel: NVRM: RmFetchGspRmImages: No firmware image found
+     kernel: NVRM: GPU 0000:ae:00.0: RmInitAdapter failed! (0x61:0x56:1697)
+     kernel: NVRM: GPU 0000:ae:00.0: rm_init_adapter failed, device minor number 0
+
+  The vGPU Manager pods do not mount the ``/sys/module/firmware_class/parameters/path`` and ``/lib/firmware``
   paths on the host and the pods fail to copy the GSP firmware files on the host.
 
   As a workaround, you can add the following volume mounts to the vGPU Manager daemon set, for the ``nvidia-vgpu-manager-ctr`` container:
