@@ -213,7 +213,34 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </section>
 <section id="known-limitations">
 <span id="v24-3-0-known-limitations"></span><h3>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline"></a></h3>
-<ul class="simple">
+<ul>
+<li><p>NVIDIA vGPU Manager does not work correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
+The logs for vGPU Device Manager pods include lines like the following example:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">time=&quot;2024-07-23T08:50:11Z&quot; level=fatal msg=&quot;error setting VGPU config: no parent devices found for GPU at index &#39;1&#39;&quot;</span>
+<span class="go">time=&quot;2024-07-23T08:50:11Z&quot; level=error msg=&quot;Failed to apply vGPU config: unable to apply config &#39;default&#39;: exit status 1&quot;</span>
+<span class="go">time=&quot;2024-07-23T08:50:11Z&quot; level=info msg=&quot;Setting node label: nvidia.com/vgpu.config.state=failed&quot;</span>
+<span class="go">time=&quot;2024-07-23T08:50:11Z&quot; level=info msg=&quot;Waiting for change to &#39;nvidia.com/vgpu.config&#39; label&quot;</span>
+</pre></div>
+</div>
+<p>The output of the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">nvidia-vgpu-manager-daemonset-xxxxx</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span> <span class="pre">--</span> <span class="pre">bash</span> <span class="pre">-c</span> <span class="pre">'dmesg</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">nvrm'</span></code> command
+resembles the following example:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kernel: NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  550.90.05  Release Build  (dvs-builder@U16-I1-N08-05-1)</span>
+<span class="go">kernel: NVRM: RmFetchGspRmImages: No firmware image found</span>
+<span class="go">kernel: NVRM: GPU 0000:ae:00.0: RmInitAdapter failed! (0x61:0x56:1697)</span>
+<span class="go">kernel: NVRM: GPU 0000:ae:00.0: rm_init_adapter failed, device minor number 0</span>
+</pre></div>
+</div>
+<p>The vGPU Manager pods do not mount the <code class="docutils literal notranslate"><span class="pre">/sys/module/firmware_class/parameters/path</span></code> and <code class="docutils literal notranslate"><span class="pre">/lib/firmware</span></code>
+paths on the host and the pods fail to copy the GSP firmware files on the host.</p>
+<p>As a workaround, you can add the following volume mounts to the vGPU Manager daemon set, for the <code class="docutils literal notranslate"><span class="pre">nvidia-vgpu-manager-ctr</span></code> container:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">firmware-search-path</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/sys/module/firmware_class/parameters/path</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nv-firmware</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/lib/firmware</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This issue is fixed in the next release of the GPU Operator.</p>
+</li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">1g.12gb</span></code> MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code>.</p></li>
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
 because of the missing <code class="docutils literal notranslate"><span class="pre">kernel-headers</span></code> package within the container.
@@ -1914,7 +1941,7 @@ would not be available after reboot.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 25, 2024.
+      <span class="lastupdated">Last updated on Jul 26, 2024.
       </span></p>
 
   </div>
