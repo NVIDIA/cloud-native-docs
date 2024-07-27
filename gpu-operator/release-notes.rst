@@ -34,6 +34,19 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 
 ----
 
+.. _v24.6.0:
+
+24.6.0
+======
+
+New Features
+------------
+
+* Added support for using the Operator with Container-Optimized OS on Google Kubernetes Engine (GKE).
+  The process uses the Google driver installer to manage the NVIDIA GPU Driver.
+  For Ubuntu on GKE, you can use the Google driver installer or continue to use the NVIDIA Driver Manager as with previous releases.
+  Refer to :doc:`google-gke` for more information.
+
 .. _v24.3.0:
 
 24.3.0
