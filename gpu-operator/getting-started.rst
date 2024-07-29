@@ -254,7 +254,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``sandboxWorkloads.defaultWorkload``
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
-       
+
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
        Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <gpu-operator-kata>`, or :doc:`Confidential Containers <gpu-operator-confidential-containers>`.
      - ``container``
@@ -299,6 +299,16 @@ To disable operands from getting deployed on a GPU worker node, label the node w
 .. code-block:: console
 
    $ kubectl label nodes $NODE nvidia.com/gpu.deploy.operands=false
+
+Preventing Installation of NVIDIA GPU Driver on Some Nodes
+==========================================================
+
+By default, the GPU Operator deploys the driver on all GPU worker nodes in the cluster.
+To prevent installing the driver on a GPU worker node, label the node like the following sample command.
+
+.. code-block:: console
+
+   $ kubectl label nodes $NODE nvidia.com/gpu.deploy.driver=false
 
 
 Installation on Red Hat Enterprise Linux
