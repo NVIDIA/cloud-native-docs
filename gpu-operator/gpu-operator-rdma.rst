@@ -61,9 +61,8 @@ The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on 
      - Legacy NVIDIA-peermem
 
    * - GPU Driver
-     - Branch 535 or higher.
-       An Open Kernel module driver is required.
-     - Branch 470, 535 or higher.
+     - An Open Kernel module driver is required.
+     - Any supported driver.
 
    * - CUDA
      - CUDA 11.7 or higher.
