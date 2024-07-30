@@ -30,19 +30,38 @@ NVIDIA GPU Operator with Google GKE
 About Using the Operator with Google GKE
 ****************************************
 
-There are two ways to use NVIDIA GPU Operator with Google Kubernetes Engine (GKE):
+There are two ways to use NVIDIA GPU Operator with Google Kubernetes Engine (GKE).
+You can use Google driver installer to install and manage NVIDIA GPU Driver on the nodes
+or you can use the Operator and driver manager to manage the driver and other NVIDIA software components.
 
-- Use the default operating system, Container-Optimized OS.
+The choice depends on the operating system and whether you prefer to have the Operator manage all the software components.
 
-  GKE configures the nodes with containerd from Google and the Google driver installer manages the NVIDIA GPU Driver.
-  The GPU Operator manages the lifecycle and upgrade of the remaining software components such as the device plugin, container toolkit, DCGM, and so on.
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: 1 2 5
 
-- Use Ubuntu operating system with containerd.
+   * -
+     - Supported OS
+     - Summary
 
-  You can choose to use the Google driver installer to manage the NVIDIA GPU Driver.
-  Alternatively, you can use the Operator and NVIDIA Driver Manager to manage the driver lifecycle and upgrades.
+   * - | Google
+       | Driver
+       | Installer
+     -
+       - Container-Optimized OS
+       - Ubuntu with containerd
+     - The Google driver installer manages the NVIDIA GPU Driver.
+       NVIDIA GPU Operator manages other software components.
 
-The preceding approaches relate to using GKE Standard node pools.
+   * - | NVIDIA
+       | Driver
+       | Manager
+     -
+       - Ubuntu with containerd
+     - NVIDIA GPU Operator manages the lifecycle and upgrades of the driver and other NVIDIA software.
+
+The preceding information relates to using GKE Standard node pools.
 For Autopilot Pods, using the GPU Operator is not supported, and you can refer to
 `Deploy GPU workloads in Autopilot <https://cloud.google.com/kubernetes-engine/docs/how-to/autopilot-gpus>`__.
 
@@ -167,9 +186,6 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
       --set migManager.env[0].name=WITH_REBOOT \
       --set-string migManager.env[0].value=true
 
-   Using NVIDIA MIG Manager to configure devices is an alternative to the default GKE approach and is incompatible with the default GKE approach.
-   Refer to `Running Multi-Instance GPUs <https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi>`__
-   in the GKE documentation for information about the default approach.
 
 ***************************
 Using NVIDIA Driver Manager
@@ -202,7 +218,7 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
           --no-enable-master-authorized-networks \
           --tags=nvidia-ingress-all
 
-    Creating the cluster requires several minutes.
+   Creating the cluster requires several minutes.
 
 #. Get the authentication credentials for the cluster:
 
