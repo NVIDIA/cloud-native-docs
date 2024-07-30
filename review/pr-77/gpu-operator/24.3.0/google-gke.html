@@ -140,18 +140,52 @@
 </div>
 <section id="about-using-the-operator-with-google-gke">
 <h2>About Using the Operator with Google GKE<a class="headerlink" href="#about-using-the-operator-with-google-gke" title="Permalink to this headline"></a></h2>
-<p>There are two ways to use NVIDIA GPU Operator with Google Kubernetes Engine (GKE):</p>
-<ul>
-<li><p>Use the default operating system, Container-Optimized OS.</p>
-<p>GKE configures the nodes with containerd from Google and the Google driver installer manages the NVIDIA GPU Driver.
-The GPU Operator manages the lifecycle and upgrade of the remaining software components such as the device plugin, container toolkit, DCGM, and so on.</p>
-</li>
-<li><p>Use Ubuntu operating system with containerd.</p>
-<p>You can choose to use the Google driver installer to manage the NVIDIA GPU Driver.
-Alternatively, you can use the Operator and NVIDIA Driver Manager to manage the driver lifecycle and upgrades.</p>
-</li>
+<p>There are two ways to use NVIDIA GPU Operator with Google Kubernetes Engine (GKE).
+You can use Google driver installer to install and manage NVIDIA GPU Driver on the nodes
+or you can use the Operator and driver manager to manage the driver and other NVIDIA software components.</p>
+<p>The choice depends on the operating system and whether you prefer to have the Operator manage all the software components.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 25%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>Supported OS</p></th>
+<th class="head"><p>Summary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><div class="line-block">
+<div class="line">Google</div>
+<div class="line">Driver</div>
+<div class="line">Installer</div>
+</div>
+</th>
+<td><ul class="simple">
+<li><p>Container-Optimized OS</p></li>
+<li><p>Ubuntu with containerd</p></li>
 </ul>
-<p>The preceding approaches relate to using GKE Standard node pools.
+</td>
+<td><p>The Google driver installer manages the NVIDIA GPU Driver.
+NVIDIA GPU Operator manages other software components.</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><div class="line-block">
+<div class="line">NVIDIA</div>
+<div class="line">Driver</div>
+<div class="line">Manager</div>
+</div>
+</th>
+<td><ul class="simple">
+<li><p>Ubuntu with containerd</p></li>
+</ul>
+</td>
+<td><p>NVIDIA GPU Operator manages the lifecycle and upgrades of the driver and other NVIDIA software.</p></td>
+</tr>
+</tbody>
+</table>
+<p>The preceding information relates to using GKE Standard node pools.
 For Autopilot Pods, using the GPU Operator is not supported, and you can refer to
 <a class="reference external" href="https://cloud.google.com/kubernetes-engine/docs/how-to/autopilot-gpus">Deploy GPU workloads in Autopilot</a>.</p>
 </section>
@@ -270,9 +304,6 @@ On GKE node images, the <code class="docutils literal notranslate"><span class="
 <span class="go">--set-string migManager.env[0].value=true</span>
 </pre></div>
 </div>
-<p>Using NVIDIA MIG Manager to configure devices is an alternative to the default GKE approach and is incompatible with the default GKE approach.
-Refer to <a class="reference external" href="https://cloud.google.com/kubernetes-engine/docs/how-to/gpus-multi">Running Multi-Instance GPUs</a>
-in the GKE documentation for information about the default approach.</p>
 </li>
 </ol>
 </section>
@@ -282,29 +313,28 @@ in the GKE documentation for information about the default approach.</p>
 The steps create the cluster with a node pool that uses a Ubuntu and containerd node image.</p>
 <ol class="arabic">
 <li><p>Create the cluster by running a command that is similar to the following example:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">  $ </span>gcloud beta container clusters create demo-cluster <span class="se">\</span>
-      --project &lt;project-id&gt; <span class="se">\</span>
-      --zone us-west1-a <span class="se">\</span>
-      --release-channel <span class="s2">&quot;regular&quot;</span> <span class="se">\</span>
-      --machine-type <span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
-      --accelerator <span class="s2">&quot;type=nvidia-tesla-t4,count=1&quot;</span> <span class="se">\</span>
-      --image-type <span class="s2">&quot;UBUNTU_CONTAINERD&quot;</span> <span class="se">\</span>
-      --disk-type <span class="s2">&quot;pd-standard&quot;</span> <span class="se">\</span>
-      --disk-size <span class="s2">&quot;1000&quot;</span> <span class="se">\</span>
-      --no-enable-intra-node-visibility <span class="se">\</span>
-      --metadata disable-legacy-endpoints<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-      --max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
-      --num-nodes <span class="s2">&quot;1&quot;</span> <span class="se">\</span>
-      --logging<span class="o">=</span>SYSTEM,WORKLOAD <span class="se">\</span>
-      --monitoring<span class="o">=</span>SYSTEM <span class="se">\</span>
-      --enable-ip-alias <span class="se">\</span>
-      --default-max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
-      --no-enable-master-authorized-networks <span class="se">\</span>
-      --tags<span class="o">=</span>nvidia-ingress-all
-
-<span class="go">Creating the cluster requires several minutes.</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gcloud beta container clusters create demo-cluster <span class="se">\</span>
+    --project &lt;project-id&gt; <span class="se">\</span>
+    --zone us-west1-a <span class="se">\</span>
+    --release-channel <span class="s2">&quot;regular&quot;</span> <span class="se">\</span>
+    --machine-type <span class="s2">&quot;n1-standard-4&quot;</span> <span class="se">\</span>
+    --accelerator <span class="s2">&quot;type=nvidia-tesla-t4,count=1&quot;</span> <span class="se">\</span>
+    --image-type <span class="s2">&quot;UBUNTU_CONTAINERD&quot;</span> <span class="se">\</span>
+    --disk-type <span class="s2">&quot;pd-standard&quot;</span> <span class="se">\</span>
+    --disk-size <span class="s2">&quot;1000&quot;</span> <span class="se">\</span>
+    --no-enable-intra-node-visibility <span class="se">\</span>
+    --metadata disable-legacy-endpoints<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    --max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
+    --num-nodes <span class="s2">&quot;1&quot;</span> <span class="se">\</span>
+    --logging<span class="o">=</span>SYSTEM,WORKLOAD <span class="se">\</span>
+    --monitoring<span class="o">=</span>SYSTEM <span class="se">\</span>
+    --enable-ip-alias <span class="se">\</span>
+    --default-max-pods-per-node <span class="s2">&quot;110&quot;</span> <span class="se">\</span>
+    --no-enable-master-authorized-networks <span class="se">\</span>
+    --tags<span class="o">=</span>nvidia-ingress-all
 </pre></div>
 </div>
+<p>Creating the cluster requires several minutes.</p>
 </li>
 <li><p>Get the authentication credentials for the cluster:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">USE_GKE_GCLOUD_AUTH_PLUGIN</span><span class="o">=</span>True <span class="se">\</span>
@@ -406,7 +436,7 @@ to disable the GKE GPU device plugin daemon set on GPU nodes.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 27, 2024.
+      <span class="lastupdated">Last updated on Jul 30, 2024.
       </span></p>
 
   </div>
