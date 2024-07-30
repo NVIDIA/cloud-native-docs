@@ -177,11 +177,15 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``nvcr.io/nvidia``
 
    * - ``driver.rdma.enabled``
-     - Controls whether the driver daemonset should build and load the ``nvidia-peermem`` kernel module.
+     - Controls whether the driver daemon set builds and loads the legacy ``nvidia-peermem`` kernel module.
+
+       You might be able to use GPUDirect RDMA without enabling this option.
+       Refer to :doc:`gpu-operator-rdma` for information about whether you can use DMA-BUF or
+       you need to use legacy ``nvidia-peermem``.
      - ``false``
 
    * - ``driver.rdma.useHostMofed``
-     - Indicate if MOFED is directly pre-installed on the host. This is used to build and load ``nvidia-peermem`` kernel module.
+     - Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.
      - ``false``
 
    * - ``driver.startupProbe``
