@@ -343,19 +343,11 @@ You can use the ``values.yaml`` file when you install or upgrade the Operator to
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
 
-#. Patch the cluster policy so MIG Manager uses the custom config map:
-
-   .. code-block:: console
-
-      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
-          --type='json' \
-          -p='[{"op":"replace", "path":"/spec/migManager/config/name", "value":"custom-mig-config"}]'
-
 #. Label the nodes with the profile to configure:
 
    .. code-block:: console
 
-      $ kubectl label nodes <node-name> nvidia.com/mig.config=five-1g-one-2g --overwrite
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=custom-mig --overwrite
 
 
 Example: Custom MIG Configuration
