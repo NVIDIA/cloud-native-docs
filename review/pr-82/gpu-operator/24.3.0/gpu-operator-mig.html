@@ -496,15 +496,18 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
 <span class="w">    </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
-<span class="w">      </span><span class="no">all-disabled:</span><span class="w"></span>
-<span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-enabled: false</span><span class="w"></span>
-<span class="w">      </span><span class="no">five-1g-one-2g:</span><span class="w"></span>
-<span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-enabled: true</span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-devices:</span><span class="w"></span>
-<span class="w">            </span><span class="no">&quot;1g.10gb&quot;: 5</span><span class="w"></span>
-<span class="w">            </span><span class="no">&quot;2g.20gb&quot;: 1</span><span class="w"></span>
+<span class="w">      </span><span class="no">config.yaml: |-</span><span class="w"></span>
+<span class="w">        </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">        </span><span class="no">mig-configs:</span><span class="w"></span>
+<span class="w">          </span><span class="no">all-disabled:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: all</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">          </span><span class="no">custom-mig:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [0]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;1g.10gb&quot;: 2</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;2g.20gb&quot;: 2</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -515,15 +518,8 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
-<li><p>Patch the cluster policy so MIG Manager uses the custom config map:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
-    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/migManager/config/name&quot;, &quot;value&quot;:&quot;custom-mig-config&quot;}]&#39;</span>
-</pre></div>
-</div>
-</li>
 <li><p>Label the nodes with the profile to configure:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-one-2g --overwrite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
 </pre></div>
 </div>
 </li>
@@ -929,7 +925,7 @@ G -- on failure --&gt; I
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 30, 2024.
+      <span class="lastupdated">Last updated on Jul 31, 2024.
       </span></p>
 
   </div>
