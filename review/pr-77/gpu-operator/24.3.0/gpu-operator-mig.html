@@ -142,23 +142,24 @@
 <li><p><a class="reference internal" href="#example-single-mig-strategy" id="id5">Example: Single MIG Strategy</a></p></li>
 <li><p><a class="reference internal" href="#example-mixed-mig-strategy" id="id6">Example: Mixed MIG Strategy</a></p></li>
 <li><p><a class="reference internal" href="#example-reconfiguring-mig-profiles" id="id7">Example: Reconfiguring MIG Profiles</a></p></li>
-<li><p><a class="reference internal" href="#example-custom-mig-configuration" id="id8">Example: Custom MIG Configuration</a></p></li>
+<li><p><a class="reference internal" href="#example-custom-mig-configuration-during-installation" id="id8">Example: Custom MIG Configuration During Installation</a></p></li>
+<li><p><a class="reference internal" href="#example-custom-mig-configuration" id="id9">Example: Custom MIG Configuration</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#verification-running-sample-cuda-workloads" id="id9">Verification: Running Sample CUDA Workloads</a></p>
+<li><p><a class="reference internal" href="#verification-running-sample-cuda-workloads" id="id10">Verification: Running Sample CUDA Workloads</a></p>
 <ul>
-<li><p><a class="reference internal" href="#cuda-vectoradd" id="id10">CUDA VectorAdd</a></p></li>
-<li><p><a class="reference internal" href="#concurrent-job-launch" id="id11">Concurrent Job Launch</a></p></li>
+<li><p><a class="reference internal" href="#cuda-vectoradd" id="id11">CUDA VectorAdd</a></p></li>
+<li><p><a class="reference internal" href="#concurrent-job-launch" id="id12">Concurrent Job Launch</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#disabling-mig" id="id12">Disabling MIG</a></p></li>
-<li><p><a class="reference internal" href="#mig-manager-with-preinstalled-drivers" id="id13">MIG Manager with Preinstalled Drivers</a></p>
+<li><p><a class="reference internal" href="#disabling-mig" id="id13">Disabling MIG</a></p></li>
+<li><p><a class="reference internal" href="#mig-manager-with-preinstalled-drivers" id="id14">MIG Manager with Preinstalled Drivers</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id1" id="id14">Install</a></p></li>
-<li><p><a class="reference internal" href="#managing-host-gpu-clients" id="id15">Managing Host GPU Clients</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id15">Install</a></p></li>
+<li><p><a class="reference internal" href="#managing-host-gpu-clients" id="id16">Managing Host GPU Clients</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#architecture" id="id16">Architecture</a></p></li>
+<li><p><a class="reference internal" href="#architecture" id="id17">Architecture</a></p></li>
 </ul>
 </div>
 <section id="about-multi-instance-gpu">
@@ -479,6 +480,46 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">  </span><span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;single&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;nvidia.com/mps.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-custom-mig-configuration-during-installation">
+<h3>Example: Custom MIG Configuration During Installation<a class="headerlink" href="#example-custom-mig-configuration-during-installation" title="Permalink to this headline"></a></h3>
+<p>By default, the Operator creates the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map and MIG Manager is configured to read profiles from that config map.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file when you install or upgrade the Operator to create a config map with a custom configuration.</p>
+<ol class="arabic">
+<li><p>In your <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file, add the data for the config map, like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">migManager</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
+<span class="w">    </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">      </span><span class="no">config.yaml: |-</span><span class="w"></span>
+<span class="w">        </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">        </span><span class="no">mig-configs:</span><span class="w"></span>
+<span class="w">          </span><span class="no">all-disabled:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: all</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">          </span><span class="no">custom-mig:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [0]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;1g.10gb&quot;: 2</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;2g.20gb&quot;: 2</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
 </pre></div>
 </div>
 </li>
@@ -884,7 +925,7 @@ G -- on failure --&gt; I
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Jul 30, 2024.
+      <span class="lastupdated">Last updated on Jul 31, 2024.
       </span></p>
 
   </div>
