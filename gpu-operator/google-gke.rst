@@ -30,21 +30,40 @@ NVIDIA GPU Operator with Google GKE
 About Using the Operator with Google GKE
 ****************************************
 
-You can use the NVIDIA GPU Operator with Google Kubernetes Engine (GKE),
-but you must use an operating system that is supported by the Operator.
+There are two ways to use NVIDIA GPU Operator with Google Kubernetes Engine (GKE).
+You can use Google driver installer to install and manage NVIDIA GPU Driver on the nodes
+or you can use the Operator and driver manager to manage the driver and other NVIDIA software components.
 
-By default, Google GKE configures nodes with the Container-Optimized OS with Containerd from Google.
-This operating system is not supported by the Operator.
+The choice depends on the operating system and whether you prefer to have the Operator manage all the software components.
 
-To use a supported operating system, such as Ubuntu 22.04 or 20.04, configure your
-GKE cluster entirely with Ubuntu containerd nodes images or with a node pool
-that uses Ubuntu containerd node images.
+.. list-table::
+   :header-rows: 1
+   :stub-columns: 1
+   :widths: 1 2 5
 
-By selecting a supported operating system rather than Container-Optimized OS with Containerd,
-you can customize which NVIDIA software components are installed by the GPU Operator at deployment time.
-For example, the Operator can deploy GPU driver containers and use the Operator
-to manage the lifecycle of the NVIDIA software components.
+   * -
+     - Supported OS
+     - Summary
 
+   * - | Google
+       | Driver
+       | Installer
+     -
+       - Container-Optimized OS
+       - Ubuntu with containerd
+     - The Google driver installer manages the NVIDIA GPU Driver.
+       NVIDIA GPU Operator manages other software components.
+
+   * - | NVIDIA
+       | Driver
+       | Manager
+     -
+       - Ubuntu with containerd
+     - NVIDIA GPU Operator manages the lifecycle and upgrades of the driver and other NVIDIA software.
+
+The preceding information relates to using GKE Standard node pools.
+For Autopilot Pods, using the GPU Operator is not supported, and you can refer to
+`Deploy GPU workloads in Autopilot <https://cloud.google.com/kubernetes-engine/docs/how-to/autopilot-gpus>`__.
 
 *************
 Prerequisites
@@ -67,11 +86,111 @@ Prerequisites
   in the Google Cloud documentation.
 
 
-*********
-Procedure
-*********
+*********************************
+Using the Google Driver Installer
+*********************************
 
-Perform the following steps to create a GKE cluster with the ``gcloud`` CLI.
+Perform the following steps to create a GKE cluster with the ``gcloud`` CLI and use Google driver installer to manage the GPU driver.
+You can create a node pool that uses a Container-Optimized OS node image or a Ubuntu node image.
+
+#. Create the node pool.
+   Refer to `Running GPUs in GKE Standard clusters <https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#create>`__
+   in the GKE documentation.
+
+   When you create the node pool, specify the following additional ``gcloud`` command-line options to disable GKE features that are not supported with the Operator:
+
+   - ``--node-labels="gke-no-default-nvidia-gpu-device-plugin=true"``
+
+     The node label disables the GKE GPU device plugin daemon set on GPU nodes.
+
+   - ``--accelerator type=...,gpu-driver-version=disabled``
+
+     This argument disables automatically installing the GPU driver on GPU nodes.
+
+#. Get the authentication credentials for the cluster:
+
+   .. code-block:: console
+
+      $ gcloud container clusters get-credentials demo-cluster --location us-west1
+
+#. Optional: Verify that you can connect to the cluster:
+
+   .. code-block:: console
+
+      $ kubectl get nodes -o wide
+
+#. Create the namespace for the NVIDIA GPU Operator:
+
+   .. code-block:: console
+
+      $ kubectl create ns gpu-operator
+
+#. Create a file, such as ``gpu-operator-quota.yaml``, with contents like the following example:
+
+   .. literalinclude:: ./manifests/input/google-gke-gpu-operator-quota.yaml
+      :language: yaml
+
+#. Apply the resource quota:
+
+   .. code-block:: console
+
+      $ kubectl apply -n gpu-operator -f gpu-operator-quota.yaml
+
+#. Optional: View the resource quota:
+
+   .. code-block:: console
+
+      $ kubectl get -n gpu-operator resourcequota
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                  AGE     REQUEST
+      gpu-operator-quota    38s     pods: 0/100
+
+#. Install the Google driver installer daemon set.
+
+   For Container-Optimized OS:
+
+   .. code-block:: console
+
+      $ kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/container-engine-accelerators/master/nvidia-driver-installer/cos/daemonset-preloaded.yaml
+
+   For Ubuntu, the manifest to apply depends on GPU model and node version.
+   Refer to the **Ubuntu** tab at
+   `Manually install NVIDIA GPU drivers <https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#installing_drivers>`__
+   in the GKE documentation.
+
+#. Install the Operator using Helm:
+
+   .. code-block:: console
+
+      $ helm install --wait --generate-name \
+          -n gpu-operator \
+          nvidia/gpu-operator \
+          --set hostPaths.driverInstallDir=/home/kubernetes/bin/nvidia \
+          --set toolkit.installDir=/home/kubernetes/bin/nvidia \
+          --set cdi.enabled=true \
+          --set cdi.default=true \
+          --set driver.enabled=false
+
+   Set the NVIDIA Container Toolkit and driver installation path to ``/home/kubernetes/bin/nvidia``.
+   On GKE node images, this directory is writable and is a stateful location for storing the NVIDIA runtime binaries.
+
+   To configure MIG with NVIDIA MIG Manager, specify the following additional Helm command arguments:
+
+   .. code-block:: console
+
+      --set migManager.env[0].name=WITH_REBOOT \
+      --set-string migManager.env[0].value=true
+
+
+***************************
+Using NVIDIA Driver Manager
+***************************
+
+Perform the following steps to create a GKE cluster with the ``gcloud`` CLI and use the Operator and NVIDIA Driver Manager to manage the GPU driver.
 The steps create the cluster with a node pool that uses a Ubuntu and containerd node image.
 
 #. Create the cluster by running a command that is similar to the following example:
@@ -80,11 +199,12 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
 
       $ gcloud beta container clusters create demo-cluster \
           --project <project-id> \
-          --zone us-west1-a \
+          --location us-west1 \
           --release-channel "regular" \
           --machine-type "n1-standard-4" \
           --accelerator "type=nvidia-tesla-t4,count=1" \
           --image-type "UBUNTU_CONTAINERD" \
+          --node-labels="gke-no-default-nvidia-gpu-device-plugin=true" \
           --disk-type "pd-standard" \
           --disk-size "1000" \
           --no-enable-intra-node-visibility \
@@ -94,19 +214,18 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
           --logging=SYSTEM,WORKLOAD \
           --monitoring=SYSTEM \
           --enable-ip-alias \
-          --no-enable-intra-node-visibility \
           --default-max-pods-per-node "110" \
           --no-enable-master-authorized-networks \
           --tags=nvidia-ingress-all
 
-    Creating the cluster requires several minutes.
+   Creating the cluster requires several minutes.
 
 #. Get the authentication credentials for the cluster:
 
    .. code-block:: console
 
       $ USE_GKE_GCLOUD_AUTH_PLUGIN=True \
-          gcloud container clusters get-credentials demo-cluster --zone us-west1-a
+          gcloud container clusters get-credentials demo-cluster --zone us-west1
 
 #. Optional: Verify that you can connect to the cluster:
 
@@ -146,12 +265,8 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
       gpu-operator-quota    38s     pods: 0/100
 
 
-**********
-Next Steps
-**********
-
-* You are ready to :ref:`install the NVIDIA GPU Operator <install-gpu-operator>`
-  with Helm.
+#. Install the Operator.
+   Refer to :ref:`install the NVIDIA GPU Operator <install-gpu-operator>`.
 
 
 *******************
@@ -160,4 +275,8 @@ Related Information
 
 * If you have an existing GKE cluster, refer to
   `Add and manage node pools <https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools>`_
-  in the Google Kubernetes Engine documentation.
+  in the GKE documentation.
+* When you create new node pools, specify the
+  ``--node-labels="gke-no-default-nvidia-gpu-device-plugin=true"`` and
+  ``--accelerator type=...,gpu-driver-version=disabled`` CLI arguments
+  to disable the GKE GPU device plugin daemon set and automatic driver installation on GPU nodes.
