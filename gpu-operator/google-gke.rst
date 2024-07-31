@@ -93,11 +93,11 @@ Using the Google Driver Installer
 Perform the following steps to create a GKE cluster with the ``gcloud`` CLI and use Google driver installer to manage the GPU driver.
 You can create a node pool that uses a Container-Optimized OS node image or a Ubuntu node image.
 
-#. Create the cluster.
+#. Create the node pool.
    Refer to `Running GPUs in GKE Standard clusters <https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#create>`__
    in the GKE documentation.
 
-   When you create the cluster, specify the following additional ``gcloud`` command-line options:
+   When you create the node pool, specify the following additional ``gcloud`` command-line options to disable GKE features that are not supported with the Operator:
 
    - ``--node-labels="gke-no-default-nvidia-gpu-device-plugin=true"``
 
@@ -105,14 +105,13 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
 
    - ``--accelerator type=...,gpu-driver-version=disabled``
 
-     This argument prevents automatically installing the GPU driver on GPU nodes.
+     This argument disables automatically installing the GPU driver on GPU nodes.
 
 #. Get the authentication credentials for the cluster:
 
    .. code-block:: console
 
-      $ USE_GKE_GCLOUD_AUTH_PLUGIN=True \
-          gcloud container clusters get-credentials demo-cluster --zone us-west1-a
+      $ gcloud container clusters get-credentials demo-cluster --location us-west1
 
 #. Optional: Verify that you can connect to the cluster:
 
@@ -177,7 +176,7 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
           --set driver.enabled=false
 
    Set the NVIDIA Container Toolkit and driver installation path to ``/home/kubernetes/bin/nvidia``.
-   On GKE node images, the ``/home`` directory is writable and is a stateful location for storing the NVIDIA runtime binaries.
+   On GKE node images, this directory is writable and is a stateful location for storing the NVIDIA runtime binaries.
 
    To configure MIG with NVIDIA MIG Manager, specify the following additional Helm command arguments:
 
@@ -200,11 +199,12 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
 
       $ gcloud beta container clusters create demo-cluster \
           --project <project-id> \
-          --zone us-west1-a \
+          --location us-west1 \
           --release-channel "regular" \
           --machine-type "n1-standard-4" \
           --accelerator "type=nvidia-tesla-t4,count=1" \
           --image-type "UBUNTU_CONTAINERD" \
+          --node-labels="gke-no-default-nvidia-gpu-device-plugin=true" \
           --disk-type "pd-standard" \
           --disk-size "1000" \
           --no-enable-intra-node-visibility \
@@ -225,7 +225,7 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
    .. code-block:: console
 
       $ USE_GKE_GCLOUD_AUTH_PLUGIN=True \
-          gcloud container clusters get-credentials demo-cluster --zone us-west1-a
+          gcloud container clusters get-credentials demo-cluster --zone us-west1
 
 #. Optional: Verify that you can connect to the cluster:
 
@@ -276,5 +276,7 @@ Related Information
 * If you have an existing GKE cluster, refer to
   `Add and manage node pools <https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools>`_
   in the GKE documentation.
-* When you create new node pools, specify the ``--node-labels="gke-no-default-nvidia-gpu-device-plugin=true"`` CLI argument
-  to disable the GKE GPU device plugin daemon set on GPU nodes.
+* When you create new node pools, specify the
+  ``--node-labels="gke-no-default-nvidia-gpu-device-plugin=true"`` and
+  ``--accelerator type=...,gpu-driver-version=disabled`` CLI arguments
+  to disable the GKE GPU device plugin daemon set and automatic driver installation on GPU nodes.
