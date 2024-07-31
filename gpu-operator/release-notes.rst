@@ -25,7 +25,7 @@ Release Notes
 
 This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
 
-See the :ref:`GPU Operator Component Matrix` for a list of components included in each release.
+See the :ref:`GPU Operator Component Matrix` for a list of software components and versions included in each release.
 
 .. note::
 
@@ -39,13 +39,151 @@ See the :ref:`GPU Operator Component Matrix` for a list of components included i
 24.6.0
 ======
 
+.. _v24.6.0-new-features:
+
 New Features
 ------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 550.90.07.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Container Toolkit v1.16.1
+    - NVIDIA Driver Manager for Kubernetes v0.6.10
+    - NVIDIA Kubernetes Device Plugin v0.16.1
+    - NVIDIA DCGM Exporter v3.3.7-3.5.0
+    - NVIDIA DCGM v3.3.7-1
+    - Node Feature Discovery v0.16.3
+    - NVIDIA GPU Feature Discovery for Kubernetes v0.16.1
+    - NVIDIA MIG Manager for Kubernetes v0.8.0
+    - NVIDIA KubeVirt GPU Device Plugin v1.2.9
+    - NVIDIA vGPU Device Manager v0.2.7
+    - NVIDIA GDS Driver v2.17.5
+    - NVIDIA Kata Manager for Kubernetes v0.2.1
+    - NVIDIA GDRCopy Driver v2.4.1-1
+
+* Added support for NVIDIA Network Operator v24.4.0.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
 * Added support for using the Operator with Container-Optimized OS on Google Kubernetes Engine (GKE).
   The process uses the Google driver installer to manage the NVIDIA GPU Driver.
   For Ubuntu on GKE, you can use the Google driver installer or continue to use the NVIDIA Driver Manager as with previous releases.
   Refer to :doc:`google-gke` for more information.
+
+* Added support for precompiled driver containers with Open Kernel module drivers.
+  Specify ``--set driver.useOpenKernelModules=true --set driver.usePrecompiled=true --set driver.version=<driver-branch>``
+  when you install or upgrade the Operator.
+  Support remains limited to Ubuntu 22.04.
+  Refer to :doc:`precompiled-drivers` for more information.
+
+  NVIDIA began publishing driver containers with this support on July 15, 2024.
+  The tags for the first containers with this support are as follows:
+
+  * <driver-branch>-5.15.0-116-generic-ubuntu22.04
+  * <driver-branch>-5.15.0-1060-nvidia-ubuntu22.04
+  * <driver-branch>-5.15.0-1063-oracle-ubuntu22.04
+  * <driver-branch>-5.15.0-1068-azure-ubuntu22.04
+  * <driver-branch>-5.15.0-1065-aws-ubuntu22.04
+
+  Precompiled driver containers built after July 15 include support for the Open Kernel module drivers.
+
+* Added support for new MIG profiles.
+
+  * For H200 devices:
+
+    * ``1g.18gb``
+    * ``1g.18gb+me``
+    * ``1g.35gb``
+    * ``2g.35gb``
+    * ``3g.71gb``
+    * ``4g.71gb``
+    * ``7g.141gb``
+
+  * Added an ``all-balanced`` profile for H20 devices that creates the following GPU instances:
+
+    * ``1g.12gb`` :math:`\times` 2
+    * ``2g.24gb`` :math:`\times` 1
+    * ``3g.48gb`` :math:`\times` 1
+
+* Added support for creating a config map with custom MIG profiles during installation or upgrade with Helm.
+  Refer to :ref:`Example: Custom MIG Configuration During Installation` for more information.
+
+.. _v24.6.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* Role-based access controls for the following components were reviewed and revised to use least-required privileges:
+
+  * GPU Operator
+  * Operator Validator
+  * MIG Manager
+  * GPU Driver Manager
+  * GPU Feature Discovery
+  * Kubernetes Device Plugin
+  * KubeVirt Device Plugin
+  * vGPU Host Manager
+
+  In previous releases, the permissions were more permissive than necessary.
+
+* Fixed an issue with Node Feature Discovery (NFD).
+  When an NFD pod was deleted or restarted, all NFD node labels were removed from the node and GPU Operator operands were restarted.
+  The v0.16.2 release of NFD fixes the issue.
+  Refer to Github `issue #782 <https://github.com/NVIDIA/gpu-operator/issues/782>`__ for more details.
+
+* Fixed an issue with NVIDIA vGPU Manager not working correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
+  Refer to Github `issue #761 <https://github.com/NVIDIA/gpu-operator/issues/761>`__ for more details.
+
+* DGCM is revised to use a cluster IP and a service with the internal traffic policy set to ``Local``.
+  In previous releases, DCGM was a host networked pod.
+  The ``dcgm.hostPort`` field of the NVIDIA cluster policy resource is now deprecated.
+
+* Fixed an issue that prevented enabling GDRCopy and additional volume mounts with the NVIDIA Driver custom resource.
+  Previously, the driver daemon set did not update with the change and the Operator logs included an error message.
+  Refer to Github `issue #713 <https://github.com/NVIDIA/gpu-operator/issues/713>`__ for more details.
+
+* Fixed an issue with deleting GPU Driver daemon sets due to having misscheduled pods rather than zero pods.
+  Previously, if a node had an untolerated taint such as ``node.kubernetes.io/unreachable:NoSchedule``,
+  the Operator could repeatedly delete and recreate the driver daemon sets.
+  Refer to Github `issue #715 <https://github.com/NVIDIA/gpu-operator/issues/715>`__ for more details.
+
+* Fixed an issue with reporting the correct GPU capacity and allocatable resources from the KubeVirt GPU Device Plugin.
+  Previously, if a GPU became unavailable, the reported GPU capacity and allocatable resources remained unchanged.
+  Refer to Github `issue #97 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin/issues/97>`__ for more details.
+
+.. _v24.6.0-known-limitations:
+
+Known Limitations
+------------------
+
+* The ``1g.12gb`` MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to ``all-balanced``.
+* The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
+  because of the missing ``kernel-headers`` package within the container.
+  With a custom kernel, NVIDIA recommends pre-installing the NVIDIA drivers on the host if you want to
+  run traditional container workloads with NVIDIA GPUs.
+* If you cordon a node while the GPU driver upgrade process is already in progress,
+  the Operator uncordons the node and upgrades the driver on the node.
+  You can determine if an upgrade is in progress by checking the node label
+  ``nvidia.com/gpu-driver-upgrade-state != upgrade-done``.
+* NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+  as OpenShift Virtualization 4.12.0---4.12.2.
+* Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
+* All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+  Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+* NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
+* The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
+  The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
+  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+* When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
+  at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
+  configuration option.
+  Additionally, network-restricted environments are not supported.
 
 .. _v24.3.0:
 
