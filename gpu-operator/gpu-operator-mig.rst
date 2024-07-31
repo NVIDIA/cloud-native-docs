@@ -21,9 +21,9 @@
 
 .. _install-gpu-operator-mig:
 
-#######################
+#####################
 GPU Operator with MIG
-#######################
+#####################
 
 .. contents::
    :depth: 2
@@ -119,7 +119,7 @@ The following steps show how to use the single MIG strategy and configure the ``
 #. Configure the MIG strategy to ``single`` if you are unsure of the current strategy:
 
    .. code-block:: console
-    
+
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"single"}]'
@@ -202,7 +202,7 @@ The following steps show how to use the ``mixed`` MIG strategy and configure the
 #. Configure the MIG strategy to ``mixed`` if you are unsure of the current strategy:
 
    .. code-block:: console
-    
+
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
@@ -269,7 +269,7 @@ The following steps show how to update a GPU on a node to the ``3g.40gb`` profil
    *Example Output*
 
    .. code-block:: console
-   
+
       Applying the selected MIG config to the node
       time="2024-05-14T18:31:26Z" level=debug msg="Parsing config file..."
       time="2024-05-14T18:31:26Z" level=debug msg="Selecting specific MIG config..."
@@ -301,7 +301,7 @@ The following steps show how to update a GPU on a node to the ``3g.40gb`` profil
 #. Optional: Display the node labels to confirm the GPU count (``2``), slices (``3``), and profile are set:
 
    .. code-block:: console
-    
+
       $ kubectl get node <node-name> -o=jsonpath='{.metadata.labels}' | jq .
 
    *Partial Output*
@@ -321,6 +321,33 @@ The following steps show how to update a GPU on a node to the ``3g.40gb`` profil
         "nvidia.com/mig.strategy": "single",
         "nvidia.com/mps.capable": "false"
       }
+
+
+Example: Custom MIG Configuration During Installation
+=====================================================
+
+By default, the Operator creates the ``default-mig-parted-config`` config map and MIG Manager is configured to read profiles from that config map.
+
+You can use the ``values.yaml`` file when you install or upgrade the Operator to create a config map with a custom configuration.
+
+#. In your ``values.yaml`` file, add the data for the config map, like the following example:
+
+   .. literalinclude:: manifests/input/mig-cm-values.yaml
+      :language: yaml
+
+#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+#. Label the nodes with the profile to configure:
+
+   .. code-block:: console
+
+      $ kubectl label nodes <node-name> nvidia.com/mig.config=custom-mig --overwrite
 
 
 Example: Custom MIG Configuration
