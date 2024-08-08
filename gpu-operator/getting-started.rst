@@ -325,9 +325,9 @@ In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set toolkit-version=1.13.4-ubi8
+        --set toolkit.version=v1.15.0-ubi8
 
-Replace the ``1.13.4`` value in the preceding command with the version that is supported
+Replace the ``v1.15.0`` value in the preceding command with the version that is supported
 with the NVIDIA GPU Operator.
 Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
 
