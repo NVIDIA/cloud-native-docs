@@ -34,6 +34,17 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.6.1:
+
+24.6.1
+======
+
+Fixed Issues
+------------
+
+* Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
+  Refer to Github `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
+
 .. _v24.6.0:
 
 24.6.0

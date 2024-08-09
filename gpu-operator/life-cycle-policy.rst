@@ -99,7 +99,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `1.16.1 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.16.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.16.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
      - `3.3.7-3.5.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
@@ -109,7 +109,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.16.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.16.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.8.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
