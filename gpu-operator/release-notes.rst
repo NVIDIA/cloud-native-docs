@@ -44,7 +44,11 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 New Features
 ------------
 
-* Added support for NVIDIA Container Toolkit v1.16.2.
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit v1.16.2
+  - NVIDIA Kubernetes Device Plugin v0.16.2
+
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
 
@@ -55,7 +59,6 @@ Fixed Issues
 
 * Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
   Refer to Github `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
-
 
 
 .. _v24.6.0:
