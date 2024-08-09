@@ -39,8 +39,12 @@ CDI also improves the compatibility of the NVIDIA container stack with certain f
 
 ### Procedure
 
-Two typical locations for CDI specifications are `/etc/cdi/` and `/var/run/cdi`.
-However, the path to create and use can depend on the container engine that you use.
+Two common locations for CDI specifications are `/etc/cdi/` and `/var/run/cdi/`.
+NVIDIA recommends using the `/etc/cdi/` directory for user-applied changes, such as performing the following steps.
+The `/var/run/cdi/` directory is commonly used for dynamic changes made by software.
+The contents of the `/var/run/cdi/` directory can change at runtime and can be deleted after a reboot.
+
+However, the `/etc/cdi/` path to create and use can depend on the container engine that you use.
 
 1. Generate the CDI specification file:
 
@@ -77,7 +81,11 @@ However, the path to create and use can depend on the container engine that you 
    ```
 
 ```{important}
-If you change the device or CUDA driver configuration, you must generate a new CDI specification.
+You must generate a new CDI specification after any of the following changes:
+
+- You change the device or CUDA driver configuration.
+- You upgrade the Linux kernel.
+
 A configuration change can occur when MIG devices are created or removed, or when the driver is upgraded.
 ```
 
@@ -89,7 +97,7 @@ or ensure that you do not run containers with the `NVIDIA_VISIBLE_DEVICES` envir
 
 The use of the CDI specification is dependent on the CDI-enabled container engine or CLI that you use.
 In the case of `podman`, for example, releases as of `v4.1.0` include support for specifying CDI devices in the `--device` argument.
-Assuming that you genrated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs would require the following command:
+Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs would require the following command:
 
 ```console
 $ podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L
