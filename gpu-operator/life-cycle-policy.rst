@@ -86,7 +86,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - Version
 
    * - NVIDIA GPU Operator
-     - v24.6.0
+     - v24.6.1
 
    * - NVIDIA GPU Driver
      - | `550.90.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-07/index.html>`_ (default),
@@ -118,7 +118,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `3.3.7-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
-     - v24.6.0
+     - v24.6.1
 
    * - NVIDIA KubeVirt GPU Device Plugin
      - `v1.2.9 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
