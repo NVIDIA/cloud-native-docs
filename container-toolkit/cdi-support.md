@@ -40,11 +40,9 @@ CDI also improves the compatibility of the NVIDIA container stack with certain f
 ### Procedure
 
 Two common locations for CDI specifications are `/etc/cdi/` and `/var/run/cdi/`.
-NVIDIA recommends using the `/etc/cdi/` directory for user-applied changes, such as performing the following steps.
-The `/var/run/cdi/` directory is commonly used for dynamic changes made by software.
-The contents of the `/var/run/cdi/` directory can change at runtime and can be deleted after a reboot.
+The contents of the `/var/run/cdi/` directory are cleared on boot.
 
-However, the `/etc/cdi/` path to create and use can depend on the container engine that you use.
+However, the path to create and use can depend on the container engine that you use.
 
 1. Generate the CDI specification file:
 
@@ -84,7 +82,7 @@ However, the `/etc/cdi/` path to create and use can depend on the container engi
 You must generate a new CDI specification after any of the following changes:
 
 - You change the device or CUDA driver configuration.
-- You upgrade the Linux kernel.
+- You use a location such as `/var/run/cdi` that is cleared on boot.
 
 A configuration change can occur when MIG devices are created or removed, or when the driver is upgraded.
 ```
