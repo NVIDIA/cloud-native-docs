@@ -46,8 +46,8 @@ New Features
 
 * Added support for the following software component versions:
 
-  - NVIDIA Container Toolkit v1.16.2
   - NVIDIA Kubernetes Device Plugin v0.16.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.16.2
 
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
