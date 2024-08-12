@@ -34,6 +34,36 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.6.1:
+
+24.6.1
+======
+
+.. _v24.6.1-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Kubernetes Device Plugin v0.16.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.16.2
+
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+.. _v24.6.1-fixed-issues:
+
+Fixed Issues
+------------
+
+* Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
+  Refer to Github `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
+* Fixed an issue with role-based access controls in the GPU Operator validator that prevented retrieving NVIDIA Driver daemon set information.
+  On OpenShift Container Platform, this issue triggered `GPUOperatorNodeDeploymentDriverFailed` alerts.
+  Refer to Github `issue #892 <https://github.com/NVIDIA/gpu-operator/issues/892>`__ for more details.
+
+
 .. _v24.6.0:
 
 24.6.0
