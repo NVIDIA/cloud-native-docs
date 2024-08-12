@@ -144,10 +144,8 @@ The hook and dependencies are not needed on machines that use CDI exclusively.</
 <section id="procedure">
 <h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h3>
 <p>Two common locations for CDI specifications are <code class="docutils literal notranslate"><span class="pre">/etc/cdi/</span></code> and <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code>.
-NVIDIA recommends using the <code class="docutils literal notranslate"><span class="pre">/etc/cdi/</span></code> directory for user-applied changes, such as performing the following steps.
-The <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code> directory is commonly used for dynamic changes made by software.
-The contents of the <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code> directory can change at runtime and can be deleted after a reboot.</p>
-<p>However, the <code class="docutils literal notranslate"><span class="pre">/etc/cdi/</span></code> path to create and use can depend on the container engine that you use.</p>
+The contents of the <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code> directory are cleared on boot.</p>
+<p>However, the path to create and use can depend on the container engine that you use.</p>
 <ol class="arabic">
 <li><p>Generate the CDI specification file:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate --output<span class="o">=</span>/etc/cdi/nvidia.yaml
@@ -182,7 +180,7 @@ You can omit the <code class="docutils literal notranslate"><span class="pre">--
 <p>You must generate a new CDI specification after any of the following changes:</p>
 <ul class="simple">
 <li><p>You change the device or CUDA driver configuration.</p></li>
-<li><p>You upgrade the Linux kernel.</p></li>
+<li><p>You use a location such as <code class="docutils literal notranslate"><span class="pre">/var/run/cdi</span></code> that is cleared on boot.</p></li>
 </ul>
 <p>A configuration change can occur when MIG devices are created or removed, or when the driver is upgraded.</p>
 </div>
@@ -290,7 +288,7 @@ The NVIDIA Container Toolkit performs the configuration for you.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Aug 07, 2024.
+      <span class="lastupdated">Last updated on Aug 12, 2024.
       </span></p>
 
   </div>
