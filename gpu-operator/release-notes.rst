@@ -59,7 +59,7 @@ Fixed Issues
 
 * Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
   Refer to Github `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
-* Fixed an issue with role-based access controls that prevented retrieving NVIDIA Driver daemon set information.
+* Fixed an issue with role-based access controls in the GPU Operator validator that prevented retrieving NVIDIA Driver daemon set information.
   On OpenShift Container Platform, this issue triggered `GPUOperatorNodeDeploymentDriverFailed` alerts.
   Refer to Github `issue #892 <https://github.com/NVIDIA/gpu-operator/issues/892>`__ for more details.
 
