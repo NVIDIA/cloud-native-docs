@@ -290,4 +290,3 @@ Next Steps
 **********
 
 - :ref:`verify gpu operator install`
-- :ref:`running sample gpu applications`
