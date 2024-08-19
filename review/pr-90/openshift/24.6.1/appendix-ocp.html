@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appendix &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.6.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Troubleshooting" href="troubleshooting-gpu-ocp.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">Installing the Node Feature Discovery (NFD) Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">Installing the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html#viewing-gpu-metrics">Viewing GPU Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Appendix</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Appendix</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="appendix">
+<span id="ocp-appendix"></span><h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline"></a></h1>
+<section id="enabling-a-cluster-wide-entitlement">
+<span id="cluster-entitlement"></span><h2>Enabling a Cluster-wide entitlement<a class="headerlink" href="#enabling-a-cluster-wide-entitlement" title="Permalink to this headline"></a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Driver Toolkit, which enables entitlement-free deployments of the GPU Operator, is available for certain z-streams on OpenShift
+4.8 and all z-streams on OpenShift 4.9. However, some Driver Toolkit images are broken, so we recommend maintaining entitlements for
+all OpenShift versions prior to 4.9.9. See <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a> for more information.</p>
+</div>
+<p>The <strong>NVIDIA GPU Operator</strong> deploys several pods used to manage and enable GPUs for use in the OpenShift Container Platform.
+Some of these Pods require packages that are not available by default in the Universal Base Image (UBI) that OpenShift Container
+Platform uses. To make packages available to the NVIDIA GPU driver container, you must enable cluster-wide entitled container builds in OpenShift.</p>
+<p>At a high level, enabling a cluster-wide entitlement involves three steps:</p>
+<ol class="arabic simple">
+<li><p>Download Red Hat OpenShift Container Platform subscription certificates from the <a class="reference external" href="https://access.redhat.com/">Red Hat Customer Portal</a> (access requires login credentials).</p></li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> that enables the subscription manager and provides a valid subscription certificate. Wait for the <code class="docutils literal notranslate"><span class="pre">MachineConfigOperator</span></code> to reboot the node and finish applying the <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code>.</p></li>
+<li><p>Validate that cluster-wide entitlement is working properly.</p></li>
+</ol>
+<p>These instructions assume you downloaded an entitlement encoded in base64 from the <a class="reference external" href="https://access.redhat.com/">Red Hat Customer Portal</a> or extracted it from an existing node.</p>
+<p>Creating entitled containers requires that you assign machine configuration that has a valid Red Hat entitlement certificate to your worker nodes. This step is necessary because Red Hat Enterprise Linux (RHEL) CoreOS nodes are not yet automatically entitled.</p>
+</section>
+<section id="obtaining-an-entitlement-certificate">
+<span id="obtain-entitlement"></span><h3>Obtaining an entitlement certificate<a class="headerlink" href="#obtaining-an-entitlement-certificate" title="Permalink to this headline"></a></h3>
+<p>Follow the guidance below to edit obtain the entitlement certificate.</p>
+<ol class="arabic">
+<li><p>Navigate to the <a class="reference external" href="https://access.redhat.com/management/systems/">Red Hat Customer Portal systems management page</a> and click <strong>New</strong>.</p>
+<img alt="_images/cluster_entitlement_1.png" src="_images/cluster_entitlement_1.png" />
+</li>
+<li><p>Select <strong>Hypervisor</strong> and populate the <strong>Name</strong> field with the text <strong>OpenShift-Entitlement</strong>.</p>
+<img alt="_images/entitlement_hypervisor.png" src="_images/entitlement_hypervisor.png" />
+</li>
+<li><p>Click <strong>CREATE</strong>.</p></li>
+<li><p>Select the <strong>Subscriptions</strong> tab and click <strong>Attach Subscriptions</strong>.</p>
+<img alt="_images/cluster_entitlement_3.png" src="_images/cluster_entitlement_3.png" />
+</li>
+<li><p>Search for <strong>Red Hat Developer Subscription</strong> [content here may vary according to accounts], select one of them and click <strong>Attach Subscriptions</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>Red Hat Developer Subscription</strong> is choosen here purely for illustrating this example. Choose an appropriate subscription relevant for your your needs.</p>
+</div>
+</li>
+<li><p>Click <strong>Download Certificates</strong>.</p></li>
+</ol>
+<img alt="_images/cluster_entitlement_5.png" src="_images/cluster_entitlement_5.png" />
+<ol class="arabic">
+<li><p>Download and extract the file.</p></li>
+<li><p>Extract the key <em>&lt;key&gt;.pem</em> and test it with this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -E &lt;key&gt;.pem -Sfs -k https://cdn.redhat.com/content/dist/rhel8/8/x86_64/baseos/os/repodata/repomd.xml <span class="p">|</span> head -3
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With a valid key, <cite>curl</cite> downloads the repository entrypoint and shows its <cite>head</cite> shown in the example below.</p>
+<p>With an invalid key, <cite>curl</cite> download is refused by the Red Hat package mirror.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="go">&lt;repomd xmlns=&quot;http://linux.duke.edu/metadata/repo&quot; xmlns:rpm=&quot;http://linux.duke.edu/metadata/rpm&quot;&gt;</span>
+<span class="go">&lt;revision&gt;1631130504&lt;/revision&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="add-a-cluster-wide-entitlement">
+<h3>Add a cluster-wide entitlement<a class="headerlink" href="#add-a-cluster-wide-entitlement" title="Permalink to this headline"></a></h3>
+<p>Use the following procedure to add a cluster-wide entitlement:</p>
+<ol class="arabic">
+<li><p>Create a local appropriately named directory. Change to this directory.</p></li>
+<li><p>Download the <a class="reference download internal" download="" href="_downloads/d52ed445b8c6334b765945fae02a867a/0003-cluster-wide-machineconfigs.yaml.template"><code class="xref download docutils literal notranslate"><span class="pre">machine</span> <span class="pre">config</span> <span class="pre">YAML</span> <span class="pre">template</span></code></a> for cluster-wide entitlements on OpenShift Container Platform. Save the downloaded file <code class="docutils literal notranslate"><span class="pre">0003-cluster-wide-machineconfigs.yaml.template</span></code> to the directory created in step 1.</p></li>
+<li><p>Copy the selected <code class="docutils literal notranslate"><span class="pre">pem</span></code> file from your entitlement certificate to a local file named <code class="docutils literal notranslate"><span class="pre">nvidia.pem</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;path/to/pem/file&gt;/&lt;certificate-file-name&gt;.pem nvidia.pem
+</pre></div>
+</div>
+</li>
+<li><p>Generate the MachineConfig file by appending the entitlement certificate:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sed -i -f - <span class="m">0003</span>-cluster-wide-machineconfigs.yaml.template &lt;&lt; EOF
+<span class="go">s/BASE64_ENCODED_PEM_FILE/$(base64 -w0 nvidia.pem)/g</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the machine config to the OpenShift cluster:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f <span class="m">0003</span>-cluster-wide-machineconfigs.yaml.template
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This step triggers an update driven by the OpenShift Machine Config Operator and initiates a restart on all worker nodes one by one.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">machineconfig.machineconfiguration.openshift.io/50-rhsm-conf created</span>
+<span class="go">machineconfig.machineconfiguration.openshift.io/50-entitlement-pem created</span>
+<span class="go">machineconfig.machineconfiguration.openshift.io/50-entitlement-key-pem created</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the <code class="docutils literal notranslate"><span class="pre">machineconfig</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get machineconfig <span class="p">|</span> grep entitlement
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">50-entitlement-key-pem                             2.2.0             45s</span>
+<span class="go">50-entitlement-pem                                 2.2.0             45s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Monitor the <code class="docutils literal notranslate"><span class="pre">MachineConfigPool</span></code> object:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get mcp/worker
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE</span>
+<span class="go">worker   rendered-worker-5f1eaf24c760fb389d47d3c37ef41c29   True      False      False      2              2                   2                     0                      7h15m</span>
+</pre></div>
+</div>
+<p>Here you can see that the MCP is updated, not updating or degraded, so all the <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> resources have been successfully applied to the nodes and you can proceed to validate the cluster.</p>
+</li>
+</ol>
+</section>
+<section id="validate-the-cluster-wide-entitlement">
+<h3>Validate the cluster-wide entitlement<a class="headerlink" href="#validate-the-cluster-wide-entitlement" title="Permalink to this headline"></a></h3>
+<p>Validate the cluster-wide entitlement with a test pod that queries a Red Hat subscription repo for the kernel-devel package.</p>
+<ol class="arabic">
+<li><p>Create a test pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt; EOF &gt;&gt; mypod.yaml
+
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go"> name: cluster-entitled-build-pod</span>
+<span class="go"> namespace: default</span>
+<span class="go">spec:</span>
+<span class="go"> containers:</span>
+<span class="go">  - name: cluster-entitled-build</span>
+<span class="go">    image: registry.access.redhat.com/ubi8:latest</span>
+<span class="go">    command: [ &quot;/bin/sh&quot;, &quot;-c&quot;, &quot;dnf search kernel-devel --showduplicates&quot; ]</span>
+<span class="go"> restartPolicy: Never</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the test pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create -f mypod.yaml
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cluster-entitled-build-pod created</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the test pod is created:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n default
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                         READY   STATUS    RESTARTS   AGE</span>
+<span class="go">cluster-entitled-build-pod   1/1     Completed 0          64m</span>
+</pre></div>
+</div>
+</li>
+<li><p>Validate that the pod can locate the necessary kernel-devel packages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs cluster-entitled-build-pod -n default
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Updating Subscription Management repositories.</span>
+<span class="go">Unable to read consumer identity</span>
+<span class="go">Subscription Manager is operating in container mode.</span>
+<span class="go">Red Hat Enterprise Linux 8 for x86_64 - AppStre  15 MB/s |  14 MB     00:00</span>
+<span class="go">Red Hat Enterprise Linux 8 for x86_64 - BaseOS   15 MB/s |  13 MB     00:00</span>
+<span class="go">Red Hat Universal Base Image 8 (RPMs) - BaseOS  493 kB/s | 760 kB     00:01</span>
+<span class="go">Red Hat Universal Base Image 8 (RPMs) - AppStre 2.0 MB/s | 3.1 MB     00:01</span>
+<span class="go">Red Hat Universal Base Image 8 (RPMs) - CodeRea  12 kB/s | 9.1 kB     00:00</span>
+<span class="go">====================== Name Exactly Matched: kernel-devel ======================</span>
+<span class="go">kernel-devel-4.18.0-80.1.2.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                  : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.el8.x86_64 : Development package for building kernel</span>
+<span class="go">                            : modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.4.2.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                  : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.7.1.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                  : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.11.1.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                   : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-147.el8.x86_64 : Development package for building kernel</span>
+<span class="go">                             : modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.11.2.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                   : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-80.7.2.el8_0.x86_64 : Development package for building</span>
+<span class="go">                                  : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-147.0.3.el8_1.x86_64 : Development package for building</span>
+<span class="go">                                   : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-147.0.2.el8_1.x86_64 : Development package for building</span>
+<span class="go">                                   : kernel modules to match the kernel</span>
+<span class="go">kernel-devel-4.18.0-147.3.1.el8_1.x86_64 : Development package for building</span>
+<span class="go">                                   : kernel modules to match the kernel</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Any Pod based on RHEL can now run entitled builds.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting-gpu-ocp.html" class="btn btn-neutral float-left" title="Troubleshooting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Aug 19, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
