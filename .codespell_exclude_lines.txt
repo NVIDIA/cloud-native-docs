@@ -17,3 +17,4 @@ command-line argument to the ``az aks nodepool add`` command.
    $ az aks nodepool add --resource-group <rg-name> --name gpunodes --cluster-name <cluster-name> \
 `Skip GPU driver installation (preview) <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview>`__
 After you start your Azure AKS cluster with an image that includes a preinstalled NVIDIA GPU Driver
+   Azure AKS <microsoft-aks.rst>
