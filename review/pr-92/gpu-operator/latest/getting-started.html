@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing the NVIDIA GPU Operator &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Upgrading the NVIDIA GPU Operator" href="upgrade.html" />
+    <link rel="prev" title="About the NVIDIA GPU Operator" href="overview.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Installing the NVIDIA GPU Operator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installing-the-nvidia-gpu-operator">
+<span id="operator-install-guide"></span><span id="install-gpu-operator"></span><h1>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#prerequisites" id="id2">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#procedure" id="id3">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#common-chart-customization-options" id="id4">Common Chart Customization Options</a></p></li>
+<li><p><a class="reference internal" href="#common-deployment-scenarios" id="id5">Common Deployment Scenarios</a></p>
+<ul>
+<li><p><a class="reference internal" href="#specifying-the-operator-namespace" id="id6">Specifying the Operator Namespace</a></p></li>
+<li><p><a class="reference internal" href="#preventing-installation-of-operands-on-some-nodes" id="id7">Preventing Installation of Operands on Some Nodes</a></p></li>
+<li><p><a class="reference internal" href="#preventing-installation-of-nvidia-gpu-driver-on-some-nodes" id="id8">Preventing Installation of NVIDIA GPU Driver on Some Nodes</a></p></li>
+<li><p><a class="reference internal" href="#installation-on-red-hat-enterprise-linux" id="id9">Installation on Red Hat Enterprise Linux</a></p></li>
+<li><p><a class="reference internal" href="#pre-installed-nvidia-gpu-drivers" id="id10">Pre-Installed NVIDIA GPU Drivers</a></p></li>
+<li><p><a class="reference internal" href="#pre-installed-nvidia-gpu-drivers-and-nvidia-container-toolkit" id="id11">Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit</a></p></li>
+<li><p><a class="reference internal" href="#pre-installed-nvidia-container-toolkit-but-no-drivers" id="id12">Pre-Installed NVIDIA Container Toolkit (but no drivers)</a></p></li>
+<li><p><a class="reference internal" href="#running-a-custom-driver-image" id="id13">Running a Custom Driver Image</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#specifying-configuration-options-for-containerd" id="id14">Specifying Configuration Options for containerd</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rancher-kubernetes-engine-2" id="id15">Rancher Kubernetes Engine 2</a></p></li>
+<li><p><a class="reference internal" href="#microk8s" id="id16">MicroK8s</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#verification-running-sample-gpu-applications" id="id17">Verification: Running Sample GPU Applications</a></p>
+<ul>
+<li><p><a class="reference internal" href="#cuda-vectoradd" id="id18">CUDA VectorAdd</a></p></li>
+<li><p><a class="reference internal" href="#jupyter-notebook" id="id19">Jupyter Notebook</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#installation-on-commercially-supported-kubernetes-platforms" id="id20">Installation on Commercially Supported Kubernetes Platforms</a></p></li>
+</ul>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>You have the <code class="docutils literal notranslate"><span class="pre">kubectl</span></code> and <code class="docutils literal notranslate"><span class="pre">helm</span></code> CLIs available on a client machine.</p>
+<p>You can run the following commands to install the Helm CLI:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> chmod <span class="m">700</span> get_helm.sh <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> ./get_helm.sh
+</pre></div>
+</div>
+</li>
+<li><p>All worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.</p>
+<p>For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
+the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.</p>
+</li>
+<li><p>Nodes must be configured with a container engine such CRI-O or containerd.</p></li>
+<li><p>If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
+label the namespace for the Operator to set the enforcement policy to privileged:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns gpu-operator
+<span class="gp">$ </span>kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
+</pre></div>
+</div>
+</li>
+<li><p>Node Feature Discovery (NFD) is a dependency for the Operator on each node.
+By default, NFD master and worker are automatically deployed by the Operator.
+If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.</p>
+<p>One way to determine if NFD is already running in the cluster is to check for a NFD label on your nodes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -o json <span class="p">|</span> jq <span class="s1">&#39;.items[].metadata.labels | keys | any(startswith(&quot;feature.node.kubernetes.io&quot;))&#39;</span>
+</pre></div>
+</div>
+<p>If the command output is <code class="docutils literal notranslate"><span class="pre">true</span></code>, then NFD is already running in the cluster.</p>
+</li>
+</ol>
+</section>
+<section id="procedure">
+<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Add the NVIDIA Helm repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+</li>
+<li><p>Install the GPU Operator.</p>
+<ul>
+<li><p>Install the Operator with the default configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Install the Operator and specify configuration options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --set &lt;option-name&gt;<span class="o">=</span>&lt;option-value&gt;
+</pre></div>
+</div>
+<p>Refer to the <a class="reference internal" href="#gpu-operator-helm-chart-options"><span class="std std-ref">Common Chart Customization Options</span></a>
+and <a class="reference internal" href="#common-deployment-scenarios"><span class="std std-ref">Common Deployment Scenarios</span></a> for more information.</p>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="common-chart-customization-options">
+<span id="id1"></span><span id="chart-customization-options"></span><span id="gpu-operator-helm-chart-options"></span><h2>Common Chart Customization Options<a class="headerlink" href="#common-chart-customization-options" title="Permalink to this headline"></a></h2>
+<p>The following options are available when using the Helm chart.
+These options can be used with <code class="docutils literal notranslate"><span class="pre">--set</span></code> when installing with Helm.</p>
+<p>The following table identifies the most frequently used options.
+To view all the options, run <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/gpu-operator</span></code>.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 50%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ccManager.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
+Refer to <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">GPU Operator with Confidential Containers and Kata</span></a> for more information.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator installs two additional runtime classes,
+nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
+for making GPUs accessible to containers.
+Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
+are exposed to containerized environments.</p>
+<p>Pods can specify <code class="docutils literal notranslate"><span class="pre">spec.runtimeClassName</span></code> as <code class="docutils literal notranslate"><span class="pre">nvidia-cdi</span></code> to use the functionality or
+specify <code class="docutils literal notranslate"><span class="pre">nvidia-legacy</span></code> to prevent using CDI to perform device injection.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.default</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the container runtime uses CDI to perform device injection by default.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.annotations</span></code></p></td>
+<td><p>Map of custom annotations to add to all GPU Operator managed pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.labels</span></code></p></td>
+<td><p>Map of custom labels to add to all GPU Operator managed pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
+<td><p>Specifies the configuration for the NVIDIA Device Plugin as a config map.</p>
+<p>In most cases, this field is configured after installing the Operator, such as
+to configure <a class="reference internal" href="gpu-sharing.html"><span class="doc">Time-Slicing GPUs in Kubernetes</span></a>.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.enabled</span></code></p></td>
+<td><p>By default, the Operator deploys NVIDIA drivers as a container on the system.
+Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using the Operator on systems with pre-installed drivers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.repository</span></code></p></td>
+<td><p>The images are downloaded from NGC. Specify another image repository when using
+custom driver images.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled</span></code></p></td>
+<td><p>Controls whether the driver daemon set builds and loads the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
+<p>You might be able to use GPUDirect RDMA without enabling this option.
+Refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a> for information about whether you can use DMA-BUF or
+you need to use legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code>.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.useHostMofed</span></code></p></td>
+<td><p>Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.startupProbe</span></code></p></td>
+<td><p>By default, the driver container has an initial delay of <code class="docutils literal notranslate"><span class="pre">60s</span></code> before starting liveness probes.
+The probe runs the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command with a timeout duration of <code class="docutils literal notranslate"><span class="pre">60s</span></code>.
+You can increase the <code class="docutils literal notranslate"><span class="pre">timeoutSeconds</span></code> duration if the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command
+runs slowly in your cluster.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">60s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the driver containers install the NVIDIA Open GPU Kernel module driver.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator attempts to deploy driver containers that have
+precompiled kernel drivers.
+This option is available as a technology preview feature for select operating systems.
+Refer to the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">precompiled driver containers</span></a> page for the supported operating systems.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.version</span></code></p></td>
+<td><p>Version of the NVIDIA datacenter driver supported by the Operator.</p>
+<p>If you set <code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, then set this field to
+a driver branch, such as <code class="docutils literal notranslate"><span class="pre">525</span></code>.</p>
+</td>
+<td><p>Depends on the version of the Operator. See the Component Matrix
+for more information on supported drivers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gdrcopy.enabled</span></code></p></td>
+<td><p>Enables support for GDRCopy.
+When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
+For information about GDRCopy, refer to the <a class="reference external" href="https://developer.nvidia.com/gdrcopy">gdrcopy</a> page.</p>
+<p>You can enable GDRCopy if you use the <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a>.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataManager.enabled</span></code></p></td>
+<td><p>The GPU Operator deploys NVIDIA Kata Manager when this field is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+Refer to <a class="reference internal" href="gpu-operator-kata.html"><span class="doc">GPU Operator with Kata Containers</span></a> for more information.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mig.strategy</span></code></p></td>
+<td><p>Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
+are either <code class="docutils literal notranslate"><span class="pre">mixed</span></code> or <code class="docutils literal notranslate"><span class="pre">single</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">single</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">migManager.enabled</span></code></p></td>
+<td><p>The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
+default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nfd.enabled</span></code></p></td>
+<td><p>Deploys Node Feature Discovery plugin as a daemonset.
+Set this variable to <code class="docutils literal notranslate"><span class="pre">false</span></code> if NFD is already running in the cluster.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nfd.nodefeaturerules</span></code></p></td>
+<td><p>Installs node feature rules that are related to confidential computing.
+NFD uses the rules to detect security features in CPUs and NVIDIA GPUs.
+Set this variable to <code class="docutils literal notranslate"><span class="pre">true</span></code> when you configure the Operator for Confidential Containers.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">operator.labels</span></code></p></td>
+<td><p>Map of custom labels that will be added to all GPU Operator managed pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">psp.enabled</span></code></p></td>
+<td><p>The GPU operator deploys <code class="docutils literal notranslate"><span class="pre">PodSecurityPolicies</span></code> if enabled.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
+<td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.
+Refer to <a class="reference internal" href="gpu-operator-kubevirt.html"><span class="doc">KubeVirt</span></a>, <a class="reference internal" href="gpu-operator-kata.html"><span class="doc">Kata Containers</span></a>, or <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">Confidential Containers</span></a>.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">toolkit.enabled</span></code></p></td>
+<td><p>By default, the Operator deploys the NVIDIA Container Toolkit (<code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> stack)
+as a container on the system. Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using the Operator on systems
+with pre-installed NVIDIA runtimes.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="common-deployment-scenarios">
+<h2>Common Deployment Scenarios<a class="headerlink" href="#common-deployment-scenarios" title="Permalink to this headline"></a></h2>
+<p>The following common deployment scenarios and sample commands apply best to
+bare metal hosts or virtual machines with GPU passthrough.</p>
+<section id="specifying-the-operator-namespace">
+<h3>Specifying the Operator Namespace<a class="headerlink" href="#specifying-the-operator-namespace" title="Permalink to this headline"></a></h3>
+<p>Both the Operator and operands are installed in the same namespace.
+The namespace is configurable and is specified during installation.
+For example, to install the GPU Operator in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n nvidia-gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator
+</pre></div>
+</div>
+<p>If you do not specify a namespace during installation, all GPU Operator components are installed in the <code class="docutils literal notranslate"><span class="pre">default</span></code> namespace.</p>
+</section>
+<section id="preventing-installation-of-operands-on-some-nodes">
+<h3>Preventing Installation of Operands on Some Nodes<a class="headerlink" href="#preventing-installation-of-operands-on-some-nodes" title="Permalink to this headline"></a></h3>
+<p>By default, the GPU Operator operands are deployed on all GPU worker nodes in the cluster.
+GPU worker nodes are identified by the presence of the label <code class="docutils literal notranslate"><span class="pre">feature.node.kubernetes.io/pci-10de.present=true</span></code>.
+The value <code class="docutils literal notranslate"><span class="pre">0x10de</span></code> is the PCI vendor ID that is assigned to NVIDIA.</p>
+<p>To disable operands from getting deployed on a GPU worker node, label the node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.operands=false</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="nv">$NODE</span> nvidia.com/gpu.deploy.operands<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="preventing-installation-of-nvidia-gpu-driver-on-some-nodes">
+<h3>Preventing Installation of NVIDIA GPU Driver on Some Nodes<a class="headerlink" href="#preventing-installation-of-nvidia-gpu-driver-on-some-nodes" title="Permalink to this headline"></a></h3>
+<p>By default, the GPU Operator deploys the driver on all GPU worker nodes in the cluster.
+To prevent installing the driver on a GPU worker node, label the node like the following sample command.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="nv">$NODE</span> nvidia.com/gpu.deploy.driver<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-on-red-hat-enterprise-linux">
+<h3>Installation on Red Hat Enterprise Linux<a class="headerlink" href="#installation-on-red-hat-enterprise-linux" title="Permalink to this headline"></a></h3>
+<p>In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --set toolkit.version<span class="o">=</span>v1.16.1-ubi8
+</pre></div>
+</div>
+<p>Replace the <code class="docutils literal notranslate"><span class="pre">v1.16.1</span></code> value in the preceding command with the version that is supported
+with the NVIDIA GPU Operator.
+Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> on the platform support page.</p>
+<p>When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, network restricted environments are not supported.</p>
+</section>
+<section id="pre-installed-nvidia-gpu-drivers">
+<h3>Pre-Installed NVIDIA GPU Drivers<a class="headerlink" href="#pre-installed-nvidia-gpu-drivers" title="Permalink to this headline"></a></h3>
+<p>In this scenario, the NVIDIA GPU driver is already installed on the worker nodes that have GPUs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --set driver.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="pre-installed-nvidia-gpu-drivers-and-nvidia-container-toolkit">
+<span id="preinstalled-drivers-and-toolkit"></span><h3>Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit<a class="headerlink" href="#pre-installed-nvidia-gpu-drivers-and-nvidia-container-toolkit" title="Permalink to this headline"></a></h3>
+<p>In this scenario, the NVIDIA GPU driver and the NVIDIA Container Toolkit are already installed on
+the worker nodes that have GPUs.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This scenario applies to NVIDIA DGX Systems that run NVIDIA Base OS.</p>
+</div>
+<p>Before installing the Operator, ensure that the default runtime is set to <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration" title="(in NVIDIA Container Toolkit)"><span>Configuration</span></a> in the NVIDIA Container Toolkit documentation for more information.</p>
+<p>Install the Operator with the following options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+      nvidia/gpu-operator <span class="se">\</span>
+      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="pre-installed-nvidia-container-toolkit-but-no-drivers">
+<h3>Pre-Installed NVIDIA Container Toolkit (but no drivers)<a class="headerlink" href="#pre-installed-nvidia-container-toolkit-but-no-drivers" title="Permalink to this headline"></a></h3>
+<p>In this scenario, the NVIDIA Container Toolkit is already installed on the worker nodes that have GPUs.</p>
+<ol class="arabic">
+<li><p>Configure toolkit to use the <code class="docutils literal notranslate"><span class="pre">root</span></code> directory of the driver installation as <code class="docutils literal notranslate"><span class="pre">/run/nvidia/driver</span></code>, because this is the path mounted by driver container.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo sed -i <span class="s1">&#39;s/^#root/root/&#39;</span> /etc/nvidia-container-runtime/config.toml
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic">
+<li><p>Install the Operator with the following options (which will provision a driver):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="running-a-custom-driver-image">
+<h3>Running a Custom Driver Image<a class="headerlink" href="#running-a-custom-driver-image" title="Permalink to this headline"></a></h3>
+<p>If you want to use custom driver container images, such as version 465.27, then
+you can build a custom driver container image. Follow these steps:</p>
+<ul>
+<li><p>Rebuild the driver container by specifying the <code class="docutils literal notranslate"><span class="pre">$DRIVER_VERSION</span></code> argument when building the Docker image. For
+reference, the driver container Dockerfiles are available on the Git repository at <a class="reference external" href="https://gitlab.com/nvidia/container-images/driver">https://gitlab.com/nvidia/container-images/driver</a>.</p></li>
+<li><p>Build the container using the appropriate Dockerfile. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build --pull -t <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="m">455</span>.28 <span class="se">\</span>
+    nvidia/driver:455.28-ubuntu20.04 <span class="se">\</span>
+    --file Dockerfile .
+</pre></div>
+</div>
+<p>Ensure that the driver container is tagged as shown in the example by using the <code class="docutils literal notranslate"><span class="pre">driver:&lt;version&gt;-&lt;os&gt;</span></code> schema.</p>
+</li>
+<li><p>Specify the new driver image and repository by overriding the defaults in
+the Helm install command. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
+     --set driver.version<span class="o">=</span><span class="s2">&quot;465.27&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>These instructions are provided for reference and evaluation purposes.
+Not using the standard releases of the GPU Operator from NVIDIA would mean limited
+support for such custom configurations.</p>
+</section>
+</section>
+<section id="specifying-configuration-options-for-containerd">
+<span id="custom-runtime-options"></span><h2>Specifying Configuration Options for containerd<a class="headerlink" href="#specifying-configuration-options-for-containerd" title="Permalink to this headline"></a></h2>
+<p>When you use containerd as the container runtime, the following configuration
+options are used with the container-toolkit deployed with GPU Operator:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_CONFIG</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/containerd/config.toml</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SOCKET</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/containerd/containerd.sock</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_RUNTIME_CLASS</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
+<span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
+<span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
+<span class="go">    --set toolkit.env[0].value=/etc/containerd/config.toml \</span>
+<span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
+<span class="go">    --set toolkit.env[1].value=/run/containerd/containerd.sock \</span>
+<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
+<span class="go">    --set toolkit.env[2].value=nvidia \</span>
+<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
+<span class="go">    --set-string toolkit.env[3].value=true</span>
+</pre></div>
+</div>
+<p>These options are defined as follows:</p>
+<dl class="simple">
+<dt>CONTAINERD_CONFIG</dt><dd><p>The path on the host to the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> config
+you would like to have updated with support for the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
+By default this will point to <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> (the default
+location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if your <code class="docutils literal notranslate"><span class="pre">containerd</span></code>
+installation is not in the default location.</p>
+</dd>
+<dt>CONTAINERD_SOCKET</dt><dd><p>The path on the host to the socket file used to
+communicate with <code class="docutils literal notranslate"><span class="pre">containerd</span></code>. The operator will use this to send a
+<code class="docutils literal notranslate"><span class="pre">SIGHUP</span></code> signal to the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> daemon to reload its config. By
+default this will point to <code class="docutils literal notranslate"><span class="pre">/run/containerd/containerd.sock</span></code>
+(the default location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if
+your <code class="docutils literal notranslate"><span class="pre">containerd</span></code> installation is not in the default location.</p>
+</dd>
+<dt>CONTAINERD_RUNTIME_CLASS</dt><dd><p>The name of the
+<a class="reference external" href="https://kubernetes.io/docs/concepts/containers/runtime-class">Runtime Class</a>
+you would like to associate with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
+Pods launched with a <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code> equal to CONTAINERD_RUNTIME_CLASS
+will always run with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>. The default
+CONTAINERD_RUNTIME_CLASS is <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>.</p>
+</dd>
+<dt>CONTAINERD_SET_AS_DEFAULT</dt><dd><p>A flag indicating whether you want to set
+<code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> as the default runtime used to launch all
+containers. When set to false, only containers in pods with a <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code>
+equal to CONTAINERD_RUNTIME_CLASS will be run with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
+The default value is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</dd>
+</dl>
+<section id="rancher-kubernetes-engine-2">
+<h3>Rancher Kubernetes Engine 2<a class="headerlink" href="#rancher-kubernetes-engine-2" title="Permalink to this headline"></a></h3>
+<p>For Rancher Kubernetes Engine 2 (RKE2), set the following in the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_CONFIG</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SOCKET</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/k3s/containerd/containerd.sock</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_RUNTIME_CLASS</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>These options can be passed to GPU Operator during install time as below.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
+<span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
+<span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
+<span class="go">    --set toolkit.env[0].value=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl \</span>
+<span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
+<span class="go">    --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \</span>
+<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
+<span class="go">    --set toolkit.env[2].value=nvidia \</span>
+<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
+<span class="go">    --set-string toolkit.env[3].value=true</span>
+</pre></div>
+</div>
+</section>
+<section id="microk8s">
+<h3>MicroK8s<a class="headerlink" href="#microk8s" title="Permalink to this headline"></a></h3>
+<p>For MicroK8s, set the following in the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_CONFIG</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/snap/microk8s/current/args/containerd-template.toml</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SOCKET</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/snap/microk8s/common/run/containerd.sock</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_RUNTIME_CLASS</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>These options can be passed to GPU Operator during install time as below.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
+<span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
+<span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
+<span class="go">    --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \</span>
+<span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
+<span class="go">    --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \</span>
+<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
+<span class="go">    --set toolkit.env[2].value=nvidia \</span>
+<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
+<span class="go">    --set-string toolkit.env[3].value=true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="verification-running-sample-gpu-applications">
+<span id="verify-gpu-operator-install"></span><span id="running-sample-gpu-applications"></span><h2>Verification: Running Sample GPU Applications<a class="headerlink" href="#verification-running-sample-gpu-applications" title="Permalink to this headline"></a></h2>
+<section id="cuda-vectoradd">
+<h3>CUDA VectorAdd<a class="headerlink" href="#cuda-vectoradd" title="Permalink to this headline"></a></h3>
+<p>In the first example, let’s run a simple CUDA sample, which adds two vectors together:</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd.yaml
+</pre></div>
+</div>
+<p>The pod starts, runs the <code class="docutils literal notranslate"><span class="pre">vectorAdd</span></code> command, and then exits.</p>
+</li>
+<li><p>View the logs from the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs pod/cuda-vectoradd
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Removed the stopped pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd.yaml
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;cuda-vectoradd&quot; deleted</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="jupyter-notebook">
+<h3>Jupyter Notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this headline"></a></h3>
+<p>You can perform the following steps to deploy Jupyter Notebook in your cluster:</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">tf-notebook.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NodePort</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span><span class="w"></span>
+<span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8888</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30001</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tf-notebook</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tensorflow/tensorflow:latest-gpu-jupyter</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8888</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">notebook</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the manifest to deploy the pod and start the service:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f tf-notebook.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Check the pod status:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod tf-notebook
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAMESPACE   NAME          READY   STATUS      RESTARTS   AGE</span>
+<span class="go">default     tf-notebook   1/1     Running     0          3m45s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Because the manifest includes a service, get the external port for the notebook:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get svc tf-notebook
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)       AGE</span>
+<span class="go">tf-notebook   NodePort    10.106.229.20   &lt;none&gt;        80:30001/TCP  4m41s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the token for the Jupyter notebook:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs tf-notebook
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret</span>
+<span class="go">[I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf</span>
+<span class="go">[I 21:50:23.391 NotebookApp] The Jupyter Notebook is running at:</span>
+<span class="go">[I 21:50:23.391 NotebookApp] http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9</span>
+<span class="go">[I 21:50:23.391 NotebookApp]  or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9</span>
+<span class="go">[I 21:50:23.391 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).</span>
+<span class="go">[C 21:50:23.394 NotebookApp]</span>
+
+<span class="go">To access the notebook, open this file in a browser:</span>
+<span class="go">   file:///root/.local/share/jupyter/runtime/nbserver-1-open.html</span>
+<span class="go">Or copy and paste one of these URLs:</span>
+<span class="go">   http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9</span>
+<span class="go">or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The notebook should now be accessible from your browser at this URL:
+<a class="reference external" href="http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9">http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9</a>.</p>
+</section>
+</section>
+<section id="installation-on-commercially-supported-kubernetes-platforms">
+<h2>Installation on Commercially Supported Kubernetes Platforms<a class="headerlink" href="#installation-on-commercially-supported-kubernetes-platforms" title="Permalink to this headline"></a></h2>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Product</p></th>
+<th class="head"><p>Documentation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">Red Hat OpenShift 4</div>
+<div class="line">using RHCOS worker nodes</div>
+</div>
+</td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA GPU Operator on Red Hat OpenShift Container Platform</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line">VMware vSphere with Tanzu</div>
+<div class="line">and NVIDIA AI Enterprise</div>
+</div>
+</td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/ai-enterprise/deployment-guide-vmware/0.1.0/index.html"><em>NVIDIA AI Enterprise VMware vSphere Deployment Guide</em></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Google Cloud Anthos</p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html" title="(in NVIDIA Cloud Native Reference Architectures)"><span>NVIDIA GPUs with Google Anthos</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="About the NVIDIA GPU Operator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="upgrade.html" class="btn btn-neutral float-right" title="Upgrading the NVIDIA GPU Operator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Aug 27, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
