@@ -74,13 +74,17 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      +=========================+===========================+
      | NVIDIA H800             | NVIDIA Hopper             |
      +-------------------------+---------------------------+
+     | | NVIDIA H200,          | NVIDIA Hopper             |
+     | | NVIDIA H200 NVL       |                           |
+     +-------------------------+---------------------------+
+     | NVIDIA HGX H200         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
      | NVIDIA DGX H100         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
      | NVIDIA HGX H100         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
-     | NVIDIA H200             | NVIDIA Hopper             |
      +-------------------------+---------------------------+
      | | NVIDIA H100,          | NVIDIA Hopper             |
      | | NVIDIA H100 NVL       |                           |
@@ -329,7 +333,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _ubuntu-kernel:
 
     :sup:`1`
-    For Ubuntu 22.04 LTS, kernel version 5.15 is an LTS ESM kernel.
+    For Ubuntu 22.04 LTS, kernel versions 6.5 and 5.15 are LTS ESM kernels.
     For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
     Refer to the Kernel release schedule on Canonical's
