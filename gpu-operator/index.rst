@@ -35,7 +35,7 @@
 
 
 .. toctree::
-   :caption: Advanced Operator configurations
+   :caption: Advanced Operator Configuration
    :titlesonly:
    :hidden:
 
