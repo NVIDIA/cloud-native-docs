@@ -311,8 +311,8 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 8.4,
-           | 8.6---8.9
+           | Linux 8.6,
+           | 8.8, 8.10
          - 1.22---1.30
          -
          -
