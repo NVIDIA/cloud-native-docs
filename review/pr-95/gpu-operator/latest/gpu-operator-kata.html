@@ -289,7 +289,7 @@ Reboot the host after configuring the bootloader.</p>
 Alternatively, you can set the default sandbox workload to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> to run confidential containers on all worker nodes.</p>
 </li>
 <li><p>Install the Kata Deploy Helm chart.</p>
-<p>This step runs <cite>kata-deploy.sh</cite> on each node and installs the Kata Containers runtime on each node.</p>
+<p>This step runs <code class="docutils literal notranslate"><span class="pre">kata-deploy.sh</span></code> on each node and installs the Kata Containers runtime on each node.</p>
 </li>
 <li><p>Install the NVIDIA GPU Operator.</p>
 <p>You install the Operator and specify options to deploy the operands that are required for Kata Containers.</p>
@@ -381,18 +381,18 @@ Specify a space-separated string of values.</p></td>
 <li><p>Optional: Verify the installation.</p>
 <ul>
 <li><p>Confirm the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> containers are running:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`console</span>
-<span class="pre">$</span> <span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">kube-system</span> <span class="pre">-l</span> <span class="pre">FIXME</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kube-system -l FIXME
+</pre></div>
+</div>
 </li>
 <li><p>Confirm the runtime class is installed:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`console</span>
-<span class="pre">$</span> <span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">runtimeclass</span> <span class="pre">kata-qemu-nvidia-gpu</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass kata-qemu-nvidia-gpu
+</pre></div>
+</div>
 <p><em>Example Output</em></p>
-<p><code class="docutils literal notranslate"><span class="pre">`output</span>
-<span class="pre">FIXME</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">FIXME</span>
+</pre></div>
+</div>
 </li>
 </ul>
 </li>
