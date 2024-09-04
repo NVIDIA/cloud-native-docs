@@ -67,10 +67,10 @@ The following diagram shows the software components that Kubernetes uses to run 
      a[Kubelet] --> b[CRI] --> c[Kata\nRuntime] --> d[Lightweight\nQEMU VM] --> e[Lightweight\nGuest OS] --> f[Pod] --> g[Container]
 
 
-NVIDIA supports Kata Containers by using the Confidential Containers Operator to install the Kata runtime and QEMU.
-Even though the Operator isn't used for confidential computing in this configuration, the Operator
-simplifies the installation of the Kata runtime.
+NVIDIA supports Kata Containers by using Helm to run a daemon set that installs the Kata runtime and QEMU.
 
+The daemon set runs the `kata-deploy.sh` script and configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``,
+and configures containerd for the runtime class.
 
 About NVIDIA Kata Manager
 =========================
@@ -82,43 +82,42 @@ The manager downloads an NVIDIA optimized Linux kernel image and initial RAM dis
 provides the lightweight operating system for the virtual machines that run in QEMU.
 These artifacts are downloaded from the NVIDIA container registry, nvcr.io, on each worker node.
 
-The manager also configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``,
-and configures containerd for the runtime class.
+.. comment
 
-NVIDIA Kata Manager Configuration
-=================================
+   NVIDIA Kata Manager Configuration
+   =================================
 
-The following part of the cluster policy shows the fields related to the manager:
+   The following part of the cluster policy shows the fields related to the manager:
 
-.. code-block:: yaml
+   .. code-block:: yaml
 
-   kataManager:
-     enabled: true
-     config:
-       artifactsDir: /opt/nvidia-gpu-operator/artifacts/runtimeclasses
-       runtimeClasses:
-       - artifacts:
-           pullSecret: ""
-           url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-525
-         name: kata-qemu-nvidia-gpu
-         nodeSelector: {}
-       - artifacts:
-           pullSecret: ""
-           url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-535-snp
-         name: kata-qemu-nvidia-gpu-snp
-         nodeSelector: {}
-     repository: nvcr.io/nvidia/cloud-native
-     image: k8s-kata-manager
-     version: v0.1.0
-     imagePullPolicy: IfNotPresent
-     imagePullSecrets: []
-     env: []
-     resources: {}
+      kataManager:
+        enabled: true
+        config:
+          artifactsDir: /opt/nvidia-gpu-operator/artifacts/runtimeclasses
+          runtimeClasses:
+          - artifacts:
+              pullSecret: ""
+              url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-525
+            name: kata-qemu-nvidia-gpu
+            nodeSelector: {}
+          - artifacts:
+              pullSecret: ""
+              url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-535-snp
+            name: kata-qemu-nvidia-gpu-snp
+            nodeSelector: {}
+        repository: nvcr.io/nvidia/cloud-native
+        image: k8s-kata-manager
+        version: v0.1.0
+        imagePullPolicy: IfNotPresent
+        imagePullSecrets: []
+        env: []
+        resources: {}
 
-The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
+   The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
 
-The ``kata-qemu-nvidia-gpu-snp`` runtime class is used with Confidential Containers
-and is installed by default even though it is not used with this configuration.
+   The ``kata-qemu-nvidia-gpu-snp`` runtime class is used with Confidential Containers
+   and is installed by default even though it is not used with this configuration.
 
 
 *********************************
@@ -197,7 +196,7 @@ Prerequisites
 
 * Your hosts are configured to support IOMMU.
 
-  If the output from running ``ls /sys/kernel/iommu_groups`` includes ``0``, ``1``, and so on,
+  If the output from running ``ls /sys/kernel/iommu_groups`` includes a value greater than ``0``,
   then your host is configured for IOMMU.
 
   If a host is not configured or you are unsure, add the ``intel_iommu=on`` Linux kernel command-line argument.
@@ -228,9 +227,9 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
    This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
    Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes.
 
-#. Install the Confidential Containers Operator.
+#. Install the Kata Deploy Helm chart.
 
-   This step installs the Operator and also the Kata Containers runtime that NVIDIA uses for Kata Containers.
+   This step runs ``kata-deploy.sh`` on each node and installs the Kata Containers runtime on each node.
 
 #. Install the NVIDIA GPU Operator.
 
@@ -238,12 +237,106 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
 After installation, you can run a sample workload.
 
-.. |project-name| replace:: Kata Containers
+*************************************
+Kata Deploy Helm Chart Customizations
+*************************************
 
-.. include:: gpu-operator-confidential-containers.rst
-   :start-after: start-install-coco-operator
-   :end-before: end-install-coco-operator
+The following table shows the configurable values from the Kata Deploy Helm chart.
 
+.. list-table::
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+     - Default
+
+   * - ``kataDeploy.allowedHypervisorAnnotations``
+     - Specifies the
+       `hypervisor annotations <https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-set-sandbox-config-kata.md#hypervisor-options>`__
+       to enable in the Kata configuration file on each node.
+       Specify a space-separated string of values such as ``enable_iommu initrd kernel``.
+     - None
+
+   * - ``kataDeploy.createRuntimeClasses``
+     - When set to ``true``, the ``kata-deploy.sh`` script installs the runtime classes on the nodes.
+     - ``true``
+
+   * - ``kataDeploy.createDefaultRuntimeClass``
+     - When set to ``true``, the ``kata-deploy.sh`` script sets the runtime class specified in the ``defaultShim`` field as the default Kata runtime class.
+     - ``false``
+
+   * - ``kataDeploy.debug``
+     - When set to ``true``, the ``kata-deploy.sh`` script enables debugging and a debug console in the Kata configuration file on each node.
+     - ``false``
+
+   * - ``kataDeploy.defaultShim``
+     - Specifies the shim to set as the default Kata runtime class.
+       This field is ignored unless you specify ``createDefaultRuntimeClass: true``.
+     - ``qemu-nvidia-gpu``
+
+   * - ``kataDeploy.imagePullPolicy``
+     - Specifies the image pull policy for the ``kata-deploy`` container.
+     - ``Always``
+
+   * - ``kataDeploy.k8sDistribution``
+     - FIXME
+     - ``k8s``
+
+   * - ``kataDeploy.repository``
+     - Specifies the image repository for the ``kata-deploy`` container.
+     - ``nvcr.io/nvidia/cloud-native``
+
+   * - ``kataDeploy.shims``
+     - Specifies the shim binaries to install on each node.
+       Specify a space-separated string of values.
+     - ``qemu-nvidia-gpu``
+
+   * - ``kataDeploy.version``
+     - Specifies the version of the ``kata-deploy`` container to run.
+     - ``latest``
+
+
+**********************************
+Install the Kata Deploy Helm Chart
+**********************************
+
+Perform the following steps to install the Helm chart:
+
+#. Add and update the NVIDIA Helm repository:
+
+   .. code-block:: console
+
+      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+         && helm repo update
+
+#. Specify at least the following options when you install the chart.
+
+   .. code-block:: console
+
+      $ helm install --wait --generate-name \
+         -n kube-system \
+         nvidia/kata-deploy
+
+#. Optional: Verify the installation.
+
+   - Confirm the ``kata-deploy`` containers are running:
+
+     .. code-block:: console
+
+        $ kubectl get pods -n kube-system -l FIXME
+
+   - Confirm the runtime class is installed:
+
+     .. code-block:: console
+
+        $ kubectl get runtimeclass kata-qemu-nvidia-gpu
+
+     *Example Output*
+
+     .. code-block:: output
+
+        FIXME
 
 *******************************
 Install the NVIDIA GPU Operator
@@ -262,7 +355,7 @@ Perform the following steps to install the Operator for use with Kata Containers
          && helm repo update
 
 #. Specify at least the following options when you install the Operator.
-   If you want to run |project-name| by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
+   If you want to run Kata Containers by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
 
    .. code-block:: console
 
