@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time-Slicing GPUs in Kubernetes &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPUDirect RDMA and GPUDirect Storage" href="gpu-operator-rdma.html" />
+    <link rel="prev" title="GPU Operator with MIG" href="gpu-operator-mig.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Time-Slicing GPUs in Kubernetes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="time-slicing-gpus-in-kubernetes">
+<span id="gpu-sharing"></span><h1>Time-Slicing GPUs in Kubernetes<a class="headerlink" href="#time-slicing-gpus-in-kubernetes" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#understanding-time-slicing-gpus" id="id1">Understanding Time-Slicing GPUs</a></p>
+<ul>
+<li><p><a class="reference internal" href="#comparison-time-slicing-and-multi-instance-gpu" id="id2">Comparison: Time-Slicing and Multi-Instance GPU</a></p></li>
+<li><p><a class="reference internal" href="#support-platforms-and-resource-types" id="id3">Support Platforms and Resource Types</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id4">Limitations</a></p></li>
+<li><p><a class="reference internal" href="#changes-to-node-labels" id="id5">Changes to Node Labels</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration" id="id6">Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#about-configuring-gpu-time-slicing" id="id7">About Configuring GPU Time-Slicing</a></p></li>
+<li><p><a class="reference internal" href="#applying-one-cluster-wide-configuration" id="id8">Applying One Cluster-Wide Configuration</a></p></li>
+<li><p><a class="reference internal" href="#applying-multiple-node-specific-configurations" id="id9">Applying Multiple Node-Specific Configurations</a></p></li>
+<li><p><a class="reference internal" href="#configuring-time-slicing-before-installing-the-nvidia-gpu-operator" id="id10">Configuring Time-Slicing Before Installing the NVIDIA GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#updating-a-time-slicing-config-map" id="id11">Updating a Time-Slicing Config Map</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#verifying-the-gpu-time-slicing-configuration" id="id12">Verifying the GPU Time-Slicing Configuration</a></p></li>
+<li><p><a class="reference internal" href="#references" id="id13">References</a></p></li>
+</ul>
+</div>
+<section id="understanding-time-slicing-gpus">
+<h2>Understanding Time-Slicing GPUs<a class="headerlink" href="#understanding-time-slicing-gpus" title="Permalink to this headline"></a></h2>
+<p>The NVIDIA GPU Operator enables oversubscription of GPUs through a set
+of extended options for the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/k8s-device-plugin">NVIDIA Kubernetes Device Plugin</a>.
+GPU time-slicing enables workloads that are scheduled on oversubscribed GPUs to
+interleave with one another.</p>
+<p>This mechanism for enabling <em>time-slicing</em> of
+GPUs in Kubernetes enables a system administrator to define a set of
+<em>replicas</em> for a GPU, each of which can be handed out independently to a
+pod to run workloads on. Unlike Multi-Instance GPU (MIG), there is no memory or
+fault-isolation between replicas, but for some workloads this is better
+than not being able to share at all. Internally, GPU
+time-slicing is used to multiplex workloads from
+replicas of the same underlying GPU.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A typical resource request provides exclusive access to GPUs.
+A request for a time-sliced GPU provides shared access.
+A request for more than one time-sliced GPU does not guarantee that the pod
+receives access to a proportional amount of GPU compute power.</p>
+<p>A request for more than one time-sliced GPU only specifies that the pod
+receives access to a GPU that is shared by other pods.
+Each pod can run as many processes on the underlying GPU without a limit.
+The GPU simply provides an equal share of time to all GPU processes, across
+all of the pods.</p>
+</div>
+<p>You can apply a cluster-wide default time-slicing configuration.
+You can also apply node-specific configurations.
+For example, you can apply a time-slicing configuration to nodes with Tesla-T4 GPUs only
+and not modify nodes with other GPU models.</p>
+<p>You can combine the two approaches by applying a cluster-wide default configuration
+and then label nodes so that those nodes receive a node-specific configuration.</p>
+<section id="comparison-time-slicing-and-multi-instance-gpu">
+<h3>Comparison: Time-Slicing and Multi-Instance GPU<a class="headerlink" href="#comparison-time-slicing-and-multi-instance-gpu" title="Permalink to this headline"></a></h3>
+<p>The latest generations of NVIDIA GPUs provide an operation mode called
+Multi-Instance GPU (MIG). MIG allows you to partition a GPU
+into several smaller, predefined instances, each of which looks like a
+mini-GPU that provides memory and fault isolation at the hardware layer.
+You can share access to a GPU by running workloads on one of
+these predefined instances instead of the full native GPU.</p>
+<p>MIG support was added to Kubernetes in 2020. Refer to <a class="reference external" href="https://www.google.com/url?q=https://docs.google.com/document/d/1mdgMQ8g7WmaI_XVVRrCvHPFPOMCm5LQD5JefgAh6N8g/edit&amp;sa=D&amp;source=editors&amp;ust=1655578433019961&amp;usg=AOvVaw1F-OezvM-Svwr1lLsdQmu3">Supporting MIG in Kubernetes</a>
+for details on how this works.</p>
+<p>Time-slicing trades the memory and fault-isolation that is provided by MIG
+for the ability to share a GPU by a larger number of users.
+Time-slicing also provides a way to provide shared access to a GPU for
+older generation GPUs that do not support MIG.
+However, you can combine MIG and time-slicing to provide shared access to
+MIG instances.</p>
+</section>
+<section id="support-platforms-and-resource-types">
+<h3>Support Platforms and Resource Types<a class="headerlink" href="#support-platforms-and-resource-types" title="Permalink to this headline"></a></h3>
+<p>GPU time-slicing can be used with bare-metal applications, virtual machines
+with GPU passthrough, and virtual machines with NVIDIA vGPU.</p>
+<p>Currently, the only supported resource types are <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>
+and any of the resource types that emerge from configuring a node with
+the mixed MIG strategy.</p>
+</section>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.</p></li>
+<li><p>The Operator does not monitor changes to a time-slicing config map.
+Refer to <a class="reference internal" href="#time-slicing-update-config-map"><span class="std std-ref">Updating a Time-Slicing Config Map</span></a>.</p></li>
+</ul>
+</section>
+<section id="changes-to-node-labels">
+<h3>Changes to Node Labels<a class="headerlink" href="#changes-to-node-labels" title="Permalink to this headline"></a></h3>
+<p>In addition to the standard node labels that GPU Feature Discovery (GFD)
+applies to nodes, the following label is also applied after you configure
+GPU time-slicing for a node:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/&lt;resource-name&gt;.replicas = &lt;replicas-count&gt;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;replicas-count&gt;</span></code> is the factor by which each resource of <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;</span></code> is oversubscribed.</p>
+<p>Additionally, by default, the <code class="docutils literal notranslate"><span class="pre">nvidia.com/&lt;resource-name&gt;.product</span></code> label is modified:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/&lt;resource-name&gt;.product = &lt;product-name&gt;-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For example, on an NVIDIA DGX A100 machine, depending on the time-slicing configuration,
+the labels can be similar to the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.replicas = 8</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.product = A100-SXM4-40GB-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Using these labels, you can request time-sliced access to a GPU or exclusive access to a GPU
+in the same way that you traditionally specify a node selector to request one GPU model over another.
+That is, the <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> product name suffix ensures that you can specify a
+node selector to assign pods to nodes with time-sliced GPUs.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">migStrategy</span></code> configuration option has an effect on the node label for the product name.
+When <code class="docutils literal notranslate"><span class="pre">renameByDefault=false</span></code>, the default value, and <code class="docutils literal notranslate"><span class="pre">migStrategy=single</span></code>, both the MIG profile name
+and the <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix are appended to the product name, such as the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.product = A100-SXM4-40GB-MIG-1g.5gb-SHARED</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you set <code class="docutils literal notranslate"><span class="pre">renameByDefault=true</span></code>, then the value of the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> node
+label is not modified.</p>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline"></a></h2>
+<section id="about-configuring-gpu-time-slicing">
+<h3>About Configuring GPU Time-Slicing<a class="headerlink" href="#about-configuring-gpu-time-slicing" title="Permalink to this headline"></a></h3>
+<p>You configure GPU time-slicing by performing the following high-level steps:</p>
+<ul class="simple">
+<li><p>Add a config map to the namespace that is used by the GPU operator.</p></li>
+<li><p>Configure the cluster policy so that the device plugin uses the config map.</p></li>
+<li><p>Apply a label to the nodes that you want to configure for GPU time-slicing.</p></li>
+</ul>
+<p>On a machine with one GPU, the following config map configures Kubernetes so that
+the node advertises four GPU resources.
+A machine with two GPUs advertises eight GPUs, and so on.</p>
+<p class="rubric">Sample Config Map</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-config</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">any</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">flags:</span><span class="w"></span>
+<span class="w">      </span><span class="no">migStrategy: none</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">renameByDefault: false</span><span class="w"></span>
+<span class="w">        </span><span class="no">failRequestsGreaterThanOne: false</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 4</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The following table describes the key fields in the config map.</p>
+<table class="colwidths-given docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 10%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">data.&lt;key&gt;</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies the time-slicing configuration name.</p>
+<p>You can specify multiple configurations if you want to assign node-specific configurations.
+In the preceding example, the value for <code class="docutils literal notranslate"><span class="pre">key</span></code> is <code class="docutils literal notranslate"><span class="pre">any</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">flags.migStrategy</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies how to label MIG devices for the nodes that receive the time-slicing configuration.
+Specify one of <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">single</span></code>, or <code class="docutils literal notranslate"><span class="pre">mixed</span></code>.</p>
+<p>The default value is <code class="docutils literal notranslate"><span class="pre">none</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, each resource is advertised under the name <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;.shared</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;</span></code>.</p>
+<p>For example, if this field is set to <code class="docutils literal notranslate"><span class="pre">true</span></code> and the resource is typically <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>,
+the nodes that are configured for time-sliced GPU access then advertise the resource as
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.shared</span></code>.
+Setting this field to true can be helpful if you want to schedule pods on GPUs with shared
+access by specifying <code class="docutils literal notranslate"><span class="pre">&lt;resource-name&gt;.shared</span></code> in the resource request.</p>
+<p>When this field is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the advertised resource name, such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>,
+is not modified.
+However, label for the product name is suffixed with <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code>.
+For example, if the output of <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">node</span></code> shows the node label
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product=Tesla-T4</span></code>, then after the node is configured for time-sliced
+GPU access, the label becomes <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product=Tesla-T4-SHARED</span></code>.
+In this case, you can specify a node selector that includes the <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix to
+schedule pods on GPUs with shared access.</p>
+<p>The default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">failRequestsGreaterThanOne</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>The purpose of this field is to enforce awareness that requesting more than one GPU replica does not
+result in receiving more proportional access to the GPU.</p>
+<p>For example, if <code class="docutils literal notranslate"><span class="pre">4</span></code> GPU replicas are available and two pods request <code class="docutils literal notranslate"><span class="pre">1</span></code> GPU each and a third pod
+requests <code class="docutils literal notranslate"><span class="pre">2</span></code> GPUs, the applications in the three pods have an equal share of GPU compute time.
+Specifically, the pod that requests <code class="docutils literal notranslate"><span class="pre">2</span></code> GPUs does not receive twice as much compute time as the pods
+that request <code class="docutils literal notranslate"><span class="pre">1</span></code> GPU.</p>
+<p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, a resource request for more than one GPU fails with an <code class="docutils literal notranslate"><span class="pre">UnexpectedAdmissionError</span></code>.
+In this case, you must manually delete the pod, update the resource request, and redeploy.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">resources.name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Specifies the resource type to make available with time-sliced access, such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>,
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-1g.5gb</span></code>, and so on.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resources.replicas</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>Specifies the number of time-sliced GPU replicas to make available for shared access to GPUs of the
+specified resource type.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="applying-one-cluster-wide-configuration">
+<span id="time-slicing-cluster-wide-config"></span><h3>Applying One Cluster-Wide Configuration<a class="headerlink" href="#applying-one-cluster-wide-configuration" title="Permalink to this headline"></a></h3>
+<p>Perform the following steps to configure GPU time-slicing if you already installed the GPU operator
+and want to apply the same time-slicing configuration on all nodes in the cluster.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">time-slicing-config-all.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-config-all</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">any</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">flags:</span><span class="w"></span>
+<span class="w">      </span><span class="no">migStrategy: none</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 4</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the config map to the same namespace as the GPU operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -n gpu-operator -f time-slicing-config-all.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Configure the device plugin with the config map and set the default time-slicing configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    -n gpu-operator --type merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;time-slicing-config-all&quot;, &quot;default&quot;: &quot;any&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST SEEN   TYPE      REASON             OBJECT                                     MESSAGE</span>
+<span class="go">33s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container toolkit-validation</span>
+<span class="go">33s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container toolkit-validation</span>
+<span class="go">33s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container toolkit-validation</span>
+<span class="go">33s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container toolkit-validation</span>
+<span class="go">33s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1&quot; already present on machine</span>
+<span class="go">33s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1&quot; already present on machine</span>
+<span class="go">32s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager-init</span>
+<span class="go">32s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">32s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">32s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager-init</span>
+<span class="go">32s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager-init</span>
+<span class="go">32s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager-init</span>
+<span class="go">31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager</span>
+<span class="go">31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container gpu-feature-discovery</span>
+<span class="go">31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container gpu-feature-discovery</span>
+<span class="go">31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/gpu-feature-discovery:v0.7.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager</span>
+<span class="go">31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager</span>
+<span class="go">31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container nvidia-device-plugin</span>
+<span class="go">31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container nvidia-device-plugin</span>
+<span class="go">31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Refer to <a class="reference internal" href="#time-slicing-verify"><span class="std std-ref">Verifying the GPU Time-Slicing Configuration</span></a>.</p>
+</section>
+<section id="applying-multiple-node-specific-configurations">
+<span id="time-slicing-node-specific-config"></span><h3>Applying Multiple Node-Specific Configurations<a class="headerlink" href="#applying-multiple-node-specific-configurations" title="Permalink to this headline"></a></h3>
+<p>An alternative to applying one cluster-wide configuration is to specify multiple
+time-slicing configurations in the config map and to apply labels node-by-node to
+control which configuration is applied to which nodes.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">time-slicing-config-fine.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-config-fine</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">a100-40gb</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">flags:</span><span class="w"></span>
+<span class="w">      </span><span class="no">migStrategy: mixed</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 8</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/mig-1g.5gb</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 2</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/mig-2g.10gb</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 2</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/mig-3g.20gb</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 3</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/mig-7g.40gb</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 7</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tesla-t4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">flags:</span><span class="w"></span>
+<span class="w">      </span><span class="no">migStrategy: none</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="no">replicas: 4</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the config map to the same namespace as the GPU operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -n gpu-operator -f time-slicing-config-fine.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Configure the device plugin with the config map and set the default time-slicing configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    -n gpu-operator --type merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;time-slicing-config-fine&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+<p>Because the specification does not include the <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.default</span></code> field,
+when the device plugin pods redeploy, they do not automatically apply the time-slicing
+configuration to all nodes.</p>
+</li>
+<li><p>Optional: Confirm that the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> and
+<code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pods restart.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST SEEN   TYPE      REASON             OBJECT                                     MESSAGE</span>
+<span class="go">33s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container toolkit-validation</span>
+<span class="go">33s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container toolkit-validation</span>
+<span class="go">33s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container toolkit-validation</span>
+<span class="go">33s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container toolkit-validation</span>
+<span class="go">33s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1&quot; already present on machine</span>
+<span class="go">33s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1&quot; already present on machine</span>
+<span class="go">32s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager-init</span>
+<span class="go">32s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">32s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">32s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager-init</span>
+<span class="go">32s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager-init</span>
+<span class="go">32s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager-init</span>
+<span class="go">31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container config-manager</span>
+<span class="go">31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container gpu-feature-discovery</span>
+<span class="go">31s         Normal    Created            pod/gpu-feature-discovery-rvlg9            Created container gpu-feature-discovery</span>
+<span class="go">31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/gpu-feature-discovery:v0.7.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container config-manager</span>
+<span class="go">31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container config-manager</span>
+<span class="go">31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/nvidia-device-plugin-daemonset-cffds   Started container nvidia-device-plugin</span>
+<span class="go">31s         Normal    Created            pod/nvidia-device-plugin-daemonset-cffds   Created container nvidia-device-plugin</span>
+<span class="go">31s         Normal    Pulled             pod/nvidia-device-plugin-daemonset-cffds   Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Pulled             pod/gpu-feature-discovery-rvlg9            Container image &quot;nvcr.io/nvidia/k8s-device-plugin:v0.13.0-ubi8&quot; already present on machine</span>
+<span class="go">31s         Normal    Started            pod/gpu-feature-discovery-rvlg9            Started container config-manager</span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply a label to the nodes by running one or more of the following commands:</p>
+<ul>
+<li><p>Apply a label to nodes one-by-one by specifying the node name:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/device-plugin.config<span class="o">=</span>tesla-t4
+</pre></div>
+</div>
+</li>
+<li><p>Apply a label to several nodes at one time by specifying a label selector:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="se">\</span>
+    --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4 <span class="se">\</span>
+    nvidia.com/device-plugin.config<span class="o">=</span>tesla-t4
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<p>Refer to <a class="reference internal" href="#time-slicing-verify"><span class="std std-ref">Verifying the GPU Time-Slicing Configuration</span></a>.</p>
+</section>
+<section id="configuring-time-slicing-before-installing-the-nvidia-gpu-operator">
+<h3>Configuring Time-Slicing Before Installing the NVIDIA GPU Operator<a class="headerlink" href="#configuring-time-slicing-before-installing-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h3>
+<p>You can enable time-slicing with the NVIDIA GPU Operator by passing the
+<code class="docutils literal notranslate"><span class="pre">devicePlugin.config.name=&lt;config-map-name&gt;</span></code> parameter during installation.</p>
+<p>Perform the following steps to configure time-slicing before installing the operator:</p>
+<ol class="arabic">
+<li><p>Create the namespace for the operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">time-slicing-config.yaml</span></code>, with the config map contents.</p>
+<p>Refer to the <a class="reference internal" href="#time-slicing-cluster-wide-config"><span class="std std-ref">Applying One Cluster-Wide Configuration</span></a> or
+<a class="reference internal" href="#time-slicing-node-specific-config"><span class="std std-ref">Applying Multiple Node-Specific Configurations</span></a> sections.</p>
+</li>
+<li><p>Add the config map to the same namespace as the GPU operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f time-slicing-config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Install the operator with Helm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
+    -n gpu-operator <span class="se">\</span>
+    --set devicePlugin.config.name<span class="o">=</span>time-slicing-config
+</pre></div>
+</div>
+</li>
+<li><p>Refer to either <a class="reference internal" href="#time-slicing-cluster-wide-config"><span class="std std-ref">Applying One Cluster-Wide Configuration</span></a> or
+<a class="reference internal" href="#time-slicing-node-specific-config"><span class="std std-ref">Applying Multiple Node-Specific Configurations</span></a> and perform the following tasks:</p>
+<ul class="simple">
+<li><p>Configure the device plugin by running the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">patch</span></code> command.</p></li>
+<li><p>Apply labels to nodes if you added a config map with node-specific configurations.</p></li>
+</ul>
+</li>
+</ol>
+<p>After installation, refer to <a class="reference internal" href="#time-slicing-verify"><span class="std std-ref">Verifying the GPU Time-Slicing Configuration</span></a>.</p>
+</section>
+<section id="updating-a-time-slicing-config-map">
+<span id="time-slicing-update-config-map"></span><h3>Updating a Time-Slicing Config Map<a class="headerlink" href="#updating-a-time-slicing-config-map" title="Permalink to this headline"></a></h3>
+<p>The Operator does not monitor the time-slicing config maps.
+As a result, if you modify a config map, the device plugin pods do not restart and do not apply the modified configuration.</p>
+<p>To apply the modified config map, manually restart the device plugin pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-daemonset
+</pre></div>
+</div>
+<p>Currently running workloads are not affected and continue to run, though NVIDIA recommends performing the restart during a maintenance period.</p>
+</section>
+</section>
+<section id="verifying-the-gpu-time-slicing-configuration">
+<span id="time-slicing-verify"></span><h2>Verifying the GPU Time-Slicing Configuration<a class="headerlink" href="#verifying-the-gpu-time-slicing-configuration" title="Permalink to this headline"></a></h2>
+<p>Perform the following steps to verify that the time-slicing configuration is applied successfully:</p>
+<ol class="arabic">
+<li><p>Confirm that the node advertises additional GPU resources:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt;
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<p>The example output varies according to the GPU in your node and the configuration
+that you apply.</p>
+<p>The following output applies when <code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>,
+the default value.
+The key considerations are as follows:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count</span></code> label reports the number of physical GPUs in the machine.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> label includes a <code class="docutils literal notranslate"><span class="pre">-SHARED</span></code> suffix to the product name.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.replicas</span></code> label matches the reported capacity.</p></li>
+</ul>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">Labels:</span>
+<span class="hll"><span class="go">                  nvidia.com/gpu.count=4</span>
+</span><span class="hll"><span class="go">                  nvidia.com/gpu.product=Tesla-T4-SHARED</span>
+</span><span class="hll"><span class="go">                  nvidia.com/gpu.replicas=4</span>
+</span><span class="go">Capacity:</span>
+<span class="hll"><span class="go">  nvidia.com/gpu: 16</span>
+</span><span class="go">  ...</span>
+<span class="go">Allocatable:</span>
+<span class="go">  nvidia.com/gpu: 16</span>
+<span class="go">  ...</span>
+</pre></div>
+</div>
+<p>The following output applies when <code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+The key considerations are as follows:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count</span></code> label reports the number of physical GPUs in the machine.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> capacity reports <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.shared</span></code> capacity equals the number of physical GPUs multiplied by the
+specified number of GPU replicas to create.</p></li>
+</ul>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">Labels:</span>
+<span class="hll"><span class="go">                  nvidia.com/gpu.count=4</span>
+</span><span class="go">                  nvidia.com/gpu.product=Tesla-T4</span>
+<span class="go">                  nvidia.com/gpu.replicas=4</span>
+<span class="go">Capacity:</span>
+<span class="hll"><span class="go">  nvidia.com/gpu:        0</span>
+</span><span class="hll"><span class="go">  nvidia.com/gpu.shared: 16</span>
+</span><span class="go">  ...</span>
+<span class="go">Allocatable:</span>
+<span class="go">  nvidia.com/gpu:        0</span>
+<span class="go">  nvidia.com/gpu.shared: 16</span>
+<span class="go">  ...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Deploy a workload to validate GPU time-slicing:</p>
+<ul>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">time-slicing-verification.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-verification</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-verification</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-verification</span><span class="w"></span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">time-slicing-verification</span><span class="w"></span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu</span><span class="w"></span>
+<span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
+<span class="w">          </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span><span class="w"></span>
+<span class="w">      </span><span class="nt">hostPID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-sample-vector-add</span><span class="w"></span>
+<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;/bin/bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">          </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">while true; do /cuda-samples/vectorAdd; done</span><span class="w"></span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">           </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">             </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the deployment with multiple replicas:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f time-slicing-verification.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Verify that all five replicas are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                         READY   STATUS    RESTARTS   AGE</span>
+<span class="go">time-slicing-verification-7cdc7f87c5-lkd9d   1/1     Running   0          23s</span>
+<span class="go">time-slicing-verification-7cdc7f87c5-rrzq7   1/1     Running   0          23s</span>
+<span class="go">time-slicing-verification-7cdc7f87c5-s8qwk   1/1     Running   0          23s</span>
+<span class="go">time-slicing-verification-7cdc7f87c5-xhmb7   1/1     Running   0          23s</span>
+<span class="go">time-slicing-verification-7cdc7f87c5-zsncp   1/1     Running   0          23s</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs from one of the pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs deploy/time-slicing-verification
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Found 5 pods, using pod/time-slicing-verification-7cdc7f87c5-s8qwk</span>
+<span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+<span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Stop the deployment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f time-slicing-verification.yaml
+</pre></div>
+</div>
+</li>
+</ul>
+<blockquote>
+<div><p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">deployment.apps &quot;time-slicing-verification&quot; deleted</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes">Blog post on GPU sharing in Kubernetes</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA Kubernetes Device Plugin</a> repository on GitHub.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpu-operator-mig.html" class="btn btn-neutral float-left" title="GPU Operator with MIG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-operator-rdma.html" class="btn btn-neutral float-right" title="GPUDirect RDMA and GPUDirect Storage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Sep 05, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
