@@ -371,9 +371,9 @@ Specify a space-separated string of values.</p></td>
 <p>Perform the following steps to install the Helm chart:</p>
 <ol class="arabic">
 <li><p>Label the nodes to run virtual machines in containers. Label only the nodes that you want to run with Kata Containers:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`console</span>
-<span class="pre">$</span> <span class="pre">kubectl</span> <span class="pre">label</span> <span class="pre">node</span> <span class="pre">&lt;node-name&gt;</span> <span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span>
-<span class="pre">`</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
+</pre></div>
+</div>
 </li>
 <li><p>Add and update the NVIDIA Helm repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
@@ -456,11 +456,11 @@ If you want to run Kata Containers by default on all worker nodes, also specify 
 <span class="go">gpu-operator-57bf5d5769-nb98z                                1/1     Running     0          6m21s</span>
 <span class="go">gpu-operator-node-feature-discovery-master-b44f595bf-5sjxg   1/1     Running     0          6m21s</span>
 <span class="go">gpu-operator-node-feature-discovery-worker-lwhdr             1/1     Running     0          6m21s</span>
-<span class="hll"><span class="go">nvidia-kata-manager-bw5mb                                    1/1     Running     0          3m36s</span>
-</span><span class="go">nvidia-sandbox-device-plugin-daemonset-cr4s6                 1/1     Running     0          2m37s</span>
+<span class="go">nvidia-kata-manager-bw5mb                                    1/1     Running     0          3m36s</span>
+<span class="go">nvidia-sandbox-device-plugin-daemonset-cr4s6                 1/1     Running     0          2m37s</span>
 <span class="go">nvidia-sandbox-validator-9wjm4                               1/1     Running     0          2m37s</span>
-<span class="hll"><span class="go">nvidia-vfio-manager-vg4wp                                    1/1     Running     0          3m36s</span>
-</span></pre></div>
+<span class="go">nvidia-vfio-manager-vg4wp                                    1/1     Running     0          3m36s</span>
+</pre></div>
 </div>
 </li>
 <li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime classes is available:</p>
@@ -518,17 +518,17 @@ If you want to run Kata Containers by default on all worker nodes, also specify 
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
 <span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
 <span class="hll"><span class="w">    </span><span class="nt">cdi.k8s.io/gpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvidia.com/pgpu=0&quot;</span><span class="w"></span>
-</span><span class="w">    </span><span class="nt">io.katacontainers.config.hypervisor.default_memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;16384&quot;</span><span class="w"></span>
-<span class="hll"><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-</span><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu</span><span class="w"></span>
-<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nt">io.katacontainers.config.hypervisor.default_memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;16384&quot;</span><span class="w"></span>
+</span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
 <span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="hll"><span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-</span><span class="w">        </span><span class="s">&quot;nvidia.com/GA102GL_A10&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-</pre></div>
+<span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">        </span><span class="s">&quot;nvidia.com/GA102GL_A10&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+</span></pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.default_memory</span></code> annotation starts the VM with 16 GB of memory.
 Modify the value to accommodate your workload.</p>
