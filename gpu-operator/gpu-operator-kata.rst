@@ -272,9 +272,9 @@ Perform the following steps to install the Helm chart:
 
 #. Label the nodes to run virtual machines in containers. Label only the nodes that you want to run with Kata Containers:
 
-   ```console
-   $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
-   ```
+   .. code-block:: console
+
+      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
 #. Add and update the NVIDIA Helm repository:
 
@@ -365,7 +365,6 @@ Verification
    *Example Output*
 
    .. code-block:: output
-      :emphasize-lines: 5,8
 
       NAME                                                         READY   STATUS      RESTARTS   AGE
       gpu-operator-57bf5d5769-nb98z                                1/1     Running     0          6m21s
@@ -438,7 +437,7 @@ A pod specification for a Kata container requires the following:
 #. Create a file, such as ``cuda-vectoradd-kata.yaml``, like the following example:
 
    .. code-block:: yaml
-      :emphasize-lines: 6,8,15
+      :emphasize-lines: 6,7,9,16
 
       apiVersion: v1
       kind: Pod
