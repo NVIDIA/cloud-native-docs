@@ -20,6 +20,62 @@
 Troubleshooting the NVIDIA GPU Operator
 #######################################
 
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
+****************************************************
+GPU Operator Validator: Failed to Create Pod Sandbox
+****************************************************
+
+.. rubric:: Issue
+   :class: h4
+
+On some occasions, the driver container is unable to unload the ``nouveau`` Linux kernel module.
+
+.. rubric:: Observation
+   :class: h4
+
+- Running ``kubectl describe pod -n gpu-operator -l app=nvidia-operator-validator`` includes the following event:
+
+  .. code-block:: console
+
+     Events:
+       Type     Reason                  Age                 From     Message
+       ----     ------                  ----                ----     -------
+       Warning  FailedCreatePodSandBox  8s (x21 over 9m2s)  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to get sandbox runtime: no runtime for "nvidia" is configured
+
+- Running one of the following commands on the node indicates that the ``nouveau`` Linux kernel module is loaded:
+
+  .. code-block:: console
+
+     $ lsmod | grep -i nouveau
+     $ dmesg | grep -i nouveau
+     $ journalctl -xb | grep -i nouveau
+
+.. rubric:: Root Cause
+   :class: h4
+
+The ``nouveau`` Linux kernel module is loaded and the driver container is unable to unload the module.
+Because the ``nouveau`` module is loaded, the driver container cannot load the ``nvidia`` module.
+
+.. rubric:: Action
+   :class: h4
+
+On each node, run the following commands to prevent loading the ``nouveau`` Linux kernel module on boot:
+
+.. code-block:: console
+
+   $ sudo tee /etc/modules-load.d/ipmi.conf <<< "ipmi_msghandler" \
+       && sudo tee /etc/modprobe.d/blacklist-nouveau.conf <<< "blacklist nouveau" \
+       && sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <<< "options nouveau modeset=0"
+
+   $ sudo update-initramfs -u
+
+   $ sudo init 6
+
+
 *************************************
 GPU Operator Pods Stuck in Crash Loop
 *************************************
@@ -131,7 +187,7 @@ The output from the driver validation container indicates that the infoROM is co
         | N/A   42C    P0    29W / 250W |      0MiB / 16280MiB |      0%      Default |
         |                               |                      |                  N/A |
         +-------------------------------+----------------------+----------------------+
-                                                                                    
+
         +-----------------------------------------------------------------------------+
         | Processes:                                                                  |
         |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
