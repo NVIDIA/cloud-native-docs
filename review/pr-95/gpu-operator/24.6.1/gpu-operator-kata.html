@@ -192,15 +192,17 @@ Kata uses a hypervisor, like QEMU, to provide a lightweight virtual machine with
 </figcaption>
 </figure>
 <p>NVIDIA supports Kata Containers by using Helm to run a daemon set that installs the Kata runtime and QEMU.</p>
-<p>The daemon set runs the <cite>kata-deploy.sh</cite> script and configures each worker node with a runtime class, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>,
-and configures containerd for the runtime class.</p>
+<p>The daemon set runs the <code class="docutils literal notranslate"><span class="pre">kata-deploy.sh</span></code> script and configures each worker node with a runtime class, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>.</p>
 <section id="about-nvidia-kata-manager">
 <h3>About NVIDIA Kata Manager<a class="headerlink" href="#about-nvidia-kata-manager" title="Permalink to this headline"></a></h3>
 <p>When you configure the GPU Operator for Kata Containers, the Operator
 deploys NVIDIA Kata Manager as an operand.</p>
-<p>The manager downloads an NVIDIA optimized Linux kernel image and initial RAM disk that
-provides the lightweight operating system for the virtual machines that run in QEMU.
-These artifacts are downloaded from the NVIDIA container registry, nvcr.io, on each worker node.</p>
+<p>The manager performs the following actions on each node that is labeled to run Kata Containers:</p>
+<ul class="simple">
+<li><p>Configure containerd with the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class.</p></li>
+<li><p>Create a CDI specification, <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/nvidia.com-pgpu.yaml</span></code>, for each GPU on the node.</p></li>
+<li><p>Loads the vhost-sock and vhost-net Linux kernel modules.</p></li>
+</ul>
 </section>
 </section>
 <section id="benefits-of-using-kata-containers">
@@ -224,8 +226,8 @@ Multi-GPU passthrough and vGPU are not supported.</p></li>
 Upgrade and configuration of existing clusters for Kata Containers is not supported.</p></li>
 <li><p>Support for Kata Containers is limited to the implementation described on this page.
 The Operator does not support Red Hat OpenShift sandbox containers.</p></li>
-<li><p>Uninstalling the GPU Operator or the NVIDIA Kata Manager does not remove the files
-that the manager downloads and installs in the <code class="docutils literal notranslate"><span class="pre">/opt/nvidia-gpu-operator/artifacts/runtimeclasses/kata-qemu-nvidia-gpu/</span></code>
+<li><p>Uninstalling the GPU Operator or the NVIDIA Kata Manager does not remove the
+<code class="docutils literal notranslate"><span class="pre">/opt/nvidia-gpu-operator/artifacts/runtimeclasses/</span></code>
 directory on the worker nodes.</p></li>
 <li><p>NVIDIA supports the Operator and Kata Containers with the containerd runtime only.</p></li>
 </ul>
@@ -263,7 +265,7 @@ NVIDIA optimized Linux kernel image and initial RAM disk.</p></li>
 With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
 Enabling these features is typically performed by configuring the host BIOS.</p></li>
 <li><p>Your hosts are configured to support IOMMU.</p>
-<p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/sys/kernel/iommu_groups</span></code> includes a value greater than <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+<p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-1</span> <span class="pre">/sys/kernel/iommu_groups</span> <span class="pre">|</span> <span class="pre">wc</span> <span class="pre">-l</span></code> includes a value greater than <code class="docutils literal notranslate"><span class="pre">0</span></code>,
 then your host is configured for IOMMU.</p>
 <p>If a host is not configured or you are unsure, add the <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> Linux kernel command-line argument.
 For most Linux distributions, you add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file:</p>
@@ -322,7 +324,7 @@ Specify a space-separated string of values such as <code class="docutils literal
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.createRuntimeClasses</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy.sh</span></code> script installs the runtime classes on the nodes.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.createDefaultRuntimeClass</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy.sh</span></code> script sets the runtime class specified in the <code class="docutils literal notranslate"><span class="pre">defaultShim</span></code> field as the default Kata runtime class.</p></td>
@@ -335,14 +337,17 @@ Specify a space-separated string of values such as <code class="docutils literal
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.defaultShim</span></code></p></td>
 <td><p>Specifies the shim to set as the default Kata runtime class.
 This field is ignored unless you specify <code class="docutils literal notranslate"><span class="pre">createDefaultRuntimeClass:</span> <span class="pre">true</span></code>.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">qemu-nvidia-gpu</span></code></p></td>
+<td><p>None</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.imagePullPolicy</span></code></p></td>
 <td><p>Specifies the image pull policy for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> container.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Always</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.k8sDistribution</span></code></p></td>
-<td><p>FIXME</p></td>
+<td><p>Specifies the Kubernetes platform.
+The Helm chart uses the value to set the platform-specific location of the containerd configuration file.</p>
+<p>Supported values are <code class="docutils literal notranslate"><span class="pre">k8s</span></code>, <code class="docutils literal notranslate"><span class="pre">k3s</span></code>, <code class="docutils literal notranslate"><span class="pre">rke2</span></code>, and <code class="docutils literal notranslate"><span class="pre">k0s</span></code>.</p>
+</td>
 <td><p><code class="docutils literal notranslate"><span class="pre">k8s</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataDeploy.repository</span></code></p></td>
@@ -365,23 +370,29 @@ Specify a space-separated string of values.</p></td>
 <h2>Install the Kata Deploy Helm Chart<a class="headerlink" href="#install-the-kata-deploy-helm-chart" title="Permalink to this headline"></a></h2>
 <p>Perform the following steps to install the Helm chart:</p>
 <ol class="arabic">
+<li><p>Label the nodes to run virtual machines in containers. Label only the nodes that you want to run with Kata Containers:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`console</span>
+<span class="pre">$</span> <span class="pre">kubectl</span> <span class="pre">label</span> <span class="pre">node</span> <span class="pre">&lt;node-name&gt;</span> <span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span>
+<span class="pre">`</span></code></p>
+</li>
 <li><p>Add and update the NVIDIA Helm repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
    <span class="o">&amp;&amp;</span> helm repo update
 </pre></div>
 </div>
 </li>
-<li><p>Specify at least the following options when you install the chart.</p>
+<li><p>Specify at least the following options when you install the chart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
    -n kube-system <span class="se">\</span>
-   nvidia/kata-deploy
+   nvidia/kata-deploy <span class="se">\</span>
+   --set kataDeploy.createRuntimeClasses<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 </li>
 <li><p>Optional: Verify the installation.</p>
 <ul>
 <li><p>Confirm the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> containers are running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kube-system -l FIXME
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kube-system -l <span class="nv">name</span><span class="o">=</span>kata-deploy
 </pre></div>
 </div>
 </li>
@@ -390,7 +401,8 @@ Specify a space-separated string of values.</p></td>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">FIXME</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                   HANDLER                AGE</span>
+<span class="go">kata-qemu-nvidia-gpu   kata-qemu-nvidia-gpu   23s</span>
 </pre></div>
 </div>
 </li>
@@ -416,7 +428,8 @@ If you want to run Kata Containers by default on all worker nodes, also specify 
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
    --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-   --set kataManager.enabled<span class="o">=</span><span class="nb">true</span>
+   --set kataManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+   --set kataManager.config.runtimeClasses<span class="o">=</span>null
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -450,28 +463,18 @@ If you want to run Kata Containers by default on all worker nodes, also specify 
 </span></pre></div>
 </div>
 </li>
-<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes are available:</p>
+<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime classes is available:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                       HANDLER                    AGE</span>
-<span class="go">kata                       kata                       37m</span>
-<span class="go">kata-clh                   kata-clh                   37m</span>
-<span class="go">kata-clh-tdx               kata-clh-tdx               37m</span>
-<span class="go">kata-qemu                  kata-qemu                  37m</span>
-<span class="hll"><span class="go">kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       96s</span>
-</span><span class="hll"><span class="go">kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   96s</span>
-</span><span class="go">kata-qemu-sev              kata-qemu-sev              37m</span>
-<span class="go">kata-qemu-snp              kata-qemu-snp              37m</span>
-<span class="go">kata-qemu-tdx              kata-qemu-tdx              37m</span>
+<span class="go">kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       96s</span>
 <span class="go">nvidia                     nvidia                     97s</span>
 </pre></div>
 </div>
 </li>
-<li><p>Optional: If you have host access to the worker node, you can perform the following steps:</p>
-<ol class="arabic">
-<li><p>Confirm that the host uses the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> device driver for GPUs:</p>
+<li><p>Optional: If you have host access to the worker node, confirm that the host uses the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> device driver for GPUs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
 </pre></div>
 </div>
@@ -482,20 +485,6 @@ If you want to run Kata Containers by default on all worker nodes, also specify 
 </span><span class="go">        Kernel modules: nvidiafb, nouveau</span>
 </pre></div>
 </div>
-</li>
-<li><p>Confirm that NVIDIA Kata Manager installed the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class files:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -1 /opt/nvidia-gpu-operator/artifacts/runtimeclasses/kata-qemu-nvidia-gpu/
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">configuration-nvidia-gpu-qemu.toml</span>
-<span class="go">kata-ubuntu-jammy-nvidia-gpu.initrd</span>
-<span class="go">vmlinuz-5.xx.x-xxx-nvidia-gpu</span>
-<span class="go">...</span>
-</pre></div>
-</div>
-</li>
-</ol>
 </li>
 </ol>
 </section>
@@ -645,7 +634,7 @@ is bound to the VFIO PCI driver:</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 04, 2024.
+      <span class="lastupdated">Last updated on Sep 10, 2024.
       </span></p>
 
   </div>
