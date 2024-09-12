@@ -90,7 +90,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA GPU Driver
      - | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
-       | `550.90.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-07/index.html>`_ (recommended),
+       | `550.90.12 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-12/index.html>`_ (recommended),
        | `550.54.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-54-15/index.html>`_ (default),
        | `535.183.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-183-01/index.html>`_
 
