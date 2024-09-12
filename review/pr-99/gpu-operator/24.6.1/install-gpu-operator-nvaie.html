@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NVIDIA AI Enterprise &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPU Operator with MIG" href="gpu-operator-mig.html" />
+    <link rel="prev" title="Using NVIDIA vGPU" href="install-gpu-operator-vgpu.html" />
+ 
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+<a href="index.html">
+  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+</a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>NVIDIA AI Enterprise</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nvidia-ai-enterprise">
+<span id="install-gpu-operator-nvaie"></span><h1>NVIDIA AI Enterprise<a class="headerlink" href="#nvidia-ai-enterprise" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-nvidia-ai-enterprise-and-supported-platforms" id="id2">About NVIDIA AI Enterprise and Supported Platforms</a></p></li>
+<li><p><a class="reference internal" href="#installing-gpu-operator-using-the-vgpu-driver" id="id3">Installing GPU Operator Using the vGPU Driver</a></p>
+<ul>
+<li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#procedure" id="id5">Procedure</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#updating-nls-client-license-token" id="id6">Updating NLS Client License Token</a></p></li>
+<li><p><a class="reference internal" href="#installing-gpu-operator-using-the-data-center-driver" id="id7">Installing GPU Operator Using the Data Center Driver</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id8">Related Information</a></p></li>
+</ul>
+</div>
+<section id="about-nvidia-ai-enterprise-and-supported-platforms">
+<h2>About NVIDIA AI Enterprise and Supported Platforms<a class="headerlink" href="#about-nvidia-ai-enterprise-and-supported-platforms" title="Permalink to this headline"></a></h2>
+<p>NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.</p>
+<p>Deploying the GPU Operator with NVIDIA AI Enterprise offers two installation options.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>vGPU Guest Driver</p></th>
+<th class="head"><p>Data Center Driver</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Uses a a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers.</p>
+<p>It is configured to use the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/">NVIDIA License System (NLS)</a>.
+Installations on virtualization platforms must use the vGPU driver installation.</p>
+<p>Installation is performed by downloading a Bash script from NVIDIA NGC and running the script.</p>
+</td>
+<td><p>Uses the GPU Operator Helm chart that is publicly available and GPU driver containers that are publicly available.</p>
+<p>You must determine the supported driver branch, such as 550, for your NVIDIA AI Enterprise release.</p>
+<p>Installation is performed by running the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For information about supported platforms, hypervisors, and operating systems, refer to the
+<a class="reference external" href="https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html">Product Support Matrix</a>
+in the NVIDIA AI Enterprise documentation.</p>
+<p>For information about using vGPU with Red Hat OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA AI Enterprise with OpenShift</span></a>.</p>
+</section>
+<section id="installing-gpu-operator-using-the-vgpu-driver">
+<h2>Installing GPU Operator Using the vGPU Driver<a class="headerlink" href="#installing-gpu-operator-using-the-vgpu-driver" title="Permalink to this headline"></a></h2>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>A client configuration token has been generated for the client on which the script will install the vGPU guest driver.
+Refer to <a class="reference external" href="https://docs.nvidia.com/license-system/latest/nvidia-license-system-user-guide/index.html#generating-client-configuration-token">Generating a Client Configuration Token</a>
+in the <em>NVIDIA License System User Guide</em> for more information.</p></li>
+<li><p>An NGC CLI API key that is used to create an image pull secret.
+The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
+Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key">Generating Your NGC API Key</a>
+in the <em>NVIDIA NGC Private Registry User Guide</em> for more information.</p></li>
+</ul>
+</section>
+<section id="procedure">
+<h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h3>
+<ol class="arabic">
+<li><p>Export the NGC CLI API key and your email address as environment variables:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NGC_API_KEY</span><span class="o">=</span><span class="s2">&quot;M2Vub3QxYmgyZ...&quot;</span>
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">NGC_USER_EMAIL</span><span class="o">=</span><span class="s2">&quot;user@example.com&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Go to the
+<a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5">NVIDIA GPU Operator - Deploy Installer Script</a>
+web page on NVIDIA NGC.</p>
+<p>Click the <strong>File Browser</strong> tab, identify your NVIDIA AI Enterprise release, click <a class="reference internal" href="https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg"><img alt="Actions button" height="14px" src="https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg" width="14px" /></a>, and select <strong>Download File</strong>.</p>
+<p>Copy the downloaded script to the same directory as the client configuration token.</p>
+</li>
+<li><p>Rename the client configuration token that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.
+Originally, the client configuration token is named to match the pattern: <code class="docutils literal notranslate"><span class="pre">client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok</span></code>.</p></li>
+<li><p>From the directory that contains the downloaded script and the client configuration token, run the script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bash gpu-operator-nvaie.sh install
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="updating-nls-client-license-token">
+<h2>Updating NLS Client License Token<a class="headerlink" href="#updating-nls-client-license-token" title="Permalink to this headline"></a></h2>
+<p>In case the NLS client license token needs to be updated, please use the following procedure:</p>
+<p>Create an empty vGPU license configuration file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo touch gridd.conf
+</pre></div>
+</div>
+<p>Generate and download a new NLS client license token. Please refer to Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NLS User Guide</a> for instructions.</p>
+<p>Rename the NLS client license token that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.</p>
+<p>Create a new <code class="docutils literal notranslate"><span class="pre">licensing-config-new</span></code> ConfigMap object in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace (make sure the name of the configmap is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this ConfigMap:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config-new <span class="se">\</span>
+    -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>&lt;path&gt;/client_configuration_token.tok
+</pre></div>
+</div>
+<p>Edit the clusterpolicies by using the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl edit clusterpolicies.nvidia.com
+</pre></div>
+</div>
+<p>Go to the driver section and replace the following argument:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">licensingConfig:</span>
+<span class="go">    configMapName: licensing-config</span>
+</pre></div>
+</div>
+<p>with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">licensingConfig:</span>
+<span class="go">    configMapName: licensing-config-new</span>
+</pre></div>
+</div>
+<p>Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)</p>
+<p>GPU Operator sequentially redeploys all the driver pods with this new licensing information.</p>
+</section>
+<section id="installing-gpu-operator-using-the-data-center-driver">
+<h2>Installing GPU Operator Using the Data Center Driver<a class="headerlink" href="#installing-gpu-operator-using-the-data-center-driver" title="Permalink to this headline"></a></h2>
+<p>This installation method is available for bare metal clusters or any cluster that does not use virtualization.</p>
+<p>You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
+The following list summarizes the driver branches for each release.</p>
+<ul class="simple">
+<li><p>v5.x: 550 branch</p></li>
+<li><p>v4.x: 535 branch</p></li>
+<li><p>v3.x: 525 branch</p></li>
+<li><p>v1.x: 470 branch</p></li>
+</ul>
+<p>For newer releases, you can confirm the the supported driver branch by performing the following steps:</p>
+<ol class="arabic">
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#release-documentation">release documentation</a>
+for NVIDIA AI Enterprise and access the documentation for your release.</p></li>
+<li><p>In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.</p>
+<p>For example, the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software">Supported Hardware and Software</a> for the 5.1 release
+indicates that the release uses the 550.90.07 version of the Linux driver.</p>
+</li>
+<li><p>Refer to <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> to identify the recommended driver version that uses the same driver branch, 550, in this case.</p></li>
+</ol>
+<p>After identifying the correct driver version, refer to <a class="reference internal" href="getting-started.html#install-gpu-operator"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> to install the Operator by using Helm.</p>
+</section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/">NVIDIA AI Enterprise</a> web page.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install-gpu-operator-vgpu.html" class="btn btn-neutral float-left" title="Using NVIDIA vGPU" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-operator-mig.html" class="btn btn-neutral float-right" title="GPU Operator with MIG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Sep 12, 2024.
+      </span></p>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+ 
+
+
+
+</body>
+</html>
