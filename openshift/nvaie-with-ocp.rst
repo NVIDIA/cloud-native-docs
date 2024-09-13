@@ -113,8 +113,11 @@ Create the NGC secret
 OpenShift has a secret object type which provides a mechanism for holding sensitive information such as passwords and private source repository credentials. Next you will create a secret object for storing our NGC API key (the mechanism used to authenticate your access to the
 NGC container registry).
 
-.. note:: Before you begin you will need to generate or use an existing `API key <https://docs.nvidia.com/ngc/ngc-private-registry-user-guide/index.html#generating-api-key>`_.
+.. note::
 
+   Before you begin, have or generate an NGC API key.
+   Refer to `Generating NGC API Keys <https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key>`__
+   in *NVIDIA NGC Private Registry Guide* for more information.
 
 #. Navigate to **Home** > **Projects** and ensure the ``nvidia-gpu-operator`` is selected.
 
@@ -132,13 +135,13 @@ NGC container registry).
 
     * **Authentication type**: Image registry credentials
 
-    * **Registry server address**: nvcr.io/nvaie
+    * **Registry server address**: ``nvcr.io/nvidia/vgpu``
 
-    * **Username**: $oauthtoken
+    * **Username**: ``$oauthtoken``
 
-    * **Password**: <API-KEY>
+    * **Password**: ``<NGC-API-KEY>``
 
-    * **Email**: <YOUR-EMAIL>
+    * **Email**: ``<YOUR-EMAIL>``
 
    .. image:: graphics/secrets_2.png
 
@@ -163,36 +166,20 @@ Procedure
 
 #. Select the **Workloads** Drop Down menu.
 
-#. Select **ConfigMaps**.
+#. Select **ConfigMaps** and then click **Create ConfigMap**.
 
-#. Click **Create ConfigMap**.
+#. On the **Create ConfigMap** window, click **YAML view**.
 
-   .. image:: graphics/create_config_map1.png
-
-#. Enter the details for your ConfigMap.
+#. Enter the details for your config map.
 
    #. The ``name`` must be ``licensing-config``.
 
    #. Copy and paste the information for your NLS client token into the ``client_configuration_token.tok`` parameter.
 
+   .. image:: graphics/create_config_map1.png
+      :alt: Create ConfigMap window of the OpenShift Console.
+
 #. Click **Create**.
-
-   **Example output**
-
-   .. code-block:: yaml
-
-      kind: ConfigMap
-      apiVersion: v1
-      metadata:
-       name: licensing-config
-      data:
-       client_configuration_token.tok: >-
-        tJ8EKOD5-rN7sSUWyHKsrvVSgfRYucvKo-lg<SNIP>
-       gridd.conf: '# empty file'
-
-#. The created ConfigMap should resemble the following:
-
-   .. image:: graphics/create_config_maps2.png
 
 
 Create the Cluster Policy Instance
@@ -200,77 +187,71 @@ Create the Cluster Policy Instance
 
 Now create the cluster policy, which is responsible for maintaining policy resources to create pods in a cluster.
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
 
-#. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**.
+#. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**.
 
-   .. note:: The platform assigns the default name *gpu-cluster-policy*.
+   The console assigns the default name ``gpu-cluster-policy``.
 
-#. Expand the drop down for **NVIDIA GPU/vGPU Driver config** and then **licensingConfig.** In the text box labeled **configMapName,** enter the name of the licensing config map that was previously created (for example *licensing-config*). Check the **nlsEnabled** checkbox.
+#. Expand the drop down for **NVIDIA GPU/vGPU Driver config** and then **licensingConfig**.
+   In the **configMapName** field, enter the name of the licensing config map that you created previously, ``licensing-config``.
+   Select the **nlsEnabled** checkbox.
    Refer the screenshots for parameter examples and modify values accordingly.
-
-   .. note:: This was previously created in the previous section "Create the ConfigMap for NLS Token".
 
    .. image:: graphics/cluster_policy_1.png
 
    * **configMapName**: licensing-config
-   * **nlsEnabled**: Enabled
+   * **nlsEnabled**: nlsEnabled
+   * **enabled**: enabled
 
-#. Expand the rdma menu and check **enabled** if you want to deploy GPUDirect RDMA:
+#. Expand the **rdma** menu and select **enabled** if you want to deploy GPUDirect RDMA:
 
    .. image:: graphics/enable-gpu-direct-rdma.png
 
-#. Scroll down to specify repository path under the **NVIDIA GPU/vGPU Driver config** section. See the screenshot below for parameter examples and modify values accordingly.
+#. Scroll down to specify repository path under the **NVIDIA GPU/vGPU Driver config** section. See the screenshot below for parameter examples and modify values accordingly.
 
-   .. image:: graphics/createclusterpolicy2.png
+   .. image:: graphics/cluster-policy-repository.png
 
-   * **enabled**: Enabled
-   * **repository**: ``nvcr.io/nvaie``
+   * **repository**: ``nvcr.io/nvidia/vgpu``
 
-
-#. Scroll down further to image name and specifgy the NVIDIA vGPU driver version under the **NVIDIA GPU/vGPU Driver config** section.
+#. Scroll down further to image name and specify the NVIDIA vGPU driver version under the **NVIDIA GPU/vGPU Driver config** section.
 
    .. image:: graphics/createclusterpolicy3.png
 
-   * **version**: 525.60.13
-   * **image**: vgpu-guest-driver-3-0
+   * **version**: 550.90.07-rhcos4.15
+   * **image**: vgpu-guest-driver-5
 
-      .. note:: The above version and image are examples for NVIDIA AI Enterprise 3.0. Please update the vGPU driver version and image for the appropriate OpenShift Container Platform version.
+   The preceding version and image are examples for NVIDIA AI Enterprise 5.
+   Specify the vGPU driver version and image for the appropriate OpenShift Container Platform version.
 
-                * 4.9 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.9``
-                * 4.10 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.10``
-                * 4.11 is ``nvcr.io/nvaie/vgpu-guest-driver-3-0:525.60.13-rhcos4.11``
+   * 4.9 is ``vgpu-guest-driver-3-0:525.60.13-rhcos4.9``
+   * 4.10 is ``vgpu-guest-driver-3-0:525.60.13-rhcos4.10``
+   * 4.11 is ``vgpu-guest-driver-3-0:525.60.13-rhcos4.11``
 
-#. Expand the **Advanced configuration** menu and specify the imagePullSecret.
-
-   .. note:: This was previously created in the section "Create NGC secret".
+#. Expand the **Advanced configuration** menu and specify the image pull secret that you created earlier.
 
    .. image:: graphics/cluster_policy_4.png
 
-#. Click **Create**.
+#. Click **Create**.
 
-The GPU Operator proceeds to install all the required components to set up the NVIDIA GPUs in the OpenShift Container Platform cluster.
+The GPU Operator installs all the required components to set up the NVIDIA GPUs in the OpenShift Container Platform cluster.
 
-.. note:: Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take some time to finish.
+.. note:: Wait at least 10 to 20 minutes before performing troubleshooting because installation requires several minutes to complete.
 
-The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
+The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
 .. image:: graphics/cluster_policy_suceed.png
 
 
-Verify the ClusterPolicy installation from the CLI run:
+Verify the ClusterPolicy installation by running the following command that displays the node names and GPU counts:
 
    .. code-block:: console
 
       $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
 
-This lists each node and the number of GPUs.
-
-   **Example output**
+   *Example Output*
 
    .. code-block:: console
-
-      $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
 
         Node GPUs
 
