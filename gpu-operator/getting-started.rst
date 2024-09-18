@@ -501,35 +501,9 @@ CONTAINERD_SET_AS_DEFAULT
 Rancher Kubernetes Engine 2
 ===========================
 
-For Rancher Kubernetes Engine 2 (RKE2), set the following in the ``ClusterPolicy``.
-
-.. code-block:: yaml
-
-   toolkit:
-      env:
-      - name: CONTAINERD_CONFIG
-        value: /var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl
-      - name: CONTAINERD_SOCKET
-        value: /run/k3s/containerd/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: "true"
-
-These options can be passed to GPU Operator during install time as below.
-
-.. code-block:: console
-
-  helm install gpu-operator -n gpu-operator --create-namespace \
-    nvidia/gpu-operator $HELM_OPTIONS \
-      --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl \
-      --set toolkit.env[1].name=CONTAINERD_SOCKET \
-      --set toolkit.env[1].value=/run/k3s/containerd/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+For Rancher Kubernetes Engine 2 (RKE2), refer to
+`Deploy NVIDIA Operator <https://docs.rke2.io/advanced#deploy-nvidia-operator>`__
+in the RKE2 documentation.
 
 MicroK8s
 ========
