@@ -104,7 +104,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `0.16.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `3.3.7-3.5.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `3.3.8-3.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
      - v0.16.3
@@ -117,7 +117,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `0.8.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
 
    * - DCGM
-     - `3.3.7-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `3.3.8-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
      - v24.6.1

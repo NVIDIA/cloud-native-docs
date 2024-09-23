@@ -44,7 +44,11 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 New Features
 ------------
 
-* Added support for NVIDIA Container Toolkit v1.16.2.
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit v1.16.2.
+  - NVIDIA DCGM Exporter v3.3.8-3.6.0
+  - NVIDIA DCGM v3.3.8-1
 
 .. _v24.6.1:
 
