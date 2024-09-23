@@ -34,6 +34,18 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.6.2:
+
+24.6.2
+======
+
+.. _v24.6.2-new-features:
+
+New Features
+------------
+
+* Added support for NVIDIA Container Toolkit v1.16.2.
+
 .. _v24.6.1:
 
 24.6.1
