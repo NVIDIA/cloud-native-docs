@@ -347,6 +347,12 @@ In this scenario, the NVIDIA GPU driver is already installed on the worker nodes
         nvidia/gpu-operator \
         --set driver.enabled=false
 
+The preceding command prevents the Operator from installing the GPU driver on any nodes in the cluster.
+If any nodes in the cluster have the GPU driver pre-installed, the GPU driver pod detects the kernel and exits.
+The Operator proceeds to start other pods, such as the container toolkit pod.
+
+If all the nodes in the cluster have the GPU driver pre-installed, the Operator detects that all GPU driver pods exited and stops the GPU driver daemon set,
+regardless of the ``driver.enabled`` value.
 
 .. _preinstalled-drivers-and-toolkit:
 
