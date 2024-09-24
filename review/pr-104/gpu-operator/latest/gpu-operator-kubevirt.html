@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPU Operator with KubeVirt &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPU Operator with Kata Containers" href="gpu-operator-kata.html" />
+    <link rel="prev" title="Container Device Interface Support in the GPU Operator" href="cdi.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>GPU Operator with KubeVirt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gpu-operator-with-kubevirt">
+<span id="gpu-operator-kubevirt"></span><h1>GPU Operator with KubeVirt<a class="headerlink" href="#gpu-operator-with-kubevirt" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id2">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#assumptions-constraints-and-dependencies" id="id3">Assumptions, constraints, and dependencies</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#getting-started" id="id5">Getting Started</a></p>
+<ul>
+<li><p><a class="reference internal" href="#labeling-worker-nodes" id="id6">Labeling worker nodes</a></p></li>
+<li><p><a class="reference internal" href="#install-the-gpu-operator" id="id7">Install the GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#add-gpu-resources-to-kubevirt-cr" id="id8">Add GPU resources to KubeVirt CR</a></p></li>
+<li><p><a class="reference internal" href="#create-a-virtual-machine-with-gpu" id="id9">Create a virtual machine with GPU</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id10">vGPU Device Configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id11">Apply a New vGPU Device Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#building-the-nvidia-vgpu-manager-image" id="id12">Building the NVIDIA vGPU Manager image</a></p></li>
+</ul>
+</div>
+<section id="introduction">
+<span id="gpu-operator-kubevirt-introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h2>
+<p><a class="reference external" href="https://kubevirt.io/">KubeVirt</a> is a virtual machine management add-on to Kubernetes that allows you to run and manage virtual machines in a Kubernetes cluster. It eliminates the need to manage separate clusters for virtual machine and container workloads, as both can now coexist in a single Kubernetes cluster.</p>
+<p>Up until this point, the GPU Operator only provisioned worker nodes for running GPU-accelerated containers. Now, the GPU Operator can also be used to provision worker nodes for running GPU-accelerated virtual machines.</p>
+<p>The prerequisites needed for running containers and virtual machines with GPU(s) differs, with the primary difference being the drivers required. For example, the datacenter driver is needed for containers, the vfio-pci driver is needed for GPU passthrough, and the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#installing-configuring-grid-vgpu">NVIDIA vGPU Manager</a> is needed for creating vGPU devices.</p>
+<p>The GPU Operator can now be configured to deploy different software components on worker nodes depending on what GPU workload is configured to run on those nodes. Consider the following example.</p>
+<div class="line-block">
+<div class="line">Node A is configured to run containers.</div>
+<div class="line">Node B is configured to run virtual machines with Passthrough GPU.</div>
+<div class="line">Node C is configured to run virtual machines with vGPU.</div>
+</div>
+<p>Node A receives the following software components:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">Datacenter</span> <span class="pre">Driver</span></code> - to install the driver</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">Container</span> <span class="pre">Toolkit</span></code> - to ensure containers can properly access GPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">Kubernetes</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - to discover and advertise GPU resources to kubelet</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">DCGM</span> <span class="pre">and</span> <span class="pre">DCGM</span> <span class="pre">Exporter</span></code> - to monitor the GPU(s)</p></li>
+</ul>
+<p>Node B receives the following software components:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">VFIO</span> <span class="pre">Manager</span></code> - to load <cite>vfio-pci</cite> and bind it to all GPUs on the node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - to discover and advertise the passthrough GPUs to kubelet</p></li>
+</ul>
+<p>Node C receives the following software components:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Manager</span></code> - to install the driver</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Device</span> <span class="pre">Manager</span></code> - to create vGPU devices on the node</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - to discover and advertise the vGPU devices to kubelet</p></li>
+</ul>
+</section>
+<section id="assumptions-constraints-and-dependencies">
+<span id="gpu-operator-kubevirt-limitations"></span><h2>Assumptions, constraints, and dependencies<a class="headerlink" href="#assumptions-constraints-and-dependencies" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A GPU worker node can run GPU workloads of a particular type - containers, virtual machines with GPU Passthrough, or virtual machines with vGPU - but not a combination of any of them.</p></li>
+<li><p>The cluster admin or developer has knowledge about their cluster ahead of time, and can properly label nodes to indicate what types of GPU workloads they will run.</p></li>
+<li><p>Worker nodes running GPU accelerated virtual machines (with pGPU or vGPU) are assumed to be bare metal.</p></li>
+<li><p>The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.</p></li>
+<li><p>Users must manually add all passthrough GPU and vGPU resources to the <code class="docutils literal notranslate"><span class="pre">permittedDevices</span></code> list in the KubeVirt CR before assigning them to KubeVirt virtual machines. See the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt documentation</a> for more information.</p></li>
+<li><p>MIG-backed vGPUs are not supported.</p></li>
+</ul>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>The virtualization and IOMMU extensions (Intel VT-d or AMD IOMMU) are enabled in the BIOS.</p></li>
+<li><p>The host is booted with <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> on the kernel command line.</p></li>
+<li><p>If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu">NVIDIA vGPU Documentation</a> to ensure you have met all of the prerequisites for using NVIDIA vGPU.</p></li>
+<li><p>KubeVirt is installed in the cluster.</p></li>
+<li><p>Starting with KubeVirt v0.58.2 and v0.59.1, set the <code class="docutils literal notranslate"><span class="pre">DisableMDEVConfiguration</span></code> feature gate:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch kubevirt -n kubevirt kubevirt  --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;, &quot;value&quot;: &quot;DisableMDEVConfiguration&quot; }]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kubevirt.kubevirt.io/kubevirt patched</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline"></a></h2>
+<p>The high-level workflow for using the GPU Operator with KubeVirt is as follows:</p>
+<ol class="arabic simple">
+<li><p>Ensure the disable mediated devices configuration feature gate is set.</p></li>
+<li><p>Label worker nodes based on the GPU workloads they will run.</p></li>
+<li><p>Install the GPU Operator and set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled=true</span></code></p></li>
+</ol>
+<p>There are additional steps required if using NVIDIA vGPU, which will be covered in subsequent sections</p>
+<section id="labeling-worker-nodes">
+<h3>Labeling worker nodes<a class="headerlink" href="#labeling-worker-nodes" title="Permalink to this headline"></a></h3>
+<p>Use the following command to add a label to a worker node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite nvidia.com/gpu.workload.config<span class="o">=</span>vm-vgpu
+</pre></div>
+</div>
+<p>You can assign the following values to the label - <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, and <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>. The GPU Operator uses the value of this label when determining which operands to deploy on each worker node.</p>
+<p>If the node label <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> does not exist on the node, the GPU Operator will assume the default GPU workload configuration, <code class="docutils literal notranslate"><span class="pre">container</span></code>, and will deploy the software components needed to support this workload type.
+To override the default GPU workload configuration, set the following value in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>: <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=&lt;config&gt;</span></code>.</p>
+</section>
+<section id="install-the-gpu-operator">
+<h3>Install the GPU Operator<a class="headerlink" href="#install-the-gpu-operator" title="Permalink to this headline"></a></h3>
+<p>Follow one of the below subsections for installing the GPU Operator, depending on whether you plan to use NVIDIA vGPU or not.</p>
+<p>In general, the flag <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes
+for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same
+software which enable container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
+</div>
+<section id="install-the-gpu-operator-without-nvidia-vgpu">
+<h4>Install the GPU Operator (without NVIDIA vGPU)<a class="headerlink" href="#install-the-gpu-operator-without-nvidia-vgpu" title="Permalink to this headline"></a></h4>
+<p>Install the GPU Operator, enabling <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+      -n gpu-operator --create-namespace <span class="se">\</span>
+      nvidia/gpu-operator <span class="se">\</span>
+      --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</section>
+<section id="install-the-gpu-operator-with-nvidia-vgpu">
+<h4>Install the GPU Operator (with NVIDIA vGPU)<a class="headerlink" href="#install-the-gpu-operator-with-nvidia-vgpu" title="Permalink to this headline"></a></h4>
+<p>Build a private NVIDIA vGPU Manager container image and push to a private registry.
+Follow the steps provided in <a class="reference internal" href="#build-vgpu-manager-image"><span class="std std-ref">this section</span></a>.</p>
+<p>Create a namespace for GPU Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+</pre></div>
+</div>
+<p>Create an ImagePullSecret for accessing the NVIDIA vGPU Manager image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret docker-registry <span class="si">${</span><span class="nv">REGISTRY_SECRET_NAME</span><span class="si">}</span> <span class="se">\</span>
+  --docker-server<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> --docker-username<span class="o">=</span>&lt;username&gt; <span class="se">\</span>
+  --docker-password<span class="o">=</span>&lt;password&gt; <span class="se">\</span>
+  --docker-email<span class="o">=</span>&lt;email-id&gt; -n gpu-operator
+</pre></div>
+</div>
+<p>Install the GPU Operator with <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads</span></code> and <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> enabled and specify the NVIDIA vGPU Manager image built previously:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+      -n gpu-operator --create-namespace <span class="se">\</span>
+      nvidia/gpu-operator <span class="se">\</span>
+      --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+      --set vgpuManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+      --set vgpuManager.repository<span class="o">=</span>&lt;path to private repository&gt; <span class="se">\</span>
+      --set vgpuManager.image<span class="o">=</span>vgpu-manager <span class="se">\</span>
+      --set vgpuManager.version<span class="o">=</span>&lt;driver version&gt; <span class="se">\</span>
+      --set vgpuManager.imagePullSecrets<span class="o">={</span><span class="si">${</span><span class="nv">REGISTRY_SECRET_NAME</span><span class="si">}</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt virtual machines.
+Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
+To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to <a class="reference internal" href="#vgpu-device-configuration"><span class="std std-ref">vGPU Device Configuration</span></a>.</p>
+</section>
+</section>
+<section id="add-gpu-resources-to-kubevirt-cr">
+<h3>Add GPU resources to KubeVirt CR<a class="headerlink" href="#add-gpu-resources-to-kubevirt-cr" title="Permalink to this headline"></a></h3>
+<p>Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
+<p>The following example shows how to permit the A10 GPU device and A10-24Q vGPU device.</p>
+<ol class="arabic">
+<li><p>Determine the resource names for the GPU devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;nvidia.com/NVIDIA_A10-12Q&quot;: &quot;4&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Determine the PCI device IDs for the GPUs.</p>
+<ul>
+<li><p>You can search by device name in the <a class="reference external" href="https://pci-ids.ucw.cz/v2.2/pci.ids">PCI IDs database</a>.</p></li>
+<li><p>If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)</span>
+</span><span class="go">        Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]</span>
+<span class="go">        Kernel modules: nvidiafb, nouveau</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource like the following partial example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DisableMDEVConfiguration</span><span class="w"></span>
+<span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">        </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
+<span class="w">      </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-24Q</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-24Q</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Replace the values in the YAML as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pciDeviceSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
+</ul>
+</li>
+</ol>
+<p>Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt user guide</a> for more information on the configuration options.</p>
+</section>
+<section id="create-a-virtual-machine-with-gpu">
+<h3>Create a virtual machine with GPU<a class="headerlink" href="#create-a-virtual-machine-with-gpu" title="Permalink to this headline"></a></h3>
+<p>After the GPU Operator finishes deploying the sandbox device plugin and VFIO manager pods on worker nodes and the GPU resources are added to the
+KubeVirt allowlist, you can assign a GPU to a virtual machine by editing the <code class="docutils literal notranslate"><span class="pre">spec.domain.devices.gpus</span></code> field
+in the <code class="docutils literal notranslate"><span class="pre">VirtualMachineInstance</span></code> manifest.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1alpha3</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">deviceName</span></code> is the resource name representing the device.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> is a name to identify the device in the virtual machine</p></li>
+</ul>
+</section>
+</section>
+<section id="vgpu-device-configuration">
+<span id="id1"></span><h2>vGPU Device Configuration<a class="headerlink" href="#vgpu-device-configuration" title="Permalink to this headline"></a></h2>
+<p>The vGPU Device Manager assists in creating vGPU devices on GPU worker nodes.
+The vGPU Device Manager allows administrators to declaratively define a set of possible vGPU device configurations they would like applied to GPUs on a node.
+At runtime, they then point the vGPU Device Manager at one of these configurations, and vGPU Device Manager takes care of applying it.
+The configuration file is created as a ConfigMap, and is shared across all worker nodes.
+At runtime, a node label, <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code>, can be used to decide which of these configurations to actually apply to a node at any given time.
+If the node is not labeled, then the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be used.
+For more information on this component and how it is configured, refer to the project <a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">README</a>.</p>
+<p>By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu">vGPU types</a> supported by NVIDIA vGPU.
+Users can select a specific configuration for a worker node by applying the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label.
+For example, labeling a node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config=A10-8Q</span></code> would create 3 vGPU devices of type <strong>A10-8Q</strong> on all <strong>A10</strong> GPUs on the node (note: 3 is the maximum number of <strong>A10-8Q</strong> devices that can be created per GPU).
+If the node is not labeled, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be applied.
+The <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device
+is half the total GPU memory.
+For example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create two <strong>A10-12Q</strong> devices on all <strong>A10</strong> GPUs, two <strong>V100-8Q</strong> devices  on all <strong>V100</strong> GPUs, and two <strong>T4-8Q</strong> devices on all <strong>T4</strong> GPUs.</p>
+<p>If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap custom-vgpu-config -n gpu-operator --from-file<span class="o">=</span>config.yaml<span class="o">=</span>/path/to/file
+</pre></div>
+</div>
+<p>And then configure the GPU Operator to use it by setting <code class="docutils literal notranslate"><span class="pre">vgpuDeviceManager.config.name=custom-vgpu-config</span></code>.</p>
+<section id="apply-a-new-vgpu-device-configuration">
+<h3>Apply a New vGPU Device Configuration<a class="headerlink" href="#apply-a-new-vgpu-device-configuration" title="Permalink to this headline"></a></h3>
+<p>We can apply a specific vGPU device configuration on a per-node basis by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label. It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.</p>
+<p>Switching vGPU device configuration after one has been successfully applied assumes that no virtual machines with vGPU are currently running on the node. Any existing virtual machines will have to be shutdown/migrated first.</p>
+<p>To apply a new configuration after GPU Operator install, simply update the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label. Let’s run through an example on a system with two <strong>A10</strong> GPUs.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
+<span class="go">GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)</span>
+<span class="go">GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)</span>
+</pre></div>
+</div>
+<p>After installing the GPU Operator as detailed in the previous sections and without labeling the node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code>, the <code class="docutils literal notranslate"><span class="pre">default</span></code> vGPU config get applied – four <strong>A10-12Q</strong> devices get created (two per GPU):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
+<span class="go">{</span>
+<span class="go">  &quot;nvidia.com/NVIDIA_A10-12Q&quot;: &quot;4&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>If instead we wish to create <strong>A10-4Q</strong> devices, we can label the node like such:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite nvidia.com/vgpu.config<span class="o">=</span>A10-4Q
+</pre></div>
+</div>
+<p>After the vGPU Device Manager finishes applying the new configuration, all GPU Operator pods should return to the Running state.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+<span class="go">NAME                                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">...</span>
+<span class="go">nvidia-sandbox-device-plugin-daemonset-brtb6                  1/1     Running   0          10s</span>
+<span class="go">nvidia-sandbox-validator-ljnwg                                1/1     Running   0          10s</span>
+<span class="go">nvidia-vgpu-device-manager-8mgg8                              1/1     Running   0          30m</span>
+<span class="go">nvidia-vgpu-manager-daemonset-fpplc                           1/1     Running   0          31m</span>
+</pre></div>
+</div>
+<p>We now see 12 <strong>A10-4Q</strong> devices on the node, as 6 <strong>A10-4Q</strong> devices can be created per <strong>A10</strong> GPU.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
+<span class="go">{</span>
+<span class="go">  &quot;nvidia.com/NVIDIA_A10-4Q&quot;: &quot;12&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="building-the-nvidia-vgpu-manager-image">
+<span id="build-vgpu-manager-image"></span><h2>Building the NVIDIA vGPU Manager image<a class="headerlink" href="#building-the-nvidia-vgpu-manager-image" title="Permalink to this headline"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Building the NVIDIA vGPU Manager image is only required if you are planning to use NVIDIA vGPU.
+If only planning to use PCI passthrough, skip this section.</p>
+</div>
+<p>This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.</p>
+<p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
+<ul class="simple">
+<li><p>Login to the NVIDIA Licensing Portal and navigate to the <cite>Software Downloads</cite> section.</p></li>
+<li><p>The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.</p></li>
+<li><p>The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> file)</p></li>
+</ul>
+<p>Next, clone the driver container repository and build the driver image with the following steps.</p>
+<p>Open a terminal and clone the driver container image repository.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
+<span class="gp">$ </span><span class="nb">cd</span> driver
+</pre></div>
+</div>
+<p>Change to the vgpu-manager directory for your OS. We use Ubuntu 20.04 as an example.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> vgpu-manager/ubuntu20.04
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For RedHat OpenShift, run <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">vgpu-manager/rhel8</span></code> to use the <code class="docutils literal notranslate"><span class="pre">rhel8</span></code> folder instead.</p>
+</div>
+<p>Copy the NVIDIA vGPU Manager from your extracted zip file</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-vgpu-kvm.run ./
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">Set the following environment variables:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">PRIVATE_REGISTRY</span></code> - name of private registry used to store driver image</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - this must match the Guest OS version. In the below example <code class="docutils literal notranslate"><span class="pre">ubuntu20.04</span></code> is used. For RedHat OpenShift this should be set to <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where x is the supported minor OCP version.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">CUDA_VERSION</span></code> - CUDA base image version to build the driver image with.</div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu20.04 <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.7.1
+</pre></div>
+</div>
+<p>Build the NVIDIA vGPU Manager image.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
+    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> <span class="se">\</span>
+    -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
+</pre></div>
+</div>
+<p>Push NVIDIA vGPU Manager image to your private registry.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cdi.html" class="btn btn-neutral float-left" title="Container Device Interface Support in the GPU Operator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-operator-kata.html" class="btn btn-neutral float-right" title="GPU Operator with Kata Containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Sep 24, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
