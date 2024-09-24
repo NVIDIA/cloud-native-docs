@@ -297,6 +297,16 @@ After all the required packages are mirrored to the local repository, repo lists
 distribution specific documentation. A ``ConfigMap`` containing the repo list file needs to be created in
 the namespace where the GPU Operator gets deployed.
 
+An example of repo list is shown below for Ubuntu 22.04 (access to local package repository via HTTP):
+
+``custom-repo.list``:
+
+.. code-block::
+
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-updates main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-security main universe
+
 An example of repo list is shown below for Ubuntu 20.04 (access to local package repository via HTTP):
 
 ``custom-repo.list``:
