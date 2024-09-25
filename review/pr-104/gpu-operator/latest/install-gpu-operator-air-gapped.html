@@ -444,6 +444,7 @@ the namespace where the GPU Operator gets deployed.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap repo-config -n gpu-operator --from-file<span class="o">=</span>&lt;path-to-repo-list-file&gt;
 </pre></div>
 </div>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">custom-repo.list</span></code> file and config map as appropriate if the containerization software platform, such as Tanzu, upgrades the Kubernetes cluster nodes to a newer operating system version.</p>
 <p>After the config map is created, update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with this information to let the GPU Operator mount the repo configuration
 within the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to pull required packages. Based on the OS distribution the GPU Operator automatically mounts this config map into the appropriate directory.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
@@ -520,7 +521,7 @@ Similarly, the certificate file format and suffix, such as <code class="docutils
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 24, 2024.
+      <span class="lastupdated">Last updated on Sep 25, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
