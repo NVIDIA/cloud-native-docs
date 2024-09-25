@@ -347,6 +347,9 @@ Create a ``ConfigMap`` object from the file:
 
    $ kubectl create configmap repo-config -n gpu-operator --from-file=<path-to-repo-list-file>
 
+
+Update the ``custom-repo.list`` file and config map as appropriate if the containerization software platform, such as Tanzu, upgrades the Kubernetes cluster nodes to a newer operating system version.
+
 After the config map is created, update ``values.yaml`` with this information to let the GPU Operator mount the repo configuration
 within the ``driver`` container to pull required packages. Based on the OS distribution the GPU Operator automatically mounts this config map into the appropriate directory.
 
