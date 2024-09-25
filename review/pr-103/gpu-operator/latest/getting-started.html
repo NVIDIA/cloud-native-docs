@@ -446,8 +446,8 @@ Additionally, network restricted environments are not supported.</p>
 </pre></div>
 </div>
 <p>The preceding command prevents the Operator from installing the GPU driver on any nodes in the cluster.</p>
-<p>If you do not specify the <code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code> argument and nodes in the cluster have a pre-installed GPU driver, the GPU driver pod detects the driver kernel module and exits.
-The Operator labels the nodes with <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.driver=preinstalled</span></code> and proceeds to start other pods, such as the container toolkit pod.</p>
+<p>If you do not specify the <code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code> argument and nodes in the cluster have a pre-installed GPU driver, the init container in the driver pod detects that the driver is preinstalled and labels the node so that the driver pod is terminated and does not get re-scheduled on to the node.
+The Operator proceeds to start other pods, such as the container toolkit pod.</p>
 </section>
 <section id="pre-installed-nvidia-gpu-drivers-and-nvidia-container-toolkit">
 <span id="preinstalled-drivers-and-toolkit"></span><h3>Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit<a class="headerlink" href="#pre-installed-nvidia-gpu-drivers-and-nvidia-container-toolkit" title="Permalink to this headline"></a></h3>
@@ -832,7 +832,7 @@ in the RKE2 documentation.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 24, 2024.
+      <span class="lastupdated">Last updated on Sep 25, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
