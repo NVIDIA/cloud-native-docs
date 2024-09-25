@@ -297,6 +297,16 @@ After all the required packages are mirrored to the local repository, repo lists
 distribution specific documentation. A ``ConfigMap`` containing the repo list file needs to be created in
 the namespace where the GPU Operator gets deployed.
 
+An example of repo list is shown below for Ubuntu 22.04 (access to local package repository via HTTP):
+
+``custom-repo.list``:
+
+.. code-block::
+
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-updates main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-security main universe
+
 An example of repo list is shown below for Ubuntu 20.04 (access to local package repository via HTTP):
 
 ``custom-repo.list``:
@@ -336,6 +346,9 @@ Create a ``ConfigMap`` object from the file:
 .. code-block:: console
 
    $ kubectl create configmap repo-config -n gpu-operator --from-file=<path-to-repo-list-file>
+
+
+Update the ``custom-repo.list`` file and config map as appropriate if the containerization software platform, such as Tanzu, upgrades the Kubernetes cluster nodes to a newer operating system version.
 
 After the config map is created, update ``values.yaml`` with this information to let the GPU Operator mount the repo configuration
 within the ``driver`` container to pull required packages. Based on the OS distribution the GPU Operator automatically mounts this config map into the appropriate directory.
