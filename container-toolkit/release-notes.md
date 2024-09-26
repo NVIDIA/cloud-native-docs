@@ -10,6 +10,49 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.16.2
+
+**This release provides critical security updates and is recommended for all users.**
+
+It includes updates for:
+* [NVIDIA CVE-2024-0132](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
+* [NVIDIA CVE-2024-0133](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
+
+To view any published security bulletins for NVIDIA products, see the NVIDIA product security page (https://www.nvidia.com/en-us/security/)
+
+For more information regarding NVIDIA's security vulnerability remediation policies, see (https://www.nvidia.com/en-us/security/psirt-policies/)
+
+---
+
+This release of the NVIDIA Container Toolkit `v1.16.2` is a bugfix and security release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.16.2`
+- `libnvidia-container-tools 1.16.2`
+- `libnvidia-container1 1.16.2`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.2-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.2-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1`)
+
+### Fixes and Features
+
+- Excluded `libnvidia-allocator` from graphics mounts. This fixes a bug that leaks mounts when a container is started with bi-directional mount propagation.
+- Used empty string for default `runtime-config-override`. This removes a redundant warning for runtimes (e.g. Docker) where this is not applicable.
+
+### Enhancements to container-toolkit Container Images
+
+- Updated the CUDA base image version to 12.6.0.
+
+#### Enhancements to libnvidia-container
+
+- Added a `--no-gsp-firmware` command line option.
+- Added a `--no-fabricmanager` command line option.
+- Added a `--no-persistenced` command line option.
+- Updated logic to skip directories and symlinks when mounting libraries.
+
 ## NVIDIA Container Toolkit 1.16.1
 
 This release of the NVIDIA Container Toolkit `v1.16.1` is a bugfix release.
