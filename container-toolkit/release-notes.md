@@ -14,13 +14,14 @@ ______________________________________________________________________
 
 **This release provides critical security updates and is recommended for all users.**
 
-It includes updates for:
+This version includes updates for:
+
 * [NVIDIA CVE-2024-0132](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
 * [NVIDIA CVE-2024-0133](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
 
-To view any published security bulletins for NVIDIA products, see the NVIDIA product security page (https://www.nvidia.com/en-us/security/)
+To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <https://www.nvidia.com/en-us/security/>.
 
-For more information regarding NVIDIA's security vulnerability remediation policies, see (https://www.nvidia.com/en-us/security/psirt-policies/)
+For more information regarding NVIDIA security vulnerability remediation policies, refer to <https://www.nvidia.com/en-us/security/psirt-policies/>.
 
 ---
 
