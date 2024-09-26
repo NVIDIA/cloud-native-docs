@@ -10,6 +10,26 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.16.1
+
+This release of the NVIDIA Container Toolkit `v1.16.1` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.16.1`
+- `libnvidia-container-tools 1.16.1`
+- `libnvidia-container1 1.16.1`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1`)
+
+### Fixes and Features
+
+* Fixed bug with processing errors during CDI spec generation for MIG devices.
+
+
 ## NVIDIA Container Toolkit 1.16.0
 
 This release of the NVIDIA Container Toolkit `v1.16.0` is a major feature release.
