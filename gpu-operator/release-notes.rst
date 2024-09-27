@@ -49,12 +49,12 @@ New Features
 This release adds support for NVIDIA Container Toolkit 1.16.2.
 This version includes updates for the following CVEs:
 
-* [NVIDIA CVE-2024-0132](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
-* [NVIDIA CVE-2024-0133](https://nvidia.custhelp.com/app/answers/detail/a_id/5582)
+* `NVIDIA CVE-2024-0132 <https://nvidia.custhelp.com/app/answers/detail/a_id/5582>`__
+* `NVIDIA CVE-2024-0133 <https://nvidia.custhelp.com/app/answers/detail/a_id/5582>`__
 
-To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <https://www.nvidia.com/en-us/security/>.
+To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at https://www.nvidia.com/en-us/security/.
 
-For more information regarding NVIDIA security vulnerability remediation policies, refer to <https://www.nvidia.com/en-us/security/psirt-policies/>.
+For more information regarding NVIDIA security vulnerability remediation policies, refer to https://www.nvidia.com/en-us/security/psirt-policies/.
 
 .. _v24.6.1:
 
