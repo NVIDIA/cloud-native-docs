@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installing the NVIDIA GPU Operator &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.6.2 documentation</title>
+  <title>Installing the NVIDIA GPU Operator on OpenShift &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.6.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -30,7 +30,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NVIDIA AI Enterprise with OpenShift" href="nvaie-with-ocp.html" />
-    <link rel="prev" title="Installing the Node Feature Discovery (NFD) Operator" href="install-nfd.html" />
+    <link rel="prev" title="Installing the Node Feature Discovery Operator on OpenShift" href="install-nfd.html" />
  
 <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
 
@@ -54,11 +54,11 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to NVIDIA GPU Operator on OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">Installing the Node Feature Discovery (NFD) Operator</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GPU Operator Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
@@ -93,7 +93,7 @@
     <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
 </li>
-<li>Installing the NVIDIA GPU Operator</li>
+<li>Installing the NVIDIA GPU Operator on OpenShift</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -102,15 +102,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="installing-the-nvidia-gpu-operator">
-<span id="install-nvidiagpu"></span><h1>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are installing the <strong>NVIDIA GPU Operator</strong> on OpenShift &lt;<code class="docutils literal notranslate"><span class="pre">4.9.9</span></code> ensure you have <a class="reference internal" href="appendix-ocp.html#cluster-entitlement"><span class="std std-ref">enabled a Cluster-wide entitlement</span></a>.
-For more information see <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a>.</p>
+  <section id="installing-the-nvidia-gpu-operator-on-openshift">
+<span id="install-nvidiagpu"></span><h1>Installing the NVIDIA GPU Operator on OpenShift<a class="headerlink" href="#installing-the-nvidia-gpu-operator-on-openshift" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console" id="id3">Installing the NVIDIA GPU Operator by using the web console</a></p></li>
+<li><p><a class="reference internal" href="#installing-the-nvidia-gpu-operator-using-the-cli" id="id4">Installing the NVIDIA GPU Operator using the CLI</a></p></li>
+<li><p><a class="reference internal" href="#create-the-clusterpolicy-instance" id="id5">Create the ClusterPolicy instance</a></p>
+<ul>
+<li><p><a class="reference internal" href="#create-the-cluster-policy-using-the-web-console" id="id6">Create the cluster policy using the web console</a></p></li>
+<li><p><a class="reference internal" href="#create-the-cluster-policy-using-the-cli" id="id7">Create the cluster policy using the CLI</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#create-the-clusterpolicy-instance-with-nvidia-vgpu" id="id8">Create the ClusterPolicy instance with NVIDIA vGPU</a></p>
+<ul>
+<li><p><a class="reference internal" href="#pre-requisites" id="id9">Pre-requisites</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id10">Create the cluster policy using the web console</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id11">Create the cluster policy using the CLI</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#verify-the-successful-installation-of-the-nvidia-gpu-operator" id="id12">Verify the successful installation of the NVIDIA GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#cluster-monitoring" id="id13">Cluster monitoring</a></p></li>
+<li><p><a class="reference internal" href="#logging" id="id14">Logging</a></p></li>
+<li><p><a class="reference internal" href="#running-a-sample-gpu-application" id="id15">Running a sample GPU Application</a></p></li>
+<li><p><a class="reference internal" href="#getting-information-about-the-gpu" id="id16">Getting information about the GPU</a></p></li>
+</ul>
 </div>
-<p>With the <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Node Feature Discovery Operator</span></a> installed you can continue with the final step and install the <strong>NVIDIA GPU Operator</strong>.</p>
-<p>As a cluster administrator, you can install the <strong>NVIDIA GPU Operator</strong> using the OpenShift Container Platform CLI or the web console.</p>
 <section id="installing-the-nvidia-gpu-operator-by-using-the-web-console">
 <h2>Installing the NVIDIA GPU Operator by using the web console<a class="headerlink" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console" title="Permalink to this headline"></a></h2>
 <ol class="arabic simple">
@@ -573,7 +590,7 @@ If the label is defined, the GPU Operator will not change its value.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="install-nfd.html" class="btn btn-neutral float-left" title="Installing the Node Feature Discovery (NFD) Operator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install-nfd.html" class="btn btn-neutral float-left" title="Installing the Node Feature Discovery Operator on OpenShift" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="nvaie-with-ocp.html" class="btn btn-neutral float-right" title="NVIDIA AI Enterprise with OpenShift" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
