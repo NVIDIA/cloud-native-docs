@@ -1,9 +1,10 @@
 .. Date: November 26 2021
 .. Author: kquinn
 
-*****************************************
-Prerequisites
-*****************************************
+*******************************************
+Prerequisites for GPU Operator on OpenShift
+*******************************************
+
 Before following the steps in this guide, ensure that your environment has:
 
 * A working OpenShift cluster up and running with a GPU worker node. See `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/index.html>`_  for guidance on installing.

@@ -5,9 +5,9 @@
 
 .. _steps_overview:
 
-#################################
-Installation and Upgrade Overview
-#################################
+##############################################
+Installation and Upgrade Overview on OpenShift
+##############################################
 
 .. contents::
    :depth: 2
