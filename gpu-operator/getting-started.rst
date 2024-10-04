@@ -79,6 +79,11 @@ Prerequisites
 Procedure
 *********
 
+.. tip::
+
+   For installation on Red Hat OpenShift Container Platform,
+   refer to :external+ocp:doc:`steps-overview`.
+
 #. Add the NVIDIA Helm repository:
 
    .. code-block:: console
