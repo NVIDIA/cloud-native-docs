@@ -84,13 +84,11 @@ As a best practice, establish proper security policies and prevent any other use
 Licenses and Contributing
 =========================
 
-.. _swlagree: https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-software-license-agreement/
-.. |swlagree| replace:: NVIDIA Software License Agreement
 .. _pstai: https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/
 .. |pstai| replace:: Product-Specific Terms for NVIDIA AI Products
 
 The NVIDIA GPU Operator source code is licensed under `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`__ and
-contributions are accepted with a DCO. See the `contributing <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ document for
+contributions are accepted with a DCO. Refer to the `contributing <https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md>`_ document for
 more information on how to contribute and the release artifacts.
 
 The base images used by the software might include software that is licensed under open-source licenses such as GPL.
@@ -109,7 +107,7 @@ By installing and using the GPU Operator, you accept the terms and conditions of
 
    * - NVIDIA GPU Operator
      - Helm Chart
-     - x `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`__                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`__                                                                      |
+     - `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`__
 
    * - NVIDIA GPU Operator
      - Image
