@@ -3,16 +3,14 @@
 
 .. _install-nvidiagpu:
 
-###################################
-Installing the NVIDIA GPU Operator
-###################################
+###############################################
+Installing the NVIDIA GPU Operator on OpenShift
+###############################################
 
-.. note:: If you are installing the **NVIDIA GPU Operator** on OpenShift <``4.9.9`` ensure you have :ref:`enabled a Cluster-wide entitlement <cluster-entitlement>`.
-   For more information see :ref:`broken driver toolkit <broken-dtk>`.
-
-With the :ref:`Node Feature Discovery Operator<install-nfd>` installed you can continue with the final step and install the **NVIDIA GPU Operator**.
-
-As a cluster administrator, you can install the **NVIDIA GPU Operator** using the OpenShift Container Platform CLI or the web console.
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
 
 ***********************************************************
 Installing the NVIDIA GPU Operator by using the web console

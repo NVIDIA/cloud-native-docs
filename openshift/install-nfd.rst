@@ -3,9 +3,18 @@
 
 .. _install-nfd:
 
-####################################################
-Installing the Node Feature Discovery (NFD) Operator
-####################################################
+###########################################################
+Installing the Node Feature Discovery Operator on OpenShift
+###########################################################
+
+.. contents::
+   :depth: 2
+   :local:
+   :backlinks: none
+
+*********
+Procedure
+*********
 
 The Node Feature Discovery (NFD) Operator is a prerequisite for the **NVIDIA GPU Operator**. Install the NFD Operator using the Red Hat OperatorHub catalog in the OpenShift Container Platform web console .
 
