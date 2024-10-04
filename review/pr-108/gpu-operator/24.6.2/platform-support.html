@@ -109,6 +109,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -293,8 +298,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline"></a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="cc3eb973-39c3-4ca5-997e-96071bf37881" name="2711ddda-b721-4b8f-b601-e7dc78c26c75" type="radio">
-</input><label class="sd-tab-label" for="cc3eb973-39c3-4ca5-997e-96071bf37881">
+<input id="0c328462-9e91-4c65-994e-ff8219c5de2f" name="c99a5f74-548a-47b8-ab9e-212c890e5c2d" type="radio">
+</input><label class="sd-tab-label" for="0c328462-9e91-4c65-994e-ff8219c5de2f">
 GH-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -318,8 +323,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="8d92f990-0806-4753-877d-9e6906bfdc2a" name="2711ddda-b721-4b8f-b601-e7dc78c26c75" type="radio">
-</input><label class="sd-tab-label" for="8d92f990-0806-4753-877d-9e6906bfdc2a">
+<input checked="checked" id="34f59011-f532-4534-b676-25ff1fa6e65b" name="c99a5f74-548a-47b8-ab9e-212c890e5c2d" type="radio">
+</input><label class="sd-tab-label" for="34f59011-f532-4534-b676-25ff1fa6e65b">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -414,12 +419,12 @@ NVSwitch</p></td>
 <ul class="simple">
 <li><p>Hopper (H100) GPU is only supported on x86 servers.</p></li>
 <li><p>The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
-For installation instructions, see <a class="reference internal" href="getting-started.html#preinstalled-drivers-and-toolkit"><span class="std std-ref">Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit</span></a> for DGX OS 5.1+ and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/introduction.html#openshift-introduction" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Introduction</span></a> for Red Hat OpenShift.</p></li>
+For installation instructions, see <a class="reference internal" href="getting-started.html#preinstalled-drivers-and-toolkit"><span class="std std-ref">Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit</span></a> for DGX OS 5.1+ and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/introduction.html#openshift-introduction" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Introduction to NVIDIA GPU Operator on OpenShift</span></a> for Red Hat OpenShift.</p></li>
 </ul>
 </div>
 </div>
-<input id="60487121-22fc-4e2b-9196-fc0a6ad6b2b4" name="2711ddda-b721-4b8f-b601-e7dc78c26c75" type="radio">
-</input><label class="sd-tab-label" for="60487121-22fc-4e2b-9196-fc0a6ad6b2b4">
+<input id="964f406d-b2b9-43dc-8bdd-f2f63a1c5694" name="c99a5f74-548a-47b8-ab9e-212c890e5c2d" type="radio">
+</input><label class="sd-tab-label" for="964f406d-b2b9-43dc-8bdd-f2f63a1c5694">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -450,8 +455,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="a2c2ce94-91e8-4d72-b0a7-3d994fb0a86a" name="2711ddda-b721-4b8f-b601-e7dc78c26c75" type="radio">
-</input><label class="sd-tab-label" for="a2c2ce94-91e8-4d72-b0a7-3d994fb0a86a">
+<input id="1780fb65-0f20-42a5-a15f-5d39434ccc49" name="c99a5f74-548a-47b8-ab9e-212c890e5c2d" type="radio">
+</input><label class="sd-tab-label" for="1780fb65-0f20-42a5-a15f-5d39434ccc49">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -614,8 +619,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.</p>
 </div>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="d03ce278-f313-4f8d-8233-4547d8b61ef2" name="a44bb20e-e08f-4f3b-b5ab-95c9fdc9b409" type="radio">
-</input><label class="sd-tab-label" for="d03ce278-f313-4f8d-8233-4547d8b61ef2">
+<input checked="checked" id="2669a483-636b-4fd8-9dc5-8c238cfa0a6f" name="cd505d45-ce21-4244-a2d2-19f1ee6bce15" type="radio">
+</input><label class="sd-tab-label" for="2669a483-636b-4fd8-9dc5-8c238cfa0a6f">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -732,8 +737,8 @@ by the <code class="docutils literal notranslate"><span class="pre">unattended-u
 <p>Red Hat OpenShift Container Platform is supported on the AWS (G4, G5, P3, P4, P5), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.</p>
 </div>
 </div>
-<input id="afc52656-b1bf-4b69-9c5c-90b64def6907" name="a44bb20e-e08f-4f3b-b5ab-95c9fdc9b409" type="radio">
-</input><label class="sd-tab-label" for="afc52656-b1bf-4b69-9c5c-90b64def6907">
+<input id="99cca780-4eb8-4da5-b54c-04ccff07f126" name="cd505d45-ce21-4244-a2d2-19f1ee6bce15" type="radio">
+</input><label class="sd-tab-label" for="99cca780-4eb8-4da5-b54c-04ccff07f126">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -779,8 +784,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="f1ba3680-295d-4352-b460-19abf70dbf60" name="a44bb20e-e08f-4f3b-b5ab-95c9fdc9b409" type="radio">
-</input><label class="sd-tab-label" for="f1ba3680-295d-4352-b460-19abf70dbf60">
+<input id="2319e293-c894-446b-b08b-a56eafd52933" name="cd505d45-ce21-4244-a2d2-19f1ee6bce15" type="radio">
+</input><label class="sd-tab-label" for="2319e293-c894-446b-b08b-a56eafd52933">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -1044,7 +1049,7 @@ Supported storage types are local NVMe and remote NFS.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 30, 2024.
+      <span class="lastupdated">Last updated on Oct 04, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
