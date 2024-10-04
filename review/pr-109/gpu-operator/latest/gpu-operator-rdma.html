@@ -109,6 +109,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -379,8 +384,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="737669fb-33ac-4b60-a30e-04746ad08b69" name="7dcb811a-f3d7-4e29-a88f-1569436f3176" type="radio">
-</input><label class="sd-tab-label" for="737669fb-33ac-4b60-a30e-04746ad08b69">
+<input checked="checked" id="df4f1f10-9ad9-4d16-8488-a2f93137a780" name="660fc33b-1c5d-4c44-b9f7-84a7bbae6e30" type="radio">
+</input><label class="sd-tab-label" for="df4f1f10-9ad9-4d16-8488-a2f93137a780">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -425,8 +430,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="2c4b8b26-9d77-485e-8136-da1a59a8bfae" name="7dcb811a-f3d7-4e29-a88f-1569436f3176" type="radio">
-</input><label class="sd-tab-label" for="2c4b8b26-9d77-485e-8136-da1a59a8bfae">
+<input id="8baf63c0-1ed3-4476-9d2f-ad11f48ddee9" name="660fc33b-1c5d-4c44-b9f7-84a7bbae6e30" type="radio">
+</input><label class="sd-tab-label" for="8baf63c0-1ed3-4476-9d2f-ad11f48ddee9">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -706,7 +711,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 30, 2024.
+      <span class="lastupdated">Last updated on Oct 04, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
