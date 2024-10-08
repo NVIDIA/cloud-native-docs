@@ -1,0 +1,30 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: nim-auth-policy
+  namespace: <namespace>
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: inferencing
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    to:
+    - operation:
+        methods: ["POST"]
+        paths: ["/v1/completions*"]
+    when:
+    - key: request.auth.claims[realm_access][roles]
+      values: ["completions"]
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    to:
+    - operation:
+        methods: ["POST"]
+        paths: ["/v1/chat/completions*"]
+    when:
+    - key: request.auth.claims[realm_access][roles]
+      values: ["chat"]
