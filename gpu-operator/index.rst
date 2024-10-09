@@ -31,7 +31,7 @@
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
-
+   Security Considerations <security-considerations.rst>
 
 
 .. toctree::
