@@ -1,1 +1,0 @@
-GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)

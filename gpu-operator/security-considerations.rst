@@ -44,8 +44,8 @@ To configure these operands during Operator installation or upgrade, create a ``
       - name: DEVICE_LIST_STRATEGY
         value: volume-mounts
 
-The following tables show sample commands that demonstrate the interactions between specifying
-values for resource limits and ``NVIDIA_VISIBLE_DEVICES``, and the effect on GPU device access.
+The following comparison shows how ``NVIDIA_VISIBLE_DEVICES`` set to ``all`` grants access to more GPUs than the resource request
+in the default configuration and how access is limited after reconfiguration.
 
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 | .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
@@ -55,10 +55,45 @@ values for resource limits and ``NVIDIA_VISIBLE_DEVICES``, and the effect on GPU
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 | Default Configuration                                            | Limit Unprivileged                                              |
 +------------------------------------------------------------------+-----------------------------------------------------------------+
-| .. literalinclude:: ./manifests/output/before-envall-limit-1.txt | .. literalinclude:: ./manifests/output/after-envall-limit-1.txt |
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt             | .. literalinclude:: ./manifests/input/k-run-cuda.txt            |
 |   :language: output                                              |    :language: output                                            |
+|   :start-after: default-envall-limit-1                           |    :start-after: limit-envall-limit-1                           |
+|   :end-before: end                                               |    :end-before: end                                             |
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 
+The following comparison shows how specifying a resource request of ``nvidia.com/gpu: 0`` grants access to GPUs
+in the default configuration and how access is limited after reconfiguration.
+
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
+|    :language: console                                                                                                              |
+|    :start-after: noenv-limit-0                                                                                                     |
+|    :end-before: end                                                                                                                |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| Default Configuration                                            | Limit Unprivileged                                              |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt             | .. literalinclude:: ./manifests/input/k-run-cuda.txt            |
+|   :language: output                                              |    :language: output                                            |
+|   :start-after: default-noenv-limit-0                            |    :start-after: limit-noenv-limit-0                            |
+|   :end-before: end                                               |    :end-before: end                                             |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+
+The following comparison shows that privileged containers have access to all GPUs regardless of environment variables, resource requests,
+or plugin and toolkit configuration.
+
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
+|    :language: text                                                                                                                 |
+|    :start-after: privileged                                                                                                        |
+|    :end-before: end                                                                                                                |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| Default Configuration                                            | Limit Unprivileged                                              |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt             | .. literalinclude:: ./manifests/input/k-run-cuda.txt            |
+|   :language: output                                              |    :language: output                                            |
+|   :start-after: default-privileged                               |    :start-after: limit-privileged                               |
+|   :end-before: end                                               |    :end-before: end                                             |
++------------------------------------------------------------------+-----------------------------------------------------------------+
 
 *************************************************
 Pod Security Context of the Operator and Operands

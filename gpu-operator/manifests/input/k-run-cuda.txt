@@ -5,3 +5,80 @@ $ kubectl run --rm -it cuda \
     --overrides='{"spec":{"containers":[{"name":"cuda","resources":{"limits":{"nvidia.com/gpu":1}}}]}}' \
     --env="NVIDIA_VISIBLE_DEVICES=all" -- nvidia-smi -L
 # end
+
+# default-envall-limit-1
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+GPU 1: Tesla T4 (UUID: GPU-90ac9649-3c3b-4d9f-e3ab-95c8043e7d48)
+# end
+
+# limit-envall-limit-1
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+# end
+
+# noenv-limit-1
+$ kubectl run --rm -it cuda \
+    --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 \
+    --restart=Never --override-type=strategic \
+    --overrides='{"spec":{"containers":[{"name":"cuda","resources":{"limits":{"nvidia.com/gpu":1}}}]}}' \
+    -- nvidia-smi -L
+# end
+
+# default-noenv-limit-1
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+# end
+
+# limit-noenv-limit-1
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+# end
+
+# noenv-limit-0
+$ kubectl run --rm -it cuda \
+    --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 \
+    --restart=Never --override-type=strategic \
+    --overrides='{"spec":{"containers":[{"name":"cuda","resources":{"limits":{"nvidia.com/gpu":0}}}]}}' \
+    -- nvidia-smi -L
+# end
+
+# default-noenv-limit-0
+GPU 0: Tesla T4 (UUID: GPU-dfb3f7ba-f6c2-3dd1-e621-46208932a9a7)
+GPU 1: Tesla T4 (UUID: GPU-1d37ef30-0861-de64-a06d-73257e247a0d)
+# end
+
+# limit-noenv-limit-0
+pod default/cuda terminated (StartError)
+failed to create containerd task: failed to create shim task: OCI runtime create failed: runc
+create failed: unable to start container process: exec: "nvidia-smi": executable file not found in $PATH: unknown
+# end
+
+# privileged
+$ kubectl run --rm -it cuda \
+    --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 \
+    --restart=Never --override-type=strategic \
+    --overrides='{
+       "spec":{
+          "containers": [{
+            "name":"cuda",
+            "env": [{
+                "name": "NVIDIA_VISIBLE_DEVICES",
+                "value": "0,1"
+            }],
+            "securityContext": {
+                "capabilities": {
+                    "add": ["SYS_ADMIN"]
+                }
+            }
+          }]
+       }
+    }' \
+    -- nvidia-smi -L
+# end
+
+# default-privileged
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+GPU 1: Tesla T4 (UUID: GPU-90ac9649-3c3b-4d9f-e3ab-95c8043e7d48)
+# end
+
+# limit-privileged
+GPU 0: Tesla T4 (UUID: GPU-6cfb8bf0-b556-d216-90a4-0827b23b1348)
+GPU 1: Tesla T4 (UUID: GPU-90ac9649-3c3b-4d9f-e3ab-95c8043e7d48)
+# end
