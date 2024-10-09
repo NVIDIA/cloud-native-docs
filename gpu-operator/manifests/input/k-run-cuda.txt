@@ -1,0 +1,7 @@
+# envall-limit-1
+$ kubectl run --rm -it cuda \
+    --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 \
+    --restart=Never --override-type=strategic \
+    --overrides='{"spec":{"containers":[{"name":"cuda","resources":{"limits":{"nvidia.com/gpu":1}}}]}}' \
+    --env="NVIDIA_VISIBLE_DEVICES=all" -- nvidia-smi -L
+# end

@@ -15,7 +15,7 @@ Preventing Unprivileged Access to GPUs
 **************************************
 
 ..
-  k run --rm -it cuda --image=nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04 --restart=Never --override-type=strategic --overrides='{ "spec": { "containers": [{"name":"cuda", "resources": { "limits": { "nvidia.com/gpu": 2 } } }] }}' --command -- bash
+  k run --rm -it cuda --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 --restart=Never --override-type=strategic --overrides='{ "spec": { "containers": [{"name":"cuda", "resources": { "limits": { "nvidia.com/gpu": 2 } } }] }}' --command -- bash
 
 A default installation of NVIDIA Container Toolkit and NVIDIA Device Plugin provides unprivileged containers with access to GPUs on a node when the pod specification does not specify resource limits or the container sets ``NVIDIA_VISIBLE_DEVICES``.
 This behavior enables some pods such as NVIDIA DCGM Exporter to monitor all GPUs on a node without interfering with Kubernetes accounting for allocatable resources.
@@ -43,6 +43,21 @@ To configure these operands during Operator installation or upgrade, create a ``
       env:
       - name: DEVICE_LIST_STRATEGY
         value: volume-mounts
+
+The following tables show sample commands that demonstrate the interactions between specifying
+values for resource limits and ``NVIDIA_VISIBLE_DEVICES``, and the effect on GPU device access.
+
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
+|    :language: console                                                                                                              |
+|    :start-after: envall-limit-1                                                                                                    |
+|    :end-before: end                                                                                                                |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| Default Configuration                                            | Limit Unprivileged                                              |
++------------------------------------------------------------------+-----------------------------------------------------------------+
+| .. literalinclude:: ./manifests/output/before-envall-limit-1.txt | .. literalinclude:: ./manifests/output/after-envall-limit-1.txt |
+|   :language: output                                              |    :language: output                                            |
++------------------------------------------------------------------+-----------------------------------------------------------------+
 
 
 *************************************************
