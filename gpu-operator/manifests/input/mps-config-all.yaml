@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mps-config-all
+data:
+  mps-any: |-
+    version: v1
+    sharing:
+      mps:
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 4

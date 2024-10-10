@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mps-config-fine
+data:
+  mps-four: |-
+    version: v1
+    sharing:
+      mps:
+        renameByDefault: false
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 4
+  mps-two: |-
+    version: v1
+    sharing:
+      mps:
+        renameByDefault: false
+        resources:
+        - name: nvidia.com/gpu
+          replicas: 2
+
