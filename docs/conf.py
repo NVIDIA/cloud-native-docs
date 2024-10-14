@@ -22,7 +22,7 @@
 
 from datetime import date
 
-project = "Kubernetes Reference Architecture"
+project = "Securing NVIDIA Services with Istio and Keycloak"
 this_year = date.today().year
 copyright = f"2023-{this_year}, NVIDIA Corporation"
 author = "NVIDIA Corporation"
@@ -84,7 +84,7 @@ html_js_files = [
 
 html_logo = "media/nvidia-logo-white.png"
 html_favicon = "media/favicon.ico"
-html_baseurl = "https://docs.nvidia.com/datacenter/cloud-native/"
+html_baseurl = "https://docs.nvidia.com/nim-operator/latest/"
 
 templates_path = ["templates"]
 

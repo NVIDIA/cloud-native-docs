@@ -5,7 +5,7 @@
 
 # Sample Implementation Details
 
-Service Mesh Tools: Istio-based service mesh for creating a secure, observable, and highly configurable communication layer. OIDC Integration: Using tools like Keycloak, DEX, or other commercial solutions as an OIDC provider.
+Service Mesh Tools: Istio-based service mesh for creating a secure, observable, and highly configurable communication layer. OIDC Integration: Using tools like Keycloak, DEX, or other commercial solutions as an OIDC provider. NVIDIA developed and tested this document using the following installations methods.
 
 ```{contents}
 :depth: 2
@@ -80,21 +80,6 @@ Service Mesh Tools: Istio-based service mesh for creating a secure, observable, 
    kubectl rollout status deployment/kiali -n istio-system
    ```
 
-### Inject Istio 
-
-1. Run the below command to enable Istio to namespace, replace the `<namespace>` with your target namespace
-
-   ```console
-   kubectl label namespace <namespace> istio-injection=enabled --overwrite
-   ```
-        
-
-2. Run the below command to delete the existing pods to recreate with Istio sidecar containers, replace the `<namespace>` with your target namespace
-
-   ```console
-   kubectl delete pod $(kubectl get pods -n <namespace> | awk '{print $1}') -n rag-sample
-   ````
-        
 ## Install OIDC Keycloak
 
 1. Run the below command to update the label to run the privileged pods on default namespace.
@@ -156,7 +141,7 @@ Service Mesh Tools: Istio-based service mesh for creating a secure, observable, 
 
 ![](images/keycloak-3.png)
 
-7. Enter the **Realm Name** as *nvidia-rag-llm* and click on **Create** as shown below.
+7. Enter the **Realm Name** as *nvidia-nim* and click on **Create** as shown below.
 
 ![](images/keycloak-4.png)
 
@@ -164,7 +149,7 @@ Service Mesh Tools: Istio-based service mesh for creating a secure, observable, 
 
 ![](images/keycloak-5.png)
 
-9. Provide **Client ID** as nvidia-rag-llm and click **Next** with default values for steps 2 and 3.
+9. Provide **Client ID** as nvidia-nim and click **Next** with default values for steps 2 and 3.
 
 ![](images/keycloak-6.png)
 
@@ -184,11 +169,11 @@ Service Mesh Tools: Istio-based service mesh for creating a secure, observable, 
 
 ![](images/keycloak-10.png)
 
-14. Create a user with name as *rag* and click on **Create**.
+14. Create a user with name as *nim* and click on **Create**.
 
 ![](images/keycloak-11.png)
 
-15. Once you have clicked on **Create** you will see multiple tabs for the user and click on **Credentials** and then click on **Set password** to create a *password* for *rag user* as shown below.
+15. Once you have clicked on **Create** you will see multiple tabs for the user and click on **Credentials** and then click on **Set password** to create a *password* for *nim user* as shown below.
 
 ![](images/keycloak-12.png)
 
@@ -199,11 +184,11 @@ Service Mesh Tools: Istio-based service mesh for creating a secure, observable, 
 
 ![](images/keycloak-14.png)
 
-17. Now Navigate to **Role Mapping0** tab for *rag user* and click on **Assign Role**.	
+17. Now Navigate to **Role Mapping0** tab for *nimuser* and click on **Assign Role**.	
 
 ![](images/keycloak-15.png)
 
-18. Enable **chat** and **completion** roles to the *rag user* and click on **Assign** as shown below, 
+18. Enable **chat** and **completion** roles to the *nim user* and click on **Assign** as shown below, 
 
 ![](images/keycloak-16.png)
 

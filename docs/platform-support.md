@@ -75,3 +75,23 @@
     [Install Helm](https://helm.sh/docs/intro/install/)
     in the Helm documentation for more information.
 ```
+
+## Installed Componenets
+
+```{list-table}
+:header-rows: 1
+:widths: 30 70
+
+* - Component
+  - Verified Version
+
+* - Istio
+  - 1.23.2 
+    Refer to [Istion Releases](https://github.com/istio/istio/tree/release-1.23)
+    for more information.
+
+* - Keycloak
+  - 26.0.0 
+    Refer to [Keycloak Releases](https://github.com/keycloak/keycloak/tree/release/26.0)
+    for more information.
+```

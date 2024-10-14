@@ -1,6 +1,6 @@
-# Kubernetes Reference Architecture Documentation
+# Securing NVIDIA Services with Istio and Keycloak
 
-The product documentation is available from <https://docs.nvidia.com/datacenter/cloud-native/>.
+The product documentation is available from <https://docs.nvidia.com/ai-enterprise/nim-operator/latest/>.
 
 ## Building the Documentation
 
@@ -8,23 +8,17 @@ The product documentation is available from <https://docs.nvidia.com/datacenter/
 
    ```bash
    docker build --pull \
-     --tag k8s-ref-arch:0.1.0 \
+     --tag nim-service-docs:0.1.0 \
      --file Dockerfile .
    ```
 
-1. Run the container from the previous step:
+2. Run the container from the previous step:
 
    ```bash
    docker run -it --rm \
      -v $(pwd):/work -w /work \
-     k8s-ref-arch:0.1.0 \
-     bash
-   ```
-
-1. Build the docs:
-
-   ```bash
-   sphinx-build -E -a -b html -d /tmp docs _build/output
+     nim-service-docs:0.1.0 \
+     sphinx-build -E -a -b html -d /tmp docs _build/output 
    ```
 
    The documentation is viewable in your browser with a URL like <file://.../_build/latest/>.

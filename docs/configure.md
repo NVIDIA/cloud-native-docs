@@ -13,6 +13,23 @@
 ```
 ````
 
+## Inject Istio 
+
+1. Run the below command to enable Istio to namespace, replace the `<namespace>` with your target namespace
+
+   ```console
+   kubectl label namespace <namespace> istio-injection=enabled --overwrite
+   ```
+        
+
+2. Run the below command to delete the existing pods to recreate with Istio sidecar containers, replace the `<namespace>` with your target namespace
+
+   ```console
+   kubectl delete pod $(kubectl get pods -n <namespace> | awk '{print $1}') -n <namespace>
+   ````
+        
+## Deploy Manifests
+
 1. The following sample manifest deploys Ingress Virutal Service and Gateway.
   - `NOTE:`
     - 1. Make sure to update the target namespace for VirtualService object
@@ -53,8 +70,8 @@
   Example Output:
 
   ```console
-  rag-test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16
-  rag-test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23
+  nim-test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16
+  nim-test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23
   ```
 
 5. The following manifest deploys RequestAuthentication.
@@ -77,7 +94,7 @@
     - 1. Make sure to update the target namespace
     - 2. Modify or Update the rules that applies to target micro services
 
-  ```{literalinclude} ./manifests/requestAuthentication.yaml
+  ```{literalinclude} ./manifests/authorizationPolicy.yaml
   :language: yaml
   ```
 
@@ -90,7 +107,7 @@
 9. Run the below command to create a Token for Keycloak authentication, make sure to update the node IP and Ingress Gateway NodePort as per below.
 
   ```console        
-  TOKEN=`curl -X POST -d "client_id=nvidia-rag-llm" -d "username=rag" -d "password=nvidia123" -d "grant_type=password" "http://10.217.19.114:30611/realms/nvidia-rag-llm/protocol/openid-connect/token"| jq .access_token| tr -d '"' `
+  TOKEN=`curl -X POST -d "client_id=nvidia-nim" -d "username=nim" -d "password=nvidia123" -d "grant_type=password" "http://10.217.19.114:30611/realms/nvidia-nim-llm/protocol/openid-connect/token"| jq .access_token| tr -d '"' `
   ```
 
 10. Run the below command to verify whether you can access NeMo from Keycloak through Istio Gateway. 
@@ -121,6 +138,6 @@
 
 Access in browser with ``system-ip`` and port ``20001``
 
-# Conclusion
+## Conclusion
 
 This architecture offers a robust solution for deploying NVIDIA NeMo MicroServices in a secure, scalable, and efficient manner. Integrating advanced service mesh capabilities with OIDC authentication sets a new standard for building sophisticated AI-driven applications.

@@ -4,17 +4,17 @@
 -->
 
 ```{toctree}
-   :caption: Kubernetes Reference Architecture
+   :caption: Securing NVIDIA MicroServices
    :titlesonly:
    :hidden:
 
-   About the Reference Architecture <self>
+   About the Architecture <self>
    Platform Support <platform-support>
    Implementation <implementation>
    Configure <configure>
 ```
 
-# Kubernetes Reference Architecture
+# Securing NVIDIA Services with Istio and Keycloak
 
 ```{contents}
 :depth: 2
@@ -36,33 +36,37 @@ A service mesh is a configurable infrastructure layer designed to handle service
 
 ## Secure communication through Service Mesh
 
-### Encryption
+- Encryption
+  
+  Ensuring that data in transit is encrypted and secure from external threats to ensure data privacy and compliance. 
 
-Ensuring that data in transit is encrypted and secure from external threats to ensure data privacy and compliance. 
+- Authentication
+  
+  Verifying the identity of services within the mesh.
 
-### Authentication
+- Authorization
+  
+  Controlling which services can communicate with each other and what resources they can access.
 
-Verifying the identity of services within the mesh.
+- Integration with OIDC Provider
+  
+  OpenID Connect (OIDC) is an authentication layer on top of OAuth 2.0 in this RAG architecture.
+  
+  - Role of OIDC
+  
+    It provides a standardized way for services to authenticate using tokens, ensuring that only authorized services and users can access the RAG system's components.
+  
+  - Integration Steps
+  
+    The service mesh can be configured to work with an OIDC provider to validate tokens for each request, ensuring authenticated and authorized communication.
+  
+  - Benefits
+  
+    When a user or service attempts to access the RAG system, the service mesh intercepts this request and checks for valid authentication tokens provided by the OIDC/OAuth2 service. This ensures that only authenticated users and services can interact with the RAG system, enhancing security and access control.
 
-## Authorization
+- Performance and Scalability
 
-Controlling which services can communicate with each other and what resources they can access.
-
-## Integration with OIDC Provider
- 
-OpenID Connect (OIDC) is an authentication layer on top of OAuth 2.0 in this RAG architecture.
-
-### Role of OIDC
-
-It provides a standardized way for services to authenticate using tokens, ensuring that only authorized services and users can access the RAG system's components.
-
-### Integration Steps
-
-The service mesh can be configured to work with an OIDC provider to validate tokens for each request, ensuring authenticated and authorized communication.
-
-### Benefits
-
-When a user or service attempts to access the RAG system, the service mesh intercepts this request and checks for valid authentication tokens provided by the OIDC/OAuth2 service. This ensures that only authenticated users and services can interact with the RAG system, enhancing security and access control.
+  The architecture supports horizontal scaling and can handle varying loads, ensuring high availability and minimal latency.
 
 ## Architecture Diagram
 
@@ -70,9 +74,6 @@ The diagram visualizes the first version of the Operator. Later more microservic
 
 ![](/images/reference-arch-01.png)
 
-## Performance and Scalability
-
-The architecture supports horizontal scaling and can handle varying loads, ensuring high availability and minimal latency.
 
 ## Use Cases
 
