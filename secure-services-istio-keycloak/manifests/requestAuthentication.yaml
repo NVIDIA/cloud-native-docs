@@ -1,0 +1,46 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: nim-request-authentication
+  namespace: <namespace>
+spec:
+  selector:
+    matchLabels:
+     app.kubernetes.io/name: inferencing
+  jwtRules:
+  - issuer: "http://10.176.21.249:30669/realms/nvidia-nim"
+    jwksUri: "http://keycloak.default.svc.cluster.local:8080/realms/nvidia-nim/protocol/openid-connect/certs"
+    forwardOriginalToken: true
+    fromHeaders:
+      - name: Authorization
+        prefix: "Bearer"
+  - issuer: "http://10.176.21.249/realms/nvidia-nim"
+    jwksUri: "http://keycloak.default.svc.cluster.local:8080/realms/nvidia-nim/protocol/openid-connect/certs"
+    forwardOriginalToken: true
+    fromHeaders:
+      - name: Authorization
+        prefix: "Bearer"
+---
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: nim-request-authentication-gw
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+     istio: ingressgateway
+  jwtRules:
+  - issuer: "http://10.176.21.249:30669/realms/nvidia-nim"
+    jwksUri: "http://keycloak.default.svc.cluster.local:8080/realms/nvidia-nim/protocol/openid-connect/certs"
+    forwardOriginalToken: true
+    fromHeaders:
+      - name: Authorization
+        prefix: "Bearer"
+  - issuer: "http://10.176.21.249/realms/nvidia-nim"
+    jwksUri: "http://keycloak.default.svc.cluster.local:8080/realms/nvidia-nim/protocol/openid-connect/certs"
+    forwardOriginalToken: true
+    fromHeaders:
+      - name: Authorization
+        prefix: "Bearer"
