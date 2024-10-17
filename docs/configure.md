@@ -3,7 +3,7 @@
   SPDX-License-Identifier: Apache-2.0
 -->
 
-# Confifgure RBAC
+# Configure RBAC
 
 ````{only} not publish_bsp
 ```{contents}
@@ -13,130 +13,127 @@
 ```
 ````
 
-## Inject Istio 
+## Inject Istio
 
-1. Run the below command to enable Istio to namespace, replace the `<namespace>` with your target namespace
+1. Label the namespace to enable Istio injection.
 
    ```console
    kubectl label namespace <namespace> istio-injection=enabled --overwrite
    ```
-        
 
-2. Run the below command to delete the existing pods to recreate with Istio sidecar containers, replace the `<namespace>` with your target namespace
+   Replace the `<namespace>` with your target namespace.
+
+2. Delete the existing pods to recreate them with Istio sidecar containers.
 
    ```console
    kubectl delete pod $(kubectl get pods -n <namespace> | awk '{print $1}') -n <namespace>
    ````
-        
+
 ## Deploy Manifests
 
-1. The following sample manifest deploys Ingress Virutal Service and Gateway.
-  - `NOTE:`
-    - 1. Make sure to update the target namespace for VirtualService object
-    - 2. Below example are target for NIM Inference Microservice, if you plan to other NVIDIA NeMo MicroService, make sure to update the `match` and `route` appropriately
-        - To find more information about `match` and `route` for NeMo MicroServices refer 
+1. The following sample manifest deploys a gateway and ingress virtual service.
+
+    - Update the target namespace for the virtual service resource.
+    - The sample manifest applies to NVIDIA NIM for LLMs. For other NVIDIA microservices, update the `match` and `route` for the microservice endpoints.
+        - For information about the microservice endpoints, refer to the following documents:
           - [NIM Inference API Inference](https://docs.nvidia.com/nim/large-language-models/latest/api-reference.html)
           - [NIM Embedding API Reference](https://docs.nvidia.com/nim/nemo-retriever/text-embedding/latest/reference.html)
           - [NIM ReRanking API Reference](https://docs.nvidia.com/nim/nemo-retriever/text-reranking/latest/reference.html)
 
-  ```{literalinclude} ./manifests/istio-sample-manifest.yaml
-  :language: yaml
-  ```
+   ```{literalinclude} ./manifests/istio-sample-manifest.yaml
+   :language: yaml
+   ```
 
-2. Run the below command to expose Inference service externally via Istio Ingress Gateway.
+2. Apply the manifest.
 
-  ```console
-  kubectl apply -f istio-sample-manifest.yaml
-  ````
+   ```console
+   kubectl apply -f istio-sample-manifest.yaml
+   ````
 
-3. Run the below command to get the Istio Ingress Gateway NodePort.
+3. Determine the Istio ingress gateway node port.
 
-  ```console        
-  kubectl get svc -n istio-system | grep ingress
-  ```
-  
-  Example Output:
+   ```console
+   kubectl get svc -n istio-system | grep ingress
+   ```
 
-  ```console
-  istio-ingressgateway   LoadBalancer   10.102.8.149     10.28.234.101   15021:32658/TCP,80:30611/TCP,443:31874/TCP,31400:30160/TCP,15443:32430/TCP   22h
-  ```
-  
-4. Run the below command to list the worker IP addresses.
+   *Example Output*
 
-  ```console       
-  for node in `kubectl get nodes | awk '{print $1}' | grep -v NAME`; do echo $node ' ' | tr -d '\n'; kubectl describe node $node | grep -i 'internalIP:' | awk '{print $2}'; done
-  ```
-  
-  Example Output:
+   ```output
+   istio-ingressgateway   LoadBalancer   10.102.8.149     10.28.234.101   15021:32658/TCP,80:30611/TCP,443:31874/TCP,31400:30160/TCP,15443:32430/TCP   22h
+   ```
 
-  ```console
-  nim-test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16
-  nim-test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23
-  ```
+4. List the worker IP addresses.
 
-5. The following manifest deploys RequestAuthentication.
-  - `NOTE:`
-    - 1. Make sure to update the target namespace
-    - 2. Modify issuer in the yaml with one of the above system IP addresses and above ingress Istio gateway NodePort mapped to 80
+   ```console
+   for node in `kubectl get nodes | awk '{print $1}' | grep -v NAME`; do echo $node ' ' | tr -d '\n'; kubectl describe node $node | grep -i 'internalIP:' | awk '{print $2}'; done
+   ```
 
-  ```{literalinclude} ./manifests/requestAuthentication.yaml
-  :language: yaml
-  ```
+   *Example Output*
 
-6. Run the below command to apply Request Authentication to Kubernetes Cluster.
+   ```console
+   nim-test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16
+   nim-test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23
+   ```
 
-  ```console
-  kubectl apply -f requestAuthentication.yaml
-  ```
+5. The following manifest creates request authentication resources.
 
-7. The following manifest deploys authorizationPolicy.
-  - `NOTE:`
-    - 1. Make sure to update the target namespace
-    - 2. Modify or Update the rules that applies to target micro services
+    - Update the target namespace.
+    - Modify the issuer in the manifest with one of the preceding IP addresses and preceeding ingress Istio gateway node ports, mapped to port 80.
 
-  ```{literalinclude} ./manifests/authorizationPolicy.yaml
-  :language: yaml
-  ```
+    ```{literalinclude} ./manifests/requestAuthentication.yaml
+    :language: yaml
+    ```
 
-8. Run the below command to create Authentication Policy on Kubernetes Cluster.
+6. Apply the manifest.
 
-  ```console
-  kubectl apply -f authorizationPolicy.yaml
-  ```
+   ```console
+   kubectl apply -f requestAuthentication.yaml
+   ```
 
-9. Run the below command to create a Token for Keycloak authentication, make sure to update the node IP and Ingress Gateway NodePort as per below.
+7. The following manifest creates an authorization policy resource.
 
-  ```console        
-  TOKEN=`curl -X POST -d "client_id=nvidia-nim" -d "username=nim" -d "password=nvidia123" -d "grant_type=password" "http://10.217.19.114:30611/realms/nvidia-nim-llm/protocol/openid-connect/token"| jq .access_token| tr -d '"' `
-  ```
+    - Update the target namespace.
+    - Update the rules that apply to the target microservices.
 
-10. Run the below command to verify whether you can access NeMo from Keycloak through Istio Gateway. 
+   ```{literalinclude} ./manifests/authorizationPolicy.yaml
+   :language: yaml
+   ```
 
-  ```console
-  curl -v -X POST http://10.217.19.114:30611/v1/completions -H "Authorization: Bearer $TOKEN" -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "model": "llama-2-13b-chat","prompt": "What is Kubernetes?","max_tokens": 16,"temperature": 1, "n": 1, "stream": false, "stop": "string", "frequency_penalty": 0.0 }'
-  ```
+8. Apply the manifest.
 
-  `NOTE`:
-    - Make sure to update the node IP and Ingress Gateway port 
-    - Update the model name if it’s other than llama-2-13b-chat
-        
-11. Generate some more data, so it can be usable in the next step to visualize it on the Kiali dashboard. 
+   ```console
+   kubectl apply -f authorizationPolicy.yaml
+   ```
 
-  ```console
-  for i in $(seq 1 100); do curl -X POST http://10.217.19.114:30611/v1/chat/completions -H 'accept: application/json' -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"model": "llama-2-13b-chat","messages": [{"role": "system","content": "You are a helpful assistant."},{"role": "user", "content": "Hello!"}]}'  -s -o /dev/null; done
-  ```
+9. Create a token for Keycloak authentication.
+   Update the node IP address and ingress gateway node port.
 
-  `Note:`
-    - Make sure to update the node IP and Ingress Gateway port 
-    - Update the model name if it’s other than llama-2-13b-chat
+   ```console
+   TOKEN=`curl -X POST -d "client_id=nvidia-nim" -d "username=nim" -d "password=nvidia123" -d "grant_type=password" "http://10.217.19.114:30611/realms/nvidia-nim-llm/protocol/openid-connect/token"| jq .access_token| tr -d '"' `
+   ```
 
-12. Run the below command to access the Istio Dashboard with replacing your Linux/WSL system IP.
+10. Verify access to the microservice from Keycloak through the Istio gateway.
 
-  ```console    
+    ```console
+    curl -v -X POST http://10.217.19.114:30611/v1/completions -H "Authorization: Bearer $TOKEN" -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "model": "llama-2-13b-chat","prompt": "What is Kubernetes?","max_tokens": 16,"temperature": 1, "n": 1, "stream": false, "stop": "string", "frequency_penalty": 0.0 }'
+    ```
+
+    Update the node IP address and ingress gateway port.
+    Update the model name if it is not `llama-2-13b-chat`.
+
+11. Generate some more data so it can be visualized in the next step on the Kiali dashboard.
+
+    ```console
+    for i in $(seq 1 100); do curl -X POST http://10.217.19.114:30611/v1/chat/completions -H 'accept: application/json' -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"model": "llama-2-13b-chat","messages": [{"role": "system","content": "You are a helpful assistant."},{"role": "user", "content": "Hello!"}]}'  -s -o /dev/null; done
+    ```
+
+12. Access the Istio Dashboard, specifying your client system IP address.
+
+    ```console
     istioctl dashboard kiali --address <system-ip>
-  ```
+    ```
 
-Access in browser with ``system-ip`` and port ``20001``
+Access in browser with `system-ip` and port `20001`.
 
 ## Conclusion
 
