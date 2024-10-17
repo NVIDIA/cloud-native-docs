@@ -1,8 +1,0 @@
-# Python Exclusions
-.venv
-
-# Visual Studio Code
-.vscode
-
-# File from docs builds
-_build/
