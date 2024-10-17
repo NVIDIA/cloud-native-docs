@@ -14,7 +14,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 0.2.0
+  TAG: 0.3.0
   GH_TOKEN: ${{ github.token }}
 
 concurrency:
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
+      packages: write
     outputs:
       changed: ${{ steps.change.outputs.changed }}
       image: ${{ steps.change.outputs.image }}
