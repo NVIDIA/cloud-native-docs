@@ -1,12 +1,8 @@
 name: docs-build
 
 on:
-  pull_request:
-    branches: [ master, main ]
-    types: [ opened, synchronize ]
-
   push:
-    branches: [ master, main ]
+    branches: [ main ]
     tags:
       - v*
   workflow_dispatch:
@@ -14,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 0.2.0
+  TAG: 0.3.0
   GH_TOKEN: ${{ github.token }}
 
 concurrency:
@@ -33,8 +29,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
@@ -77,8 +71,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
@@ -95,16 +89,13 @@ jobs:
 
   build-docs:
     needs: [dockerfile-changed, build-and-push-image]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
     container:
       image: ${{ needs.dockerfile-changed.outputs.image }}
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set ownership
-        run: |
-          chown -R $(id -u):$(id -g) $PWD
       - name: Build docs
         run: |
           ./repo docs
@@ -124,7 +115,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
       - name: Store PR information
-        if: ${{ github.event_name == 'pull_request' }}
+        if: github.event_name == 'pull_request'
         run: |
           mkdir ./pr
           echo ${{ github.event.number }}              > ./pr/pr.txt
@@ -139,7 +130,6 @@ jobs:
 
   store-html:
     needs: [ build-docs ]
-    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

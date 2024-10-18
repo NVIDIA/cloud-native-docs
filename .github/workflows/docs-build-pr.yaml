@@ -1,0 +1,58 @@
+name: docs-build-pr
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize ]
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          load: true
+          tags: pr-image:${{ github.sha }}
+      - name: Build docs
+        run: |
+          docker run -v $(pwd):/work -w /work pr-image:${{ github.sha }} ./repo docs
+      - name: Delete unnecessary files
+        run: |
+          sudo find _build -name .doctrees -prune -exec rm -rf {} \;
+          sudo find _build -name .buildinfo -exec rm {} \;
+      - name: Copy review page
+        run: |
+          sudo mv _build/docs/review/latest/* _build/docs
+          sudo rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
+      - name: Upload HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-build-artifact
+          path: _build/docs
+          if-no-files-found: error
+          retention-days: 1
+      - name: Store PR information
+        run: |
+          mkdir ./pr
+          echo ${{ github.event.number }}              > ./pr/pr.txt
+          echo ${{ github.event.pull_request.merged }} > ./pr/merged.txt
+          echo ${{ github.event.action }}              > ./pr/action.txt
+      - name: Upload PR information
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr
+          path: pr/
