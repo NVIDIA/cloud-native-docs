@@ -303,7 +303,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.12---4.16
+         - | 4.12---4.17
          -
          -
          -
@@ -400,7 +400,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.12---4.16
+         - 4.12---4.17
          -
          -
 
