@@ -2,11 +2,11 @@ name: docs-build
 
 on:
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
     types: [ opened, synchronize ]
 
   push:
-    branches: [ master, main ]
+    branches: [ main ]
     tags:
       - v*
   workflow_dispatch:
@@ -26,15 +26,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write
+      packages: read
     outputs:
       changed: ${{ steps.change.outputs.changed }}
       image: ${{ steps.change.outputs.image }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
@@ -92,22 +90,42 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: ${{ needs.dockerfile-changed.outputs.image }}
+        if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
+      - name: Build and save
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          tags: ${{ needs.dockerfile-changed.outputs.image }}
+          outputs: type=oci,dest=/tmp/image.tar
+        if: github.event_name == 'pull_request'
+      - name: Upload image
+        uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: /tmp/image.tar
+        if: github.event_name == 'pull_request'
 
   build-docs:
     needs: [dockerfile-changed, build-and-push-image]
     if: ${{ always() }}
     runs-on: ubuntu-latest
-    container:
-      image: ${{ needs.dockerfile-changed.outputs.image }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set ownership
+      - name: Download image
+        uses: actions/download-artifact@v4
+        with:
+          name: image
+          path: /tmp/
+        if: github.event_name == 'pull_request'
+      - name: Load image
         run: |
-          chown -R $(id -u):$(id -g) $PWD
+          docker load --input /tmp/image.tar
+        if: github.event_name == 'pull_request'
       - name: Build docs
         run: |
-          ./repo docs
+          docker run -v $(pwd):/work -w /work ${{ needs.dockerfile-changed.outputs.image }} ./repo docs
       - name: Delete unnecessary files
         run: |
           find _build -name .doctrees -prune -exec rm -rf {} \;
@@ -124,7 +142,7 @@ jobs:
           if-no-files-found: error
           retention-days: 1
       - name: Store PR information
-        if: ${{ github.event_name == 'pull_request' }}
+        if: github.event_name == 'pull_request'
         run: |
           mkdir ./pr
           echo ${{ github.event.number }}              > ./pr/pr.txt
@@ -139,7 +157,7 @@ jobs:
 
   store-html:
     needs: [ build-docs ]
-    if: ${{ github.event_name == 'push' }}
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
