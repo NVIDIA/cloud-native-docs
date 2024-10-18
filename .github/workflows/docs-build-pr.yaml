@@ -1,9 +1,12 @@
-name: docs-build
+name: docs-build-pr
 
 on:
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize ]
+
+env:
+  GH_TOKEN: ${{ github.token }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -15,9 +18,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false
+          tags: pr-image:${{ github.sha }}
       - name: Build docs
         run: |
-          ./repo docs
+          docker run -v $(pwd):/work -w /work pr-image:${{ github.sha }} ./repo docs
       - name: Delete unnecessary files
         run: |
           find _build -name .doctrees -prune -exec rm -rf {} \;
