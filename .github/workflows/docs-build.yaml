@@ -1,10 +1,6 @@
 name: docs-build
 
 on:
-  pull_request:
-    branches: [ main ]
-    types: [ opened, synchronize ]
-
   push:
     branches: [ main ]
     tags:
@@ -90,42 +86,19 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: ${{ needs.dockerfile-changed.outputs.image }}
-        if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
-      - name: Build and save
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/Dockerfile
-          tags: ${{ needs.dockerfile-changed.outputs.image }}
-          outputs: type=local,dest=/tmp/image.tar
-        if: github.event_name == 'pull_request'
-      - name: Upload image
-        uses: actions/upload-artifact@v4
-        with:
-          name: image
-          path: /tmp/image.tar
-        if: github.event_name == 'pull_request'
 
   build-docs:
     needs: [dockerfile-changed, build-and-push-image]
+    container:
+      image: ${{ needs.dockerfile-changed.outputs.image }}
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Download image
-        uses: actions/download-artifact@v4
-        with:
-          name: image
-          path: /tmp/
-        if: github.event_name == 'pull_request'
-      - name: Load image
-        run: |
-          docker load --input /tmp/image.tar
-        if: github.event_name == 'pull_request'
       - name: Build docs
         run: |
-          docker run -v $(pwd):/work -w /work ${{ needs.dockerfile-changed.outputs.image }} ./repo docs
+          ./repo docs
       - name: Delete unnecessary files
         run: |
           find _build -name .doctrees -prune -exec rm -rf {} \;
@@ -157,7 +130,6 @@ jobs:
 
   store-html:
     needs: [ build-docs ]
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

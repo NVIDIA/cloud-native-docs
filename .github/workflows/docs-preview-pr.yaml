@@ -2,9 +2,9 @@ name: docs-preview-pr
 
 on:
   workflow_run:
-    workflows: [ docs-build ]
+    workflows: [ docs-build-pr ]
     types: [ completed ]
-    branches-ignore: [ 'master' ]
+    branches-ignore: [ main ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
