@@ -1,0 +1,53 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: rag-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http2
+        protocol: HTTP
+      hosts:
+        - "*"
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sample-vs
+  namespace: <namespace>
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - istio-system/rag-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /admin
+        - uri:
+            prefix: /resources
+        - uri:
+            prefix: /welcome
+        - uri:
+            prefix: /realms
+      route:
+        - destination:
+            host: keycloak.default.svc.cluster.local
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /v1/completions
+        - uri:
+            prefix: /v1/chat/completions
+      route:
+        - destination:
+            host: inferencing
+            port:
+              number: 8080
