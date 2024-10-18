@@ -32,12 +32,12 @@ jobs:
           docker run -v $(pwd):/work -w /work pr-image:${{ github.sha }} ./repo docs
       - name: Delete unnecessary files
         run: |
-          find _build -name .doctrees -prune -exec rm -rf {} \;
-          find _build -name .buildinfo -exec rm {} \;
+          sudo find _build -name .doctrees -prune -exec rm -rf {} \;
+          sudo find _build -name .buildinfo -exec rm {} \;
       - name: Copy review page
         run: |
-          mv _build/docs/review/latest/* _build/docs
-          rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
+          sudo mv _build/docs/review/latest/* _build/docs
+          sudo rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
       - name: Upload HTML
         uses: actions/upload-artifact@v4
         with:
