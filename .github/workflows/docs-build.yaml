@@ -95,7 +95,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           tags: ${{ needs.dockerfile-changed.outputs.image }}
-          outputs: type=docker,dest=/tmp/image.tar
+          outputs: type=local,dest=/tmp/image.tar
         if: github.event_name == 'pull_request'
       - name: Upload image
         uses: actions/upload-artifact@v4
