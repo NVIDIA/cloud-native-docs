@@ -60,6 +60,7 @@ project_build_order = [
   "kubernetes",
   "partner-validated",
   "container-toolkit",
+  "secure-services-istio-keycloak",
   "review",
 ]
 
@@ -229,3 +230,14 @@ docs_root = "${root}/review"
 name = "Technical Review"
 version = "0.1.0"
 copyright_start = 2023
+
+[repo_docs.projects.secure-services-istio-keycloak]
+docs_root = "${root}/secure-services-istio-keycloak"
+project = "secure-services-istio-keycloak"
+name = "Securing NVIDIA Services with Istio and Keycloak"
+version = "0.1.0"
+copyright_start = 2024
+
+[repo_docs.projects.secure-services-istio-keycloak.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
