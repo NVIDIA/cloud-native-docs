@@ -156,12 +156,12 @@
 <li><p><a class="reference internal" href="#verification" id="id13">Verification</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#run-a-sample-workload" id="id14">Run a Sample Workload</a></p></li>
-<li><p><a class="reference internal" href="#optional-configuring-a-gpu-resource-alias" id="id15">Optional: Configuring a GPU Resource Alias</a></p>
+<li><p><a class="reference internal" href="#run-a-sample-workload" id="id14">Run a Sample Workload</a></p>
 <ul>
-<li><p><a class="reference internal" href="#troubleshooting-workloads" id="id16">Troubleshooting Workloads</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting-workloads" id="id15">Troubleshooting Workloads</a></p></li>
 </ul>
 </li>
+<li><p><a class="reference internal" href="#optional-configuring-a-gpu-resource-alias" id="id16">Optional: Configuring a GPU Resource Alias</a></p></li>
 <li><p><a class="reference internal" href="#about-the-pod-annotation" id="id17">About the Pod Annotation</a></p></li>
 </ul>
 </div>
@@ -567,6 +567,20 @@ Modify the value to accommodate your workload.</p>
 </div>
 </li>
 </ol>
+<section id="troubleshooting-workloads">
+<h3>Troubleshooting Workloads<a class="headerlink" href="#troubleshooting-workloads" title="Permalink to this headline"></a></h3>
+<p>If the sample workload does not run, confirm that you labelled nodes to run virtual machines in containers:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -l nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME               STATUS   ROLES    AGE   VERSION</span>
+<span class="go">kata-worker-1      Ready    &lt;none&gt;   10d   v1.27.3</span>
+<span class="go">kata-worker-2      Ready    &lt;none&gt;   10d   v1.27.3</span>
+<span class="go">kata-worker-3      Ready    &lt;none&gt;   10d   v1.27.3</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="optional-configuring-a-gpu-resource-alias">
 <h2>Optional: Configuring a GPU Resource Alias<a class="headerlink" href="#optional-configuring-a-gpu-resource-alias" title="Permalink to this headline"></a></h2>
@@ -598,20 +612,6 @@ You can configure the NVIDIA Sandbox Device Plugin so that nodes also expose GPU
 </div>
 </li>
 </ol>
-<section id="troubleshooting-workloads">
-<h3>Troubleshooting Workloads<a class="headerlink" href="#troubleshooting-workloads" title="Permalink to this headline"></a></h3>
-<p>If the sample workload does not run, confirm that you labelled nodes to run virtual machines in containers:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -l nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME               STATUS   ROLES    AGE   VERSION</span>
-<span class="go">kata-worker-1      Ready    &lt;none&gt;   10d   v1.27.3</span>
-<span class="go">kata-worker-2      Ready    &lt;none&gt;   10d   v1.27.3</span>
-<span class="go">kata-worker-3      Ready    &lt;none&gt;   10d   v1.27.3</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="about-the-pod-annotation">
 <h2>About the Pod Annotation<a class="headerlink" href="#about-the-pod-annotation" title="Permalink to this headline"></a></h2>
