@@ -492,6 +492,25 @@ A pod specification for a Kata container requires the following:
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
 
+Troubleshooting Workloads
+=========================
+
+If the sample workload does not run, confirm that you labelled nodes to run virtual machines in containers:
+
+.. code-block:: console
+
+   $ kubectl get nodes -l nvidia.com/gpu.workload.config=vm-passthrough
+
+*Example Output*
+
+.. code-block:: output
+
+   NAME               STATUS   ROLES    AGE   VERSION
+   kata-worker-1      Ready    <none>   10d   v1.27.3
+   kata-worker-2      Ready    <none>   10d   v1.27.3
+   kata-worker-3      Ready    <none>   10d   v1.27.3
+
+
 ******************************************
 Optional: Configuring a GPU Resource Alias
 ******************************************
@@ -527,25 +546,6 @@ You can configure the NVIDIA Sandbox Device Plugin so that nodes also expose GPU
         memory:                  65488292Ki
         nvidia.com/GA102GL_A10:  1
         nvidia.com/pgpu:         1
-
-
-Troubleshooting Workloads
-=========================
-
-If the sample workload does not run, confirm that you labelled nodes to run virtual machines in containers:
-
-.. code-block:: console
-
-   $ kubectl get nodes -l nvidia.com/gpu.workload.config=vm-passthrough
-
-*Example Output*
-
-.. code-block:: output
-
-   NAME               STATUS   ROLES    AGE   VERSION
-   kata-worker-1      Ready    <none>   10d   v1.27.3
-   kata-worker-2      Ready    <none>   10d   v1.27.3
-   kata-worker-3      Ready    <none>   10d   v1.27.3
 
 
 ************************
