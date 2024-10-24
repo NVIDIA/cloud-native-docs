@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Platform Support &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+  <title>Platform Support &mdash; NVIDIA GPU Operator 24.6.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -32,7 +32,7 @@
     <link rel="next" title="Release Notes" href="release-notes.html" />
     <link rel="prev" title="Uninstalling the GPU Operator" href="uninstall.html" />
  
-
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
 
 </head>
 
@@ -41,11 +41,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-
-<a href="index.html">
-  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
-</a>
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
 
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -111,6 +109,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -132,19 +135,19 @@
 <span id="operator-platform-support"></span><h1>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline"></a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#nvidia-gpu-operator-versioning" id="id5">NVIDIA GPU Operator Versioning</a></p></li>
-<li><p><a class="reference internal" href="#nvidia-gpu-operator-life-cycle" id="id6">NVIDIA GPU Operator Life Cycle</a></p></li>
-<li><p><a class="reference internal" href="#gpu-operator-component-matrix" id="id7">GPU Operator Component Matrix</a></p>
+<li><p><a class="reference internal" href="#nvidia-gpu-operator-versioning" id="id6">NVIDIA GPU Operator Versioning</a></p></li>
+<li><p><a class="reference internal" href="#nvidia-gpu-operator-life-cycle" id="id7">NVIDIA GPU Operator Life Cycle</a></p></li>
+<li><p><a class="reference internal" href="#gpu-operator-component-matrix" id="id8">GPU Operator Component Matrix</a></p>
 <ul>
-<li><p><a class="reference internal" href="#supported-nvidia-data-center-gpus-and-systems" id="id8">Supported NVIDIA Data Center GPUs and Systems</a></p></li>
-<li><p><a class="reference internal" href="#supported-arm-based-platforms" id="id9">Supported ARM Based Platforms</a></p></li>
-<li><p><a class="reference internal" href="#supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products" id="id10">Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products</a></p></li>
-<li><p><a class="reference internal" href="#supported-operating-systems-and-kubernetes-platforms" id="id11">Supported Operating Systems and Kubernetes Platforms</a></p></li>
-<li><p><a class="reference internal" href="#supported-container-runtimes" id="id12">Supported Container Runtimes</a></p></li>
-<li><p><a class="reference internal" href="#support-for-kubevirt-and-openshift-virtualization" id="id13">Support for KubeVirt and OpenShift Virtualization</a></p></li>
-<li><p><a class="reference internal" href="#support-for-gpudirect-rdma" id="id14">Support for GPUDirect RDMA</a></p></li>
-<li><p><a class="reference internal" href="#support-for-gpudirect-storage" id="id15">Support for GPUDirect Storage</a></p></li>
-<li><p><a class="reference internal" href="#additional-supported-container-management-tools" id="id16">Additional Supported Container Management Tools</a></p></li>
+<li><p><a class="reference internal" href="#supported-nvidia-data-center-gpus-and-systems" id="id9">Supported NVIDIA Data Center GPUs and Systems</a></p></li>
+<li><p><a class="reference internal" href="#supported-arm-based-platforms" id="id10">Supported ARM Based Platforms</a></p></li>
+<li><p><a class="reference internal" href="#supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products" id="id11">Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products</a></p></li>
+<li><p><a class="reference internal" href="#supported-operating-systems-and-kubernetes-platforms" id="id12">Supported Operating Systems and Kubernetes Platforms</a></p></li>
+<li><p><a class="reference internal" href="#supported-container-runtimes" id="id13">Supported Container Runtimes</a></p></li>
+<li><p><a class="reference internal" href="#support-for-kubevirt-and-openshift-virtualization" id="id14">Support for KubeVirt and OpenShift Virtualization</a></p></li>
+<li><p><a class="reference internal" href="#support-for-gpudirect-rdma" id="id15">Support for GPUDirect RDMA</a></p></li>
+<li><p><a class="reference internal" href="#support-for-gpudirect-storage" id="id16">Support for GPUDirect Storage</a></p></li>
+<li><p><a class="reference internal" href="#additional-supported-container-management-tools" id="id17">Additional Supported Container Management Tools</a></p></li>
 </ul>
 </li>
 </ul>
@@ -169,8 +172,8 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <li><p>Upgrades are only supported within a major release or to the next major release.</p></li>
 </ul>
 </div>
-<table class="docutils align-default" id="id4">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id5" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -215,7 +218,8 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <tr class="row-odd"><td><p>NVIDIA GPU Driver</p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html">560.35.03</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-07/index.html">550.90.07</a> (default, recommended),</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-12/index.html">550.90.12</a> (recommended),</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-90-07/index.html">550.90.07</a> (default),</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-183-06/index.html">535.183.06</a></div>
 </div>
 </td>
@@ -224,7 +228,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.6.10</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Container Toolkit</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.16.1</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.16.2</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Kubernetes Device Plugin</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.16.2</a></p></td>
@@ -294,8 +298,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline"></a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="18031dae-585a-41be-876a-3b5c2696360b" name="0a78e98d-054b-4006-bebd-c64b7498b2bc" type="radio">
-</input><label class="sd-tab-label" for="18031dae-585a-41be-876a-3b5c2696360b">
+<input id="fb64b46b-0b1f-4f0c-91ca-8df8cc9eb109" name="88731943-6d6b-4ec4-a435-5ca5e5657529" type="radio">
+</input><label class="sd-tab-label" for="fb64b46b-0b1f-4f0c-91ca-8df8cc9eb109">
 GH-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -319,8 +323,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="a374df45-2e66-45ad-ab1c-a2b6ac1d4de8" name="0a78e98d-054b-4006-bebd-c64b7498b2bc" type="radio">
-</input><label class="sd-tab-label" for="a374df45-2e66-45ad-ab1c-a2b6ac1d4de8">
+<input checked="checked" id="5c058ceb-9fc9-40b4-9c24-49cc87a7b4de" name="88731943-6d6b-4ec4-a435-5ca5e5657529" type="radio">
+</input><label class="sd-tab-label" for="5c058ceb-9fc9-40b4-9c24-49cc87a7b4de">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -415,12 +419,12 @@ NVSwitch</p></td>
 <ul class="simple">
 <li><p>Hopper (H100) GPU is only supported on x86 servers.</p></li>
 <li><p>The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
-For installation instructions, see <a class="reference internal" href="getting-started.html#preinstalled-drivers-and-toolkit"><span class="std std-ref">Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit</span></a> for DGX OS 5.1+ and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/introduction.html#openshift-introduction" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Introduction</span></a> for Red Hat OpenShift.</p></li>
+For installation instructions, see <a class="reference internal" href="getting-started.html#preinstalled-drivers-and-toolkit"><span class="std std-ref">Pre-Installed NVIDIA GPU Drivers and NVIDIA Container Toolkit</span></a> for DGX OS 5.1+ and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/introduction.html#openshift-introduction" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Introduction to NVIDIA GPU Operator on OpenShift</span></a> for Red Hat OpenShift.</p></li>
 </ul>
 </div>
 </div>
-<input id="ec8b4e63-06df-454a-9d6e-1b854f8fa7f4" name="0a78e98d-054b-4006-bebd-c64b7498b2bc" type="radio">
-</input><label class="sd-tab-label" for="ec8b4e63-06df-454a-9d6e-1b854f8fa7f4">
+<input id="3bd10ba6-0f82-4072-95d3-487b258483bd" name="88731943-6d6b-4ec4-a435-5ca5e5657529" type="radio">
+</input><label class="sd-tab-label" for="3bd10ba6-0f82-4072-95d3-487b258483bd">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -451,8 +455,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="5eb2cceb-2fff-4f1e-b002-0090292528cb" name="0a78e98d-054b-4006-bebd-c64b7498b2bc" type="radio">
-</input><label class="sd-tab-label" for="5eb2cceb-2fff-4f1e-b002-0090292528cb">
+<input id="8a7f331d-29e4-4223-a2c8-49491788d789" name="88731943-6d6b-4ec4-a435-5ca5e5657529" type="radio">
+</input><label class="sd-tab-label" for="8a7f331d-29e4-4223-a2c8-49491788d789">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -615,8 +619,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.</p>
 </div>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="7454f1e7-5c94-4bf5-99dd-19902d11eb33" name="75c660ed-6f0c-40e1-b48e-c75871c3ee8b" type="radio">
-</input><label class="sd-tab-label" for="7454f1e7-5c94-4bf5-99dd-19902d11eb33">
+<input checked="checked" id="5057afed-0b47-4881-ab69-1887d0d4a7f9" name="bff1c5cb-9579-4307-ad0c-e965672ec81f" type="radio">
+</input><label class="sd-tab-label" for="5057afed-0b47-4881-ab69-1887d0d4a7f9">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -665,25 +669,25 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>1</sup></a></p></th>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td><p>7.0 U3c, 8.0 U2</p></td>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>1</sup></a></p></th>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td><p>8.0 U2</p></td>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td><p>1.26</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Red Hat Core OS</p></th>
 <td></td>
 <td><div class="line-block">
-<div class="line">4.12—4.16</div>
+<div class="line">4.12—4.17</div>
 </div>
 </td>
 <td></td>
@@ -694,14 +698,14 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 <tr class="row-odd"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
-<div class="line">Linux 8.6,</div>
-<div class="line">8.8, 8.10</div>
+<div class="line">Linux 8.8,</div>
+<div class="line">8.10</div>
 </div>
 </th>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td></td>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td></td>
 </tr>
@@ -733,8 +737,8 @@ by the <code class="docutils literal notranslate"><span class="pre">unattended-u
 <p>Red Hat OpenShift Container Platform is supported on the AWS (G4, G5, P3, P4, P5), Azure (NC-T4-v3, NC-v3, ND-A100-v4), and GCP (T4, V100, A100) based instances.</p>
 </div>
 </div>
-<input id="0d9a3592-eb1a-44f0-aeb4-ce56b9a6cf31" name="75c660ed-6f0c-40e1-b48e-c75871c3ee8b" type="radio">
-</input><label class="sd-tab-label" for="0d9a3592-eb1a-44f0-aeb4-ce56b9a6cf31">
+<input id="4a30ded5-8e13-48e0-90cb-f7db9e9a8996" name="bff1c5cb-9579-4307-ad0c-e965672ec81f" type="radio">
+</input><label class="sd-tab-label" for="4a30ded5-8e13-48e0-90cb-f7db9e9a8996">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -780,8 +784,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<input id="03b59664-ab54-401f-b47e-6d7a43bab91b" name="75c660ed-6f0c-40e1-b48e-c75871c3ee8b" type="radio">
-</input><label class="sd-tab-label" for="03b59664-ab54-401f-b47e-6d7a43bab91b">
+<input id="9669c73a-36a4-427e-8a91-c761a5a57099" name="bff1c5cb-9579-4307-ad0c-e965672ec81f" type="radio">
+</input><label class="sd-tab-label" for="9669c73a-36a4-427e-8a91-c761a5a57099">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <table class="docutils align-default">
 <colgroup>
@@ -817,24 +821,20 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS</p></th>
-<td><p>1.22–1.30</p></td>
+<td><p>1.23–1.30</p></td>
 <td></td>
 <td><p>7.0 U3c, 8.0 U2</p></td>
-<td><div class="line-block">
-<div class="line">1.22, 1.23,</div>
-<div class="line">1.24, 1.25</div>
-</div>
-</td>
+<td><p>1.23—1.25</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
-<td><p>1.22–1.30</p></td>
+<td><p>1.23–1.30</p></td>
 <td></td>
 <td><p>8.0 U2</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Red Hat Core OS</p></th>
 <td></td>
-<td><p>4.12—4.16</p></td>
+<td><p>4.12—4.17</p></td>
 <td></td>
 <td></td>
 </tr>
@@ -845,10 +845,10 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="line">8.6—8.9</div>
 </div>
 </th>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 <td></td>
 <td></td>
-<td><p>1.22—1.30</p></td>
+<td><p>1.23—1.30</p></td>
 </tr>
 </tbody>
 </table>
@@ -934,14 +934,14 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 </thead>
 <tbody>
 <tr class="row-odd"><td><p>Ubuntu 20.04 LTS</p></td>
-<td><p>1.22—1.29</p></td>
+<td><p>1.23—1.29</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
-<td><p>1.22—1.29</p></td>
+<td><p>1.23—1.29</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
@@ -951,8 +951,8 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <td></td>
 <td></td>
 <td></td>
-<td><p>4.12—4.16</p></td>
-<td><p>4.13—4.16</p></td>
+<td><p>4.12—4.17</p></td>
+<td><p>4.13—4.17</p></td>
 </tr>
 </tbody>
 </table>
@@ -1045,8 +1045,9 @@ Supported storage types are local NVMe and remote NFS.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 10, 2024.
+      <span class="lastupdated">Last updated on Oct 24, 2024.
       </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
   </div>
 
@@ -1061,10 +1062,7 @@ Supported storage types are local NVMe and remote NFS.</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
- 
-
-
+  </script> 
 
 </body>
 </html>

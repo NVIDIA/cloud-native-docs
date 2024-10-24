@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deploy GPU Operators in a disconnected or airgapped environment &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.6.1 documentation</title>
+  <title>Deploy GPU Operators in a disconnected or airgapped environment &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.6.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -32,7 +32,7 @@
     <link rel="next" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
     <link rel="prev" title="Cleanup" href="clean-up.html" />
  
-
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
 
 </head>
 
@@ -41,11 +41,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-
-<a href="index.html">
-  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
-</a>
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
 
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,8 +57,8 @@
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">Installing the Node Feature Discovery (NFD) Operator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">Installing the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
@@ -87,6 +85,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -1066,7 +1069,7 @@ Create the <code class="docutils literal notranslate"><span class="pre">pull-sec
 </section>
 <section id="install-the-node-feature-discovery-operator">
 <h2>Install the Node Feature Discovery Operator<a class="headerlink" href="#install-the-node-feature-discovery-operator" title="Permalink to this headline"></a></h2>
-<p>Follow the guidance <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Installing the Node Feature Discovery (NFD) Operator</span></a> to install the <strong>Node Feature Discovery (NFD) Operator</strong>. If you are installing on any Openshift Container Platform version other than <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code> proceed to <a class="reference internal" href="#install-gpu-noworkaround"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
+<p>Follow the guidance <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Installing the Node Feature Discovery Operator on OpenShift</span></a> to install the <strong>Node Feature Discovery (NFD) Operator</strong>. If you are installing on any Openshift Container Platform version other than <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code> proceed to <a class="reference internal" href="#install-gpu-noworkaround"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
 <section id="optional-configure-repoconfig-using-local-yum-repository">
 <h3>Optional: Configure repoConfig using Local Yum Repository<a class="headerlink" href="#optional-configure-repoconfig-using-local-yum-repository" title="Permalink to this headline"></a></h3>
 <p>These steps only need to be carried out if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p>
@@ -1172,8 +1175,9 @@ If only trusted operators are installed in this namespace, you can manually enab
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 10, 2024.
+      <span class="lastupdated">Last updated on Oct 24, 2024.
       </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
   </div>
 
@@ -1188,10 +1192,7 @@ If only trusted operators are installed in this namespace, you can manually enab
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
- 
-
-
+  </script> 
 
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Troubleshooting the NVIDIA GPU Operator &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+  <title>Troubleshooting the NVIDIA GPU Operator &mdash; NVIDIA GPU Operator 24.6.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -32,7 +32,7 @@
     <link rel="next" title="GPU Driver Upgrades" href="gpu-driver-upgrades.html" />
     <link rel="prev" title="Release Notes" href="release-notes.html" />
  
-
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
 
 </head>
 
@@ -41,11 +41,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-
-<a href="index.html">
-  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
-</a>
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
 
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -111,6 +109,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -130,6 +133,51 @@
              
   <section id="troubleshooting-the-nvidia-gpu-operator">
 <h1>Troubleshooting the NVIDIA GPU Operator<a class="headerlink" href="#troubleshooting-the-nvidia-gpu-operator" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#gpu-operator-validator-failed-to-create-pod-sandbox" id="id1">GPU Operator Validator: Failed to Create Pod Sandbox</a></p></li>
+<li><p><a class="reference internal" href="#gpu-operator-pods-stuck-in-crash-loop" id="id2">GPU Operator Pods Stuck in Crash Loop</a></p></li>
+<li><p><a class="reference internal" href="#inforom-is-corrupted-nvidia-smi-return-code-14" id="id3">infoROM is corrupted (nvidia-smi return code 14)</a></p></li>
+<li><p><a class="reference internal" href="#efi-secure-boot" id="id4">EFI + Secure Boot</a></p></li>
+</ul>
+</div>
+<section id="gpu-operator-validator-failed-to-create-pod-sandbox">
+<h2>GPU Operator Validator: Failed to Create Pod Sandbox<a class="headerlink" href="#gpu-operator-validator-failed-to-create-pod-sandbox" title="Permalink to this headline"></a></h2>
+<p class="h4 rubric">Issue</p>
+<p>On some occasions, the driver container is unable to unload the <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module.</p>
+<p class="h4 rubric">Observation</p>
+<ul>
+<li><p>Running <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span> <span class="pre">-l</span> <span class="pre">app=nvidia-operator-validator</span></code> includes the following event:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Events:</span>
+<span class="go">  Type     Reason                  Age                 From     Message</span>
+<span class="go">  ----     ------                  ----                ----     -------</span>
+<span class="go">  Warning  FailedCreatePodSandBox  8s (x21 over 9m2s)  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to get sandbox runtime: no runtime for &quot;nvidia&quot; is configured</span>
+</pre></div>
+</div>
+</li>
+<li><p>Running one of the following commands on the node indicates that the <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module is loaded:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep -i nouveau
+<span class="gp">$ </span>dmesg <span class="p">|</span> grep -i nouveau
+<span class="gp">$ </span>journalctl -xb <span class="p">|</span> grep -i nouveau
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="h4 rubric">Root Cause</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module is loaded and the driver container is unable to unload the module.
+Because the <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> module is loaded, the driver container cannot load the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> module.</p>
+<p class="h4 rubric">Action</p>
+<p>On each node, run the following commands to prevent loading the <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module on boot:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo tee /etc/modules-load.d/ipmi.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;ipmi_msghandler&quot;</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> sudo tee /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;blacklist nouveau&quot;</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;options nouveau modeset=0&quot;</span>
+
+<span class="gp">$ </span>sudo update-initramfs -u
+
+<span class="gp">$ </span>sudo init <span class="m">6</span>
+</pre></div>
+</div>
+</section>
 <section id="gpu-operator-pods-stuck-in-crash-loop">
 <h2>GPU Operator Pods Stuck in Crash Loop<a class="headerlink" href="#gpu-operator-pods-stuck-in-crash-loop" title="Permalink to this headline"></a></h2>
 <p class="h4 rubric">Issue</p>
@@ -294,8 +342,9 @@ The return values for the <code class="docutils literal notranslate"><span class
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 10, 2024.
+      <span class="lastupdated">Last updated on Oct 24, 2024.
       </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
   </div>
 
@@ -310,10 +359,7 @@ The return values for the <code class="docutils literal notranslate"><span class
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
- 
-
-
+  </script> 
 
 </body>
 </html>

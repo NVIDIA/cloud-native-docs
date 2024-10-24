@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPUDirect RDMA and GPUDirect Storage &mdash; NVIDIA GPU Operator 24.6.1 documentation</title>
+  <title>GPUDirect RDMA and GPUDirect Storage &mdash; NVIDIA GPU Operator 24.6.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -32,7 +32,7 @@
     <link rel="next" title="Considerations when Installing with Outdated Kernels in Cluster" href="install-gpu-operator-outdated-kernels.html" />
     <link rel="prev" title="Time-Slicing GPUs in Kubernetes" href="gpu-sharing.html" />
  
-
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
 
 </head>
 
@@ -41,11 +41,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-
-<a href="index.html">
-  <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
-</a>
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
 
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -111,6 +109,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
 <li>
     <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -381,8 +384,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="ac14bbac-fa91-4911-a4a2-f15b5ad29f26" name="a73c52a2-aa08-4632-ad41-dfb81124dc67" type="radio">
-</input><label class="sd-tab-label" for="ac14bbac-fa91-4911-a4a2-f15b5ad29f26">
+<input checked="checked" id="e450ea51-fd6b-4a25-8138-a33eeab8bb4a" name="41c01ed4-a413-4254-8ad0-0f15cba24f3f" type="radio">
+</input><label class="sd-tab-label" for="e450ea51-fd6b-4a25-8138-a33eeab8bb4a">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -427,8 +430,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="b612652f-9c78-4e3a-b177-0bbe027307d2" name="a73c52a2-aa08-4632-ad41-dfb81124dc67" type="radio">
-</input><label class="sd-tab-label" for="b612652f-9c78-4e3a-b177-0bbe027307d2">
+<input id="a0313f6b-102c-47bb-b2ec-a149ad4292e5" name="41c01ed4-a413-4254-8ad0-0f15cba24f3f" type="radio">
+</input><label class="sd-tab-label" for="a0313f6b-102c-47bb-b2ec-a149ad4292e5">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -708,8 +711,9 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Sep 10, 2024.
+      <span class="lastupdated">Last updated on Oct 24, 2024.
       </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
   </div>
 
@@ -724,10 +728,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
- 
-
-
+  </script> 
 
 </body>
 </html>
