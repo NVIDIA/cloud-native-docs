@@ -67,10 +67,13 @@ The following diagram shows the software components that Kubernetes uses to run 
      a[Kubelet] --> b[CRI] --> c[Kata\nRuntime] --> d[Lightweight\nQEMU VM] --> e[Lightweight\nGuest OS] --> f[Pod] --> g[Container]
 
 
-NVIDIA supports Kata Containers by using the Confidential Containers Operator to install the Kata runtime and QEMU.
-Even though the Operator isn't used for confidential computing in this configuration, the Operator
-simplifies the installation of the Kata runtime.
+NVIDIA supports Kata Containers by using Helm to run a daemon set that installs the Kata runtime and QEMU.
 
+The daemon set runs the ``kata-deploy.sh`` script that performs the following actions on each node htat is labeled to run Kata Containers:
+
+- Downloads an NVIDIA optimized Linux kernel image and initial RAM disk that provides the lightweight operating system for the virtual machines that run in QEMU.
+  These artifacts are downloaded from the NVIDIA container registry, nvcr.io, on each worker node.
+- Configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``.
 
 About NVIDIA Kata Manager
 =========================
@@ -78,48 +81,11 @@ About NVIDIA Kata Manager
 When you configure the GPU Operator for Kata Containers, the Operator
 deploys NVIDIA Kata Manager as an operand.
 
-The manager downloads an NVIDIA optimized Linux kernel image and initial RAM disk that
-provides the lightweight operating system for the virtual machines that run in QEMU.
-These artifacts are downloaded from the NVIDIA container registry, nvcr.io, on each worker node.
+The manager performs the following actions on each node that is labeled to run Kata Containers:
 
-The manager also configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``,
-and configures containerd for the runtime class.
-
-NVIDIA Kata Manager Configuration
-=================================
-
-The following part of the cluster policy shows the fields related to the manager:
-
-.. code-block:: yaml
-
-   kataManager:
-     enabled: true
-     config:
-       artifactsDir: /opt/nvidia-gpu-operator/artifacts/runtimeclasses
-       runtimeClasses:
-       - artifacts:
-           pullSecret: ""
-           url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-525
-         name: kata-qemu-nvidia-gpu
-         nodeSelector: {}
-       - artifacts:
-           pullSecret: ""
-           url: nvcr.io/nvidia/cloud-native/kata-gpu-artifacts:ubuntu22.04-535-snp
-         name: kata-qemu-nvidia-gpu-snp
-         nodeSelector: {}
-     repository: nvcr.io/nvidia/cloud-native
-     image: k8s-kata-manager
-     version: v0.1.0
-     imagePullPolicy: IfNotPresent
-     imagePullSecrets: []
-     env: []
-     resources: {}
-
-The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
-
-The ``kata-qemu-nvidia-gpu-snp`` runtime class is used with Confidential Containers
-and is installed by default even though it is not used with this configuration.
-
+- Configures containerd with the ``kata-qemu-nvidia-gpu`` runtime class.
+- Creates a CDI specification, ``/var/run/cdi/nvidia.com-pgpu.yaml``, for each GPU on the node.
+- Loads the vhost-sock and vhost-net Linux kernel modules.
 
 *********************************
 Benefits of Using Kata Containers
@@ -136,6 +102,7 @@ The primary benefits of Kata Containers are as follows:
 
 * Transparent deployment of unmodified containers.
 
+
 ****************************
 Limitations and Restrictions
 ****************************
@@ -149,8 +116,8 @@ Limitations and Restrictions
 * Support for Kata Containers is limited to the implementation described on this page.
   The Operator does not support Red Hat OpenShift sandbox containers.
 
-* Uninstalling the GPU Operator or the NVIDIA Kata Manager does not remove the files
-  that the manager downloads and installs in the ``/opt/nvidia-gpu-operator/artifacts/runtimeclasses/kata-qemu-nvidia-gpu/``
+* Uninstalling the GPU Operator or the NVIDIA Kata Manager does not remove the
+  ``/opt/nvidia-gpu-operator/artifacts/runtimeclasses/``
   directory on the worker nodes.
 
 * NVIDIA supports the Operator and Kata Containers with the containerd runtime only.
@@ -197,7 +164,7 @@ Prerequisites
 
 * Your hosts are configured to support IOMMU.
 
-  If the output from running ``ls /sys/kernel/iommu_groups`` includes ``0``, ``1``, and so on,
+  If the output from running ``ls -1 /sys/kernel/iommu_groups | wc -l`` includes a value greater than ``0``,
   then your host is configured for IOMMU.
 
   If a host is not configured or you are unsure, add the ``intel_iommu=on`` Linux kernel command-line argument.
@@ -228,9 +195,9 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
    This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
    Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes.
 
-#. Install the Confidential Containers Operator.
+#. Install the Kata Deploy Helm chart.
 
-   This step installs the Operator and also the Kata Containers runtime that NVIDIA uses for Kata Containers.
+   This step runs ``kata-deploy.sh`` on each node and installs the Kata Containers runtime on each node.
 
 #. Install the NVIDIA GPU Operator.
 
@@ -238,12 +205,117 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
 After installation, you can run a sample workload.
 
-.. |project-name| replace:: Kata Containers
+*************************************
+Kata Deploy Helm Chart Customizations
+*************************************
 
-.. include:: gpu-operator-confidential-containers.rst
-   :start-after: start-install-coco-operator
-   :end-before: end-install-coco-operator
+The following table shows the configurable values from the Kata Deploy Helm chart.
 
+.. list-table::
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+     - Default
+
+   * - ``kataDeploy.allowedHypervisorAnnotations``
+     - Specifies the
+       `hypervisor annotations <https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-set-sandbox-config-kata.md#hypervisor-options>`__
+       to enable in the Kata configuration file on each node.
+       Specify a space-separated string of values such as ``enable_iommu initrd kernel``.
+     - None
+
+   * - ``kataDeploy.createRuntimeClasses``
+     - When set to ``true``, the ``kata-deploy.sh`` script installs the runtime classes on the nodes.
+     - ``false``
+
+   * - ``kataDeploy.createDefaultRuntimeClass``
+     - When set to ``true``, the ``kata-deploy.sh`` script sets the runtime class specified in the ``defaultShim`` field as the default Kata runtime class.
+     - ``false``
+
+   * - ``kataDeploy.debug``
+     - When set to ``true``, the ``kata-deploy.sh`` script enables debugging and a debug console in the Kata configuration file on each node.
+     - ``false``
+
+   * - ``kataDeploy.defaultShim``
+     - Specifies the shim to set as the default Kata runtime class.
+       This field is ignored unless you specify ``createDefaultRuntimeClass: true``.
+     - None
+
+   * - ``kataDeploy.imagePullPolicy``
+     - Specifies the image pull policy for the ``kata-deploy`` container.
+     - ``Always``
+
+   * - ``kataDeploy.k8sDistribution``
+     - Specifies the Kubernetes platform.
+       The Helm chart uses the value to set the platform-specific location of the containerd configuration file.
+
+       Supported values are ``k8s``, ``k3s``, ``rke2``, and ``k0s``.
+     - ``k8s``
+
+   * - ``kataDeploy.repository``
+     - Specifies the image repository for the ``kata-deploy`` container.
+     - ``nvcr.io/nvidia/cloud-native``
+
+   * - ``kataDeploy.shims``
+     - Specifies the shim binaries to install on each node.
+       Specify a space-separated string of values.
+     - ``qemu-nvidia-gpu``
+
+   * - ``kataDeploy.version``
+     - Specifies the version of the ``kata-deploy`` container to run.
+     - ``latest``
+
+
+**********************************
+Install the Kata Deploy Helm Chart
+**********************************
+
+Perform the following steps to install the Helm chart:
+
+#. Label the nodes to run virtual machines in containers. Label only the nodes that you want to run with Kata Containers:
+
+   .. code-block:: console
+
+      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
+
+#. Add and update the NVIDIA Helm repository:
+
+   .. code-block:: console
+
+      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+         && helm repo update
+
+#. Specify at least the following options when you install the chart:
+
+   .. code-block:: console
+
+      $ helm install --wait --generate-name \
+         -n kube-system \
+         nvidia/kata-deploy \
+         --set kataDeploy.createRuntimeClasses=true
+
+#. Optional: Verify the installation.
+
+   - Confirm the ``kata-deploy`` containers are running:
+
+     .. code-block:: console
+
+        $ kubectl get pods -n kube-system -l name=kata-deploy
+
+   - Confirm the runtime class is installed:
+
+     .. code-block:: console
+
+        $ kubectl get runtimeclass kata-qemu-nvidia-gpu
+
+     *Example Output*
+
+     .. code-block:: output
+
+        NAME                   HANDLER                AGE
+        kata-qemu-nvidia-gpu   kata-qemu-nvidia-gpu   23s
 
 *******************************
 Install the NVIDIA GPU Operator
@@ -262,7 +334,7 @@ Perform the following steps to install the Operator for use with Kata Containers
          && helm repo update
 
 #. Specify at least the following options when you install the Operator.
-   If you want to run |project-name| by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
+   If you want to run Kata Containers by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthough``.
 
    .. code-block:: console
 
@@ -270,7 +342,8 @@ Perform the following steps to install the Operator for use with Kata Containers
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
          --set sandboxWorkloads.enabled=true \
-         --set kataManager.enabled=true
+         --set kataManager.enabled=true \
+         --set kataManager.config.runtimeClasses=null
 
    *Example Output*
 
@@ -296,7 +369,6 @@ Verification
    *Example Output*
 
    .. code-block:: output
-      :emphasize-lines: 5,8
 
       NAME                                                         READY   STATUS      RESTARTS   AGE
       gpu-operator-57bf5d5769-nb98z                                1/1     Running     0          6m21s
@@ -307,7 +379,7 @@ Verification
       nvidia-sandbox-validator-9wjm4                               1/1     Running     0          2m37s
       nvidia-vfio-manager-vg4wp                                    1/1     Running     0          3m36s
 
-#. Verify that the ``kata-qemu-nvidia-gpu`` and ``kata-qemu-nvidia-gpu-snp`` runtime classes are available:
+#. Verify that the ``kata-qemu-nvidia-gpu`` runtime classes is available:
 
    .. code-block:: console
 
@@ -316,53 +388,27 @@ Verification
    *Example Output*
 
    .. code-block:: output
-      :emphasize-lines: 6, 7
 
       NAME                       HANDLER                    AGE
-      kata                       kata                       37m
-      kata-clh                   kata-clh                   37m
-      kata-clh-tdx               kata-clh-tdx               37m
-      kata-qemu                  kata-qemu                  37m
       kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       96s
-      kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   96s
-      kata-qemu-sev              kata-qemu-sev              37m
-      kata-qemu-snp              kata-qemu-snp              37m
-      kata-qemu-tdx              kata-qemu-tdx              37m
       nvidia                     nvidia                     97s
 
 
-#. Optional: If you have host access to the worker node, you can perform the following steps:
+#. Optional: If you have host access to the worker node, confirm that the host uses the ``vfio-pci`` device driver for GPUs:
 
-   #. Confirm that the host uses the ``vfio-pci`` device driver for GPUs:
+   .. code-block:: console
 
-      .. code-block:: console
+      $ lspci -nnk -d 10de:
 
-         $ lspci -nnk -d 10de:
+   *Example Output*
 
-      *Example Output*
+   .. code-block:: output
+      :emphasize-lines: 3
 
-      .. code-block:: output
-         :emphasize-lines: 3
-
-         65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
-                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
-                 Kernel driver in use: vfio-pci
-                 Kernel modules: nvidiafb, nouveau
-
-   #. Confirm that NVIDIA Kata Manager installed the ``kata-qemu-nvidia-gpu`` runtime class files:
-
-      .. code-block:: console
-
-         $ ls -1 /opt/nvidia-gpu-operator/artifacts/runtimeclasses/kata-qemu-nvidia-gpu/
-
-      *Example Output*
-
-      .. code-block:: output
-
-         configuration-nvidia-gpu-qemu.toml
-         kata-ubuntu-jammy-nvidia-gpu.initrd
-         vmlinuz-5.xx.x-xxx-nvidia-gpu
-         ...
+      65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
+              Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+              Kernel driver in use: vfio-pci
+              Kernel modules: nvidiafb, nouveau
 
 
 *********************
@@ -395,7 +441,7 @@ A pod specification for a Kata container requires the following:
 #. Create a file, such as ``cuda-vectoradd-kata.yaml``, like the following example:
 
    .. code-block:: yaml
-      :emphasize-lines: 6,8,15
+      :emphasize-lines: 6,7,9,16
 
       apiVersion: v1
       kind: Pod
@@ -446,7 +492,6 @@ A pod specification for a Kata container requires the following:
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
 
-
 Troubleshooting Workloads
 =========================
 
@@ -464,6 +509,43 @@ If the sample workload does not run, confirm that you labelled nodes to run virt
    kata-worker-1      Ready    <none>   10d   v1.27.3
    kata-worker-2      Ready    <none>   10d   v1.27.3
    kata-worker-3      Ready    <none>   10d   v1.27.3
+
+
+******************************************
+Optional: Configuring a GPU Resource Alias
+******************************************
+
+By default, GPU resources are exposed on nodes with a name like ``nvidia.com/GA102GL_A10``.
+You can configure the NVIDIA Sandbox Device Plugin so that nodes also expose GPUs with an alias like ``nvidia.com/pgpu``.
+
+#. Patch the cluster policy with a command like the following example:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type=merge \
+          -p '{"spec": {"sandboxDevicePlugin": {"env":[{"name": "P_GPU_ALIAS", "value":"pgpu"}]}}}'
+
+   The sandbox device plugin daemon set pods restart.
+
+#. Optional: Describe a node to confirm the alias:
+
+   .. code-block:: console
+
+      $ kubectl describe node <node-name>
+
+   *Partial Output*
+
+   .. code-block:: output
+
+      ...
+      Allocatable:
+        cpu:                     16
+        ephemeral-storage:       1922145660Ki
+        hugepages-1Gi:           0
+        hugepages-2Mi:           0
+        memory:                  65488292Ki
+        nvidia.com/GA102GL_A10:  0
+        nvidia.com/pgpu:         1
 
 
 ************************
