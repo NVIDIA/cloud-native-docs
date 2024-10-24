@@ -69,7 +69,11 @@ The following diagram shows the software components that Kubernetes uses to run 
 
 NVIDIA supports Kata Containers by using Helm to run a daemon set that installs the Kata runtime and QEMU.
 
-The daemon set runs the ``kata-deploy.sh`` script and configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``.
+The daemon set runs the ``kata-deploy.sh`` script that performs the following actions on each node htat is labeled to run Kata Containers:
+
+- Downloads an NVIDIA optimized Linux kernel image and initial RAM disk that provides the lightweight operating system for the virtual machines that run in QEMU.
+  These artifacts are downloaded from the NVIDIA container registry, nvcr.io, on each worker node.
+- Configures each worker node with a runtime class, ``kata-qemu-nvidia-gpu``.
 
 About NVIDIA Kata Manager
 =========================
@@ -79,8 +83,8 @@ deploys NVIDIA Kata Manager as an operand.
 
 The manager performs the following actions on each node that is labeled to run Kata Containers:
 
-- Configure containerd with the ``kata-qemu-nvidia-gpu`` runtime class.
-- Create a CDI specification, ``/var/run/cdi/nvidia.com-pgpu.yaml``, for each GPU on the node.
+- Configures containerd with the ``kata-qemu-nvidia-gpu`` runtime class.
+- Creates a CDI specification, ``/var/run/cdi/nvidia.com-pgpu.yaml``, for each GPU on the node.
 - Loads the vhost-sock and vhost-net Linux kernel modules.
 
 *********************************
@@ -487,6 +491,42 @@ A pod specification for a Kata container requires the following:
    .. code-block:: console
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
+
+******************************************
+Optional: Configuring a GPU Resource Alias
+******************************************
+
+By default, GPU resources are exposed on nodes with a name like ``nvidia.com/GA102GL_A10``.
+You can configure the NVIDIA Sandbox Device Plugin so that nodes also expose GPUs with an alias like ``nvidia.com/pgpu``.
+
+#. Patch the cluster policy with a command like the following example:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type=merge \
+          -p '{"spec": {"sandboxDevicePlugin": {"env":[{"name": "P_GPU_ALIAS", "value":"pgpu"}]}}}'
+
+   The sandbox device plugin daemon set pods restart.
+
+#. Optional: Describe a node to confirm the alias:
+
+   .. code-block:: console
+
+      $ kubectl describe node <node-name>
+
+   *Partial Output*
+
+   .. code-block:: output
+
+      ...
+      Capacity:
+        cpu:                     16
+        ephemeral-storage:       1922145660Ki
+        hugepages-1Gi:           0
+        hugepages-2Mi:           0
+        memory:                  65488292Ki
+        nvidia.com/GA102GL_A10:  1
+        nvidia.com/pgpu:         1
 
 
 Troubleshooting Workloads
