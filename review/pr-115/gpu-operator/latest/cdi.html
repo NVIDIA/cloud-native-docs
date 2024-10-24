@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Container Device Interface Support in the GPU Operator &mdash; NVIDIA GPU Operator 24.6.2 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
+    <link rel="prev" title="NVIDIA GPU Driver Custom Resource Definition" href="gpu-driver-configuration.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Container Device Interface Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Container Device Interface Support in the GPU Operator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="container-device-interface-support-in-the-gpu-operator">
+<h1>Container Device Interface Support in the GPU Operator<a class="headerlink" href="#container-device-interface-support-in-the-gpu-operator" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-the-container-device-interface" id="id1">About the Container Device Interface</a></p>
+<ul>
+<li><p><a class="reference internal" href="#support-for-multi-instance-gpu" id="id2">Support for Multi-Instance GPU</a></p></li>
+<li><p><a class="reference internal" href="#limitations-and-restrictions" id="id3">Limitations and Restrictions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#enabling-cdi-during-installation" id="id4">Enabling CDI During Installation</a></p></li>
+<li><p><a class="reference internal" href="#enabling-cdi-after-installation" id="id5">Enabling CDI After Installation</a></p></li>
+<li><p><a class="reference internal" href="#disabling-cdi" id="id6">Disabling CDI</a></p></li>
+<li><p><a class="reference internal" href="#optional-specifying-the-runtime-class-for-a-pod" id="id7">Optional: Specifying the Runtime Class for a Pod</a></p></li>
+<li><p><a class="reference internal" href="#related-information" id="id8">Related Information</a></p></li>
+</ul>
+</div>
+<section id="about-the-container-device-interface">
+<h2>About the Container Device Interface<a class="headerlink" href="#about-the-container-device-interface" title="Permalink to this headline"></a></h2>
+<p>The Container Device Interface (CDI) is a specification for container runtimes
+such as cri-o, containerd, and podman that standardizes access to complex
+devices like NVIDIA GPUs by the container runtimes.
+CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
+that support for Kubernetes clusters.</p>
+<p>Use of CDI is transparent to cluster administrators and application developers.
+The benefits of CDI are largely to reduce development and support for runtime-specific
+plugins.</p>
+<p>When CDI is enabled, two runtime classes, nvidia-cdi and nvidia-legacy, become available.
+These two runtime classes are in addition to the default runtime class, nvidia.</p>
+<p>If you do not set CDI as the default runtime, the runtime resolves to the
+legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
+machines or any architecture that has NVML libraries installed.</p>
+<p>Optionally, you can specify the runtime class for a workload.
+See <a class="reference internal" href="#optional-specifying-the-runtime-class-for-a-pod"><span class="std std-ref">Optional: Specifying the Runtime Class for a Pod</span></a> for an example.</p>
+<section id="support-for-multi-instance-gpu">
+<h3>Support for Multi-Instance GPU<a class="headerlink" href="#support-for-multi-instance-gpu" title="Permalink to this headline"></a></h3>
+<p>Configuring CDI is supported with Multi-Instance GPU (MIG).
+Both the <code class="docutils literal notranslate"><span class="pre">single</span></code> and <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategies are supported.</p>
+</section>
+<section id="limitations-and-restrictions">
+<h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline"></a></h3>
+<p>Enabling CDI is not supported with Red Hat OpenShift Container Platform.
+Refer to the <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p>
+</section>
+</section>
+<section id="enabling-cdi-during-installation">
+<h2>Enabling CDI During Installation<a class="headerlink" href="#enabling-cdi-during-installation" title="Permalink to this headline"></a></h2>
+<p>Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
+<p>When you install the Operator with Helm, specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> argument.
+Optionally, also specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.default=true</span></code> argument to use the CDI runtime class by default for all pods.</p>
+</section>
+<section id="enabling-cdi-after-installation">
+<h2>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline"></a></h2>
+<p class="rubric">Prerequisites</p>
+<ul>
+<li><p>You installed version 22.3.0 or newer.</p></li>
+<li><p>(Optional) Confirm that the only runtime class is <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> by running the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclasses
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME     HANDLER   AGE</span>
+<span class="go">nvidia   nvidia    47h</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p class="rubric">Procedure</p>
+<p>To enable CDI support, perform the following steps:</p>
+<ol class="arabic">
+<li><p>Enable CDI by modifying the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:true}]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) Set the default container runtime mode to CDI by modifying the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/default&quot;, &quot;value&quot;:true}]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) Confirm that the container toolkit and device plugin pods restart:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS      RESTARTS   AGE</span>
+<span class="go">gpu-feature-discovery-qnw2q                                   1/1     Running     0          47h</span>
+<span class="go">gpu-operator-6d59774ff-hznmr                                  1/1     Running     0          2d</span>
+<span class="go">gpu-operator-node-feature-discovery-master-6d6649d597-7l8bj   1/1     Running     0          2d</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-v86vj              1/1     Running     0          2d</span>
+<span class="hll"><span class="go">nvidia-container-toolkit-daemonset-2768s                      1/1     Running     0          2m11s</span>
+</span><span class="go">nvidia-cuda-validator-ls4vc                                   0/1     Completed   0          47h</span>
+<span class="go">nvidia-dcgm-exporter-fxp9h                                    1/1     Running     0          47h</span>
+<span class="hll"><span class="go">nvidia-device-plugin-daemonset-dvp4v                          1/1     Running     0          2m26s</span>
+</span><span class="go">nvidia-device-plugin-validator-kvxbs                          0/1     Completed   0          47h</span>
+<span class="go">nvidia-driver-daemonset-m86r7                                 1/1     Running     0          2d</span>
+<span class="go">nvidia-operator-validator-xg98r                               1/1     Running     0          47h</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the runtime classes include nvidia-cdi and nvidia-legacy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclasses
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME            HANDLER         AGE</span>
+<span class="go">nvidia          nvidia          2d</span>
+<span class="go">nvidia-cdi      nvidia-cdi      5m7s</span>
+<span class="go">nvidia-legacy   nvidia-legacy   5m7s</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="disabling-cdi">
+<h2>Disabling CDI<a class="headerlink" href="#disabling-cdi" title="Permalink to this headline"></a></h2>
+<p>To disable CDI support, perform the following steps:</p>
+<ol class="arabic">
+<li><p>If your nodes use the CRI-O container runtime, then temporarily disable the
+GPU Operator validator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="se">\</span>
+    nvidia.com/gpu.deploy.operator-validator<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    -l nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    --overwrite
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">nodes</span> <span class="pre">-o</span> <span class="pre">wide</span></code> and view the <code class="docutils literal notranslate"><span class="pre">CONTAINER-RUNTIME</span></code>
+column to determine if your nodes use CRI-O.</p>
+</div>
+</li>
+<li><p>Disable CDI by modifying the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:false}]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you temporarily disabled the GPU Operator validator, re-enable the validator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="se">\</span>
+    nvidia.com/gpu.deploy.operator-validator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    --overwrite
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) Verify that the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-legacy</span></code> runtime classes
+are no longer available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME     HANDLER   AGE</span>
+<span class="go">nvidia   nvidia    11d</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="optional-specifying-the-runtime-class-for-a-pod">
+<h2>Optional: Specifying the Runtime Class for a Pod<a class="headerlink" href="#optional-specifying-the-runtime-class-for-a-pod" title="Permalink to this headline"></a></h2>
+<p>If you enabled CDI mode for the default container runtime, then no action is required to use CDI.
+However, you can use the following procedure to specify the legacy mode for a workload if you experience trouble.</p>
+<p>If you did not enable CDI mode for the default container runtime, then you can
+use the following procedure to verify that CDI is enabled and as a
+routine practice to use the CDI mode of the container runtime.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-cdi.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-cdi</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>As an alternative, specify <code class="docutils literal notranslate"><span class="pre">nvidia-legacy</span></code> to use the legacy mode of the container runtime.</p>
+</li>
+<li><p>(Optional) Create a temporary namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns demo
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace/demo created</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n demo -f cuda-vectoradd-cdi.yaml
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd created</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs from the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n demo cuda-vectoradd
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Delete the temporary namespace:</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete ns demo
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace &quot;demo&quot; deleted</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>For more information about CDI, see the container device interface
+<a class="reference external" href="https://github.com/container-orchestrated-devices/container-device-interface">repository</a>
+on GitHub.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpu-driver-configuration.html" class="btn btn-neutral float-left" title="NVIDIA GPU Driver Custom Resource Definition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpu-operator-kubevirt.html" class="btn btn-neutral float-right" title="GPU Operator with KubeVirt" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Oct 24, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

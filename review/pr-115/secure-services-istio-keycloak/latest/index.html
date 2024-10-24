@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Securing NVIDIA Services with Istio and Keycloak &mdash; Securing NVIDIA Services with Istio and Keycloak 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Platform Support" href="platform-support.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Securing NVIDIA MicroServices</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">   About the Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">   Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">   Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">   Configure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Securing NVIDIA Services with Istio and Keycloak</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or GPU Operator v24.6.2 to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Securing NVIDIA Services with Istio and Keycloak</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<div class="toctree-wrapper compound">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="securing-nvidia-services-with-istio-and-keycloak">
+<h1>Securing NVIDIA Services with Istio and Keycloak<a class="headerlink" href="#securing-nvidia-services-with-istio-and-keycloak" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#nvidia-nim-overview" id="id2">NVIDIA NIM Overview</a></p></li>
+<li><p><a class="reference internal" href="#service-mesh-in-nim" id="id3">Service Mesh in NIM</a></p></li>
+<li><p><a class="reference internal" href="#secure-communication-through-service-mesh" id="id4">Secure Communication Through Service Mesh</a></p></li>
+<li><p><a class="reference internal" href="#architecture-diagram" id="id5">Architecture Diagram</a></p></li>
+<li><p><a class="reference internal" href="#use-cases" id="id6">Use Cases</a></p>
+<ul>
+<li><p><a class="reference internal" href="#secure-api-endpoints" id="id7">Secure API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#ingress-management" id="id8">Ingress Management</a></p></li>
+<li><p><a class="reference internal" href="#opentelemetry-protocol-otlp-telemetry" id="id9">OpenTelemetry Protocol (OTLP) Telemetry</a></p></li>
+<li><p><a class="reference internal" href="#rbac-for-api-endpoints" id="id10">RBAC for API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#load-balancing" id="id11">Load Balancing</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h2>
+<p>In the evolving landscape of AI and machine learning, Retrieval Augmented Generation (RAG) stands out for its ability to dynamically retrieve and integrate external knowledge for real-time response generation. However, implementing RAG in a distributed environment poses significant challenges, particularly in secure service communication. This document proposes a reference architecture that leverages a service mesh framework to ensure secure, efficient communication within a RAG system while integrating with an external OpenID Connect (OIDC) provider for robust authentication and authorization.</p>
+</section>
+<section id="nvidia-nim-overview">
+<h2>NVIDIA NIM Overview<a class="headerlink" href="#nvidia-nim-overview" title="Permalink to this headline"></a></h2>
+<p>NVIDIA NIM microservices are a set of easy-to-use microservices for accelerating the deployment of foundation models on any cloud or data center and helps keep your data secure. NIM microservices have production-grade runtimes including on-going security updates. Run your business applications with stable APIs backed by enterprise-grade support. For more information refer <a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM</a></p>
+</section>
+<section id="service-mesh-in-nim">
+<h2>Service Mesh in NIM<a class="headerlink" href="#service-mesh-in-nim" title="Permalink to this headline"></a></h2>
+<p>A service mesh is a configurable infrastructure layer designed to handle service-to-service communication in a microservices architecture, ensuring reliable data transfer, service discovery, load balancing, and more. In a NIM MicroServices, where multiple services (like retrieval microservices, encoding microservices, and language models) need to communicate efficiently, a service mesh serves as a backbone for managing these interactions.</p>
+</section>
+<section id="secure-communication-through-service-mesh">
+<h2>Secure Communication Through Service Mesh<a class="headerlink" href="#secure-communication-through-service-mesh" title="Permalink to this headline"></a></h2>
+<ul>
+<li><p>Encryption</p>
+<p>Ensuring that data in transit is encrypted and secure from external threats to ensure data privacy and compliance.</p>
+</li>
+<li><p>Authentication</p>
+<p>Verifying the identity of services within the mesh.</p>
+</li>
+<li><p>Authorization</p>
+<p>Controlling which services can communicate with each other and what resources they can access.</p>
+</li>
+<li><p>Integration with OIDC Provider</p>
+<p>OpenID Connect (OIDC) is an authentication layer on top of OAuth 2.0 in this RAG architecture.</p>
+<ul>
+<li><p>Role of OIDC</p>
+<p>It provides a standardized way for services to authenticate using tokens, ensuring that only authorized services and users can access the RAG system’s components.</p>
+</li>
+<li><p>Integration Steps</p>
+<p>The service mesh can be configured to work with an OIDC provider to validate tokens for each request, ensuring authenticated and authorized communication.</p>
+</li>
+<li><p>Benefits</p>
+<p>When a user or service attempts to access the RAG system, the service mesh intercepts this request and checks for valid authentication tokens provided by the OIDC/OAuth2 service. This ensures that only authenticated users and services can interact with the RAG system, enhancing security and access control.</p>
+</li>
+</ul>
+</li>
+<li><p>Performance and Scalability</p>
+<p>The architecture supports horizontal scaling and can handle varying loads, ensuring high availability and minimal latency.</p>
+</li>
+</ul>
+</section>
+<section id="architecture-diagram">
+<h2>Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permalink to this headline"></a></h2>
+<p>The diagram visualizes the first version of the Operator. Later more microservices can be added.</p>
+<p><img alt="Sample network topology" src="_images/reference-arch-01.png" /></p>
+</section>
+<section id="use-cases">
+<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline"></a></h2>
+<section id="secure-api-endpoints">
+<h3>Secure API Endpoints<a class="headerlink" href="#secure-api-endpoints" title="Permalink to this headline"></a></h3>
+<p><strong>Implementation</strong>: The service mesh employs mTLS (mutual Transport Layer Security) to encrypt data transmitted between the API endpoints.</p>
+<p><strong>Functionality</strong>: All incoming and outgoing traffic from the API endpoints passes through the service mesh, where it is encrypted, ensuring data integrity and confidentiality.</p>
+<p><strong>Benefits</strong>: This encryption secures the API endpoints against interception and unauthorized access.</p>
+</section>
+<section id="ingress-management">
+<h3>Ingress Management<a class="headerlink" href="#ingress-management" title="Permalink to this headline"></a></h3>
+<p><strong>Implementation</strong>: The service mesh acts as an intelligent ingress controller, managing the flow of external traffic into the RAG system.</p>
+<p><strong>Functionality</strong>: It filters and routes incoming requests to the appropriate services within the RAG system, applying necessary security checks and load balancing.</p>
+<p><strong>Benefits</strong>: This ensures controlled and secure access to the system’s resources, preventing unauthorized access and optimizing resource utilization.</p>
+</section>
+<section id="opentelemetry-protocol-otlp-telemetry">
+<h3>OpenTelemetry Protocol (OTLP) Telemetry<a class="headerlink" href="#opentelemetry-protocol-otlp-telemetry" title="Permalink to this headline"></a></h3>
+<p><strong>Implementation</strong>: The service mesh is configured to support OTLP for collecting and exporting networking telemetry data.</p>
+<p><strong>Functionality</strong>: It captures metrics, access logs, and traces from different parts of the RAG system, forwarding them to an observability platform via OTLP.</p>
+<p><strong>Benefits</strong>: This enables real-time monitoring and analysis of the system’s performance and security, aiding in prompt issue detection and resolution.</p>
+</section>
+<section id="rbac-for-api-endpoints">
+<h3>RBAC for API Endpoints<a class="headerlink" href="#rbac-for-api-endpoints" title="Permalink to this headline"></a></h3>
+<p><strong>Implementation</strong>: Role-Based Access Control (RBAC) is integrated within the service mesh to manage access to API endpoints.</p>
+<p><strong>Functionality</strong>: The service mesh checks the roles and permissions of authenticated users or services against predefined policies to grant or deny access to specific endpoints.</p>
+<p><strong>Benefits</strong>: This ensures that only users or services with the appropriate permissions, especially those belonging to specific groups, can access certain endpoints, enforcing fine-grained access control.</p>
+</section>
+<section id="load-balancing">
+<h3>Load Balancing<a class="headerlink" href="#load-balancing" title="Permalink to this headline"></a></h3>
+<p>Service-to-service communication within the mesh has source load-balancing with automatic service discovery. The mesh ingress endpoint creates Kubernetes service of type Load Balancer and is usually automatically realized on the infrastructure layer.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="platform-support.html" class="btn btn-neutral float-right" title="Platform Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Oct 24, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
