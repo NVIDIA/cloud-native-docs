@@ -538,13 +538,13 @@ You can configure the NVIDIA Sandbox Device Plugin so that nodes also expose GPU
    .. code-block:: output
 
       ...
-      Capacity:
+      Allocatable:
         cpu:                     16
         ephemeral-storage:       1922145660Ki
         hugepages-1Gi:           0
         hugepages-2Mi:           0
         memory:                  65488292Ki
-        nvidia.com/GA102GL_A10:  1
+        nvidia.com/GA102GL_A10:  0
         nvidia.com/pgpu:         1
 
 
