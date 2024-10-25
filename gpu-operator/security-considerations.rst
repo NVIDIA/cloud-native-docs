@@ -14,20 +14,23 @@ Security Considerations for NVIDIA GPU Operator
 Preventing Unprivileged Access to GPUs
 **************************************
 
-..
-  k run --rm -it cuda --image=nvcr.io/nvidia/cuda:12.5.1-base-ubuntu20.04 --restart=Never --override-type=strategic --overrides='{ "spec": { "containers": [{"name":"cuda", "resources": { "limits": { "nvidia.com/gpu": 2 } } }] }}' --command -- bash
+A default installation of NVIDIA Container Toolkit and NVIDIA Kubernetes Device Plugin permits unprivileged containers to bypass the Kubernetes Device Plugin API and gain access to GPUs on a node by setting the ``NVIDIA_VISIBLE_DEVICES`` environment variable.
+This behavior means that an unprivileged container can gain access to GPUs without specifying resource limits or gain access to more GPUs than were specified through resource limits.
 
-A default installation of NVIDIA Container Toolkit and NVIDIA Device Plugin provides unprivileged containers with access to GPUs on a node when the pod specification does not specify resource limits or the container sets ``NVIDIA_VISIBLE_DEVICES``.
-This behavior enables some pods such as NVIDIA DCGM Exporter to monitor all GPUs on a node without interfering with Kubernetes accounting for allocatable resources.
-In addition, privileged containers always have access to all GPUs on a node.
+However, there are valid circumstances to grant containers access to all GPUs on the system without going through the NVIDIA Kubernetes Device Plugin and interfering with Kubernetes accounting for allocatable resources.
+Examples of these pods are the device plugin itself and and container that performs monitoring of GPU devices, such as NVIDIA DCGM Exporter.
+However, these pods differ from typical workloads because they run software that is critical to the overall Kubernetes infrastructure and should be considered privileged.
+Keep in mind that privileged containers always have access to all GPUs on a node.
 
-Optionally, you can configure the toolkit and plugin to limit access for unprivileged containers.
-The strategy is for the toolkit and plugin as follows:
+You can configure the toolkit and device plugin to prevent unprivileged containers from gaining access to GPUs through the ``NVIDIA_VISIBLE_DEVICES`` environment variable.
+The strategy for the toolkit and device plugin are as follows:
 
 - The toolkit ignores ``NVIDIA_VISIBLE_DEVICES``.
-- The plugin produces a list of GPU devices as volume mounts, according to resource requests, and the toolkit accepts this list exclusively.
+- The device plugin produces a list of GPU devices as volume mounts, according to resource requests, and the toolkit accepts this list exclusively.
 
-  An assumption is made that unprivileged containers are denied access to host mounts.
+  An assumption is made that cluster administrators do not allow host volume mounts for unprivileged containers.
+
+The combination of configuring the toolkit and device plugin, and not allowing host volume mounts for unprivileged containers prevents those containers from setting up the GPU device list themselves.
 
 To configure these operands during Operator installation or upgrade, create a ``values.yaml`` file with contents like the following example:
 
@@ -44,8 +47,9 @@ To configure these operands during Operator installation or upgrade, create a ``
       - name: DEVICE_LIST_STRATEGY
         value: volume-mounts
 
-The following comparison shows how ``NVIDIA_VISIBLE_DEVICES`` set to ``all`` grants access to more GPUs than the resource request
-in the default configuration and how access is limited after reconfiguration.
+The following comparison shows how setting ``NVIDIA_VISIBLE_DEVICES`` to ``all`` grants access to more GPUs than the resource request
+in the default configuration and that access is limited after reconfiguration.
+Any image can set ``NVIDIA_VISIBLE_DEVICES`` to ``all``--the base CUDA image in the example does--with the same result as explicitly setting the variable on the command line.
 
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 | .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
@@ -62,7 +66,7 @@ in the default configuration and how access is limited after reconfiguration.
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 
 The following comparison shows how specifying a resource request of ``nvidia.com/gpu: 0`` grants access to GPUs
-in the default configuration and how access is limited after reconfiguration.
+in the default configuration and that access is limited after reconfiguration.
 
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 | .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
@@ -79,7 +83,7 @@ in the default configuration and how access is limited after reconfiguration.
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 
 The following comparison shows that privileged containers have access to all GPUs regardless of environment variables, resource requests,
-or plugin and toolkit configuration.
+or device plugin and toolkit configuration.
 
 +------------------------------------------------------------------+-----------------------------------------------------------------+
 | .. literalinclude:: ./manifests/input/k-run-cuda.txt                                                                               |
