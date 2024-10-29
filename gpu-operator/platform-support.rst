@@ -219,30 +219,6 @@ The GPU Operator has been validated in the following scenarios:
 | Virtual machines with NVIDIA vGPU based products    |
 +-----------------------------------------------------+
 
-Hypervisors (On-premises)
-
-+-----------------------------------------------------+
-| Hypervisors                                         |
-+=====================================================+
-| VMware vSphere 7 and 8                              |
-+-----------------------------------------------------+
-| Red Hat Enterprise Linux KVM                        |
-+-----------------------------------------------------+
-| Red Hat Virtualization (RHV)                        |
-+-----------------------------------------------------+
-
-NVIDIA vGPU based products
-
-+-----------------------------------------------------+
-| NVIDIA vGPU based products                          |
-+=====================================================+
-| NVIDIA vGPU (NVIDIA AI Enterprise)                  |
-+-----------------------------------------------------+
-| NVIDIA vCompute Server                              |
-+-----------------------------------------------------+
-| NVIDIA RTX Virtual Workstation                      |
-+-----------------------------------------------------+
-
 .. note::
 
   GPU Operator is supported with NVIDIA vGPU 12.0+.
@@ -284,6 +260,8 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
          - | Canonical
            | MicroK8s
+         - | Nutanix
+           | NPK
 
        * - Ubuntu 20.04 LTS |fn1|_
          - 1.23---1.30
@@ -292,6 +270,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.23---1.30
          -
          -
+         - 2.12
 
        * - Ubuntu 22.04 LTS |fn1|_
          - 1.23---1.30
@@ -300,10 +279,12 @@ The GPU Operator has been validated in the following scenarios:
          - 1.23---1.30
          -
          - 1.26
+         -
 
        * - Red Hat Core OS
          -
          - | 4.12---4.17
+         -
          -
          -
          -
@@ -319,6 +300,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.23---1.30
          -
          -
+         -
 
        * - | Red Hat
            | Enterprise
@@ -328,6 +310,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 5.5
+         -
          -
 
     .. _ubuntu-kernel:
