@@ -170,6 +170,28 @@ on the platform support page.</p></li>
 </li>
 <li><p>Added support for NVIDIA Network Operator v24.7.0.
 Refer to <a class="reference internal" href="platform-support.html#support-for-gpudirect-rdma"><span class="std std-ref">Support for GPUDirect RDMA</span></a> and <a class="reference internal" href="platform-support.html#support-for-gpudirect-storage"><span class="std std-ref">Support for GPUDirect Storage</span></a>.</p></li>
+<li><p>Added support for new MIG profiles with GH200 144GB HBM3e.</p>
+<ul class="simple">
+<li><p>Added support for the following profiles:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb+me</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.36gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.36gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.72gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4g.72gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">7g.144gb</span></code></p></li>
+</ul>
+</li>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile creates the following GPU instances:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.36gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.72gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="fixed-issues">
