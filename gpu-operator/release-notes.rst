@@ -34,6 +34,43 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.9.0:
+
+24.9.0
+======
+
+.. _v24.9.0-new-features:
+
+New Features
+------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 550.127.05.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Container Toolkit v1.17.0
+    - NVIDIA Driver Manager for Kubernetes v0.7.0
+    - NVIDIA Kubernetes Device Plugin v0.17.0
+    - NVIDIA DCGM Exporter v3.3.8-3.6.0
+    - NVIDIA DCGM v3.3.8-1
+    - Node Feature Discovery v0.16.5
+    - NVIDIA GPU Feature Discovery for Kubernetes v0.17.0
+    - NVIDIA MIG Manager for Kubernetes v0.10.0
+    - NVIDIA KubeVirt GPU Device Plugin v1.2.10
+    - NVIDIA vGPU Device Manager v0.2.8
+    - NVIDIA GDS Driver v2.20.5
+    - NVIDIA Kata Manager for Kubernetes v0.2.2
+
+.. _v24.9.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* FIXME
+
+
 .. _v24.6.2:
 
 24.6.2
