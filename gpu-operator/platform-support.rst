@@ -203,9 +203,10 @@ system that meets the following requirements is supported:
 
    NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
 
+.. _supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products:
 
-Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products
--------------------------------------------------------------------------
+Supported Deployment Options
+----------------------------
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -261,7 +262,7 @@ The GPU Operator has been validated in the following scenarios:
          - | Canonical
            | MicroK8s
          - | Nutanix
-           | NPK
+           | NKP
 
        * - Ubuntu 20.04 LTS |fn1|_
          - 1.23---1.30
