@@ -66,6 +66,24 @@ New Features
 * Added support for NVIDIA Network Operator v24.7.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
+* Added support for new MIG profiles with GH200 144GB HBM3e.
+
+  * Added support for the following profiles:
+
+    * ``1g.18gb``
+    * ``1g.18gb+me``
+    * ``1g.36gb``
+    * ``2g.36gb``
+    * ``3g.72gb``
+    * ``4g.72gb``
+    * ``7g.144gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.18gb`` :math:`\times` 2
+    * ``2g.36gb`` :math:`\times` 1
+    * ``3g.72gb`` :math:`\times` 1
+
 .. _v24.9.0-fixed-issues:
 
 Fixed Issues
