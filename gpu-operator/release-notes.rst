@@ -63,6 +63,9 @@ New Features
     - NVIDIA GDS Driver v2.20.5
     - NVIDIA Kata Manager for Kubernetes v0.2.2
 
+* Added support for NVIDIA Network Operator v24.7.0.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
 .. _v24.9.0-fixed-issues:
 
 Fixed Issues
