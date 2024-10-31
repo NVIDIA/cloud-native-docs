@@ -146,7 +146,7 @@ Option 2: Automatically Upgrading CRDs Using a Helm Hook
 
 Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ can automatically upgrade to latest CRD.
 
-Starting with GPU Operator v24.9.0, the Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.
+Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.
 
 #. Specify the Operator release tag in an environment variable:
 
