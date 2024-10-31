@@ -89,7 +89,10 @@ New Features
 Fixed Issues
 ------------
 
-* FIXME
+* Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
+  On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
+  In this release, the tolerations that you specify for the Operator are applied to the jobs.
+  For more information about the hooks, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
 
 
 .. _v24.6.2:
