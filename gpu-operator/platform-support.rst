@@ -465,7 +465,9 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- GA10x: A40, RTX A6000, RTX A5500, RTX A5000, A16, A10, A2.
+- H100
+
+- GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
   The A10G and A10M GPUs are excluded.
 

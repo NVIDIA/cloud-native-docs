@@ -93,6 +93,8 @@ New Features
     * ``2g.36gb`` :math:`\times` 1
     * ``3g.72gb`` :math:`\times` 1
 
+* Added support for KubeVirt and OpenShift Virtualization with vGPU v17.4 for A30, A100, and H100 GPUs.
+
 * Revised roles and role-based access controls for the Operator.
   The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, ``openshift``.
   The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
