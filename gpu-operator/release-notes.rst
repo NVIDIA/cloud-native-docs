@@ -75,7 +75,7 @@ New Features
   This release sets the default value to ``true`` and automatically runs a Helm hook when you upgrade the Operator.
   For more information, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
 
-* Added support for new MIG profiles with GH200 144GB HBM3e.
+* Added support for new MIG profiles with GH200 NVL2 144GB HBM3e.
 
   * Added support for the following profiles:
 
