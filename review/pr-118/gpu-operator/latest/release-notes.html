@@ -192,6 +192,11 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 </li>
 </ul>
 </li>
+<li><p>Revised roles and role-based access controls for the Operator.
+The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, <code class="docutils literal notranslate"><span class="pre">openshift</span></code>.
+The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
+Using caching enables the Operator to use the namespace-scoped role, <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code>, instead of a cluster role for monitoring changes to resources in the Operator namespace.
+This change follows the principle of least privilege and improves the security posture of the Operator.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
