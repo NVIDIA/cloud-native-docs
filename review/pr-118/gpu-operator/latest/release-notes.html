@@ -197,7 +197,10 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 <section id="fixed-issues">
 <span id="v24-9-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline"></a></h3>
 <ul class="simple">
-<li><p>FIXME</p></li>
+<li><p>Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
+On clusters that have nodes with taints, even when <code class="docutils literal notranslate"><span class="pre">operator.tolerations</span></code> includes tolerations, the jobs are not scheduled.
+In this release, the tolerations that you specify for the Operator are applied to the jobs.
+For more information about the hooks, refer to <a class="reference internal" href="upgrade.html#option-2-automatically-upgrading-crds-using-a-helm-hook"><span class="std std-ref">Option 2: Automatically Upgrading CRDs Using a Helm Hook</span></a>.</p></li>
 </ul>
 </section>
 </section>
@@ -2190,7 +2193,7 @@ would not be available after reboot.</p></li>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Oct 29, 2024.
+      <span class="lastupdated">Last updated on Oct 31, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
