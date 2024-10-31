@@ -84,6 +84,12 @@ New Features
     * ``2g.36gb`` :math:`\times` 1
     * ``3g.72gb`` :math:`\times` 1
 
+* Revised roles and role-based access controls for the Operator.
+  The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, ``openshift``.
+  The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
+  Using caching enables the Operator to use the namespace-scoped role, ``gpu-operator``, instead of a cluster role for monitoring changes to resources in the Operator namespace.
+  This change follows the principle of least privilege and improves the security posture of the Operator.
+
 .. _v24.9.0-fixed-issues:
 
 Fixed Issues
@@ -93,6 +99,7 @@ Fixed Issues
   On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
   In this release, the tolerations that you specify for the Operator are applied to the jobs.
   For more information about the hooks, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
+
 
 
 .. _v24.6.2:
