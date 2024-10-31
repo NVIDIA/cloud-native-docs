@@ -265,19 +265,19 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn1|_
-         - 1.23---1.30
+         - 1.24---1.31
          -
          - 7.0 U3c, 8.0 U2
-         - 1.23---1.30
+         - 1.24---1.31
          -
          -
          - 2.12
 
        * - Ubuntu 22.04 LTS |fn1|_
-         - 1.23---1.30
+         - 1.24---1.31
          -
          - 8.0 U2
-         - 1.23---1.30
+         - 1.24---1.31
          -
          - 1.26
          -
@@ -295,10 +295,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.23---1.30
+         - 1.24---1.31
          -
          -
-         - 1.23---1.30
+         - 1.24---1.31
          -
          -
          -
@@ -371,13 +371,13 @@ The GPU Operator has been validated in the following scenarios:
            | Engine 2
 
        * - Ubuntu 20.04 LTS
-         - 1.23--1.30
+         - 1.24--1.31
          -
          - 7.0 U3c, 8.0 U2
          - 1.23---1.25
 
        * - Ubuntu 22.04 LTS
-         - 1.23--1.30
+         - 1.24--1.31
          -
          - 8.0 U2
          -
@@ -392,10 +392,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.23---1.30
+         - 1.24---1.31
          -
          -
-         - 1.23---1.30
+         - 1.24---1.31
 
 
 Supported Container Runtimes
@@ -449,7 +449,9 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- GA10x: A40, RTX A6000, RTX A5500, RTX A5000, A16, A10, A2.
+- H100
+
+- GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
   The A10G and A10M GPUs are excluded.
 
@@ -463,7 +465,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.4.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.7.0
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
@@ -474,7 +476,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.4.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.7.0
 - Red Hat OpenShift Container Platform 4.12 and higher
 
 .. note::

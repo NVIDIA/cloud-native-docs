@@ -207,7 +207,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
    * - ``driver.usePrecompiled``
      - When set to ``true``, the Operator attempts to deploy driver containers that have
        precompiled kernel drivers.
-       This option is available as a technology preview feature for select operating systems.
        Refer to the :doc:`precompiled driver containers <precompiled-drivers>` page for the supported operating systems.
      - ``false``
 

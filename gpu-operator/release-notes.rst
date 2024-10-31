@@ -34,6 +34,90 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.9.0:
+
+24.9.0
+======
+
+.. _v24.9.0-new-features:
+
+New Features
+------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 550.127.05.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Container Toolkit v1.17.0
+    - NVIDIA Driver Manager for Kubernetes v0.7.0
+    - NVIDIA Kubernetes Device Plugin v0.17.0
+    - NVIDIA DCGM Exporter v3.3.8-3.6.0
+    - NVIDIA DCGM v3.3.8-1
+    - Node Feature Discovery v0.16.6
+    - NVIDIA GPU Feature Discovery for Kubernetes v0.17.0
+    - NVIDIA MIG Manager for Kubernetes v0.10.0
+    - NVIDIA KubeVirt GPU Device Plugin v1.2.10
+    - NVIDIA vGPU Device Manager v0.2.8
+    - NVIDIA GDS Driver v2.20.5
+    - NVIDIA Kata Manager for Kubernetes v0.2.2
+
+* Added support for NVIDIA Network Operator v24.7.0.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added generally available (GA) support for precompiled driver containers.
+  This feature was previously a technical preview feature.
+  For more information, refer to :doc:`precompiled-drivers`.
+
+* Enabled automatic upgrade of Operator and Node Feature Discovery CRDs by default.
+  In previous releases, the ``operator.upgradeCRD`` field was ``false``.
+  This release sets the default value to ``true`` and automatically runs a Helm hook when you upgrade the Operator.
+  For more information, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
+
+* Added support for new MIG profiles with GH200 NVL2 144GB HBM3e.
+
+  * Added support for the following profiles:
+
+    * ``1g.18gb``
+    * ``1g.18gb+me``
+    * ``1g.36gb``
+    * ``2g.36gb``
+    * ``3g.72gb``
+    * ``4g.72gb``
+    * ``7g.144gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.18gb`` :math:`\times` 2
+    * ``2g.36gb`` :math:`\times` 1
+    * ``3g.72gb`` :math:`\times` 1
+
+* Added support for KubeVirt and OpenShift Virtualization with vGPU v17.4 for A30, A100, and H100 GPUs.
+
+* Revised roles and role-based access controls for the Operator.
+  The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, ``openshift``.
+  The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
+  Limiting caching to specific namespaces enables the Operator to use the namespace-scoped role, ``gpu-operator``, instead of a cluster role for monitoring changes to resources in the Operator namespace.
+  This change follows the principle of least privilege and improves the security posture of the Operator.
+
+* Enhanced the GPU Driver Container to set the ``NODE_NAME`` environment variable from the node host name and the ``NODE_IP`` environment variable from the node host IP address.
+
+.. _v24.9.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
+  On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
+  In this release, the tolerations that you specify for the Operator are applied to the jobs.
+  For more information about the hooks, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
+
+* Fixed an issue with configuring NVIDIA Container Toolkit to use CDI on nodes that use CRI-O.
+  Previously, the toolkit could configure the ``runc`` handler with the ``nvidia`` runtime handler even if ``runc`` was not the default runtime and cause CRI-O to crash.
+  In this release, the toolkit determines the default runtime by running ``crio status config`` and configures that runtime with the ``nvidia`` runtime handler.
+
+
 .. _v24.6.2:
 
 24.6.2

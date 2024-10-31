@@ -144,9 +144,9 @@ With this procedure, all existing GPU operator resources are updated inline and 
 Option 2: Automatically Upgrading CRDs Using a Helm Hook
 ========================================================
 
-Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ is utilized to automatically upgrade to latest CRD.
-A new parameter ``operator.upgradeCRD`` is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
-This parameter needs to be set using ``--set operator.upgradeCRD=true`` option during upgrade command as below.
+Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ can automatically upgrade to latest CRD.
+
+Starting with GPU Operator v24.9.0, the Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.
 
 #. Specify the Operator release tag in an environment variable:
 
@@ -181,7 +181,7 @@ This parameter needs to be set using ``--set operator.upgradeCRD=true`` option d
    .. code-block:: console
 
       $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
-          --set operator.upgradeCRD=true --disable-openapi-validation -f values-$RELEASE_TAG.yaml
+          --disable-openapi-validation -f values-$RELEASE_TAG.yaml
 
    .. note::
 

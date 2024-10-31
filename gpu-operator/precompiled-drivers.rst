@@ -31,13 +31,6 @@ Precompiled Driver Containers
 About Precompiled Driver Containers
 ***********************************
 
-.. note:: Technology Preview features are not supported in production environments
-          and are not functionally complete.
-          Technology Preview features provide early access to upcoming product features,
-          enabling customers to test functionality and provide feedback during the development process.
-          These releases may not have any documentation, and testing is limited.
-
-
 Containers with precompiled drivers do not require internet access to download Linux kernel
 header files, GCC compiler tooling, or operating system packages.
 
