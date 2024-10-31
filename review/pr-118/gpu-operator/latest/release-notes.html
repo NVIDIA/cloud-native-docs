@@ -206,6 +206,9 @@ This change follows the principle of least privilege and improves the security p
 On clusters that have nodes with taints, even when <code class="docutils literal notranslate"><span class="pre">operator.tolerations</span></code> includes tolerations, the jobs are not scheduled.
 In this release, the tolerations that you specify for the Operator are applied to the jobs.
 For more information about the hooks, refer to <a class="reference internal" href="upgrade.html#option-2-automatically-upgrading-crds-using-a-helm-hook"><span class="std std-ref">Option 2: Automatically Upgrading CRDs Using a Helm Hook</span></a>.</p></li>
+<li><p>Fixed an issue with configuring NVIDIA Container Toolkit to use CDI on nodes that use CRI-O.
+Previously, the toolkit could configure the <code class="docutils literal notranslate"><span class="pre">runc</span></code> handler with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime handler even if <code class="docutils literal notranslate"><span class="pre">runc</span></code> was not the default runtime and cause CRI-O to crash.
+In this release, the toolkit determines the default runtime by running <code class="docutils literal notranslate"><span class="pre">crio</span> <span class="pre">status</span> <span class="pre">config</span></code> and configures that runtime with the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime handler.</p></li>
 </ul>
 </section>
 </section>
