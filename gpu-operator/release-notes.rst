@@ -55,7 +55,7 @@ New Features
     - NVIDIA Kubernetes Device Plugin v0.17.0
     - NVIDIA DCGM Exporter v3.3.8-3.6.0
     - NVIDIA DCGM v3.3.8-1
-    - Node Feature Discovery v0.16.5
+    - Node Feature Discovery v0.16.6
     - NVIDIA GPU Feature Discovery for Kubernetes v0.17.0
     - NVIDIA MIG Manager for Kubernetes v0.10.0
     - NVIDIA KubeVirt GPU Device Plugin v1.2.10
@@ -98,18 +98,15 @@ New Features
 * Revised roles and role-based access controls for the Operator.
   The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, ``openshift``.
   The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
-  Using caching enables the Operator to use the namespace-scoped role, ``gpu-operator``, instead of a cluster role for monitoring changes to resources in the Operator namespace.
+  Limiting caching to specific namespaces enables the Operator to use the namespace-scoped role, ``gpu-operator``, instead of a cluster role for monitoring changes to resources in the Operator namespace.
   This change follows the principle of least privilege and improves the security posture of the Operator.
+
+* Enhanced the GPU Driver Container to set the ``NODE_NAME`` environment variable from the node host name and the ``NODE_IP`` environment variable from the node host IP address.
 
 .. _v24.9.0-fixed-issues:
 
 Fixed Issues
 ------------
-
-* Fixed an issue with the GPU Driver Container and vGPU Software License Server and how host names and IP addresses are reported.
-  Previously, the driver pod reported the pod name, such as ``nvidia-driver-daemonset-xxxxx``, as the host name and the pod cluster IP address.
-  In this release, the driver pod sets the ``NODE_NAME`` environment variable from the node host name and the ``NODE_IP`` environment variable from the node host IP address.
-  This change improves the customer experience with applications that use these environment variables for information about the driver pods.
 
 * Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
   On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
