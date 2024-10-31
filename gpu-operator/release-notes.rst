@@ -66,6 +66,10 @@ New Features
 * Added support for NVIDIA Network Operator v24.7.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
+* Added generally available (GA) support for precompiled driver containers.
+  This feature was previously a technical preview feature.
+  For more information, refer to :doc:`precompiled-drivers`.
+
 * Enabled automatic upgrade of Operator and Node Feature Discovery CRDs by default.
   In previous releases, the ``operator.upgradeCRD`` field was ``false``.
   This release sets the default value to ``true`` and automatically runs a Helm hook when you upgrade the Operator.
