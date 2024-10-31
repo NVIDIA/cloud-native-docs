@@ -89,7 +89,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - v24.9.0
 
    * - NVIDIA GPU Driver
-     - | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
+     - | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
+       | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
        | `550.127.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-05/index.html>`_ (default),
        | `535.216.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-216-01/index.html>`_
 
@@ -106,7 +107,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `3.3.8-3.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
-     - v0.16.5
+     - v0.16.6
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
