@@ -206,6 +206,10 @@ This change follows the principle of least privilege and improves the security p
 <section id="fixed-issues">
 <span id="v24-9-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline"></a></h3>
 <ul class="simple">
+<li><p>Fixed an issue with the GPU Driver Container and vGPU Software License Server and how host names and IP addresses are reported.
+Previously, the driver pod reported the pod name, such as <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset-xxxxx</span></code>, as the host name and the pod cluster IP address.
+In this release, the driver pod sets the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable from the node host name and the <code class="docutils literal notranslate"><span class="pre">NODE_IP</span></code> environment variable from the node host IP address.
+This change improves the customer experience with applications that use these environment variables for information about the driver pods.</p></li>
 <li><p>Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
 On clusters that have nodes with taints, even when <code class="docutils literal notranslate"><span class="pre">operator.tolerations</span></code> includes tolerations, the jobs are not scheduled.
 In this release, the tolerations that you specify for the Operator are applied to the jobs.
