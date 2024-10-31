@@ -100,6 +100,11 @@ New Features
 Fixed Issues
 ------------
 
+* Fixed an issue with the GPU Driver Container and vGPU Software License Server and how host names and IP addresses are reported.
+  Previously, the driver pod reported the pod name, such as ``nvidia-driver-daemonset-xxxxx``, as the host name and the pod cluster IP address.
+  In this release, the driver pod sets the ``NODE_NAME`` environment variable from the node host name and the ``NODE_IP`` environment variable from the node host IP address.
+  This change improves the customer experience with applications that use these environment variables for information about the driver pods.
+
 * Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
   On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
   In this release, the tolerations that you specify for the Operator are applied to the jobs.
