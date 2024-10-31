@@ -141,7 +141,7 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "24.6.2"
+version = "24.9.0"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -199,7 +199,7 @@ output_format = "linkcheck"
 docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "24.6.2"
+version = "24.9.0"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",
