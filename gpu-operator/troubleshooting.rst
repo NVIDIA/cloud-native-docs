@@ -75,6 +75,36 @@ On each node, run the following commands to prevent loading the ``nouveau`` Linu
 
    $ sudo init 6
 
+*************************************
+No GPU Driver or Operand Pods Running
+*************************************
+
+.. rubric:: Issue
+   :class: h4
+
+On some clusters, taints are applied to nodes with a taint effect of ``NoSchedule``.
+
+.. rubric:: Observation
+   :class: h4
+
+- Running ``kubectl get ds -n gpu-operator`` shows ``0`` for ``DESIRED``, ``CURRENT``, ``READY`` and so on.
+
+  .. code-block:: console
+
+     NAME                              DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                         AGE
+     gpu-feature-discovery             0         0         0       0            0           nvidia.com/gpu.deploy.gpu-feature-discovery=true                                                                      11m
+     ...
+
+.. rubric:: Root Cause
+   :class: h4
+
+The ``NoSchedule`` taint prevents the Operator from deploying the GPU Driver and other Operand pods.
+
+.. rubric:: Action
+   :class: h4
+
+Describe each node, identify the taints, and either remove the taints from the nodes or add the taints as tolerations to the daemon sets.
+
 
 *************************************
 GPU Operator Pods Stuck in Crash Loop
