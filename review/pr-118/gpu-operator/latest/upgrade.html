@@ -252,9 +252,8 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 </section>
 <section id="option-2-automatically-upgrading-crds-using-a-helm-hook">
 <h3>Option 2: Automatically Upgrading CRDs Using a Helm Hook<a class="headerlink" href="#option-2-automatically-upgrading-crds-using-a-helm-hook" title="Permalink to this headline"></a></h3>
-<p>Starting with GPU Operator v22.09, a <code class="docutils literal notranslate"><span class="pre">pre-upgrade</span></code> Helm <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">hook</a> is utilized to automatically upgrade to latest CRD.
-A new parameter <code class="docutils literal notranslate"><span class="pre">operator.upgradeCRD</span></code> is added to to trigger this hook during GPU Operator upgrade using Helm. This is disabled by default.
-This parameter needs to be set using <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">operator.upgradeCRD=true</span></code> option during upgrade command as below.</p>
+<p>Starting with GPU Operator v22.09, a <code class="docutils literal notranslate"><span class="pre">pre-upgrade</span></code> Helm <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">hook</a> can automatically upgrade to latest CRD.</p>
+<p>Starting with GPU Operator v24.9.0, the Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v23.9.0
@@ -280,7 +279,7 @@ This parameter needs to be set using <code class="docutils literal notranslate">
 <li><p>Update the values file as needed.</p></li>
 <li><p>Upgrade the Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
-    --set operator.upgradeCRD<span class="o">=</span><span class="nb">true</span> --disable-openapi-validation -f values-<span class="nv">$RELEASE_TAG</span>.yaml
+    --disable-openapi-validation -f values-<span class="nv">$RELEASE_TAG</span>.yaml
 </pre></div>
 </div>
 <div class="admonition note">

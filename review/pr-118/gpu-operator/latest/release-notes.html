@@ -170,6 +170,10 @@ on the platform support page.</p></li>
 </li>
 <li><p>Added support for NVIDIA Network Operator v24.7.0.
 Refer to <a class="reference internal" href="platform-support.html#support-for-gpudirect-rdma"><span class="std std-ref">Support for GPUDirect RDMA</span></a> and <a class="reference internal" href="platform-support.html#support-for-gpudirect-storage"><span class="std std-ref">Support for GPUDirect Storage</span></a>.</p></li>
+<li><p>Enabled automatic upgrade of Operator and Node Feature Discovery CRDs by default.
+In previous releases, the <code class="docutils literal notranslate"><span class="pre">operator.upgradeCRD</span></code> field was <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+This release sets the default value to <code class="docutils literal notranslate"><span class="pre">true</span></code> and automatically runs a Helm hook when you upgrade the Operator.
+For more information, refer to <a class="reference internal" href="upgrade.html#option-2-automatically-upgrading-crds-using-a-helm-hook"><span class="std std-ref">Option 2: Automatically Upgrading CRDs Using a Helm Hook</span></a>.</p></li>
 <li><p>Added support for new MIG profiles with GH200 144GB HBM3e.</p>
 <ul class="simple">
 <li><p>Added support for the following profiles:</p>
