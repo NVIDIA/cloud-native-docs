@@ -100,6 +100,9 @@ Fixed Issues
   In this release, the tolerations that you specify for the Operator are applied to the jobs.
   For more information about the hooks, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
 
+* Fixed an issue with configuring NVIDIA Container Toolkit to use CDI on nodes that use CRI-O.
+  Previously, the toolkit could configure the ``runc`` handler with the ``nvidia`` runtime handler even if ``runc`` was not the default runtime and cause CRI-O to crash.
+  In this release, the toolkit determines the default runtime by running ``crio status config`` and configures that runtime with the ``nvidia`` runtime handler.
 
 
 .. _v24.6.2:
