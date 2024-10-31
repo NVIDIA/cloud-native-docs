@@ -66,6 +66,11 @@ New Features
 * Added support for NVIDIA Network Operator v24.7.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
+* Enabled automatic upgrade of Operator and Node Feature Discovery CRDs by default.
+  In previous releases, the ``operator.upgradeCRD`` field was ``false``.
+  This release sets the default value to ``true`` and automatically runs a Helm hook when you upgrade the Operator.
+  For more information, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
+
 * Added support for new MIG profiles with GH200 144GB HBM3e.
 
   * Added support for the following profiles:
