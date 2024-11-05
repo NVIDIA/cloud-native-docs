@@ -203,7 +203,7 @@ system that meets the following requirements is supported:
 
    NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
 
-.. _supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products:
+.. _Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products:
 
 Supported Deployment Options
 ----------------------------

@@ -33,7 +33,7 @@ sphinx_conf_py_extra = """
   html_css_files.append("custom.css")
   highlight_language = 'console'
   intersphinx_mapping = {
-    "dcgm": ('https://docs.nvidia.com/datacenter/dcgm/latest/', None),
+    "dcgm": ("https://docs.nvidia.com/datacenter/dcgm/latest/", "../work/dcgm-offline.inv"),
     "gpuop": ("https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/",
                 ("_build/docs/gpu-operator/latest/objects.inv", None)),
     "ctk": ("https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/",
