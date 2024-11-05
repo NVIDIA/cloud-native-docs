@@ -274,6 +274,5 @@ as can be seen in the output below:
    DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
 
 
-For more information on the profiling metrics and how to interpret the metrics, refer to the `profiling metrics <https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-user-guide/feature-overview.html#profiling>`_
-section of the DCGM user guide.
+For more information on the profiling metrics and how to interpret the metrics, refer to :external+dcgm:ref:`profiling metrics` in the `NVIDIA DCGM User Guide`.
 
