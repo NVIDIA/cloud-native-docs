@@ -280,7 +280,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.24---1.31
          -
          - 1.26
-         -
+         - 2.12
 
        * - Red Hat Core OS
          -
