@@ -271,7 +271,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.24---1.31
          -
          -
-         - 2.12
+         - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS |fn1|_
          - 1.24---1.31
@@ -280,7 +280,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.24---1.31
          -
          - 1.26
-         - 2.12
+         - 2.12, 2.13
 
        * - Red Hat Core OS
          -
@@ -369,22 +369,27 @@ The GPU Operator has been validated in the following scenarios:
            | with Tanzu
          - | Rancher Kubernetes
            | Engine 2
+         - | Nutanix
+           | NKP
 
        * - Ubuntu 20.04 LTS
          - 1.24--1.31
          -
          - 7.0 U3c, 8.0 U2
          - 1.23---1.25
+         - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
          - 1.24--1.31
          -
          - 8.0 U2
          -
+         - 2.12, 2.13
 
        * - Red Hat Core OS
          -
          - 4.12---4.17
+         -
          -
          -
 
@@ -396,6 +401,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.24---1.31
+         -
 
 
 Supported Container Runtimes
