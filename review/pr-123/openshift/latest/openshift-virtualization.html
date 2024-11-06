@@ -277,25 +277,25 @@ To change the default GPU workload configuration, set the following value in <co
 If you plan to use GPU Passthrough only, skip this section.</p>
 </div>
 <p>Use the following steps to build the vGPU Manager container and push it to a private registry.</p>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
 <ul class="simple">
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <strong>Software Downloads</strong> section.</p></li>
 <li><p>The NVIDIA vGPU Software is located on the <strong>Driver downloads</strong> tab of the <strong>Software Downloads</strong> page.</p></li>
 <li><p>Click the <strong>Download</strong> link for the Linux KVM complete vGPU package.
 Confirm that the <strong>Product Version</strong> column shows the vGPU version to install.
-Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> file)</p></li>
+Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p></li>
 </ul>
-</li>
-</ol>
-<div class="admonition note">
+<blockquote>
+<div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>NVAIE users need to use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file when building the NVIDIA vGPU Manager image.
+<p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image.
 Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm-aie.run</span></code> file instead, and rename it to
-<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> before procedding with the rest of the procedure.</p>
-<p>Use the following steps to clone the driver container repository and build the driver image.</p>
+<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> before proceeding with the rest of the procedure.</p>
 </div>
-<ol class="arabic">
+</div></blockquote>
+<p>Use the following steps to clone the driver container repository and build the driver image.</p>
+</li>
 <li><p>Open a terminal and clone the driver container image repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
 <span class="gp">$ </span><span class="nb">cd</span> driver
