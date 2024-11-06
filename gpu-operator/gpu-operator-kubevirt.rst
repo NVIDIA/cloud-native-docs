@@ -378,6 +378,13 @@ Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidi
 * The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
 * The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` file)
 
+.. note::
+
+   NVAIE users need to use the ``aie`` .run file when building the NVIDIA vGPU Manager image.
+   Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
+   ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before procedding with the rest of the procedure.
+
+
 Next, clone the driver container repository and build the driver image with the following steps.
 
 Open a terminal and clone the driver container image repository.
