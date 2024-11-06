@@ -178,14 +178,11 @@ Use the following steps to build the vGPU Manager container and push it to a pri
    * The NVIDIA vGPU Software is located on the **Driver downloads** tab of the **Software Downloads** page.
    * Click the **Download** link for the Linux KVM complete vGPU package.
      Confirm that the **Product Version** column shows the vGPU version to install.
-     Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` file)
+     Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
 
-.. note::
-
-   NVAIE users need to use the ``aie`` .run file when building the NVIDIA vGPU Manager image.
-   Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
-   ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before procedding with the rest of the procedure.
-
+   .. include:: ../gpu-operator/gpu-operator-kubevirt.rst
+      :start-after: start-nvaie-run-file
+      :end-before: end-nvaie-run-file
 
    Use the following steps to clone the driver container repository and build the driver image.
 
