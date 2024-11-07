@@ -10,6 +10,53 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.0
+
+This version includes updates for:
+
+* [NVIDIA CVE-2024-0134](https://nvidia.custhelp.com/app/answers/detail/a_id/5585)
+
+To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <https://www.nvidia.com/en-us/security/>.
+
+For more information regarding NVIDIA security vulnerability remediation policies, refer to <https://www.nvidia.com/en-us/security/psirt-policies/>.
+
+---
+
+This release of the NVIDIA Container Toolkit `v1.17.0` is a feature update and bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.0`
+- `libnvidia-container-tools 1.17.0`
+- `libnvidia-container1 1.17.0`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1`)
+
+### Fixes and Features
+
+- Fixed a bug where symlinks created as a container starts could escape the container root. This fix addresses CVE-2024-0134.
+- Fixed a bug with locating `libcuda.so` in the ldcache while generating CDI specifications. This fix enables the toolkit to locate driver libraries on systems that use a custom path for the driver installation.
+- Fixed a bug related to creating symlink chains on Tegra-based sytems. This fix ensures that behavior is consistent across multiple runs of containers and do not depend on a random sort order.
+- Fixed a bug where VDPAU driver libraries are not discovered in CDI spec generation.
+
+- Added support for requesting IMEX channels as volume mounts.
+- Added a `disable-imex-channel-creation` feature flag to disable the creation of IMEX channel device nodes when creating a container.
+- Added IMEX channel device nodes to the CDI specifications in `management` mode.
+- Added the creation of select driver symlinks (e.g. `libcuda.so`) in CDI specification generation to match the behavior in the `legacy` mode.
+
+
+### Enhancements to container-toolkit Container Images
+
+- Added support for querying current container runtime configurations from the command line instead of config files. This ensures that the effective config is used when configuring the NVIDIA Container Runtimes.
+- Updated the CUDA base image version to 12.6.2.
+
+#### Enhancements to libnvidia-container
+
+- Added a `--no-create-imex-channels` command line option.
+
 ## NVIDIA Container Toolkit 1.16.2
 
 **This release provides critical security updates and is recommended for all users.**
