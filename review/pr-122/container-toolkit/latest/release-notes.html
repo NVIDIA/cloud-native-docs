@@ -132,12 +132,12 @@
 <section id="fixes-and-features">
 <h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline"></a></h3>
 <ul class="simple">
-<li><p>Fixed a bug where symlinks created when starting a container may escape the container root. This addresses CVE-2024-0134.</p></li>
-<li><p>Fixed a bug when locating libcuda.so in the ldcache when generating CDI specifications. This allows the driver libraries to be properly discovered on systems with non-standard driver installation paths.</p></li>
-<li><p>Fixed a bug in the creation of symlink chains on Tegra-based sytems. This ensures that behaviour is consistent across multiple runs of containers and do not depend on a random sort order.</p></li>
+<li><p>Fixed a bug where symlinks created as a container starts could escape the container root. This fix addresses CVE-2024-0134.</p></li>
+<li><p>Fixed a bug with locating <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code> in the ldcache while generating CDI specifications. This fix enables the toolkit to locate driver libraries on systems that use a custom path for the driver installation.</p></li>
+<li><p>Fixed a bug related to creating symlink chains on Tegra-based sytems. This fix ensures that behavior is consistent across multiple runs of containers and do not depend on a random sort order.</p></li>
 <li><p>Fixed a bug where VDPAU driver libraries are not discovered in CDI spec generation.</p></li>
 <li><p>Added support for requesting IMEX channels as volume mounts.</p></li>
-<li><p>Added a <code class="docutils literal notranslate"><span class="pre">disable-imex-channel-creation</span></code> feature flag to skip the creation of IMEX channel device nodes when creating a container.</p></li>
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">disable-imex-channel-creation</span></code> feature flag to disable the creation of IMEX channel device nodes when creating a container.</p></li>
 <li><p>Added IMEX channel device nodes to the CDI specifications in <code class="docutils literal notranslate"><span class="pre">management</span></code> mode.</p></li>
 <li><p>Added the creation of select driver symlinks (e.g. <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code>) in CDI specification generation to match the behavior in the <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode.</p></li>
 </ul>
@@ -1384,7 +1384,7 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Nov 05, 2024.
+      <span class="lastupdated">Last updated on Nov 07, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 

@@ -440,10 +440,18 @@ If only planning to use PCI passthrough, skip this section.</p>
 </div>
 <p>This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.</p>
 <p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
-<ul class="simple">
+<ul>
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <cite>Software Downloads</cite> section.</p></li>
 <li><p>The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.</p></li>
-<li><p>The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> file)</p></li>
+<li><p>The vGPU Software bundle is packaged as a zip file.
+Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image.
+Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm-aie.run</span></code> file instead, and rename it to
+<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> before proceeding with the rest of the procedure.</p>
+</div>
+</li>
 </ul>
 <p>Next, clone the driver container repository and build the driver image with the following steps.</p>
 <p>Open a terminal and clone the driver container image repository.</p>
@@ -522,7 +530,7 @@ If only planning to use PCI passthrough, skip this section.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Nov 05, 2024.
+      <span class="lastupdated">Last updated on Nov 07, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 

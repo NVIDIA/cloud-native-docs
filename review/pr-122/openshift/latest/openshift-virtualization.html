@@ -284,8 +284,16 @@ If you plan to use GPU Passthrough only, skip this section.</p>
 <li><p>The NVIDIA vGPU Software is located on the <strong>Driver downloads</strong> tab of the <strong>Software Downloads</strong> page.</p></li>
 <li><p>Click the <strong>Download</strong> link for the Linux KVM complete vGPU package.
 Confirm that the <strong>Product Version</strong> column shows the vGPU version to install.
-Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux (<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> file)</p></li>
+Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p></li>
 </ul>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image.
+Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm-aie.run</span></code> file instead, and rename it to
+<code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code> before proceeding with the rest of the procedure.</p>
+</div>
+</div></blockquote>
 <p>Use the following steps to clone the driver container repository and build the driver image.</p>
 </li>
 <li><p>Open a terminal and clone the driver container image repository:</p>
@@ -629,7 +637,7 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Nov 05, 2024.
+      <span class="lastupdated">Last updated on Nov 07, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
