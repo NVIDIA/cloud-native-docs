@@ -513,6 +513,8 @@ For Rancher Kubernetes Engine 2 (RKE2), refer to
 `Deploy NVIDIA Operator <https://docs.rke2.io/advanced#deploy-nvidia-operator>`__
 in the RKE2 documentation.
 
+Refer to the :ref:`v24.9.0-known-limitations`.
+
 MicroK8s
 ========
 
