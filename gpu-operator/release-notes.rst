@@ -138,8 +138,8 @@ Known Limitations
   The toolkit attempts to use the `containerd` command to determine the container runtime configuration on the host.
   On these platforms, the `containerd` executable is not on the PATH and results in an error.
 
-  NVIDIA recommends installing v1.16.2 of the toolkit when you install or upgrade the Operator.
-  You can specify the ``--set toolkit.version=v1.16.2-ubuntu20.04`` or ``v1.16.2-ubi8`` argument to Helm.
+  NVIDIA recommends installing v1.17.1 of the toolkit when you install or upgrade the Operator.
+  You can specify the ``--set toolkit.version=v1.17.1-ubuntu20.04`` or ``v1.17.1-ubi8`` argument to Helm.
 
 .. _v24.6.2:
 
