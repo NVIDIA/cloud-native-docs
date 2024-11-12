@@ -135,8 +135,8 @@ Known Limitations
 -----------------
 
 * On Rancher RKE2 and K3s, NVIDIA Container Toolkit v1.17.0 fails to start.
-  The toolkit attempts to use the `containerd` command to determine the container runtime configuration on the host.
-  On these platforms, the `containerd` executable is not on the PATH and results in an error.
+  The toolkit attempts to use the ``containerd`` command to determine the container runtime configuration on the host.
+  On these platforms, the ``containerd`` executable is not on the PATH and results in an error.
 
   NVIDIA recommends installing v1.17.1 of the toolkit when you install or upgrade the Operator.
   You can specify the ``--set toolkit.version=v1.17.1-ubuntu20.04`` or ``v1.17.1-ubi8`` argument to Helm.
