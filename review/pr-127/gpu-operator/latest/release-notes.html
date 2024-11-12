@@ -234,10 +234,10 @@ In this release, the toolkit determines the default runtime by running <code cla
 <span id="v24-9-0-known-limitations"></span><h3>Known Limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline"></a></h3>
 <ul>
 <li><p>On Rancher RKE2 and K3s, NVIDIA Container Toolkit v1.17.0 fails to start.
-The toolkit attempts to use the <cite>containerd</cite> command to determine the container runtime configuration on the host.
-On these platforms, the <cite>containerd</cite> executable is not on the PATH and results in an error.</p>
-<p>NVIDIA recommends installing v1.16.2 of the toolkit when you install or upgrade the Operator.
-You can specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">toolkit.version=v1.16.2-ubuntu20.04</span></code> or <code class="docutils literal notranslate"><span class="pre">v1.16.2-ubi8</span></code> argument to Helm.</p>
+The toolkit attempts to use the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> command to determine the container runtime configuration on the host.
+On these platforms, the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> executable is not on the PATH and results in an error.</p>
+<p>NVIDIA recommends installing v1.17.1 of the toolkit when you install or upgrade the Operator.
+You can specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">toolkit.version=v1.17.1-ubuntu20.04</span></code> or <code class="docutils literal notranslate"><span class="pre">v1.17.1-ubi8</span></code> argument to Helm.</p>
 </li>
 </ul>
 </section>
