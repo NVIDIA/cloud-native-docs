@@ -135,7 +135,7 @@ Known Limitations
 -----------------
 
 * On Rancher RKE2 and K3s, NVIDIA Container Toolkit v1.17.0 fails to start.
-  The toolkit attempts to use the ``containerd`` command to determine the container runtime configuration on the host.
+  The toolkit attempts to run ``containerd config dump`` to determine the container runtime configuration on the host.
   On these platforms, the ``containerd`` executable is not on the PATH and results in an error.
 
   NVIDIA recommends installing v1.17.1 of the toolkit when you install or upgrade the Operator.
