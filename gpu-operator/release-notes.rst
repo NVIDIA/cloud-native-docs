@@ -53,6 +53,8 @@ New Features
 
   For more information regarding NVIDIA security vulnerability remediation policies, refer to https://www.nvidia.com/en-us/security/psirt-policies/.
 
+  For Rancher RKE2 and K3s, refer to the :ref:`v24.9.0-known-limitations`.
+
 * Added support for the NVIDIA Data Center GPU Driver version 550.127.05.
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
@@ -127,6 +129,17 @@ Fixed Issues
   Previously, the toolkit could configure the ``runc`` handler with the ``nvidia`` runtime handler even if ``runc`` was not the default runtime and cause CRI-O to crash.
   In this release, the toolkit determines the default runtime by running ``crio status config`` and configures that runtime with the ``nvidia`` runtime handler.
 
+.. _v24.9.0-known-limitations:
+
+Known Limitations
+-----------------
+
+* On Rancher RKE2 and K3s, NVIDIA Container Toolkit v1.17.0 fails to start.
+  The toolkit attempts to run ``containerd config dump`` to determine the container runtime configuration on the host.
+  On these platforms, the ``containerd`` executable is not on the PATH and results in an error.
+
+  NVIDIA recommends installing v1.17.1 of the toolkit when you install or upgrade the Operator.
+  You can specify the ``--set toolkit.version=v1.17.1-ubuntu20.04`` or ``v1.17.1-ubi8`` argument to Helm.
 
 .. _v24.6.2:
 
