@@ -83,18 +83,17 @@ Prerequisites
 
 * `Install the OpenShift Virtualization Operator <https://docs.openshift.com/container-platform/latest/virt/install/installing-virt-cli.html>`__.
 * `Install the virtctl client <https://docs.openshift.com/container-platform/latest/virt/virt-using-the-cli-tools.html>`__.
-* Starting with OpenShift Virtualization 4.12.3 and 4.13.0, set the ``DisableMDEVConfiguration`` feature gate:
+* Starting with OpenShift Virtualization 4.12.3 and 4.13.0, set the ``disableMDevConfiguration`` feature gate:
 
   .. code-block:: console
 
-     $ oc annotate --overwrite -n openshift-cnv hco kubevirt-hyperconverged \
-         kubevirt.kubevirt.io/jsonpatch='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
+     $ kubectl patch hyperconverged -n openshift-cnv  kubevirt-hyperconverged --type='json' -p='[{"op": "add", "path": "/spec/featureGates/disableMDevConfiguration", "value": true}]'
 
   *Example Output*
 
   .. code-block:: output
 
-     hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged annotated
+     hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
 
 
 **********************************
@@ -363,22 +362,19 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
                 Kernel modules: nvidiafb, nouveau
 
-#. Modify the ``HyperConvered`` custom resource like the following partial example:
+#. Modify the ``HyperConverged`` custom resource like the following partial example:
 
    .. code-block:: yaml
 
       ...
       spec:
-        configuration:
-          developerConfiguration:
-            featureGates:
-            - GPU
-            - DisableMDEVConfiguration
-          permittedHostDevices:
-            pciHostDevices:
-            - externalResourceProvider: true
-              pciDeviceSelector: 10DE:2236
-              resourceName: nvidia.com/GA102GL_A10
+        featureGates:
+          disableMDevConfiguration: true
+        permittedHostDevices:
+          pciHostDevices:
+          - externalResourceProvider: true
+            pciDeviceSelector: 10DE:2236
+            resourceName: nvidia.com/GA102GL_A10
           mediatedDevices:
           - externalResourceProvider: true
             mdevNameSelector: NVIDIA A10-24Q
