@@ -154,13 +154,13 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
-    | NVIDIA RTX A8000        | Turing                 |
+    | NVIDIA Quadro RTX 8000  | Turing                 |
     +-------------------------+------------------------+
-    | NVIDIA RTX A6000        | Turing                 |
+    | NVIDIA Quadro RTX 6000  | Turing                 |
     +-------------------------+------------------------+
-    | NVIDIA RTX A5000        | Turing                 |
+    | NVIDIA Quadro RTX 5000  | Turing                 |
     +-------------------------+------------------------+
-    | NVIDIA RTX A4000        | Turing                 |
+    | NVIDIA Quadro RTX 4000  | Turing                 |
     +-------------------------+------------------------+
     | NVIDIA T1000            | Turing                 |
     +-------------------------+------------------------+
