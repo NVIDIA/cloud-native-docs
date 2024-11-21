@@ -364,7 +364,7 @@ Perform the following steps to configure time-slicing before installing the oper
 
       $ helm install gpu-operator nvidia/gpu-operator \
           -n gpu-operator \
-          --set version=${version} \
+          --version=${version} \
           --set devicePlugin.config.name=time-slicing-config
 
 #. Refer to either :ref:`time-slicing-cluster-wide-config` or

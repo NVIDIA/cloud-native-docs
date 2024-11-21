@@ -100,7 +100,7 @@ Procedure
         $ helm install --wait --generate-name \
             -n gpu-operator --create-namespace \
             nvidia/gpu-operator \
-            --set version=${version}
+            --version=${version}
 
    - Install the Operator and specify configuration options:
 
@@ -109,7 +109,7 @@ Procedure
         $ helm install --wait --generate-name \
             -n gpu-operator --create-namespace \
             nvidia/gpu-operator \
-            --set version=${version} \
+            --version=${version} \
             --set <option-name>=<option-value>
 
      Refer to the :ref:`gpu-operator-helm-chart-options`
@@ -294,7 +294,7 @@ For example, to install the GPU Operator in the ``nvidia-gpu-operator`` namespac
    $ helm install --wait --generate-name \
         -n nvidia-gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
 
 If you do not specify a namespace during installation, all GPU Operator components are installed in the ``default`` namespace.
 
@@ -332,7 +332,7 @@ In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         --set toolkit.version=v1.16.1-ubi8
 
 Replace the ``v1.16.1`` value in the preceding command with the version that is supported
@@ -353,7 +353,7 @@ In this scenario, the NVIDIA GPU driver is already installed on the worker nodes
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         --set driver.enabled=false
 
 The preceding command prevents the Operator from installing the GPU driver on any nodes in the cluster.
@@ -383,7 +383,7 @@ Install the Operator with the following options:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         --set driver.enabled=false \
         --set toolkit.enabled=false
 
@@ -406,7 +406,7 @@ In this scenario, the NVIDIA Container Toolkit is already installed on the worke
       $ helm install --wait --generate-name \
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
-          --set version=${version} \
+          --version=${version} \
           --set toolkit.enabled=false
 
 Running a Custom Driver Image
@@ -435,7 +435,7 @@ you can build a custom driver container image. Follow these steps:
      $ helm install --wait --generate-name \
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
-          --set version=${version} \
+          --version=${version} \
           --set driver.repository=docker.io/nvidia \
           --set driver.version="465.27"
 
@@ -473,7 +473,7 @@ If you need to specify custom values, refer to the following sample command for 
 
   helm install gpu-operator -n gpu-operator --create-namespace \
     nvidia/gpu-operator $HELM_OPTIONS \
-      --set version=${version} \
+      --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
       --set toolkit.env[0].value=/etc/containerd/config.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
@@ -548,7 +548,7 @@ These options can be passed to GPU Operator during install time as below.
 
   helm install gpu-operator -n gpu-operator --create-namespace \
     nvidia/gpu-operator $HELM_OPTIONS \
-      --set version=${version} \
+      --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
       --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \

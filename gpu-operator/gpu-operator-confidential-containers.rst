@@ -407,7 +407,7 @@ Perform the following steps to install the Operator for use with confidential co
       $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --set version=${version} \
+         --version=${version} \
          --set sandboxWorkloads.enabled=true \
          --set kataManager.enabled=true \
          --set ccManager.enabled=true \

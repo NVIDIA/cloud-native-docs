@@ -57,7 +57,7 @@ Perform the following steps to install the Operator and configure MIG:
       $ helm install --wait --generate-name \
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
-          --set version=${version} \
+          --version=${version} \
           --set mig.strategy=single
 
    Set ``mig.strategy`` to ``mixed`` when MIG mode is not enabled on all GPUs on a node.
@@ -464,7 +464,7 @@ can be used to install the GPU Operator:
     $ helm install gpu-operator \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         --set driver.enabled=false
 
 
@@ -515,7 +515,7 @@ Alternatively, you can create a custom config map for use by MIG Manager by perf
      $ helm install gpu-operator \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --set version=${version} \
+         --version=${version} \
          --set migManager.gpuClientsConfig.name=gpu-clients
          --set driver.enabled=false
 
