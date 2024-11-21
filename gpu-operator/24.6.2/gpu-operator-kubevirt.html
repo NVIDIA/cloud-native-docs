@@ -249,6 +249,7 @@ software which enable container workloads, and the <code class="docutils literal
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
+      --set <span class="nv">version</span><span class="o">=</span>v24.6.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -272,6 +273,7 @@ Follow the steps provided in <a class="reference internal" href="#build-vgpu-man
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
+      --set <span class="nv">version</span><span class="o">=</span>v24.6.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.repository<span class="o">=</span>&lt;path to private repository&gt; <span class="se">\</span>
@@ -522,7 +524,7 @@ If only planning to use PCI passthrough, skip this section.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Oct 18, 2024.
+      <span class="lastupdated">Last updated on Nov 21, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 

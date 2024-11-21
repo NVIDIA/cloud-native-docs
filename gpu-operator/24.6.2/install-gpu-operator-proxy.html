@@ -165,25 +165,15 @@ a proxy is not specific to the GPU Operator, we do not include those instruction
 <section id="http-proxy-configuration-for-openshift">
 <span id="proxy-config-openshift"></span><h2>HTTP Proxy Configuration for Openshift<a class="headerlink" href="#http-proxy-configuration-for-openshift" title="Permalink to this headline"></a></h2>
 <p>For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Please follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
+Follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
 from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container
 based on information present in the cluster-wide Proxy object.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>GPU Operator v1.8.0 does not work well on RedHat OpenShift when a cluster-wide Proxy object is configured and causes constant restarts of <code class="docutils literal notranslate"><span class="pre">driver</span></code> container. This will be fixed in an upcoming patch release v1.8.2.</p></li>
-</ul>
-</div>
 </section>
 <section id="http-proxy-configuration">
 <h2>HTTP Proxy Configuration<a class="headerlink" href="#http-proxy-configuration" title="Permalink to this headline"></a></h2>
 <p>First, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v24.6.2/deployments/gpu-operator/values.yaml
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">v1.7.0</span></code> in the above command with the version you want to use.</p>
 </div>
 <p>Specify <code class="docutils literal notranslate"><span class="pre">driver.env</span></code> in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
 (in both uppercase and lowercase).</p>
@@ -214,14 +204,14 @@ based on information present in the cluster-wide Proxy object.</p>
 <section id="deploy-gpu-operator">
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline"></a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<p>Fetch the chart from NGC repository. <code class="docutils literal notranslate"><span class="pre">v1.10.0</span></code> is used as an example in the command below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.10.0.tgz
+<p>Fetch the chart from NGC repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v24.6.2.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v1.10.0.tgz <span class="se">\</span>
+     gpu-operator-v24.6.2.tgz <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>
@@ -267,7 +257,7 @@ based on information present in the cluster-wide Proxy object.</p>
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Oct 18, 2024.
+      <span class="lastupdated">Last updated on Nov 21, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
