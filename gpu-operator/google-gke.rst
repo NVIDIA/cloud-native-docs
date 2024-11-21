@@ -169,6 +169,7 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
       $ helm install --wait --generate-name \
           -n gpu-operator \
           nvidia/gpu-operator \
+          --set version=${version} \
           --set hostPaths.driverInstallDir=/home/kubernetes/bin/nvidia \
           --set toolkit.installDir=/home/kubernetes/bin/nvidia \
           --set cdi.enabled=true \

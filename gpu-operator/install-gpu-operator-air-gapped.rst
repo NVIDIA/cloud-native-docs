@@ -122,13 +122,13 @@ An example is shown below with the Operator container image:
    operator:
      repository: nvcr.io/nvidia
      image: gpu-operator
-     version: "v1.9.0"
+     version: "${version}"
 
-For instance, to pull the gpu-operator image version v1.9.0, use the following instruction:
+For instance, to pull the gpu-operator image version ${version}, use the following instruction:
 
 .. code-block:: console
 
-   $ docker pull nvcr.io/nvidia/gpu-operator:v1.9.0
+   $ docker pull nvcr.io/nvidia/gpu-operator:${version}
 
 There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.
 
@@ -137,19 +137,13 @@ There is one caveat with regards to the driver image. The version field must be 
    driver:
      repository: nvcr.io/nvidia
      image: driver
-     version: "470.82.01"
+     version: "${recommended}"
 
 To pull the driver image for Ubuntu 20.04:
 
 .. code-block:: console
 
-   $ docker pull nvcr.io/nvidia/driver:470.82.01-ubuntu20.04
-
-To pull the driver image for CentOS 8:
-
-.. code-block:: console
-
-   $ docker pull nvcr.io/nvidia/driver:470.82.01-centos8
+   $ docker pull nvcr.io/nvidia/driver:${recommended}-ubuntu20.04
 
 To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.
 
@@ -157,15 +151,15 @@ Using the above examples, this will result in:
 
 .. code-block:: console
 
-   $ docker tag nvcr.io/nvidia/gpu-operator:v1.9.0 <local-registry>/<local-path>/gpu-operator:v1.9.0
-   $ docker tag nvcr.io/nvidia/driver:470.82.01-ubuntu20.04 <local-registry>/<local-path>/driver:470.82.01-ubuntu20.04
+   $ docker tag nvcr.io/nvidia/gpu-operator:${version} <local-registry>/<local-path>/gpu-operator:${version}
+   $ docker tag nvcr.io/nvidia/driver:${recommended}-ubuntu20.04 <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 
 Finally, push the images to the local registry:
 
 .. code-block:: console
 
-   $ docker push <local-registry>/<local-path>/gpu-operator:v1.9.0
-   $ docker push <local-registry>/<local-path>/driver:470.82.01-ubuntu20.04
+   $ docker push <local-registry>/<local-path>/gpu-operator:${version}
+   $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 
 Update ``values.yaml`` with local registry information in the repository field.
 
@@ -380,11 +374,11 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from NGC repository. ``v1.9.0`` is used in the command below:
+Fetch the chart from NGC repository:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.9.0.tgz
+    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-${version}.tgz
 
 Install the GPU Operator with the customized ``values.yaml``:
 
@@ -392,7 +386,7 @@ Install the GPU Operator with the customized ``values.yaml``:
 
     $ helm install --wait gpu-operator \
          -n gpu-operator --create-namespace \
-         gpu-operator-v1.9.0.tgz \
+         gpu-operator-${version}.tgz \
          -f values.yaml
 
 Check the status of the pods to ensure all the containers are running:

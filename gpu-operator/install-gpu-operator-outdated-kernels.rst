@@ -7,17 +7,17 @@ Considerations when Installing with Outdated Kernels in Cluster
 ***************************************************************
 
 The ``driver`` container deployed as part of the GPU Operator requires certain packages to be available as part of the driver installation.
-On GPU nodes where the running kernel is not the latest, the ``driver`` container may fail to find the right version of these packages 
-(e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the ``driver`` container logs, you will most likely 
+On GPU nodes where the running kernel is not the latest, the ``driver`` container may fail to find the right version of these packages
+(e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the ``driver`` container logs, you will most likely
 see the following error message: ``Could not resolve Linux kernel version``.
 
-In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a 
+In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
 workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.
 
 Add Archived Package Repositories
 =================================
 
-The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package 
+The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package
 manager running inside the ``driver`` container. To achieve this, we can simply mount a repository list file into the ``driver`` container using a ``ConfigMap``.
 The ``ConfigMap`` containing the repository list file needs to be created in the ``gpu-operator`` namespace.
 
@@ -87,6 +87,7 @@ Deploy GPU Operator with updated ``values.yaml``:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
+        --set version=${version} \
         -f values.yaml
 
 
