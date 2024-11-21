@@ -119,6 +119,7 @@ Specify the ``--set driver.usePrecompiled=true`` and ``--set driver.version=<dri
    $ helm install --wait gpu-operator \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
+        --version=${version} \
         --set driver.usePrecompiled=true \
         --set driver.version="<driver-branch>"
 
