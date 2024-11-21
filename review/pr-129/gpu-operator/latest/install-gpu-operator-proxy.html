@@ -165,7 +165,7 @@ a proxy is not specific to the GPU Operator, we do not include those instruction
 <section id="http-proxy-configuration-for-openshift">
 <span id="proxy-config-openshift"></span><h2>HTTP Proxy Configuration for Openshift<a class="headerlink" href="#http-proxy-configuration-for-openshift" title="Permalink to this headline"></a></h2>
 <p>For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
+Follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
 from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container
 based on information present in the cluster-wide Proxy object.</p>
 </section>
@@ -204,7 +204,7 @@ based on information present in the cluster-wide Proxy object.</p>
 <section id="deploy-gpu-operator">
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline"></a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<p>Fetch the chart from NGC repository:</p>
+<p>Fetch the chart from the NGC repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v24.9.0.tgz
 </pre></div>
 </div>
