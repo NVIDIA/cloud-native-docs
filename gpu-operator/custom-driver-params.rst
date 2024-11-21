@@ -38,5 +38,5 @@ containing the kernel module parameters.
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         --set driver.kernelModuleConfig.name="kernel-module-params"

@@ -190,7 +190,7 @@ For newer releases, you can confirm the the supported driver branch by performin
 #. Refer to :ref:`operator-component-matrix` to identify the recommended driver version that uses the same driver branch, 550, in this case.
 
 After identifying the correct driver version, refer to :ref:`install-gpu-operator` to install the Operator by using Helm.
-Specify the ``--set version=<supported-version>`` argument to install a supported version of the Operator for your NVIDIA AI Enterprise release.
+Specify the ``--version=<supported-version>`` argument to install a supported version of the Operator for your NVIDIA AI Enterprise release.
 
 
 *******************
