@@ -156,7 +156,7 @@ containing the kernel module parameters.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --set <span class="nv">version</span><span class="o">=</span>v24.6.2 <span class="se">\</span>
+     --version<span class="o">=</span>v24.6.2 <span class="se">\</span>
      --set driver.kernelModuleConfig.name<span class="o">=</span><span class="s2">&quot;kernel-module-params&quot;</span>
 </pre></div>
 </div>

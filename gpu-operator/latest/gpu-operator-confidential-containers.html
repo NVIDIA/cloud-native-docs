@@ -492,7 +492,7 @@ If you want to run Confidential Containers by default on all worker nodes, also 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
-   --set <span class="nv">version</span><span class="o">=</span>v24.6.2 <span class="se">\</span>
+   --version<span class="o">=</span>v24.6.2 <span class="se">\</span>
    --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
    --set kataManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
    --set ccManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
