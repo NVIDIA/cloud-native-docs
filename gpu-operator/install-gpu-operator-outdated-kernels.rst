@@ -87,7 +87,7 @@ Deploy GPU Operator with updated ``values.yaml``:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --set version=${version} \
+        --version=${version} \
         -f values.yaml
 
 

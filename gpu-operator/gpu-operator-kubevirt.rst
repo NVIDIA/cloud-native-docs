@@ -140,7 +140,7 @@ Install the GPU Operator, enabling ``sandboxWorkloads``:
    $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --set version=${version} \
+         --version=${version} \
          --set sandboxWorkloads.enabled=true
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -172,7 +172,7 @@ Install the GPU Operator with ``sandboxWorkloads`` and ``vgpuManager`` enabled a
    $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --set version=${version} \
+         --version=${version} \
          --set sandboxWorkloads.enabled=true \
          --set vgpuManager.enabled=true \
          --set vgpuManager.repository=<path to private repository> \
