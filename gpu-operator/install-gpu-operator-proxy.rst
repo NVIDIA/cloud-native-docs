@@ -57,7 +57,7 @@ HTTP Proxy Configuration for Openshift
 ======================================
 
 For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html>`_
+Follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html>`_
 from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the ``driver`` container
 based on information present in the cluster-wide Proxy object.
 
@@ -100,7 +100,7 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from NGC repository:
+Fetch the chart from the NGC repository:
 
 .. code-block:: console
 

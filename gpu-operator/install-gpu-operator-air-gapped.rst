@@ -374,7 +374,7 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from NGC repository:
+Fetch the chart from the NGC repository:
 
 .. code-block:: console
 
