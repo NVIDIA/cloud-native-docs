@@ -277,6 +277,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
         $ helm install --wait --generate-name \
             -n gpu-operator --create-namespace \
             nvidia/gpu-operator \
+            --set version=${version}
             --set driver.nvidiaDriverCRD.enabled=true
 
      By default, Helm configures a ``default`` NVIDIA driver custom resource during installation.

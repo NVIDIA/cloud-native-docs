@@ -57,13 +57,9 @@ HTTP Proxy Configuration for Openshift
 ======================================
 
 For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Please follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html>`_
+Follow the procedure described in `Configuring the cluster-wide proxy <https://docs.openshift.com/container-platform/4.8/networking/enable-cluster-wide-proxy.html>`_
 from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the ``driver`` container
 based on information present in the cluster-wide Proxy object.
-
-.. note::
-
-   * GPU Operator v1.8.0 does not work well on RedHat OpenShift when a cluster-wide Proxy object is configured and causes constant restarts of ``driver`` container. This will be fixed in an upcoming patch release v1.8.2.
 
 HTTP Proxy Configuration
 ========================
@@ -72,11 +68,7 @@ First, get the ``values.yaml`` file used for GPU Operator configuration:
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
-
-.. note::
-
-   Replace ``v1.7.0`` in the above command with the version you want to use.
+  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/${version}/deployments/gpu-operator/values.yaml
 
 Specify ``driver.env`` in ``values.yaml`` with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
 (in both uppercase and lowercase).
@@ -108,11 +100,11 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from NGC repository. ``v1.10.0`` is used as an example in the command below:
+Fetch the chart from NGC repository:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v1.10.0.tgz
+    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-${version}.tgz
 
 Install the GPU Operator with updated ``values.yaml``:
 
@@ -120,7 +112,7 @@ Install the GPU Operator with updated ``values.yaml``:
 
     $ helm install --wait gpu-operator \
          -n gpu-operator --create-namespace \
-         gpu-operator-v1.10.0.tgz \
+         gpu-operator-${version}.tgz \
          -f values.yaml
 
 Check the status of the pods to ensure all the containers are running:

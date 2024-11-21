@@ -132,6 +132,7 @@ To use DMA-BUF and network device drivers that are installed by the Network Oper
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
+        --set version=${version} \
         --set driver.useOpenKernelModules=true
 
 To use DMA-BUF and network device drivers that are installed on the host:
@@ -141,6 +142,7 @@ To use DMA-BUF and network device drivers that are installed on the host:
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
+        --set version=${version} \
         --set driver.useOpenKernelModules=true \
         --set driver.rdma.useHostMofed=true
 
@@ -433,6 +435,7 @@ The following sample command applies to clusters that use the Network Operator t
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
+        --set version=${version} \
         --set driver.useOpenKernelModules=true \
         --set gds.enabled=true
 

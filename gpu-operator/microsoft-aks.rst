@@ -112,6 +112,7 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
 
       $ helm install gpu-operator nvidia/gpu-operator \
           -n gpu-operator --create-namespace \
+          --set version=${version} \
           --set driver.enabled=false \
           --set toolkit.enabled=false \
           --set operator.runtimeClass=nvidia-container-runtime
