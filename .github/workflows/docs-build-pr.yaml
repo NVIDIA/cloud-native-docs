@@ -2,7 +2,7 @@ name: docs-build-pr
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, 'release-*' ]
     types: [ opened, synchronize ]
 
 env:
