@@ -25,6 +25,7 @@ sphinx_conf_py_extra = """
   html_theme_options = {
     'titles_only': True,
     'logo_only': True,
+    'analytics_id': "G-WBRZJBCJEW",
   }
   html_domain_indices = False
   html_use_index = False
