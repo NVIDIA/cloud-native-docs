@@ -219,7 +219,7 @@ Below are an example set of events generated for the upgrade of one node.
 
 .. code-block:: console
 
-   $ kubectl get events --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
+   $ kubectl get events -n default --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
 
 *Example Output*
 
@@ -259,7 +259,7 @@ If the upgrade fails for a particular node, the node is labelled with the ``upgr
 
    .. code:: console
 
-      $ kubectl get events --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
+      $ kubectl get events -n default --sort-by='.lastTimestamp' | grep GPUDriverUpgrade
 
 #. (Optional) Check the logs from the upgrade controller in the gpu-operator container:
 
