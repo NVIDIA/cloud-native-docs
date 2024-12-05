@@ -89,7 +89,9 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - ${version}
 
    * - NVIDIA GPU Driver
-     - | `550.127.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-08/index.html>`_ (default),
+     - | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
+       | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
+       | `550.127.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-08/index.html>`_ (default),
        | `535.216.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-216-03/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
