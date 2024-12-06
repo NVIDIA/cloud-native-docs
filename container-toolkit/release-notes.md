@@ -10,6 +10,33 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.1
+
+This release of the NVIDIA Container Toolkit `v1.17.1` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.1`
+- `nvidia-container-toolkit-base 1.17.1`
+- `libnvidia-container-tools 1.17.1`
+- `libnvidia-container1 1.17.1`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.1-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.1-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.1`)
+
+### Fixes and Features
+
+- Fixed a bug where specific symlinks existing in a container image could cause a container to fail to start.
+- Fixed a bug on Tegra-based systems where a container would fail to start.
+- Fixed a bug where the default container runtime config path was not properly set.
+
+### Enhancements to container-toolkit Container Images
+
+- Added a fallback to using a config file if the current runtime config can not be determined from the command line. This fixes deployments on environments such as microk8s.
+
+
 ## NVIDIA Container Toolkit 1.17.0
 
 This version includes updates for:
