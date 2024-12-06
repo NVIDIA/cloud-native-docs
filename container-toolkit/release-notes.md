@@ -10,6 +10,26 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.2
+
+This release of the NVIDIA Container Toolkit `v1.17.2` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.2`
+- `nvidia-container-toolkit-base 1.17.2`
+- `libnvidia-container-tools 1.17.2`
+- `libnvidia-container1 1.17.2`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2`)
+
+### Fixes and Features
+
+- Fixed a bug where legacy images would set imex channels as `all`.container to fail to start.
+
 ## NVIDIA Container Toolkit 1.17.1
 
 This release of the NVIDIA Container Toolkit `v1.17.1` is a bugfix release.
