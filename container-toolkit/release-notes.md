@@ -27,13 +27,14 @@ This release of the NVIDIA Container Toolkit `v1.17.0` is a feature update and b
 The following packages are included:
 
 - `nvidia-container-toolkit 1.17.0`
+- `nvidia-container-toolkit-base 1.17.0`
 - `libnvidia-container-tools 1.17.0`
 - `libnvidia-container1 1.17.0`
 
 The following `container-toolkit` conatiners are included:
 
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubi8`
-- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.16.1`)
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.0`)
 
 ### Fixes and Features
 
