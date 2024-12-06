@@ -10,6 +10,30 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.3
+
+This release of the NVIDIA Container Toolkit `v1.17.3` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.3`
+- `nvidia-container-toolkit-base 1.17.3`
+- `libnvidia-container-tools 1.17.3`
+- `libnvidia-container1 1.17.3`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.3-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.3-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.3`)
+
+### Fixes and Features
+
+- Only allow host-relative LDConfig paths by default. The previous behaviour of allowing container-relative LDConfig paths can explicitly enable.
+
+#### Enhancements to libnvidia-container
+
+- Create virtual copy of host ldconfig binary before calling fexecve() to update the container's ldcache.
+
 ## NVIDIA Container Toolkit 1.17.2
 
 This release of the NVIDIA Container Toolkit `v1.17.2` is a bugfix release.
