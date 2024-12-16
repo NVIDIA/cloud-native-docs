@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Implementation Details &mdash; Securing NVIDIA Services with Istio and Keycloak 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configure RBAC" href="configure.html" />
+    <link rel="prev" title="Platform Support" href="platform-support.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Securing NVIDIA MicroServices</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">   About the Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">   Platform Support</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">   Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">   Configure</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Securing NVIDIA Services with Istio and Keycloak</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or higher, or GPU Operator v24.6.2 or higher to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Sample Implementation Details</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<section class="tex2jax_ignore mathjax_ignore" id="sample-implementation-details">
+<h1>Sample Implementation Details<a class="headerlink" href="#sample-implementation-details" title="Permalink to this headline"></a></h1>
+<p>The service mesh uses an Istio-based service mesh for creating a secure, observable, and highly configurable communication layer.
+OIDC is provided by tools like Keycloak, DEX, or other commercial solutions as an OIDC provider. NVIDIA developed and tested this document using the following installations methods.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#prerequisites" id="id1">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#service-mesh-installation-using-istio" id="id2">Service Mesh Installation Using Istio</a></p></li>
+<li><p><a class="reference internal" href="#install-oidc-keycloak" id="id3">Install OIDC Keycloak</a></p>
+<ul>
+<li><p><a class="reference internal" href="#configure-keycloak" id="id4">Configure KeyCloak</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#next-steps" id="id5">Next Steps</a></p></li>
+</ul>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>A Kubernetes cluster and the cluster-admin role.
+Refer to <a class="reference internal" href="platform-support.html"><span class="doc std std-doc">Platform Support</span></a> for information about supported operating systems and Kubernetes platforms.</p></li>
+<li><p>A Linux VM or WSL on Windows.</p></li>
+</ul>
+</section>
+<section id="service-mesh-installation-using-istio">
+<h2>Service Mesh Installation Using Istio<a class="headerlink" href="#service-mesh-installation-using-istio" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Run the following command to download Istio.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl https://raw.githubusercontent.com/istio/istio/release-1.23/release/downloadIstioCandidate.sh | sh -</span>
+</pre></div>
+</div>
+<p>The download creates a directory with name such as <code class="docutils literal notranslate"><span class="pre">istio-1.2x.x</span></code>.</p>
+</li>
+<li><p>Change directory into the Istio directory.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd istio-1.23.2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">istioctl</span></code> to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export PATH=$PWD/bin:$PATH</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: For VMware Tanzu Kubernetes or Red Hat OpenShift, create a namespace and label the namespace to run privileged pods.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl create ns istio-system</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl label --overwrite ns istio-system pod-security.kubernetes.io/warn=privileged  pod-security.kubernetes.io/enforce=privileged</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install Istio with the demonstration profile.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">istioctl install --set profile=demo -y</span>
+</pre></div>
+</div>
+</li>
+<li><p>Determine the storage classes on the cluster.
+Grafana Loki uses persistent storage and you must specify a storage class.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get storageclass</span>
+</pre></div>
+</div>
+</li>
+<li><p>Update the storage class for Loki.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sed -i &#39;/accessModes:/i\        storageClassName: &lt;storage-class-name&gt; &#39; samples/addons/loki.yaml</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run the below command to install the add-ons like Prometheus, Grafana and Jaeger.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl rollout status deployment/kiali -n istio-system</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl rollout status deployment/kiali -n istio-system</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="install-oidc-keycloak">
+<h2>Install OIDC Keycloak<a class="headerlink" href="#install-oidc-keycloak" title="Permalink to this headline"></a></h2>
+<ol class="arabic">
+<li><p>Label the default namespace to run the privileged pods.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl label --overwrite ns default pod-security.kubernetes.io/warn=privileged  pod-security.kubernetes.io/enforce=privileged</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install KeyCloak.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl create -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="configure-keycloak">
+<h3>Configure KeyCloak<a class="headerlink" href="#configure-keycloak" title="Permalink to this headline"></a></h3>
+<ol class="arabic">
+<li><p>Determine the node port of the Keycloak service.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get svc</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME       TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)          AGE</span>
+<span class="go">keycloak   LoadBalancer   10.108.216.157   10.28.234.100   8080:30111/TCP   21h</span>
+</pre></div>
+</div>
+</li>
+<li><p>List the worker IP addresses and then use any one of them with the service node port.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">for node in `kubectl get nodes | awk &#39;{print $1}&#39; | grep -v NAME`; do echo $node &#39; &#39; | tr -d &#39;\n&#39;; kubectl describe node $node | grep -i &#39;internalIP:&#39; | awk &#39;{print $2}&#39;; done</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16</span>
+<span class="go">test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use any of the worker IP addresses to access the Keycloak administration interface.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">10.120.199.15:30111</span>
+</pre></div>
+</div>
+</li>
+<li><p>After you access the application, you can see the page like the following.
+Click on <strong>Administration Console</strong>.</p>
+<p><img alt="" src="_images/keycloak-1.png" /></p>
+</li>
+<li><p>Enter the default credentials as <code class="docutils literal notranslate"><span class="pre">admin</span></code> and <code class="docutils literal notranslate"><span class="pre">admin</span></code> and then sign in.</p>
+<p><img alt="" src="_images/keycloak-2.png" /></p>
+</li>
+<li><p>Create a new <strong>Realm</strong>.</p>
+<p><img alt="" src="_images/keycloak-3.png" /></p>
+</li>
+<li><p>Enter the <strong>Realm Name</strong> as <code class="docutils literal notranslate"><span class="pre">nvidia-nim</span></code> and click <strong>Create</strong>.</p>
+<p><img alt="" src="_images/keycloak-4.png" /></p>
+</li>
+<li><p>Click <strong>Clients</strong> on the navigation bar and then click <strong>Create client</strong>.</p>
+<p><img alt="" src="_images/keycloak-5.png" /></p>
+</li>
+<li><p>Provide <strong>Client ID</strong> as <code class="docutils literal notranslate"><span class="pre">nvidia-nim</span></code> and click <strong>Next</strong> with default values for steps 2 and 3.</p>
+<p><img alt="" src="_images/keycloak-6.png" /></p>
+</li>
+<li><p>Navigate to <strong>Realm roles</strong> on the left side pane and click <strong>Create</strong> to create a role.</p>
+<p><img alt="" src="_images/keycloak-7.png" /></p>
+</li>
+<li><p>Create role with name <code class="docutils literal notranslate"><span class="pre">chat</span></code> and save.</p>
+<p><img alt="" src="_images/keycloak-8.png" /></p>
+</li>
+<li><p>Create another role with name <code class="docutils literal notranslate"><span class="pre">completions</span></code> and save.</p>
+<p><img alt="" src="_images/keycloak-9.png" /></p>
+</li>
+<li><p>Navigate to <strong>Users</strong> on left side pane and click <strong>Add user</strong>.</p>
+<p><img alt="" src="_images/keycloak-10.png" /></p>
+</li>
+<li><p>Create a user with name <code class="docutils literal notranslate"><span class="pre">nim</span></code> and click <strong>Create</strong>.</p>
+<p><img alt="" src="_images/keycloak-11.png" /></p>
+<p>Keycloak displays the <code class="docutils literal notranslate"><span class="pre">nim</span></code> User details page.</p>
+</li>
+<li><p>On the <code class="docutils literal notranslate"><span class="pre">nim</span></code> User details page, click <strong>Credentials</strong> and then click <strong>Set password</strong> to create a password.</p>
+<p><img alt="" src="_images/keycloak-12.png" /></p>
+</li>
+<li><p>Enter the password <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, set the <strong>Temporary</strong> switch to <strong>Off</strong>, and click <strong>Save</strong>.</p>
+<p><img alt="" src="_images/keycloak-13.png" /></p>
+<p><img alt="" src="_images/keycloak-14.png" /></p>
+</li>
+<li><p>Navigate to the <strong>Role Mapping0</strong> tab for <code class="docutils literal notranslate"><span class="pre">nimuser</span></code> and click <strong>Assign Role</strong>.</p>
+<p><img alt="" src="_images/keycloak-15.png" /></p>
+</li>
+<li><p>Enable <strong>chat</strong> and <strong>completion</strong> roles for <code class="docutils literal notranslate"><span class="pre">nimuser</span></code> and click <strong>Assign</strong>.</p>
+<p><img alt="" src="_images/keycloak-16.png" /></p>
+</li>
+</ol>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Refer to <a class="reference internal" href="configure.html"><span class="doc std std-doc">Configure RBAC</span></a> to create and validate ingress resources.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="platform-support.html" class="btn btn-neutral float-left" title="Platform Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configure.html" class="btn btn-neutral float-right" title="Configure RBAC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Dec 16, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WBRZJBCJEW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WBRZJBCJEW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
