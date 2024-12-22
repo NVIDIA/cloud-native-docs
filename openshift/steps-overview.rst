@@ -130,7 +130,7 @@ The following messages are recorded in the driver pod containers.
 Follow the guidance in :ref:`enabling a Cluster-wide entitlement <cluster-entitlement>`.
 Afterward, the ``nvidia-driver-daemonset`` automatically uses an entitlement-based fallback.
 
-To disable the use of Driver Toolkit image altogether, edit the cluster policy instance and set ``driver.use_ocp_driver_toolkit`` option to ``false``.
+To disable the use of Driver Toolkit image altogether, edit the cluster policy instance and set ``operator.use_ocp_driver_toolkit`` option to ``false``.
 Also, we recommend maintaining entitlements for OpenShift versions < 4.9.9.
 
 #. View the logs from the OpenShift Driver Toolkit container:
