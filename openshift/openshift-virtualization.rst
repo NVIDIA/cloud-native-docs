@@ -81,8 +81,8 @@ Assumptions, constraints, and dependencies
 Prerequisites
 *************
 
-* `Install the OpenShift Virtualization Operator <https://docs.openshift.com/container-platform/latest/virt/install/installing-virt-cli.html>`__.
-* `Install the virtctl client <https://docs.openshift.com/container-platform/latest/virt/virt-using-the-cli-tools.html>`__.
+* `Install the OpenShift Virtualization Operator <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/installing>`__.
+* `Install the virtctl client <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/getting-started#installing-virtctl_virt-using-the-cli-tools>`__.
 * Starting with OpenShift Virtualization 4.12.3 and 4.13.0, set the ``disableMDevConfiguration`` feature gate:
 
   .. code-block:: console
