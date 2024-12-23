@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIG Support in Kubernetes &mdash; Kubernetes with NVIDIA GPUs 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">MIG Support in Kubernetes</a><ul>
+<li><a class="reference internal" href="#mig-strategies">MIG Strategies</a></li>
+<li><a class="reference internal" href="#using-mig-strategies-in-kubernetes">Using MIG Strategies in Kubernetes</a></li>
+<li><a class="reference internal" href="#testing-with-different-strategies">Testing with Different Strategies</a><ul>
+<li><a class="reference internal" href="#the-none-strategy">The none strategy</a><ul>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-single-strategy">The single strategy</a><ul>
+<li><a class="reference internal" href="#id1">Testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-mixed-strategy">The mixed strategy</a><ul>
+<li><a class="reference internal" href="#id2">Testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Kubernetes with NVIDIA GPUs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or higher, or GPU Operator v24.6.2 or higher to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>MIG Support in Kubernetes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="toctree-wrapper compound">
+</div>
+<section id="mig-support-in-kubernetes">
+<h1>MIG Support in Kubernetes<a class="headerlink" href="#mig-support-in-kubernetes" title="Permalink to this headline"></a></h1>
+<p>The Multi-Instance GPU (MIG) feature enables securely partitioning GPUs such as the NVIDIA A100 into
+several separate GPU instances for CUDA applications.
+For example, the NVIDIA A100 supports up to seven separate GPU instances.</p>
+<p>MIG provides multiple users with separate GPU resources for
+optimal GPU utilization. This feature is particularly beneficial for workloads that do not fully saturate the GPU’s
+compute capacity and therefore users may want to run different workloads in parallel to maximize utilization.</p>
+<p>This document provides an overview of the necessary software to enable MIG support for Kubernetes.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">MIG User Guide</a> for more details on the technical concepts,
+setting up MIG and the NVIDIA Container Toolkit for running containers with MIG.</p>
+<p>The deployment workflow requires these pre-requisites:</p>
+<ol class="arabic simple">
+<li><p>You have installed the NVIDIA R450+ datacenter (450.80.02+) drivers required for NVIDIA A100.</p></li>
+<li><p>You have installed the NVIDIA Container Toolkit v2.5.0+</p></li>
+<li><p>You already have a Kubernetes deployment up and running with access to at least one NVIDIA A100 GPU.</p></li>
+</ol>
+<p>Once these prerequisites have been met, you can proceed to deploy a MIG capable version of the NVIDIA <code class="docutils literal notranslate"><span class="pre">k8s-device-plugin</span></code> and (optionally)
+the <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> component in your cluster, so that Kubernetes can schedule pods on the available MIG devices.</p>
+<p>The minimum versions of the software components required are enumerated below:</p>
+<ol class="arabic simple">
+<li><p>NVIDIA R450+ datacenter driver: 450.80.02+</p></li>
+<li><p>NVIDIA Container Toolkit (<code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code>): v2.5.0+</p></li>
+<li><p>NVIDIA <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/tree/v0.7.0">k8s-device-plugin</a>: v0.7.0+</p></li>
+<li><p>NVIDIA <a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery/tree/v0.2.0">gpu-feature-discovery</a>: v0.2.0+</p></li>
+</ol>
+<section id="mig-strategies">
+<h2>MIG Strategies<a class="headerlink" href="#mig-strategies" title="Permalink to this headline"></a></h2>
+<p>NVIDIA provides two strategies for exposing MIG devices on a Kubernetes node.
+For more details on the strategies, refer to the
+<a class="reference external" href="https://docs.google.com/document/d/1mdgMQ8g7WmaI_XVVRrCvHPFPOMCm5LQD5JefgAh6N8g/edit">design document</a>.</p>
+</section>
+<section id="using-mig-strategies-in-kubernetes">
+<h2>Using MIG Strategies in Kubernetes<a class="headerlink" href="#using-mig-strategies-in-kubernetes" title="Permalink to this headline"></a></h2>
+<p>This section walks through the steps necessary to deploy and run the <code class="docutils literal notranslate"><span class="pre">k8s-device-plugin</span></code>
+and <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> components for the various MIG strategies. The preferred
+approach for deployment is through Helm.</p>
+<p>For alternate deployment methods, refer to the installation instructions in the following GitHub repositories:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/tree/v0.7.0/#deployment-via-helm">k8s-device-plugin</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery/tree/v0.2.0#deploying-via-helm-install-with-a-direct-url-to-the-helm-package">gpu-feature-discovery</a></p></li>
+</ul>
+<p>First, add the <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-feature-discovery</span></code> helm repositories:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvdp https://nvidia.github.io/k8s-device-plugin
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvgfd https://nvidia.github.io/gpu-feature-discovery
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo update
+</pre></div>
+</div>
+<p>Then, verify that the <strong>v0.7.0</strong> version of the <em>nvidia-device-plugin</em> and the <strong>v0.2.0</strong> version
+of <em>gpu-feature-discovery</em> is available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm search repo nvdp --devel
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                           CHART VERSION  APP VERSION    DESCRIPTION</span>
+<span class="go">nvdp/nvidia-device-plugin      0.7.0          0.7.0         A Helm chart for ...</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm search repo nvgfd --devel
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                           CHART VERSION  APP VERSION    DESCRIPTION</span>
+<span class="go">nvgfd/gpu-feature-discovery  0.2.0          0.2.0           A Helm chart for ...</span>
+</pre></div>
+</div>
+<p>Finally, select a MIG strategy and deploy the <em>nvidia-device-plugin</em> and <em>gpu-feature-discovery</em> components:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">MIG_STRATEGY</span><span class="o">=</span>&lt;none <span class="p">|</span> single <span class="p">|</span> mixed&gt;
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install <span class="se">\</span>
+   --version<span class="o">=</span><span class="m">0</span>.7.0 <span class="se">\</span>
+   --generate-name <span class="se">\</span>
+   --set <span class="nv">migStrategy</span><span class="o">=</span><span class="si">${</span><span class="nv">MIG_STRATEGY</span><span class="si">}</span> <span class="se">\</span>
+   nvdp/nvidia-device-plugin
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install <span class="se">\</span>
+   --version<span class="o">=</span><span class="m">0</span>.2.0 <span class="se">\</span>
+   --generate-name <span class="se">\</span>
+   --set <span class="nv">migStrategy</span><span class="o">=</span><span class="si">${</span><span class="nv">MIG_STRATEGY</span><span class="si">}</span> <span class="se">\</span>
+   nvgfd/gpu-feature-discovery
+</pre></div>
+</div>
+</section>
+<section id="testing-with-different-strategies">
+<h2>Testing with Different Strategies<a class="headerlink" href="#testing-with-different-strategies" title="Permalink to this headline"></a></h2>
+<p>This section walks through the steps necessary to test each of the MIG strategies.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With a default setup, only <strong>one</strong> device type can be requested by a container at a time for
+the <cite>mixed</cite> strategy. If more than one device type is requested by the container, then the
+device received is undefined. For example, a container cannot request both <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>
+and <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-3g.20gb</span></code> at the same time. However, it can request multiple instances
+of the same resource type (e.g. <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu:</span> <span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-3g.20gb:</span> <span class="pre">2</span></code>) without restriction.</p>
+<p>To mitigate this behavior, we recommend following the guidance outlined in the <a class="reference external" href="https://docs.google.com/document/d/1zy0key-EL6JH50MZgwg96RPYxxXXnVUdxLZwGiyqLd8">document</a>.</p>
+</div>
+<section id="the-none-strategy">
+<h3>The none strategy<a class="headerlink" href="#the-none-strategy" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">none</span></code> strategy is designed to keep the <em>nvidia-device-plugin</em> running the same as it always
+has. The plugin will make no distinction between GPUs that have either MIG enabled or not, and
+will enumerate all GPUs on the node, making them available using the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resource type.</p>
+<section id="testing">
+<h4>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h4>
+<p>To test this strategy we check the enumeration of a GPU with and without MIG enabled and make
+sure we can see it in both cases. The test assumes a single GPU on a single node in the cluster.</p>
+<ol class="arabic">
+<li><p>Verify that MIG is disabled on the GPU:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 450.80.02    Driver Version: 450.80.02    CUDA Version: 11.0     |</span>
+<span class="go">|-------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                               |                      |               MIG M. |</span>
+<span class="go">|===============================+======================+======================|</span>
+<span class="go">|   0  A100-SXM4-40GB      Off  | 00000000:36:00.0 Off |                    0 |</span>
+<span class="go">| N/A   29C    P0    62W / 400W |      0MiB / 40537MiB |      6%      Default |</span>
+<span class="go">|                               |                      |             Disabled |</span>
+<span class="go">+-------------------------------+----------------------+----------------------+</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the <em>nvidia-device-plugin</em> with the <code class="docutils literal notranslate"><span class="pre">none</span></code> strategy as described in the previous section.
+Restart the plugin if its already running.</p></li>
+<li><p>Observe that 1 GPU is available on the node with resource type <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node
+<span class="go">...</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:          1</span>
+<span class="go">...</span>
+<span class="go">Allocatable:</span>
+<span class="go">nvidia.com/gpu:          1</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start <em>gpu-feature-discovery</em> with the <code class="docutils literal notranslate"><span class="pre">none</span></code> strategy as described in the previous section
+Restart the plugin if its already running.</p></li>
+<li><p>Observe that the proper set of labels have been applied for this MIG strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -o json <span class="p">|</span> <span class="se">\</span>
+   jq <span class="s1">&#39;.items[0].metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com&quot;)))&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">&quot;nvidia.com/cuda.driver.major&quot;: &quot;450&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.minor&quot;: &quot;80&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.rev&quot;: &quot;02&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.major&quot;: &quot;11&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gfd.timestamp&quot;: &quot;1605312111&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.major&quot;: &quot;8&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.family&quot;: &quot;ampere&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.machine&quot;: &quot;NVIDIA DGX&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.memory&quot;: &quot;40537&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.product&quot;: &quot;A100-SXM4-40GB&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Deploy a pod to consume the GPU and run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl run -it --rm <span class="se">\</span>
+   --image<span class="o">=</span>nvidia/cuda:11.0-base <span class="se">\</span>
+   --restart<span class="o">=</span>Never <span class="se">\</span>
+   --limits<span class="o">=</span>nvidia.com/gpu<span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+   mig-none-example -- nvidia-smi -L
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-15f0798d-c807-231d-6525-a7827081f0f1)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enable MIG on the GPU (requires stopping all GPU clients first)</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl stop kubelet
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-smi -mig <span class="m">1</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enabled MIG Mode for GPU 00000000:36:00.0</span>
+<span class="go">All done.</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi --query-gpu<span class="o">=</span>mig.mode.current --format<span class="o">=</span>csv,noheader
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enabled</span>
+</pre></div>
+</div>
+</li>
+<li><p>Restart the <code class="docutils literal notranslate"><span class="pre">kubelet</span></code> and the plugins</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl start kubelet
+</pre></div>
+</div>
+</li>
+<li><p>Observe that 1 GPU is available on the node with resource type <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node
+<span class="go">...</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:          1</span>
+<span class="go">...</span>
+<span class="go">Allocatable:</span>
+<span class="go">nvidia.com/gpu:          1</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Observe that the labels haven’t changed</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -o json <span class="p">|</span> <span class="se">\</span>
+   jq <span class="s1">&#39;.items[0].metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com&quot;)))&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">&quot;nvidia.com/cuda.driver.major&quot;: &quot;450&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.minor&quot;: &quot;80&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.rev&quot;: &quot;02&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.major&quot;: &quot;11&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gfd.timestamp&quot;: &quot;1605312111&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.major&quot;: &quot;8&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.family&quot;: &quot;ampere&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.machine&quot;: &quot;NVIDIA DGX&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.memory&quot;: &quot;40537&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.product&quot;: &quot;A100-SXM4-40GB&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Deploy a pod to consume the GPU and run nvidia-smi</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl run -it --rm <span class="se">\</span>
+   --image<span class="o">=</span>nvidia/cuda:9.0-base <span class="se">\</span>
+   --restart<span class="o">=</span>Never <span class="se">\</span>
+   --limits<span class="o">=</span>nvidia.com/gpu<span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+   mig-none-example -- nvidia-smi -L
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-15f0798d-c807-231d-6525-a7827081f0f1)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="the-single-strategy">
+<h3>The single strategy<a class="headerlink" href="#the-single-strategy" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy is designed to keep the user-experience of working with GPUs in Kubernetes the
+same as it has always been. MIG devices are enumerated with the nvidia.com/gpu resource type just as before.
+However, the properties associated with that resource type now map to the MIG devices available on that node,
+instead of the full GPUs.</p>
+<section id="id1">
+<h4>Testing<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
+<p>To test this strategy, we check that MIG devices of a single type are enumerated using the traditional <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>
+resource type. The test assumes a single GPU on a single node in the cluster with MIG enabled on it already.</p>
+<ol class="arabic">
+<li><p>Verify that MIG is enabled on the GPU and no MIG devices present:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 450.80.02    Driver Version: 450.80.02    CUDA Version: 11.0     |</span>
+<span class="go">|-------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                               |                      |               MIG M. |</span>
+<span class="go">|===============================+======================+======================|</span>
+<span class="go">|   0  A100-SXM4-40GB      On   | 00000000:00:04.0 Off |                   On |</span>
+<span class="go">| N/A   32C    P0    43W / 400W |      0MiB / 40537MiB |     N/A      Default |</span>
+<span class="go">|                               |                      |              Enabled |</span>
+<span class="go">+-------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| MIG devices:                                                                |</span>
+<span class="go">+------------------+----------------------+-----------+-----------------------+</span>
+<span class="go">| GPU  GI  CI  MIG |         Memory-Usage |        Vol|         Shared        |</span>
+<span class="go">|      ID  ID  Dev |           BAR1-Usage | SM     Unc| CE  ENC  DEC  OFA  JPG|</span>
+<span class="go">|                  |                      |        ECC|                       |</span>
+<span class="go">|==================+======================+===========+=======================|</span>
+<span class="go">|  No MIG devices found                                                       |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                  |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span>
+<span class="go">|        ID   ID                                                   Usage      |</span>
+<span class="go">|=============================================================================|</span>
+<span class="go">|  No running processes found                                                 |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create 7 single-slice MIG devices on the GPU:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-smi mig -cgi <span class="m">19</span>,19,19,19,19,19,19 -C
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-4200ccc0-2667-d4cb-9137-f932c716232a)</span>
+<span class="go">  MIG 1g.5gb Device 0: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/7/0)</span>
+<span class="go">  MIG 1g.5gb Device 1: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/8/0)</span>
+<span class="go">  MIG 1g.5gb Device 2: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/9/0)</span>
+<span class="go">  MIG 1g.5gb Device 3: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/10/0)</span>
+<span class="go">  MIG 1g.5gb Device 4: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/11/0)</span>
+<span class="go">  MIG 1g.5gb Device 5: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/12/0)</span>
+<span class="go">  MIG 1g.5gb Device 6: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/13/0)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the <em>nvidia-device-plugin</em> plugin with the <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy as described in the previous section. If its already
+running, then restart the plugin.</p></li>
+<li><p>Observe that 7 MIG devices are available on the node with resource type <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node
+<span class="go">...</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:          7</span>
+<span class="go">...</span>
+<span class="go">Allocatable:</span>
+<span class="go">nvidia.com/gpu:          7</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start <em>gpu-feature-discovery</em> with the <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy as described in the previous section. If its already running, then
+restart the plugin.</p></li>
+<li><p>Observe that the proper set of labels have been applied for this MIG strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -o json <span class="p">|</span> <span class="se">\</span>
+   jq <span class="s1">&#39;.items[0].metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com&quot;)))&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">&quot;nvidia.com/cuda.driver.major&quot;: &quot;450&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.minor&quot;: &quot;80&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.rev&quot;: &quot;02&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.major&quot;: &quot;11&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gfd.timestamp&quot;: &quot;1605657366&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.major&quot;: &quot;8&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.count&quot;: &quot;7&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.engines.copy&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.engines.decoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.engines.encoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.engines.jpeg&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.engines.ofa&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.family&quot;: &quot;ampere&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.machine&quot;: &quot;NVIDIA DGX&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.memory&quot;: &quot;4864&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.multiprocessors&quot;: &quot;14&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.product&quot;: &quot;A100-SXM4-40GB-MIG-1g.5gb&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.slices.ci&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.slices.gi&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig.strategy&quot;: &quot;single&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Deploy 7 pods, each consuming one MIG device (then read their logs and delete them)</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="k">for</span> i <span class="k">in</span> <span class="k">$(</span>seq <span class="m">7</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+<span class="go">   kubectl run \</span>
+<span class="go">      --image=nvidia/cuda:11.0-base \</span>
+<span class="go">      --restart=Never \</span>
+<span class="go">      --limits=nvidia.com/gpu=1 \</span>
+<span class="go">      mig-single-example-${i} -- bash -c &quot;nvidia-smi -L; sleep infinity&quot;</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pod/mig-single-example-1 created</span>
+<span class="go">pod/mig-single-example-2 created</span>
+<span class="go">pod/mig-single-example-3 created</span>
+<span class="go">pod/mig-single-example-4 created</span>
+<span class="go">pod/mig-single-example-5 created</span>
+<span class="go">pod/mig-single-example-6 created</span>
+<span class="go">pod/mig-single-example-7 created</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="k">for</span> i <span class="k">in</span> <span class="k">$(</span>seq <span class="m">7</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+<span class="go">echo &quot;mig-single-example-${i}&quot;;</span>
+<span class="go">kubectl logs mig-single-example-${i}</span>
+<span class="go">echo &quot;&quot;;</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mig-single-example-1</span>
+<span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-4200ccc0-2667-d4cb-9137-f932c716232a)</span>
+<span class="go">   MIG 1g.5gb Device 0: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/7/0)</span>
+
+<span class="go">mig-single-example-2</span>
+<span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-4200ccc0-2667-d4cb-9137-f932c716232a)</span>
+<span class="go">   MIG 1g.5gb Device 0: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/9/0)</span>
+
+<span class="go">...</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="k">for</span> i <span class="k">in</span> <span class="k">$(</span>seq <span class="m">7</span><span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+<span class="go">kubectl delete pod mig-single-example-${i};</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;mig-single-example-1&quot; deleted</span>
+<span class="go">pod &quot;mig-single-example-2&quot; deleted</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="the-mixed-strategy">
+<h3>The mixed strategy<a class="headerlink" href="#the-mixed-strategy" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy is designed to enumerate a different resource type for every MIG device
+configuration available in the cluster.</p>
+<section id="id2">
+<h4>Testing<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<p>To test this strategy, we check that all MIG devices are enumerated using their fully qualified name
+of the form <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-&lt;slice_count&gt;g.&lt;memory_size&gt;gb</span></code>. The test assumes a single GPU on a single
+node in the cluster with MIG enabled on it already.</p>
+<ol class="arabic">
+<li><p>Verify that MIG is enabled on the GPU and no MIG devices present:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 450.80.02    Driver Version: 450.80.02    CUDA Version: 11.0     |</span>
+<span class="go">|-------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                               |                      |               MIG M. |</span>
+<span class="go">|===============================+======================+======================|</span>
+<span class="go">|   0  A100-SXM4-40GB      On   | 00000000:00:04.0 Off |                   On |</span>
+<span class="go">| N/A   32C    P0    43W / 400W |      0MiB / 40537MiB |     N/A      Default |</span>
+<span class="go">|                               |                      |              Enabled |</span>
+<span class="go">+-------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| MIG devices:                                                                |</span>
+<span class="go">+------------------+----------------------+-----------+-----------------------+</span>
+<span class="go">| GPU  GI  CI  MIG |         Memory-Usage |        Vol|         Shared        |</span>
+<span class="go">|      ID  ID  Dev |           BAR1-Usage | SM     Unc| CE  ENC  DEC  OFA  JPG|</span>
+<span class="go">|                  |                      |        ECC|                       |</span>
+<span class="go">|==================+======================+===========+=======================|</span>
+<span class="go">|  No MIG devices found                                                       |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+
+<span class="go">+-----------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                  |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span>
+<span class="go">|        ID   ID                                                   Usage      |</span>
+<span class="go">|=============================================================================|</span>
+<span class="go">|  No running processes found                                                 |</span>
+<span class="go">+-----------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create 3 different MIG devices of different sizes on the GPU:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-smi mig -cgi <span class="m">9</span>,14,19 -C
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-4200ccc0-2667-d4cb-9137-f932c716232a)</span>
+<span class="go">  MIG 3g.20gb Device 0: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/2/0)</span>
+<span class="go">  MIG 2g.10gb Device 1: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/3/0)</span>
+<span class="go">  MIG 1g.5gb Device 2: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/9/0)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the <em>nvidia-device-plugin</em> plugin with the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy as described in the previous section. If its already
+running, then restart the plugin.</p></li>
+<li><p>Observe that 3 MIG devices are available on the node with resource type <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node
+<span class="go">...</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/mig-1g.5gb:   1</span>
+<span class="go">nvidia.com/mig-2g.10gb:  1</span>
+<span class="go">nvidia.com/mig-3g.20gb:  1</span>
+<span class="go">...</span>
+<span class="go">Allocatable:</span>
+<span class="go">nvidia.com/mig-1g.5gb:   1</span>
+<span class="go">nvidia.com/mig-2g.10gb:  1</span>
+<span class="go">nvidia.com/mig-3g.20gb:  1</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start <em>gpu-feature-discovery</em> with the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy as described in the previous section. If its already running, then
+restart the plugin.</p></li>
+<li><p>Observe that the proper set of labels have been applied for this MIG strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -o json <span class="p">|</span> <span class="se">\</span>
+   jq <span class="s1">&#39;.items[0].metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com&quot;)))&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">&quot;nvidia.com/cuda.driver.major&quot;: &quot;450&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.minor&quot;: &quot;80&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.rev&quot;: &quot;02&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.major&quot;: &quot;11&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gfd.timestamp&quot;: &quot;1605658841&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.major&quot;: &quot;8&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.minor&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.family&quot;: &quot;ampere&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.machine&quot;: &quot;NVIDIA DGX&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.memory&quot;: &quot;40537&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.product&quot;: &quot;A100-SXM4-40GB&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.engines.copy&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.engines.decoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.engines.encoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.engines.jpeg&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.engines.ofa&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.memory&quot;: &quot;4864&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.multiprocessors&quot;: &quot;14&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.slices.ci&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-1g.5gb.slices.gi&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.engines.copy&quot;: &quot;2&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.engines.decoder&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.engines.encoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.engines.jpeg&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.engines.ofa&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.memory&quot;: &quot;9984&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.multiprocessors&quot;: &quot;28&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.slices.ci&quot;: &quot;2&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-2g.10gb.slices.gi&quot;: &quot;2&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.engines.copy&quot;: &quot;3&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.engines.decoder&quot;: &quot;2&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.engines.encoder&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.engines.jpeg&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.engines.ofa&quot;: &quot;0&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.memory&quot;: &quot;20096&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.multiprocessors&quot;: &quot;42&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.slices.ci&quot;: &quot;3&quot;,</span>
+<span class="go">&quot;nvidia.com/mig-3g.21gb.slices.gi&quot;: &quot;3&quot;,</span>
+<span class="go">&quot;nvidia.com/mig.strategy&quot;: &quot;mixed&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Deploy 3 pods, each consuming one of the available MIG devices</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl run -it --rm <span class="se">\</span>
+   --image<span class="o">=</span>nvidia/cuda:11.0-base <span class="se">\</span>
+   --restart<span class="o">=</span>Never <span class="se">\</span>
+   --limits<span class="o">=</span>nvidia.com/mig-1g.5gb<span class="o">=</span><span class="m">1</span> <span class="se">\</span>
+   mig-mixed-example -- nvidia-smi -L
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: A100-SXM4-40GB (UUID: GPU-4200ccc0-2667-d4cb-9137-f932c716232a)</span>
+<span class="go">MIG 1g.5gb Device 0: (UUID: MIG-GPU-4200ccc0-2667-d4cb-9137-f932c716232a/9/0)</span>
+<span class="go">pod &quot;mig-mixed-example&quot; deleted</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Dec 23, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WBRZJBCJEW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WBRZJBCJEW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
