@@ -141,9 +141,9 @@ Always update the openshift docset when there is a new gpu-operator docset versi
 
 Changes to the default branch are not published on docs.nvidia.com.
 
-Only tags or specially-named branches are published to docs.nvidia.com.
+Only tags are published to docs.nvidia.com.
 
-1. Create a tag or specially-named branch from your commit with the following naming pattern: `<component-name>-v<version>`.
+1. Create a tag from your commit with the following naming pattern: `<component-name>-v<version>`.
 
    *Example*
 
@@ -156,7 +156,7 @@ Only tags or specially-named branches are published to docs.nvidia.com.
 
    Always tag the openshift docset and driver-containers docset for each new gpu-operator docset release.
 
-1. Push the tag or specially-named branch to the repository.
+1. Push the tag to the repository.
 
 CI builds the documentation for the Git ref---currently for all software components.
 However, only the documentation for the `component-name` and specified version is updated on the web.
