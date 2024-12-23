@@ -200,8 +200,8 @@ on what GPU workload is configured to run on those nodes. Consider the following
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h2>
 <ul>
-<li><p><a class="reference external" href="https://docs.openshift.com/container-platform/latest/virt/install/installing-virt-cli.html">Install the OpenShift Virtualization Operator</a>.</p></li>
-<li><p><a class="reference external" href="https://docs.openshift.com/container-platform/latest/virt/virt-using-the-cli-tools.html">Install the virtctl client</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/installing">Install the OpenShift Virtualization Operator</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/getting-started#installing-virtctl_virt-using-the-cli-tools">Install the virtctl client</a>.</p></li>
 <li><p>Starting with OpenShift Virtualization 4.12.3 and 4.13.0, set the <code class="docutils literal notranslate"><span class="pre">disableMDevConfiguration</span></code> feature gate:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch hyperconverged -n openshift-cnv  kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/featureGates/disableMDevConfiguration&quot;, &quot;value&quot;: true}]&#39;</span>
 </pre></div>
@@ -633,7 +633,7 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 </p>
 
     <p>
-      <span class="lastupdated">Last updated on Dec 06, 2024.
+      <span class="lastupdated">Last updated on Dec 23, 2024.
       </span></p>
 <script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
 
