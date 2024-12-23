@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing the Node Feature Discovery Operator on OpenShift &mdash; NVIDIA GPU Operator on Red Hat OpenShift Container Platform 24.9.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" type="text/css" />
+      <link rel="stylesheet" href="_static/omni-style.css" type="text/css" />
+      <link rel="stylesheet" href="_static/api-styles.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/mermaid-init.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/design-tabs.js"></script>
+        <script src="_static/version.js"></script>
+        <script src="_static/social-media.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing the NVIDIA GPU Operator on OpenShift" href="install-gpu-ocp.html" />
+    <link rel="prev" title="Installation and Upgrade Overview on OpenShift" href="steps-overview.html" />
+ 
+<script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html">
+            <img src="_static/nvidia-logo-white.png" class="logo" alt="Logo"/>
+          </a>
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html#viewing-gpu-metrics">Viewing GPU Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+<div> <!-- class="omni-version-warning" -->
+  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or higher, or GPU Operator v24.6.2 or higher to install a critical security update.<br/>
+  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
+</div>
+
+<li>
+    <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>
+    <a href="https://docs.nvidia.com/datacenter/cloud-native/">NVIDIA Cloud Native Technologies</a>
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+</li>
+<li>Installing the Node Feature Discovery Operator on OpenShift</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installing-the-node-feature-discovery-operator-on-openshift">
+<span id="install-nfd"></span><h1>Installing the Node Feature Discovery Operator on OpenShift<a class="headerlink" href="#installing-the-node-feature-discovery-operator-on-openshift" title="Permalink to this headline"></a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#procedure" id="id1">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#verify-that-the-node-feature-discovery-operator-is-functioning-correctly" id="id2">Verify that the Node Feature Discovery Operator is functioning correctly</a></p></li>
+</ul>
+</div>
+<section id="procedure">
+<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline"></a></h2>
+<p>The Node Feature Discovery (NFD) Operator is a prerequisite for the <strong>NVIDIA GPU Operator</strong>. Install the NFD Operator using the Red Hat OperatorHub catalog in the OpenShift Container Platform web console .</p>
+<ol class="arabic">
+<li><p>Follow the Red Hat documentation guidance in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/hardware_enablement/psap-node-feature-discovery-operator.html">The Node Feature Discovery Operator</a> to install the Node Feature Discovery Operator.</p></li>
+<li><p>Verify the Node Feature Discovery Operator is running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n openshift-nfd
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                      READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nfd-controller-manager-7f86ccfb58-nqgxm   2/2     Running   0          11m</span>
+</pre></div>
+</div>
+</li>
+<li><p>When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the <strong>NodeFeatureDiscovery</strong> tab.</p></li>
+</ol>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Click <strong>Operators</strong> &gt; <strong>Installed Operators</strong> from the side menu.</p></li>
+<li><p>Find the <strong>Node Feature Discovery</strong> entry.</p></li>
+<li><p>Click <strong>NodeFeatureDiscovery</strong> under the <strong>Provided APIs</strong> field.</p></li>
+<li><p>Click <strong>Create NodeFeatureDiscovery</strong>.</p></li>
+<li><p>In the subsequent screen click <strong>Create</strong>. This starts the Node Feature Discovery Operator that proceeds to label the nodes in the cluster that have GPUs.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The values pre-populated by the OperatorHub are valid for the GPU Operator.</p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="verify-that-the-node-feature-discovery-operator-is-functioning-correctly">
+<h2>Verify that the Node Feature Discovery Operator is functioning correctly<a class="headerlink" href="#verify-that-the-node-feature-discovery-operator-is-functioning-correctly" title="Permalink to this headline"></a></h2>
+<p>The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID 10de. Use the OpenShift Container Platform web console or the CLI to verify that the Node Feature Discovery Operator is functioning correctly.</p>
+<ol class="arabic">
+<li><p>In the OpenShift Container Platform web console, click <strong>Compute</strong> &gt; <strong>Nodes</strong> from the side menu.</p></li>
+<li><p>Select a worker node that you know contains a GPU.</p></li>
+<li><p>Click the <strong>Details</strong> tab.</p></li>
+<li><p>Under <strong>Node labels</strong> verify that the following label is present:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">feature.node.kubernetes.io/pci-10de.present=true</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">0x10de</span></code> is the PCI vendor ID that is assigned to NVIDIA.</p>
+</div>
+</li>
+<li><p>Verify the GPU device (<code class="docutils literal notranslate"><span class="pre">pci-10de</span></code>) is discovered on the GPU node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> egrep <span class="s1">&#39;Roles|pci&#39;</span> <span class="p">|</span> grep -v master
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Roles:              worker</span>
+<span class="go">                    feature.node.kubernetes.io/pci-10de.present=true</span>
+<span class="go">                    feature.node.kubernetes.io/pci-1d0f.present=true</span>
+<span class="go">Roles:              worker</span>
+<span class="go">                    feature.node.kubernetes.io/pci-1013.present=true</span>
+<span class="go">                    feature.node.kubernetes.io/pci-8086.present=true</span>
+<span class="go">Roles:              worker</span>
+<span class="go">                    feature.node.kubernetes.io/pci-1013.present=true</span>
+<span class="go">                    feature.node.kubernetes.io/pci-8086.present=true</span>
+<span class="go">Roles:              worker</span>
+<span class="go">                    feature.node.kubernetes.io/pci-1013.present=true</span>
+<span class="go">                    feature.node.kubernetes.io/pci-8086.present=true</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="steps-overview.html" class="btn btn-neutral float-left" title="Installation and Upgrade Overview on OpenShift" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="install-gpu-ocp.html" class="btn btn-neutral float-right" title="Installing the NVIDIA GPU Operator on OpenShift" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+<img src="_static/NVIDIA-LogoBlack.svg" class="only-light"/>
+<img src="_static/NVIDIA-LogoWhite.svg" class="only-dark"/>
+<p class="notices">
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank">Privacy Policy</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/" target="_blank">Manage My Privacy</a>
+|
+<a href="https://www.nvidia.com/en-us/preferences/start/" target="_blank">Do Not Sell or Share My Data</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/" target="_blank">Terms of Service</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/accessibility/" target="_blank">Accessibility</a>
+|
+<a href="https://www.nvidia.com/en-us/about-nvidia/company-policies/" target="_blank">Corporate Policies</a>
+|
+<a href="https://www.nvidia.com/en-us/product-security/" target="_blank">Product Security</a>
+|
+<a href="https://www.nvidia.com/en-us/contact/" target="_blank">Contact</a>
+</p>
+<p>
+  Copyright &#169; 2020-2024, NVIDIA Corporation.
+</p>
+
+    <p>
+      <span class="lastupdated">Last updated on Dec 23, 2024.
+      </span></p>
+<script type="text/javascript">if (typeof _satellite !== "undefined"){ _satellite.pageBottom();}</script>
+
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WBRZJBCJEW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WBRZJBCJEW', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>
