@@ -9,11 +9,6 @@
 Installation and Upgrade Overview on OpenShift
 ##############################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ****************
 High-Level Steps

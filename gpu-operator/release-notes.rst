@@ -71,18 +71,18 @@ New Features
 
 * Added support for the following software component versions:
 
-    - NVIDIA Container Toolkit v1.17.3
-    - NVIDIA DCGM v3.3.9-1
-    - NVIDIA DCGM Exporter v3.3.9-3.6.1
+  - NVIDIA Container Toolkit v1.17.3
+  - NVIDIA DCGM v3.3.9-1
+  - NVIDIA DCGM Exporter v3.3.9-3.6.1
 
 * Added support for NVIDIA Network Operator v24.10.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
 * Added an ``all-balanced`` MIG profile for H200 NVL which creates the following GPU instances:
 
-    * ``1g.18gb`` :math:`\times` 2
-    * ``2g.35gb`` :math:`\times` 1
-    * ``3g.71gb`` :math:`\times` 1
+  - ``1g.18gb`` :math:`\times` 2
+  - ``2g.35gb`` :math:`\times` 1
+  - ``3g.71gb`` :math:`\times` 1
 
 .. _v24.9.1-fixed-issues:
 
@@ -122,18 +122,18 @@ New Features
 
 * Added support for the following software component versions:
 
-    - NVIDIA Container Toolkit v1.17.0
-    - NVIDIA Driver Manager for Kubernetes v0.7.0
-    - NVIDIA Kubernetes Device Plugin v0.17.0
-    - NVIDIA DCGM Exporter v3.3.8-3.6.0
-    - NVIDIA DCGM v3.3.8-1
-    - Node Feature Discovery v0.16.6
-    - NVIDIA GPU Feature Discovery for Kubernetes v0.17.0
-    - NVIDIA MIG Manager for Kubernetes v0.10.0
-    - NVIDIA KubeVirt GPU Device Plugin v1.2.10
-    - NVIDIA vGPU Device Manager v0.2.8
-    - NVIDIA GDS Driver v2.20.5
-    - NVIDIA Kata Manager for Kubernetes v0.2.2
+  - NVIDIA Container Toolkit v1.17.0
+  - NVIDIA Driver Manager for Kubernetes v0.7.0
+  - NVIDIA Kubernetes Device Plugin v0.17.0
+  - NVIDIA DCGM Exporter v3.3.8-3.6.0
+  - NVIDIA DCGM v3.3.8-1
+  - Node Feature Discovery v0.16.6
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.17.0
+  - NVIDIA MIG Manager for Kubernetes v0.10.0
+  - NVIDIA KubeVirt GPU Device Plugin v1.2.10
+  - NVIDIA vGPU Device Manager v0.2.8
+  - NVIDIA GDS Driver v2.20.5
+  - NVIDIA Kata Manager for Kubernetes v0.2.2
 
 * Added support for NVIDIA Network Operator v24.7.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.

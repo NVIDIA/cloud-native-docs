@@ -18,3 +18,31 @@ command-line argument to the ``az aks nodepool add`` command.
 `Skip GPU driver installation (preview) <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview>`__
 After you start your Azure AKS cluster with an image that includes a preinstalled NVIDIA GPU Driver
    Azure AKS <microsoft-aks.rst>
+.. |prod-name-short| replace:: MKE
+Mirantis Kubernetes Engine (MKE) gives you the power to build, run, and scale cloud-native
+   * - MKE 3.6.2+ and 3.5.7+
+* A running MKE cluster with at least one control plane node and two worker nodes.
+* A seed node to connect to the MKE instance, with Helm 3.x installed on the seed node.
+* The kubeconfig file for the MKE cluster on the seed node.
+  You can get the file from the MKE web interface by downloading a client bundle.
+  Alternatively, if the MKE cluster is a managed cluster of a Mirantis Container Cloud (MCC) instance,
+  In this case, the MKE web interface can be accessed from the MCC web interface.
+* You have an MKE administrator user name and password, and you have the MKE host URL.
+Perform the following steps to prepare the MKE cluster:
+#. MKE does not apply a label to worker nodes.
+      $ export MKE_USERNAME=<mke-username> \
+          MKE_PASSWORD=<mke-password> \
+          MKE_HOST=<mke-fqdn-or-ip-address>
+#. Get an API key from MKE so that you can make API calls later:
+          '{"username":"'$MKE_USERNAME'","password":"'$MKE_PASSWORD'"}' \
+          https://$MKE_HOST/auth/login | jq --raw-output .auth_token)
+#. Download the MKE configuration file:
+      $ curl --silent --insecure -X GET "https://$MKE_HOST/api/ucp/config-toml" \
+#. Upload the edited MKE configuration file:
+          https://$MKE_HOST/api/ucp/config-toml
+The MKE cluster is ready for you to install the GPU Operator with Helm.
+Refer to the MKE product documentation for information about working with MKE.
+* https://docs.mirantis.com/mke/3.6/overview.html
+         $ cat <<EOF > nvidia-container-microshift.te
+         $ checkmodule -m -M -o nvidia-container-microshift.mod nvidia-container-microshift.te
+      2023/06/22 14:25:38 Retreiving plugins.

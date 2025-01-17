@@ -7,11 +7,6 @@
 Installing the NVIDIA GPU Operator on OpenShift
 ###############################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 ***********************************************************
 Installing the NVIDIA GPU Operator by using the web console
 ***********************************************************

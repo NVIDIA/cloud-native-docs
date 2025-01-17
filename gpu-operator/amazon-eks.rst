@@ -20,11 +20,6 @@
 NVIDIA GPU Operator with Amazon EKS
 ###################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 **************************************
 Approaches for Working with Amazon EKS

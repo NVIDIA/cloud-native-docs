@@ -12,11 +12,6 @@
 GPUDirect RDMA and GPUDirect Storage
 ####################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ******************************************
 About GPUDirect RDMA and GPUDirect Storage

@@ -20,11 +20,6 @@
 GPU Operator with Confidential Containers and Kata
 ##################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *****************************************
 About Support for Confidential Containers

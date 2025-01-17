@@ -20,11 +20,6 @@
 NVIDIA GPU Operator with Google GKE
 ###################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ****************************************
 About Using the Operator with Google GKE

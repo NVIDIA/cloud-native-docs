@@ -23,11 +23,6 @@
 Using NVIDIA vGPU
 #################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *********************************************
 About Installing the Operator and NVIDIA vGPU
