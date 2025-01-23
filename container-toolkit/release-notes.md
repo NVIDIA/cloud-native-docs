@@ -10,6 +10,40 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.4
+
+This release of the NVIDIA Container Toolkit `v1.17.4` is a bugfix release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.4`
+- `nvidia-container-toolkit-base 1.17.4`
+- `libnvidia-container-tools 1.17.4`
+- `libnvidia-container1 1.17.4`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.4-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.4-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.4`)
+
+### Fixes and Features
+
+- Disable the mounting of CUDA compat libraries from the container by default. The libraries are still available in their
+  orignal location. If the previous behaviour is required, the `allow-cuda-compat-libs-from-container` feature flag can be enabled.
+- Skip the detection and injection of graphics libraries when `NVIDIA_DRIVER_CAPABILITIES` includes `graphics` on iGPU-based systems.
+  This prevents conflicting ICD files causing errors when starting a container.
+- Fix a bug where `--config-search-path` arguments are ignored when running `nvidia-ctk generate`. This fix allows driver
+  to be located even if they are in non-standard locations.
+- Add support for Containerd version 3 config files.
+
+#### Enhancements to libnvidia-container
+
+- Add a `--no-cntlibs` CLI option to `nvidia-container-cli`.
+
+### Enhancements to container-toolkit Container Images
+
+- Updated the CUDA base image version to 12.6.3.
+
 ## NVIDIA Container Toolkit 1.17.3
 
 This release of the NVIDIA Container Toolkit `v1.17.3` is a bugfix release.
