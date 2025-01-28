@@ -89,10 +89,11 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - ${version}
 
    * - NVIDIA GPU Driver
-     - | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
+     - | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_ (recommended),
+       | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
        | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
-       | `550.144.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-144-03/index.html>`_ (recommended),
-       | `550.127.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-08/index.html>`_ (default),
+       | `550.144.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-144-03/index.html>`_ (default),
+       | `550.127.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-08/index.html>`_
        | `535.230.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-230-02/index.html>`_
        | `535.216.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-216-03/index.html>`_
 
@@ -100,7 +101,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `v0.7.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
-     - `1.17.3 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
+     - `1.17.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
      - `0.17.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__

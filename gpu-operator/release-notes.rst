@@ -34,6 +34,27 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v24.9.2:
+
+24.9.2
+======
+
+.. _v24.9.2-new-features:
+
+New Features
+------------
+
+* Added support for the NVIDIA Data Center GPU Driver version 570.86.15. 
+* The default driver in this version is now 550.144.03.
+  Refer to the :ref:`GPU Operator Component Matrix`
+  on the platform support page for more details on supported drivers.
+
+* Added support for the following software component versions:
+
+    - NVIDIA Container Toolkit v1.17.4
+
+
+
 .. _v24.9.1:
 
 24.9.1
