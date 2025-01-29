@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 17, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 29, 2025"/>
 
 
 
@@ -494,7 +494,7 @@ software which enable container workloads, and the <code class="docutils literal
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v24.9.1 <span class="se">\</span>
+      --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -518,7 +518,7 @@ Follow the steps provided in <a class="reference internal" href="#build-vgpu-man
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v24.9.1 <span class="se">\</span>
+      --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.repository<span class="o">=</span>&lt;path to private repository&gt; <span class="se">\</span>
