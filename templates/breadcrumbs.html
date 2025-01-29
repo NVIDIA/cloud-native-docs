@@ -1,27 +1,28 @@
-{% extends '!breadcrumbs.html' %}
+{% extends '!components/breadcrumbs.html' %}
 
 {% set docs_home = "https://docs.nvidia.com" %}
-{% set cloud_native_home = docs_home + "/datacenter/cloud-native/" %}
+{% set home = docs_home + "/datacenter/cloud-native" %}
 
 {%- block breadcrumbs %}
-<div> <!-- class="omni-version-warning" -->
-  <p class="omni-version-warning-content"> Upgrade to NVIDIA Container Toolkit v1.16.2 or higher, or GPU Operator v24.6.2 or higher to install a critical security update.<br/>
-  Refer to <a href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">Security Bulletin: NVIDIA Container Toolkit - September 2024</a> for more information.</p>
-</div>
-
-<li>
-    <a href="{{ docs_home }}">NVIDIA Docs Hub</a>
-    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-</li>
-<li>
-    <a href="{{ cloud_native_home }}">NVIDIA Cloud Native Technologies</a>
-    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-</li>
-{%- for doc in parents %}
-  <li>
-    <a href="{{ doc.link|e }}">{{ doc.title }}</a>
-    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-  </li>
-{%- endfor %}
-<li>{{ title }}</li>
+<nav aria-label="{{ _('Breadcrumb') }}" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="{{ docs_home }}">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{ home }}">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{ pathto(root_doc) }}">{{ project }}</a>
+    </li>
+    {%- for doc in parents %}
+    {% if doc.link %}
+    <li class="breadcrumb-item"><a href="{{ doc.link|e }}" class="nav-link">{{ doc.title }}</a></li>
+    {% else %}
+    <li class="breadcrumb-item">{{ doc.title }}</li>
+    {% endif %}
+    {%- endfor %}
+    <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+  </ul>
+</nav>
 {%- endblock %}

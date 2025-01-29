@@ -20,11 +20,6 @@
 Install GPU Operator with Service Mesh
 ######################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *****************************************
 Special Considerations for Service Meshes

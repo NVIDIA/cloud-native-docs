@@ -20,11 +20,6 @@
 Troubleshooting the NVIDIA GPU Operator
 #######################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 ****************************************************
 GPU Operator Validator: Failed to Create Pod Sandbox
 ****************************************************

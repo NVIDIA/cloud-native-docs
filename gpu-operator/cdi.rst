@@ -20,11 +20,6 @@
 Container Device Interface Support in the GPU Operator
 ######################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 ************************************
 About the Container Device Interface
 ************************************

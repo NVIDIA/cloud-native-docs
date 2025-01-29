@@ -6,13 +6,6 @@
 
 # Supported Platforms
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
 
 ## Linux Distributions
 

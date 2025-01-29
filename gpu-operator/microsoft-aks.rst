@@ -20,11 +20,6 @@
 NVIDIA GPU Operator with Azure Kubernetes Service
 #################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *************************************
 Approaches for Working with Azure AKS

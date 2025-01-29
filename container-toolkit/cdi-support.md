@@ -8,14 +8,6 @@
 
 # Support for Container Device Interface
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
-
 ## About the Container Device Interface
 
 As of the `v1.12.0` release the NVIDIA Container Toolkit includes support for generating Container Device Interface (CDI) specifications.

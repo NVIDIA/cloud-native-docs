@@ -5,11 +5,6 @@
 Setting up Prometheus
 #####################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ***************************
 About Setting up Prometheus
@@ -380,7 +375,7 @@ Port Forwarding
 
 Another method to access the Grafana page would be to use port forwarding.
 
-First, it can be observed that the Grafana service is available at port 80. We will need to port-forward the service from an abitrary port - in this example,
+First, it can be observed that the Grafana service is available at port 80. We will need to port-forward the service from an arbitrary port - in this example,
 we will forward from port 32322 on our local machine to port 80 on the service (which in turn will forward to port 3000 that the Grafana pod is listening at, as
 shown below):
 

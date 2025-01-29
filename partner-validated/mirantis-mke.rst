@@ -7,11 +7,6 @@
 |prod-name-long| with the NVIDIA GPU Operator
 #############################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *********************************************
 About |prod-name-short| with the GPU Operator

@@ -4,14 +4,6 @@
 
 # Installing the NVIDIA Container Toolkit
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
-
 ## Installation
 
 (pre-requisites)=

@@ -9,11 +9,6 @@
 Deploy GPU Operators in a disconnected or airgapped environment
 ###############################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 **************
 Introduction
 **************
