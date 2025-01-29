@@ -69,6 +69,17 @@ New Features
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
 
+* This release adds support for NVIDIA Container Toolkit 1.17.3.
+  This version includes updates for:
+
+  * `NVIDIA CVE-2024-0135 <https://nvidia.custhelp.com/app/answers/detail/a_id/5599>`__
+  * `NVIDIA CVE-2024-0136 <https://nvidia.custhelp.com/app/answers/detail/a_id/5599>`__
+  * `NVIDIA CVE-2024-0137 <https://nvidia.custhelp.com/app/answers/detail/a_id/5599>`__
+
+  To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at https://www.nvidia.com/en-us/security/.
+
+  For more information regarding NVIDIA security vulnerability remediation policies, refer to https://www.nvidia.com/en-us/security/psirt-policies/.
+
 * Added support for the following software component versions:
 
     - NVIDIA Container Toolkit v1.17.3
