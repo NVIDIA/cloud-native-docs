@@ -4,14 +4,6 @@
 
 # Specialized Configurations with Docker
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
-
 ## Environment variables (OCI spec)
 
 Users can control the behavior of the NVIDIA container runtime using environment variables - especially for

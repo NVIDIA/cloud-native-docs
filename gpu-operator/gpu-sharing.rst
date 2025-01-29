@@ -9,11 +9,6 @@
 Time-Slicing GPUs in Kubernetes
 ###############################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *******************************
 Understanding Time-Slicing GPUs

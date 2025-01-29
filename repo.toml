@@ -3,7 +3,7 @@ logging = "warn"
 
 [repo_docs]
 enabled = true
-# keep_sphinx_conf_py = true
+keep_sphinx_conf_py = false
 social_media_set = []
 social_media = []
 favicon = "${root}/assets/favicon.ico"
@@ -22,17 +22,28 @@ sphinx_conf_py_extra = """
   suppress_warnings = [ 'autosectionlabel.*' ]
   pygments_style = 'sphinx'
   copybutton_exclude = '.linenos, .gp'
-  html_theme_options = {
-    'titles_only': True,
-    'logo_only': True,
-    'analytics_id': "G-WBRZJBCJEW",
-  }
+
+  html_theme = "nvidia_sphinx_theme"
+  html_copy_source = False
+  html_show_sourcelink = False
+  html_show_sphinx = False
+
   html_domain_indices = False
   html_use_index = False
-  html_extra_path = ["versions.json"]
-  html_static_path.append("${root}/css/")
-  html_css_files.append("custom.css")
+  html_extra_path = ["versions1.json"]
+  html_static_path = ["${root}/css"]
+  html_css_files = ["custom.css"]
+
+  html_theme_options = {
+    "icon_links": [],
+    "switcher": {
+      "json_url": "../versions1.json",
+      "version_match": release,
+    },
+  }
+
   highlight_language = 'console'
+
   intersphinx_mapping = {
     "dcgm": ("https://docs.nvidia.com/datacenter/dcgm/latest/", "../work/dcgm-offline.inv"),
     "gpuop": ("https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/",

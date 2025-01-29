@@ -27,11 +27,6 @@
 Platform Support
 ################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 .. include:: life-cycle-policy.rst
 
 .. _supported nvidia gpus and systems:

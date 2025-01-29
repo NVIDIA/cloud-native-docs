@@ -25,11 +25,6 @@
 GPU Driver Upgrades
 ###################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ******************************
 About Upgrading the GPU Driver

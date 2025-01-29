@@ -6,14 +6,6 @@
 
 # Troubleshooting
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
-
 ## Troubleshooting with Docker
 
 ### Generating Debugging Logs
@@ -67,7 +59,7 @@ The conflicting repository references can be obtained by running and inspecting 
 $ grep "nvidia.github.io" /etc/apt/sources.list.d/*
 ```
 
-The list of files with (possibly)  conflicting references can be optained by running:
+The list of files with possibly conflicting references can be obtained by running:
 
 ```console
 $ grep -l "nvidia.github.io" /etc/apt/sources.list.d/* | grep -vE "/nvidia-container-toolkit.list\$"
@@ -105,7 +97,7 @@ allow this access for now by executing:
 
 This occurs because `nvidia-docker` forwards the command line arguments with minor modifications to the `docker` executable.
 
-To address this it is recommeded that the `docker` command be used directly specifying the `nvidia` runtime:
+To address this, specify the NVIDIA runtime in the the `docker` command:
 
 ```console
 $ sudo docker run --gpus=all --runtime=nvidia --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi

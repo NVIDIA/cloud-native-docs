@@ -9,11 +9,6 @@
 MIG Support in OpenShift Container Platform
 ############################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ************
 Introduction
@@ -81,7 +76,7 @@ MIG advertisement strategies
 The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that can be requested and exposed into Pods and containers. The first step of the MIG configuration is to decide what **Strategy** you want. The advertisement strategies are described here:
 
 
-* **Single** defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs. This strategy exposes the MIG instances as ``nvidia.com/gpu`` resources, identically, as usual non-MIG capable (or with MIG disabled) devices. In this strategy, all the GPUs in a single node must be configured in a homogenous manner (same number of compute units, same memory size). This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users. Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.
+* **Single** defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs. This strategy exposes the MIG instances as ``nvidia.com/gpu`` resources, identically, as usual non-MIG capable (or with MIG disabled) devices. In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size). This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users. Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.
 
    Examples for the A100-40GB:
 
@@ -412,7 +407,7 @@ For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in th
 
    MIG manager applies a ``mig.config.state`` label to the GPU and then terminates all the GPU pods
    in preparation to enable MIG mode and configure the GPU into the specified configuration.
-   
+
 
 #. Optional: Verify that MIG manager configured the GPUs:
 
@@ -457,7 +452,7 @@ For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in th
       Resource                Requests      Limits
       nvidia.com/mig-1g.10gb  0             0
       nvidia.com/mig-2g.20gb  0             0
-      nvidia.com/mig-3g.40gb  0             0 
+      nvidia.com/mig-3g.40gb  0             0
 
 
 #. Optional: Start a pod to run the ``nvidia-smi`` command and display the GPU resources.
@@ -500,7 +495,7 @@ For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in th
          $ oc logs command-nvidia-smi
 
       *Example Output*
-      
+
       .. code-block:: output
 
          +---------------------------------------------------------------------------------------+
@@ -542,7 +537,7 @@ For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in th
          | N/A   31C    P0              72W / 700W |                  N/A |     N/A      Default |
          |                                         |                      |              Enabled |
          +-----------------------------------------+----------------------+----------------------+
-      
+
          +---------------------------------------------------------------------------------------+
          | MIG devices:                                                                          |
          +------------------+--------------------------------+-----------+-----------------------+
@@ -646,7 +641,7 @@ For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in th
          |  7   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |
          |                  |               0MiB / 16383MiB  |           |                       |
          +------------------+--------------------------------+-----------+-----------------------+
-      
+
          +---------------------------------------------------------------------------------------+
          | Processes:                                                                            |
          |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
@@ -769,7 +764,7 @@ For information about the initial default MIG configuration and viewing it, refe
          $ oc logs command-nvidia-smi
 
       *Example Output*
-      
+
       .. code-block:: output
          :emphasize-lines: 42,47-94
 
@@ -812,7 +807,7 @@ For information about the initial default MIG configuration and viewing it, refe
          | N/A   31C    P0              76W / 700W |                  N/A |     N/A      Default |
          |                                         |                      |              Enabled |
          +-----------------------------------------+----------------------+----------------------+
-      
+
          +---------------------------------------------------------------------------------------+
          | MIG devices:                                                                          |
          +------------------+--------------------------------+-----------+-----------------------+
@@ -868,7 +863,7 @@ For information about the initial default MIG configuration and viewing it, refe
          |  7    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |
          |                  |               0MiB / 65535MiB  |           |                       |
          +------------------+--------------------------------+-----------+-----------------------+
-      
+
          +---------------------------------------------------------------------------------------+
          | Processes:                                                                            |
          |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |

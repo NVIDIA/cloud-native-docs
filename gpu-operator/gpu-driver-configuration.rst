@@ -21,11 +21,6 @@
 NVIDIA GPU Driver Custom Resource Definition
 ############################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 *****************************************************
 Overview of the GPU Driver Custom Resource Definition
