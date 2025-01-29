@@ -10,11 +10,6 @@
 Accelerating workloads with NVIDIA GPUs with Red Hat Device Edge
 ################################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 **************
 Introduction
 **************

@@ -27,11 +27,6 @@
 GPU Operator with Kata Containers
 #################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ***************************************
 About the Operator with Kata Containers

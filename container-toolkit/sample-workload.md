@@ -1,13 +1,5 @@
 # Running a Sample Workload
 
-```{contents}
----
-depth: 2
-local: true
-backlinks: none
----
-```
-
 ## Running a Sample Workload with Docker
 
 After you install and configure the toolkit and install an NVIDIA GPU Driver,

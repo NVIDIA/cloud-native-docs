@@ -22,11 +22,6 @@
 Precompiled Driver Containers
 #############################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 ***********************************
 About Precompiled Driver Containers
 ***********************************

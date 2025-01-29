@@ -22,11 +22,6 @@
 Upgrading the NVIDIA GPU Operator
 =================================
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 *************
 Prerequisites
 *************

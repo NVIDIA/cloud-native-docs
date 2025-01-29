@@ -23,11 +23,6 @@
 DCGM Exporter
 #############
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 ************
 Introduction
 ************

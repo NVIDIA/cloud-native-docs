@@ -9,11 +9,6 @@
 Precompiled Drivers for the NVIDIA GPU Operator for RHCOS
 ###############################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 .. note:: Technology Preview features are not supported in production environments and are not functionally complete. Technology Preview features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have any documentation, and testing is limited.
 
 

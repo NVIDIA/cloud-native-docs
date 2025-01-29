@@ -7,11 +7,6 @@
 Installing the Node Feature Discovery Operator on OpenShift
 ###########################################################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 *********
 Procedure
 *********

@@ -25,11 +25,6 @@
 GPU Operator with MIG
 #####################
 
-.. contents::
-   :depth: 2
-   :local:
-   :backlinks: none
-
 
 ************************
 About Multi-Instance GPU
