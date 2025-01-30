@@ -16,14 +16,10 @@ Supported Linux distributions are listed below:
 | Amazon Linux 2023        | X              |         | X {sup}`1`      |
 | Amazon Linux 2           | X              |         | X               |
 | Open Suse/SLES 15.x      | X              |         |                 |
-| Debian Linux 10          | X              |         |                 |
 | Debian Linux 11          | X              |         |                 |
-| Centos 7                 | X              | X       |                 |
 | Centos 8                 | X              | X       | X               |
-| RHEL 7.x                 | X              | X       |                 |
 | RHEL 8.x                 | X              | X       | X               |
 | RHEL 9.x                 | X              | X       | X               |
-| Ubuntu 18.04             | X              | X       | X               |
 | Ubuntu 20.04             | X              | X       | X               |
 | Ubuntu 22.04             | X              | X       | X               |
 | Ubuntu 24.04             | X              |         | X               |
