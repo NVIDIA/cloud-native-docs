@@ -412,7 +412,7 @@ The GPU Operator has been validated with the following precomplied drivers.
 See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 
 +----------------------------+------------------------+----------------+---------------------+
-| Operating System           | Kernal Flavor          | Kernal Version | CUDA Driver Version |
+| Operating System           | Kernal Flavor          | Kernal Version | CUDA Driver Branch |
 +============================+========================+================+=====================+
 | Ubuntu 22.04               | Generic                | 5.15           | R535, R550          |
 +----------------------------+------------------------+----------------+---------------------+
