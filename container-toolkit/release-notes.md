@@ -12,6 +12,14 @@ ______________________________________________________________________
 
 ## NVIDIA Container Toolkit 1.17.4
 
+This version includes updates for:
+
+* [NVIDIA CVE-2025-23359](https://nvidia.custhelp.com/app/answers/detail/a_id/5616)
+
+To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <https://www.nvidia.com/en-us/security/>.
+
+For more information regarding NVIDIA security vulnerability remediation policies, refer to <https://www.nvidia.com/en-us/security/psirt-policies/>.
+
 This release of the NVIDIA Container Toolkit `v1.17.4` is a bugfix release.
 
 The following packages are included:
