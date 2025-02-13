@@ -4,22 +4,23 @@
 
 # Installing the NVIDIA Container Toolkit
 
+
 ## Installation
 
 (pre-requisites)=
 
 ### Prerequisites
 
-1. Install the NVIDIA GPU driver for your Linux distribution.
+1. Read [this section](./supported-platforms.md) about platform support.
+
+2. Install the NVIDIA GPU driver for your Linux distribution.
 NVIDIA recommends installing the driver by using the package manager for your distribution.
 For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
 
-2. Read [this section](./supported-platforms.md) about platform support.
-
-### Debian-based distributions (Ubuntu):
+### Ubuntu and other Debian-based distributions
 
 1. Configure the production repository:
 
@@ -53,7 +54,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
-### RPM-based distributions (RHEL/CentOS, Fedora, Amazon Linux, ...):
+### RHEL/CentOS, Fedora, Amazon Linux, ... :
 
 1. Configure the production repository:
 
@@ -74,7 +75,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo yum install -y nvidia-container-toolkit
    ```
 
-### OpenSUSE/SLE:
+### OpenSUSE, SLE:
 
 1. Configure the production repository:
 
