@@ -10,14 +10,14 @@
 
 ### Prerequisites
 
-Install the NVIDIA GPU driver for your Linux distribution.
+1. Install the NVIDIA GPU driver for your Linux distribution.
 NVIDIA recommends installing the driver by using the package manager for your distribution.
-
 For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
+Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
-Alternatively, you can install the driver by downloading a `.run` installer.
-Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.aspx?lang=en-us) page.
+
+2. Read [this section](./supported-platforms.md) about platform support.
 
 ### Debian-based distributions (Ubuntu):
 
