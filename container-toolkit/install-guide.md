@@ -19,7 +19,7 @@ the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/data
 Alternatively, you can install the driver by downloading a `.run` installer.
 Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.aspx?lang=en-us) page.
 
-### Installing with Apt
+### Debian-based distributions (Ubuntu):
 
 1. Configure the production repository:
 
@@ -53,7 +53,7 @@ Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.asp
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
-### Installing with Yum or Dnf
+### RPM-based distributions (RHEL/CentOS, Fedora, Amazon Linux, ...):
 
 1. Configure the production repository:
 
@@ -74,7 +74,7 @@ Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.asp
    $ sudo yum install -y nvidia-container-toolkit
    ```
 
-### Installing with Zypper
+### OpenSUSE/SLE:
 
 1. Configure the production repository:
 
