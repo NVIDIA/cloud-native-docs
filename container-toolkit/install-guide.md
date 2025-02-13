@@ -20,7 +20,7 @@ the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/data
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
 
-### Ubuntu and other Debian-based distributions
+### Ubuntu and Debian
 
 1. Configure the production repository:
 
@@ -54,7 +54,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
-### RHEL/CentOS, Fedora, Amazon Linux, ... :
+### RHEL/CentOS, Fedora, Amazon Linux
 
 1. Configure the production repository:
 
@@ -75,7 +75,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo yum install -y nvidia-container-toolkit
    ```
 
-### OpenSUSE, SLE:
+### OpenSUSE, SLE
 
 1. Configure the production repository:
 
