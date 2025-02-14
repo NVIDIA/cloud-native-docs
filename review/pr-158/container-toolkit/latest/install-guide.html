@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 13, 2025"/>
+    <meta name="docbuild:last-update" content="Feb 14, 2025"/>
 
 
 
@@ -364,8 +364,12 @@ the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla
 Alternatively, you can install the driver by <a class="reference external" href="https://www.nvidia.com/en-us/drivers/">downloading</a> a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.</p></li>
 </ol>
 </section>
-<section id="ubuntu-and-debian">
-<h3>Ubuntu and Debian<a class="headerlink" href="#ubuntu-and-debian" title="Permalink to this headline">#</a></h3>
+<section id="with-apt-ubuntu-debian">
+<h3>With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian<a class="headerlink" href="#with-apt-ubuntu-debian" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for any Debian-derived distribution.</p>
+</div>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg <span class="se">\</span>
@@ -395,8 +399,12 @@ TODO:
 </li>
 </ol>
 </section>
-<section id="rhel-centos-fedora-amazon-linux">
-<h3>RHEL/CentOS, Fedora, Amazon Linux<a class="headerlink" href="#rhel-centos-fedora-amazon-linux" title="Permalink to this headline">#</a></h3>
+<section id="with-dnf-rhel-centos-fedora-amazon-linux">
+<h3>With <code class="docutils literal notranslate"><span class="pre">dnf</span></code>: RHEL/CentOS, Fedora, Amazon Linux<a class="headerlink" href="#with-dnf-rhel-centos-fedora-amazon-linux" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for many RPM-based distributions.</p>
+</div>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> <span class="se">\</span>
@@ -404,19 +412,19 @@ TODO:
 </pre></div>
 </div>
 <p>Optionally, configure the repository to use experimental packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf-config-manager --enable nvidia-container-toolkit-experimental
 </pre></div>
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo yum install -y nvidia-container-toolkit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y nvidia-container-toolkit
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
-<section id="opensuse-sle">
-<h3>OpenSUSE, SLE<a class="headerlink" href="#opensuse-sle" title="Permalink to this headline">#</a></h3>
+<section id="with-zypper-opensuse-sle">
+<h3>With <code class="docutils literal notranslate"><span class="pre">zypper</span></code>: OpenSUSE, SLE<a class="headerlink" href="#with-zypper-opensuse-sle" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
@@ -594,9 +602,9 @@ TODO:
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ubuntu-and-debian">Ubuntu and Debian</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rhel-centos-fedora-amazon-linux">RHEL/CentOS, Fedora, Amazon Linux</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opensuse-sle">OpenSUSE, SLE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-apt-ubuntu-debian">With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-dnf-rhel-centos-fedora-amazon-linux">With <code class="docutils literal notranslate"><span class="pre">dnf</span></code>: RHEL/CentOS, Fedora, Amazon Linux</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-zypper-opensuse-sle">With <code class="docutils literal notranslate"><span class="pre">zypper</span></code>: OpenSUSE, SLE</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a><ul class="nav section-nav flex-column">
