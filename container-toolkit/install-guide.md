@@ -20,7 +20,11 @@ the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/data
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
 
-### Ubuntu and Debian
+### With `apt`: Ubuntu, Debian
+
+   ```{note}
+   These instructions [should work](./supported-platforms.md) for any Debian-derived distribution.
+   ```
 
 1. Configure the production repository:
 
@@ -54,7 +58,12 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
-### RHEL/CentOS, Fedora, Amazon Linux
+### With `dnf`: RHEL/CentOS, Fedora, Amazon Linux
+
+
+   ```{note}
+   These instructions [should work](./supported-platforms.md) for many RPM-based distributions.
+   ```
 
 1. Configure the production repository:
 
@@ -66,16 +75,16 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    Optionally, configure the repository to use experimental packages:
 
    ```console
-   $ sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+   $ sudo dnf-config-manager --enable nvidia-container-toolkit-experimental
    ```
 
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ sudo yum install -y nvidia-container-toolkit
+   $ sudo dnf install -y nvidia-container-toolkit
    ```
 
-### OpenSUSE, SLE
+### With `zypper`: OpenSUSE, SLE
 
 1. Configure the production repository:
 
