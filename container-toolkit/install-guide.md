@@ -103,11 +103,6 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo zypper modifyrepo --enable nvidia-container-toolkit-experimental
    ```
 
-   <!--
-   TODO:
-   - [ ] Experimental repos: zypper modifyrepo --enable nvidia-container-toolkit-experimental
-   -->
-
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
