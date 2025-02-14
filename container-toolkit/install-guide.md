@@ -4,7 +4,6 @@
 
 # Installing the NVIDIA Container Toolkit
 
-
 ## Installation
 
 (pre-requisites)=
@@ -19,6 +18,8 @@ For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
+
+(installing-with-apt)=
 
 ### With `apt`: Ubuntu, Debian
 
@@ -58,6 +59,8 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
+(installing-with-yum-or-dnf)=
+
 ### With `dnf`: RHEL/CentOS, Fedora, Amazon Linux
 
 
@@ -83,6 +86,8 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    ```console
    $ sudo dnf install -y nvidia-container-toolkit
    ```
+
+(installing-with-zypper)=
 
 ### With `zypper`: OpenSUSE, SLE
 
