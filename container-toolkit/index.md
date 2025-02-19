@@ -23,16 +23,17 @@ Container Device Interface <cdi-support.md>
 docker-specialized.md
 ```
 
-The NVIDIA Container Toolkit enables users to build and run GPU-accelerated containers.
-The toolkit includes a container runtime [library](https://github.com/NVIDIA/libnvidia-container)
-and utilities to automatically configure containers to leverage NVIDIA GPUs.
+The NVIDIA Container Toolkit is a collection of libraries and utilities enabling users to build and run GPU-accelerated containers. It currently includes:
 
-```{image} https://cloud.githubusercontent.com/assets/3028125/12213714/5b208976-b632-11e5-8406-38d379ec46aa.png
-:width: 400
-```
+* The NVIDIA Container Runtime (`nvidia-container-runtime`)
+* The NVIDIA Container Toolkit CLI (`nvidia-ctk`)
+* The NVIDIA CDI Hooks (`nvidia-cdi-hook`)
+* The NVIDIA Container Runtime Hook (`nvidia-container-runtime-hook`)
+* The NVIDIA Container CLI (`nvidia-container-cli`)
+* The NVIDIA Container Library (`libnvidia-container1`)
 
 ## License
 
 The NVIDIA Container Toolkit (and all included components) is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) and
-contributions are accepted with a DCO. See the [contributing](https://github.com/NVIDIA/nvidia-container-toolkit/blob/master/CONTRIBUTING.md) document for
+contributions are accepted with a Developer Certificate of Origin (DCO). See the [contributing](https://github.com/NVIDIA/nvidia-container-toolkit/blob/master/CONTRIBUTING.md) document for
 more information.
