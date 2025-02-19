@@ -10,16 +10,22 @@
 
 ### Prerequisites
 
-Install the NVIDIA GPU driver for your Linux distribution.
-NVIDIA recommends installing the driver by using the package manager for your distribution.
+1. Read [this section](./supported-platforms.md) about platform support.
 
+2. Install the NVIDIA GPU driver for your Linux distribution.
+NVIDIA recommends installing the driver by using the package manager for your distribution.
 For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
+Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
-Alternatively, you can install the driver by downloading a `.run` installer.
-Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.aspx?lang=en-us) page.
 
-### Installing with Apt
+(installing-with-apt)=
+
+### With `apt`: Ubuntu, Debian
+
+   ```{note}
+   These instructions [should work](./supported-platforms.md) for any Debian-derived distribution.
+   ```
 
 1. Configure the production repository:
 
@@ -53,7 +59,14 @@ Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.asp
    $ sudo apt-get install -y nvidia-container-toolkit
    ```
 
-### Installing with Yum or Dnf
+(installing-with-yum-or-dnf)=
+
+### With `dnf`: RHEL/CentOS, Fedora, Amazon Linux
+
+
+   ```{note}
+   These instructions [should work](./supported-platforms.md) for many RPM-based distributions.
+   ```
 
 1. Configure the production repository:
 
@@ -65,16 +78,18 @@ Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.asp
    Optionally, configure the repository to use experimental packages:
 
    ```console
-   $ sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+   $ sudo dnf-config-manager --enable nvidia-container-toolkit-experimental
    ```
 
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ sudo yum install -y nvidia-container-toolkit
+   $ sudo dnf install -y nvidia-container-toolkit
    ```
 
-### Installing with Zypper
+(installing-with-zypper)=
+
+### With `zypper`: OpenSUSE, SLE
 
 1. Configure the production repository:
 
@@ -87,11 +102,6 @@ Refer to the NVIDIA [Official Drivers](https://www.nvidia.com/Download/index.asp
    ```console
    $ sudo zypper modifyrepo --enable nvidia-container-toolkit-experimental
    ```
-
-   <!--
-   TODO:
-   - [ ] Experimental repos: zypper modifyrepo --enable nvidia-container-toolkit-experimental
-   -->
 
 1. Install the NVIDIA Container Toolkit packages:
 
