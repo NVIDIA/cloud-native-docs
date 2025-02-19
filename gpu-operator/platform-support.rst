@@ -86,6 +86,8 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      +-------------------------+---------------------------+
      | NVIDIA H20              | NVIDIA Hopper             |
      +-------------------------+---------------------------+
+     | NVIDIA L20              | NVIDIA Ada                |
+     +-------------------------+---------------------------+
      | | NVIDIA L40,           | NVIDIA Ada                |
      | | NVIDIA L40S           |                           |
      +-------------------------+---------------------------+
@@ -116,7 +118,6 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
      .. note::
 
-       * Hopper (H100) GPU is only supported on x86 servers.
        * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
          For installation instructions, see :ref:`preinstalled-drivers-and-toolkit` for DGX OS 5.1+ and :ref:`openshift-introduction` for Red Hat OpenShift.
 
@@ -224,15 +225,12 @@ The GPU Operator has been validated in the following scenarios:
 Supported Operating Systems and Kubernetes Platforms
 ----------------------------------------------------
 
-.. _fn1: #ubuntu-kernel
+.. _fn1: #kubernetes-version
 .. |fn1| replace:: :sup:`1`
+.. _fn2: #ubuntu-kernel
+.. |fn2| replace:: :sup:`2`
 
 The GPU Operator has been validated in the following scenarios:
-
-.. note::
-
-   The Kubernetes community supports only the last three minor releases as of v1.17. Older releases
-   may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
 
 .. tab-set::
 
@@ -244,7 +242,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Operating
            | System
-         - Kubernetes
+         - Kubernetes |fn1|_
          - | Red Hat
            | OpenShift
          - | VMware vSphere
@@ -259,7 +257,7 @@ The GPU Operator has been validated in the following scenarios:
          - | Nutanix
            | NKP
 
-       * - Ubuntu 20.04 LTS |fn1|_
+       * - Ubuntu 20.04 LTS |fn2|_
          - 1.24---1.31
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
@@ -268,7 +266,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 2.12, 2.13
 
-       * - Ubuntu 22.04 LTS |fn1|_
+       * - Ubuntu 22.04 LTS |fn2|_
          - 1.24---1.31
          -
          - 8.0 U2, 8.0 U3
@@ -309,16 +307,23 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
 
-    .. _ubuntu-kernel:
+    .. _kubernetes-version:
 
     :sup:`1`
-    For Ubuntu 22.04 LTS, kernel versions 6.5 and 5.15 are LTS ESM kernels.
+    The Kubernetes community only supports the last three minor `releases <https://kubernetes.io/releases/>`_.
+    Older releases may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
+
+    .. _ubuntu-kernel:
+
+    :sup:`2`
+    For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
     For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
     Refer to the Kernel release schedule on Canonical's
     `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
     NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
     by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
+ 
 
     .. note::
 
@@ -397,6 +402,27 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 1.24---1.31
          -
+
+
+Supported Precompiled Drivers
+-----------------------------
+
+The GPU Operator has been validated with the following precomplied drivers.
+See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
+
++----------------------------+------------------------+----------------+---------------------+
+| Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
++============================+========================+================+=====================+
+| Ubuntu 22.04               | Generic                | 5.15           | R535, R550          |
++----------------------------+------------------------+----------------+---------------------+
+| Ubuntu 22.04               | NVIDIA                 | 5.15           | R535, R550          |
++----------------------------+------------------------+----------------+---------------------+
+| Ubuntu 22.04               | Azure                  | 5.15           | R535, R550          |
++----------------------------+------------------------+----------------+---------------------+
+| Ubuntu 22.04               | AWS                    | 5.15           | R535, R550          |
++----------------------------+------------------------+----------------+---------------------+
+| Ubuntu 22.04               | Oracle                 | 5.15           | R535, R550          |
++----------------------------+------------------------+----------------+---------------------+
 
 
 Supported Container Runtimes
