@@ -55,13 +55,13 @@ The product life cycle and versioning are subject to change in the future.
    * - GPU Operator Version
      - Status
 
-   * - 24.9.x
+   * - 24.12.x
      - Generally Available
 
-   * - 24.6.x
+   * - 24.9.x
      - Maintenance
 
-   * - 24.3.x and lower
+   * - 24.6.x and lower
      - EOL
 
 

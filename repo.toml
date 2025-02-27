@@ -153,8 +153,8 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "24.9.2"
-source_substitutions = { version = "v24.9.2", recommended = "570.86.15" }
+version = "24.12.0"
+source_substitutions = { version = "v24.12.0", recommended = "570.86.15" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -212,7 +212,7 @@ output_format = "linkcheck"
 docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "24.9.2"
+version = "24.12.0"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",
@@ -249,7 +249,7 @@ docs_root = "${root}/secure-services-istio-keycloak"
 project = "secure-services-istio-keycloak"
 name = "Securing NVIDIA Services with Istio and Keycloak"
 version = "0.1.0"
-copyright_start = 2024
+copyright_start = 2025
 
 [repo_docs.projects.secure-services-istio-keycloak.builds.linkcheck]
 build_by_default = false
