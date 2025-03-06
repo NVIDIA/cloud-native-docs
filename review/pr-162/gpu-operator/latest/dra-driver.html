@@ -1,0 +1,899 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NVIDIA GPU DRA Driver &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-driver';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
+    <link rel="prev" title="Container Device Interface Support in the GPU Operator" href="cdi.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Mar 06, 2025"/>
+
+
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">DRA Driver</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA GPU DRA Driver</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="nvidia-gpu-dra-driver">
+<h1>NVIDIA GPU DRA Driver<a class="headerlink" href="#nvidia-gpu-dra-driver" title="Permalink to this headline">#</a></h1>
+<section id="about-the-nvidia-gpu-dra-driver">
+<h2>About the NVIDIA GPU DRA Driver<a class="headerlink" href="#about-the-nvidia-gpu-dra-driver" title="Permalink to this headline">#</a></h2>
+<p>The NVIDIA GPU DRA Driver leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA IMEX channels available in GH200 and GB200 GPUs.
+The NVIDIA GPU DRA Driver creates and manages IMEX channels through the creation of a ComputeDomain custom resource. Use this custom resource to define your resource templates, and then reference the templates within your workload specs.</p>
+<p>An IMEX channel is a construct that allows a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
+The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch.
+Once an IMEX channel has been established for a set of GPUs, they are free to read and write each other’s memory via extensions to the CUDA memory call APIs.</p>
+<p>The ability to support IMEX channels on GH200 and GB200 systems is essential, as they have been designed specifically to exploit the use of IMEX channels to turn a rack of GPU machines (each with a small number of GPUs) into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+This allows you to get the most use out of your available GPUs without any additional latency burdens.</p>
+<p>Kubernetes Dynamic Resource Allocation (DRA), available as beta in Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.
+This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels.
+Along with the NVIDIA GPU DRA Driver, you are able to use DRA to define IMEX channel resources that can be managed by Kubernetes.</p>
+<p>Refer to the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA documentation</a> for details on this feature.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>GH200 and GB200 GPUs with Mulit-Node NVLink connections between GPUs.</p></li>
+<li><p>565 or later driver installed on all GPU nodes.
+Drivers must be pre-installed on all GPU nodes before installing the NVIDIA GPU Operator as operator managed drivers are not supported at this time.</p></li>
+<li><p>IMEX packages installed on GPU nodes with systemd service disabled.
+The IMEX package verisons must match the installed driver version.</p>
+<p>The following example shows how to install IMEX drivers.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL -o /tmp/nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/sbsa/nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb <span class="o">&amp;&amp;</span> dpkg -i /tmp/nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb <span class="o">&amp;&amp;</span> <span class="se">\</span>
+nvidia-imex --version <span class="o">&amp;&amp;</span> <span class="se">\</span>
+ls /etc/nvidia-imex <span class="o">&amp;&amp;</span> <span class="se">\</span>
+rm -rf /tmp/nvidia-imex_<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb
+</pre></div>
+</div>
+<p>Then disable systemd service.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl disable --now nvidia-imex.service <span class="o">&amp;&amp;</span> systemctl mask nvidia-imex.service
+</pre></div>
+</div>
+</li>
+<li><p>Kubernetes v1.32 multi-node cluster with the DynaticResourceAllocation feature gate enabled.</p>
+<p>The following is a sample for enabling DRA feature gates.
+Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Sample Kubeadm Init Config with DRA Feature Gates Enabled</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubeadm.k8s.io/v1beta4</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterConfiguration</span><span class="w"></span>
+<span class="nt">apiServer</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;runtime-config&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resource.k8s.io/v1alpha3=true&quot;</span><span class="w"></span>
+<span class="nt">controllerManager</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="nt">scheduler</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">DynamicResourceAllocation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>The NVIDIA GPU Operator v25.3.0 installed with CDI enabled on all nodes.</p>
+<p>A sample Helm install command below includes enabling CDI with <code class="docutils literal notranslate"><span class="pre">cdi.enabled=true</span></code> and pre-installed drivers configured with <code class="docutils literal notranslate"><span class="pre">drivers.enabled=false</span></code>.
+Refer to the install documentation for details on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">enabling CDI</a> and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">pre-installed drivers</a>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+        -n gpu-operator --create-namespace <span class="se">\</span>
+        nvidia/gpu-operator <span class="se">\</span>
+        --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+        --set driver.enabled<span class="o">=</span><span class="nb">false</span>
+<span class="go">        --set cdi.enabled=true</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="install-nvidia-dra-driver">
+<h2>Install NVIDIA DRA Driver<a class="headerlink" href="#install-nvidia-dra-driver" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Add the NVIDIA Helm repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+</li>
+<li><p>Install NVIDIA DRA Driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia-dra-driver-gpu-dev-repo/nvidia-dra-driver-gpu <span class="se">\</span>
+      --create-namespace <span class="se">\</span>
+      --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+      --set image.repository<span class="o">=</span>ghcr.io/nvidia/k8s-dra-driver-gpu <span class="se">\</span>
+      --set image.tag<span class="o">=</span>d1fad7ed-ubi9 <span class="se">\</span>
+      --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/ <span class="se">\</span>
+      --set <span class="nv">nvidiaCtkPath</span><span class="o">=</span>/usr/local/nvidia/toolkit/nvidia-ctk <span class="se">\</span>
+      --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="common-chart-customization-options">
+<h3>Common Chart Customization Options<a class="headerlink" href="#common-chart-customization-options" title="Permalink to this headline">#</a></h3>
+<p>The following options are available when using the Helm chart.
+These options can be used with <code class="docutils literal notranslate"><span class="pre">--set</span></code> when installing with Helm.</p>
+<p>The following table identifies the most frequently used options.
+To view all the options, run <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/nvidia-dra-driver-gpu</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 50%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code></p></td>
+<td><p>Specifies the driver root on the host.
+For driver installed directly on a host, use a value of <cite>/</cite>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaCtkPath</span></code></p></td>
+<td><p>Specifies the path of The NVIDIA Container Tool Kit binary (nvidia-ctk) on the host, as it should appear in the the generated CDI specification.
+The path depends on the system that runs on the node.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="verify-installation">
+<h3>Verify installation<a class="headerlink" href="#verify-installation" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Validate that the DRA Driver components are running and in a Ready state.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod -n nvidia-dra-driver-gpu
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                           READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvidia-dra-driver-k8s-dra-driver-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s</span>
+<span class="go">nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-7kdg9          1/1     Running   0          7m27s</span>
+<span class="go">nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bd6gn          1/1     Running   0          7m27s</span>
+<span class="go">nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bzm6p          1/1     Running   0          7m26s</span>
+<span class="go">nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-xjm4p          1/1     Running   0          7m27s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that all GPU nodes are labeled with clique ids.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="o">(</span><span class="nb">echo</span> -e <span class="s2">&quot;NODE\tLABEL\tCLIQUE&quot;</span><span class="p">;</span> kubectl get nodes -o json <span class="p">|</span> <span class="se">\</span>
+  jq -r <span class="s1">&#39;.items[] | [.metadata.name, &quot;nvidia.com/gpu.clique&quot;, .metadata.labels[&quot;nvidia.com/gpu.clique&quot;]] | @tsv&#39;</span><span class="o">)</span> <span class="p">|</span> <span class="se">\</span>
+  column -t
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NODE                  LABEL                  CLIQUE</span>
+<span class="go">node1                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
+<span class="go">node2                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
+<span class="go">node3                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
+<span class="go">node4                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The GPU DRA Driver adds a Clique ID to each GPU node.
+This is an unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other.
+The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same &lt;ClusterUUID.Clique ID&gt; pair.</p>
+<p>The ClusterUUID is a unique identifier for a given NVLink Domain.
+It can be queried on a GPU by GPU basis via nvidia-smi.
+All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
+</section>
+</section>
+<section id="about-the-computedomain-custom-resource">
+<h2>About the ComputeDomain Custom Resource<a class="headerlink" href="#about-the-computedomain-custom-resource" title="Permalink to this headline">#</a></h2>
+<p>The NVIDIA GPU DRA Driver introduces a new custom resource called ComputeDomain, which creates a DRA ResourceClaimTemplate that you can reference in workloads.
+The ComputeDomain resources also creates a unique ResourceClaim for each worker that links it back to the ComputeDomain where the ResourceClaimTemplate is defined.</p>
+<p>If a subset of the nodes associated with a ComputeDomain are capable of communicating over IMEX, the NVIDIA Kubernetes DRA will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections. Multiple such IMEX domains will be created as necessary depending on the number (and availability) of nodes allocated to the ComputeDomain.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Sample NVIDIA DRA Driver ComputeDomain Custom Resource Manifest</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-injection</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>The following table describes some of the fields in the custom resource.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">channel.resourceClaimTemplate.name</span></code> (required)</p></td>
+<td><p>Specifies the <code class="docutils literal notranslate"><span class="pre">name</span></code> of the ResourceClaimTemplate to create.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numNodes</span></code> (required)</p></td>
+<td><p>Specifies the number of nodes in the IMEX domain.</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="node-and-pod-affitnity-strategies">
+<h3>Node and Pod Affitnity Strategies<a class="headerlink" href="#node-and-pod-affitnity-strategies" title="Permalink to this headline">#</a></h3>
+<p>The ComputeDomain object is not tied directly to the notion of an IMEX channel.
+Instead, it is tied to the looser notion of running a multi-node workload on a set of compute nodes.
+This means that nodes that are not capable of communicating over IMEX can still be allocated to the same ComputeDomain as IMEX capable nodes.
+Workloads should use NodeAffinity and PodAffinity rules to influence where they will be deployed on your cluster to ensure they are allocated to the exact set of nodes you want.</p>
+<p>For example you could set PodAffinity with a preferred topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.clique</span></code> for workloads to span multiple NVLink domains but want them packed as tightly as possible. Or use a required topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.con/gpu.clique</span></code> when you require all workloads deployed into the same NVLink domain, but don’t care which one.</p>
+</section>
+</section>
+<section id="create-a-custom-domain-and-run-a-workload">
+<h2>Create a Custom Domain and run a workload<a class="headerlink" href="#create-a-custom-domain-and-run-a-workload" title="Permalink to this headline">#</a></h2>
+<p>To create IMEX domains on your GPUs, create a Custom Domain resource on your cluster. YOu can then reference the ResouceClaimTemplate in your workload specs as a <code class="docutils literal notranslate"><span class="pre">resourceClaims.resourceClaimTemplateName</span></code>. The example manifest below, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code>, shows the creation of a CustomDomain, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>, and a workload pod referencing the ResourceClaimTemplate, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-injection</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-injection</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ctr</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu:22.04</span><span class="w"></span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ls</span><span class="nv"> </span><span class="s">-la</span><span class="nv"> </span><span class="s">/dev/nvidia-caps-imex-channels;</span><span class="nv"> </span><span class="s">trap</span><span class="nv"> </span><span class="s">&#39;exit</span><span class="nv"> </span><span class="s">0&#39;</span><span class="nv"> </span><span class="s">TERM;</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">wait&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Apply the mainfest.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f imex-channel-injection.yaml
+</pre></div>
+</div>
+<p>This will create the following resources on your cluster.</p>
+<ul>
+<li><p>A ComputeDomain resourced named <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>.</p></li>
+<li><p>A ResourceClaimTemplate named <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>.</p>
+<p>This is used to request access to a unique IMEX channel on a set of compute nodes.
+A reference to the ComputeDomain this ResourceClaimTemplate is associated with is passed along as part of a request.
+Each worker of a multi-node job should reference this ResourceClaimTemplate to ensure that they have access to the same IMEX channel inside the appropriate ComputeDomain</p>
+</li>
+<li><p>ResourceClaimTemplate for the DaemonSet.</p>
+<p>This is used to request access to a device that injects ComputeDomain-specific settings for an imex-daemon to run with (config.cfg, nodes_config.cfg, etc.)
+A reference to the ComputeDomain this ResourceClaimTemplate is associated with is passed along as part of a request.
+Each worker of the daemonset mentioned below references this ResourceClaimTemplate to ensure they start up IMEX daemons associated with the appropriate ComputeDomain.</p>
+</li>
+<li><p>A DaemonSet.</p>
+<p>This forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them.
+These daemons “follow” the workload pods to the nodes where they have been scheduled.
+Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.</p>
+</li>
+</ul>
+<p>As the workload <code class="docutils literal notranslate"><span class="pre">imex-channel-injection-pod</span></code> referencing the ResourceClaimTemplate for workloads, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>, get scheduled, they trigger the DRA Driver to request access to the same IMEX channel on whatever node they land on.</p>
+<p>Once scheduled to a node, the DRA driver adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
+This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.
+Once all workloads running in a ComputeDomain have run to completion, the label gets removed (even if the ComputeDomain itself hasn’t been deleted yet).
+This allows these nodes to be reused for other ComputeDomains and blocks the workloads from running until the IMEX daemon on that node has been started.</p>
+<p>The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.</p>
+<p>Once all daemons have been fully started, the DRA driver unblocks each worker, injects its IMEX channel into the worker and allows it to start running.</p>
+<section id="view-the-compute-domain-resources-on-your-cluster">
+<h3>View the Compute Domain resources on your cluster<a class="headerlink" href="#view-the-compute-domain-resources-on-your-cluster" title="Permalink to this headline">#</a></h3>
+<p>View a ComputeDomain resource.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe computedomain/imex-channel-injection
+</pre></div>
+</div>
+<p>Sample output:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Name</span><span class="p">:</span><span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-injection</span><span class="w"></span>
+<span class="nt">Namespace</span><span class="p">:</span><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+<span class="nt">Labels</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">&lt;none&gt;</span><span class="w"></span>
+<span class="nt">Annotations</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">&lt;none&gt;</span><span class="w"></span>
+<span class="nt">API Version</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
+<span class="nt">Kind</span><span class="p">:</span><span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
+<span class="nt">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Creation Timestamp</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">2025-03-06T11:24:47Z</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Finalizers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/computeDomain</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Generation</span><span class="p">:</span><span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Resource Version</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">18161752</span><span class="w"></span>
+<span class="w">  </span><span class="nt">UID</span><span class="p">:</span><span class="w">               </span><span class="l l-Scalar l-Scalar-Plain">e771ff54-948f-405d-8ef2-47ae83857500</span><span class="w"></span>
+<span class="nt">Spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Channel</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">Resource Claim Template</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">Name</span><span class="p">:</span><span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Num Nodes</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="nt">Events</span><span class="p">:</span><span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">&lt;none&gt;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>View IMEX channel creation logs</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain --tail<span class="o">=</span>-1
+</pre></div>
+</div>
+<p>Sample output:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">IMEX Log initializing at</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3/3/2025 17:26:19.102</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX version 570.00 is running with the following configuration options</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Logging level = 4</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Logging file name/path = /var/log/nvidia-imex.log</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Append to log file = 0</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Max Log file size = 1024 (MBs)</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Use Syslog file = 0</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX Library communication bind interface =</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX library communication bind port = 50000</span><span class="w"></span>
+
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Identified this node as ID 0, using bind IP of &#39;XX.XXX.XXX.XX&#39;, and network interface of enP2s2f1</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NvGpu Library version matched with GPU Driver version</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 62</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 63</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 64</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Creating gRPC channels to all peers (nPeers = 1).</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 65</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.</span><span class="w"></span>
+<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU event successfully subscribed</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cdi.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Container Device Interface Support in the GPU Operator</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gpu-operator-kubevirt.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-nvidia-gpu-dra-driver">About the NVIDIA GPU DRA Driver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-nvidia-dra-driver">Install NVIDIA DRA Driver</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-chart-customization-options">Common Chart Customization Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-installation">Verify installation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-computedomain-custom-resource">About the ComputeDomain Custom Resource</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#node-and-pod-affitnity-strategies">Node and Pod Affitnity Strategies</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-custom-domain-and-run-a-workload">Create a Custom Domain and run a workload</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-the-compute-domain-resources-on-your-cluster">View the Compute Domain resources on your cluster</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+
+  </body>
+</html>
