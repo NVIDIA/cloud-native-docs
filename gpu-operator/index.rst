@@ -47,6 +47,7 @@
    precompiled-drivers.rst
    GPU Driver CRD <gpu-driver-configuration.rst>
    Container Device Interface Support <cdi.rst>
+   NVIDIA DRA Driver for GPUs <dra-driver.rst>
 
 .. toctree::
    :caption:  Sandboxed Workloads
