@@ -55,7 +55,7 @@ The product life cycle and versioning are subject to change in the future.
    * - GPU Operator Version
      - Status
 
-   * - 24.12.x
+   * - 25.3.x
      - Generally Available
 
    * - 24.9.x
@@ -104,10 +104,10 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `1.17.4 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.17.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.17.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `4.1.0-4.0.2 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `4.1.1-4.0.4 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
      - `v0.17.2 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
@@ -120,7 +120,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `0.11.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
 
    * - DCGM
-     - `4.1.0 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.1.1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
      - ${version}

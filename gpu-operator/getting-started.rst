@@ -173,6 +173,13 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
      - ``true``
 
+  * - ``driver.kernelModelType``
+    - Specifies the type of driver kernel modules to be used when installing the GPU driver.
+      Accepted values are `auto` (defualt), `proprietary` and `open`. 
+      * `auto` means that the recommended kernel module type is chosen based on the GPU devices on the host and the driver branch used.
+      * `proprietary` means the propietary kernel modules.
+    - ``auto``
+
    * - ``driver.repository``
      - The images are downloaded from NGC. Specify another image repository when using
        custom driver images.
@@ -197,8 +204,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        runs slowly in your cluster.
      - ``60s``
 
-   * - ``driver.useOpenKernelModules``
-     - When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
+   * - ``driver.useOpenKernelModules`` (deprecated)
+     - Use `kernelModelType` instead. 
+       This field is no longer honor in v25.3.0 and later. 
+       It  will be removed in future release.
+       When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
      - ``false``
 
    * - ``driver.usePrecompiled``
