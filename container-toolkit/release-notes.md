@@ -10,6 +10,36 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.5
+
+This release of the NVIDIA Container Toolkit `v1.17.5` is a bugfix and minor feature release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.5`
+- `nvidia-container-toolkit-base 1.17.5`
+- `libnvidia-container-tools 1.17.5`
+- `libnvidia-container1 1.17.5`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubi9`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5`)
+
+### Fixes and Features
+
+- Re-added support for CUDA Forward Compatibility (removed by default in v1.17.4) using a dedicated `enable-cuda-compat` hook. This can be disabled using a `disable-cuda-compat-lib-hook` feature flag and can be skipped from CDI specification generation when using the `nvcdi` API to allow compatibility with older NVIDIA Container Toolkit installations.
+- Added the IMEX binaries to a generated CDI specification if present on the host. This change ensures that the IMEX Daemon and IMEX Control executables are present in containers.
+- Fixed a bug that may overwrite docker feature flags when configuring CDI Docker from the `nvidia-ctk runtime configure` command.
+- Added an `ignore-imex-channel-requests` feature flag. When enabled, this feature flag ensures that the NVIDIA Container Runtime ignores IMEX channel requests to allow their injection to be managed solely by another component.
+- Updated the `update-ldcache` hook to run the host `ldconfig` from a MEMFD.
+- Fixed a bug where `cdi` mode would not work with the `--gpus` flag even if the NVIDIA Container Runtime was used.
+
+### Enhancements to container-toolkit Container Images
+
+- Added functionality to enable CDI in the selected container engine (Containerd, Cri-o, Docker) if `CDI_ENABLED` is set.
+- Updated the CUDA base image version to 12.8.0.
+
 ## NVIDIA Container Toolkit 1.17.4
 
 This version includes updates for:
