@@ -31,8 +31,113 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
-
 ----
+
+.. _v25.3.0:
+
+25.3.0
+======
+
+.. _v25.3.0-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit version v1.15.0
+  - NVIDIA Driver Manager for Kubernetes v0.8.0
+  - NVIDIA Kubernetes Device Plugin v0.17.1
+  - NVIDIA DCGM Exporter v4.1.1-4.0.4
+  - NVIDIA DCGM v4.1.1-2
+  - Node Feature Discovery v0.17.2
+  - NVIDIA MIG Manager for Kubernetes v0.12.0
+  - NVIDIA KubeVirt GPU Device Plugin v1.3.1
+  - NVIDIA Kata Manager for Kubernetes v0.2.3
+  - NVIDIA GDRCopy Driver v2.4.4
+
+* Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
+
+* Added new parameter, `kernelModuleType`, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
+  The `kernelModuleType` field supports three values to determine how the the kernal model is selected. Valid values for the new field are auto (default), open, and proprietary.
+
+  In previous versions, the `useOpenKernelModules` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
+  This field is now deprecated and will be removed in a future release.
+  If you were using the `useOpenKernelModules` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
+
+  Note, `auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  550 and 535 branch drivers do not yet support this mode.
+
+* Added support for Ubuntu 24.04.
+
+* Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+
+* Added support for NVIDIA Network Operator v25.1.0.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added support for OpenShift 4.18.
+
+* Add support for Containerd 2.0.
+
+* Added support for new MIG profiles with HGX B200.
+
+  * Added support for the following profiles:
+
+    * ``1g.23gb``
+    * ``1g.23gb+me``
+    * ``1g.45gb``
+    * ``2g.45gb``
+    * ``3g.90gb``
+    * ``7g.180gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.23gb`` :math:`\times` 2
+    * ``2g.45gb`` :math:`\times` 1
+    * ``3g.90gb`` :math:`\times` 1
+
+* Added support for new MIG profiles with HGX GB200.
+
+  * Added support for the following profiles:
+
+    * ``1g.24gb``
+    * ``1g.24gb+me``
+    * ``1g.47gb``
+    * ``2g.47gb``
+    * ``3g.95gb``
+    * ``4g.95gb``
+    * ``7g.189gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.24gb`` :math:`\times` 2
+    * ``2g.47gb`` :math:`\times` 1
+    * ``3g.95gb`` :math:`\times` 1
+
+Improvements 
+------------
+
+* Improved security by removing unneeded permissions in the GPU Operator ClusterRole.
+
+* Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrcis namespace to `gpu_operator`.
+
+.. _v25.3.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* Removed default liveiness prode from the GDS and GDRCopy containers of the driver-daemonset. 
+  Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
+
+* Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
+  Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
+
+* Removed deprecated `operator.defaultRuntime`` parameter.
+
+.. _v25.3.0-known-limitations:
+
+Known Limitations
+-----------------
 
 .. _v24.9.2:
 

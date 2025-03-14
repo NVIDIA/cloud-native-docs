@@ -165,6 +165,16 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
+  .. tab-item:: G-series Products
+
+    +-------------------------+------------------------+
+    | Product                 | Architecture           |
+    +=========================+========================+
+    | NVIDIA HGX B200         | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
+    | NVIDIA HGX GB200 NVL    | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
+
 
 .. _gpu-operator-arm-platforms:
 
@@ -258,19 +268,19 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 8.0 U2, 8.0 U3
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 1.26
          - 2.12, 2.13
@@ -288,10 +298,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
          -
@@ -373,14 +383,14 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.24--1.31
+         - 1.29--1.32
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.23---1.25
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.24--1.31
+         - 1.29--1.32
          -
          - 8.0 U2, 8.0 U3
          -
@@ -397,10 +407,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
-         - 1.24---1.31
+         - 1.29---1.32
          -
 
 
@@ -454,6 +464,7 @@ Support for KubeVirt and OpenShift Virtualization
 
 Red Hat OpenShift Virtualization is based on KubeVirt.
 
+
 ================    ===========   =============   =========    =============    ===========
 Operating System    Kubernetes           KubeVirt              OpenShift Virtualization
 ----------------    -----------   -------------------------    ----------------------------
@@ -476,7 +487,7 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- H100
+- H100 
 
 - GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
