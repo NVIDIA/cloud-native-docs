@@ -58,14 +58,19 @@ New Features
 
 * Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
 
-* Added new parameter, `kernelModuleType`, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
-  The `kernelModuleType` field supports three values to determine how the the kernal model is selected. Valid values for the new field are auto (default), open, and proprietary.
+* Added new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
+ 
+  Valid values include:
 
-  In previous versions, the `useOpenKernelModules` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
+  * ``auto``: Default and recommended option. Use the default kernel module type (open or proprietary) based on the GPU Operator and driver containers used. 
+  * ``open``: Use the NVIDIA Open GPU Kernel module driver. 
+  * ``proprietary``: Use the NVIDIA Proprietary GPU Kernel module driver.
+
+  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
   This field is now deprecated and will be removed in a future release.
-  If you were using the `useOpenKernelModules` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
+  If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
 
-  Note, `auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
   550 and 535 branch drivers do not yet support this mode.
 
 * Added support for Ubuntu 24.04.
@@ -120,6 +125,8 @@ Improvements
 * Improved security by removing unneeded permissions in the GPU Operator ClusterRole.
 
 * Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrcis namespace to `gpu_operator`.
+
+* Improved error handling in Driver Manager for Kubernetes by adding pod watch permissions.
 
 .. _v25.3.0-fixed-issues:
 

@@ -521,7 +521,8 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
    Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, ``nvidia-fs``,
    requires the NVIDIA Open GPU Kernel module driver.
-   You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
+   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later. 
+   Or use ``driver.kernelModuleType=open`` if you are using a different driver version or branch.
    argument to the ``helm`` command.
    Refer to :ref:`Common Chart Customization Options` for more information.
 

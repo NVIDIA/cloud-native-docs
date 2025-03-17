@@ -195,6 +195,13 @@ The following table describes some of the fields in the custom resource.
      - Specifies the credentials to provide to the registry if the registry is secured.
      - None
 
+   * - ``kernelModuleType``
+     - Specifies the type of the NVIDIA GPU Kernel modules to use.
+       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
+       
+       ``Auto`` means that the recommended kernel module type is chosen based on the GPU devices on the host and the driver branch used.
+     - ``auto``
+
    * - ``labels``
      - Specifies a map of key and value pairs to add as custom labels to the driver pod.
      - None
@@ -217,8 +224,9 @@ The following table describes some of the fields in the custom resource.
      - Specifies the container registry that contains the driver container.
      - ``nvcr.io/nvidia``
 
-   * - ``useOpenKernelModules``
-     - Specifies to use the NVIDIA Open GPU Kernel modules.
+   * - ``useOpenKernelModules`` Deprecated.
+     - This field is depreacted as of v25.3.0. Use ``kernelModuleType`` instead. 
+       Specifies to use the NVIDIA Open GPU Kernel modules.
      - ``false``
 
    * - ``tolerations``
