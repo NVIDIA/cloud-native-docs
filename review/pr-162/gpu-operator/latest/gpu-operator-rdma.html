@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2025"/>
 
 
 
@@ -152,6 +152,32 @@
   </div>
   
   <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
     
     
     <div class="navbar-header-items__end">
@@ -239,6 +265,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -257,6 +312,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -311,27 +367,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -611,8 +646,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="9ce05694-afd4-497c-a533-a65fa9fd1159" name="57d2ddb2-46a1-49b9-bd62-a567c8c81e01" type="radio">
-</input><label class="sd-tab-label" for="9ce05694-afd4-497c-a533-a65fa9fd1159">
+<input checked="checked" id="3e06075b-f0c2-4990-a950-7d9ceb27d721" name="992e8f37-7bf3-4b27-b5dd-073e8e4d33f9" type="radio">
+</input><label class="sd-tab-label" for="3e06075b-f0c2-4990-a950-7d9ceb27d721">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -657,8 +692,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="ab1770a3-5e6b-491d-b925-284be6553f6f" name="57d2ddb2-46a1-49b9-bd62-a567c8c81e01" type="radio">
-</input><label class="sd-tab-label" for="ab1770a3-5e6b-491d-b925-284be6553f6f">
+<input id="4a774c80-64aa-437d-bc81-c9c92e9ec651" name="992e8f37-7bf3-4b27-b5dd-073e8e4d33f9" type="radio">
+</input><label class="sd-tab-label" for="4a774c80-64aa-437d-bc81-c9c92e9ec651">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -938,6 +973,8 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -973,6 +1010,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -1046,6 +1084,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </div>
       
         <div class="footer-item">
+
 
 
 

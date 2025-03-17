@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2025"/>
 
 
 
@@ -152,6 +152,32 @@
   </div>
   
   <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
     
     
     <div class="navbar-header-items__end">
@@ -239,6 +265,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -257,6 +312,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -311,27 +367,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -380,49 +415,29 @@
   <section id="install-the-nvidia-gpu-dra-driver-and-configure-imex-support">
 <h1>Install the NVIDIA GPU DRA Driver and Configure IMEX Support<a class="headerlink" href="#install-the-nvidia-gpu-dra-driver-and-configure-imex-support" title="Permalink to this headline">#</a></h1>
 <p>THe NVIDIA GPU DRA Driver is an additional component you can install after the GPU Operator that enables you to use the Kubernetes DRA feature to define IMEX channel resources that are managed by Kubernetes.
-This page details more information about the GPU DRA Driver, including how to install it and examples of deploying workload using IMEX channels.</p>
+This page details more information about the GPU DRA Driver, including how to install it and examples of deploying workloads using IMEX channels.</p>
 <section id="about-the-nvidia-gpu-dra-driver">
 <h2>About the NVIDIA GPU DRA Driver<a class="headerlink" href="#about-the-nvidia-gpu-dra-driver" title="Permalink to this headline">#</a></h2>
 <p>The NVIDIA GPU DRA Driver leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA IMEX channels available in GH200 and GB200 GPUs.
-The NVIDIA GPU DRA Driver creates and manages IMEX channels through the creation of a ComputeDomain custom resource. Use this custom resource to define your resource templates, and then reference the templates within your workload specs.</p>
+The NVIDIA GPU DRA Driver creates and manages IMEX channels through the creation of a ComputeDomain custom resource. You use this custom resource to define your resource templates, and then reference the templates within your workload specs. The GPU DRA Driver will handle creating the cooresponding IMEX channels for you.</p>
 <p>An IMEX channel is a construct that allows a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
 The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch.
 Once an IMEX channel has been established for a set of GPUs, they are free to read and write each other’s memory via extensions to the CUDA memory call APIs.</p>
 <p>An IMEX channel is a resource that spans multiple nodes.
 GH200 and GB200 systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
 This allows you to get the most use out of your available GPUs without any additional latency burdens.</p>
-<p>Kubernetes Dynamic Resource Allocation (DRA), available as beta in Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.
+<p>Kubernetes DRA, available as beta from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.
 This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels.
 NVIDIA GPU DRA Driver uses DRA features to define IMEX channel resources that can be managed by Kubernetes.</p>
 <p>Refer to the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA documentation</a> for details on this feature.</p>
 </section>
-<section id="install-the-gpu-dra-driver">
-<h2>Install the GPU DRA Driver<a class="headerlink" href="#install-the-gpu-dra-driver" title="Permalink to this headline">#</a></h2>
-<p>The GPU DRA Driver is an addiitonal component that can be installed after you’ve installed the  GPU Operator on your clsuter.</p>
+<section id="install-the-nvidia-gpu-dra-driver">
+<h2>Install the NVIDIA GPU DRA Driver<a class="headerlink" href="#install-the-nvidia-gpu-dra-driver" title="Permalink to this headline">#</a></h2>
+<p>The GPU DRA Driver is an addiitonal component that can be installed after you’ve installed the GPU Operator on your clsuter.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>GH200 and GB200 GPUs with Mulit-Node NVLink connections between GPUs.</p></li>
-<li><p>NVIDIA GPU Driver 565 or later driver installed on all GPU nodes.
-Drivers must be pre-installed on all GPU nodes before installing the NVIDIA GPU Operator as operator managed drivers are not supported at this time.</p></li>
-<li><p>IMEX packages installed on GPU nodes with systemd service disabled.
-Refer to the release notes for your driver version for the exact version of the IMEX packages to install.</p>
-<p>The following example shows how to install IMEX drivers.
-The script assumes that the NVIDIA drivers have been installed already.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">DRIVER_VERSION=$(nvidia-smi -i 0 --query-gpu=driver_version --format=csv,noheader,nounits)</span>
-<span class="go">IMEX_DRIVER_VERSION=&quot;${DRIVER_VERSION%%.*}&quot;</span>
-<span class="go">TARGETARCH=$(uname -m | sed -E &#39;s/^x86_64$/amd64/; s/^(aarch64|arm64)$/arm64/&#39;)</span>
-
-<span class="gp">$ </span>curl -fsSL -o /tmp/nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb <span class="o">&amp;&amp;</span> dpkg -i /tmp/nvidia-imex-<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb <span class="o">&amp;&amp;</span> <span class="se">\</span>
-nvidia-imex --version <span class="o">&amp;&amp;</span> <span class="se">\</span>
-rm -rf /tmp/nvidia-imex_<span class="si">${</span><span class="nv">IMEX_DRIVER_VERSION</span><span class="si">}</span>_<span class="si">${</span><span class="nv">DRIVER_VERSION</span><span class="si">}</span>-1_<span class="si">${</span><span class="nv">TARGETARCH</span><span class="si">}</span>.deb
-</pre></div>
-</div>
-<p>Then disable systemd service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl disable --now nvidia-imex.service <span class="o">&amp;&amp;</span> systemctl mask nvidia-imex.service
-</pre></div>
-</div>
-</li>
 <li><p>Kubernetes v1.32 multi-node cluster with the DynamitcResourceAllocation feature gate enabled.</p>
 <p>The following is a sample for enabling DRA feature gates.
 Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
@@ -453,17 +468,18 @@ Refer to the Kubernetes documentation for full details on <a class="reference ex
 </div>
 </div>
 </li>
-<li><p>The NVIDIA GPU Operator v25.3.0 installed with CDI enabled on all nodes and operator managed drivers disabled.</p>
-<p>A sample Helm install command below includes enabling CDI with <code class="docutils literal notranslate"><span class="pre">cdi.enabled=true</span></code> and pre-installed drivers configured with <code class="docutils literal notranslate"><span class="pre">drivers.enabled=false</span></code>.
-Refer to the install documentation for details on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">enabling CDI</a> and <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">pre-installed drivers</a>.</p>
+<li><p>The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.</p>
+<p>A sample Helm install command below includes enabling CDI with <code class="docutils literal notranslate"><span class="pre">cdi.enabled=true</span></code>.
+Refer to the install documentation for details on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">enabling CDI</a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
         -n gpu-operator --create-namespace <span class="se">\</span>
         nvidia/gpu-operator <span class="se">\</span>
         --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
-        --set driver.enabled<span class="o">=</span><span class="nb">false</span>
-<span class="go">        --set cdi.enabled=true</span>
+        --set cdi.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
+<p>Note if you want to install the GPU DRA Driver using pre-installed drivers, you must install NVIDIA GPU Driver 565 or later, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
+Refer to the documentation on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">installing the GPU Operator with pre-installed drivers</a> for more details.</p>
 </li>
 </ul>
 </section>
@@ -477,12 +493,11 @@ Refer to the install documentation for details on <a class="reference external" 
 </div>
 </li>
 <li><p>Install NVIDIA DRA Driver:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia-dra-driver-gpu-dev-repo/nvidia-dra-driver-gpu <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+      --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.1&quot;</span> <span class="se">\</span>
       --create-namespace <span class="se">\</span>
       --namespace nvidia-dra-driver-gpu <span class="se">\</span>
-      --set image.repository<span class="o">=</span>ghcr.io/nvidia/k8s-dra-driver-gpu <span class="se">\</span>
-      --set image.tag<span class="o">=</span>d1fad7ed-ubi9 <span class="se">\</span>
-      --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/ <span class="se">\</span>
+      --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver <span class="se">\</span>
       --set <span class="nv">nvidiaCtkPath</span><span class="o">=</span>/usr/local/nvidia/toolkit/nvidia-ctk <span class="se">\</span>
       --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
@@ -511,12 +526,13 @@ To view all the options, run <code class="docutils literal notranslate"><span cl
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code></p></td>
 <td><p>Specifies the driver root on the host.
-For driver installed directly on a host, use a value of <cite>/</cite>.</p></td>
+For Operator managed drivers, use <code class="docutils literal notranslate"><span class="pre">/run/nvidia/driver</span></code>.
+For pre-installed drivers, use <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaCtkPath</span></code></p></td>
 <td><p>Specifies the path of The NVIDIA Container Tool Kit binary (nvidia-ctk) on the host, as it should appear in the the generated CDI specification.
-The path depends on the system that runs on the node.</p></td>
+The exact path depends on the system that runs on the node.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code></p></td>
 </tr>
 </tbody>
@@ -568,7 +584,8 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
 <h2>About the ComputeDomain Custom Resource<a class="headerlink" href="#about-the-computedomain-custom-resource" title="Permalink to this headline">#</a></h2>
 <p>The NVIDIA GPU DRA Driver introduces a new custom resource called ComputeDomain, which creates a DRA ResourceClaimTemplate that you can reference in workloads.
 The ComputeDomain resources also creates a unique ResourceClaim for each worker that links it back to the ComputeDomain where the ResourceClaimTemplate is defined.</p>
-<p>If a subset of the nodes associated with a ComputeDomain are capable of communicating over IMEX, the NVIDIA Kubernetes DRA will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections. Multiple such IMEX domains will be created as necessary depending on the number (and availability) of nodes allocated to the ComputeDomain.</p>
+<p>If a subset of the nodes associated with a ComputeDomain are capable of communicating over IMEX, the NVIDIA Kubernetes DRA will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections. Multiple IMEX domains will be created as necessary depending on the number (and availability) of nodes allocated to the ComputeDomain.</p>
+<p>To create IMEX domains on your GPUs using the GPU DRA Driver, create a CustomDomain resource on your cluster. You can then reference the ResouceClaimTemplate in your workload specs as a <code class="docutils literal notranslate"><span class="pre">resourceClaims.resourceClaimTemplateName</span></code>.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Sample NVIDIA DRA Driver ComputeDomain Custom Resource Manifest</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
@@ -608,9 +625,40 @@ The ComputeDomain resources also creates a unique ResourceClaim for each worker 
 </tbody>
 </table>
 </div>
+<p>When you create a CustomDomain resource and configure a pod to reference it, the GPU DRA Driver will create the following reources on your cluster:</p>
+<ul>
+<li><p>A ComputeDomain resource.</p></li>
+<li><p>A ResourceClaimTemplate to use for workload pods.</p>
+<p>This is used to request access to a unique IMEX channel on a set of compute nodes.
+Each worker of a multi-node job should reference this ResourceClaimTemplate to ensure that they have access to the same IMEX channel inside the appropriate ComputeDomain.</p>
+</li>
+<li><p>ResourceClaimTemplate for the DaemonSet.</p>
+<p>This is used to request access to a device that injects ComputeDomain-specific settings for an imex-daemon to run with (config.cfg, nodes_config.cfg, etc.).
+Each worker of the DaemonSet mentioned below references this ResourceClaimTemplate to ensure they start up IMEX daemons associated with the appropriate ComputeDomain.</p>
+</li>
+<li><p>A DaemonSet.</p>
+<p>Depending on your workload requirements, this DaemonSet forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them.
+When your workload is deployed, these daemons “follow” the workload pods to the nodes where they have been scheduled.
+Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.</p>
+</li>
+</ul>
+<p>As workload pods that reference a CustomDomain ResourceClaimTemplate, get scheduled they trigger the GPU DRA Driver to request access to the same IMEX channel on whatever node they land on.</p>
+<p>Once scheduled to a node, the GPU DRA Driver adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
+This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.</p>
+<p>The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.</p>
+<p>When all daemons have been fully started, the GPU DRA Driver unblocks each worker, injects its IMEX channel into the worker and allows it to start running.</p>
+<p>Once all workloads running in a ComputeDomain have run to completion, the label gets removed even if the ComputeDomain itself hasn’t been deleted yet.
+This allows these nodes to be reused for other ComputeDomains.</p>
+<section id="node-and-pod-affitnity-strategies">
+<h3>Node and Pod Affitnity Strategies<a class="headerlink" href="#node-and-pod-affitnity-strategies" title="Permalink to this headline">#</a></h3>
+<p>A ComputeDomain isn’t strictly about IMEX channels—it’s about running workloads across a group of compute nodes.
+This means even if some nodes are not IMEX capable, they can still be part of the same ComputeDomain.
+You must apply NodeAffinity and PodAffinity rules to make sure your workloads run on IMEX capable nodes.</p>
+<p>For example you could set PodAffinity with a preferred topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.clique</span></code> for workloads to span multiple NVLink domains but want them packed as tightly as possible. Or use a required topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.con/gpu.clique</span></code> when you require all workloads deployed into the same NVLink domain, but don’t care which one.</p>
+</section>
 <section id="create-a-customdomain-and-run-a-workload">
 <h3>Create a CustomDomain and run a workload<a class="headerlink" href="#create-a-customdomain-and-run-a-workload" title="Permalink to this headline">#</a></h3>
-<p>To create IMEX domains on your GPUs using the GPUR DRA Driver, create a CustomDomain resource on your cluster. You can then reference the ResouceClaimTemplate in your workload specs as a <code class="docutils literal notranslate"><span class="pre">resourceClaims.resourceClaimTemplateName</span></code>. The example manifest below, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code>, shows the creation of a CustomDomain, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>, and a workload pod referencing the ResourceClaimTemplate, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>:</p>
+<p>The example manifest below, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code>, shows the creation of a CustomDomain, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>, and a workload pod referencing the ResourceClaimTemplate, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
@@ -644,37 +692,8 @@ The ComputeDomain resources also creates a unique ResourceClaim for each worker 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f imex-channel-injection.yaml
 </pre></div>
 </div>
-<p>This will create the following resources on your cluster.</p>
-<ul>
-<li><p>A ComputeDomain resourced named <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>.</p></li>
-<li><p>A ResourceClaimTemplate named <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>.</p>
-<p>This is used to request access to a unique IMEX channel on a set of compute nodes.
-A reference to the ComputeDomain this ResourceClaimTemplate is associated with is passed along as part of a request.
-Each worker of a multi-node job should reference this ResourceClaimTemplate to ensure that they have access to the same IMEX channel inside the appropriate ComputeDomain</p>
-</li>
-<li><p>ResourceClaimTemplate for the DaemonSet.</p>
-<p>This is used to request access to a device that injects ComputeDomain-specific settings for an imex-daemon to run with (config.cfg, nodes_config.cfg, etc.)
-A reference to the ComputeDomain this ResourceClaimTemplate is associated with is passed along as part of a request.
-Each worker of the daemonset mentioned below references this ResourceClaimTemplate to ensure they start up IMEX daemons associated with the appropriate ComputeDomain.</p>
-</li>
-<li><p>A DaemonSet.</p>
-<p>Depending on your workload requirements, this DaemonSet forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them.
-When your workload is shceduled and deployed, these daemons “follow” the workload pods to the nodes where they have been scheduled.
-Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.</p>
-</li>
-</ul>
-<p>As the workload <code class="docutils literal notranslate"><span class="pre">imex-channel-injection-pod</span></code> referencing the ResourceClaimTemplate for workloads, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>, get scheduled, they trigger the DRA Driver to request access to the same IMEX channel on whatever node they land on.</p>
-<p>Once scheduled to a node, the DRA driver adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
-This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.
-Once all workloads running in a ComputeDomain have run to completion, the label gets removed even if the ComputeDomain itself hasn’t been deleted yet.
-This allows these nodes to be reused for other ComputeDomains and blocks the workloads from running until the IMEX daemon on that node has been started.</p>
-<p>The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.</p>
-<p>Once all daemons have been fully started, the DRA driver unblocks each worker, injects its IMEX channel into the worker and allows it to start running.</p>
-</section>
-<section id="view-the-compute-domain-resources-on-your-cluster">
-<h3>View the Compute Domain resources on your cluster<a class="headerlink" href="#view-the-compute-domain-resources-on-your-cluster" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
-<li><p>View a ComputeDomain resource.</p>
+<li><p>Optional: View the ComputeDomain resource.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe computedomain/imex-channel-injection
 </pre></div>
 </div>
@@ -701,152 +720,152 @@ This allows these nodes to be reused for other ComputeDomains and blocks the wor
 </pre></div>
 </div>
 </li>
-<li><p>View IMEX channel creation logs.</p>
+<li><p>Optional: View IMEX channel creation logs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain --tail<span class="o">=</span>-1
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
-<blockquote>
-<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">IMEX Log initializing at</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3/3/2025 17:26:19.102</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX version 570.00 is running with the following configuration options</span><span class="w"></span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">IMEX Log initializing at: 3/3/2025 17:26:19.102</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX version 570.00 is running with the following configuration options</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Logging level = 4</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging level = 4</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Logging file name/path = /var/log/nvidia-imex.log</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging file name/path = /var/log/nvidia-imex.log</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Append to log file = 0</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Append to log file = 0</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Max Log file size = 1024 (MBs)</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Max Log file size = 1024 (MBs)</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Use Syslog file = 0</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Use Syslog file = 0</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX Library communication bind interface =</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX Library communication bind interface =</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX library communication bind port = 50000</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX library communication bind port = 50000</span>
 
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Identified this node as ID 0, using bind IP of &#39;XX.XXX.XXX.XX&#39;, and network interface of enP2s2f1</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NvGpu Library version matched with GPU Driver version</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 62</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 63</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 64</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Creating gRPC channels to all peers (nPeers = 1).</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 65</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Started processing of incoming messages.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.</span><span class="w"></span>
-<span class="p p-Indicator">[</span><span class="nv">Mar 03 2025 17</span><span class="p p-Indicator">:</span><span class="nv">26</span><span class="p p-Indicator">:</span><span class="nv">19</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">INFO</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tid 38</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU event successfully subscribed</span><span class="w"></span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Identified this node as ID 0, using bind IP of &#39;XX.XXX.XXX.XX&#39;, and network interface of enP2s2f1</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] NvGpu Library version matched with GPU Driver version</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 62] Started processing of incoming messages.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 63] Started processing of incoming messages.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 64] Started processing of incoming messages.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Creating gRPC channels to all peers (nPeers = 1).</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 65] Started processing of incoming messages.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.</span>
+<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] GPU event successfully subscribed</span>
 </pre></div>
 </div>
-</div></blockquote>
+</li>
+<li><p>Delete <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code> example.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f imex-channel-injection.yaml
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">computedomain.resource.nvidia.com &quot;imex-channel-injection&quot; deleted</span>
+<span class="go">pod &quot;imex-channel-injection&quot; deleted</span>
+</pre></div>
+</div>
 </li>
 </ol>
-</section>
-<section id="node-and-pod-affitnity-strategies">
-<h3>Node and Pod Affitnity Strategies<a class="headerlink" href="#node-and-pod-affitnity-strategies" title="Permalink to this headline">#</a></h3>
-<p>A ComputeDomain isn’t strictly about IMEX channels—it’s about running workloads across a group of compute nodes.
-This means even if some nodes are not IMEX capable, they can still be part of the same ComputeDomain.
-To control where your workloads run, you should use NodeAffinity and PodAffinity rules.</p>
-<p>For example you could set PodAffinity with a preferred topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.clique</span></code> for workloads to span multiple NVLink domains but want them packed as tightly as possible. Or use a required topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.con/gpu.clique</span></code> when you require all workloads deployed into the same NVLink domain, but don’t care which one.</p>
 </section>
 </section>
 <section id="run-a-multi-node-nvbandwidth-test-requiring-imex-channels-with-mpi">
 <h2>Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI<a class="headerlink" href="#run-a-multi-node-nvbandwidth-test-requiring-imex-channels-with-mpi" title="Permalink to this headline">#</a></h2>
-<p>This examples shows how to run a workload across multiple nodes using an IMEX channel.
-This example uses the following</p>
+<p>This examples shows how to run a workload across multiple nodes using an IMEX channel.</p>
+<p>The following sample files use the following:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/kubeflow/mpi-operator">MPI Operator</a></p></li>
+<li><p><a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a></p></li>
 <li><p>A 4 node cluster with all nodes capable of running GPU workloads.</p></li>
 </ul>
 <ol class="arabic">
-<li><p>Install MPI Operator.</p>
+<li><p>Install Kubeflow MPI Operator.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
 </pre></div>
 </div>
 </li>
 <li><p>Create a nvbandwidth test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF &gt; nvbandwidth-test-job.yaml
-<span class="go">  ---</span>
-<span class="go">  apiVersion: resource.nvidia.com/v1beta1</span>
-<span class="go">  kind: ComputeDomain</span>
-<span class="go">  metadata:</span>
-<span class="go">    name: nvbandwidth-test-compute-domain</span>
-<span class="go">  spec:</span>
-<span class="go">    numNodes: 4</span>
-<span class="go">    channel:</span>
-<span class="go">      resourceClaimTemplate:</span>
-<span class="go">        name: nvbandwidth-test-compute-domain-channel</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain-channel</span><span class="w"></span>
 
-<span class="go">  ---</span>
-<span class="go">  apiVersion: kubeflow.org/v2beta1</span>
-<span class="go">  kind: MPIJob</span>
-<span class="go">  metadata:</span>
-<span class="go">    name: nvbandwidth-test</span>
-<span class="go">  spec:</span>
-<span class="go">    slotsPerWorker: 2</span>
-<span class="go">    launcherCreationPolicy: WaitForWorkersReady</span>
-<span class="go">    runPolicy:</span>
-<span class="go">      cleanPodPolicy: Running</span>
-<span class="go">    sshAuthMountPath: /home/mpiuser/.ssh</span>
-<span class="go">    mpiReplicaSpecs:</span>
-<span class="go">      Launcher:</span>
-<span class="go">        replicas: 1</span>
-<span class="go">        template:</span>
-<span class="go">          metadata:</span>
-<span class="go">            labels:</span>
-<span class="go">              mpi-memcpy-dra-test-replica: mpi-launcher</span>
-<span class="go">          spec:</span>
-<span class="go">            containers:</span>
-<span class="go">            - image: ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span>
-<span class="go">              name: mpi-launcher</span>
-<span class="go">              securityContext:</span>
-<span class="go">                runAsUser: 1000</span>
-<span class="go">              command:</span>
-<span class="go">              - mpirun</span>
-<span class="go">              args:</span>
-<span class="go">              - --bind-to</span>
-<span class="go">              - core</span>
-<span class="go">              - --map-by</span>
-<span class="go">              - ppr:2:node</span>
-<span class="go">              - -np</span>
-<span class="go">              - &quot;8&quot;</span>
-<span class="go">              - --report-bindings</span>
-<span class="go">              - -q</span>
-<span class="go">              - nvbandwidth</span>
-<span class="go">              - -t</span>
-<span class="go">              - multinode_device_to_device_memcpy_read_ce</span>
-<span class="go">            affinity:</span>
-<span class="go">              nodeAffinity:</span>
-<span class="go">                requiredDuringSchedulingIgnoredDuringExecution:</span>
-<span class="go">                  nodeSelectorTerms:</span>
-<span class="go">                  - matchExpressions:</span>
-<span class="go">                    - key: node-role.kubernetes.io/control-plane</span>
-<span class="go">                      operator: Exists</span>
-<span class="go">      Worker:</span>
-<span class="go">        replicas: 4</span>
-<span class="go">        template:</span>
-<span class="go">          metadata:</span>
-<span class="go">            labels:</span>
-<span class="go">              mpi-memcpy-dra-test-replica: mpi-worker</span>
-<span class="go">          spec:</span>
-<span class="go">            containers:</span>
-<span class="go">            - image: ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span>
-<span class="go">              name: mpi-worker</span>
-<span class="go">              securityContext:</span>
-<span class="go">                runAsUser: 1000</span>
-<span class="go">              env:</span>
-<span class="go">              command:</span>
-<span class="go">              - /usr/sbin/sshd</span>
-<span class="go">              args:</span>
-<span class="go">              - -De</span>
-<span class="go">              - -f</span>
-<span class="go">              - /home/mpiuser/.sshd_config</span>
-<span class="go">              resources:</span>
-<span class="go">                limits:</span>
-<span class="go">                  nvidia.com/gpu: 2</span>
-<span class="go">                claims:</span>
-<span class="go">                - name: compute-domain-channel</span>
-<span class="go">            resourceClaims:</span>
-<span class="go">            - name: compute-domain-channel</span>
-<span class="go">              resourceClaimTemplateName: nvbandwidth-test-compute-domain-channel</span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubeflow.org/v2beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MPIJob</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">slotsPerWorker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">  </span><span class="nt">launcherCreationPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitForWorkersReady</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runPolicy</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">cleanPodPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span><span class="w"></span>
+<span class="w">  </span><span class="nt">sshAuthMountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/mpiuser/.ssh</span><span class="w"></span>
+<span class="w">  </span><span class="nt">mpiReplicaSpecs</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">Launcher</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">mpi-memcpy-dra-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
+<span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
+<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
+<span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpirun</span><span class="w"></span>
+<span class="w">            </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--bind-to</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--map-by</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppr:2:node</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-np</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--report-bindings</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-q</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-t</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multinode_device_to_device_memcpy_read_ce</span><span class="w"></span>
+<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-role.kubernetes.io/control-plane</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
+<span class="w">    </span><span class="nt">Worker</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">mpi-memcpy-dra-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
+<span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
+<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
+<span class="w">            </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/sbin/sshd</span><span class="w"></span>
+<span class="w">            </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-De</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-f</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/mpiuser/.sshd_config</span><span class="w"></span>
+<span class="w">            </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">              </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-domain-channel</span><span class="w"></span>
+<span class="w">          </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-domain-channel</span><span class="w"></span>
+<span class="w">            </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain-channel</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -930,6 +949,8 @@ This example uses the following</p>
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -944,7 +965,7 @@ This example uses the following</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-nvidia-gpu-dra-driver">About the NVIDIA GPU DRA Driver</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-gpu-dra-driver">Install the GPU DRA Driver</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-dra-driver">Install the NVIDIA GPU DRA Driver</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-gpu-dra-driver-with-helm">Install the GPU DRA Driver with Helm</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-chart-customization-options">Common Chart Customization Options</a></li>
@@ -952,9 +973,8 @@ This example uses the following</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-computedomain-custom-resource">About the ComputeDomain Custom Resource</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-customdomain-and-run-a-workload">Create a CustomDomain and run a workload</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-the-compute-domain-resources-on-your-cluster">View the Compute Domain resources on your cluster</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#node-and-pod-affitnity-strategies">Node and Pod Affitnity Strategies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-customdomain-and-run-a-workload">Create a CustomDomain and run a workload</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-multi-node-nvbandwidth-test-requiring-imex-channels-with-mpi">Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI</a></li>
@@ -964,6 +984,7 @@ This example uses the following</p>
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -1037,6 +1058,7 @@ This example uses the following</p>
 </div>
       
         <div class="footer-item">
+
 
 
 
