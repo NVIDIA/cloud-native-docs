@@ -53,10 +53,14 @@ New Features
   - Node Feature Discovery v0.17.2
   - NVIDIA MIG Manager for Kubernetes v0.12.0
   - NVIDIA KubeVirt GPU Device Plugin v1.3.1
+  - NVIDIA vGPU Device Manager v0.3.0
   - NVIDIA Kata Manager for Kubernetes v0.2.3
   - NVIDIA GDRCopy Driver v2.4.4
 
-* Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
+* Added support for the NVIDIA GPU DRA Driver v25.3.0 component which enables IMEX and Kubernetes Dynamic Resource Allocation (DRA) support.
+  See the `IMEX DRA Driver Support <dra-driver.rst>`__ documentation for more details on installing this component and running workloads. 
+
+GB200 NVL72 with IMEX/DRA and with Driver Container (embedding the IMEX package) - user sets CDI flag to true for GPU operator
 
 * Added new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
  
@@ -73,16 +77,24 @@ New Features
   Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
   550 and 535 branch drivers do not yet support this mode.
 
-* Added support for Ubuntu 24.04.
+* Added support for Ubuntu 24.04.  - runfile based driver container
+ - precompiled driver container - 6.8 kernel only
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+
+* Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
+
+* Added support for KubeVirt and OpenShift Virtualization with vGPU v18 for A30, A100, and H100 GPUs.
 
 * Added support for NVIDIA Network Operator v25.1.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
 
-* Added support for OpenShift 4.18.
+* Added support for OpenShift v4.18.
 
-* Add support for Containerd 2.0.
+* Added support for Containerd v2.0.
+
+* Added support for Kubernetes v1.32.
+  Note that the minimum supported Kubernetes versions has been updated to v1.29.
 
 * Added support for new MIG profiles with HGX B200.
 
@@ -122,7 +134,7 @@ New Features
 Improvements 
 ------------
 
-* Improved security by removing unneeded permissions in the GPU Operator ClusterRole.
+* Improved security by removing unnecessary permissions in the GPU Operator ClusterRole.
 
 * Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrcis namespace to `gpu_operator`.
 
@@ -140,11 +152,6 @@ Fixed Issues
   Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
 
 * Removed deprecated `operator.defaultRuntime`` parameter.
-
-.. _v25.3.0-known-limitations:
-
-Known Limitations
------------------
 
 .. _v24.9.2:
 

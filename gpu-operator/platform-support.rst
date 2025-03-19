@@ -285,9 +285,18 @@ The GPU Operator has been validated in the following scenarios:
          - 1.26
          - 2.12, 2.13
 
+       * - Ubuntu 24.04 LTS
+         - 1.29---1.32
+         -
+         - 8.0 U2, 8.0 U3
+         - 1.29---1.32
+         -
+         - 1.26
+         - 2.12, 2.13
+
        * - Red Hat Core OS
          -
-         - | 4.12---4.17
+         - | 4.12---4.18
          -
          -
          -
@@ -326,6 +335,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _ubuntu-kernel:
 
     :sup:`2`
+    For Ubuntu 24.04 LTS, kernel versions 6.8 are LTS ESM kernels.
     For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
     For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
@@ -398,7 +408,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.12---4.17
+         - 4.12---4.18
          -
          -
          -
@@ -423,16 +433,13 @@ See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 +----------------------------+------------------------+----------------+---------------------+
 | Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
 +============================+========================+================+=====================+
-| Ubuntu 22.04               | Generic                | 5.15           | R535, R550          |
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550         |
+|                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | NVIDIA                 | 5.15           | R535, R550          |
+| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550               |
+|                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | Azure                  | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | AWS                    | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | Oracle                 | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
+
 
 
 Supported Container Runtimes
@@ -441,7 +448,7 @@ Supported Container Runtimes
 The GPU Operator has been validated in the following scenarios:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.4 - 1.7   | CRI-O          |
+| Operating System           | Containerd 1.4 - 2.0   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -456,7 +463,7 @@ The GPU Operator has been validated in the following scenarios:
 
 .. note::
 
-  The GPU Operator has been validated with version 2 of the containerd config file.
+  The GPU Operator has been validated with version 2 and 3 of the containerd config file.
 
 
 Support for KubeVirt and OpenShift Virtualization
@@ -473,7 +480,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
-Red Hat Core OS                                                4.12---4.17      4.13---4.17
+Red Hat Core OS                                                4.12---4.18      4.13---4.18
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
