@@ -58,11 +58,11 @@ New Features
   - NVIDIA GDRCopy Driver v2.4.4
 
 * Added support for the NVIDIA GPU DRA Driver v25.3.0 component which enables IMEX and Kubernetes Dynamic Resource Allocation (DRA) support.
+
+  This component is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL or NVIDIA HGX B200, and with CDI enabled on your GPU Operator. 
   See the `IMEX DRA Driver Support <dra-driver.rst>`__ documentation for more details on installing this component and running workloads. 
 
-GB200 NVL72 with IMEX/DRA and with Driver Container (embedding the IMEX package) - user sets CDI flag to true for GPU operator
-
-* Added new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
+* Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
  
   Valid values include:
 
@@ -70,15 +70,14 @@ GB200 NVL72 with IMEX/DRA and with Driver Container (embedding the IMEX package)
   * ``open``: Use the NVIDIA Open GPU Kernel module driver. 
   * ``proprietary``: Use the NVIDIA Proprietary GPU Kernel module driver.
 
+  Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  550 and 535 branch drivers do not yet support this mode.
+
   In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
   This field is now deprecated and will be removed in a future release.
   If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
 
-  Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
-  550 and 535 branch drivers do not yet support this mode.
-
-* Added support for Ubuntu 24.04.  - runfile based driver container
- - precompiled driver container - 6.8 kernel only
+* Added support for Ubuntu 24.04.
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
 

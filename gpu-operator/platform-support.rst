@@ -494,6 +494,8 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
+- H200NVL with vGPU v18.0
+
 - H100 
 
 - GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
@@ -510,7 +512,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
