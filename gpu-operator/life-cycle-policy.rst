@@ -112,7 +112,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `0.17.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
-     - `0.12.0 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
+     - `0.12.1 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
 
    * - DCGM
      - `4.1.1-2 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__

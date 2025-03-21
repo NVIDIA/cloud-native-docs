@@ -32,7 +32,9 @@ NVIDIA recommends using the DMA-BUF rather than using the ``nvidia-peermem`` ker
 
 The Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-Newer driver versions will use an open kernel module by default, however to make sure you are using an open model, you can include the ``--set driver.kernelModuleType=open`` command-line arugment in your Operator install command.
+In GPU Operator v25.3.0 and later, the ``driver.kernelModuleType`` default is ``auto``, for the supported driver versions. 
+This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available. 
+Newer driver versions will use an open kernel module by default, however to make sure you are using an open model, include ``--set driver.kernelModuleType=open`` command-line arugment in your Operator install command.
 
 In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
@@ -433,7 +435,7 @@ The following sample command applies to clusters that use the Network Operator t
 
 Add ``--set driver.rdma.enabled=true`` to the command to use the legacy ``nvidia-peermem`` kernel module.
 
-Add ``--set driver.kernelModuleType=open`` if you are using driver version other than 570.86.15 or 570.124.06.
+Add ``--set driver.kernelModuleType=open`` if you are using a driver version from a branch earlier than R570.
 
 Verification
 ==============

@@ -51,7 +51,7 @@ New Features
   - NVIDIA DCGM Exporter v4.1.1-4.0.4
   - NVIDIA DCGM v4.1.1-2
   - Node Feature Discovery v0.17.2
-  - NVIDIA MIG Manager for Kubernetes v0.12.0
+  - NVIDIA MIG Manager for Kubernetes v0.12.1
   - NVIDIA KubeVirt GPU Device Plugin v1.3.1
   - NVIDIA vGPU Device Manager v0.3.0
   - NVIDIA Kata Manager for Kubernetes v0.2.3
@@ -70,7 +70,7 @@ New Features
   * ``open``: Use the NVIDIA Open GPU Kernel module driver. 
   * ``proprietary``: Use the NVIDIA Proprietary GPU Kernel module driver.
 
-  Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
   550 and 535 branch drivers do not yet support this mode.
 
   In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
@@ -104,6 +104,7 @@ New Features
     * ``1g.45gb``
     * ``2g.45gb``
     * ``3g.90gb``
+    * ``4g.90gb``
     * ``7g.180gb``
 
   * Added an ``all-balanced`` profile creates the following GPU instances:
@@ -144,7 +145,7 @@ Improvements
 Fixed Issues
 ------------
 
-* Removed default liveiness prode from the GDS and GDRCopy containers of the driver-daemonset. 
+* Removed default liveness probe from the GDS and GDRCopy containers of the driver-daemonset. 
   Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
 
 * Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.

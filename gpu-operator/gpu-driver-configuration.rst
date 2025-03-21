@@ -225,7 +225,7 @@ The following table describes some of the fields in the custom resource.
      - ``nvcr.io/nvidia``
 
    * - ``useOpenKernelModules`` Deprecated.
-     - This field is depreacted as of v25.3.0. Use ``kernelModuleType`` instead. 
+     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead. 
        Specifies to use the NVIDIA Open GPU Kernel modules.
      - ``false``
 
