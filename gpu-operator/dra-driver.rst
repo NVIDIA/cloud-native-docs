@@ -2,19 +2,27 @@
   SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0
 
-############################################################
-Install the NVIDIA GPU DRA Driver and Configure IMEX Support
-############################################################
+###################################################################S
+Multi-Node NVLink support with the NVIDIA Compute Domain DRA Driver 
+###################################################################
 
-THe NVIDIA GPU DRA Driver is an additional component you can install after the GPU Operator that enables you to use the Kubernetes DRA feature to define IMEX channel resources that are managed by Kubernetes.
-This page details more information about the GPU DRA Driver, including how to install it and examples of deploying workloads using IMEX channels.
+The NVIDIA GPU DRA Driver is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in distributed applications.
+This page details more information about installing the Compute Domain DRA Driver and examples of deploying workloads utilizing Multi-Node NVLink.
+
+For more information about Kubernetes Dynamic Resource Allocation (DRA), refer to the `Kubernetes DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
 *******************************
-About the NVIDIA GPU DRA Driver
+About the NVIDIA Compute Domain DRA Driver
 *******************************
 
-The NVIDIA GPU DRA Driver leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA IMEX channels available in GH200 and GB200 GPUs.
-The NVIDIA GPU DRA Driver creates and manages IMEX channels through the creation of a ComputeDomain custom resource. You use this custom resource to define your resource templates, and then reference the templates within your workload specs. The GPU DRA Driver will handle creating the cooresponding IMEX channels for you. 
+The NVIDIA Compute Domain DRA Driver provides a Compute Domain Kubernetes CRD that allows you to define distributed applications that make use of technologies such as Mulit-node NVLink. The underlying GPU connectivity is managed by the NVIDIA Compute Domain DRA Driver to ensure portability of workloads.
+
+
+The NVIDIA Compute Domain DRA Driver leverages the Kubernetes Dynamic Resource Allocation
+
+ You use this custom resource to define your resource templates, and then reference the templates within your workload specs. The Compute Domain DRA Driver will handle creating 
+
+
 
 An IMEX channel is a construct that allows a set of GPUs to directly read and write each other's memory over a high-bandwidth NVLink. 
 The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch. 
@@ -26,31 +34,29 @@ This allows you to get the most use out of your available GPUs without any addit
 
 Kubernetes DRA, available as beta from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod. 
 This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels. 
-NVIDIA GPU DRA Driver uses DRA features to define IMEX channel resources that can be managed by Kubernetes.
+NVIDIA Compute Domain DRA Driver uses DRA features to define IMEX channel resources that can be managed by Kubernetes.
 
-Refer to the `Kubernetes DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`__ for details on this feature. 
+Refer to the `Kubernetes DRA documentation`_ for details on this feature. 
 
 *********************************
-Install the NVIDIA GPU DRA Driver 
+Install the NVIDIA Compute Domain DRA Driver 
 *********************************
 
-The GPU DRA Driver is an addiitonal component that can be installed after you've installed the GPU Operator on your clsuter.
+The NVIDIA Compute Domain DRA Driver is an additional component that can be installed after you've installed the GPU Operator on your Kubernetes cluster.
 
 Prerequisites
 =============
 
-- GH200 and GB200 GPUs with Mulit-Node NVLink connections between GPUs.
+- A Kubernetes v1.32 cluster with the `DynamitcResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
 
-- Kubernetes v1.32 multi-node cluster with the DynamitcResourceAllocation feature gate enabled. 
-
-  The following is a sample for enabling DRA feature gates. 
+  The following is a sample for enabling the required feature gates and API groups. 
   Refer to the Kubernetes documentation for full details on `enabling DRA on your cluster <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`__.
 
   .. literalinclude:: ./manifests/input/kubeadm-init-config.yaml
     :language: yaml
     :caption: Sample Kubeadm Init Config with DRA Feature Gates Enabled
 
-- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.
+- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes.
   
   A sample Helm install command below includes enabling CDI with ``cdi.enabled=true``.
   Refer to the install documentation for details on `enabling CDI <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
@@ -63,11 +69,15 @@ Prerequisites
               --version=${version} \
               --set cdi.enabled=true
 
-  Note if you want to install the GPU DRA Driver using pre-installed drivers, you must install NVIDIA GPU Driver 565 or later, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
+  If you want to install the Compute Domain DRA Driver using pre-installed drivers, you must install, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
   Refer to the documentation on `installing the GPU Operator with pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__ for more details.
 
+  NVIDIA Compute Domain DRA Driver also requires the NVIDIA Container Toolkit (nvidia-ctk) v1.17.5 or later, which is installed by default with the NVIDIA GPU Operator v25.3.0 and later.
+  Refer to the `NVIDIA Container Toolkit documentation <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>`__ for installation instructions if you want to manage the NVIDIA Container Toolkit manually.
 
-Install the GPU DRA Driver with Helm
+- If you are using GH200 or GB200 GPUs, NVIDIA GPU Driver 565 or later must be installed. 
+
+Install the Compute Domain DRA Driver with Helm
 ====================================
 
 #. Add the NVIDIA Helm repository:
@@ -108,20 +118,21 @@ To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
 
    * - ``nvidiaDriverRoot``
      - Specifies the driver root on the host.
-       For Operator managed drivers, use ``/run/nvidia/driver``.
+       For Operator-managed drivers (recommended), use ``/run/nvidia/driver``.
        For pre-installed drivers, use ``/``.
      - ``/``
 
    * - ``nvidiaCtkPath``
-     - Specifies the path of The NVIDIA Container Tool Kit binary (nvidia-ctk) on the host, as it should appear in the the generated CDI specification.
-       The exact path depends on the system that runs on the node.
+     - Specifies the path of The NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
+       For Operator-installed NVIDIA Container Toolkit (recommedned), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
+       For a pre-installed NVIDIA Container Toolkit, use ``/usr/bin/nvidia-ctk``.
      - ``/usr/bin/nvidia-ctk`` 
 
 
 Verify installation
 ===================
 
-#. Validate that the GPU DRA Driver components are running and in a Ready state.
+#. Validate that the Compute Domain DRA Driver components are running and in a Ready state.
 
    .. code-block:: console
 
@@ -157,7 +168,7 @@ Verify installation
       node3                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1
       node4                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1
 
-The GPU DRA Driver adds a Clique ID to each GPU node. 
+The Compute Domain DRA Driver adds a Clique ID to each GPU node. 
 This is an unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other. 
 The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same <ClusterUUID.Clique ID> pair. 
 
@@ -169,12 +180,12 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.
 About the ComputeDomain Custom Resource
 ***************************************
 
-The NVIDIA GPU DRA Driver introduces a new custom resource called ComputeDomain, which creates a DRA ResourceClaimTemplate that you can reference in workloads. 
+The NVIDIA Compute Domain DRA Driver introduces a new custom resource called ComputeDomain, which creates a DRA ResourceClaimTemplate that you can reference in workloads. 
 The ComputeDomain resources also creates a unique ResourceClaim for each worker that links it back to the ComputeDomain where the ResourceClaimTemplate is defined.
 
 If a subset of the nodes associated with a ComputeDomain are capable of communicating over IMEX, the NVIDIA Kubernetes DRA will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections. Multiple IMEX domains will be created as necessary depending on the number (and availability) of nodes allocated to the ComputeDomain. 
 
-To create IMEX domains on your GPUs using the GPU DRA Driver, create a CustomDomain resource on your cluster. You can then reference the ResouceClaimTemplate in your workload specs as a ``resourceClaims.resourceClaimTemplateName``. 
+To create IMEX domains on your GPUs using the Compute Domain DRA Driver, create a CustomDomain resource on your cluster. You can then reference the ResouceClaimTemplate in your workload specs as a ``resourceClaims.resourceClaimTemplateName``. 
 
 .. literalinclude:: ./manifests/input/dra-compute-domain-crd.yaml
    :language: yaml
@@ -199,7 +210,7 @@ The following table describes some of the fields in the custom resource.
      - None
 
 
-When you create a CustomDomain resource and configure a pod to reference it, the GPU DRA Driver will create the following reources on your cluster:
+When you create a CustomDomain resource and configure a pod to reference it, the Compute Domain DRA Driver will create the following reources on your cluster:
 
 - A ComputeDomain resource. 
 
@@ -216,17 +227,17 @@ When you create a CustomDomain resource and configure a pod to reference it, the
 - A DaemonSet. 
 
   Depending on your workload requirements, this DaemonSet forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them.
-  When your workload is deployed, these daemons “follow” the workload pods to the nodes where they have been scheduled. 
+  When your workload is deployed, these daemons "follow" the workload pods to the nodes where they have been scheduled. 
   Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.
 
-As workload pods that reference a CustomDomain ResourceClaimTemplate, get scheduled they trigger the GPU DRA Driver to request access to the same IMEX channel on whatever node they land on. 
+As workload pods that reference a CustomDomain ResourceClaimTemplate, get scheduled they trigger the Compute Domain DRA Driver to request access to the same IMEX channel on whatever node they land on. 
 
-Once scheduled to a node, the GPU DRA Driver adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
+Once scheduled to a node, the Compute Domain DRA Driver adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
 This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.
 
 The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.
 
-When all daemons have been fully started, the GPU DRA Driver unblocks each worker, injects its IMEX channel into the worker and allows it to start running.
+When all daemons have been fully started, the Compute Domain DRA Driver unblocks each worker, injects its IMEX channel into the worker and allows it to start running.
 
 Once all workloads running in a ComputeDomain have run to completion, the label gets removed even if the ComputeDomain itself hasn't been deleted yet.
 This allows these nodes to be reused for other ComputeDomains.
@@ -343,7 +354,7 @@ Apply the mainfest.
 Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI
 ******************************************************************
 
-This examples shows how to run a workload across multiple nodes using an IMEX channel.
+This example demonstrates how to run a workload across multiple nodes using a Compute Domain. The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your IMEX setup is working correctly.
 
 The following sample files use the following:
 
