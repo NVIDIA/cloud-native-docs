@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 20, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 21, 2025"/>
 
 
 
@@ -435,7 +435,7 @@
 <li><p>NVIDIA DCGM Exporter v4.1.1-4.0.4</p></li>
 <li><p>NVIDIA DCGM v4.1.1-2</p></li>
 <li><p>Node Feature Discovery v0.17.2</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes v0.12.0</p></li>
+<li><p>NVIDIA MIG Manager for Kubernetes v0.12.1</p></li>
 <li><p>NVIDIA KubeVirt GPU Device Plugin v1.3.1</p></li>
 <li><p>NVIDIA vGPU Device Manager v0.3.0</p></li>
 <li><p>NVIDIA Kata Manager for Kubernetes v0.2.3</p></li>
@@ -453,7 +453,7 @@ See the <a class="reference external" href="dra-driver.rst">IMEX DRA Driver Supp
 <li><p><code class="docutils literal notranslate"><span class="pre">open</span></code>: Use the NVIDIA Open GPU Kernel module driver.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">proprietary</span></code>: Use the NVIDIA Proprietary GPU Kernel module driver.</p></li>
 </ul>
-<p>Note, <code class="docutils literal notranslate"><span class="pre">auto</span></code> is only supported with the 570.86.15 and 570.124.06 or later driver containers.
+<p>Currently, <code class="docutils literal notranslate"><span class="pre">auto</span></code> is only supported with the 570.86.15 and 570.124.06 or later driver containers.
 550 and 535 branch drivers do not yet support this mode.</p>
 <p>In previous versions, the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field specified the driver containers to install the NVIDIA Open GPU Kernel module driver.
 This field is now deprecated and will be removed in a future release.
@@ -478,6 +478,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.45gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2g.45gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">3g.90gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4g.90gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">7g.180gb</span></code></p></li>
 </ul>
 </li>
@@ -525,7 +526,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <section id="fixed-issues">
 <span id="v25-3-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Removed default liveiness prode from the GDS and GDRCopy containers of the driver-daemonset.
+<li><p>Removed default liveness probe from the GDS and GDRCopy containers of the driver-daemonset.
 Long response times of the <cite>lsmod</cite> commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.</p></li>
 <li><p>Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1207">issue #1207</a> for more details.</p></li>

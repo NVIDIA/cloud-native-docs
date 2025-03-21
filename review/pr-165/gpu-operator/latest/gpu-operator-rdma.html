@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 20, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 21, 2025"/>
 
 
 
@@ -427,7 +427,9 @@ The kernel mode support is provided by one of two approaches: DMA-BUF from the L
 NVIDIA recommends using the DMA-BUF rather than using the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module from the GPU Driver.</p>
 <p>The Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-Newer driver versions will use an open kernel module by default, however to make sure you are using an open model, you can include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line arugment in your Operator install command.</p>
+In GPU Operator v25.3.0 and later, the <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code> default is <code class="docutils literal notranslate"><span class="pre">auto</span></code>, for the supported driver versions.
+This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available.
+Newer driver versions will use an open kernel module by default, however to make sure you are using an open model, include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line arugment in your Operator install command.</p>
 <p>In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
@@ -643,8 +645,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="6fcddc7b-9cbe-4d42-b157-72f1106daf2f" name="51df9406-92b8-440d-b0ab-25131b250d40" type="radio">
-</input><label class="sd-tab-label" for="6fcddc7b-9cbe-4d42-b157-72f1106daf2f">
+<input checked="checked" id="85755c1b-bc02-4d95-942d-1705e3c7dde8" name="55bb26e5-c88e-4b3e-b057-5a825bcd7147" type="radio">
+</input><label class="sd-tab-label" for="85755c1b-bc02-4d95-942d-1705e3c7dde8">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -689,8 +691,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="8f93b9ed-f280-4804-8c7e-c206d4dd0f75" name="51df9406-92b8-440d-b0ab-25131b250d40" type="radio">
-</input><label class="sd-tab-label" for="8f93b9ed-f280-4804-8c7e-c206d4dd0f75">
+<input id="a3be9010-c8c4-452b-8b19-8d6dacfac1f7" name="55bb26e5-c88e-4b3e-b057-5a825bcd7147" type="radio">
+</input><label class="sd-tab-label" for="a3be9010-c8c4-452b-8b19-8d6dacfac1f7">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -852,7 +854,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 </pre></div>
 </div>
 <p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to the command to use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using driver version other than 570.86.15 or 570.124.06.</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
 </section>
 <section id="verification">
 <h3>Verification<a class="headerlink" href="#verification" title="Permalink to this headline">#</a></h3>
