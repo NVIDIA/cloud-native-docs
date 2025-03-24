@@ -209,7 +209,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``60s``
 
    * - ``driver.useOpenKernelModules`` Deprecated.
-     - This field is deprecated as of v25.3.0, use ``kernelModelueType`` instead.
+     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead.
        When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
      - ``false``
 

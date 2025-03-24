@@ -45,21 +45,23 @@ New Features
 
 * Added support for the following software component versions:
 
-  - NVIDIA Container Toolkit version v1.15.0
+  - NVIDIA Container Toolkit version v1.17.5
   - NVIDIA Driver Manager for Kubernetes v0.8.0
   - NVIDIA Kubernetes Device Plugin v0.17.1
   - NVIDIA DCGM Exporter v4.1.1-4.0.4
   - NVIDIA DCGM v4.1.1-2
   - Node Feature Discovery v0.17.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.17.1
   - NVIDIA MIG Manager for Kubernetes v0.12.1
   - NVIDIA KubeVirt GPU Device Plugin v1.3.1
   - NVIDIA vGPU Device Manager v0.3.0
   - NVIDIA Kata Manager for Kubernetes v0.2.3
   - NVIDIA GDRCopy Driver v2.4.4
 
-* Added support for the NVIDIA GPU DRA Driver v25.3.0 component which enables IMEX and Kubernetes Dynamic Resource Allocation (DRA) support.
+* Added support for the NVIDIA GPU DRA Driver v25.3.0 component which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA)  and IMEXsupport.
 
-  This component is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL or NVIDIA HGX B200, and with CDI enabled on your GPU Operator. 
+  This component is an additional component that can be installed alongside the the GPU Operator. 
+  It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL or NVIDIA HGX B200, and with CDI enabled on your GPU Operator. 
   See the `IMEX DRA Driver Support <dra-driver.rst>`__ documentation for more details on installing this component and running workloads. 
 
 * Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
@@ -77,7 +79,7 @@ New Features
   This field is now deprecated and will be removed in a future release.
   If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
 
-* Added support for Ubuntu 24.04.
+* Added support for Ubuntu 24.04 LTS.
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
 
@@ -94,6 +96,8 @@ New Features
 
 * Added support for Kubernetes v1.32.
   Note that the minimum supported Kubernetes versions has been updated to v1.29.
+
+* Added support for Network Operator v25.1.0.
 
 * Added support for new MIG profiles with HGX B200.
 

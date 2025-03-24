@@ -165,7 +165,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
-  .. tab-item:: G-series Products
+  .. tab-item:: B-series Products
 
     +-------------------------+------------------------+
     | Product                 | Architecture           |
@@ -288,11 +288,11 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 24.04 LTS
          - 1.29---1.32
          -
-         - 8.0 U2, 8.0 U3
-         - 1.29---1.32
          -
-         - 1.26
-         - 2.12, 2.13
+         -
+         -
+         -
+         -
 
        * - Red Hat Core OS
          -
@@ -335,7 +335,6 @@ The GPU Operator has been validated in the following scenarios:
     .. _ubuntu-kernel:
 
     :sup:`2`
-    For Ubuntu 24.04 LTS, kernel versions 6.8 are LTS ESM kernels.
     For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
     For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
@@ -436,7 +435,7 @@ See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 | Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550         |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550               |
+| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550, R570         |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
 
@@ -448,11 +447,13 @@ Supported Container Runtimes
 The GPU Operator has been validated in the following scenarios:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.4 - 2.0   | CRI-O          |
+| Operating System           | Containerd 1.6 - 2.0   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | Ubuntu 22.04 LTS           | Yes                    | Yes            |
++----------------------------+------------------------+----------------+
+| Ubuntu 24.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | CentOS 7                   | Yes                    | No             |
 +----------------------------+------------------------+----------------+
@@ -460,10 +461,6 @@ The GPU Operator has been validated in the following scenarios:
 +----------------------------+------------------------+----------------+
 | Red Hat Enterprise Linux 8 | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
-
-.. note::
-
-  The GPU Operator has been validated with version 2 and 3 of the containerd config file.
 
 
 Support for KubeVirt and OpenShift Virtualization
@@ -478,6 +475,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
+Ubuntu 24.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
 Red Hat Core OS                                                4.12---4.18      4.13---4.18
@@ -494,7 +492,7 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- H200NVL with vGPU v18.0
+- H200NVL
 
 - H100 
 
@@ -512,6 +510,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
+- Ubuntu 22.04 LTS Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
