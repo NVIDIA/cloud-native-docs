@@ -36,12 +36,12 @@ Refer to the `Kubernetes DRA documentation`_ for details on this feature.
 Install the NVIDIA DRA Driver for GPUs
 **************************************
 
-The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your cluster.
+The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetescluster.
 
 Prerequisites
 =============
 
-- GH200 or GB200 GPUs
+- GH200 or GB200 GPUs with Multi-Node NVLink support.
 
 - A Kubernetes v1.32 cluster with the `DynamicResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
 
@@ -52,7 +52,7 @@ Prerequisites
     :language: yaml
     :caption: Sample Kubeadm Init Config with DRA Feature Gates Enabled
 
-- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes.
+- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.
   
   A sample Helm install command below includes enabling CDI with ``cdi.enabled=true``.
   Refer to the install documentation for details on `enabling CDI <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
@@ -207,7 +207,7 @@ The following table describes some of the fields in the custom resource.
      - None
 
    * - ``numNodes`` (required)
-     - Specifies the number of nodes in the IMEX domain.
+     - Specifies the number of nodes in the ComputeDomain.
      - None
 
 
