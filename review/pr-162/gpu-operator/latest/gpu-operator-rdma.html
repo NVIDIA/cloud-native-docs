@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 17, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 24, 2025"/>
 
 
 
@@ -341,7 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-driver.html">IMEX DRA Driver Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-driver.html">Multi-Node NVLink Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -646,8 +646,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="3e06075b-f0c2-4990-a950-7d9ceb27d721" name="992e8f37-7bf3-4b27-b5dd-073e8e4d33f9" type="radio">
-</input><label class="sd-tab-label" for="3e06075b-f0c2-4990-a950-7d9ceb27d721">
+<input checked="checked" id="cfa7035e-c8f3-4919-90c7-275270c9f2a2" name="e027e98e-c3c9-41c0-854f-32897a890658" type="radio">
+</input><label class="sd-tab-label" for="cfa7035e-c8f3-4919-90c7-275270c9f2a2">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -692,8 +692,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="4a774c80-64aa-437d-bc81-c9c92e9ec651" name="992e8f37-7bf3-4b27-b5dd-073e8e4d33f9" type="radio">
-</input><label class="sd-tab-label" for="4a774c80-64aa-437d-bc81-c9c92e9ec651">
+<input id="c44673c1-a957-4c6f-92fd-38090f24cecf" name="e027e98e-c3c9-41c0-854f-32897a890658" type="radio">
+</input><label class="sd-tab-label" for="c44673c1-a957-4c6f-92fd-38090f24cecf">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
