@@ -64,11 +64,11 @@ New Features
   It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL or NVIDIA HGX B200, and with CDI enabled on your GPU Operator. 
   See the `IMEX DRA Driver Support <dra-driver.rst>`__ documentation for more details on installing this component and running workloads. 
 
-* Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel models to use.
+* Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel modules to use.
  
   Valid values include:
 
-  * ``auto``: Default and recommended option. Use the default kernel module type (open or proprietary) based on the GPU Operator and driver containers used. 
+  * ``auto``: Default and recommended option. ``auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
   * ``open``: Use the NVIDIA Open GPU Kernel module driver. 
   * ``proprietary``: Use the NVIDIA Proprietary GPU Kernel module driver.
 
@@ -140,7 +140,7 @@ Improvements
 
 * Improved security by removing unnecessary permissions in the GPU Operator ClusterRole.
 
-* Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrcis namespace to `gpu_operator`.
+* Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrics namespace to `gpu_operator`.
 
 * Improved error handling in Driver Manager for Kubernetes by adding pod watch permissions.
 
