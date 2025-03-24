@@ -433,11 +433,11 @@ A ComputeDomain uses DRA features to define IMEX channel resources that can be m
 </section>
 <section id="install-the-nvidia-dra-driver-for-gpus">
 <h2>Install the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#install-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your cluster.</p>
+<p>The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetescluster.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>GH200 or GB200 GPUs</p></li>
+<li><p>GH200 or GB200 GPUs with Multi-Node NVLink support.</p></li>
 <li><p>A Kubernetes v1.32 cluster with the <cite>DynamicResourceAllocation</cite> feature gate enabled and the <cite>resource.k8s.io</cite> API group enabled.</p>
 <p>The following is a sample for enabling the required feature gates and API groups.
 Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
@@ -468,7 +468,7 @@ Refer to the Kubernetes documentation for full details on <a class="reference ex
 </div>
 </div>
 </li>
-<li><p>The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes.</p>
+<li><p>The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.</p>
 <p>A sample Helm install command below includes enabling CDI with <code class="docutils literal notranslate"><span class="pre">cdi.enabled=true</span></code>.
 Refer to the install documentation for details on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">enabling CDI</a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
@@ -628,7 +628,7 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
 <td><p>None</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numNodes</span></code> (required)</p></td>
-<td><p>Specifies the number of nodes in the IMEX domain.</p></td>
+<td><p>Specifies the number of nodes in the ComputeDomain.</p></td>
 <td><p>None</p></td>
 </tr>
 </tbody>
