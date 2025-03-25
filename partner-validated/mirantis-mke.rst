@@ -79,14 +79,6 @@ Validated Configuration Matrix
      - Helm v3
      - | NVIDIA T4 Tensor Core
      - | AWS EC2 g4dn.2xlarge (8vcpus/32GB)
-   * - MKE 4.0
-     - v24.9.2
-     - | Ubuntu 22.04
-     - containerd 1.7.24
-     - 1.31.5
-     - Helm v3
-     - | NVIDIA T4 Tensor Core
-     - | AWS EC2 g4dn.2xlarge
    * - k0s v1.31.5+k0s
      - v24.9.2
      - | Ubuntu 22.04
