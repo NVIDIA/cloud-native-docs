@@ -55,14 +55,50 @@ Validated Configuration Matrix
        | NVIDIA H100
        | NVIDIA A100
      - | Dell PowerEdge R720
+
        | Dell CN-QVWT90-70163-2BJ-00LV-A02
+
        | 2x Intel Xeon E5-2690
+
        | 24x RAM 8GB
+
        | 1x SSD 480GB Micron 5300 PRO
+
        | 1x SSD 960GB Micron 5300 PRO
+
        | 1x GPU NVIDIA P1001B A100 PCIe AMPERE 40GB
+
        | 1x RAID Controller PERC H710
+
        | 1x Network card FM487
+   * - MKE 3.8
+     - v24.9.2
+     - | Ubuntu 22.04
+     - Mirantis Container Runtime (MCR) 25.0.1
+     - 1.31.5
+     - Helm v3
+     - | NVIDIA T4 Tensor Core
+     - | AWS EC2 g4dn.2xlarge (8vcpus/32GB)
+   * - k0s v1.31.5+k0s
+     - v24.9.2
+     - | Ubuntu 22.04
+     - containerd v1.7.24  with the NVIDIA Container Toolkit v1.17.4
+     - 1.31.5
+     - Helm v3
+     - | 2x NVIDIA RTX 4000 SFF Ada 20GB GDDR6 (ECC)
+     - | Supermicro SuperServer 6028U-E1CNR4T+
+
+       | 1000W Supermicro PWS-1K02A-1R
+
+       | 2x Intel Xeon E5-2630v4, 10C/20T 2.2/3.1 GHz LGA 2011-3 25MB 85W
+
+       | 32GB DDR4-2666 RDIMM, M393A4K40BB2-CTD6Q
+
+       | NVMe 960GB PM983 NVMe M.2, MZ1LB960HAJQ-00007
+
+       | 2 x NVIDIA RTX 4000 SFF Ada 20GB GDDR6 (ECC), 70W, PCIe 4.0x16, 4x
+
+       | 4x Mini DisplayPort 1.4a
 
 
 *************
