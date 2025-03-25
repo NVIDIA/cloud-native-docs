@@ -112,13 +112,13 @@ To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
 
    * - ``nvidiaDriverRoot``
      - Specifies the driver root on the host.
-       For Operator-managed drivers (recommended), use ``/run/nvidia/driver``.
+       For GPU Operator-managed drivers (recommended), use ``/run/nvidia/driver``.
        For pre-installed drivers, use ``/``.
      - ``/``
 
    * - ``nvidiaCtkPath``
      - Specifies the path of The NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
-       For Operator-installed NVIDIA Container Toolkit (recommended), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
+       For GPU Operator-installed NVIDIA Container Toolkit (recommended), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
        For a pre-installed NVIDIA Container Toolkit, use ``/usr/bin/nvidia-ctk``.
      - ``/usr/bin/nvidia-ctk`` 
 
@@ -231,7 +231,7 @@ When you create a CustomDomain resource and configure a pod to reference it, the
   When your workload is deployed, these daemons "follow" the workload pods to the nodes where they have been scheduled. 
   Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.
 
-As workload pods that reference a CustomDomain ResourceClaimTemplate, get scheduled they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on. 
+As workload pods that reference a CustomDomain ResourceClaimTemplate get scheduled, they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on. 
 
 Once scheduled to a node, the NVIDIA DRA Driver for GPUs adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
 This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.
@@ -256,17 +256,85 @@ Or use a preferred topologyKey set to ``nvidia.com/gpu.clique`` for workloads to
 Create a CustomDomain and run a workload
 ========================================
 
-The example manifest below, ``imex-channel-injection.yaml``, shows the creation of a CustomDomain, ``imex-channel-injection``, and a workload pod referencing the ResourceClaimTemplate, ``imex-channel-0``:
+#. Create a file like ``imex-channel-injection.yaml`` below.
 
-.. literalinclude:: ./manifests/input/imex-channel-injection.yaml
-  :language: yaml
+   .. code-block:: yaml
 
-Apply the manifest.
+    ---
+    apiVersion: resource.nvidia.com/v1beta1
+    kind: ComputeDomain
+    metadata:
+      name: imex-channel-injection
+    spec:
+      numNodes: 1
+      channel:
+        resourceClaimTemplate:
+          name: imex-channel-0
+    ---
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: imex-channel-injection
+    spec:
+      containers:
+      - name: ctr
+        image: ubuntu:22.04
+        command: ["bash", "-c"]
+        args: ["ls -la /dev/nvidia-caps-imex-channels; trap 'exit 0' TERM; sleep 9999 & wait"]
+        resources:
+          claims:
+          - name: imex-channel-0
+      resourceClaims:
+      - name: imex-channel-0
+        resourceClaimTemplateName: imex-channel-0
 
-.. code-block:: console
+#. Apply the manifest.
 
-  $ kubectl apply -f imex-channel-injection.yaml
+   .. code-block:: console
 
+     $ kubectl apply -f imex-channel-injection.yaml
+
+
+#. Optional: View the ``imex-channel-injection`` pod.
+
+   .. code-block:: console
+
+      $ kubectl get pods
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                     READY   STATUS    RESTARTS   AGE
+      imex-channel-injection   1/1     Running   0          3s
+
+#. Optional: View logs for the ``imex-channel-injection`` pod, where the IMEX channel was injected.
+
+   .. code-block:: console
+
+      $ kubectl logs imex-channel-injection
+
+   *Example Output*
+
+   .. code-block:: output
+
+      total 0
+      drwxr-xr-x 2 root root     60 Feb 19 10:43 .
+      drwxr-xr-x 6 root root    380 Feb 19 10:43 ..
+      crw-rw-rw- 1 root root 507, 0 Feb 19 10:43 channel0
+
+#. Optional: View the ComputeDomain pod.
+
+   .. code-block:: console
+
+      $ kubectl get pods -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                                 READY   STATUS    RESTARTS   AGE
+      imex-channel-injection-6k9sx-ffgpf   1/1     Running   0          3s
 
 #. Optional: View the ComputeDomain resource.
 
