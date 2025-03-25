@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 24, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 25, 2025"/>
 
 
 
@@ -448,17 +448,17 @@ Refer to the Kubernetes documentation for full details on <a class="reference ex
 <span class="nt">apiServer</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;runtime-config&quot;</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resource.k8s.io/v1alpha3=true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;resource.k8s.io/v1beta1=true&quot;</span><span class="w"></span>
 <span class="nt">controllerManager</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
 <span class="nt">scheduler</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;feature-gates&quot;</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;DynamicResourceAllocation=true&quot;</span><span class="w"></span>
 <span class="nn">---</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
@@ -528,13 +528,13 @@ To view all the options, run <code class="docutils literal notranslate"><span cl
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code></p></td>
 <td><p>Specifies the driver root on the host.
-For Operator-managed drivers (recommended), use <code class="docutils literal notranslate"><span class="pre">/run/nvidia/driver</span></code>.
+For GPU Operator-managed drivers (recommended), use <code class="docutils literal notranslate"><span class="pre">/run/nvidia/driver</span></code>.
 For pre-installed drivers, use <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaCtkPath</span></code></p></td>
 <td><p>Specifies the path of The NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
-For Operator-installed NVIDIA Container Toolkit (recommended), use <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia/toolkit/nvidia-ctk</span></code>.
+For GPU Operator-installed NVIDIA Container Toolkit (recommended), use <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia/toolkit/nvidia-ctk</span></code>.
 For a pre-installed NVIDIA Container Toolkit, use <code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code></p></td>
 </tr>
@@ -651,7 +651,7 @@ When your workload is deployed, these daemons “follow” the workload pods to 
 Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.</p>
 </li>
 </ul>
-<p>As workload pods that reference a CustomDomain ResourceClaimTemplate, get scheduled they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on.</p>
+<p>As workload pods that reference a CustomDomain ResourceClaimTemplate get scheduled, they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on.</p>
 <p>Once scheduled to a node, the NVIDIA DRA Driver for GPUs adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
 This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.</p>
 <p>The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.</p>
@@ -668,7 +668,8 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 </section>
 <section id="create-a-customdomain-and-run-a-workload">
 <h3>Create a CustomDomain and run a workload<a class="headerlink" href="#create-a-customdomain-and-run-a-workload" title="Permalink to this headline">#</a></h3>
-<p>The example manifest below, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code>, shows the creation of a CustomDomain, <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code>, and a workload pod referencing the ResourceClaimTemplate, <code class="docutils literal notranslate"><span class="pre">imex-channel-0</span></code>:</p>
+<ol class="arabic">
+<li><p>Create a file like <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code> below.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
@@ -698,11 +699,44 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 <span class="w">    </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Apply the manifest.</p>
+</li>
+<li><p>Apply the manifest.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f imex-channel-injection.yaml
 </pre></div>
 </div>
-<ol class="arabic">
+</li>
+<li><p>Optional: View the <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code> pod.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                     READY   STATUS    RESTARTS   AGE</span>
+<span class="go">imex-channel-injection   1/1     Running   0          3s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: View logs for the <code class="docutils literal notranslate"><span class="pre">imex-channel-injection</span></code> pod, where the IMEX channel was injected.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs imex-channel-injection
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">total 0</span>
+<span class="go">drwxr-xr-x 2 root root     60 Feb 19 10:43 .</span>
+<span class="go">drwxr-xr-x 6 root root    380 Feb 19 10:43 ..</span>
+<span class="go">crw-rw-rw- 1 root root 507, 0 Feb 19 10:43 channel0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: View the ComputeDomain pod.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                 READY   STATUS    RESTARTS   AGE</span>
+<span class="go">imex-channel-injection-6k9sx-ffgpf   1/1     Running   0          3s</span>
+</pre></div>
+</div>
+</li>
 <li><p>Optional: View the ComputeDomain resource.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe computedomain/imex-channel-injection
 </pre></div>
