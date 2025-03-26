@@ -96,8 +96,6 @@ New Features
 * Added support for Kubernetes v1.32.
   Note that the minimum supported Kubernetes versions has been updated to v1.29.
 
-* Added support for Network Operator v25.1.0.
-
 * Added support for new MIG profiles with HGX B200.
 
   * Added support for the following profiles:
