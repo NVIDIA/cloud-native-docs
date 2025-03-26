@@ -69,8 +69,8 @@ New Features
   Valid values include:
 
   * ``auto``: Default and recommended option. ``auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-  * ``open``: Use the NVIDIA Open GPU Kernel module driver. 
-  * ``proprietary``: Use the NVIDIA Proprietary GPU Kernel module driver.
+  * ``open``: Use the NVIDIA Open GPU kernel module driver. 
+  * ``proprietary``: Use the NVIDIA Proprietary GPU kernel module driver.
 
   Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
   550 and 535 branch drivers do not yet support this mode.

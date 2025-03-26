@@ -34,7 +34,7 @@ The Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
 In GPU Operator v25.3.0 and later, the ``driver.kernelModuleType`` default is ``auto``, for the supported driver versions. 
 This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available. 
-Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel model, include ``--set driver.kernelModuleType=open`` command-line argument in your helm Operator install command.
+Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include ``--set driver.kernelModuleType=open`` command-line argument in your helm Operator install command.
 
 In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
