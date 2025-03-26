@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 24, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 26, 2025"/>
 
 
 
@@ -551,22 +551,22 @@ Search for an image, such as <code class="docutils literal notranslate"><span cl
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;570.86.15&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;570.124.06&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To pull the driver image for Ubuntu 20.04:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/driver:570.86.15-ubuntu20.04
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/driver:570.124.06-ubuntu20.04
 </pre></div>
 </div>
 <p>To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.</p>
 <p>Using the above examples, this will result in:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v25.3.0 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.0
-<span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:570.86.15-ubuntu20.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.86.15-ubuntu20.04
+<span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:570.124.06-ubuntu20.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.124.06-ubuntu20.04
 </pre></div>
 </div>
 <p>Finally, push the images to the local registry:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.0
-<span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.86.15-ubuntu20.04
+<span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.124.06-ubuntu20.04
 </pre></div>
 </div>
 <p>Update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with local registry information in the repository field.</p>

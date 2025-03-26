@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 24, 2025"/>
+    <meta name="docbuild:last-update" content="Mar 26, 2025"/>
 
 
 
@@ -429,7 +429,7 @@ NVIDIA recommends using the DMA-BUF rather than using the <code class="docutils 
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
 In GPU Operator v25.3.0 and later, the <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code> default is <code class="docutils literal notranslate"><span class="pre">auto</span></code>, for the supported driver versions.
 This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available.
-Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel model, include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line argument in your helm Operator install command.</p>
+Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line argument in your helm Operator install command.</p>
 <p>In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
@@ -644,8 +644,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="24870f85-5ac7-44ff-882c-dc4ee8e3649a" name="9c5b1d74-741c-404d-abc4-afbef56c07a6" type="radio">
-</input><label class="sd-tab-label" for="24870f85-5ac7-44ff-882c-dc4ee8e3649a">
+<input checked="checked" id="d7929dfe-295f-4440-95e7-8b76895326c4" name="34510987-672b-4d8c-b95e-d60dfaf9dbf9" type="radio">
+</input><label class="sd-tab-label" for="d7929dfe-295f-4440-95e7-8b76895326c4">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -690,8 +690,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="d2ee7bd2-2436-446b-bfe3-b06e078e3ac9" name="9c5b1d74-741c-404d-abc4-afbef56c07a6" type="radio">
-</input><label class="sd-tab-label" for="d2ee7bd2-2436-446b-bfe3-b06e078e3ac9">
+<input id="4db9e431-9736-4448-88df-99f1a8df3044" name="34510987-672b-4d8c-b95e-d60dfaf9dbf9" type="radio">
+</input><label class="sd-tab-label" for="4db9e431-9736-4448-88df-99f1a8df3044">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
