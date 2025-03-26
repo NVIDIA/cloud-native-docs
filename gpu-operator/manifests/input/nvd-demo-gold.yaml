@@ -16,6 +16,7 @@ spec:
   image: driver
   imagePullPolicy: IfNotPresent
   imagePullSecrets: []
+  kernelModuleType: auto
   manager: {}
   nodeSelector:
     driver.config: "gold"
@@ -30,6 +31,5 @@ spec:
     initialDelaySeconds: 60
     periodSeconds: 10
     timeoutSeconds: 60
-  useOpenKernelModules: false
   usePrecompiled: false
   version: 535.104.12

@@ -173,6 +173,17 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
      - ``true``
 
+   * - ``kernelModuleType``
+     - Specifies the type of the NVIDIA GPU Kernel modules to use.
+       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
+       
+       ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
+       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+       550 and 535 branch drivers do not yet support this mode.
+       ``Open`` means the open kernel module is used.
+       ``Proprietary`` means the proprietary module is used.
+     - ``auto``
+
    * - ``driver.repository``
      - The images are downloaded from NGC. Specify another image repository when using
        custom driver images.
@@ -197,8 +208,9 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        runs slowly in your cluster.
      - ``60s``
 
-   * - ``driver.useOpenKernelModules``
-     - When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
+   * - ``driver.useOpenKernelModules`` Deprecated.
+     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead.
+       When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
      - ``false``
 
    * - ``driver.usePrecompiled``

@@ -31,8 +31,130 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
-
 ----
+
+.. _v25.3.0:
+
+25.3.0
+======
+
+.. _v25.3.0-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit version v1.17.5
+  - NVIDIA Driver Manager for Kubernetes v0.8.0
+  - NVIDIA Kubernetes Device Plugin v0.17.1
+  - NVIDIA DCGM Exporter v4.1.1-4.0.4
+  - NVIDIA DCGM v4.1.1-2
+  - Node Feature Discovery v0.17.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.17.1
+  - NVIDIA MIG Manager for Kubernetes v0.12.1
+  - NVIDIA KubeVirt GPU Device Plugin v1.3.1
+  - NVIDIA vGPU Device Manager v0.3.0
+  - NVIDIA Kata Manager for Kubernetes v0.2.3
+  - NVIDIA GDRCopy Driver v2.4.4
+
+* Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.
+
+  This component is an additional component that can be installed alongside the the GPU Operator. 
+  It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
+
+* Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel modules to use.
+ 
+  Valid values include:
+
+  * ``auto``: Default and recommended option. ``auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
+  * ``open``: Use the NVIDIA Open GPU kernel module driver. 
+  * ``proprietary``: Use the NVIDIA Proprietary GPU kernel module driver.
+
+  Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  550 and 535 branch drivers do not yet support this mode.
+
+  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU kernel module driver. 
+  This field is now deprecated and will be removed in a future release.
+  If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the ``kernelModuleType`` field instead.   
+
+* Added support for Ubuntu 24.04 LTS.
+
+* Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+
+* Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
+
+* Added support for KubeVirt and OpenShift Virtualization with vGPU v18 for A30, A100, and H100 GPUs.
+
+* Added support for NVIDIA Network Operator v25.1.0.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added support for OpenShift v4.18.
+
+* Added support for Containerd v2.0.
+
+* Added support for Kubernetes v1.32.
+  Note that the minimum supported Kubernetes versions has been updated to v1.29.
+
+* Added support for Network Operator v25.1.0.
+
+* Added support for new MIG profiles with HGX B200.
+
+  * Added support for the following profiles:
+
+    * ``1g.23gb``
+    * ``1g.23gb+me``
+    * ``1g.45gb``
+    * ``2g.45gb``
+    * ``3g.90gb``
+    * ``4g.90gb``
+    * ``7g.180gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.23gb`` :math:`\times` 2
+    * ``2g.45gb`` :math:`\times` 1
+    * ``3g.90gb`` :math:`\times` 1
+
+* Added support for new MIG profiles with HGX GB200.
+
+  * Added support for the following profiles:
+
+    * ``1g.24gb``
+    * ``1g.24gb+me``
+    * ``1g.47gb``
+    * ``2g.47gb``
+    * ``3g.95gb``
+    * ``4g.95gb``
+    * ``7g.189gb``
+
+  * Added an ``all-balanced`` profile creates the following GPU instances:
+
+    * ``1g.24gb`` :math:`\times` 2
+    * ``2g.47gb`` :math:`\times` 1
+    * ``3g.95gb`` :math:`\times` 1
+
+Improvements 
+------------
+
+* Improved security by removing unnecessary permissions in the GPU Operator ClusterRole.
+
+* Improved GPU Operator metrics to include a `operatorMetricsNamespace` field that sets the metrics namespace to `gpu_operator`.
+
+* Improved error handling in Driver Manager for Kubernetes by adding pod watch permissions.
+
+.. _v25.3.0-fixed-issues:
+
+Fixed Issues
+------------
+
+* Removed default liveness probe from the ``nvidia-fs-ctr`` and ``nvidia-gdrcopy-ctr`` containers of the GPU driver daemonset. 
+  Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
+
+* Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
+  Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
+
+* Removed deprecated `operator.defaultRuntime`` parameter.
 
 .. _v24.9.2:
 

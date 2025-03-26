@@ -165,6 +165,16 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
+  .. tab-item:: B-series Products
+
+    +-------------------------+------------------------+
+    | Product                 | Architecture           |
+    +=========================+========================+
+    | NVIDIA HGX B200         | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
+    | NVIDIA HGX GB200 NVL    | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
+
 
 .. _gpu-operator-arm-platforms:
 
@@ -258,26 +268,35 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 8.0 U2, 8.0 U3
-         - 1.24---1.31
+         - 1.29---1.32
          -
          - 1.26
          - 2.12, 2.13
 
+       * - Ubuntu 24.04 LTS
+         - 1.29---1.32
+         -
+         -
+         -
+         -
+         -
+         -
+
        * - Red Hat Core OS
          -
-         - | 4.12---4.17
+         - | 4.12---4.18
          -
          -
          -
@@ -288,10 +307,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
          -
@@ -373,22 +392,29 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.24--1.31
+         - 1.29--1.32
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.23---1.25
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.24--1.31
+         - 1.29--1.32
          -
          - 8.0 U2, 8.0 U3
          -
          - 2.12, 2.13
 
+       * - Ubuntu 24.04 LTS
+         - 1.29--1.32
+         -
+         - 
+         -
+         - 
+
        * - Red Hat Core OS
          -
-         - 4.12---4.17
+         - 4.12---4.18
          -
          -
          -
@@ -397,10 +423,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.9
-         - 1.24---1.31
+         - 1.29---1.32
          -
          -
-         - 1.24---1.31
+         - 1.29---1.32
          -
 
 
@@ -413,16 +439,13 @@ See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 +----------------------------+------------------------+----------------+---------------------+
 | Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
 +============================+========================+================+=====================+
-| Ubuntu 22.04               | Generic                | 5.15           | R535, R550          |
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550         |
+|                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | NVIDIA                 | 5.15           | R535, R550          |
+| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550, R570         |
+|                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | Azure                  | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | AWS                    | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | Oracle                 | 5.15           | R535, R550          |
-+----------------------------+------------------------+----------------+---------------------+
+
 
 
 Supported Container Runtimes
@@ -431,11 +454,13 @@ Supported Container Runtimes
 The GPU Operator has been validated in the following scenarios:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.4 - 1.7   | CRI-O          |
+| Operating System           | Containerd 1.6 - 2.0   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | Ubuntu 22.04 LTS           | Yes                    | Yes            |
++----------------------------+------------------------+----------------+
+| Ubuntu 24.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | CentOS 7                   | Yes                    | No             |
 +----------------------------+------------------------+----------------+
@@ -444,15 +469,12 @@ The GPU Operator has been validated in the following scenarios:
 | Red Hat Enterprise Linux 8 | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 
-.. note::
-
-  The GPU Operator has been validated with version 2 of the containerd config file.
-
 
 Support for KubeVirt and OpenShift Virtualization
 -------------------------------------------------
 
 Red Hat OpenShift Virtualization is based on KubeVirt.
+
 
 ================    ===========   =============   =========    =============    ===========
 Operating System    Kubernetes           KubeVirt              OpenShift Virtualization
@@ -460,9 +482,10 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
+Ubuntu 24.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
-Red Hat Core OS                                                4.12---4.17      4.13---4.17
+Red Hat Core OS                                                4.12---4.18      4.13---4.18
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -476,7 +499,9 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- H100
+- H200NVL
+
+- H100 
 
 - GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
@@ -492,7 +517,8 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
+- Ubuntu 22.04 LTS Network Operator 25.1.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
@@ -510,7 +536,8 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
    Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, ``nvidia-fs``,
    requires the NVIDIA Open GPU Kernel module driver.
-   You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
+   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later. 
+   Or use ``driver.kernelModuleType=open`` if you are using a different driver version or branch.
    argument to the ``helm`` command.
    Refer to :ref:`Common Chart Customization Options` for more information.
 

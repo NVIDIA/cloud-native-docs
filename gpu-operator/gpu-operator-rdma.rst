@@ -30,10 +30,11 @@ To support GPUDirect RDMA, userspace CUDA APIs are required.
 The kernel mode support is provided by one of two approaches: DMA-BUF from the Linux kernel or the legacy ``nvidia-peermem`` kernel module.
 NVIDIA recommends using the DMA-BUF rather than using the ``nvidia-peermem`` kernel module from the GPU Driver.
 
-Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
+The Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-The sample commands for installing the Operator include the ``--set useOpenKernelModules=true``
-command-line argument for Helm.
+In GPU Operator v25.3.0 and later, the ``driver.kernelModuleType`` default is ``auto``, for the supported driver versions. 
+This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available. 
+Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include ``--set driver.kernelModuleType=open`` command-line argument in your helm Operator install command.
 
 In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
@@ -128,7 +129,6 @@ To use DMA-BUF and network device drivers that are installed by the Network Oper
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
-        --set driver.useOpenKernelModules=true
 
 To use DMA-BUF and network device drivers that are installed on the host:
 
@@ -138,11 +138,10 @@ To use DMA-BUF and network device drivers that are installed on the host:
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
-        --set driver.useOpenKernelModules=true \
         --set driver.rdma.useHostMofed=true
 
 To use the legacy ``nvidia-peermem`` kernel module instead of DMA-BUF, add ``--set driver.rdma.enabled=true`` to either of the preceding commands.
-The ``driver.useOpenKernelModules=true`` argument is optional for using the legacy kernel driver.
+Add ``--set driver.kernelModuleType=open`` if you are using a driver version from a branch earlier than R570.
 
 Verifying the Installation of GPUDirect with RDMA
 =================================================
@@ -431,11 +430,11 @@ The following sample command applies to clusters that use the Network Operator t
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
-        --set driver.useOpenKernelModules=true \
         --set gds.enabled=true
 
 Add ``--set driver.rdma.enabled=true`` to the command to use the legacy ``nvidia-peermem`` kernel module.
 
+Add ``--set driver.kernelModuleType=open`` if you are using a driver version from a branch earlier than R570.
 
 Verification
 ==============
