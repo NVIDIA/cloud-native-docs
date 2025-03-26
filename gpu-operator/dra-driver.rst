@@ -6,10 +6,10 @@
 Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs 
 #############################################################
 
-The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in GH200 and GB200 GPUs.
-This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with GH200 and GB200 systems.
+The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in GB200 GPUs.
+This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with GB200 systems.
 
-GH200 and GB200 systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+GB200 systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
 This allows you to get the most use out of your available GPUs without any additional latency burdens.
 
 For more information about Kubernetes Dynamic Resource Allocation (DRA), refer to the `Kubernetes DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
@@ -19,7 +19,7 @@ For more information about Kubernetes Dynamic Resource Allocation (DRA), refer t
 About the NVIDIA DRA Driver for GPUs
 ************************************
 
-The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in GH200 and GB200 GPUs.
+The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in GB200 GPUs.
 The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ComputeDomain where you can define your resource templates, and then reference the templates within your workload definitions. 
 
 A ComputeDomain creates and manages an IMEX channel, a construct that allows a set of GPUs to directly read and write each other's memory over a high-bandwidth NVLink. 
@@ -41,7 +41,7 @@ The NVIDIA DRA Driver for GPUs is an additional component that can be installed 
 Prerequisites
 =============
 
-- GH200 or GB200 GPUs with Multi-Node NVLink support.
+- GB200 GPUs with Multi-Node NVLink support.
 
 - A Kubernetes v1.32 cluster with the `DynamicResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
 
@@ -227,7 +227,7 @@ When you create a CustomDomain resource and configure a pod to reference it, the
 
 - A DaemonSet. 
 
-  Depending on your workload requirements, this DaemonSet forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them.
+  Depending on your workload requirements, this DaemonSet forms one (or more) IMEX domains by running IMEX daemons on the set of nodes in a ComputeDomain that requires them. 
   When your workload is deployed, these daemons "follow" the workload pods to the nodes where they have been scheduled. 
   Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.
 
@@ -605,14 +605,14 @@ The following sample files use the following:
       CUDA Driver Version: 12080
       Driver Version: 570.00
 
-      Process 0 (nvbandwidth-test-worker-0): device 0: NVIDIA GH200 96GB HBM3 (00000009:01:00)
-      Process 1 (nvbandwidth-test-worker-0): device 1: NVIDIA GH200 96GB HBM3 (00000019:01:00)
-      Process 2 (nvbandwidth-test-worker-1): device 0: NVIDIA GH200 96GB HBM3 (00000009:01:00)
-      Process 3 (nvbandwidth-test-worker-1): device 1: NVIDIA GH200 96GB HBM3 (00000019:01:00)
-      Process 4 (nvbandwidth-test-worker-2): device 0: NVIDIA GH200 96GB HBM3 (00000009:01:00)
-      Process 5 (nvbandwidth-test-worker-2): device 1: NVIDIA GH200 96GB HBM3 (00000019:01:00)
-      Process 6 (nvbandwidth-test-worker-3): device 0: NVIDIA GH200 96GB HBM3 (00000009:01:00)
-      Process 7 (nvbandwidth-test-worker-3): device 1: NVIDIA GH200 96GB HBM3 (00000019:01:00)
+      Process 0 (nvbandwidth-test-worker-0): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)
+      Process 1 (nvbandwidth-test-worker-0): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)
+      Process 2 (nvbandwidth-test-worker-1): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)
+      Process 3 (nvbandwidth-test-worker-1): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)
+      Process 4 (nvbandwidth-test-worker-2): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)
+      Process 5 (nvbandwidth-test-worker-2): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)
+      Process 6 (nvbandwidth-test-worker-3): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)
+      Process 7 (nvbandwidth-test-worker-3): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)
 
       Running multinode_device_to_device_memcpy_read_ce.
       memcpy CE GPU(row) -> GPU(column) bandwidth (GB/s)
