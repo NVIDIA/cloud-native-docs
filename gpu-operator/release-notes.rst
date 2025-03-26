@@ -58,7 +58,7 @@ New Features
   - NVIDIA Kata Manager for Kubernetes v0.2.3
   - NVIDIA GDRCopy Driver v2.4.4
 
-* Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEXsupport.
+* Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.
 
   This component is an additional component that can be installed alongside the the GPU Operator. 
   It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
@@ -74,9 +74,9 @@ New Features
   Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
   550 and 535 branch drivers do not yet support this mode.
 
-  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU Kernel module driver. 
+  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU kernel module driver. 
   This field is now deprecated and will be removed in a future release.
-  If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the `kernelModuleType` field instead.   
+  If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the ``kernelModuleType`` field instead.   
 
 * Added support for Ubuntu 24.04 LTS.
 
@@ -148,7 +148,7 @@ Improvements
 Fixed Issues
 ------------
 
-* Removed default liveness probe from the GDS and GDRCopy containers of the driver-daemonset. 
+* Removed default liveness probe from the ``nvidia-fs-ctr`` and ``nvidia-gdrcopy-ctr`` containers of the GPU driver daemonset. 
   Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
 
 * Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
