@@ -58,11 +58,10 @@ New Features
   - NVIDIA Kata Manager for Kubernetes v0.2.3
   - NVIDIA GDRCopy Driver v2.4.4
 
-* Added support for the NVIDIA GPU DRA Driver v25.3.0 component which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA)  and IMEXsupport.
+* Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEXsupport.
 
   This component is an additional component that can be installed alongside the the GPU Operator. 
   It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
-  See the `IMEX DRA Driver Support <dra-driver.rst>`__ documentation for more details on installing this component and running workloads. 
 
 * Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel modules to use.
  
