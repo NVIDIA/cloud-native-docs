@@ -443,7 +443,7 @@
 <li><p>NVIDIA GDRCopy Driver v2.4.4</p></li>
 </ul>
 </li>
-<li><p>Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEXsupport.</p>
+<li><p>Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.</p>
 <p>This component is an additional component that can be installed alongside the the GPU Operator.
 It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator.</p>
 </li>
@@ -456,9 +456,9 @@ It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, a
 </ul>
 <p>Currently, <code class="docutils literal notranslate"><span class="pre">auto</span></code> is only supported with the 570.86.15 and 570.124.06 or later driver containers.
 550 and 535 branch drivers do not yet support this mode.</p>
-<p>In previous versions, the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field specified the driver containers to install the NVIDIA Open GPU Kernel module driver.
+<p>In previous versions, the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field specified the driver containers to install the NVIDIA Open GPU kernel module driver.
 This field is now deprecated and will be removed in a future release.
-If you were using the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field, it’s recommended that you update your configuration to use the <cite>kernelModuleType</cite> field instead.</p>
+If you were using the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field, it’s recommended that you update your configuration to use the <code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code> field instead.</p>
 </li>
 <li><p>Added support for Ubuntu 24.04 LTS.</p></li>
 <li><p>Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.</p></li>
@@ -528,7 +528,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <section id="fixed-issues">
 <span id="v25-3-0-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Removed default liveness probe from the GDS and GDRCopy containers of the driver-daemonset.
+<li><p>Removed default liveness probe from the <code class="docutils literal notranslate"><span class="pre">nvidia-fs-ctr</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-gdrcopy-ctr</span></code> containers of the GPU driver daemonset.
 Long response times of the <cite>lsmod</cite> commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.</p></li>
 <li><p>Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1207">issue #1207</a> for more details.</p></li>
