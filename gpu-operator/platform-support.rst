@@ -405,6 +405,13 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 2.12, 2.13
 
+       * - Ubuntu 24.04 LTS
+         - 1.29--1.32
+         -
+         - 
+         -
+         - 
+
        * - Red Hat Core OS
          -
          - 4.12---4.18
