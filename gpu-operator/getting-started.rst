@@ -173,7 +173,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
      - ``true``
 
-   * - ``kernelModuleType``
+   * - ``driver.kernelModuleType``
      - Specifies the type of the NVIDIA GPU Kernel modules to use.
        Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
        

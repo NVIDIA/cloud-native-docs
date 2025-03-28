@@ -439,7 +439,7 @@ See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 +----------------------------+------------------------+----------------+---------------------+
 | Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
 +============================+========================+================+=====================+
-| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550         |
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550, R570   |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
 | Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550, R570         |
@@ -461,8 +461,6 @@ The GPU Operator has been validated in the following scenarios:
 | Ubuntu 22.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | Ubuntu 24.04 LTS           | Yes                    | Yes            |
-+----------------------------+------------------------+----------------+
-| CentOS 7                   | Yes                    | No             |
 +----------------------------+------------------------+----------------+
 | Red Hat Core OS (RHCOS)    | No                     | Yes            |
 +----------------------------+------------------------+----------------+
@@ -517,7 +515,7 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- Ubuntu 22.04 LTS Network Operator 25.1.0.
+- Ubuntu 24.04 LTS with Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
@@ -529,6 +527,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
+-Ubuntu 24.04 LTS Network Operator 25.1.0
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
 - Red Hat OpenShift Container Platform 4.12 and higher
 
