@@ -63,6 +63,8 @@ New Features
   This component is an additional component that can be installed alongside the the GPU Operator. 
   It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
 
+* Transitioned to installing the open kernel modules by default starting with R570 driver containers. 
+
 * Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel modules to use.
  
   Valid values include:

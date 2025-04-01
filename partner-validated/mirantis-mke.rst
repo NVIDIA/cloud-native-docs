@@ -79,7 +79,7 @@ Validated Configuration Matrix
      - Helm v3
      - | NVIDIA T4 Tensor Core
      - | AWS EC2 g4dn.2xlarge (8vcpus/32GB)
-   * - k0s v1.31.5+k0s
+   * - k0s v1.31.5+k0s / k0rdent 0.1.0
      - v24.9.2
      - | Ubuntu 22.04
      - containerd v1.7.24  with the NVIDIA Container Toolkit v1.17.4

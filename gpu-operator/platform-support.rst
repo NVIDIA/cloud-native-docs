@@ -509,6 +509,7 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
   The L40G GPU is excluded.
 
+Note that HGX platforms are not supported.
 
 Support for GPUDirect RDMA
 --------------------------
