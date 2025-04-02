@@ -422,7 +422,7 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 8.4,
-           | 8.6---8.9
+           | 8.6---8.10
          - 1.29---1.32
          -
          -
@@ -509,6 +509,7 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
   The L40G GPU is excluded.
 
+Note that HGX platforms are not supported.
 
 Support for GPUDirect RDMA
 --------------------------
