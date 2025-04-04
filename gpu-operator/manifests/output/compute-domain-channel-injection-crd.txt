@@ -1,0 +1,19 @@
+Name:         imex-channel-injection
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+API Version:  resource.nvidia.com/v1beta1
+Kind:         ComputeDomain
+Metadata:
+  Creation Timestamp:  2025-03-06T11:24:47Z
+  Finalizers:
+    resource.nvidia.com/computeDomain
+  Generation:        1
+  Resource Version:  18161752
+  UID:               e771ff54-948f-405d-8ef2-47ae83857500
+Spec:
+  Channel:
+    Resource Claim Template:
+      Name:   imex-channel-0
+  Num Nodes:  1
+Events:       <none>
