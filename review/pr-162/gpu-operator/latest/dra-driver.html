@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 26, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 04, 2025"/>
 
 
 
@@ -414,14 +414,14 @@
                   
   <section id="multi-node-nvlink-support-with-the-nvidia-dra-driver-for-gpus">
 <h1>Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#multi-node-nvlink-support-with-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
-<p>The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in GB200 GPUs.
-This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with GB200 systems.</p>
-<p>GB200 systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+<p>The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in NVIDIA HGX GB200 NVL GPUs.
+This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with NVIDIA HGX GB200 NVL systems.</p>
+<p>NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
 This allows you to get the most use out of your available GPUs without any additional latency burdens.</p>
 <p>For more information about Kubernetes Dynamic Resource Allocation (DRA), refer to the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA documentation</a>.</p>
 <section id="about-the-nvidia-dra-driver-for-gpus">
 <h2>About the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#about-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in GB200 GPUs.
+<p>The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in NVIDIA HGX GB200 NVL GPUs.
 The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ComputeDomain where you can define your resource templates, and then reference the templates within your workload definitions.</p>
 <p>A ComputeDomain creates and manages an IMEX channel, a construct that allows a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
 The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch.
@@ -437,7 +437,7 @@ A ComputeDomain uses DRA features to define IMEX channel resources that can be m
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>GB200 GPUs with Multi-Node NVLink support.</p></li>
+<li><p>A Mult-iNode NVIDIA HGX GB200 NVL GPUs with at least 2 GPUs Multi-Node NVLink support.</p></li>
 <li><p>A Kubernetes v1.32 cluster with the <cite>DynamicResourceAllocation</cite> feature gate enabled and the <cite>resource.k8s.io</cite> API group enabled.</p>
 <p>The following is a sample for enabling the required feature gates and API groups.
 Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
@@ -474,7 +474,7 @@ Refer to the install documentation for details on <a class="reference external" 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
         -n gpu-operator --create-namespace <span class="se">\</span>
         nvidia/gpu-operator <span class="se">\</span>
-        --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+        --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
         --set cdi.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -575,8 +575,6 @@ The following command used <a class="reference external" href="https://jqlang.or
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NODE                  LABEL                  CLIQUE</span>
 <span class="go">node1                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
 <span class="go">node2                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
-<span class="go">node3                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
-<span class="go">node4                 nvidia.com/gpu.clique  1fbed3a8-bd74-4c83-afcb-cfb75ebc9304.1</span>
 </pre></div>
 </div>
 </li>
@@ -686,6 +684,13 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-injection</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.clique</span><span class="w"></span>
+<span class="w">            </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ctr</span><span class="w"></span>
 <span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu:22.04</span><span class="w"></span>
@@ -737,65 +742,41 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 </pre></div>
 </div>
 </li>
-<li><p>Optional: View the ComputeDomain resource.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe computedomain/imex-channel-injection
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:         imex-channel-injection</span>
-<span class="go">Namespace:    default</span>
-<span class="go">Labels:       &lt;none&gt;</span>
-<span class="go">Annotations:  &lt;none&gt;</span>
-<span class="go">API Version:  resource.nvidia.com/v1beta1</span>
-<span class="go">Kind:         ComputeDomain</span>
-<span class="go">Metadata:</span>
-<span class="go">  Creation Timestamp:  2025-03-06T11:24:47Z</span>
-<span class="go">  Finalizers:</span>
-<span class="go">    resource.nvidia.com/computeDomain</span>
-<span class="go">  Generation:        1</span>
-<span class="go">  Resource Version:  18161752</span>
-<span class="go">  UID:               e771ff54-948f-405d-8ef2-47ae83857500</span>
-<span class="go">Spec:</span>
-<span class="go">  Channel:</span>
-<span class="go">    Resource Claim Template:</span>
-<span class="go">      Name:   imex-channel-0</span>
-<span class="go">  Num Nodes:  1</span>
-<span class="go">Events:       &lt;none&gt;</span>
-</pre></div>
-</div>
-</li>
 <li><p>Optional: View IMEX channel creation logs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain --tail<span class="o">=</span>-1
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">IMEX Log initializing at: 3/3/2025 17:26:19.102</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX version 570.00 is running with the following configuration options</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">/etc/nvidia-imex/nodes_config.cfg:</span>
+<span class="go">10.115.131.8</span>
+<span class="go">IMEX Log initializing at: 3/27/2025 15:47:10.092</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] IMEX version 570.124.06 is running with the following configuration options</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging level = 4</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Logging level = 4</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging file name/path = /var/log/nvidia-imex.log</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Logging file name/path = /var/log/nvidia-imex.log</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Append to log file = 0</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Append to log file = 0</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Max Log file size = 1024 (MBs)</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Max Log file size = 1024 (MBs)</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Use Syslog file = 0</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Use Syslog file = 0</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX Library communication bind interface =</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] IMEX Library communication bind interface =</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX library communication bind port = 50000</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] IMEX library communication bind port = 50000</span>
 
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Identified this node as ID 0, using bind IP of &#39;XX.XXX.XXX.XX&#39;, and network interface of enP2s2f1</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] NvGpu Library version matched with GPU Driver version</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 62] Started processing of incoming messages.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 63] Started processing of incoming messages.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 64] Started processing of incoming messages.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] Creating gRPC channels to all peers (nPeers = 1).</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 65] Started processing of incoming messages.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.</span>
-<span class="go">[Mar 03 2025 17:26:19] [INFO] [tid 38] GPU event successfully subscribed</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Identified this node as ID 0, using bind IP of &#39;10.115.131.8&#39;, and network interface of enP5p9s0</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] NvGpu Library version matched with GPU Driver version</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 63] Started processing of incoming messages.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 64] Started processing of incoming messages.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 65] Started processing of incoming messages.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] Creating gRPC channels to all peers (nPeers = 1).</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 66] Started processing of incoming messages.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 67] Connection established to node 0 with ip address 10.115.131.8. Number of times connected: 1</span>
+<span class="go">[Mar 27 2025 15:47:10] [INFO] [tid 39] GPU event successfully subscribed</span>
 </pre></div>
 </div>
 </li>
@@ -819,7 +800,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <p>The following sample files use the following:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a></p></li>
-<li><p>A 4 node cluster with all nodes capable of running GPU workloads.</p></li>
+<li><p>A 2 node cluster with all nodes capable of running GPU workloads and meets [NVIDIA DRA Driver for GPUs prerequisites](#prerequisites)</p></li>
 </ul>
 <ol class="arabic">
 <li><p>Install Kubeflow MPI Operator.</p>
@@ -834,7 +815,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 <span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain-channel</span><span class="w"></span>
@@ -845,7 +826,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">slotsPerWorker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">  </span><span class="nt">slotsPerWorker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
 <span class="w">  </span><span class="nt">launcherCreationPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitForWorkersReady</span><span class="w"></span>
 <span class="w">  </span><span class="nt">runPolicy</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">cleanPodPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span><span class="w"></span>
@@ -856,8 +837,15 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">mpi-memcpy-dra-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
+<span class="w">            </span><span class="nt">nvbandwidth-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
 <span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-role.kubernetes.io/control-plane</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
 <span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
 <span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
@@ -869,7 +857,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--bind-to</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--map-by</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppr:2:node</span><span class="w"></span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppr:4:node</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-np</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--report-bindings</span><span class="w"></span>
@@ -877,20 +865,23 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-t</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multinode_device_to_device_memcpy_read_ce</span><span class="w"></span>
-<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
-<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-role.kubernetes.io/control-plane</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
 <span class="w">    </span><span class="nt">Worker</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
+<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 <span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">mpi-memcpy-dra-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
+<span class="w">            </span><span class="nt">nvbandwidth-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
 <span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">podAffinity</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-replica</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span><span class="w"></span>
+<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
+<span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
+<span class="w">                </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.clique</span><span class="w"></span>
 <span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
 <span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
@@ -905,7 +896,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/mpiuser/.sshd_config</span><span class="w"></span>
 <span class="w">            </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
 <span class="w">              </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
 <span class="w">              </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
 <span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-domain-channel</span><span class="w"></span>
 <span class="w">          </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
@@ -930,11 +921,9 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                              READY   STATUS    RESTARTS   AGE</span>
-<span class="go">nvbandwidth-test-launcher-sqlwc   1/1     Running   0          8s</span>
+<span class="go">nvbandwidth-test-launcher-lzv84   1/1     Running   0          8s</span>
 <span class="go">nvbandwidth-test-worker-0         1/1     Running   0          15s</span>
 <span class="go">nvbandwidth-test-worker-1         1/1     Running   0          15s</span>
-<span class="go">nvbandwidth-test-worker-2         1/1     Running   0          15s</span>
-<span class="go">nvbandwidth-test-worker-3         1/1     Running   0          14s</span>
 </pre></div>
 </div>
 </li>
@@ -944,10 +933,8 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                          READY   STATUS    RESTARTS   AGE</span>
-<span class="go">nvbandwidth-test-compute-domain-j8c7j-bkckf   1/1     Running   0          5s</span>
-<span class="go">nvbandwidth-test-compute-domain-j8c7j-d54ts   1/1     Running   0          5s</span>
-<span class="go">nvbandwidth-test-compute-domain-j8c7j-hw2sc   1/1     Running   0          5s</span>
-<span class="go">nvbandwidth-test-compute-domain-j8c7j-rhgx8   1/1     Running   0          5s</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s</span>
 </pre></div>
 </div>
 </li>
@@ -957,50 +944,47 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
-<span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-2.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
 <span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
-<span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-3.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
-<span class="go">[nvbandwidth-test-worker-2:00011] MCW rank 4 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-2:00011] MCW rank 5 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-1:00011] MCW rank 2 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-1:00011] MCW rank 3 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-0:00011] MCW rank 0 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-0:00011] MCW rank 1 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-3:00011] MCW rank 6 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-3:00011] MCW rank 7 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 1 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 2 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 3 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 4 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 5 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 6 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
 <span class="go">nvbandwidth Version: v0.7</span>
 <span class="go">Built from Git version: v0.7</span>
 
 <span class="go">MPI version: Open MPI v4.1.4, package: Debian OpenMPI, ident: 4.1.4, repo rev: v4.1.4, May 26, 2022</span>
 <span class="go">CUDA Runtime Version: 12080</span>
 <span class="go">CUDA Driver Version: 12080</span>
-<span class="go">Driver Version: 570.00</span>
+<span class="go">Driver Version: 570.124.06</span>
 
-<span class="go">Process 0 (nvbandwidth-test-worker-0): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)</span>
-<span class="go">Process 1 (nvbandwidth-test-worker-0): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)</span>
-<span class="go">Process 2 (nvbandwidth-test-worker-1): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)</span>
-<span class="go">Process 3 (nvbandwidth-test-worker-1): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)</span>
-<span class="go">Process 4 (nvbandwidth-test-worker-2): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)</span>
-<span class="go">Process 5 (nvbandwidth-test-worker-2): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)</span>
-<span class="go">Process 6 (nvbandwidth-test-worker-3): device 0: NVIDIA GPU 96GB HBM3 (00000009:01:00)</span>
-<span class="go">Process 7 (nvbandwidth-test-worker-3): device 1: NVIDIA GPU 96GB HBM3 (00000019:01:00)</span>
+<span class="go">Process 0 (nvbandwidth-test-worker-0): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 1 (nvbandwidth-test-worker-0): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 2 (nvbandwidth-test-worker-0): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 3 (nvbandwidth-test-worker-0): device 3: HGX GB200 (00000019:01:00)</span>
+<span class="go">Process 4 (nvbandwidth-test-worker-1): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 5 (nvbandwidth-test-worker-1): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 6 (nvbandwidth-test-worker-1): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 7 (nvbandwidth-test-worker-1): device 3: HGX GB200 (00000019:01:00)</span>
 
 <span class="go">Running multinode_device_to_device_memcpy_read_ce.</span>
 <span class="go">memcpy CE GPU(row) -&gt; GPU(column) bandwidth (GB/s)</span>
 <span class="go">          0         1         2         3         4         5         6         7</span>
-<span class="go">0       N/A    391.89    391.86    392.06    391.98    391.84    392.04    391.86</span>
-<span class="go">1    391.89       N/A    391.66    392.09    391.91    391.86    391.89    391.81</span>
-<span class="go">2    391.86    391.82       N/A    392.09    391.97    391.84    391.93    391.93</span>
-<span class="go">3    391.95    391.73    391.91       N/A    392.02    391.89    391.98    391.93</span>
-<span class="go">4    391.86    391.81    391.91    391.81       N/A    391.84    392.04    391.89</span>
-<span class="go">5    391.97    391.61    391.98    391.81    391.81       N/A    391.91    391.81</span>
-<span class="go">6    391.95    391.73    391.84    391.82    391.66    391.75       N/A    391.88</span>
-<span class="go">7    392.02    391.75    391.93    391.81    391.79    391.75    391.73       N/A</span>
+<span class="go">0       N/A    798.02    798.25    798.02    798.02    797.88    797.73    797.95</span>
+<span class="go">1    798.10       N/A    797.80    798.02    798.02    798.25    797.88    798.02</span>
+<span class="go">2    797.95    797.95       N/A    797.73    797.80    797.95    797.95    797.65</span>
+<span class="go">3    798.10    798.02    797.95       N/A    798.02    798.10    797.88    797.73</span>
+<span class="go">4    797.80    798.02    798.02    798.02       N/A    797.95    797.80    798.02</span>
+<span class="go">5    797.80    797.95    798.10    798.10    797.95       N/A    797.95    797.88</span>
+<span class="go">6    797.73    797.95    798.10    798.02    797.95    797.88       N/A    797.80</span>
+<span class="go">7    797.88    798.02    797.95    798.02    797.88    797.95    798.02       N/A</span>
 
-<span class="go">SUM multinode_device_to_device_memcpy_read_ce 21944.96</span>
+<span class="go">SUM multinode_device_to_device_memcpy_read_ce 44685.29</span>
 
 <span class="go">NOTE: The reported results may not reflect the full capabilities of the platform.</span>
-<span class="go">Performance can vary with software drivers, hardware clocks, and system topology.</span>
 </pre></div>
 </div>
 </li>
