@@ -347,7 +347,8 @@ with the NVIDIA GPU Operator.
 Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
 
 When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
-Additionally, network restricted environments are not supported.
+Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
+Note, network restricted environments are not supported.
 
 
 Pre-Installed NVIDIA GPU Drivers

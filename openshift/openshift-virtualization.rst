@@ -129,6 +129,8 @@ Procedure
             version: 3.2.0
         kernelArguments:
             - intel_iommu=on
+            # If you are using AMD CPU, include the following argument:
+            # - amd_iommu=on
 
 #. Create the new ``MachineConfig`` object:
 
@@ -196,7 +198,7 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ cd vgpu-manager/rhel
+      $ cd vgpu-manager/rhel8
 
 #. Copy the NVIDIA vGPU Manager from your extracted zip file:
 
@@ -216,10 +218,10 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
       $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11 CUDA_VERSION=11.7.1
 
-   .. note::
+.. note::
 
-      The recommended registry to use is the Integrated OpenShift Container Platform registry.
-      For more information about the registry, see `Accessing the registry <https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html>`_.
+   The recommended registry to use is the Integrated OpenShift Container Platform registry.
+   For more information about the registry, see `Accessing the registry <https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html>`_.
 
 #. Build the NVIDIA vGPU Manager image:
 
@@ -242,7 +244,7 @@ Installing the NVIDIA GPU Operator using the CLI
 
 Install the NVIDIA GPU Operator using the guidance at :ref:`Installing the NVIDIA GPU Operator <install-nvidiagpu>`.
 
-  .. note:: When prompted to create a cluster policy follow the guidance :ref:`Creating a ClusterPolicy for the GPU Operator<install-cluster-policy-vGPU>`.
+.. note:: When prompted to create a cluster policy follow the guidance :ref:`Creating a ClusterPolicy for the GPU Operator<install-cluster-policy-vGPU>`.
 
 Create the secret
 =================
