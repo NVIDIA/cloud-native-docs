@@ -426,18 +426,18 @@ The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named Com
 <p>A ComputeDomain creates and manages an IMEX channel, a construct that allows a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
 The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch.
 Once a ComputeDomain has been established for a set of GPUs, through an IMEX channel, the GPUs are free to read and write each other’s memory via extensions to the CUDA memory call APIs.</p>
-<p>Kubernetes DRA, available as beta from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.
-This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels.
+<p>Kubernetes DRA, available as a beta feature from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.</p>
+<p>This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels.
 A ComputeDomain uses DRA features to define IMEX channel resources that can be managed by Kubernetes.</p>
 <p>Refer to the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA documentation</a> for details on this feature.</p>
 </section>
 <section id="install-the-nvidia-dra-driver-for-gpus">
 <h2>Install the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#install-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetescluster.</p>
+<p>The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetes cluster.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>A Mult-iNode NVIDIA HGX GB200 NVL GPUs with at least 2 GPUs Multi-Node NVLink support.</p></li>
+<li><p>A Mult-Node NVIDIA HGX GB200 NVL GPUs with at least 2 GPUs Multi-Node NVLink support.</p></li>
 <li><p>A Kubernetes v1.32 cluster with the <cite>DynamicResourceAllocation</cite> feature gate enabled and the <cite>resource.k8s.io</cite> API group enabled.</p>
 <p>The following is a sample for enabling the required feature gates and API groups.
 Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
@@ -580,8 +580,8 @@ The following command used <a class="reference external" href="https://jqlang.or
 </li>
 </ol>
 <p>The <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/tree/main/docs/gpu-feature-discovery">NVIDIA GPU Feature Discovery</a> adds a Clique ID to each GPU node.
-This is an unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other.
-The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same &lt;ClusterUUID.Clique ID&gt; pair.</p>
+This is a unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other.</p>
+<p>The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same &lt;ClusterUUID.Clique ID&gt; pair.</p>
 <p>The ClusterUUID is a unique identifier for a given NVLink Domain.
 It can be queried on a GPU by GPU basis via the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> commandline tool.
 All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
@@ -801,7 +801,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <ul>
 <li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
 <li><p>This example is configured for a 2 node cluster with 4 GPUs per node.</p>
-<p>If you are using a cluster with different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p>
+<p>If you are using a cluster with a different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p>
 </li>
 </ul>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
