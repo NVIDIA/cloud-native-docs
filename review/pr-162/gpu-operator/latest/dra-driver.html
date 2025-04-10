@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 04, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 10, 2025"/>
 
 
 
@@ -797,11 +797,52 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 <h2>Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI<a class="headerlink" href="#run-a-multi-node-nvbandwidth-test-requiring-imex-channels-with-mpi" title="Permalink to this headline">#</a></h2>
 <p>This example demonstrates how to run a workload across multiple nodes using a ComputeDomain.
 The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your MNNVL setup is working correctly.</p>
-<p>The following sample files use the following:</p>
+<p><strong>Example notes:</strong></p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a></p></li>
-<li><p>A 2 node cluster with all nodes capable of running GPU workloads and meets [NVIDIA DRA Driver for GPUs prerequisites](#prerequisites)</p></li>
+<li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
+<li><p>This example is configured for a 2 node cluster with 4 GPUS per node.
+If you are using a cluster with different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p></li>
 </ul>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 55%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter to update</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value in example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CustomDomain.spec.numNodes</span></code></p></td>
+<td><p>Total number of nodes in the cluster</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.slotsPerWorker</span></code></p></td>
+<td><p>Number of GPUs per node, this should match the ppr number</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.mpiReplicaSpecs.Worker.replicas</span></code></p></td>
+<td><p>Number of worker nodes</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-ppr:4:node</span></code></p></td>
+<td><ul class="simple">
+<li><p>Number of GPUs per node as the process-per-resource number</p></li>
+</ul>
+</td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-np</span></code> value</p></td>
+<td><p>Total processes to be the number of GPU per node * the number of nodes in the cluster</p></td>
+<td><p>8</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Example Steps:</strong></p>
 <ol class="arabic">
 <li><p>Install Kubeflow MPI Operator.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
@@ -815,6 +856,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Update numNodes to match the total number of nodes in your cluster</span><span class="w"></span>
 <span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 <span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
@@ -826,6 +868,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Update slotsPerWorker to match the number of GPUs per node</span><span class="w"></span>
 <span class="w">  </span><span class="nt">slotsPerWorker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
 <span class="w">  </span><span class="nt">launcherCreationPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitForWorkersReady</span><span class="w"></span>
 <span class="w">  </span><span class="nt">runPolicy</span><span class="p">:</span><span class="w"></span>
@@ -857,8 +900,10 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--bind-to</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--map-by</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># Update the number (4) to match the number of GPUs per node</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppr:4:node</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-np</span><span class="w"></span>
+<span class="w">            </span><span class="c1"># Update the number (8) to match the total number of GPUs in the cluster, this example has 2 nodes * 4 GPUs per node</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--report-bindings</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-q</span><span class="w"></span>
@@ -866,6 +911,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-t</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multinode_device_to_device_memcpy_read_ce</span><span class="w"></span>
 <span class="w">    </span><span class="nt">Worker</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># Update replicas to match the number of worker nodes</span><span class="w"></span>
 <span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 <span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
