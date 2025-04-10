@@ -798,10 +798,11 @@ Or use a preferred topologyKey set to <code class="docutils literal notranslate"
 <p>This example demonstrates how to run a workload across multiple nodes using a ComputeDomain.
 The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your MNNVL setup is working correctly.</p>
 <p><strong>Example notes:</strong></p>
-<ul class="simple">
+<ul>
 <li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
-<li><p>This example is configured for a 2 node cluster with 4 GPUS per node.
-If you are using a cluster with different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p></li>
+<li><p>This example is configured for a 2 node cluster with 4 GPUs per node.</p>
+<p>If you are using a cluster with different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p>
+</li>
 </ul>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
