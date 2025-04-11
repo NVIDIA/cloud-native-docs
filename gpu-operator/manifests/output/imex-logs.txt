@@ -1,0 +1,27 @@
+IMEX Log initializing at: 3/3/2025 17:26:19.102
+[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX version 570.00 is running with the following configuration options
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging level = 4
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Logging file name/path = /var/log/nvidia-imex.log
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Append to log file = 0
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Max Log file size = 1024 (MBs)
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Use Syslog file = 0
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX Library communication bind interface =
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX library communication bind port = 50000
+
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Identified this node as ID 0, using bind IP of 'XX.XXX.XXX.XX', and network interface of enP2s2f1
+[Mar 03 2025 17:26:19] [INFO] [tid 38] nvidia-imex persistence file /var/run/nvidia-imex/persist.dat does not exist.  Assuming no previous importers.
+[Mar 03 2025 17:26:19] [INFO] [tid 38] NvGpu Library version matched with GPU Driver version
+[Mar 03 2025 17:26:19] [INFO] [tid 62] Started processing of incoming messages.
+[Mar 03 2025 17:26:19] [INFO] [tid 63] Started processing of incoming messages.
+[Mar 03 2025 17:26:19] [INFO] [tid 64] Started processing of incoming messages.
+[Mar 03 2025 17:26:19] [INFO] [tid 38] Creating gRPC channels to all peers (nPeers = 1).
+[Mar 03 2025 17:26:19] [INFO] [tid 65] Started processing of incoming messages.
+[Mar 03 2025 17:26:19] [INFO] [tid 38] IMEX_WAIT_FOR_QUORUM != FULL, continuing initialization without waiting for connections to all nodes.
+[Mar 03 2025 17:26:19] [INFO] [tid 38] GPU event successfully subscribed
