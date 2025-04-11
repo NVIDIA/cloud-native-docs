@@ -86,7 +86,7 @@ New Features
 
 * Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
 
-* Added support for KubeVirt and OpenShift Virtualization with vGPU v18 for A30, A100, and H100 GPUs.
+* Added support for KubeVirt and OpenShift Virtualization with vGPU v18 on H200NVL.
 
 * Added support for NVIDIA Network Operator v25.1.0.
   Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
