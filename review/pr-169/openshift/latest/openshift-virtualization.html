@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 10, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 11, 2025"/>
 
 
 
@@ -599,9 +599,8 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 <li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - This must match the Guest OS version.
 For RedHat OpenShift, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where _x_ is the supported minor OCP version.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CUDA_VERSION</span></code> - CUDA base image version to build the driver image with.</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.11 <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.7.1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.11
 </pre></div>
 </div>
 </li>
@@ -615,7 +614,6 @@ For more information about the registry, see <a class="reference external" href=
 <li><p>Build the NVIDIA vGPU Manager image:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
     --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
-    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> <span class="se">\</span>
     -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
 </pre></div>
 </div>
