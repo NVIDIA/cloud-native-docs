@@ -9,7 +9,7 @@ Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs
 The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in NVIDIA HGX GB200 NVL GPUs.
 This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with NVIDIA HGX GB200 NVL systems.
 
-NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
 This allows you to get the most use out of your available GPUs without any additional latency overhead.
 
 For more information about Kubernetes Dynamic Resource Allocation (DRA), refer to the `Kubernetes DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
@@ -19,7 +19,7 @@ For more information about Kubernetes Dynamic Resource Allocation (DRA), refer t
 About the NVIDIA DRA Driver for GPUs
 ************************************
 
-The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in NVIDIA HGX GB200 NVL GPUs.
+The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink (MNNVL) available in NVIDIA HGX GB200 NVL GPUs.
 The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ``ComputeDomain`` which can be referenced in jobs that are expected to span multiple nodes. In the case of nodes conntected using MNNVL, the required resources are automatically provisioned to allow a set of GPUs to directly read and write each other's memory over a high-bandwidth NVLink.
 
 Kubernetes DRA, available as a beta feature from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod. 
@@ -116,7 +116,7 @@ To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
      - ``/``
 
    * - ``nvidiaCtkPath``
-     - Specifies the path of The NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
+     - Specifies the path of the NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
        For GPU Operator-installed NVIDIA Container Toolkit (recommended), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
        For a pre-installed NVIDIA Container Toolkit, use ``/usr/bin/nvidia-ctk``.
      - ``/usr/bin/nvidia-ctk`` 
@@ -252,7 +252,7 @@ For example you could set PodAffinity with a required topologyKey set to ``nvidi
 Or use a preferred topologyKey set to ``nvidia.com/gpu.clique`` for workloads to span MNNVL domains but want them packed as tightly as possible. 
 
 Create a ComputeDomain and run a workload
-========================================
+=========================================
 
 #. Create a file like ``imex-channel-injection.yaml`` below.
 
