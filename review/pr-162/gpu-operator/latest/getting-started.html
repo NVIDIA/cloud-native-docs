@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 10, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 14, 2025"/>
 
 
 
@@ -709,7 +709,8 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 with the NVIDIA GPU Operator.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> on the platform support page.</p>
 <p>When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
-Additionally, network restricted environments are not supported.</p>
+Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code> configuration option.
+Note, network restricted environments are not supported.</p>
 </section>
 <section id="pre-installed-nvidia-gpu-drivers">
 <h3>Pre-Installed NVIDIA GPU Drivers<a class="headerlink" href="#pre-installed-nvidia-gpu-drivers" title="Permalink to this headline">#</a></h3>

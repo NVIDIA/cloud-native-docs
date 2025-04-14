@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 10, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 14, 2025"/>
 
 
 
@@ -521,6 +521,8 @@ The following example shows a kernel argument for an Intel CPU:</p>
 <span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.2.0</span><span class="w"></span>
 <span class="w">  </span><span class="nt">kernelArguments</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">intel_iommu=on</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># If you are using AMD CPU, include the following argument:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># - amd_iommu=on</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -582,7 +584,7 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 </div>
 </li>
 <li><p>Change to the <code class="docutils literal notranslate"><span class="pre">vgpu-manager</span></code> directory for your OS:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> vgpu-manager/rhel
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> vgpu-manager/rhel8
 </pre></div>
 </div>
 </li>
@@ -597,21 +599,21 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 <li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - This must match the Guest OS version.
 For RedHat OpenShift, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where _x_ is the supported minor OCP version.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CUDA_VERSION</span></code> - CUDA base image version to build the driver image with.</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.11 <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.7.1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.11
 </pre></div>
 </div>
+</li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The recommended registry to use is the Integrated OpenShift Container Platform registry.
 For more information about the registry, see <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html">Accessing the registry</a>.</p>
 </div>
-</li>
+<ol class="arabic">
 <li><p>Build the NVIDIA vGPU Manager image:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
     --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
-    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> <span class="se">\</span>
     -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
 </pre></div>
 </div>
@@ -626,12 +628,10 @@ For more information about the registry, see <a class="reference external" href=
 <section id="installing-the-nvidia-gpu-operator-using-the-cli">
 <h2>Installing the NVIDIA GPU Operator using the CLI<a class="headerlink" href="#installing-the-nvidia-gpu-operator-using-the-cli" title="Permalink to this headline">#</a></h2>
 <p>Install the NVIDIA GPU Operator using the guidance at <a class="reference internal" href="install-gpu-ocp.html#install-nvidiagpu"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a>.</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When prompted to create a cluster policy follow the guidance <a class="reference internal" href="#install-cluster-policy-vgpu"><span class="std std-ref">Creating a ClusterPolicy for the GPU Operator</span></a>.</p>
 </div>
-</div></blockquote>
 <section id="create-the-secret">
 <h3>Create the secret<a class="headerlink" href="#create-the-secret" title="Permalink to this headline">#</a></h3>
 <p>OpenShift has a secret object type which provides a mechanism for holding sensitive information such as passwords and private source repository credentials. Next you will create a secret object for storing your registry API key (the mechanism used to authenticate your access to the

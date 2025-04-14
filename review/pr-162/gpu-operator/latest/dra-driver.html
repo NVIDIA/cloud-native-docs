@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 10, 2025"/>
+    <meta name="docbuild:last-update" content="Apr 14, 2025"/>
 
 
 
@@ -416,16 +416,13 @@
 <h1>Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#multi-node-nvlink-support-with-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
 <p>The NVIDIA DRA Driver for GPUs is an additional component you can install alongside the GPU Operator that enables you to use the Kubernetes Dynamic Resource Allocation (DRA) feature to support Multi-Node NVLink in NVIDIA HGX GB200 NVL GPUs.
 This page details more information about installing the DRA Driver for GPUs and examples of deploying workloads utilizing Multi-Node NVLink with NVIDIA HGX GB200 NVL systems.</p>
-<p>NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use of IMEX channels to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
-This allows you to get the most use out of your available GPUs without any additional latency burdens.</p>
+<p>NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+This allows you to get the most use out of your available GPUs without any additional latency overhead.</p>
 <p>For more information about Kubernetes Dynamic Resource Allocation (DRA), refer to the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA documentation</a>.</p>
 <section id="about-the-nvidia-dra-driver-for-gpus">
 <h2>About the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#about-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink available in NVIDIA HGX GB200 NVL GPUs.
-The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ComputeDomain where you can define your resource templates, and then reference the templates within your workload definitions.</p>
-<p>A ComputeDomain creates and manages an IMEX channel, a construct that allows a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
-The NVLink connection may either be directly between GPUs on the same node or between GPUs on separate nodes connected by an NVSwitch.
-Once a ComputeDomain has been established for a set of GPUs, through an IMEX channel, the GPUs are free to read and write each other’s memory via extensions to the CUDA memory call APIs.</p>
+<p>The NVIDIA DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to support NVIDIA Multi-Node NVLink (MNNVL) available in NVIDIA HGX GB200 NVL GPUs.
+The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> which can be referenced in jobs that are expected to span multiple nodes. In the case of nodes conntected using MNNVL, the required resources are automatically provisioned to allow a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.</p>
 <p>Kubernetes DRA, available as a beta feature from Kubernetes v1.32, is an API for requesting and sharing resources between pods and containers inside a pod.</p>
 <p>This feature treats specialized hardware as a definable and reusable object and provides the necessary primitives to support cross-node resources such as IMEX channels.
 A ComputeDomain uses DRA features to define IMEX channel resources that can be managed by Kubernetes.</p>
@@ -533,7 +530,7 @@ For pre-installed drivers, use <code class="docutils literal notranslate"><span 
 <td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvidiaCtkPath</span></code></p></td>
-<td><p>Specifies the path of The NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
+<td><p>Specifies the path of the NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
 For GPU Operator-installed NVIDIA Container Toolkit (recommended), use <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia/toolkit/nvidia-ctk</span></code>.
 For a pre-installed NVIDIA Container Toolkit, use <code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-ctk</span></code></p></td>
@@ -632,7 +629,7 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
 </tbody>
 </table>
 </div>
-<p>When you create a CustomDomain resource and configure a pod to reference it, the NVIDIA DRA Driver for GPUs will create the following resources on your cluster:</p>
+<p>When you create a CumputemDomain resource and configure a pod to reference it, the NVIDIA DRA Driver for GPUs will create the following resources on your cluster:</p>
 <ul>
 <li><p>A ComputeDomain resource.</p></li>
 <li><p>A ResourceClaimTemplate to use for workload pods.</p>
@@ -649,7 +646,7 @@ When your workload is deployed, these daemons “follow” the workload pods to 
 Through DRA, these daemons are guaranteed to be fully up and running before the workload pods that triggered their creation are allowed to run.</p>
 </li>
 </ul>
-<p>As workload pods that reference a CustomDomain ResourceClaimTemplate get scheduled, they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on.</p>
+<p>As workload pods that reference a ComputeDomain ResourceClaimTemplate get scheduled, they trigger the NVIDIA DRA Driver for GPUs to request access to the same IMEX channel on whatever node they land on.</p>
 <p>Once scheduled to a node, the NVIDIA DRA Driver for GPUs adds a Node label for the ComputeDomain to the node where the workload has been scheduled to indicate the node is part of that ComputeDomain.
 This label is used as a NodeSelector on the DaemonSet mentioned above to trigger the scheduling of its pods to specific nodes.</p>
 <p>The addition of this Node label triggers the DaemonSet to deploy an IMEX daemon to that node and start running it.</p>
@@ -664,8 +661,8 @@ You must apply NodeAffinity and PodAffinity rules to make sure your workloads ru
 <p>For example you could set PodAffinity with a required topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.clique</span></code> when you require all workloads deployed into the same NVLink domain, but don’t care which one.
 Or use a preferred topologyKey set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.clique</span></code> for workloads to span MNNVL domains but want them packed as tightly as possible.</p>
 </section>
-<section id="create-a-customdomain-and-run-a-workload">
-<h3>Create a CustomDomain and run a workload<a class="headerlink" href="#create-a-customdomain-and-run-a-workload" title="Permalink to this headline">#</a></h3>
+<section id="create-a-computedomain-and-run-a-workload">
+<h3>Create a ComputeDomain and run a workload<a class="headerlink" href="#create-a-computedomain-and-run-a-workload" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create a file like <code class="docutils literal notranslate"><span class="pre">imex-channel-injection.yaml</span></code> below.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
@@ -817,7 +814,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CustomDomain.spec.numNodes</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomain.spec.numNodes</span></code></p></td>
 <td><p>Total number of nodes in the cluster</p></td>
 <td><p>2</p></td>
 </tr>
@@ -1108,7 +1105,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-computedomain-custom-resource">About the ComputeDomain Custom Resource</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#node-and-pod-affinity-strategies">Node and Pod Affinity Strategies</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-customdomain-and-run-a-workload">Create a CustomDomain and run a workload</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-computedomain-and-run-a-workload">Create a ComputeDomain and run a workload</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-multi-node-nvbandwidth-test-requiring-imex-channels-with-mpi">Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI</a></li>
