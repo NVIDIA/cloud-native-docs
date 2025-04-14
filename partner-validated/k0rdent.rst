@@ -94,10 +94,8 @@ Perform the following steps to prepare the |prod-name-short| cluster:
 
    .. code-block:: console
 
-      $ helm upgrade --install gpu-operator oci://ghcr.io/k0rdent/catalog/charts/kgst -n kcm-system \
-        --set "helm.repository.url=https://helm.ngc.nvidia.com/nvidia" \
-        --set "helm.charts[0].name=gpu-operator" \
-        --set "helm.charts[0].version=24.9.2"
+      $ helm install gpu-operator oci://ghcr.io/k0rdent/catalog/charts/gpu-operator-service-template \
+          --version 24.9.2 -n kcm-system
 
 #. Verify service template:
 
