@@ -10,6 +10,18 @@ favicon = "${root}/assets/favicon.ico"
 logo = "${root}/assets/nvidia-logo-white.png"
 author = "NVIDIA Corporation"
 
+extra_content_head = [
+  '''
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  ''',
+]
+
+extra_content_footer = [
+  '''
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  ''',
+]
+
 sphinx_conf_py_extra = """
   myst_enable_extensions = [
     "colon_fence", "dollarmath",
