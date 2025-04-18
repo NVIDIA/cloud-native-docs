@@ -110,7 +110,7 @@ Perform the following steps to prepare the |prod-name-short| cluster:
       NAMESPACE    NAME                          VALID
       kcm-system   gpu-operator-24-9-2           true
 
-#. Deploy service template to child cluster
+#. Deploy service template to child cluster:
 
    .. code-block:: console
 
