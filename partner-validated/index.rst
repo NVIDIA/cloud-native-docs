@@ -27,6 +27,7 @@ About Partner-Validated Configurations
    :hidden:
 
    self
+   k0rdent.rst
    mirantis-mke.rst
 
 Partner-validated configurations help end users who want to use
