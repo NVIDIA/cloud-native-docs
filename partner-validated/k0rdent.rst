@@ -140,7 +140,7 @@ Perform the following steps to prepare the |prod-name-short| cluster:
                 value: nvidia
 
 
-The |prod-name-short| managed clusters will now have the Nvidia GPU operator
+The |prod-name-short| managed clusters will now have the NVIDIA GPU operator
 
 *************************************************
 Verifying |prod-name-short| with the GPU Operator
