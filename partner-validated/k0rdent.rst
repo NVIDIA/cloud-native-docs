@@ -13,7 +13,7 @@ About |prod-name-short| with the GPU Operator
 *********************************************
 
 |prod-name-short| is as a "super control plane" designed to ensure the consistent provisioning and lifecycle
-management of kubernetes clusters and the services that make them useful. The goal of the k0rdent project is
+management of Kubernetes clusters and the services that make them useful. The goal of the k0rdent project is
 to provide platform engineers with the means to deliver a distributed container management environment (DCME) 
 and enable them to compose unique internal developer platforms (IDP) to support a diverse range of complex 
 modern application workloads.
