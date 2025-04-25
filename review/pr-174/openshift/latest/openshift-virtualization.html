@@ -491,6 +491,7 @@ on what GPU workload is configured to run on those nodes. Consider the following
 </pre></div>
 </div>
 </li>
+<li><p>If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu">NVIDIA vGPU Documentation</a> to ensure you have met all of the prerequisites for using NVIDIA vGPU.</p></li>
 </ul>
 </section>
 <section id="enabling-the-iommu-driver-on-hosts">
@@ -675,10 +676,6 @@ Create the cluster policy using the CLI:</p>
 </div>
 </li>
 <li><p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file as follows:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.</p>
-</div>
 <ul class="simple">
 <li><p>sandboxWorloads.enabled=true</p></li>
 <li><p>vgpuManager.enabled=true</p></li>
@@ -687,6 +684,9 @@ Create the cluster policy using the CLI:</p>
 <li><p>vgpuManager.version=&lt;driver version&gt;</p></li>
 <li><p>vgpuManager.imagePullSecrets={&lt;name of image pull secret&gt;}</p></li>
 </ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.</p>
+<p>In general, the flag <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
 </li>
 <li><p>Apply the changes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
