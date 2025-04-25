@@ -96,6 +96,9 @@ Prerequisites
      hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
 
 
+* If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu>`_ to ensure you have met all of the prerequisites for using NVIDIA vGPU.
+
+
 **********************************
 Enabling the IOMMU driver on hosts
 **********************************
@@ -297,14 +300,20 @@ Create the cluster policy using the CLI:
 
 #. Modify the ``clusterpolicy.json`` file as follows:
 
-   .. note:: The ``vgpuManager`` options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.
-
    * sandboxWorloads.enabled=true
    * vgpuManager.enabled=true
    * vgpuManager.repository=<path to private repository>
    * vgpuManager.image=vgpu-manager
    * vgpuManager.version=<driver version>
    * vgpuManager.imagePullSecrets={<name of image pull secret>}
+   
+
+   The ``vgpuManager`` options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.
+
+   In general, the flag ``sandboxWorkloads.enabled`` in ``ClusterPolicy`` controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used.
+
+   The term ``sandboxing`` refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+
 
 #. Apply the changes:
 
