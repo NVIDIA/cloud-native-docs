@@ -71,9 +71,6 @@ The product life cycle and versioning are subject to change in the future.
 GPU Operator Component Matrix
 *****************************
 
-.. _gds: #gds-open-kernel
-.. |gds| replace:: :sup:`1`
-
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
@@ -89,11 +86,14 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - ${version}
 
    * - NVIDIA GPU Driver
-     - | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_ (recommended),
+     - | `570.133.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html>`_ (recommended)
+       | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_ 
        | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
        | `560.35.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-560-35-03/index.html>`_
-       | `550.144.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-144-03/index.html>`_ (default),
+       | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
+       | `550.144.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-144-03/index.html>`_ (default)
        | `550.127.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-127-08/index.html>`_
+       | `535.247.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html>`_
        | `535.230.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-230-02/index.html>`_
        | `535.216.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-216-03/index.html>`_
 
@@ -131,7 +131,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - NVIDIA vGPU Device Manager
      - `v0.2.8 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
-   * - NVIDIA GDS Driver |gds|_
+   * - NVIDIA GDS Driver 
      - `2.20.5 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
 
    * - NVIDIA Kata Manager for Kubernetes
@@ -144,16 +144,17 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - NVIDIA GDRCopy Driver
      - `v2.4.1-1 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
-.. _gds-open-kernel:
-
-   :sup:`1`
-   This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
-   Refer to :doc:`gpu-operator-rdma` for more information.
-
 .. note::
-
+    
+  **NVIDIA GPU Driver** 
+   - If you are using driver versions 570.133.20, 550.163.01, or 535.247.01 and have configured ``driver.useOpenKernelModules=true``, you must also set the ``KERNEL_MODULE_TYPE=open`` environment variable in your ClusterPolicy to use the open kernel module.
+     The  ``driver.useOpenKernelModules`` parameter is no longer honored by newer driver versions. 
+     Its recommended that you upgrade to GPU Operator version 25.3.0 or later, which supports auto-selecting the correct kernel module type.
    - Driver version could be different with NVIDIA vGPU, as it depends on the driver
      version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
    - The GPU Operator is supported on all active NVIDIA data center production drivers.
      Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_
      for more information.
+  **NVIDIA GDS Driver**
+   - This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
+     Refer to :doc:`gpu-operator-rdma` for more information.
