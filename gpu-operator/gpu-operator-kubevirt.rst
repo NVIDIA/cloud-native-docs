@@ -224,7 +224,9 @@ The following example shows how to permit the A10 GPU device and A10-24Q vGPU de
                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
                 Kernel modules: nvidiafb, nouveau
 
-#. Modify the ``KubeVirt`` custom resource like the following partial example:
+#. Modify the ``KubeVirt`` custom resource like the following partial example. 
+
+   Add 
 
    .. code-block:: yaml
 
@@ -235,12 +237,12 @@ The following example shows how to permit the A10 GPU device and A10-24Q vGPU de
             featureGates:
             - GPU
             - DisableMDEVConfiguration
-          permittedHostDevices:
-            pciHostDevices:
+          permittedHostDevices: # Defines VM devices to import.
+            pciHostDevices: # Include for GPU passthrough
             - externalResourceProvider: true
               pciVendorSelector: 10DE:2236
               resourceName: nvidia.com/GA102GL_A10
-            mediatedDevices:
+            mediatedDevices: # Include for vGPU 
             - externalResourceProvider: true
               mdevNameSelector: NVIDIA A10-24Q
               resourceName: nvidia.com/NVIDIA_A10-24Q
@@ -248,7 +250,11 @@ The following example shows how to permit the A10 GPU device and A10-24Q vGPU de
 
    Replace the values in the YAML as follows:
 
-   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
+   * Include ``permittedHostDevices`` for GPU passthrough.
+
+   * Include ``mediatedDevices`` for vGPU.
+
+   * ``pciVendorSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
 
    * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
 
