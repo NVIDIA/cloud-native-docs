@@ -1,7 +1,7 @@
 .. headings # #, * *, =, -, ^, "
 
-.. |prod-name-long| replace:: Mirantis k0RDENT
-.. |prod-name-short| replace:: k0RDENT
+.. |prod-name-long| replace:: Mirantis k0rdent
+.. |prod-name-short| replace:: k0rdent
 
 #############################################
 |prod-name-long| with the NVIDIA GPU Operator
