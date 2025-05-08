@@ -10,6 +10,33 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.6
+
+This release of the NVIDIA Container Toolkit `v1.17.6` is a bugfix and minor feature release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.6`
+- `nvidia-container-toolkit-base 1.17.6`
+- `libnvidia-container-tools 1.17.6`
+- `libnvidia-container1 1.17.6`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubi9`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6`)
+
+### Fixes and Features
+
+#### Enhancements to libnvidia-container
+- Added logic to skip files when user has insufficient permissions to read them. This prevents errors discovering IPC sockets when the `nvidia-container-cli` is run as a non-root user.
+
+#### Enhancements to container-toolkit Container Images
+
+- Added functionality to allow the container runtime executable path to be specified when configuring containerd. The allows the Toolkit Container to be used in environments where multiple containerd executables are available.
+- Updated the CUDA base image version to 12.8.1.
+
+
 ## NVIDIA Container Toolkit 1.17.5
 
 This release of the NVIDIA Container Toolkit `v1.17.5` is a bugfix and minor feature release.
