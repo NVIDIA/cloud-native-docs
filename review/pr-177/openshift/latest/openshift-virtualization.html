@@ -710,13 +710,20 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <p>As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.</p>
 <ol class="arabic">
 <li><p>Navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> and find your installed NVIDIA GPU Operator.</p></li>
-<li><p>Under <em>ProvidedAPIs</em>, click <strong>ClusterPolicy</strong>.</p>
+<li><p>Under <em>Provided APIs</em>, click <strong>ClusterPolicy</strong>.</p>
 <img alt="_images/navigate_to_cluster_policy.png" src="_images/navigate_to_cluster_policy.png" />
 </li>
 <li><p>Click <strong>Create ClusterPolicy</strong>.</p>
 <img alt="_images/create_cluster_policy.png" src="_images/create_cluster_policy.png" />
 </li>
-<li><p>If you are planning to use NVIDIA vGPU, expand the <strong>NVIDIA GPU/vGPU Driver config</strong> section and fill in your desired configuration settings, including:</p>
+<li><p>Expand the <strong>NVIDIA GPU/vGPU Driver config</strong> section.</p></li>
+<li><p>Expand the <strong>Sandbox Workloads config</strong> section and select the checkbox to enable sandbox workloads.</p>
+<p>In general, when sandbox workloads are enabled, <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+* Click <strong>Create</strong> to create the ClusterPolicy.</p>
+<img alt="_images/cluster_policy_enable_sandbox_workloads.png" src="_images/cluster_policy_enable_sandbox_workloads.png" />
+</li>
+<li><p>If you are planning to use NVIDIA vGPU, expand the <strong>NVIDIA vGPU Manager config</strong> section and fill in your desired configuration settings, including:</p>
 <ul class="simple">
 <li><p>Select the <strong>enabled</strong> checkbox to enable the NVIDIA vGPU Manager.</p></li>
 <li><p>Add your <strong>imagePullSecrets</strong>.</p></li>
@@ -726,16 +733,11 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <p>If you are only using GPU passthrough, you dont need to fill this section out.</p>
 <img alt="_images/cluster_policy_configure_vgpu.png" src="_images/cluster_policy_configure_vgpu.png" />
 </li>
-<li><p>Expand the <strong>Sandbox Workloads config</strong> section and select the checkbox to enable sandbox workloads.</p>
-<p>In general, when sandbox workloads are enabled, <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
-<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
-* Click <strong>Create</strong> to create the ClusterPolicy.</p>
-<img alt="_images/cluster_policy_enable_sandbox_workloads.png" src="_images/cluster_policy_enable_sandbox_workloads.png" />
+<li><p>Click <strong>Create</strong> to create the ClusterPolicy.</p>
+<p>The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt VMs.
+Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
+To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#vgpu-device-configuration" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">vGPU Device Configuration</span></a>.</p>
 </li>
-</ol>
-<ol class="arabic simple" start="3">
-<li><p>Click <strong>Create</strong> to create the ClusterPolicy.
-The operands will be deployed to the cluster.</p></li>
 </ol>
 </section>
 </section>
