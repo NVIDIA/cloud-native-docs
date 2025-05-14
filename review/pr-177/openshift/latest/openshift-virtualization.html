@@ -461,12 +461,14 @@ on what GPU workload is configured to run on those nodes. Consider the following
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VFIO</span> <span class="pre">Manager</span></code> - Optional. To load vfio-pci and bind it to all GPUs on the node.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - Optional. To discover and advertise the passthrough GPUs to the kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
 </ul>
 <p>Node C receives the following software components:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Manager</span></code> - To install the driver.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Device</span> <span class="pre">Manager</span></code> - To create vGPU devices on the node.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> -Optional. To discover and advertise the vGPU devices to kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
 </ul>
 </section>
 <section id="assumptions-constraints-and-dependencies">
