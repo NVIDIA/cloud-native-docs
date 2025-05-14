@@ -51,12 +51,14 @@ Node B receives the following software components:
 
 * ``VFIO Manager`` - Optional. To load vfio-pci and bind it to all GPUs on the node.
 * ``Sandbox Device Plugin`` - Optional. To discover and advertise the passthrough GPUs to the kubelet.
+* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
 
 Node C receives the following software components:
 
 * ``NVIDIA vGPU Manager`` - To install the driver.
 * ``NVIDIA vGPU Device Manager`` - To create vGPU devices on the node.
 * ``Sandbox Device Plugin`` -Optional. To discover and advertise the vGPU devices to kubelet.
+* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
 
 
 ******************************************
