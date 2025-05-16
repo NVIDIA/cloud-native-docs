@@ -72,13 +72,16 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      | | NVIDIA H200,          | NVIDIA Hopper             |
      | | NVIDIA H200 NVL       |                           |
      +-------------------------+---------------------------+
-     | NVIDIA HGX H200         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
      | NVIDIA DGX H100         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
+     | NVIDIA DGX H200         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
      | NVIDIA HGX H100         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
+     | NVIDIA HGX H200         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
      | | NVIDIA H100,          | NVIDIA Hopper             |
@@ -170,14 +173,17 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | Product                 | Architecture           |
     +=========================+========================+
+    | NVIDIA DGX B200         | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
     | NVIDIA HGX B200         | NVIDIA Blackwell       |
     +-------------------------+------------------------+
-    | NVIDIA HGX GB200 NVL    | NVIDIA Blackwell       |
+    | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |
     +-------------------------+------------------------+
 
      .. note::
 
        * HGX B200 requires a driver container version of 570.133.20 or later.
+
 
 .. _gpu-operator-arm-platforms:
 
@@ -242,6 +248,8 @@ Supported Operating Systems and Kubernetes Platforms
 .. |fn1| replace:: :sup:`1`
 .. _fn2: #ubuntu-kernel
 .. |fn2| replace:: :sup:`2`
+.. _fn3: #rhel-9
+.. |fn3| replace:: :sup:`3`
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -271,25 +279,25 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 8.0 U2, 8.0 U3
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 1.26
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
          -
@@ -308,27 +316,27 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 8.8,
-           | 8.10
-         - 1.29---1.32
+           | Linux 9.2, 9.4, 9.5, 9.6 |fn3|_
+         - 1.29---1.33
          -
          -
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
          -
 
        * - | Red Hat
            | Enterprise
-           | Linux 8.4, 8.5
+           | Linux 8.8,
+           | 8.10
+         - 1.29---1.33
+         -
+         -
+         - 1.29---1.33
          -
          -
          -
-         -
-         - 5.5
-         -
-         -
-
+         
     .. _kubernetes-version:
 
     :sup:`1`
@@ -345,7 +353,12 @@ The GPU Operator has been validated in the following scenarios:
     `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
     NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
     by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
- 
+
+    .. _rhel-9:
+
+    :sup:`3`
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+    They are not available for ARM based systems.
 
     .. note::
 
@@ -395,21 +408,21 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.23---1.25
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 8.0 U2, 8.0 U3
          -
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 
          -
@@ -426,10 +439,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.10
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
-         - 1.29---1.32
+         - 1.29---1.33
          -
 
 
@@ -468,6 +481,8 @@ The GPU Operator has been validated in the following scenarios:
 | Red Hat Core OS (RHCOS)    | No                     | Yes            |
 +----------------------------+------------------------+----------------+
 | Red Hat Enterprise Linux 8 | Yes                    | Yes            |
++----------------------------+------------------------+----------------+
+| Red Hat Enterprise Linux 9 | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 
 
@@ -521,6 +536,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
 - Ubuntu 24.04 LTS with Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
+- Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 with Network Operator 25.1.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
