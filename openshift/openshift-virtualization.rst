@@ -51,12 +51,14 @@ Node B receives the following software components:
 
 * ``VFIO Manager`` - Optional. To load vfio-pci and bind it to all GPUs on the node.
 * ``Sandbox Device Plugin`` - Optional. To discover and advertise the passthrough GPUs to the kubelet.
+* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
 
 Node C receives the following software components:
 
 * ``NVIDIA vGPU Manager`` - To install the driver.
 * ``NVIDIA vGPU Device Manager`` - To create vGPU devices on the node.
 * ``Sandbox Device Plugin`` -Optional. To discover and advertise the vGPU devices to kubelet.
+* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
 
 
 ******************************************
@@ -286,8 +288,8 @@ private container registry).
 .. _install-cluster-policy-vGPU:
 
 
-Creating a ClusterPolicy for the GPU Operator
-=============================================
+Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI
+=========================================================================================
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI.
 Create the cluster policy using the CLI:
@@ -328,6 +330,52 @@ Create the cluster policy using the CLI:
 The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt VMs.
 Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
 To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to :ref:`vGPU Device Configuration<vgpu-device-configuration>`.
+
+
+Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console
+================================================================================================
+
+As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.
+
+#. Navigate to **Operators** > **Installed Operators** and find your installed NVIDIA GPU Operator. 
+
+#. Under *Provided APIs*, click **ClusterPolicy**.
+
+
+   .. image:: graphics/navigate_to_cluster_policy.png
+
+
+#. Click **Create ClusterPolicy**.
+
+   .. image:: graphics/create_cluster_policy.png
+
+#. Expand the **NVIDIA GPU/vGPU Driver config** section.
+
+#. Expand the **Sandbox Workloads config** section and select the checkbox to enable sandbox workloads.
+
+   In general, when sandbox workloads are enabled, ``ClusterPolicy`` controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used.
+
+   The term ``sandboxing`` refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+   * Click **Create** to create the ClusterPolicy.
+
+   .. image:: graphics/cluster_policy_enable_sandbox_workloads.png
+
+#. If you are planning to use NVIDIA vGPU, expand the **NVIDIA vGPU Manager config** section and fill in your desired configuration settings, including:
+
+   * Select the **enabled** checkbox to enable the NVIDIA vGPU Manager.
+   * Add your **imagePullSecrets**.
+   * Under *driverManager*, fill in **repository** with the path to your private repository.
+   * Under *env*, fill in **image** with ``vgpu-manager`` and the **version** with your driver version. 
+
+   If you are only using GPU passthrough, you dont need to fill this section out.
+
+   .. image:: graphics/cluster_policy_configure_vgpu.png
+
+#. Click **Create** to create the ClusterPolicy.
+
+   The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt VMs.
+   Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
+   To learn more about the vGPU Device Manager and how to configure which types of vGPU devices get created in your cluster, refer to :ref:`vGPU Device Configuration<vgpu-device-configuration>`.
 
 
 *******************************************************
@@ -403,7 +451,6 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
    * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
 
 Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information on the configuration options.
-
 
 About Mediated Devices
 ======================
