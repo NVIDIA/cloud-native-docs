@@ -410,7 +410,7 @@
 <h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to <code class="docutils literal notranslate"><span class="pre">csv</span></code>.</p></li>
-<li><p>Fixed the resolution of libraries in in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.</p></li>
+<li><p>Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-modes.legacy.cuda-compat-mode</span></code> option to provide finer control of how CUDA Forward Compatibility is handled. The default value (<code class="docutils literal notranslate"><span class="pre">ldconfig</span></code>) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (e.g. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> command line flag).</p></li>
 <li><p>Improved the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to run in isolated namespaces. This improves hook security.</p></li>
 </ul>
