@@ -10,6 +10,35 @@ This document describes the new features, improvements, fixed and known issues f
 
 ______________________________________________________________________
 
+## NVIDIA Container Toolkit 1.17.7
+
+This release of the NVIDIA Container Toolkit `v1.17.7` is a bugfix and minor feature release.
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.7`
+- `nvidia-container-toolkit-base 1.17.7`
+- `libnvidia-container-tools 1.17.7`
+- `libnvidia-container1 1.17.7`
+
+The following `container-toolkit` conatiners are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.7`)
+
+### Fixes and Features
+- Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to `csv`.
+- Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.
+- Added a `nvidia-container-runtime-modes.legacy.cuda-compat-mode` option to provide finer control of how CUDA Forward Compatibility is handled. The default value (`ldconfig`) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (e.g. the Docker `--gpus` command line flag).
+- Improved the `update-ldcache` hook to run in isolated namespaces. This improves hook security.
+
+
+#### Enhancements to libnvidia-container
+- Added a `--cuda-compat-mode` flag to the `nvidia-container-cli configure` command. The `--no-cntlibs` argument is deprecated and is replaced by the `--cuda-compat-mode=disabled` option.
+
+#### Enhancements to container-toolkit Container Images
+- Updated the CUDA base image version to 12.9.0.
+
 ## NVIDIA Container Toolkit 1.17.6
 
 This release of the NVIDIA Container Toolkit `v1.17.6` is a bugfix and minor feature release.
@@ -23,7 +52,7 @@ The following packages are included:
 
 The following `container-toolkit` conatiners are included:
 
-- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubi9`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubi8`
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.6`)
 
 ### Fixes and Features
@@ -50,7 +79,7 @@ The following packages are included:
 
 The following `container-toolkit` conatiners are included:
 
-- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubi9`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubi8`
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.5`)
 
 ### Fixes and Features
