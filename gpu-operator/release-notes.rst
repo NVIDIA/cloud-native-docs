@@ -33,6 +33,38 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.1:
+
+25.3.1
+======
+
+.. _v25.3.1-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit version v1.17.7
+  - NVIDIA Kubernetes Device Plugin v0.17.2
+  - Node Feature Discovery v0.17.3
+  - NVIDIA GDRCopy Driver v2.5.0
+
+* Added support for the following NVIDIA Data Center GPU Driver versions:
+
+  - 570.133.20 (recommended)
+  - 550.163.01
+  - 535.247.01
+
+.. _v25.3.1-fixed-issues:
+
+Fixed Issues
+------------
+
+* Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet. 
+  This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
+  Refer to Github `pull request #1416 <https://github.com/NVIDIA/gpu-operator/pull/1416>`__ for more details.
+
 .. _v25.3.0:
 
 25.3.0
@@ -155,7 +187,6 @@ Fixed Issues
   Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
 
 * Removed deprecated `operator.defaultRuntime`` parameter.
-
 .. _v24.9.2:
 
 24.9.2
@@ -2262,3 +2293,4 @@ Known Limitations
 
 * After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+
