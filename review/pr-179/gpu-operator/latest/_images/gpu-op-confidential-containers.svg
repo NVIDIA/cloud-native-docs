@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1191.8788"
+   height="790.80243"
+   viewBox="0 0 315.35124 209.23315"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="gpu-op-confidential-containers.svg">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker10303"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path10301" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker10167"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path10165" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker9833"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path9831" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker9697"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path9695" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker9343"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path9341" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7692"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path7690" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker5824"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path5822" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker5252"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path5250" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker5090"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path5088" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker4934"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path4932" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker4734"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path4732" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker4379"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path4377" />
+    </marker>
+    <rect
+       x="29.720701"
+       y="240.38335"
+       width="169.44438"
+       height="41.204102"
+       id="rect901" />
+    <marker
+       style="overflow:visible"
+       id="Arrow2Lstart-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path1829-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2557-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2555-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2955-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2953-5" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2955-4-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2953-1-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker3232-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path3230-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2955-9-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2953-7-6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker3232-4-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path3230-3-2" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker2737-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path2735-4" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.48"
+     inkscape:cx="723.36113"
+     inkscape:cy="469.80627"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1945"
+     inkscape:window-height="1199"
+     inkscape:window-x="1227"
+     inkscape:window-y="87"
+     inkscape:window-maximized="0"
+     inkscape:snap-global="false"
+     inkscape:snap-bbox="false"
+     inkscape:object-paths="true"
+     inkscape:pagecheckerboard="true"
+     fit-margin-left="5"
+     fit-margin-top="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(103.90495,-13.795933)">
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.258119;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:2.06496, 0.258119;stroke-dashoffset:0"
+       id="rect1124"
+       width="117.97915"
+       height="206.32919"
+       x="39.362305"
+       y="15.24791" />
+    <text
+       xml:space="preserve"
+       id="text899"
+       style="font-size:4.23333px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';white-space:pre;shape-inside:url(#rect901);" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="42.36277"
+       y="22.490196"
+       id="text1028"><tspan
+         sodipodi:role="line"
+         x="42.36277"
+         y="22.490196"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+         id="tspan1126">Trusted Execution Environment (TEE)</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.245442;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:1.96354, 0.245442;stroke-dashoffset:0"
+       id="rect1130"
+       width="105.80042"
+       height="144.06415"
+       x="45.340546"
+       y="30.801229" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="48.661522"
+       y="38.317596"
+       id="text1092"><tspan
+         sodipodi:role="line"
+         id="tspan1090"
+         x="48.661522"
+         y="38.317596"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">CPU</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.244549;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1132"
+       width="93.169739"
+       height="124.48297"
+       x="52.904827"
+       y="44.052238" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="55.15675"
+       y="50.528481"
+       id="text1088"><tspan
+         sodipodi:role="line"
+         id="tspan1086"
+         x="55.15675"
+         y="50.528481"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">Confidental Virtual Machine</tspan></text>
+    <g
+       id="g4683">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.228318;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8-3-8-8"
+         width="81.227875"
+         height="9.8563681"
+         x="57.134007"
+         y="-67.107887"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="85.121696"
+         y="63.910786"
+         id="text1084"><tspan
+           sodipodi:role="line"
+           id="tspan1082"
+           x="85.121696"
+           y="63.910786"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">Containers</tspan></text>
+    </g>
+    <g
+       id="g4914">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.218744;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8-3-8-6-8"
+         width="74.485634"
+         height="9.865943"
+         x="63.881031"
+         y="-82.673622"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="78.040329"
+         y="79.51371"
+         id="text1080"><tspan
+           sodipodi:role="line"
+           id="tspan1078"
+           x="78.040329"
+           y="79.51371"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">Guest Pre-Start Hook</tspan></text>
+    </g>
+    <g
+       id="g4695"
+       transform="translate(-3.1280781,-4.3719152)">
+      <g
+         id="g4638">
+        <rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:0.196663;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect1134-5-8-3-8-0"
+           width="60.072857"
+           height="9.8880224"
+           x="81.43293"
+           y="-102.61752"
+           transform="scale(1,-1)" />
+        <text
+           xml:space="preserve"
+           style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+           x="84.402092"
+           y="99.404587"
+           id="text1076"><tspan
+             sodipodi:role="line"
+             id="tspan1074"
+             x="84.402092"
+             y="99.404587"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">NVIDIA Attestation SDK</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g4922">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.206459;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8-3-8-6"
+         width="66.271942"
+         height="9.8782272"
+         x="72.100876"
+         y="-113.80166"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="76.601219"
+         y="110.63562"
+         id="text1068"><tspan
+           sodipodi:role="line"
+           id="tspan1066"
+           x="76.601219"
+           y="110.63562"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">NVIDIA Container Toolkit</tspan></text>
+    </g>
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.626673;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 163.1084,49.143794 -0.3349,77.850316 -23.50052,-28.972662 -0.20495,-9.663782 z"
+       id="path7923" />
+    <g
+       id="g4700"
+       transform="translate(0.80884933,-9.2333754)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.228318;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8-3-8"
+         width="81.227875"
+         height="9.8563681"
+         x="56.325157"
+         y="-138.58505"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="83.910339"
+         y="134.85703"
+         id="text1072"><tspan
+           sodipodi:role="line"
+           id="tspan1070"
+           x="83.910339"
+           y="134.85703"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">Kata Agent</tspan></text>
+    </g>
+    <g
+       id="g4705"
+       transform="translate(-0.98594284,-11.173688)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.228318;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8-3"
+         width="81.227875"
+         height="9.8563681"
+         x="58.119949"
+         y="-156.08632"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="66.934914"
+         y="152.9312"
+         id="text1064"><tspan
+           sodipodi:role="line"
+           id="tspan1062"
+           x="66.934914"
+           y="152.9312"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">NVIDIA Driver and RIM Files</tspan></text>
+    </g>
+    <g
+       id="g4710"
+       transform="translate(-1.1900482,-13.229169)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.228318;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1134-5-8"
+         width="81.227875"
+         height="9.8563681"
+         x="58.324055"
+         y="-173.70273"
+         transform="scale(1,-1)" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.64444px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="84.741188"
+         y="170.54761"
+         id="text1060"><tspan
+           sodipodi:role="line"
+           id="tspan1058"
+           x="84.741188"
+           y="170.54761"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">Linux Kernel</tspan></text>
+    </g>
+    <g
+       id="g5437"
+       transform="translate(0,-10.054167)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.343031;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1271"
+         width="105.57558"
+         height="27.201046"
+         x="45.912373"
+         y="197.28006" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.23333px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="84.752754"
+         y="211.80421"
+         id="text1032"><tspan
+           sodipodi:role="line"
+           id="tspan1030"
+           x="84.752754"
+           y="211.80421"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583">NVIDIA GPU</tspan></text>
+    </g>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.28322;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1321"
+       width="47.169479"
+       height="77.323708"
+       x="162.8123"
+       y="49.402874" />
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1323"
+       width="43.382267"
+       height="9.4961557"
+       x="164.7059"
+       y="51.621544" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="173.38554"
+       y="58.085888"
+       id="text1295"><tspan
+         sodipodi:role="line"
+         id="tspan1293"
+         x="173.38554"
+         y="58.085888"
+         style="stroke-width:0.264583">Attestation</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.400952;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1323-5"
+       width="43.245899"
+       height="21.876408"
+       x="164.77409"
+       y="63.823135" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="186.54027"
+       y="70.373123"
+       id="text1299"><tspan
+         sodipodi:role="line"
+         id="tspan1297"
+         x="186.54027"
+         y="70.373123"
+         style="text-align:center;text-anchor:middle;stroke-width:0.264583">Confidential</tspan><tspan
+         sodipodi:role="line"
+         x="186.54027"
+         y="76.546745"
+         style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+         id="tspan1301">Containers</tspan><tspan
+         sodipodi:role="line"
+         x="186.54027"
+         y="82.720375"
+         style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+         id="tspan1303">Administration</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.270944;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1323-5-6"
+       width="43.375904"
+       height="9.9597378"
+       x="164.70909"
+       y="89.506401" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="170.57037"
+       y="95.795082"
+       id="text1307"><tspan
+         sodipodi:role="line"
+         id="tspan1305"
+         x="170.57037"
+         y="95.795082"
+         style="stroke-width:0.264583">NVML Library</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1323-1"
+       width="43.382267"
+       height="9.4961557"
+       x="164.7059"
+       y="102.52985" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="168.22192"
+       y="109.05099"
+       id="text1311"><tspan
+         sodipodi:role="line"
+         id="tspan1309"
+         x="168.22192"
+         y="109.05099"
+         style="stroke-width:0.264583">VBIOS RIM Files</tspan></text>
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect1323-1-1"
+       width="43.382267"
+       height="9.4961557"
+       x="164.7059"
+       y="114.9398" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="171.25194"
+       y="121.47328"
+       id="text1315"><tspan
+         sodipodi:role="line"
+         id="tspan1313"
+         x="171.25194"
+         y="121.47328"
+         style="stroke-width:0.264583">Local Verifier</tspan></text>
+    <g
+       id="g5810"
+       transform="translate(0.44664574,-9.9130477)">
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect1323-1-1-5"
+         width="43.382267"
+         height="9.4961557"
+         x="164.25926"
+         y="155.64389" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="170.18791"
+         y="162.12305"
+         id="text1319"><tspan
+           sodipodi:role="line"
+           id="tspan1317"
+           x="170.18791"
+           y="162.12305"
+           style="stroke-width:0.264583">OCSP Service</tspan></text>
+    </g>
+    <g
+       id="g7991"
+       transform="translate(0,-6.879167)">
+      <ellipse
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="path1425-9"
+         cx="186.39703"
+         cy="-222.93254"
+         rx="19.682701"
+         ry="4.9027891"
+         transform="scale(1,-1)" />
+      <rect
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.46298;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0"
+         id="rect1530"
+         width="39.279045"
+         height="22.033655"
+         x="166.75751"
+         y="201.22346" />
+      <ellipse
+         style="fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+         id="path1425"
+         cx="186.39703"
+         cy="200.89891"
+         rx="19.682701"
+         ry="4.9027891" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 166.71807,200.8035 0.0394,22.45363"
+         id="path1528" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 206.07955,200.87785 -0.043,22.37928"
+         id="path1532" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+         x="186.33035"
+         y="211.53264"
+         id="text1451"><tspan
+           sodipodi:role="line"
+           id="tspan1449"
+           x="186.33035"
+           y="211.53264"
+           style="text-align:center;text-anchor:middle;stroke-width:0.264583">Signed</tspan><tspan
+           sodipodi:role="line"
+           x="186.33035"
+           y="217.70627"
+           style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+           id="tspan1453">Container</tspan><tspan
+           sodipodi:role="line"
+           x="186.33035"
+           y="223.87988"
+           style="text-align:center;text-anchor:middle;stroke-width:0.264583"
+           id="tspan1455">Images</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.264583, 0.529166;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker4734)"
+       d="M 59.161356,119.43308 V 67.303818"
+       id="path4712" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.264583, 0.529166;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker4934)"
+       d="M 67.608965,119.51611 V 82.775919"
+       id="path4924" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.264583, 0.529166;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker5090)"
+       d="M 75.253305,82.849637 V 103.75545"
+       id="path5080" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.264583, 0.529166;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker5252)"
+       d="m 104.05709,82.727177 v 5.784858"
+       id="path5242" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.5875, 0.264583;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 163.10726,49.151542 138.16449,88.303951"
+       id="path5791" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.5875, 0.264583;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 162.76276,126.98631 138.58852,98.01944"
+       id="path5793" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4379);marker-end:url(#marker5824)"
+       d="m 186.39704,126.72977 v 18.67491"
+       id="path5814" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="188.39539"
+       y="180.59547"
+       id="text7927"><tspan
+         sodipodi:role="line"
+         id="tspan7925"
+         x="188.39539"
+         y="180.59547"
+         style="stroke-width:0.264583">virtio-fs</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="5.2519822"
+       y="138.35355"
+       id="text7931"><tspan
+         sodipodi:role="line"
+         id="tspan7929"
+         x="5.2519822"
+         y="138.35355"
+         style="stroke-width:0.264583">gRPC</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="-88.650421"
+       y="138.35355"
+       id="text7931-4"><tspan
+         sodipodi:role="line"
+         id="tspan7929-3"
+         x="-88.650421"
+         y="138.35355"
+         style="stroke-width:0.264583">gRPC</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="-82.629913"
+       y="164.02953"
+       id="text7959"><tspan
+         sodipodi:role="line"
+         id="tspan7957"
+         x="-82.629913"
+         y="164.02953"
+         style="stroke-width:0.264583">I/O</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+       x="5.2519822"
+       y="163.748"
+       id="text7963"><tspan
+         sodipodi:role="line"
+         id="tspan7961"
+         x="5.2519822"
+         y="163.748"
+         style="stroke-width:0.264583">OCI</tspan><tspan
+         sodipodi:role="line"
+         x="5.2519822"
+         y="169.92163"
+         style="stroke-width:0.264583"
+         id="tspan7965">commands</tspan></text>
+    <g
+       id="g6684-7"
+       transform="translate(-128.45571,-120.61)">
+      <g
+         id="g1760-7"
+         transform="translate(3.1437205,-11.952224)">
+        <rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect1271-0-4-4-5"
+           width="53.507496"
+           height="10.589879"
+           x="66.322884"
+           y="252.01956" />
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+           x="84.828674"
+           y="259.04559"
+           id="text1275-4"><tspan
+             sodipodi:role="line"
+             id="tspan1273-8"
+             x="84.828674"
+             y="259.04559"
+             style="stroke-width:0.264583">VSOCK</tspan></text>
+      </g>
+      <g
+         id="g3174-1"
+         transform="translate(0,11.425684)">
+        <g
+           id="g1765-2"
+           transform="translate(96.869226,9.4055426)">
+          <rect
+             style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+             id="rect1271-0-4-4-7-8"
+             width="53.507496"
+             height="10.589879"
+             x="7.9238377"
+             y="246.78488" />
+          <text
+             xml:space="preserve"
+             style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+             x="18.922525"
+             y="253.79608"
+             id="text1283-9"><tspan
+               sodipodi:role="line"
+               id="tspan1281-3"
+               x="18.922525"
+               y="253.79608"
+               style="stroke-width:0.264583">Kata Runtime</tspan></text>
+        </g>
+      </g>
+      <g
+         id="g1755-6"
+         transform="translate(22.613798,20.510988)">
+        <rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect1271-0-4-8"
+           width="53.507496"
+           height="10.589879"
+           x="46.852806"
+           y="270.03381" />
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+           x="61.279083"
+           y="277.10181"
+           id="text1287-0"><tspan
+             sodipodi:role="line"
+             id="tspan1285-2"
+             x="61.279083"
+             y="277.10181"
+             style="stroke-width:0.264583">containerd</tspan></text>
+      </g>
+      <g
+         id="g1745-1"
+         transform="translate(37.045588,8.6032631)">
+        <rect
+           style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+           id="rect1271-0-4-4-7-6-0"
+           width="53.507496"
+           height="10.589879"
+           x="32.911427"
+           y="303.4458" />
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+           x="50.950512"
+           y="310.51379"
+           id="text1291-5"><tspan
+             sodipodi:role="line"
+             id="tspan1289-1"
+             x="50.950512"
+             y="310.51379"
+             style="stroke-width:0.264583">kubelet</tspan></text>
+      </g>
+      <g
+         id="g3168-1"
+         transform="translate(0,9.5250005)">
+        <g
+           id="g1807-0"
+           transform="translate(0,-4.7625002)">
+          <g
+             id="g1750-8"
+             transform="translate(-64.870649,-26.463693)">
+            <rect
+               style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect1271-0-5"
+               width="53.507496"
+               height="10.589879"
+               x="90.820511"
+               y="286.1358" />
+            <text
+               xml:space="preserve"
+               style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+               x="98.547188"
+               y="293.2038"
+               id="text1279-0"><tspan
+                 sodipodi:role="line"
+                 id="tspan1277-6"
+                 x="98.547188"
+                 y="293.2038"
+                 style="stroke-width:0.264583">containerd-shim</tspan></text>
+          </g>
+          <g
+             id="g1750-3-4"
+             transform="translate(-60.926951,-23.282196)">
+            <rect
+               style="fill:#ffffff;stroke:#000000;stroke-width:0.152375;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+               id="rect1271-0-1-6"
+               width="53.507496"
+               height="10.589879"
+               x="90.820511"
+               y="286.1358" />
+            <text
+               xml:space="preserve"
+               style="font-size:4.9389px;line-height:1.25;font-family:'NVIDIA Sans';-inkscape-font-specification:'NVIDIA Sans, Normal';stroke-width:0.264583"
+               x="98.547188"
+               y="293.2038"
+               id="text1279-7-2"><tspan
+                 sodipodi:role="line"
+                 id="tspan1277-5-5"
+                 x="98.547188"
+                 y="293.2038"
+                 style="stroke-width:0.264583">containerd-shim</tspan></text>
+          </g>
+        </g>
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Lstart-0);marker-end:url(#marker2557-0)"
+         d="m 96.225557,301.09005 v 2.78768 8.28183"
+         id="path2339-8" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2955-2)"
+         d="m 55.376251,278.3104 v 5.63898"
+         id="path2633-6" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2955-4-4)"
+         d="m 131.61618,278.3104 v 5.63898"
+         id="path2633-8-2" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 55.390216,283.8976 H 131.62321"
+         id="path3194-8" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker3232-5)"
+         d="m 96.444669,290.67899 v -6.78884"
+         id="path3210-4" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 55.390216,257.96172 H 131.6233"
+         id="path3194-5-7" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker2955-9-4)"
+         d="m 55.433283,263.64423 v -5.63898"
+         id="path2633-5-2" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker3232-4-9)"
+         d="m 96.156027,251.28404 v 6.78884"
+         id="path3210-3-4" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2737-2)"
+         d="m 131.67232,258.02896 v 9.749"
+         id="path4233-0" />
+    </g>
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:1.09963;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 154.8355,171.029 h 6.7915"
+       id="path10087-6" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker9833);marker-end:url(#marker9697)"
+       d="M 186.53356,189.07853 V 171.08765 H 151.28544"
+       id="path9687" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:1.72266;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 37.641713,125.26596 H 54.309396"
+       id="path10087" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker7692);marker-end:url(#marker9343)"
+       d="M -4.981009,125.39445 H 57.322732"
+       id="path9321" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.26458333;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#marker10167);marker-start:url(#marker10303)"
+       d="m 97.793511,175.15319 v 11.81728"
+       id="path10157" />
+  </g>
+</svg>
