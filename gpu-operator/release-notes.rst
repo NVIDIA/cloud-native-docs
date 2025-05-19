@@ -187,6 +187,7 @@ Fixed Issues
   Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
 
 * Removed deprecated `operator.defaultRuntime`` parameter.
+
 .. _v24.9.2:
 
 24.9.2
