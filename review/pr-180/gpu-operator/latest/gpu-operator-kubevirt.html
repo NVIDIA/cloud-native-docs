@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 20, 2025"/>
+    <meta name="docbuild:last-update" content="May 21, 2025"/>
 
 
 
@@ -418,23 +418,24 @@
 <span id="gpu-operator-kubevirt"></span><h1>GPU Operator with KubeVirt<a class="headerlink" href="#gpu-operator-with-kubevirt" title="Permalink to this headline">#</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#introduction" id="id2">Introduction</a></p></li>
-<li><p><a class="reference internal" href="#assumptions-constraints-and-dependencies" id="id3">Assumptions, constraints, and dependencies</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id4">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#getting-started" id="id5">Getting Started</a></p>
+<li><p><a class="reference internal" href="#introduction" id="id4">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#assumptions-constraints-and-dependencies" id="id5">Assumptions, constraints, and dependencies</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id6">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#getting-started" id="id7">Getting Started</a></p>
 <ul>
-<li><p><a class="reference internal" href="#labeling-worker-nodes" id="id6">Labeling worker nodes</a></p></li>
-<li><p><a class="reference internal" href="#install-the-gpu-operator" id="id7">Install the GPU Operator</a></p></li>
-<li><p><a class="reference internal" href="#add-gpu-resources-to-kubevirt-cr" id="id8">Add GPU resources to KubeVirt CR</a></p></li>
-<li><p><a class="reference internal" href="#create-a-virtual-machine-with-gpu" id="id9">Create a virtual machine with GPU</a></p></li>
+<li><p><a class="reference internal" href="#labeling-worker-nodes" id="id8">Labeling worker nodes</a></p></li>
+<li><p><a class="reference internal" href="#install-the-gpu-operator" id="id9">Install the GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#add-vgpu-resources-to-kubevirt-cr" id="id10">Add vGPU resources to KubeVirt CR</a></p></li>
+<li><p><a class="reference internal" href="#add-gpu-passthrough-resources-to-kubevirt-cr" id="id11">Add GPU passthrough resources to KubeVirt CR</a></p></li>
+<li><p><a class="reference internal" href="#create-a-virtual-machine-with-gpu" id="id12">Create a virtual machine with GPU</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id10">vGPU Device Configuration</a></p>
+<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id13">vGPU Device Configuration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id11">Apply a New vGPU Device Configuration</a></p></li>
+<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id14">Apply a New vGPU Device Configuration</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#building-the-nvidia-vgpu-manager-image" id="id12">Building the NVIDIA vGPU Manager image</a></p></li>
+<li><p><a class="reference internal" href="#building-the-nvidia-vgpu-manager-image" id="id15">Building the NVIDIA vGPU Manager image</a></p></li>
 </ul>
 </div>
 <section id="introduction">
@@ -570,10 +571,10 @@ Without additional configuration, the GPU Operator creates a default set of devi
 To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to <a class="reference internal" href="#vgpu-device-configuration"><span class="std std-ref">vGPU Device Configuration</span></a>.</p>
 </section>
 </section>
-<section id="add-gpu-resources-to-kubevirt-cr">
-<h3>Add GPU resources to KubeVirt CR<a class="headerlink" href="#add-gpu-resources-to-kubevirt-cr" title="Permalink to this headline">#</a></h3>
+<section id="add-vgpu-resources-to-kubevirt-cr">
+<h3>Add vGPU resources to KubeVirt CR<a class="headerlink" href="#add-vgpu-resources-to-kubevirt-cr" title="Permalink to this headline">#</a></h3>
 <p>Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
-<p>The following example shows how to permit the A10 GPU device and A10-24Q vGPU device.</p>
+<p>The following example shows how to permit the A10-24Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
 <li><p>Determine the resource names for the GPU devices:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
@@ -603,23 +604,6 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </ul>
 </li>
 <li><p>Modify the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource like the following partial example.</p>
-<p>Add the following for GPU passthrough:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DisableMDEVConfiguration</span><span class="w"></span>
-<span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">        </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
-<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Add the following for vGPU:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
@@ -637,10 +621,64 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </div>
 <p>Replace the values in the YAML as follows:</p>
 <ul class="simple">
-<li><p>Include <code class="docutils literal notranslate"><span class="pre">permittedHostDevices</span></code> for GPU passthrough.</p></li>
-<li><p>Include <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> for vGPU.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pciVendorSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
+</ul>
+</li>
+</ol>
+<p>Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt user guide</a> for more information on the configuration options.</p>
+</section>
+<section id="add-gpu-passthrough-resources-to-kubevirt-cr">
+<h3>Add GPU passthrough resources to KubeVirt CR<a class="headerlink" href="#add-gpu-passthrough-resources-to-kubevirt-cr" title="Permalink to this headline">#</a></h3>
+<p>Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
+<p>The following example shows how to permit the A10 GPU device, the device names for the GPUs on your cluster will likely be different.</p>
+<ol class="arabic">
+<li><p>Determine the resource names for the GPU devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">   &quot;nvidia.com/GA102GL_A10&quot;: &quot;1&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Determine the PCI device IDs for the GPUs.</p>
+<ul>
+<li><p>You can search by device name in the <a class="reference external" href="https://pci-ids.ucw.cz/v2.2/pci.ids">PCI IDs database</a>.</p></li>
+<li><p>If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)</span>
+</span><span class="go">        Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]</span>
+<span class="go">        Kernel modules: nvidiafb, nouveau</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource like the following partial example.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DisableMDEVConfiguration</span><span class="w"></span>
+<span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">        </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Replace the values in the YAML as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pciVendorSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
 </ul>
 </li>
@@ -652,6 +690,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <p>After the GPU Operator finishes deploying the sandbox device plugin and VFIO manager pods on worker nodes and the GPU resources are added to the
 KubeVirt allowlist, you can assign a GPU to a virtual machine by editing the <code class="docutils literal notranslate"><span class="pre">spec.domain.devices.gpus</span></code> field
 in the <code class="docutils literal notranslate"><span class="pre">VirtualMachineInstance</span></code> manifest.</p>
+<p>Example for GPU passthrough:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1alpha3</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
@@ -664,6 +703,19 @@ in the <code class="docutils literal notranslate"><span class="pre">VirtualMachi
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Example for vGPU:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1alpha3</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-12Q</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">deviceName</span></code> is the resource name representing the device.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> is a name to identify the device in the virtual machine</p></li>
@@ -671,7 +723,7 @@ in the <code class="docutils literal notranslate"><span class="pre">VirtualMachi
 </section>
 </section>
 <section id="vgpu-device-configuration">
-<span id="id1"></span><h2>vGPU Device Configuration<a class="headerlink" href="#vgpu-device-configuration" title="Permalink to this headline">#</a></h2>
+<span id="id3"></span><h2>vGPU Device Configuration<a class="headerlink" href="#vgpu-device-configuration" title="Permalink to this headline">#</a></h2>
 <p>The vGPU Device Manager assists in creating vGPU devices on GPU worker nodes.
 The vGPU Device Manager allows administrators to declaratively define a set of possible vGPU device configurations they would like applied to GPUs on a node.
 At runtime, they then point the vGPU Device Manager at one of these configurations, and vGPU Device Manager takes care of applying it.
@@ -855,7 +907,8 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-ente
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-gpu-operator-with-nvidia-vgpu">Install the GPU Operator (with NVIDIA vGPU)</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-gpu-resources-to-kubevirt-cr">Add GPU resources to KubeVirt CR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-vgpu-resources-to-kubevirt-cr">Add vGPU resources to KubeVirt CR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-gpu-passthrough-resources-to-kubevirt-cr">Add GPU passthrough resources to KubeVirt CR</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-virtual-machine-with-gpu">Create a virtual machine with GPU</a></li>
 </ul>
 </li>

@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 20, 2025"/>
+    <meta name="docbuild:last-update" content="May 21, 2025"/>
 
 
 
@@ -394,38 +394,40 @@
 <span id="nvidia-gpu-operator-openshift-virtualization-vgpu-enablement"></span><h1>NVIDIA GPU Operator with OpenShift Virtualization<a class="headerlink" href="#nvidia-gpu-operator-with-openshift-virtualization" title="Permalink to this headline">#</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#introduction" id="id4">Introduction</a></p></li>
-<li><p><a class="reference internal" href="#assumptions-constraints-and-dependencies" id="id5">Assumptions, constraints, and dependencies</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id6">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#enabling-the-iommu-driver-on-hosts" id="id7">Enabling the IOMMU driver on hosts</a></p>
+<li><p><a class="reference internal" href="#introduction" id="id6">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#assumptions-constraints-and-dependencies" id="id7">Assumptions, constraints, and dependencies</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id8">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#enabling-the-iommu-driver-on-hosts" id="id9">Enabling the IOMMU driver on hosts</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id1" id="id8">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#procedure" id="id9">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#id1" id="id10">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#procedure" id="id11">Procedure</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#labeling-worker-nodes" id="id10">Labeling worker nodes</a></p></li>
-<li><p><a class="reference internal" href="#building-the-vgpu-manager-image" id="id11">Building the vGPU Manager image</a></p></li>
-<li><p><a class="reference internal" href="#installing-the-nvidia-gpu-operator-using-the-cli" id="id12">Installing the NVIDIA GPU Operator using the CLI</a></p>
+<li><p><a class="reference internal" href="#labeling-worker-nodes" id="id12">Labeling worker nodes</a></p></li>
+<li><p><a class="reference internal" href="#building-the-vgpu-manager-image" id="id13">Building the vGPU Manager image</a></p></li>
+<li><p><a class="reference internal" href="#installing-the-nvidia-gpu-operator-using-the-cli" id="id14">Installing the NVIDIA GPU Operator using the CLI</a></p>
 <ul>
-<li><p><a class="reference internal" href="#create-the-secret" id="id13">Create the secret</a></p></li>
-<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli" id="id14">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI</a></p></li>
-<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console" id="id15">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console</a></p></li>
+<li><p><a class="reference internal" href="#create-the-secret" id="id15">Create the secret</a></p></li>
+<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli" id="id16">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI</a></p></li>
+<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console" id="id17">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#add-gpu-resources-to-the-hyperconverged-custom-resource" id="id16">Add GPU Resources to the HyperConverged Custom Resource</a></p>
+<li><p><a class="reference internal" href="#add-gpu-resources-to-the-hyperconverged-custom-resource" id="id18">Add GPU Resources to the HyperConverged Custom Resource</a></p>
 <ul>
-<li><p><a class="reference internal" href="#about-mediated-devices" id="id17">About Mediated Devices</a></p></li>
+<li><p><a class="reference internal" href="#add-gpu-passthrough-resources-to-the-hyperconverged-custom-resource" id="id19">Add GPU passthrough resources to the HyperConverged Custom Resource</a></p></li>
+<li><p><a class="reference internal" href="#add-vgpu-resources-to-the-hyperconverged-custom-resource" id="id20">Add vGPU resources to the HyperConverged Custom Resource</a></p></li>
+<li><p><a class="reference internal" href="#about-mediated-devices" id="id21">About Mediated Devices</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#creating-a-virtual-machine-with-gpu" id="id18">Creating a virtual machine with GPU</a></p>
+<li><p><a class="reference internal" href="#creating-a-virtual-machine-with-gpu" id="id22">Creating a virtual machine with GPU</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id2" id="id19">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#id3" id="id20">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id23">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id24">Procedure</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id21">vGPU Device Configuration</a></p>
+<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id25">vGPU Device Configuration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id22">Apply a New vGPU Device Configuration</a></p></li>
+<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id26">Apply a New vGPU Device Configuration</a></p></li>
 </ul>
 </li>
 </ul>
@@ -747,7 +749,62 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <section id="add-gpu-resources-to-the-hyperconverged-custom-resource">
 <h2>Add GPU Resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-gpu-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h2>
 <p>Update the <code class="docutils literal notranslate"><span class="pre">HyperConverged</span></code> custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
-<p>The following example permits the A10 GPU device and A10-24Q vGPU device.</p>
+<section id="add-gpu-passthrough-resources-to-the-hyperconverged-custom-resource">
+<h3>Add GPU passthrough resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-gpu-passthrough-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h3>
+<p>The following example permits the A10 GPU device, the device names for the GPUs on your cluster will likely be different.</p>
+<ol class="arabic">
+<li><p>Determine the resource names for the GPU devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;nvidia.com/GA102GL_A10&quot;: &quot;1&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Determine the PCI device IDs for the GPUs.</p>
+<ul>
+<li><p>You can search by device name in the <a class="reference external" href="https://pci-ids.ucw.cz/v2.2/pci.ids">PCI IDs database</a>.</p></li>
+<li><p>If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)</span>
+</span><span class="go">        Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]</span>
+<span class="go">        Kernel modules: nvidiafb, nouveau</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">HyperConverged</span></code> custom resource like the following partial examples.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">   </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pciDeviceSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Replace the values in the YAML as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
+</ul>
+</li>
+</ol>
+<p>Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt user guide</a> for more information on the configuration options.</p>
+</section>
+<section id="add-vgpu-resources-to-the-hyperconverged-custom-resource">
+<h3>Add vGPU resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-vgpu-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h3>
+<p>The following example permits the A10-24Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
 <li><p>Determine the resource names for the GPU devices:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
@@ -776,24 +833,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 </li>
 </ul>
 </li>
-<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">HyperConverged</span></code> custom resource like the following partial examples.</p></li>
-</ol>
-<blockquote>
-<div><p>Add the following for GPU passthrough:</p>
-<blockquote>
-<div><div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">   </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pciDeviceSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
-<span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Add the following for vGPU:</p>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">HyperConverged</span></code> custom resource like the following partial examples.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
@@ -808,15 +848,13 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 </div>
 <p>Replace the values in the YAML as follows:</p>
 <ul class="simple">
-<li><p>Include <code class="docutils literal notranslate"><span class="pre">permittedHostDevices</span></code> for GPU passthrough.
-Include <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> for vGPU. Include boht sections if you are using GPU passthrough and vGPU</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pciDeviceSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
 </ul>
-</div></blockquote>
-</div></blockquote>
+</li>
+</ol>
 <p>Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt user guide</a> for more information on the configuration options.</p>
+</section>
 <section id="about-mediated-devices">
 <h3>About Mediated Devices<a class="headerlink" href="#about-mediated-devices" title="Permalink to this headline">#</a></h3>
 <p>A physical device that is divided into one or more virtual devices. A vGPU is a type of mediated device
@@ -828,27 +866,39 @@ Some GPUs do not support multiple guests.</p>
 <section id="creating-a-virtual-machine-with-gpu">
 <h2>Creating a virtual machine with GPU<a class="headerlink" href="#creating-a-virtual-machine-with-gpu" title="Permalink to this headline">#</a></h2>
 <p>Assign GPU devices, either passthrough or vGPU, to virtual machines.</p>
-<section id="id2">
-<h3>Prerequisites<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<section id="id4">
+<h3>Prerequisites<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The GPU devices are configured in the <code class="docutils literal notranslate"><span class="pre">HyperConverged</span></code> custom resource (CR).</p></li>
 </ul>
 </section>
-<section id="id3">
-<h3>Procedure<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<section id="id5">
+<h3>Procedure<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Assign the GPU devices to a virtual machine (VM) by editing the <code class="docutils literal notranslate"><span class="pre">spec.domain.devices.gpus</span></code> field of the <code class="docutils literal notranslate"><span class="pre">VirtualMachine</span></code> manifest:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span><span class="w"></span>
+<p>Example for GPU passthrough:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1alpha3</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
-<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GRID_T4-1Q</span><span class="w"></span>
-<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu2</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Example for vGPU:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1alpha3</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-12Q</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
@@ -1001,12 +1051,14 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-gpu-resources-to-the-hyperconverged-custom-resource">Add GPU Resources to the HyperConverged Custom Resource</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-gpu-passthrough-resources-to-the-hyperconverged-custom-resource">Add GPU passthrough resources to the HyperConverged Custom Resource</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#add-vgpu-resources-to-the-hyperconverged-custom-resource">Add vGPU resources to the HyperConverged Custom Resource</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-mediated-devices">About Mediated Devices</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-virtual-machine-with-gpu">Creating a virtual machine with GPU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Prerequisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Procedure</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vgpu-device-configuration">vGPU Device Configuration</a><ul class="nav section-nav flex-column">
