@@ -804,7 +804,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 </section>
 <section id="add-vgpu-resources-to-the-hyperconverged-custom-resource">
 <h3>Add vGPU resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-vgpu-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h3>
-<p>The following example permits the A10-24Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
+<p>The following example permits the A10-14Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
 <li><p>Determine the resource names for the GPU devices:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
