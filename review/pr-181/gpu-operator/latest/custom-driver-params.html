@@ -421,8 +421,8 @@ By default, the GPU Operator loads the kernel modules with default values.
 On a machine with the driver already installed, you can list the parameter names and values with the <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/driver/nvidia/params</span></code> command.
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (<code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-modeset</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code>).</p>
-<section id="passing-custom-parameters-is-supported-for-the-gpu-operator">
-<h2>Passing custom parameters is supported for the GPU Operator<a class="headerlink" href="#passing-custom-parameters-is-supported-for-the-gpu-operator" title="Permalink to this headline">#</a></h2>
+<section id="configure-custom-driver-parameters">
+<h2>Configure Custom Driver Parameters<a class="headerlink" href="#configure-custom-driver-parameters" title="Permalink to this headline">#</a></h2>
 <p>To pass custom parameters, execute the following steps.</p>
 <ol class="arabic">
 <li><p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.conf</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;</span></code> is the name of the kernel module the parameters are for.
@@ -452,9 +452,9 @@ containing the kernel module parameters.</p>
 </ol>
 <section id="example-using-nvidia-uvm-module">
 <h3>Example using <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module<a class="headerlink" href="#example-using-nvidia-uvm-module" title="Permalink to this headline">#</a></h3>
+<p>This example shows the High Memory Mode being disabled in the <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module.</p>
 <ol class="arabic">
-<li><p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">nvidia-uvm.conf</span></code>:
-The following example shows the High Memory Mode being disabled in the <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module:</p>
+<li><p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">nvidia-uvm.conf</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat nvidia-uvm.conf
 <span class="go">uvm_disable_hmm=1</span>
 </pre></div>
@@ -550,7 +550,7 @@ containing the kernel module parameters.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#passing-custom-parameters-is-supported-for-the-gpu-operator">Passing custom parameters is supported for the GPU Operator</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-custom-driver-parameters">Configure Custom Driver Parameters</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-using-nvidia-uvm-module">Example using <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module</a></li>
 </ul>
 </li>
