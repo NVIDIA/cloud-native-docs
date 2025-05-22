@@ -10,8 +10,8 @@ GPU Operator with KubeVirt
 
 .. _gpu-operator-kubevirt-introduction:
 
-About KubeVirt
-==============
+About the Operator with KubeVirt
+================================
 
 `KubeVirt <https://kubevirt.io/>`_ is a virtual machine management add-on to Kubernetes that allows you to run and manage virtual machines in a Kubernetes cluster. 
 It eliminates the need to manage separate clusters for virtual machine and container workloads, as both can now coexist in a single Kubernetes cluster.
@@ -21,6 +21,41 @@ In addition to the GPU Operator being able to provision worker nodes for running
 There are some different prerequisites required virtual machines with GPU(s) than running containers with GPU(s).
 The primary difference is the drivers required. 
 For example, the datacenter driver is needed for containers, the vfio-pci driver is needed for GPU passthrough, and the `NVIDIA vGPU Manager <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#installing-configuring-grid-vgpu>`_ is needed for creating vGPU devices.
+
+.. _configure-worker-nodes-for-gpu-operator-components:
+
+Configure Worker Nodes for GPU Operator components
+---------------------------------------------------
+
+The GPU Operator can now be configured to deploy different software components on worker nodes depending on what GPU workload is configured to run on those nodes.
+This is configured by adding a ``nvidia.com/gpu.workload.config`` label to the worker node with the value of ``container``, ``vm-passthrough``, or ``vm-vgpu`` depending on if you are planning to use vGPU or not.
+The GPU Operator will use the label to determine which software components to deploy on the worker nodes.
+
+Given the following node configuration:
+
+* Node A is configured with the label ``nvidia.com/gpu.workload.config=container`` and configured to run containers.
+* Node B is configured with the label ``nvidia.com/gpu.workload.config=vm-passthrough`` and configured to run virtual machines with Passthrough GPU.
+* Node C is configured with the label ``nvidia.com/gpu.workload.config=vm-vgpu`` and configured to run virtual machines with vGPU.
+
+The GPU operator will deploy the following software components on each node:
+
+* Node A receives the following software components:
+   * ``NVIDIA Datacenter Driver`` - to install the driver
+   * ``NVIDIA Container Toolkit`` - to ensure containers can properly access GPUs
+   * ``NVIDIA Kubernetes Device Plugin`` - to discover and advertise GPU resources to kubelet
+   * ``NVIDIA DCGM and DCGM Exporter`` - to monitor the GPU(s)
+
+* Node B receives the following software components:
+   * ``VFIO Manager`` - to load `vfio-pci` and bind it to all GPUs on the node
+   * ``Sandbox Device Plugin`` - to discover and advertise the passthrough GPUs to kubelet
+
+* Node C receives the following software components:
+   * ``NVIDIA vGPU Manager`` - to install the driver
+   * ``NVIDIA vGPU Device Manager`` - to create vGPU devices on the node
+   * ``Sandbox Device Plugin`` - to discover and advertise the vGPU devices to kubelet
+
+If the node label ``nvidia.com/gpu.workload.config`` does not exist on the node, the GPU Operator will assume the default GPU workload configuration, ``container``, and will deploy the software components needed to support this workload type.
+To override the default GPU workload configuration, set the following value in ``ClusterPolicy``: ``sandboxWorkloads.defaultWorkload=<config>``.
 
 .. _gpu-operator-kubevirt-limitations:
 
@@ -104,37 +139,7 @@ The GPU Operator uses the value of the ``nvidia.com/gpu.workload.config`` label 
    * ``vm-passthrough``
    * ``vm-vgpu``
 
-If the node label ``nvidia.com/gpu.workload.config`` does not exist on the node, the GPU Operator will assume the default GPU workload configuration, ``container``, and will deploy the software components needed to support this workload type.
-To override the default GPU workload configuration, set the following value in ``ClusterPolicy``: ``sandboxWorkloads.defaultWorkload=<config>``.
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GPU Operator installed components based on labels
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Depending on how you labeled your worker nodes, the GPU Operator will deploy different software components the worker nodes during installation. 
-
-Given the following node configuration:
-
-* Node A is configured with the label ``nvidia.com/gpu.workload.config=container`` and configured to run containers.
-* Node B is configured with the label ``nvidia.com/gpu.workload.config=vm-passthrough`` and configured to run virtual machines with Passthrough GPU.
-* Node C is configured with the label ``nvidia.com/gpu.workload.config=vm-vgpu`` and configured to run virtual machines with vGPU.
-
-The GPU operator will deploy the following software components on each node:
-
-* Node A receives the following software components:
-   * ``NVIDIA Datacenter Driver`` - to install the driver
-   * ``NVIDIA Container Toolkit`` - to ensure containers can properly access GPUs
-   * ``NVIDIA Kubernetes Device Plugin`` - to discover and advertise GPU resources to kubelet
-   * ``NVIDIA DCGM and DCGM Exporter`` - to monitor the GPU(s)
-
-* Node B receives the following software components:
-   * ``VFIO Manager`` - to load `vfio-pci` and bind it to all GPUs on the node
-   * ``Sandbox Device Plugin`` - to discover and advertise the passthrough GPUs to kubelet
-
-* Node C receives the following software components:
-   * ``NVIDIA vGPU Manager`` - to install the driver
-   * ``NVIDIA vGPU Device Manager`` - to create vGPU devices on the node
-   * ``Sandbox Device Plugin`` - to discover and advertise the vGPU devices to kubelet
+   Refer to the :ref:`Configure Worker Nodes for GPU Operator components<configure-worker-nodes-for-gpu-operator-components>` section for more information on the different configurations options.
 
 .. _install-the-gpu-operator:
 
@@ -400,7 +405,8 @@ vGPU Device Configuration
 
 The vGPU Device Manager assists in creating vGPU devices on GPU worker nodes.
 The vGPU Device Manager allows administrators to declaratively define a set of possible vGPU device configurations they would like applied to GPUs on a node.
-At runtime, they then point the vGPU Device Manager at one of these configurations, and vGPU Device Manager takes care of applying it.
+At runtime, adminstrators then point the vGPU Device Manager at one of these configurations, and vGPU Device Manager takes care of applying it.
+
 The configuration file is created as a ConfigMap, and is shared across all worker nodes.
 At runtime, a node label, ``nvidia.com/vgpu.config``, can be used to decide which of these configurations to actually apply to a node at any given time.
 If the node is not labeled, then the ``default`` configuration will be used.
@@ -426,11 +432,15 @@ And then configure the GPU Operator to use it by setting ``vgpuDeviceManager.con
 Apply a New vGPU Device Configuration
 --------------------------------------
 
-We can apply a specific vGPU device configuration on a per-node basis by setting the ``nvidia.com/vgpu.config`` node label. It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.
+You can apply a specific vGPU device configuration on a per-node basis by setting the ``nvidia.com/vgpu.config`` node label. 
+It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.
 
-Switching vGPU device configuration after one has been successfully applied assumes that no virtual machines with vGPU are currently running on the node. Any existing virtual machines will have to be shutdown/migrated first.
+Switching vGPU device configuration after one has been successfully applied assumes that no virtual machines with vGPU are currently running on the node. 
+Any existing virtual machines should be shutdown/migrated before you apply the new configuration.
 
-To apply a new configuration after GPU Operator install, simply update the ``nvidia.com/vgpu.config`` node label. Let's run through an example on a system with two **A10** GPUs.
+To apply a new configuration after GPU Operator install, update the ``nvidia.com/vgpu.config`` node label. 
+
+The following example shows how to apply a new configuration on a system with two **A10** GPUs.
 
 .. code-block:: console
 
@@ -438,7 +448,8 @@ To apply a new configuration after GPU Operator install, simply update the ``nvi
    GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)
    GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)
 
-After installing the GPU Operator as detailed in the previous sections and without labeling the node with ``nvidia.com/vgpu.config``, the ``default`` vGPU config get applied -- four **A10-12Q** devices get created (two per GPU):
+In this example, the GPU Operator has been installed and the ``nvidia.com/vgpu.config`` was not aded to worker nodes, meaning the ``default`` vGPU config get applied. 
+This resulted in four **A10-12Q** devices get created (two per GPU):
 
 .. code-block:: console
 
@@ -447,7 +458,7 @@ After installing the GPU Operator as detailed in the previous sections and witho
      "nvidia.com/NVIDIA_A10-12Q": "4"
    }
 
-If instead we wish to create **A10-4Q** devices, we can label the node like such:
+Now if you wanted to create **A10-4Q** devices, add the ``nvidia.com/vgpu.config`` label to the node:
 
 .. code-block:: console
 
@@ -465,7 +476,7 @@ After the vGPU Device Manager finishes applying the new configuration, all GPU O
    nvidia-vgpu-device-manager-8mgg8                              1/1     Running   0          30m
    nvidia-vgpu-manager-daemonset-fpplc                           1/1     Running   0          31m
 
-We now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices can be created per **A10** GPU.
+You can now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices can be created per **A10** GPU.
 
 .. code-block:: console
 
