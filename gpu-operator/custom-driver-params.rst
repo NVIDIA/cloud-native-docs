@@ -12,8 +12,8 @@ On a machine with the driver already installed, you can list the parameter names
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (``nvidia``, ``nvidia-modeset``, ``nvidia-uvm``, and ``nvidia-peermem``).
 
-Passing custom parameters is supported for the GPU Operator
------------------------------------------------------------
+Configure Custom Driver Parameters
+--------------------------
 
 To pass custom parameters, execute the following steps.
 
@@ -85,7 +85,7 @@ Example using ``nvidia-uvm`` module
    *Example Output*
 
    .. code-block:: output
-      
+
       ...           
       uvm_disable_hmm                               uvm_perf_access_counter_migration_enable  uvm_perf_prefetch_min_faults
       uvm_downgrade_force_membar_sys                uvm_perf_access_counter_threshold         uvm_perf_prefetch_threshold
