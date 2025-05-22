@@ -13,7 +13,7 @@ You can pass custom parameters to the kernel modules that get loaded as part of 
 NVIDIA Driver installation (``nvidia``, ``nvidia-modeset``, ``nvidia-uvm``, and ``nvidia-peermem``).
 
 Configure Custom Driver Parameters
---------------------------
+-----------------------------------
 
 To pass custom parameters, execute the following steps.
 
@@ -49,8 +49,9 @@ To pass custom parameters, execute the following steps.
 Example using ``nvidia-uvm`` module
 -----------------------------------
 
+This example shows the High Memory Mode being disabled in the ``nvidia-uvm`` module.
+
 #. Create a configuration file named ``nvidia-uvm.conf``:
-   The following example shows the High Memory Mode being disabled in the ``nvidia-uvm`` module:
 
    .. code-block:: console
 
