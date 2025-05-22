@@ -384,7 +384,71 @@ Add GPU Resources to the HyperConverged Custom Resource
 
 Update the ``HyperConverged`` custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.
 
-The following example permits the A10 GPU device and A10-24Q vGPU device.
+Add GPU passthrough resources to the HyperConverged Custom Resource
+===================================================================
+
+The following example permits the A10 GPU device, the device names for the GPUs on your cluster will likely be different.
+
+#. Determine the resource names for the GPU devices:
+
+   .. code-block:: console
+
+      $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+
+   *Example Output*
+
+   .. code-blocK:: output
+
+      {
+        "nvidia.com/GA102GL_A10": "1"
+      }
+
+#. Determine the PCI device IDs for the GPUs.
+
+   * You can search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
+
+   * If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:
+
+     .. code-block:: console
+
+        $ lspci -nnk -d 10de:
+
+     *Example Output*
+
+     .. code-block:: output
+        :emphasize-lines: 1
+
+        65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
+                Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+                Kernel modules: nvidiafb, nouveau
+
+#. Modify the ``HyperConverged`` custom resource like the following partial examples.
+
+   .. code-block:: yaml
+
+      ...
+      spec:
+         featureGates:
+            disableMDevConfiguration: true
+         permittedHostDevices: # Defines VM devices to import.
+            pciHostDevices: # Include for GPU passthrough
+            - externalResourceProvider: true
+            pciDeviceSelector: 10DE:2236
+            resourceName: nvidia.com/GA102GL_A10
+      ...
+
+   Replace the values in the YAML as follows:
+
+   * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
+
+   * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
+
+Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information on the configuration options.
+
+Add vGPU resources to the HyperConverged Custom Resource
+========================================================
+
+The following example permits the A10-14Q vGPU device, the device names for the GPUs on your cluster will likely be different.
 
 #. Determine the resource names for the GPU devices:
 
@@ -419,7 +483,7 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
                 Kernel modules: nvidiafb, nouveau
 
-#. Modify the ``HyperConverged`` custom resource like the following partial example:
+#. Modify the ``HyperConverged`` custom resource like the following partial examples.
 
    .. code-block:: yaml
 
@@ -432,19 +496,9 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
           - externalResourceProvider: true
             pciDeviceSelector: 10DE:2236
             resourceName: nvidia.com/GA102GL_A10
-          mediatedDevices: # Include for vGPU
-          - externalResourceProvider: true
-            mdevNameSelector: NVIDIA A10-24Q
-            resourceName: nvidia.com/NVIDIA_A10-24Q
       ...
 
    Replace the values in the YAML as follows:
-
-   * Include ``permittedHostDevices`` for GPU passthrough.
-
-   * Include ``mediatedDevices`` for vGPU.
-
-   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
 
    * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
 
@@ -472,25 +526,39 @@ Prerequisites
 
 * The GPU devices are configured in the ``HyperConverged`` custom resource (CR).
 
-
 Procedure
 =========
 
 #. Assign the GPU devices to a virtual machine (VM) by editing the ``spec.domain.devices.gpus`` field of the ``VirtualMachine`` manifest:
 
+   Example for GPU passthrough:
+
    .. code-block:: yaml
 
-      apiVersion: kubevirt.io/v1
-      kind: VirtualMachine
+      apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
       ...
       spec:
-        domain:
-          devices:
+      domain:
+         devices:
             gpus:
             - deviceName: nvidia.com/GA102GL_A10
-              name: gpu1
-            - deviceName: nvidia.com/GRID_T4-1Q
-              name: gpu2
+            name: gpu1
+      ...
+
+   Example for vGPU:
+
+   .. code-block:: yaml
+      
+      apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
+      ...
+      spec:
+      domain:
+         devices:
+            gpus:
+            - deviceName: nvidia.com/NVIDIA_A10-12Q
+            name: gpu1
       ...
 
    * ``deviceName`` The resource name associated with the GPU.
