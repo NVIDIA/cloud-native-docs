@@ -825,10 +825,10 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <span class="w">  </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">  </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
-<span class="w">    </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pciDeviceSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
-<span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
+<span class="w">      </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-14Q</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-24Q</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
