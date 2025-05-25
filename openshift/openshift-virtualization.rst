@@ -524,10 +524,10 @@ The following example permits the A10-14Q vGPU device, the device names for the 
         featureGates:
           disableMDevConfiguration: true
         permittedHostDevices: # Defines VM devices to import.
-          pciHostDevices: # Include for GPU passthrough
+          mediatedDevices: # Include for vGPU
           - externalResourceProvider: true
-            pciDeviceSelector: 10DE:2236
-            resourceName: nvidia.com/GA102GL_A10
+            mdevNameSelector: NVIDIA A10-14Q
+            resourceName: nvidia.com/NVIDIA_A10-24Q
       ...
 
    Replace the values in the YAML as follows:
