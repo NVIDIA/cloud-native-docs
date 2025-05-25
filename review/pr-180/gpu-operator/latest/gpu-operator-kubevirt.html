@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 22, 2025"/>
+    <meta name="docbuild:last-update" content="May 25, 2025"/>
 
 
 
@@ -421,7 +421,7 @@
 <p><a class="reference external" href="https://kubevirt.io/">KubeVirt</a> is a virtual machine management add-on to Kubernetes that allows you to run and manage virtual machines in a Kubernetes cluster.
 It eliminates the need to manage separate clusters for virtual machine and container workloads, as both can now coexist in a single Kubernetes cluster.</p>
 <p>In addition to the GPU Operator being able to provision worker nodes for running GPU-accelerated containers, the GPU Operator can also be used to provision worker nodes for running GPU-accelerated virtual machines with KubeVirt.</p>
-<p>There are some different prerequisites required virtual machines with GPU(s) than running containers with GPU(s).
+<p>There are some different prerequisites required when running virtual machines with GPU(s) than running containers with GPU(s).
 The primary difference is the drivers required.
 For example, the datacenter driver is needed for containers, the vfio-pci driver is needed for GPU passthrough, and the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#installing-configuring-grid-vgpu">NVIDIA vGPU Manager</a> is needed for creating vGPU devices.</p>
 <section id="configure-worker-nodes-for-gpu-operator-components">
@@ -604,8 +604,8 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <p>Follow one of the below subsections for adding GPU resources to the KubeVirt CR, depending on whether you plan to use NVIDIA vGPU or not.</p>
 <section id="add-vgpu-resources-to-kubevirt-cr">
 <span id="id4"></span><h4>Add vGPU resources to KubeVirt CR<a class="headerlink" href="#add-vgpu-resources-to-kubevirt-cr" title="Permalink to this headline">#</a></h4>
-<p>Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
-<p>The following example shows how to permit the A10-14Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
+<p>Update the KubeVirt custom resource so that all vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
+<p>The following example shows how to permit the A10-12Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
 <li><p>Determine the resource names for the GPU devices:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
@@ -645,8 +645,8 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
 <span class="w">      </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-14Q</span><span class="w"></span>
-<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-14Q</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-12Q</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-12Q</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
@@ -661,7 +661,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </section>
 <section id="add-gpu-passthrough-resources-to-kubevirt-cr">
 <span id="id5"></span><h4>Add GPU passthrough resources to KubeVirt CR<a class="headerlink" href="#add-gpu-passthrough-resources-to-kubevirt-cr" title="Permalink to this headline">#</a></h4>
-<p>Update the KubeVirt custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.</p>
+<p>Update the KubeVirt custom resource so that all GPU passthrough devices in your cluster are permitted and can be assigned to virtual machines.</p>
 <p>The following example shows how to permit the A10 GPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
 <li><p>Determine the resource names for the GPU devices:</p>
@@ -719,7 +719,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </section>
 <section id="create-a-virtual-machine-with-gpu">
 <span id="id8"></span><h3>Create a virtual machine with GPU<a class="headerlink" href="#create-a-virtual-machine-with-gpu" title="Permalink to this headline">#</a></h3>
-<p>After the GPU Operator finishes deploying the sandbox device plugin and VFIO manager pods on worker nodes and the GPU resources are added to the
+<p>After the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> pod is running on your worker nodes and the GPU resources have been added to the
 KubeVirt allowlist, you can assign a GPU to a virtual machine by editing the <code class="docutils literal notranslate"><span class="pre">spec.domain.devices.gpus</span></code> field
 in the <code class="docutils literal notranslate"><span class="pre">VirtualMachineInstance</span></code> manifest.</p>
 <p>Example for GPU passthrough:</p>
@@ -788,8 +788,8 @@ Any existing virtual machines should be shutdown/migrated before you apply the n
 <span class="go">GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)</span>
 </pre></div>
 </div>
-<p>In this example, the GPU Operator has been installed and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> was not aded to worker nodes, meaning the <code class="docutils literal notranslate"><span class="pre">default</span></code> vGPU config get applied.
-This resulted in four <strong>A10-12Q</strong> devices get created (two per GPU):</p>
+<p>In this example, the GPU Operator has been installed and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> was not added to worker nodes, meaning the <code class="docutils literal notranslate"><span class="pre">default</span></code> vGPU config got applied.
+This resulted in the creation of four <strong>A10-12Q</strong> devices (two per GPU):</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
 <span class="go">{</span>
 <span class="go">  &quot;nvidia.com/NVIDIA_A10-12Q&quot;: &quot;4&quot;</span>
