@@ -71,9 +71,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 14, 2025"/>
+    <meta name="docbuild:last-update" content="May 26, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -405,23 +408,24 @@
 <li><p><a class="reference internal" href="#installing-the-nvidia-gpu-operator-using-the-cli" id="id12">Installing the NVIDIA GPU Operator using the CLI</a></p>
 <ul>
 <li><p><a class="reference internal" href="#create-the-secret" id="id13">Create the secret</a></p></li>
-<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator" id="id14">Creating a ClusterPolicy for the GPU Operator</a></p></li>
+<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli" id="id14">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI</a></p></li>
+<li><p><a class="reference internal" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console" id="id15">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#add-gpu-resources-to-the-hyperconverged-custom-resource" id="id15">Add GPU Resources to the HyperConverged Custom Resource</a></p>
+<li><p><a class="reference internal" href="#add-gpu-resources-to-the-hyperconverged-custom-resource" id="id16">Add GPU Resources to the HyperConverged Custom Resource</a></p>
 <ul>
-<li><p><a class="reference internal" href="#about-mediated-devices" id="id16">About Mediated Devices</a></p></li>
+<li><p><a class="reference internal" href="#about-mediated-devices" id="id17">About Mediated Devices</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#creating-a-virtual-machine-with-gpu" id="id17">Creating a virtual machine with GPU</a></p>
+<li><p><a class="reference internal" href="#creating-a-virtual-machine-with-gpu" id="id18">Creating a virtual machine with GPU</a></p>
 <ul>
-<li><p><a class="reference internal" href="#id2" id="id18">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#id3" id="id19">Procedure</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id19">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#id3" id="id20">Procedure</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id20">vGPU Device Configuration</a></p>
+<li><p><a class="reference internal" href="#vgpu-device-configuration" id="id21">vGPU Device Configuration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id21">Apply a New vGPU Device Configuration</a></p></li>
+<li><p><a class="reference internal" href="#apply-a-new-vgpu-device-configuration" id="id22">Apply a New vGPU Device Configuration</a></p></li>
 </ul>
 </li>
 </ul>
@@ -457,12 +461,14 @@ on what GPU workload is configured to run on those nodes. Consider the following
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VFIO</span> <span class="pre">Manager</span></code> - Optional. To load vfio-pci and bind it to all GPUs on the node.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - Optional. To discover and advertise the passthrough GPUs to the kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
 </ul>
 <p>Node C receives the following software components:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Manager</span></code> - To install the driver.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Device</span> <span class="pre">Manager</span></code> - To create vGPU devices on the node.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> -Optional. To discover and advertise the vGPU devices to kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
 </ul>
 </section>
 <section id="assumptions-constraints-and-dependencies">
@@ -491,6 +497,7 @@ on what GPU workload is configured to run on those nodes. Consider the following
 </pre></div>
 </div>
 </li>
+<li><p>If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu">NVIDIA vGPU Documentation</a> to ensure you have met all of the prerequisites for using NVIDIA vGPU.</p></li>
 </ul>
 </section>
 <section id="enabling-the-iommu-driver-on-hosts">
@@ -664,8 +671,8 @@ private container registry).</p>
 </li>
 </ol>
 </section>
-<section id="creating-a-clusterpolicy-for-the-gpu-operator">
-<span id="install-cluster-policy-vgpu"></span><h3>Creating a ClusterPolicy for the GPU Operator<a class="headerlink" href="#creating-a-clusterpolicy-for-the-gpu-operator" title="Permalink to this headline">#</a></h3>
+<section id="creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli">
+<span id="install-cluster-policy-vgpu"></span><h3>Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI<a class="headerlink" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli" title="Permalink to this headline">#</a></h3>
 <p>As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI.
 Create the cluster policy using the CLI:</p>
 <ol class="arabic">
@@ -675,10 +682,6 @@ Create the cluster policy using the CLI:</p>
 </div>
 </li>
 <li><p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file as follows:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.</p>
-</div>
 <ul class="simple">
 <li><p>sandboxWorloads.enabled=true</p></li>
 <li><p>vgpuManager.enabled=true</p></li>
@@ -687,6 +690,9 @@ Create the cluster policy using the CLI:</p>
 <li><p>vgpuManager.version=&lt;driver version&gt;</p></li>
 <li><p>vgpuManager.imagePullSecrets={&lt;name of image pull secret&gt;}</p></li>
 </ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.</p>
+<p>In general, the flag <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
 </li>
 <li><p>Apply the changes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
@@ -700,6 +706,41 @@ Create the cluster policy using the CLI:</p>
 <p>The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt VMs.
 Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
 To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#vgpu-device-configuration" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">vGPU Device Configuration</span></a>.</p>
+</section>
+<section id="creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console">
+<h3>Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console<a class="headerlink" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console" title="Permalink to this headline">#</a></h3>
+<p>As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.</p>
+<ol class="arabic">
+<li><p>Navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> and find your installed NVIDIA GPU Operator.</p></li>
+<li><p>Under <em>Provided APIs</em>, click <strong>ClusterPolicy</strong>.</p>
+<img alt="_images/navigate_to_cluster_policy.png" src="_images/navigate_to_cluster_policy.png" />
+</li>
+<li><p>Click <strong>Create ClusterPolicy</strong>.</p>
+<img alt="_images/create_cluster_policy.png" src="_images/create_cluster_policy.png" />
+</li>
+<li><p>Expand the <strong>NVIDIA GPU/vGPU Driver config</strong> section.</p></li>
+<li><p>Expand the <strong>Sandbox Workloads config</strong> section and select the checkbox to enable sandbox workloads.</p>
+<p>In general, when sandbox workloads are enabled, <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+* Click <strong>Create</strong> to create the ClusterPolicy.</p>
+<img alt="_images/cluster_policy_enable_sandbox_workloads.png" src="_images/cluster_policy_enable_sandbox_workloads.png" />
+</li>
+<li><p>If you are planning to use NVIDIA vGPU, expand the <strong>NVIDIA vGPU Manager config</strong> section and fill in your desired configuration settings, including:</p>
+<ul class="simple">
+<li><p>Select the <strong>enabled</strong> checkbox to enable the NVIDIA vGPU Manager.</p></li>
+<li><p>Add your <strong>imagePullSecrets</strong>.</p></li>
+<li><p>Under <em>driverManager</em>, fill in <strong>repository</strong> with the path to your private repository.</p></li>
+<li><p>Under <em>env</em>, fill in <strong>image</strong> with <code class="docutils literal notranslate"><span class="pre">vgpu-manager</span></code> and the <strong>version</strong> with your driver version.</p></li>
+</ul>
+<p>If you are only using GPU passthrough, you dont need to fill this section out.</p>
+<img alt="_images/cluster_policy_configure_vgpu.png" src="_images/cluster_policy_configure_vgpu.png" />
+</li>
+<li><p>Click <strong>Create</strong> to create the ClusterPolicy.</p>
+<p>The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt VMs.
+Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
+To learn more about the vGPU Device Manager and how to configure which types of vGPU devices get created in your cluster, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html#vgpu-device-configuration" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">vGPU Device Configuration</span></a>.</p>
+</li>
+</ol>
 </section>
 </section>
 <section id="add-gpu-resources-to-the-hyperconverged-custom-resource">
@@ -739,12 +780,12 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">      </span><span class="nt">pciDeviceSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
 <span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
-<span class="w">    </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">      </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-24Q</span><span class="w"></span>
 <span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-24Q</span><span class="w"></span>
@@ -753,6 +794,8 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </div>
 <p>Replace the values in the YAML as follows:</p>
 <ul class="simple">
+<li><p>Include <code class="docutils literal notranslate"><span class="pre">permittedHostDevices</span></code> for GPU passthrough.</p></li>
+<li><p>Include <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> for vGPU.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pciDeviceSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
@@ -939,7 +982,8 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-vgpu-manager-image">Building the vGPU Manager image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-nvidia-gpu-operator-using-the-cli">Installing the NVIDIA GPU Operator using the CLI</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-secret">Create the secret</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-clusterpolicy-for-the-gpu-operator">Creating a ClusterPolicy for the GPU Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-web-console">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform Web Console</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-gpu-resources-to-the-hyperconverged-custom-resource">Add GPU Resources to the HyperConverged Custom Resource</a><ul class="nav section-nav flex-column">
@@ -1054,6 +1098,9 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

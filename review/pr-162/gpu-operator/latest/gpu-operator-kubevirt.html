@@ -65,15 +65,18 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="GPU Operator with Kata Containers" href="gpu-operator-kata.html" />
-    <link rel="prev" title="Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs" href="dra-driver.html" />
+    <link rel="prev" title="NVIDIA Dynamic Resource Allocation Driver for GPUs" href="dra-driver.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 14, 2025"/>
+    <meta name="docbuild:last-update" content="May 26, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -600,7 +603,8 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </li>
 </ul>
 </li>
-<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource like the following partial example:</p>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource like the following partial example.</p>
+<p>Add</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
@@ -608,12 +612,12 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DisableMDEVConfiguration</span><span class="w"></span>
-<span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">pciHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for GPU passthrough</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">        </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10DE:2236</span><span class="w"></span>
 <span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GA102GL_A10</span><span class="w"></span>
-<span class="w">      </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">        </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-24Q</span><span class="w"></span>
 <span class="w">        </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-24Q</span><span class="w"></span>
@@ -622,7 +626,9 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </div>
 <p>Replace the values in the YAML as follows:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pciDeviceSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
+<li><p>Include <code class="docutils literal notranslate"><span class="pre">permittedHostDevices</span></code> for GPU passthrough.</p></li>
+<li><p>Include <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> for vGPU.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pciVendorSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU model.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
 </ul>
@@ -794,7 +800,7 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Multi-Node NVLink support with the NVIDIA DRA Driver for GPUs</p>
+        <p class="prev-next-title">NVIDIA Dynamic Resource Allocation Driver for GPUs</p>
       </div>
     </a>
     <a class="right-next"
@@ -945,6 +951,9 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>
