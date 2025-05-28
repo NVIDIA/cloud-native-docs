@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 19, 2025"/>
+    <meta name="docbuild:last-update" content="May 28, 2025"/>
 
 
 
@@ -219,6 +219,10 @@
     </div>
   
 
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
   
 </div>
 
@@ -417,28 +421,84 @@ By default, the GPU Operator loads the kernel modules with default values.
 On a machine with the driver already installed, you can list the parameter names and values with the <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/driver/nvidia/params</span></code> command.
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (<code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-modeset</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code>).</p>
+<section id="configure-custom-driver-parameters">
+<h2>Configure Custom Driver Parameters<a class="headerlink" href="#configure-custom-driver-parameters" title="Permalink to this headline">#</a></h2>
 <p>To pass custom parameters, execute the following steps.</p>
-<p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.conf</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;</span></code> is the name of the kernel module the parameters are for.
-The file should contain parameters as key-value pairs – one parameter per line.
-In the following example, the GPU firmware logging parameter is passed to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> module.</p>
+<ol class="arabic">
+<li><p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;.conf</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;module&gt;</span></code> is the name of the kernel module the parameters are for.
+The file should contain parameters as key-value pairs – one parameter per line.</p>
+<p>The following example shows the GPU firmware logging parameter being passed to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> module.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat nvidia.conf
 <span class="go">NVreg_EnableGpuFirmwareLogs=2</span>
 </pre></div>
 </div>
-<p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> for the configuration file.
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> for the configuration file.
 If multiple modules are being configured, pass multiple files when creating the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap kernel-module-params -n gpu-operator --from-file<span class="o">=</span>nvidia.conf<span class="o">=</span>./nvidia.conf
 </pre></div>
 </div>
-<p>Install the GPU Operator and set <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleConfig.name</span></code> to the name of the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>
+</li>
+<li><p>Install the GPU Operator and set <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleConfig.name</span></code> to the name of the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>
 containing the kernel module parameters.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
-     -n gpu-operator --create-namespace <span class="se">\</span>
-     nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
-     --set driver.kernelModuleConfig.name<span class="o">=</span><span class="s2">&quot;kernel-module-params&quot;</span>
+   -n gpu-operator --create-namespace <span class="se">\</span>
+   nvidia/gpu-operator <span class="se">\</span>
+   --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+   --set driver.kernelModuleConfig.name<span class="o">=</span><span class="s2">&quot;kernel-module-params&quot;</span>
 </pre></div>
 </div>
+</li>
+</ol>
+<section id="example-using-nvidia-uvm-module">
+<h3>Example using <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module<a class="headerlink" href="#example-using-nvidia-uvm-module" title="Permalink to this headline">#</a></h3>
+<p>This example shows the High Memory Mode being disabled in the <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module.</p>
+<ol class="arabic">
+<li><p>Create a configuration file named <code class="docutils literal notranslate"><span class="pre">nvidia-uvm.conf</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat nvidia-uvm.conf
+<span class="go">uvm_disable_hmm=1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> for the configuration file.
+If multiple modules are being configured, pass multiple files when creating the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap kernel-module-params -n gpu-operator --from-file<span class="o">=</span>nvidia-uvm.conf<span class="o">=</span>./nvidia-uvm.conf
+</pre></div>
+</div>
+</li>
+<li><p>Install the GPU Operator and set <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleConfig.name</span></code> to the name of the <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code>
+containing the kernel module parameters.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+   -n gpu-operator --create-namespace <span class="se">\</span>
+   nvidia/gpu-operator <span class="se">\</span>
+   --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+   --set driver.kernelModuleConfig.name<span class="o">=</span><span class="s2">&quot;kernel-module-params&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the parameter has been correctly applied, go to <code class="docutils literal notranslate"><span class="pre">/sys/module/nvidia_uvm/parameters/</span></code> on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls /sys/module/nvidia_uvm/parameters/
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">uvm_disable_hmm                               uvm_perf_access_counter_migration_enable  uvm_perf_prefetch_min_faults</span>
+<span class="go">uvm_downgrade_force_membar_sys                uvm_perf_access_counter_threshold         uvm_perf_prefetch_threshold</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Then check the value of the parameter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat /sys/module/nvidia_uvm/parameters/uvm_disable_hmm
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Y</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
 </section>
 
 
@@ -476,9 +536,28 @@ containing the kernel module parameters.</p>
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-custom-driver-parameters">Configure Custom Driver Parameters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-using-nvidia-uvm-module">Example using <code class="docutils literal notranslate"><span class="pre">nvidia-uvm</span></code> module</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 19, 2025"/>
+    <meta name="docbuild:last-update" content="May 28, 2025"/>
 
 
 
@@ -432,7 +432,7 @@
 <ul class="simple">
 <li><p>Added support for the following software component versions:</p>
 <ul>
-<li><p>NVIDIA Container Toolkit version v1.17.7</p></li>
+<li><p>NVIDIA Container Toolkit version v1.17.8</p></li>
 <li><p>NVIDIA Kubernetes Device Plugin v0.17.2</p></li>
 <li><p>Node Feature Discovery v0.17.3</p></li>
 <li><p>NVIDIA GDRCopy Driver v2.5.0</p></li>
@@ -445,6 +445,9 @@
 <li><p>535.247.01</p></li>
 </ul>
 </li>
+<li><p>Added support for setting DCGM Exporter internalTrafficPolicy.
+You can configure this in the Helm chart value by setting <cite>dcgmexporter.service.internalTrafficPolicy</cite> to <cite>Local</cite> or <cite>Cluster</cite> (default).
+Choose Local if you want to route internal traffic within the node only.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
