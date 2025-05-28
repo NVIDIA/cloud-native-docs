@@ -169,6 +169,27 @@ If the commit message includes `/not-latest`, then only the documentation in the
 
 <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/23.3.1/index.html>
 
+## Updating Dependencies
+
+1. Make an update to `docker/Dockerfile` to specify the dependency change.
+
+1. Update `.github/workflows/docs-build.yaml` and increment the `env.TAG` value.
+
+1. Update `.gitlab-ci.yml` and set the same value--prefixed by `ghcr.io...`--in the `variables.BUILDER_IMAGE` field.
+
+1. Optional: [Build the container and docs](#building-the-container) locally and confirm the update works as intended.
+
+1. Open a pull request.
+
+   The pull request builds a commit-specific container and builds the docs from that container.
+   Review the preview HTML to confirm the update works as intended.
+
+1. After you merge the pull request, the `docs-build.yaml` action detects that the newly incremented `env.TAG`
+   container is not in the registry, builds the container with that tag and pushes it to the GitHub registry.
+
+   When you tag a commit to publish, GitLab CI pulls image from the `variables.BUILDER_IMAGE` value,
+   builds the documentation, and that HTML is delivered to docs.nvidia.com.
+
 ## License and Contributing
 
 This documentation repository is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
