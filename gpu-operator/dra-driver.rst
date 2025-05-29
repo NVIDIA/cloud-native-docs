@@ -6,8 +6,14 @@
 NVIDIA Dynamic Resource Allocation Driver for GPUs 
 ##################################################
 
-The NVIDIA Dynamic Resource Allocation Driver (DRA) for GPUs is an additional component you can install alongside the NVIDIA GPU Operator.
-With the upstream Kubernetes DRA feature available in Kubernetes v1.32 and later, the NVIDIA DRA driver enables you to create templates for your specialized resource hardward on your clusters, separating the definition of the resource from the definition of the workload that uses it.
+GPU Operator 25.3.0 and later supports the NVIDIA Dynamic Resource Allocation (DRA) Driver for GPUs.
+This is an additional component that can be installed after the NVIDIA GPU Operator which enables allocating compute domains for multi-node workload jobs on NVIDIA HGX GB200 NVL GPUs with Multi-Node NVLink (MNNVL) support.
+Before GPU Operator 25.3.0, GPU allocation was handled through NVIDIA k8s-device plugin as the default and only mode of GPU resource management.
+While the device-plugin is still the default for GPU resource management in the GPU Operator, the DRA Driver for GPUs provides additional capabilities for managing specialized resources like GPUs.
+
+The DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to manage GPU resources and allocation on your cluster.
+Kuberntes DRA, available as Beta in 1.32, enables you to treat specialize hardward resources, like GPUs, on your cluster similarly to volume provisioning.
+Using DRA, you can create templates for your specialized resources that can be references in your workload templates, giving you more flexible and sophisticated resource management capabilities for resources compared to the traditional device-pulgin based approach.
 
 This page provides an overview of the DRA Driver for GPUs, its supported functionality, installing the component with the GPU Operator, and examples of using the DRA Driver for GPUs with supported use cases.
 
@@ -17,16 +23,16 @@ Before continuing, you should be familiar with the components of the `Kubernetes
 Supported Use Cases
 *******************
 
-NVIDIA DRA Driver for GPUs v25.6.0 supports the following use cases:
+NVIDIA DRA Driver for GPUs v25.3.0 supports the following use cases:
 
 * Full support for Multi-Node NVLink (MNNVL) with NVIDIA HGX GB200 NVL GPUs 
 * Technology Preview support for GPU resource allocation.
 
-Multi-Node NVLink Support
-=========================
+Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs 
+========================================================
 
 NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks (MNNVL) to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
-This feature allows you to get the most use out of your available GPUs without any additional latency overhead.
+MNNVL allows you to get the most use out of your available GPUs without any additional latency overhead.
 
 The NVIDIA DRA Driver for GPUs supports Multi-Node NVLink (MNNVL) by introducing a new custom resource called ``ComputeDomain``.
 This allows you to define resource requirements for multi-node workloads as a compute domain on your cluster. 
@@ -48,7 +54,6 @@ Install the NVIDIA DRA Driver for GPUs
 **************************************
 
 The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetes cluster.
-
 
 Prerequisites
 =============
@@ -193,11 +198,10 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.
 About the ComputeDomain Custom Resource
 ***************************************
 
-To use the DRA Driver for GPUs with Multi-Node NVLink (MNNVL), you must create a 
+The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ``ComputeDomain`` which you use to define multi-node resource requirements.
+As you deploy multi-node workloads, you can reference the ComputeDomain and the DRA Driver for GPUs will handle automtically provisioning the required resources to allow a set of GPUs to directly read and write each other's memory over a high-bandwidth NVLink.
+The ComputeDomain custom resource defines a `Kubernetes DRA ResourceClaimTemplate <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#api>`_ and ``numNodes`` needed to run your multi-node workload on Multi-Node NVLink (MNNVL) capable GPUs.
 
-The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named ``ComputeDomain`` which you can reference in workload specs that are expected to span multiple nodes. 
-Use a ComputeDomain custom resource to define the `Kubernetes DRA ResourceClaimTemplate <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#api>`_ and ``numNodes`` needed to run your multi-node workload on Multi-Node NVLink (MNNVL) capable GPUs.
-In the case of nodes conntected using MNNVL, the required resources are automatically provisioned to allow a set of GPUs to directly read and write each other's memory over a high-bandwidth NVLink.
 
 .. literalinclude:: ./manifests/input/dra-compute-domain-crd.yaml
    :language: yaml
@@ -206,6 +210,7 @@ In the case of nodes conntected using MNNVL, the required resources are automati
 You can then reference the ResourceClaimTemplate in your workload specs as a ``resourceClaims.resourceClaimTemplateName``. 
 
 .. code-block:: yaml
+  :emphasize-lines: 12-17
 
   apiVersion: v1
   kind: Pod
