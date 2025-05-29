@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 26, 2025"/>
+    <meta name="docbuild:last-update" content="May 29, 2025"/>
 
 
 
@@ -344,7 +344,7 @@
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multi-Node NVLink Support</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NVIDIA DRA Driver for GPUs</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -417,21 +417,26 @@
                   
   <section id="nvidia-dynamic-resource-allocation-driver-for-gpus">
 <h1>NVIDIA Dynamic Resource Allocation Driver for GPUs<a class="headerlink" href="#nvidia-dynamic-resource-allocation-driver-for-gpus" title="Permalink to this headline">#</a></h1>
-<p>The NVIDIA Dynamic Resource Allocation Driver (DRA) for GPUs is an additional component you can install alongside the NVIDIA GPU Operator.
-With the upstream Kubernetes DRA feature available in Kubernetes v1.32 and later, the NVIDIA DRA driver enables you to create templates for your specialized resource hardward on your clusters, separating the definition of the resource from the definition of the workload that uses it.</p>
+<p>GPU Operator 25.3.0 and later supports the NVIDIA Dynamic Resource Allocation (DRA) Driver for GPUs.
+This is an additional component that can be installed after the NVIDIA GPU Operator which enables allocating compute domains for multi-node workload jobs on NVIDIA HGX GB200 NVL GPUs with Multi-Node NVLink (MNNVL) support.
+Before GPU Operator 25.3.0, GPU allocation was handled through NVIDIA k8s-device plugin as the default and only mode of GPU resource management.
+While the device-plugin is still the default for GPU resource management in the GPU Operator, the DRA Driver for GPUs provides additional capabilities for managing specialized resources like GPUs.</p>
+<p>The DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to manage GPU resources and allocation on your cluster.
+Kuberntes DRA, available as Beta in 1.32, enables you to treat specialize hardward resources, like GPUs, on your cluster similarly to volume provisioning.
+Using DRA, you can create templates for your specialized resources that can be references in your workload templates, giving you more flexible and sophisticated resource management capabilities for resources compared to the traditional device-pulgin based approach.</p>
 <p>This page provides an overview of the DRA Driver for GPUs, its supported functionality, installing the component with the GPU Operator, and examples of using the DRA Driver for GPUs with supported use cases.</p>
 <p>Before continuing, you should be familiar with the components of the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA feature</a>.</p>
 <section id="supported-use-cases">
 <h2>Supported Use Cases<a class="headerlink" href="#supported-use-cases" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA DRA Driver for GPUs v25.6.0 supports the following use cases:</p>
+<p>NVIDIA DRA Driver for GPUs v25.3.0 supports the following use cases:</p>
 <ul class="simple">
 <li><p>Full support for Multi-Node NVLink (MNNVL) with NVIDIA HGX GB200 NVL GPUs</p></li>
 <li><p>Technology Preview support for GPU resource allocation.</p></li>
 </ul>
-<section id="multi-node-nvlink-support">
-<h3>Multi-Node NVLink Support<a class="headerlink" href="#multi-node-nvlink-support" title="Permalink to this headline">#</a></h3>
+<section id="multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus">
+<h3>Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs<a class="headerlink" href="#multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks (MNNVL) to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
-This feature allows you to get the most use out of your available GPUs without any additional latency overhead.</p>
+MNNVL allows you to get the most use out of your available GPUs without any additional latency overhead.</p>
 <p>The NVIDIA DRA Driver for GPUs supports Multi-Node NVLink (MNNVL) by introducing a new custom resource called <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.
 This allows you to define resource requirements for multi-node workloads as a compute domain on your cluster.
 When a workload is created that references a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, the NVIDIA DRA Driver for GPUs will handle establishing an IMEX channel to run multinode workloads across a set of NVIDIA HGX GB200 NVL GPUs.</p>
@@ -608,10 +613,9 @@ All GPUs on a given node are guaranteed to have the same Cluster UUID.</p>
 </section>
 <section id="about-the-computedomain-custom-resource">
 <h2>About the ComputeDomain Custom Resource<a class="headerlink" href="#about-the-computedomain-custom-resource" title="Permalink to this headline">#</a></h2>
-<p>To use the DRA Driver for GPUs with Multi-Node NVLink (MNNVL), you must create a</p>
-<p>The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> which you can reference in workload specs that are expected to span multiple nodes.
-Use a ComputeDomain custom resource to define the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#api">Kubernetes DRA ResourceClaimTemplate</a> and <code class="docutils literal notranslate"><span class="pre">numNodes</span></code> needed to run your multi-node workload on Multi-Node NVLink (MNNVL) capable GPUs.
-In the case of nodes conntected using MNNVL, the required resources are automatically provisioned to allow a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.</p>
+<p>The NVIDIA DRA Driver for GPUs introduces a Kubernetes custom resource named <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> which you use to define multi-node resource requirements.
+As you deploy multi-node workloads, you can reference the ComputeDomain and the DRA Driver for GPUs will handle automtically provisioning the required resources to allow a set of GPUs to directly read and write each other’s memory over a high-bandwidth NVLink.
+The ComputeDomain custom resource defines a <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#api">Kubernetes DRA ResourceClaimTemplate</a> and <code class="docutils literal notranslate"><span class="pre">numNodes</span></code> needed to run your multi-node workload on Multi-Node NVLink (MNNVL) capable GPUs.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Sample NVIDIA DRA Driver ComputeDomain Custom Resource Manifest</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
@@ -638,13 +642,13 @@ In the case of nodes conntected using MNNVL, the required resources are automati
 <span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu:22.04</span><span class="w"></span>
 <span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
 <span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ls</span><span class="nv"> </span><span class="s">-la</span><span class="nv"> </span><span class="s">/dev/nvidia-caps-imex-channels;</span><span class="nv"> </span><span class="s">trap</span><span class="nv"> </span><span class="s">&#39;exit</span><span class="nv"> </span><span class="s">0&#39;</span><span class="nv"> </span><span class="s">TERM;</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">9999</span><span class="nv"> </span><span class="s">&amp;</span><span class="nv"> </span><span class="s">wait&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
-<span class="w">  </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
-</pre></div>
+<span class="hll"><span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+</span><span class="hll"><span class="w">      </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
+</span><span class="hll"><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+</span><span class="hll"><span class="w">  </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
+</span><span class="hll"><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+</span><span class="hll"><span class="w">    </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imex-channel-0</span><span class="w"></span>
+</span></pre></div>
 </div>
 <p>If a subset of the nodes associated with a ComputeDomain are capable of communicating over MNNVL, the NVIDIA DRA Driver for GPUs will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections.
 Multiple IMEX domains will be created as necessary depending on the number and availability of nodes allocated to the ComputeDomain.</p>
@@ -1133,7 +1137,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-use-cases">Supported Use Cases</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-nvlink-support">Multi-Node NVLink Support</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus">Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-resource-allocation-technology-preview">GPU resource allocation (Technology Preview)</a></li>
 </ul>
 </li>
