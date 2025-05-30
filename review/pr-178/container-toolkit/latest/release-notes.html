@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2025"/>
+    <meta name="docbuild:last-update" content="May 30, 2025"/>
 
 
 
@@ -396,8 +396,8 @@
 <p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.7</span></code> is a bugfix and minor feature release.</p>
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
-<p>There is a <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1093">known issue</a> in this release that causes Enroot containers with Slurm to fail to load.
-This happens because container flags are discarded in cases where no <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag is specified in <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command.</p>
+<p>There is a <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1093">known issue</a> in this release that causes unexpected failures when invoking <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> directly (e.g. Enroot containers with Slurm) or when older versions of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> packages are used with the latest <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> packages (e.g. when only pinning the <code class="docutils literal notranslate"><span class="pre">nvidia-contianer-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package versions).
+This happens because container flags are discarded when handling the default values of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag added to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command in this release.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>It’s strongly recommended that you continue to use Container Toolkit v1.17.6 and pin all dependencies to v1.17.6 until this issue is resolved in the next patch release.</p>
