@@ -394,13 +394,56 @@
 <section id="nvidia-container-toolkit-1-17-7">
 <h2>NVIDIA Container Toolkit 1.17.7<a class="headerlink" href="#nvidia-container-toolkit-1-17-7" title="Permalink to this headline">#</a></h2>
 <p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.7</span></code> is a bugfix and minor feature release.</p>
+<section id="fixes-and-features">
+<h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to <code class="docutils literal notranslate"><span class="pre">csv</span></code>.</p></li>
+<li><p>Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.</p></li>
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-modes.legacy.cuda-compat-mode</span></code> option to provide finer control of how CUDA Forward Compatibility is handled. The default value (<code class="docutils literal notranslate"><span class="pre">ldconfig</span></code>) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (e.g. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> command line flag).</p></li>
+<li><p>Improved the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to run in isolated namespaces. This improves hook security.</p></li>
+</ul>
+<section id="enhancements-to-libnvidia-container">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#enhancements-to-libnvidia-container" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode</span></code> flag to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command. The <code class="docutils literal notranslate"><span class="pre">--no-cntlibs</span></code> argument is deprecated and is replaced by the <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode=disabled</span></code> option.
+Refer to the <a class="reference internal" href="#known-issues"><span class="std std-doc">known issue</span></a> section for details on a known issue when using this flag.</p></li>
+</ul>
+</section>
+<section id="enhancements-to-container-toolkit-container-images">
+<h4>Enhancements to container-toolkit Container Images<a class="headerlink" href="#enhancements-to-container-toolkit-container-images" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Updated the CUDA base image version to 12.9.0.</p></li>
+</ul>
+</section>
+</section>
+<section id="included-packages">
+<h3>Included Packages<a class="headerlink" href="#included-packages" title="Permalink to this headline">#</a></h3>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.7</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubi8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7</span></code>)</p></li>
+</ul>
+</section>
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
-<p>There is a <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1093">known issue</a> in this release that causes unexpected failures when invoking <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> directly (e.g. Enroot containers with Slurm) or when older versions of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> packages are used with the latest <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> packages (e.g. when only pinning the <code class="docutils literal notranslate"><span class="pre">nvidia-contianer-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package versions).
-This happens because container flags are discarded when handling the default values of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag added to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command in this release.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>It’s strongly recommended that you continue to use Container Toolkit v1.17.6 and pin all dependencies to v1.17.6 until this issue is resolved in the next patch release.</p>
+<p>There is a <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1093">known issue</a> in this release that causes unexpected failures when using the default value of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag in the following scenarios:</p>
+<ul class="simple">
+<li><p>When invoking <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> directly. For example if you are using Enroot containers with Slurm.</p></li>
+<li><p>When older versions of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> packages are used with the latest <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> packages.
+For example if you are only pinning the <code class="docutils literal notranslate"><span class="pre">nvidia-contianer-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package versions.</p></li>
+</ul>
+<p>This issue is caused by container flags being discarded when handling the default values of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag.
+This flag was added to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command in the this release.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you are impacted by this issue, its recommended that you continue to use Container Toolkit v1.17.6 and pin all dependencies to v1.17.6 until this issue is resolved in the next patch release.</p>
 </div>
 <section id="pin-dependencies-to-container-toolkit-1-17-6">
 <h4>Pin dependencies to Container Toolkit 1.17.6<a class="headerlink" href="#pin-dependencies-to-container-toolkit-1-17-6" title="Permalink to this headline">#</a></h4>
@@ -422,42 +465,6 @@ This happens because container flags are discarded when handling the default val
 <span class="go">        libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="included-packages">
-<h3>Included Packages<a class="headerlink" href="#included-packages" title="Permalink to this headline">#</a></h3>
-<p>The following packages are included:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.7</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.7</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.7</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.7</span></code></p></li>
-</ul>
-<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubi8</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7</span></code>)</p></li>
-</ul>
-</section>
-<section id="fixes-and-features">
-<h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to <code class="docutils literal notranslate"><span class="pre">csv</span></code>.</p></li>
-<li><p>Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.</p></li>
-<li><p>Added a <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-modes.legacy.cuda-compat-mode</span></code> option to provide finer control of how CUDA Forward Compatibility is handled. The default value (<code class="docutils literal notranslate"><span class="pre">ldconfig</span></code>) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (e.g. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> command line flag).</p></li>
-<li><p>Improved the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to run in isolated namespaces. This improves hook security.</p></li>
-</ul>
-<section id="enhancements-to-libnvidia-container">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#enhancements-to-libnvidia-container" title="Permalink to this headline">#</a></h4>
-<ul class="simple">
-<li><p>Added a <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode</span></code> flag to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command. The <code class="docutils literal notranslate"><span class="pre">--no-cntlibs</span></code> argument is deprecated and is replaced by the <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode=disabled</span></code> option.</p></li>
-</ul>
-</section>
-<section id="enhancements-to-container-toolkit-container-images">
-<h4>Enhancements to container-toolkit Container Images<a class="headerlink" href="#enhancements-to-container-toolkit-container-images" title="Permalink to this headline">#</a></h4>
-<ul class="simple">
-<li><p>Updated the CUDA base image version to 12.9.0.</p></li>
-</ul>
 </section>
 </section>
 </section>
@@ -1954,14 +1961,14 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-7">NVIDIA Container Toolkit 1.17.7</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pin-dependencies-to-container-toolkit-1-17-6">Pin dependencies to Container Toolkit 1.17.6</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#included-packages">Included Packages</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixes-and-features">Fixes and Features</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements-to-libnvidia-container">Enhancements to libnvidia-container</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements-to-container-toolkit-container-images">Enhancements to container-toolkit Container Images</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#included-packages">Included Packages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pin-dependencies-to-container-toolkit-1-17-6">Pin dependencies to Container Toolkit 1.17.6</a></li>
 </ul>
 </li>
 </ul>
