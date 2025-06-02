@@ -102,6 +102,7 @@ docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
 version = "1.17.7"
+source_substitutions = {version = "1.17.7"}
 copyright_start = 2020
 redirects = [
   { path="concepts.html", target="index.html" },
