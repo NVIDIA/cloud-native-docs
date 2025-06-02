@@ -6,9 +6,36 @@
 
 # Release Notes
 
-This document describes the new features, improvements, fixed and known issues for the NVIDIA Container Toolkit.
+This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
-______________________________________________________________________
+## NVIDIA Container Toolkit 1.17.8
+
+This release of the NVIDIA Container Toolkit `v1.17.8` is a bugfix release.
+
+### Fixes and Features
+
+- Updated the ordering of Mounts in CDI to have a deterministic output. This makes testing more consistent.
+- Added NVIDIA_CTK_DEBUG environment variable to hooks.
+
+#### Enhancements to libnvidia-container
+
+- Fixed a bug in setting the default for the `--cuda-compat-mode` flag. This caused failures in use cases invoking the `nvidia-container-cli` directly or when an older `nvidia-container-toolkit` version was used with a newer `nvidia-container-cli`.
+- Added additional logging to the `nvidia-container-cli`.
+- Fixed variable initialisation when updating the ldcache. This caused failures on Arch linux or other platforms where the `nvidia-container-cli` was built from source.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.17.8`
+- `nvidia-container-toolkit-base 1.17.8`
+- `libnvidia-container-tools 1.17.8`
+- `libnvidia-container1 1.17.8`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.8-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.17.8-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.8`)
 
 ## NVIDIA Container Toolkit 1.17.7
 
@@ -73,7 +100,7 @@ NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \
 
 **Using `dnf` (RHEL/CentOS, Fedora, Amazon Linux):**
 
-```  
+```
 NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \
     dnf install -y \
         nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
@@ -1051,7 +1078,7 @@ The following packages have also been updated to depend on `nvidia-container-too
 - Switch to debug logging to reduce log verbosity
 - Support logging to logs requested in command line
 - Allow low-level runtime path to be set explicitly as `nvidia-container-runtime.runtimes` option
-- Fix failure to locate low-level runtime if PATH envvar is unset
+- Fix failure to locate low-level runtime if PATH environment variables is unset
 - Add `--version` flag to all CLIs
 
 #### specific to libnvidia-container
