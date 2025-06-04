@@ -175,6 +175,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA HGX GB200 NVL    | NVIDIA Blackwell       |
     +-------------------------+------------------------+
 
+     .. note::
+
+       * HGX B200 requires a driver container version of 570.133.20 or later.
 
 .. _gpu-operator-arm-platforms:
 

@@ -83,6 +83,7 @@ New Features
 * Added support for Ubuntu 24.04 LTS.
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+  Note that HGX B200 requires a driver container version of 570.133.20 or later.
 
 * Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
 
