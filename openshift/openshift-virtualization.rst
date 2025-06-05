@@ -463,13 +463,13 @@ The following example permits the A10 GPU device, the device names for the GPUs 
          permittedHostDevices: # Defines VM devices to import.
             pciHostDevices: # Include for GPU passthrough
             - externalResourceProvider: true
-            pciDeviceSelector: 10DE:2236
-            resourceName: nvidia.com/GA102GL_A10
+              pciDeviceSelector: 10DE:2236
+              resourceName: nvidia.com/GA102GL_A10
       ...
 
    Replace the values in the YAML as follows:
 
-   * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
+   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU type.
 
    * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
 
@@ -480,7 +480,7 @@ Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machin
 Add vGPU resources to the HyperConverged Custom Resource
 ========================================================
 
-The following example permits the A10-14Q vGPU device, the device names for the GPUs on your cluster will likely be different.
+The following example permits the A10-12Q vGPU device, the device names for the GPUs on your cluster will likely be different.
 
 #. Determine the resource names for the GPU devices:
 
@@ -526,8 +526,8 @@ The following example permits the A10-14Q vGPU device, the device names for the 
         permittedHostDevices: # Defines VM devices to import.
           mediatedDevices: # Include for vGPU
           - externalResourceProvider: true
-            mdevNameSelector: NVIDIA A10-14Q
-            resourceName: nvidia.com/NVIDIA_A10-24Q
+            mdevNameSelector: NVIDIA A10-12Q
+            resourceName: nvidia.com/NVIDIA_A10-12Q
       ...
 
    Replace the values in the YAML as follows:
