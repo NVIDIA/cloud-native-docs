@@ -1,0 +1,1587 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MIG Support in OpenShift Container Platform &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mig-ocp';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cleanup" href="clean-up.html" />
+    <link rel="prev" title="NVIDIA AI Enterprise with OpenShift" href="nvaie-with-ocp.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jun 06, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">MIG Support in OpenShift Container Platform</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="mig-support-in-openshift-container-platform">
+<span id="mig-ocp"></span><h1>MIG Support in OpenShift Container Platform<a class="headerlink" href="#mig-support-in-openshift-container-platform" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
+The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
+These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.</p>
+<p>The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
+Each of these instances presents as a stand-alone GPU device from the system perspective and can be bound to any application, container, or virtual machine running on the node.</p>
+<p>From the perspective of the software consuming the GPU each of these MIG instances looks like its own individual GPU.</p>
+</section>
+<section id="mig-geometry">
+<h2>MIG geometry<a class="headerlink" href="#mig-geometry" title="Permalink to this headline">#</a></h2>
+<p>The NVIDIA GPU Operator version 1.7.0 and above enables OpenShift Container Platform administrators to dynamically reconfigure the geometry of the MIG partitioning.
+The geometry of the MIG partitioning is how hardware resources are bound to MIG instances, so it directly influences their performance and the number of instances that can be allocated.
+The A100-40GB, for example, has eight compute units and 40 GB of RAM. When the MIG mode is enabled, the eighth instance is reserved for resource management.</p>
+<p>The table below provides a summary of the MIG instance properties of the NVIDIA A100-40GB product:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 22%" />
+<col style="width: 21%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Profile</p></th>
+<th class="head"><p>Memory</p></th>
+<th class="head"><p>Compute Units</p></th>
+<th class="head"><p>Maximum number
+of homogeneous instances</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1g.5gb</p></td>
+<td><p>5 GB</p></td>
+<td><p>1</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>2g.10gb</p></td>
+<td><p>10 GB</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>3g.20gb</p></td>
+<td><p>20 GB</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>4g.20gb</p></td>
+<td><p>20 GB</p></td>
+<td><p>4</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>7g.40gb</p></td>
+<td><p>40 GB</p></td>
+<td><p>7</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In addition to homogeneous instances, some heterogeneous combinations can be chosen. See the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">Multi-Instance GPU User Guide documentation</a> for an exhaustive listing.</p>
+<p>Here is an example, again for the A100-40GB, with heterogeneous (or “mixed”) geometries:</p>
+<ul class="simple">
+<li><p>2x 1g.5gb</p></li>
+<li><p>1x 2g.10gb</p></li>
+<li><p>1x 3g.10gb</p></li>
+</ul>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
+<p>The deployment workflow requires these prerequisites.</p>
+<ol class="arabic simple">
+<li><p>You already have a OpenShift Container Platform cluster up and running with access to at least one MIG-capable GPU.</p></li>
+<li><p>You have followed the guidance in <a class="reference internal" href="steps-overview.html"><span class="doc">Installation and Upgrade Overview on OpenShift</span></a> proceeding as far as creating the <cite>cluster policy &lt;create-cluster-policy&gt;</cite>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The node must be free (drained) of GPU workloads before any reconfiguration is triggered. For guidance on draining a node see, the OpenShift Container Platform documentation <a class="reference external" href="https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-evacuating_nodes-nodes-working">Understanding how to evacuate pods on nodes</a>.</p>
+</div>
+</section>
+</section>
+<section id="configuring-mig-devices-in-openshift">
+<h2>Configuring MIG Devices in OpenShift<a class="headerlink" href="#configuring-mig-devices-in-openshift" title="Permalink to this headline">#</a></h2>
+<section id="mig-advertisement-strategies">
+<h3>MIG advertisement strategies<a class="headerlink" href="#mig-advertisement-strategies" title="Permalink to this headline">#</a></h3>
+<p>The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that can be requested and exposed into Pods and containers. The first step of the MIG configuration is to decide what <strong>Strategy</strong> you want. The advertisement strategies are described here:</p>
+<ul>
+<li><p><strong>Single</strong> defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs. This strategy exposes the MIG instances as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resources, identically, as usual non-MIG capable (or with MIG disabled) devices. In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size). This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users. Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.</p>
+<blockquote>
+<div><p>Examples for the A100-40GB:</p>
+<ul>
+<li><p>1g.5gb:  7 nvidia.com/gpu instances, or</p></li>
+<li><p>2g.10gb: 3 nvidia.com/gpu instances, or</p></li>
+<li><p>3g.20gb: 2 nvidia.com/gpuinstances, or</p></li>
+<li><p>7g.40gb: 1 nvidia.com/gpu instances</p>
+<img alt="_images/Mig-profile-A100.png" src="_images/Mig-profile-A100.png" />
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Mixed</strong> defines a heterogeneous advertisement strategy. There is no constraint on the geometry; all the combinations allowed by the GPU are permitted. This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.</p>
+<blockquote>
+<div><p>Examples for the A100-40GB:</p>
+<ul>
+<li><p>All the <strong>single</strong> configurations are possible</p></li>
+<li><p>A “balanced” configuration:</p>
+<ul class="simple">
+<li><p>1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and</p></li>
+<li><p>2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and</p></li>
+<li><p>3g.20gb: 1 nvidia.com/mig-3g.20gb instance</p></li>
+</ul>
+<img alt="_images/mig-mixed-profile-A100.png" src="_images/mig-mixed-profile-A100.png" />
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Version 1.8 and greater of the NVIDIA GPU Operator supports updating the <strong>Strategy</strong> in the ClusterPolicy after deployment.</p>
+<p>The <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB. The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
+The tables below describe these configurations:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-text">Single configuration</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>GPU Type</p></th>
+<th class="head"><p>Custom label</p></th>
+<th class="head"><p>Profile</p></th>
+<th class="head"><p>MIG instances</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A100-40GB</p></td>
+<td colspan="3"></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-1g.5gb</p></td>
+<td><p>1g.5gb</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>all-2g.10gb</p></td>
+<td><p>2g.10gb</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-3g.20gb</p></td>
+<td><p>3g.20gb</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>all-7g.40gb</p></td>
+<td><p>7g.40gb</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>A100-80GB</p></td>
+<td colspan="3"></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>all-1g.10gb</p></td>
+<td><p>1g.10gb</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-2g.20gb</p></td>
+<td><p>2g.20gb</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>all-3g.40gb</p></td>
+<td><p>3g.40gb</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-7g.80gb</p></td>
+<td><p>7g.80gb</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>A30-24GB</p></td>
+<td colspan="3"></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-1g.6gb</p></td>
+<td><p>1g.6gb</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>all-2g.12gb</p></td>
+<td><p>2g.12gb</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-4g.24gb</p></td>
+<td><p>4g.24gb</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All-balanced is composed of 3 distinct configurations, with a <cite>device-filter</cite> filtering, based on the device UID. The possible supported combinations are described below:</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id3">
+<caption><span class="caption-text">Balanced configuration</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 27%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>GPU Type</p></th>
+<th class="head"><p>Custom label</p></th>
+<th class="head"><p>Profile and MIG instances</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A100-40GB</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-balanced</p></td>
+<td><p>1g.5gb: 2</p>
+<p>2g.10gb:1</p>
+<p>3g.20gb:1</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>A100-80GB</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-balanced</p></td>
+<td><p>1g.10gb:2</p>
+<p>2g.20gb:1</p>
+<p>3g.40gb:1</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>A30-24GB</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>all-balanced</p></td>
+<td><p>1g.6gb: 2</p>
+<p>2g.12gb:1</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="set-the-mig-advertisement-strategy-and-apply-the-mig-partitioning">
+<span id="mig-partitioning"></span><h3>Set the MIG advertisement strategy and apply the MIG partitioning<a class="headerlink" href="#set-the-mig-advertisement-strategy-and-apply-the-mig-partitioning" title="Permalink to this headline">#</a></h3>
+<p>Having decided on your advertisement strategy you need to set this by editing the default cluster policy and then apply the MIG partitioning profile.</p>
+<p>For example to set the advertisement strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> and the MIG partitioning profile to 3x 2g.10gb MIG devices follow the step below:</p>
+<ol class="arabic">
+<li><p>In the OpenShift Container Platform CLI run the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">STRATEGY</span><span class="o">=</span>mixed <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  oc patch clusterpolicy/gpu-cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/mig/strategy&quot;, &quot;value&quot;: &#39;</span><span class="nv">$STRATEGY</span><span class="s1">&#39;}]&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This may take a while so be patient and wait at least 10-20 minutes before digging deeper into any form of troubleshooting.</p>
+</div>
+</li>
+<li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Operators</strong> &gt; <strong>Installed Operators</strong>, then click the <strong>NVIDIA GPU Operator</strong>.</p></li>
+<li><p>Select the <strong>ClusterPolicy</strong> tab. The status of the newly deployed ClusterPolicy <strong>gpu-cluster-policy</strong> for the <strong>NVIDIA GPU Operator</strong> displays <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> once the installation succeeded.</p>
+<img alt="_images/cluster_policy_suceed.png" src="_images/cluster_policy_suceed.png" />
+</li>
+<li><p>Apply the desired MIG partitioning profile. To configure 3x 2g.10gb MIG devices run the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-2g.10gb <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+</pre></div>
+</div>
+</li>
+<li><p>Wait for the <code class="docutils literal notranslate"><span class="pre">mig-manager</span></code> to perform the reconfiguration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc -n nvidia-gpu-operator logs ds/nvidia-mig-manager --all-containers -f --prefix
+</pre></div>
+</div>
+<p>The status of the reconfiguration should change from success → pending → success.</p>
+</li>
+<li><p>Verify the new configuration is applied:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n nvidia-gpu-operator -lapp<span class="o">=</span>nvidia-driver-daemonset -owide
+</pre></div>
+</div>
+<p>Select the name of the Pod on the MIG GPU enabled node and run the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc rsh -n nvidia-gpu-operator <span class="nv">$POD_NAME</span> nvidia-smi mig -lgi
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">+----------------------------------------------------+</span>
+<span class="go">| GPU instances:                                     |</span>
+<span class="go">| GPU   Name          Profile  Instance   Placement  |</span>
+<span class="go">|                       ID       ID       Start:Size |</span>
+<span class="go">|====================================================|</span>
+<span class="go">|   0  MIG 2g.10gb       19        3          4:2    |</span>
+<span class="go">+----------------------------------------------------+</span>
+<span class="go">|   0  MIG 2g.10gb       19        5          0:2    |</span>
+<span class="go">+----------------------------------------------------+</span>
+<span class="go">|   0  MIG 2g.10gb       19        6          2:2    |</span>
+<span class="go">+----------------------------------------------------+</span>
+</pre></div>
+</div>
+<p>With the profile in step 4 applied the A100 is configured into 3 MIG devices.</p>
+</li>
+<li><p>Check the node has been labeled:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nodes/<span class="nv">$NODE_NAME</span> --show-labels <span class="p">|</span> tr <span class="s1">&#39;,&#39;</span> <span class="s1">&#39;\n&#39;</span> <span class="p">|</span> grep nvidia.com
+</pre></div>
+</div>
+<p>with labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/gpu.present=true</span>
+<span class="go">nvidia.com/cuda.driver.major=470</span>
+<span class="go">nvidia.com/cuda.driver.minor=57</span>
+<span class="go">nvidia.com/cuda.driver.rev=02</span>
+<span class="go">nvidia.com/cuda.runtime.major=11</span>
+<span class="go">nvidia.com/cuda.runtime.minor=4</span>
+<span class="go">nvidia.com/gpu.compute.major=8</span>
+<span class="go">nvidia.com/gpu.compute.minor=0</span>
+<span class="go">nvidia.com/gpu.count=1</span>
+<span class="go">nvidia.com/gpu.family=ampere</span>
+<span class="go">nvidia.com/gpu.machine=...</span>
+<span class="go">nvidia.com/gpu.memory=40536</span>
+<span class="go">nvidia.com/gpu.product=NVIDIA-A100-SXM4-40GB</span>
+<span class="go">nvidia.com/mig-2g.10gb.count=3</span>
+<span class="go">nvidia.com/mig-2g.10gb.engines.copy=2</span>
+<span class="go">nvidia.com/mig-2g.10gb.engines.decoder=1</span>
+<span class="go">nvidia.com/mig-2g.10gb.engines.encoder=0</span>
+<span class="go">nvidia.com/mig-2g.10gb.engines.jpeg=0</span>
+<span class="go">nvidia.com/mig-2g.10gb.engines.ofa=0</span>
+<span class="go">nvidia.com/mig-2g.10gb.memory=9984</span>
+<span class="go">nvidia.com/mig-2g.10gb.multiprocessors=28</span>
+<span class="go">nvidia.com/mig-2g.10gb.slices.ci=2</span>
+<span class="go">nvidia.com/mig-2g.10gb.slices.gi=2</span>
+<span class="go">nvidia.com/mig.config.state=success</span>
+<span class="go">nvidia.com/mig.config=all-2g.10gb</span>
+<span class="go">nvidia.com/mig.strategy=mixed</span>
+<span class="go">[...]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The extract above shows the strategy is set to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> with the MIG configuration set to <code class="docutils literal notranslate"><span class="pre">all-2g.10gb</span></code>.</p>
+</div>
+</li>
+<li><p>Verify that the MIG instances are exposed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node/<span class="nv">$NODE_NAME</span> -ojsonpath<span class="o">={</span>.status.allocatable<span class="o">}</span> <span class="p">|</span> jq . <span class="p">|</span> grep nvidia
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia.com/mig-2g.10gb&quot;: &quot;3&quot;,</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can ignore values set to 0.</p>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="creating-and-applying-a-custom-mig-configuration">
+<h2>Creating and applying a custom MIG configuration<a class="headerlink" href="#creating-and-applying-a-custom-mig-configuration" title="Permalink to this headline">#</a></h2>
+<p>Follow the guidance below to create a new slicing profile.</p>
+<ol class="arabic">
+<li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles">supported profiles</a>.</p>
+</div>
+</li>
+<li><p>Create the custom configuration within the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CONFIG_FILE</span><span class="o">=</span>/path/to/custom_configmap.yaml <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  oc create configmap custom-mig-parted-config <span class="se">\</span>
+     --from-file<span class="o">=</span>config.yaml<span class="o">=</span><span class="nv">$CONFIG_FILE</span> <span class="se">\</span>
+     -n nvidia-gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Edit the cluster policy and enter the name of the config map in the field <code class="docutils literal notranslate"><span class="pre">spec.migManager.config.name</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc edit clusterpolicy
+<span class="go">  spec:</span>
+<span class="go">    migManager:</span>
+<span class="go">      config:</span>
+<span class="go">        name: custom-mig-parted-config</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the node with this newly created profile following the guidance in <a class="reference internal" href="#mig-partitioning"><span class="std std-ref">Set the MIG advertisement strategy and apply the MIG partitioning</span></a>.</p></li>
+</ol>
+</section>
+<section id="example-mixed-mig-strategy">
+<h2>Example: Mixed MIG strategy<a class="headerlink" href="#example-mixed-mig-strategy" title="Permalink to this headline">#</a></h2>
+<section id="introduction-and-default-mig-configuration">
+<h3>Introduction and default MIG configuration<a class="headerlink" href="#introduction-and-default-mig-configuration" title="Permalink to this headline">#</a></h3>
+<p>For each MIG configuration, you specify a strategy and a MIG configuration label.</p>
+<p>This example shows how to configure a <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy with the <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> configuration on one NVIDIA DGX H100 host with 8 x H100 80GB GPUs.
+The DGX H100 host runs a single node installation of OpenShift.</p>
+<p>By default, MIG is disabled and is configured with the <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> grep nvidia.com/mig
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/mig.capable=true</span>
+<span class="go">nvidia.com/mig.config=all-disabled</span>
+<span class="go">nvidia.com/mig.config.state=success</span>
+<span class="go">nvidia.com/mig.strategy=single</span>
+</pre></div>
+</div>
+<p>With the default configuration, the host supports up to 8 pods with GPUs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> egrep <span class="s2">&quot;Name:|Roles:|Capacity|nvidia.com/gpu|Allocatable:|Requests +Limits&quot;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:               myworker.redhat.com</span>
+<span class="go">Roles:              control-plane,master,worker</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:     8</span>
+<span class="hll"><span class="go">Allocatable:</span>
+</span><span class="hll"><span class="go">nvidia.com/gpu:     8</span>
+</span><span class="go">Resource           Requests      Limits</span>
+<span class="go">nvidia.com/gpu     0             0</span>
+</pre></div>
+</div>
+</section>
+<section id="procedure">
+<h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h3>
+<p>The following steps show how to apply the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy with the MIG configuration label <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code>.</p>
+<p>With this strategy and label, each H100 GPU enables these MIG profiles:</p>
+<ul class="simple">
+<li><p>2 x 1g.10gb</p></li>
+<li><p>1 x 2g.20gb</p></li>
+<li><p>1 x 3g.40g</p></li>
+</ul>
+<p>For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in the following GPU capacity on the cluster:</p>
+<ul class="simple">
+<li><p>16 x 1g.10gb (8 x 2)</p></li>
+<li><p>8 x 2g.20gb (8 x 1)</p></li>
+<li><p>8 x 3g.40gb (8 x 1)</p></li>
+</ul>
+<ol class="arabic">
+<li><p>Specify the host name, strategy, and configuration label in environment variables:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NODE_NAME</span><span class="o">=</span>myworker.redhat.com
+<span class="gp">$ </span><span class="nv">STRATEGY</span><span class="o">=</span>mixed
+<span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-balanced
+</pre></div>
+</div>
+</li>
+<li><p>Apply the strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy/gpu-cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/mig/strategy&quot;, &quot;value&quot;: &#39;</span><span class="nv">$STRATEGY</span><span class="s1">&#39;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the node with the configuration label:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node <span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+</pre></div>
+</div>
+<p>MIG manager applies a <code class="docutils literal notranslate"><span class="pre">mig.config.state</span></code> label to the GPU and then terminates all the GPU pods
+in preparation to enable MIG mode and configure the GPU into the specified configuration.</p>
+</li>
+<li><p>Optional: Verify that MIG manager configured the GPUs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> grep nvidia.com/mig.config
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/mig.config=all-balanced</span>
+<span class="go">nvidia.com/mig.config.state=success</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the GPU resources are available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> egrep <span class="s2">&quot;Name:|Roles:|Capacity|nvidia.com/gpu:|nvidia.com/mig-.* |Allocatable:|Requests +Limits&quot;</span>
+</pre></div>
+</div>
+<p>The following sample output shows the expected 32 GPU resources:</p>
+<ul class="simple">
+<li><p>16 x 1g.10gb</p></li>
+<li><p>8 x 1g.10gb</p></li>
+<li><p>8 x 3g.40gb</p></li>
+</ul>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:               myworker.redhat.com</span>
+<span class="go">Roles:              control-plane,master,worker</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:          0</span>
+<span class="go">nvidia.com/mig-1g.10gb:  16</span>
+<span class="go">nvidia.com/mig-2g.20gb:  8</span>
+<span class="go">nvidia.com/mig-3g.40gb:  8</span>
+<span class="go">Allocatable:</span>
+<span class="go">nvidia.com/gpu:          0</span>
+<span class="hll"><span class="go">nvidia.com/mig-1g.10gb:  16</span>
+</span><span class="hll"><span class="go">nvidia.com/mig-2g.20gb:  8</span>
+</span><span class="hll"><span class="go">nvidia.com/mig-3g.40gb:  8</span>
+</span><span class="go">Resource                Requests      Limits</span>
+<span class="go">nvidia.com/mig-1g.10gb  0             0</span>
+<span class="go">nvidia.com/mig-2g.20gb  0             0</span>
+<span class="go">nvidia.com/mig-3g.40gb  0             0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Start a pod to run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command and display the GPU resources.</p>
+<ol class="arabic">
+<li><p>Start the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> oc apply -f -
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: command-nvidia-smi</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: Never</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-container</span>
+<span class="go">    image: nvcr.io/nvidia/cuda:12.1.0-base-ubi8</span>
+<span class="go">    command: [&quot;/bin/sh&quot;,&quot;-c&quot;]</span>
+<span class="go">    args: [&quot;nvidia-smi&quot;]</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm the pod ran successfully:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                 READY   STATUS      RESTARTS   AGE</span>
+<span class="go">command-nvidia-smi   0/1     Completed   0          3m34s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> output includes 32 MIG devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs command-nvidia-smi
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 535.104.12             Driver Version: 535.104.12   CUDA Version: 12.2     |</span>
+<span class="go">|-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                                         |                      |               MIG M. |</span>
+<span class="go">|=========================================+======================+======================|</span>
+<span class="go">|   0  NVIDIA H100 80GB HBM3          On  | 00000000:1B:00.0 Off |                   On |</span>
+<span class="go">| N/A   25C    P0              71W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   1  NVIDIA H100 80GB HBM3          On  | 00000000:43:00.0 Off |                   On |</span>
+<span class="go">| N/A   26C    P0              70W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   2  NVIDIA H100 80GB HBM3          On  | 00000000:52:00.0 Off |                   On |</span>
+<span class="go">| N/A   31C    P0              72W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   3  NVIDIA H100 80GB HBM3          On  | 00000000:61:00.0 Off |                   On |</span>
+<span class="go">| N/A   29C    P0              71W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   4  NVIDIA H100 80GB HBM3          On  | 00000000:9D:00.0 Off |                   On |</span>
+<span class="go">| N/A   26C    P0              71W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   5  NVIDIA H100 80GB HBM3          On  | 00000000:C3:00.0 Off |                   On |</span>
+<span class="go">| N/A   25C    P0              70W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   6  NVIDIA H100 80GB HBM3          On  | 00000000:D1:00.0 Off |                   On |</span>
+<span class="go">| N/A   29C    P0              73W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   7  NVIDIA H100 80GB HBM3          On  | 00000000:DF:00.0 Off |                   On |</span>
+<span class="go">| N/A   31C    P0              72W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="go">| MIG devices:                                                                          |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">| GPU  GI  CI  MIG |                   Memory-Usage |        Vol|      Shared           |</span>
+<span class="go">|      ID  ID  Dev |                     BAR1-Usage | SM     Unc| CE ENC DEC OFA JPG    |</span>
+<span class="go">|                  |                                |        ECC|                       |</span>
+<span class="go">|==================+================================+===========+=======================|</span>
+<span class="go">|  0    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  0    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  0    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  0   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  1    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  1    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  1    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  1   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  2    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  2    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  2    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  2   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  3    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  3    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  3    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  3   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  4    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  4    5   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  4   13   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  4   14   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  5    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  5    5   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  5   13   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  5   14   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  6    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  6    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  6    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  6   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  7    2   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+<span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  7    3   0   1  |              11MiB / 20096MiB  | 32      0 |  2   0    2    0    2 |</span>
+<span class="go">|                  |               0MiB / 32767MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  7    9   0   2  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">|  7   10   0   3  |               5MiB /  9984MiB  | 16      0 |  1   0    1    0    1 |</span>
+<span class="go">|                  |               0MiB / 16383MiB  |           |                       |</span>
+<span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                            |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |</span>
+<span class="go">|        ID   ID                                                             Usage      |</span>
+<span class="go">|=======================================================================================|</span>
+<span class="go">|  No running processes found                                                           |</span>
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</li>
+<li><p>Delete the sample pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete pod command-nvidia-smi
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;command-nvidia-smi&quot; deleted</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+<section id="example-single-mig-strategy">
+<h2>Example: Single MIG strategy<a class="headerlink" href="#example-single-mig-strategy" title="Permalink to this headline">#</a></h2>
+<p>This example shows how to configure a <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy with the <code class="docutils literal notranslate"><span class="pre">all-3g.40gb</span></code> configuration on one NVIDIA DGX H100 host with 8 x H100 80GB GPUs.
+The DGX H100 host runs a single node installation of OpenShift.</p>
+<p>For information about the initial default MIG configuration and viewing it, refer to the beginning of
+<a class="reference internal" href="#example-mixed-mig-strategy"><span class="std std-ref">Example: Mixed MIG strategy</span></a>.</p>
+<ol class="arabic">
+<li><p>Specify the host name, strategy, and configuration label in environment variables:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NODE_NAME</span><span class="o">=</span>myworker.redhat.com
+<span class="gp">$ </span><span class="nv">STRATEGY</span><span class="o">=</span>single
+<span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-3g.40gb
+</pre></div>
+</div>
+</li>
+<li><p>Apply the strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy/gpu-cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/mig/strategy&quot;, &quot;value&quot;: &#39;</span><span class="nv">$STRATEGY</span><span class="s1">&#39;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the node with the configuration label:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node <span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+</pre></div>
+</div>
+<p>MIG manager applies a <code class="docutils literal notranslate"><span class="pre">mig.config.state</span></code> label to the GPU and then terminates all the GPU pods
+in preparation to enable MIG mode and configure the GPU into the specified configuration.</p>
+</li>
+<li><p>Confirm that the GPU resources are available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> egrep <span class="s2">&quot;Name:|Roles:|Capacity|nvidia.com/gpu:|nvidia.com/mig-.* |Allocatable:|Requests +Limits&quot;</span>
+</pre></div>
+</div>
+<p>The following sample output shows the expected 16 GPUs:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:               myworker.redhat.com</span>
+<span class="go">Roles:              control-plane,master,worker</span>
+<span class="go">Capacity:</span>
+<span class="go">nvidia.com/gpu:          16</span>
+<span class="go">nvidia.com/mig-1g.10gb:  0</span>
+<span class="go">nvidia.com/mig-2g.20gb:  0</span>
+<span class="go">nvidia.com/mig-3g.40gb:  0</span>
+<span class="hll"><span class="go">Allocatable:</span>
+</span><span class="hll"><span class="go">nvidia.com/gpu:          16</span>
+</span><span class="go">nvidia.com/mig-1g.10gb:  0</span>
+<span class="go">nvidia.com/mig-2g.20gb:  0</span>
+<span class="go">nvidia.com/mig-3g.40gb:  0</span>
+<span class="go">Resource                Requests      Limits</span>
+<span class="go">nvidia.com/mig-1g.10gb  0             0</span>
+<span class="go">nvidia.com/mig-2g.20gb  0             0</span>
+<span class="go">nvidia.com/mig-3g.40gb  0             0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Start a pod to run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command and display the GPU resources.</p>
+<ol class="arabic">
+<li><p>Start the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> oc apply -f -
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: command-nvidia-smi</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: Never</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-container</span>
+<span class="go">    image: nvcr.io/nvidia/cuda:12.1.0-base-ubi8</span>
+<span class="go">    command: [&quot;/bin/sh&quot;,&quot;-c&quot;]</span>
+<span class="go">    args: [&quot;nvidia-smi&quot;]</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm the pod ran successfully:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                 READY   STATUS      RESTARTS   AGE</span>
+<span class="go">command-nvidia-smi   0/1     Completed   0          3m34s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> output includes 16 MIG devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs command-nvidia-smi
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="go">| NVIDIA-SMI 535.104.12             Driver Version: 535.104.12   CUDA Version: 12.2     |</span>
+<span class="go">|-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |</span>
+<span class="go">| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |</span>
+<span class="go">|                                         |                      |               MIG M. |</span>
+<span class="go">|=========================================+======================+======================|</span>
+<span class="go">|   0  NVIDIA H100 80GB HBM3          On  | 00000000:1B:00.0 Off |                   On |</span>
+<span class="go">| N/A   25C    P0              75W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   1  NVIDIA H100 80GB HBM3          On  | 00000000:43:00.0 Off |                   On |</span>
+<span class="go">| N/A   27C    P0              74W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   2  NVIDIA H100 80GB HBM3          On  | 00000000:52:00.0 Off |                   On |</span>
+<span class="go">| N/A   32C    P0              75W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   3  NVIDIA H100 80GB HBM3          On  | 00000000:61:00.0 Off |                   On |</span>
+<span class="go">| N/A   30C    P0              74W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   4  NVIDIA H100 80GB HBM3          On  | 00000000:9D:00.0 Off |                   On |</span>
+<span class="go">| N/A   27C    P0              75W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   5  NVIDIA H100 80GB HBM3          On  | 00000000:C3:00.0 Off |                   On |</span>
+<span class="go">| N/A   25C    P0              73W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   6  NVIDIA H100 80GB HBM3          On  | 00000000:D1:00.0 Off |                   On |</span>
+<span class="go">| N/A   30C    P0              77W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+<span class="go">|   7  NVIDIA H100 80GB HBM3          On  | 00000000:DF:00.0 Off |                   On |</span>
+<span class="go">| N/A   31C    P0              76W / 700W |                  N/A |     N/A      Default |</span>
+<span class="go">|                                         |                      |              Enabled |</span>
+<span class="go">+-----------------------------------------+----------------------+----------------------+</span>
+
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="hll"><span class="go">| MIG devices:                                                                          |</span>
+</span><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+<span class="go">| GPU  GI  CI  MIG |                   Memory-Usage |        Vol|      Shared           |</span>
+<span class="go">|      ID  ID  Dev |                     BAR1-Usage | SM     Unc| CE ENC DEC OFA JPG    |</span>
+<span class="go">|                  |                                |        ECC|                       |</span>
+<span class="hll"><span class="go">|==================+================================+===========+=======================|</span>
+</span><span class="hll"><span class="go">|  0    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  0    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  1    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  1    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  2    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  2    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  3    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  3    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  4    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  4    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  5    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  5    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  6    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  6    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  7    1   0   0  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="hll"><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+</span><span class="hll"><span class="go">|  7    2   0   1  |              16MiB / 40448MiB  | 60      0 |  3   0    3    0    3 |</span>
+</span><span class="hll"><span class="go">|                  |               0MiB / 65535MiB  |           |                       |</span>
+</span><span class="go">+------------------+--------------------------------+-----------+-----------------------+</span>
+
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+<span class="go">| Processes:                                                                            |</span>
+<span class="go">|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |</span>
+<span class="go">|        ID   ID                                                             Usage      |</span>
+<span class="go">|=======================================================================================|</span>
+<span class="go">|  No running processes found                                                           |</span>
+<span class="go">+---------------------------------------------------------------------------------------+</span>
+</pre></div>
+</div>
+</li>
+<li><p>Delete the sample pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete pod command-nvidia-smi
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;command-nvidia-smi&quot; deleted</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="running-a-sample-gpu-application">
+<h2>Running a sample GPU application<a class="headerlink" href="#running-a-sample-gpu-application" title="Permalink to this headline">#</a></h2>
+<p>Let’s run a simple CUDA sample, in this case <code class="docutils literal notranslate"><span class="pre">vectorAdd</span></code> by requesting a GPU resource as you would normally do in Kubernetes.</p>
+<p>If the cluster is configured with the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> advertisement strategy.</p>
+<ol class="arabic">
+<li><p>Request the MIG instance with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-2g.10gb:</span> <span class="pre">1</span></code> as follows:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is no need for a nodeSelector, as the Pod is necessarily scheduled on a <code class="docutils literal notranslate"><span class="pre">2g.10gb</span></code> MIG instance.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt; EOF <span class="p">|</span> oc create -f -
+
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: cuda-vectoradd</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-vectoradd</span>
+<span class="go">    image: &quot;nvidia/samples:vectoradd-cuda11.2.1&quot;</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">        nvidia.com/mig-2g.10gb: 1</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd created</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the logs of the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs cuda-vectoradd
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If the cluster is configured with the <code class="docutils literal notranslate"><span class="pre">single</span></code> advertisement strategy.</p>
+<ol class="arabic">
+<li><p>Request the MIG instance with <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu:</span> <span class="pre">1</span></code> and enforce the Pod scheduling on a node with a <code class="docutils literal notranslate"><span class="pre">2g.10gb</span></code> MIG instance with the <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> stanza as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt; EOF <span class="p">|</span> oc create -f -
+
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: cuda-vectoradd</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-vectoradd</span>
+<span class="go">    image: &quot;nvidia/samples:vectoradd-cuda11.2.1&quot;</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">        nvidia.com/gpu: 1</span>
+<span class="go">  nodeSelector:</span>
+<span class="go">    nvidia.com/gpu.product: A100-SXM4-40GB-MIG-1g.5gb</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="disable-the-mig-mode">
+<h2>Disable the MIG mode<a class="headerlink" href="#disable-the-mig-mode" title="Permalink to this headline">#</a></h2>
+<p>To turn MIG mode off so that you can utilize the full capacity of the GPU run the following:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-disabled <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
+<p>The MIG reconfiguration is handled exclusively by the controller deployed within the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> DaemonSet. Inspecting the logs of these Pods should give a clue about what went wrong.</p>
+<ol class="arabic">
+<li><p>Check the logs of the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs nvidia-mig-manager
+</pre></div>
+</div>
+<p>The cluster administrator is expected to drain the node from any GPU workload, before requesting the MIG reconfiguration. If the node is not properly drained, the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> will fail with this error in the logs:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> Updating MIG config: map[2g.10gb:3]</span>
+<span class="go">Error clearing MigConfig: error destroying Compute instance for profile &#39;(0, 0)&#39;: In use by another client</span>
+<span class="go">Error clearing MIG config on GPU 0, erroneous devices may persist</span>
+<span class="go">Error setting MIGConfig: error attempting multiple config orderings: all orderings failed</span>
+<span class="go">Restarting all GPU clients previously shutdown by reenabling their component-specific nodeSelector labels</span>
+<span class="go">Changing the &#39;nvidia.com/mig.config.state&#39; node label to &#39;failed&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>Resolve this issue by:</p>
+<ol class="arabic">
+<li><p>Correctly draining the node. For guidance on draining a node see, the OpenShift Container Platform documentation <a class="reference external" href="https://docs.openshift.com/container-platform/latest/nodes/nodes/nodes-nodes-working.html#nodes-nodes-working-evacuating_nodes-nodes-working">Understanding how to evacuate pods on nodes</a>.</p></li>
+<li><p>Retrigger the reconfiguration by forcing the label update:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config- --overwrite
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nvaie-with-ocp.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NVIDIA AI Enterprise with OpenShift</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="clean-up.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Cleanup</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-geometry">MIG geometry</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-mig-devices-in-openshift">Configuring MIG Devices in OpenShift</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-advertisement-strategies">MIG advertisement strategies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-the-mig-advertisement-strategy-and-apply-the-mig-partitioning">Set the MIG advertisement strategy and apply the MIG partitioning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-and-applying-a-custom-mig-configuration">Creating and applying a custom MIG configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixed-mig-strategy">Example: Mixed MIG strategy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-and-default-mig-configuration">Introduction and default MIG configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-single-mig-strategy">Example: Single MIG strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-sample-gpu-application">Running a sample GPU application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disable-the-mig-mode">Disable the MIG mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
