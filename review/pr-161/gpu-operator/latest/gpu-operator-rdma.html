@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,9 +71,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 18, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 06, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -152,6 +155,32 @@
   </div>
   
   <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
     
     
     <div class="navbar-header-items__end">
@@ -239,6 +268,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -257,6 +315,7 @@
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
 
 
 <nav class="bd-docs-nav bd-links"
@@ -311,27 +370,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -391,10 +429,11 @@ This direct path increases system bandwidth and decreases the latency and utiliz
 <p>To support GPUDirect RDMA, userspace CUDA APIs are required.
 The kernel mode support is provided by one of two approaches: DMA-BUF from the Linux kernel or the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.
 NVIDIA recommends using the DMA-BUF rather than using the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module from the GPU Driver.</p>
-<p>Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
+<p>The Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-The sample commands for installing the Operator include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">useOpenKernelModules=true</span></code>
-command-line argument for Helm.</p>
+In GPU Operator v25.3.0 and later, the <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code> default is <code class="docutils literal notranslate"><span class="pre">auto</span></code>, for the supported driver versions.
+This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available.
+Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line argument in your helm Operator install command.</p>
 <p>In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
@@ -487,21 +526,19 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
-     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span>
+     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
-     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>To use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module instead of DMA-BUF, add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to either of the preceding commands.
-The <code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules=true</span></code> argument is optional for using the legacy kernel driver.</p>
+Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
 </section>
 <section id="verifying-the-installation-of-gpudirect-with-rdma">
 <h3>Verifying the Installation of GPUDirect with RDMA<a class="headerlink" href="#verifying-the-installation-of-gpudirect-with-rdma" title="Permalink to this headline">#</a></h3>
@@ -611,8 +648,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="a67ee29c-e007-4731-afbc-dd9ed72e807b" name="6cd85d2b-0fc5-4a1a-9780-b3a997e23685" type="radio">
-</input><label class="sd-tab-label" for="a67ee29c-e007-4731-afbc-dd9ed72e807b">
+<input checked="checked" id="5f41427d-179d-430b-a065-24e5a56287db" name="f009e308-7151-4bd4-9397-bcae5f4a846f" type="radio">
+</input><label class="sd-tab-label" for="5f41427d-179d-430b-a065-24e5a56287db">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -657,8 +694,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="7981e6de-3217-4a8d-87fe-01ab91c82c74" name="6cd85d2b-0fc5-4a1a-9780-b3a997e23685" type="radio">
-</input><label class="sd-tab-label" for="7981e6de-3217-4a8d-87fe-01ab91c82c74">
+<input id="10ee9144-22ec-4c36-a603-721e4aa97433" name="f009e308-7151-4bd4-9397-bcae5f4a846f" type="radio">
+</input><label class="sd-tab-label" for="10ee9144-22ec-4c36-a603-721e4aa97433">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -815,12 +852,12 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
-     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to the command to use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
 </section>
 <section id="verification">
 <h3>Verification<a class="headerlink" href="#verification" title="Permalink to this headline">#</a></h3>
@@ -938,6 +975,8 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -973,6 +1012,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -1049,6 +1089,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 
 
 
+
   <p class="copyright">
     
       Copyright © 2020-2025, NVIDIA Corporation.
@@ -1064,6 +1105,9 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>
