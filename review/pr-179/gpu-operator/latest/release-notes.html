@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 29, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 07, 2025"/>
 
 
 
@@ -440,12 +440,13 @@
 </li>
 <li><p>Added support for the following NVIDIA Data Center GPU Driver versions:</p>
 <ul>
-<li><p>570.133.20 (recommended)</p></li>
+<li><p>570.148.08 (recommended)</p></li>
+<li><p>570.133.20</p></li>
 <li><p>550.163.01</p></li>
 <li><p>535.247.01</p></li>
 </ul>
 </li>
-<li><p>Added support for setting DCGM Exporter internalTrafficPolicy.
+<li><p>Added support for setting the internalTrafficPolicy for the DCGM Exporter service.
 You can configure this in the Helm chart value by setting <cite>dcgmexporter.service.internalTrafficPolicy</cite> to <cite>Local</cite> or <cite>Cluster</cite> (default).
 Choose Local if you want to route internal traffic within the node only.</p></li>
 </ul>
@@ -499,7 +500,8 @@ This field is now deprecated and will be removed in a future release.
 If you were using the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field, it’s recommended that you update your configuration to use the <code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code> field instead.</p>
 </li>
 <li><p>Added support for Ubuntu 24.04 LTS.</p></li>
-<li><p>Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.</p></li>
+<li><p>Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+Note that HGX B200 requires a driver container version of 570.133.20 or later.</p></li>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 570.124.06.</p></li>
 <li><p>Added support for KubeVirt and OpenShift Virtualization with vGPU v18 on H200NVL.</p></li>
 <li><p>Added support for NVIDIA Network Operator v25.1.0.
