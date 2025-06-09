@@ -1,0 +1,797 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Time-slicing NVIDIA GPUs in OpenShift &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'time-slicing-gpus-in-openshift';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NVIDIA GPU Operator with OpenShift Virtualization" href="openshift-virtualization.html" />
+    <link rel="prev" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jun 09, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Time-slicing NVIDIA GPUs in OpenShift</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="time-slicing-nvidia-gpus-in-openshift">
+<span id="id1"></span><h1>Time-slicing NVIDIA GPUs in OpenShift<a class="headerlink" href="#time-slicing-nvidia-gpus-in-openshift" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>The latest generations of NVIDIA GPUs provide a mode of operation called Multi-Instance GPU (MIG).
+MIG allows you to partition a GPU into several smaller, predefined instances, each of which looks like a mini-GPU that
+provides memory and fault isolation at the hardware layer. Users can share access to a GPU by running their workloads
+on one of these predefined instances instead of the full GPU.</p>
+<p>This document describes a new mechanism for enabling time-sharing of GPUs in OpenShift. It allows a cluster
+administrator to define a set of replicas for a GPU, each of which can be handed out independently to a pod
+to run workloads on.</p>
+<p>Unlike MIG, there is no memory or fault-isolation between replicas, but for some workloads this is better than not
+being able to share at all. Under the hood, Compute Unified Device Architecture (CUDA) time-slicing is used to multiplex workloads from replicas of the
+same underlying GPU.</p>
+</section>
+<section id="configuring-gpus-with-time-slicing">
+<h2>Configuring GPUs with time slicing<a class="headerlink" href="#configuring-gpus-with-time-slicing" title="Permalink to this headline">#</a></h2>
+<p>The following sections show you how to configure NVIDIA Tesla T4 GPUs, as they do not support MIG, but can easily accept multiple small jobs.</p>
+<section id="enabling-gpu-feature-discovery">
+<h3>Enabling GPU Feature Discovery<a class="headerlink" href="#enabling-gpu-feature-discovery" title="Permalink to this headline">#</a></h3>
+<p>The feature release on GPU Feature Discovery (GFD) exposes the GPU types as labels and allows users to create node selectors based on these labels to help the scheduler place the pods. By default, when you create a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>
+custom resource, GFD is enabled. In case, you disabled it, you can re-enable it with the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy gpu-cluster-policy -n nvidia-gpu-operator <span class="se">\</span>
+    --type json <span class="se">\</span>
+    --patch <span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/gfd/enable&quot;, &quot;value&quot;: true}]&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-the-slicing-configurations">
+<h3>Creating the slicing configurations<a class="headerlink" href="#creating-the-slicing-configurations" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Before enabling a time slicing configuration, you need to tell the device plugin what are the possible configurations.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">device-plugin-config</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">A100-SXM4-40GB</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 8</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-1g.5gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 1</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-2g.10gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 2</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-3g.20gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 3</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-7g.40gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 7</span><span class="w"></span>
+<span class="w">  </span><span class="nt">A100-SXM4-80GB</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 8</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-1g.10gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 1</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-2g.20gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 2</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-3g.40gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 3</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/mig-7g.80gb</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 7</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Tesla-T4</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">sharing:</span><span class="w"></span>
+<span class="w">      </span><span class="no">timeSlicing:</span><span class="w"></span>
+<span class="w">        </span><span class="no">resources:</span><span class="w"></span>
+<span class="w">          </span><span class="no">- name: nvidia.com/gpu</span><span class="w"></span>
+<span class="w">            </span><span class="no">replicas: 8</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the ConfigMap:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create -f device-plugin-config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Tell the GPU Operator which ConfigMap to use for the device plugin configuration. You can simply patch the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> custom resource.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy gpu-cluster-policy <span class="se">\</span>
+    -n nvidia-gpu-operator --type merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;devicePlugin&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;device-plugin-config&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the configuration to all the nodes you have with Tesla TA GPUs. GFD, labels the nodes with the GPU product, in this example <code class="docutils literal notranslate"><span class="pre">Tesla-T4</span></code>, so you can use a node selector to label all of the nodes at once.</p>
+<p>You can also set <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.default=Tesla-T4</span></code>, which applies the configuration across the cluster by default without requiring node specific labels.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label --overwrite node <span class="se">\</span>
+    --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4 <span class="se">\</span>
+    nvidia.com/device-plugin.config<span class="o">=</span>Tesla-T4
+</pre></div>
+</div>
+</li>
+<li><p>After a few seconds, the configuration is applied and you can verify that GPU resource replicas have been created. The following configuration creates eight replicas for Tesla T4 GPUs, so the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> external resource is set to <code class="docutils literal notranslate"><span class="pre">8</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4-SHARED -o json <span class="p">|</span> jq <span class="s1">&#39;.items[0].status.capacity&#39;</span>
+</pre></div>
+</div>
+<p><strong>Example output</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;attachable-volumes-aws-ebs&quot;: &quot;39&quot;,</span>
+<span class="go">  &quot;cpu&quot;: &quot;4&quot;,</span>
+<span class="go">  &quot;ephemeral-storage&quot;: &quot;125293548Ki&quot;,</span>
+<span class="go">  &quot;hugepages-1Gi&quot;: &quot;0&quot;,</span>
+<span class="go">  &quot;hugepages-2Mi&quot;: &quot;0&quot;,</span>
+<span class="go">  &quot;memory&quot;: &quot;16105592Ki&quot;,</span>
+<span class="go">  &quot;nvidia.com/gpu&quot;: &quot;8&quot;,</span>
+<span class="go">  &quot;pods&quot;: &quot;250&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Note that a -SHARED suffix has been added to the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> label to reflect that time slicing is enabled. You can disable this in the configuration. For example, the Tesla T4 configuration would look like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">sharing</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">timeSlicing</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">renameByDefault</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu</span><span class="w"></span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that GFD labels have been added to indicate time-sharing.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4-SHARED -o json <span class="se">\</span>
+ <span class="p">|</span> jq <span class="s1">&#39;.items[0].metadata.labels&#39;</span> <span class="p">|</span> grep nvidia
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia.com/cuda.driver.major&quot;: &quot;510&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.minor&quot;: &quot;73&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.driver.rev&quot;: &quot;08&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.major&quot;: &quot;11&quot;,</span>
+<span class="go">&quot;nvidia.com/cuda.runtime.minor&quot;: &quot;7&quot;,</span>
+<span class="go">&quot;nvidia.com/device-plugin.config&quot;: &quot;Tesla-T4&quot;,</span>
+<span class="go">&quot;nvidia.com/gfd.timestamp&quot;: &quot;1655482336&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.major&quot;: &quot;7&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.compute.minor&quot;: &quot;5&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.count&quot;: &quot;1&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.container-toolkit&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.dcgm&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.dcgm-exporter&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.device-plugin&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.driver&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.gpu-feature-discovery&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.node-status-exporter&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.nvsm&quot;: &quot;&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.deploy.operator-validator&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.family&quot;: &quot;turing&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.machine&quot;: &quot;g4dn.xlarge&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.memory&quot;: &quot;16106127360&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.present&quot;: &quot;true&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.product&quot;: &quot;Tesla-T4-SHARED&quot;,</span>
+<span class="go">&quot;nvidia.com/gpu.replicas&quot;: &quot;8&quot;,</span>
+<span class="go">&quot;nvidia.com/mig.strategy&quot;: &quot;single&quot;,</span>
+</pre></div>
+</div>
+<p>If you remove the label, the node configuration is reset to its default.</p>
+</li>
+</ol>
+</section>
+</section>
+<section id="applying-the-configuration-to-a-machineset">
+<h2>Applying the configuration to a MachineSet<a class="headerlink" href="#applying-the-configuration-to-a-machineset" title="Permalink to this headline">#</a></h2>
+<p>With OpenShift, you can leverage the <a class="reference external" href="https://docs.openshift.com/container-platform/4.10/machine_management/index.html">Machine Management</a> feature to dynamically provision nodes on
+platforms that support it.</p>
+<p>For example, an administrator can create a MachineSet for nodes with Tesla T4 GPUs configured with time-slicing enabled.
+This provides a pool of replicas for workloads that don’t require a full T4 GPU.</p>
+<p>Consider a MachineSet named <code class="docutils literal notranslate"><span class="pre">worker-gpu-nvidia-t4-us-east-1</span></code>, with
+<a class="reference external" href="https://docs.openshift.com/container-platform/4.10/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling">Machine Autoscaler</a> configured.
+You want to ensure the new nodes will have time slicing enabled automatically, that is, you want to apply the
+label to every new node. This can be done by setting the label in the MachineSet template.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch machineset worker-gpu-nvidia-t4-us-east-1a <span class="se">\</span>
+    -n openshift-machine-api --type merge <span class="se">\</span>
+    --patch <span class="s1">&#39;{&quot;spec&quot;: {&quot;template&quot;: {&quot;spec&quot;: {&quot;metadata&quot;: {&quot;labels&quot;: {&quot;nvidia.com/device-plugin.config&quot;: &quot;Tesla-T4&quot;}}}}}}&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Now, any new machine created by the Machine Autoscaler for this MachineSet will have the label, and time-slicing enabled.</p>
+</section>
+<section id="sample-configmap-values">
+<h2>Sample ConfigMap values<a class="headerlink" href="#sample-configmap-values" title="Permalink to this headline">#</a></h2>
+<p>The following table shows sample values for a ConfigMap that contains
+multiple <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> files (small, medium, and large).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 32%" />
+<col style="width: 9%" />
+<col style="width: 10%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Small</p></th>
+<th class="head"><p>Medium</p></th>
+<th class="head"><p>Large</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">replicas</span></code></p></td>
+<td><p>The number of replicas
+that can be specified
+for each named resource.</p></td>
+<td><p>2</p></td>
+<td><p>5</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">renameByDefault</span></code></p></td>
+<td><p>When <code class="docutils literal notranslate"><span class="pre">false</span></code>, the
+<code class="docutils literal notranslate"><span class="pre">SHARED</span></code> suffix is
+added to the product
+label.</p></td>
+<td><p>false</p></td>
+<td><p>false</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">failRequestsGreaterThanOne</span></code></p></td>
+<td><p>This flag is <code class="docutils literal notranslate"><span class="pre">false</span></code>
+for backward
+compatibility.</p></td>
+<td><p>false</p></td>
+<td><p>false</p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike with standard GPU requests, requesting more than one shared GPU does not guarantee that you will have access to a proportional amount of compute power. It only specifies that you will have access to a GPU that is shared by other clients, each of which has the freedom to run as many processes on the underlying GPU as they want. Internally, the GPU will simply give an equal share of time to all GPU processes across all of the clients. The <code class="docutils literal notranslate"><span class="pre">failRequestsGreaterThanOne</span></code> flag is meant to help users understand this subtlety, by treating a request of 1 as an access request rather than an exclusive resource request. Setting <code class="docutils literal notranslate"><span class="pre">failRequestsGreaterThanOne=true</span></code> is recommended, but it is set to false by default to retain backwards compatibility.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="enable-gpu-monitoring-dashboard.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Enabling the GPU Monitoring Dashboard</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="openshift-virtualization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NVIDIA GPU Operator with OpenShift Virtualization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpus-with-time-slicing">Configuring GPUs with time slicing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-gpu-feature-discovery">Enabling GPU Feature Discovery</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-slicing-configurations">Creating the slicing configurations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-configuration-to-a-machineset">Applying the configuration to a MachineSet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-configmap-values">Sample ConfigMap values</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
