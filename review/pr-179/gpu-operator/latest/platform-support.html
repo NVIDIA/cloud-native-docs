@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
 
 
 
@@ -333,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +502,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.2</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DCGM Exporter</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.2.3-4.1.1</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.2.3-4.1.3</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Node Feature Discovery</p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.3</a></p></td>
@@ -566,8 +567,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="1a1ed2ea-6ac9-4c72-ae34-3b38fb748620" name="a7edcbe1-aedb-4e60-829e-1a652d528030" type="radio">
-</input><label class="sd-tab-label" for="1a1ed2ea-6ac9-4c72-ae34-3b38fb748620">
+<input id="b54c8176-0dd1-4c66-b89d-b2a5caf3be64" name="91f4ce53-46f4-456b-a1c2-1e91a949d375" type="radio">
+</input><label class="sd-tab-label" for="b54c8176-0dd1-4c66-b89d-b2a5caf3be64">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -592,8 +593,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="3384f3b6-4ebd-4dfc-9851-46189f8e78ce" name="a7edcbe1-aedb-4e60-829e-1a652d528030" type="radio">
-</input><label class="sd-tab-label" for="3384f3b6-4ebd-4dfc-9851-46189f8e78ce">
+<input checked="checked" id="5426f65a-f621-45d8-ba55-216f1a93a714" name="91f4ce53-46f4-456b-a1c2-1e91a949d375" type="radio">
+</input><label class="sd-tab-label" for="5426f65a-f621-45d8-ba55-216f1a93a714">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -699,8 +700,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="d20d7494-b66e-47e3-9dcd-377b0ea3615a" name="a7edcbe1-aedb-4e60-829e-1a652d528030" type="radio">
-</input><label class="sd-tab-label" for="d20d7494-b66e-47e3-9dcd-377b0ea3615a">
+<input id="ee5eafa9-342e-438f-9ab2-786b26f5814e" name="91f4ce53-46f4-456b-a1c2-1e91a949d375" type="radio">
+</input><label class="sd-tab-label" for="ee5eafa9-342e-438f-9ab2-786b26f5814e">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -732,8 +733,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="3ca9b23e-5390-40e5-9213-75ff44f8317c" name="a7edcbe1-aedb-4e60-829e-1a652d528030" type="radio">
-</input><label class="sd-tab-label" for="3ca9b23e-5390-40e5-9213-75ff44f8317c">
+<input id="4918b82d-f38c-4279-9cc7-2aa8880db26f" name="91f4ce53-46f4-456b-a1c2-1e91a949d375" type="radio">
+</input><label class="sd-tab-label" for="4918b82d-f38c-4279-9cc7-2aa8880db26f">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -783,8 +784,8 @@ RTX / T-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="e7fc1931-8d8b-4c6b-9c55-062cbf6b931a" name="a7edcbe1-aedb-4e60-829e-1a652d528030" type="radio">
-</input><label class="sd-tab-label" for="e7fc1931-8d8b-4c6b-9c55-062cbf6b931a">
+<input id="ace2e47e-cfdf-4fdd-85ef-cebc8dce42d3" name="91f4ce53-46f4-456b-a1c2-1e91a949d375" type="radio">
+</input><label class="sd-tab-label" for="ace2e47e-cfdf-4fdd-85ef-cebc8dce42d3">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -893,8 +894,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="99b5ba12-49c2-4590-acfc-341ac55263aa" name="a29a4a99-8db4-42a3-8260-6d505efe976c" type="radio">
-</input><label class="sd-tab-label" for="99b5ba12-49c2-4590-acfc-341ac55263aa">
+<input checked="checked" id="13096805-f7ef-466c-bfc7-f54074386e44" name="18364191-760a-46f3-8c5d-15339837595f" type="radio">
+</input><label class="sd-tab-label" for="13096805-f7ef-466c-bfc7-f54074386e44">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -949,25 +950,25 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td><p>7.0 U3c, 8.0 U2, 8.0 U3</p></td>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
 <td><p>2.12, 2.13</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td><p>8.0 U2, 8.0 U3</p></td>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td><p>1.26</p></td>
 <td><p>2.12, 2.13</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -993,10 +994,10 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 <div class="line">Linux 9.2, 9.4, 9.5, 9.6 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
 </div>
 </th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1008,10 +1009,10 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 <div class="line">8.10</div>
 </div>
 </th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1038,8 +1039,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="cfe286eb-b9ce-4b7a-a4dc-c4ea84672700" name="a29a4a99-8db4-42a3-8260-6d505efe976c" type="radio">
-</input><label class="sd-tab-label" for="cfe286eb-b9ce-4b7a-a4dc-c4ea84672700">
+<input id="f2b7756d-d55d-40e8-8895-dd922a5dda95" name="18364191-760a-46f3-8c5d-15339837595f" type="radio">
+</input><label class="sd-tab-label" for="f2b7756d-d55d-40e8-8895-dd922a5dda95">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1086,8 +1087,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="b16edd28-603a-4625-8fed-70dd48205c5f" name="a29a4a99-8db4-42a3-8260-6d505efe976c" type="radio">
-</input><label class="sd-tab-label" for="b16edd28-603a-4625-8fed-70dd48205c5f">
+<input id="3829f045-acc3-4cb2-8b4f-b61886d61b89" name="18364191-760a-46f3-8c5d-15339837595f" type="radio">
+</input><label class="sd-tab-label" for="3829f045-acc3-4cb2-8b4f-b61886d61b89">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1129,21 +1130,21 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS</p></th>
-<td><p>1.29–1.32</p></td>
+<td><p>1.29–1.33</p></td>
 <td></td>
 <td><p>7.0 U3c, 8.0 U2, 8.0 U3</p></td>
 <td><p>1.23—1.25</p></td>
 <td><p>2.12, 2.13</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
-<td><p>1.29–1.32</p></td>
+<td><p>1.29–1.33</p></td>
 <td></td>
 <td><p>8.0 U2, 8.0 U3</p></td>
 <td></td>
 <td><p>2.12, 2.13</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
-<td><p>1.29–1.32</p></td>
+<td><p>1.29–1.33</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1163,10 +1164,10 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="line">8.6—8.10</div>
 </div>
 </th>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
-<td><p>1.29—1.32</p></td>
+<td><p>1.29—1.33</p></td>
 <td></td>
 </tr>
 </tbody>
