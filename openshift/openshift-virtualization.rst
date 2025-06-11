@@ -269,9 +269,9 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
 .. _install-the-gpu-operator:
 
-************************************************
-Installing the NVIDIA GPU Operator using the CLI
-************************************************
+**********************************
+Installing the NVIDIA GPU Operator
+**********************************
 
 Install the NVIDIA GPU Operator using the guidance at :ref:`Installing the NVIDIA GPU Operator <install-nvidiagpu>`.
 
