@@ -210,7 +210,12 @@ Below is a full list of affected environments:
     ]
     ```
 
-    Podman environments use crun by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.
+    Podman environments use `crun` by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.
+
+```{warning}
+If you are using the container runtime in [legacy mode](https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime#legacy-mode), the container updates (or `cgroup` changes) that are triggered when running `systemctl daemon-reload` will always cause the container to lose access to the injected devices when the `systemd cgroup driver` is used and the device nodes are not requested on the docker command line.  
+This will happen even if you implement the required symlinks described in the [workaround section](#workarounds). 
+```
 
 ### How to check if you are affected
 

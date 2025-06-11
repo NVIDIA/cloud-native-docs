@@ -18,7 +18,6 @@ For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
-
 (installing-with-apt)=
 
 ### With `apt`: Ubuntu, Debian
@@ -134,6 +133,13 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
    ```console
    $ sudo systemctl restart docker
    ```
+
+```{note}
+There is a [known issue](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) using the container runtime with Docker and when `systemd` is used to manage the cgroups of the container and it is triggered to reload any Unit files that have references to NVIDIA GPUs. 
+This issue may cause containers to lose access to GPUs.
+Its recommended that you use the `nvidia-ctk` untility when installing.
+If you need to use a different Docker configuration, refer to the [troubleshooting guide](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) for details on suggested workaround for this issue. 
+```
 
 #### Rootless mode
 
