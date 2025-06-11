@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
 
 
 
@@ -333,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -436,8 +437,8 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <li><p>Upgrades are only supported within a major release or to the next major release.</p></li>
 </ul>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id6">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id7">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id7" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -482,7 +483,8 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GPU Driver</p></td>
 <td><div class="line-block">
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html">570.133.20</a> (recommended),</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html">570.148.08</a> (recommended)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html">570.133.20</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-124-06/index.html">570.124.06</a> (default)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html">570.86.15</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html">550.163.01</a></div>
@@ -565,8 +567,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="e08c0b27-3344-4335-a28f-003bf09eabe0" name="4cf48042-d3a5-4e33-b5e3-a005095238a6" type="radio">
-</input><label class="sd-tab-label" for="e08c0b27-3344-4335-a28f-003bf09eabe0">
+<input id="7612ac1d-effa-4915-ab35-3affba877fc8" name="7925f578-d746-4891-a08e-cee4db9b7b3a" type="radio">
+</input><label class="sd-tab-label" for="7612ac1d-effa-4915-ab35-3affba877fc8">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -591,8 +593,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="e7b4d532-b52a-4505-8157-fe1a1410cf42" name="4cf48042-d3a5-4e33-b5e3-a005095238a6" type="radio">
-</input><label class="sd-tab-label" for="e7b4d532-b52a-4505-8157-fe1a1410cf42">
+<input checked="checked" id="9ca96dd3-89ac-4f39-86b6-d4e7ddcb48d3" name="7925f578-d746-4891-a08e-cee4db9b7b3a" type="radio">
+</input><label class="sd-tab-label" for="9ca96dd3-89ac-4f39-86b6-d4e7ddcb48d3">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -694,8 +696,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="c647e0f2-7c8a-494c-90a2-0ed490902c09" name="4cf48042-d3a5-4e33-b5e3-a005095238a6" type="radio">
-</input><label class="sd-tab-label" for="c647e0f2-7c8a-494c-90a2-0ed490902c09">
+<input id="4d212177-8b75-4a33-ba7e-2025735369fd" name="7925f578-d746-4891-a08e-cee4db9b7b3a" type="radio">
+</input><label class="sd-tab-label" for="4d212177-8b75-4a33-ba7e-2025735369fd">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -727,8 +729,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="ea03f09a-68e0-400d-924a-112bcbbd1c84" name="4cf48042-d3a5-4e33-b5e3-a005095238a6" type="radio">
-</input><label class="sd-tab-label" for="ea03f09a-68e0-400d-924a-112bcbbd1c84">
+<input id="4a52f6d7-e46e-4567-8ddb-04f05e2448a4" name="7925f578-d746-4891-a08e-cee4db9b7b3a" type="radio">
+</input><label class="sd-tab-label" for="4a52f6d7-e46e-4567-8ddb-04f05e2448a4">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -778,8 +780,8 @@ RTX / T-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="bd7fae10-3955-43a7-a3a0-26826917f514" name="4cf48042-d3a5-4e33-b5e3-a005095238a6" type="radio">
-</input><label class="sd-tab-label" for="bd7fae10-3955-43a7-a3a0-26826917f514">
+<input id="242bfa1a-4970-40ef-b3b6-b5e7181c0a03" name="7925f578-d746-4891-a08e-cee4db9b7b3a" type="radio">
+</input><label class="sd-tab-label" for="242bfa1a-4970-40ef-b3b6-b5e7181c0a03">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -885,8 +887,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="06a6f85b-3559-44a7-bfdc-ef53b6ace0cc" name="5e30130d-55fd-433c-8331-c0d2763def51" type="radio">
-</input><label class="sd-tab-label" for="06a6f85b-3559-44a7-bfdc-ef53b6ace0cc">
+<input checked="checked" id="1b797851-330b-4167-b242-613618b068cc" name="a8ce8edf-de24-4821-960e-1736294ba278" type="radio">
+</input><label class="sd-tab-label" for="1b797851-330b-4167-b242-613618b068cc">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1027,8 +1029,8 @@ by the <code class="docutils literal notranslate"><span class="pre">unattended-u
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="0a5fa3fd-2b17-4218-a7a2-89a26825cf60" name="5e30130d-55fd-433c-8331-c0d2763def51" type="radio">
-</input><label class="sd-tab-label" for="0a5fa3fd-2b17-4218-a7a2-89a26825cf60">
+<input id="13079ced-1fda-49b3-bcc9-a3d24a18efbe" name="a8ce8edf-de24-4821-960e-1736294ba278" type="radio">
+</input><label class="sd-tab-label" for="13079ced-1fda-49b3-bcc9-a3d24a18efbe">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1075,8 +1077,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="9ebe0017-bf54-4fb8-8977-aacccde2e3b3" name="5e30130d-55fd-433c-8331-c0d2763def51" type="radio">
-</input><label class="sd-tab-label" for="9ebe0017-bf54-4fb8-8977-aacccde2e3b3">
+<input id="b9f42b9d-1e58-4865-bbf5-2212cb86f13e" name="a8ce8edf-de24-4821-960e-1736294ba278" type="radio">
+</input><label class="sd-tab-label" for="b9f42b9d-1e58-4865-bbf5-2212cb86f13e">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
