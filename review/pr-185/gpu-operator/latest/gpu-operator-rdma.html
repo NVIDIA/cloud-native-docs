@@ -55,7 +55,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'gpu-operator-rdma';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
-        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
 
 
 
@@ -333,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
@@ -647,8 +648,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="a71856db-f172-48ea-96fb-79e4dbe6689f" name="7a1b06f5-9758-4715-9712-bbf4c5251952" type="radio">
-</input><label class="sd-tab-label" for="a71856db-f172-48ea-96fb-79e4dbe6689f">
+<input checked="checked" id="d5c33c96-a0bb-403c-8c51-61fdba69f4dc" name="2d003810-6985-4e7f-b362-8b1b3eb6e80b" type="radio">
+</input><label class="sd-tab-label" for="d5c33c96-a0bb-403c-8c51-61fdba69f4dc">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -693,8 +694,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="334e304f-2ab5-4af4-8bb9-681d10bd5f5e" name="7a1b06f5-9758-4715-9712-bbf4c5251952" type="radio">
-</input><label class="sd-tab-label" for="334e304f-2ab5-4af4-8bb9-681d10bd5f5e">
+<input id="7728ee50-eb24-478d-a92f-feecc5eaa2a7" name="2d003810-6985-4e7f-b362-8b1b3eb6e80b" type="radio">
+</input><label class="sd-tab-label" for="7728ee50-eb24-478d-a92f-feecc5eaa2a7">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
