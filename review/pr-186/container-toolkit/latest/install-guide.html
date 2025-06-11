@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.7';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.8';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 04, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
 
 
 
@@ -431,7 +431,12 @@ TODO:
 -->
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install -y nvidia-container-toolkit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
+   sudo apt-get install -y <span class="se">\</span>
+      nvidia-container-toolkit<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      nvidia-container-toolkit-base<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container-tools<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container1<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -455,7 +460,12 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y nvidia-container-toolkit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
+   sudo dnf install -y <span class="se">\</span>
+      nvidia-container-toolkit-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      nvidia-container-toolkit-base-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container-tools-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container1-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -474,7 +484,12 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper --gpg-auto-import-keys install -y nvidia-container-toolkit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
+   sudo zypper --gpg-auto-import-keys install -y <span class="se">\</span>
+      nvidia-container-toolkit-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      nvidia-container-toolkit-base-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container-tools-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
+      libnvidia-container1-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -506,6 +521,13 @@ The file is updated so that Docker can use the NVIDIA Container Runtime.</p>
 </div>
 </li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">known issue</span></a> using the container runtime with Docker and when <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is used to manage the cgroups of the container and it is triggered to reload any Unit files that have references to NVIDIA GPUs.
+This issue may cause containers to lose access to GPUs.
+Its recommended that you use the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> untility when installing.
+If you need to use a different Docker configuration, refer to the <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">troubleshooting guide</span></a> for details on suggested workaround for this issue.</p>
+</div>
 <section id="rootless-mode">
 <h4>Rootless mode<a class="headerlink" href="#rootless-mode" title="Permalink to this headline">#</a></h4>
 <p>To configure the container runtime for Docker running in <a class="reference external" href="https://docs.docker.com/engine/security/rootless/">Rootless mode</a>,

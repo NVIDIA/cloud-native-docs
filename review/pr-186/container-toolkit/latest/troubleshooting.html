@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.7';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.8';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 04, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
 
 
 
@@ -567,11 +567,16 @@ For example, parameter <code class="docutils literal notranslate"><span class="p
 <span class="go">]</span>
 </pre></div>
 </div>
-<p>Podman environments use crun by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.</p>
+<p>Podman environments use <code class="docutils literal notranslate"><span class="pre">crun</span></code> by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.</p>
 </li>
 </ul>
 </li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you are using the container runtime in <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime#legacy-mode">legacy mode</a>, the container updates (or <code class="docutils literal notranslate"><span class="pre">cgroup</span></code> changes) that are triggered when running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> will always cause the container to lose access to the injected devices when the <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">cgroup</span> <span class="pre">driver</span></code> is used and the device nodes are not requested on the docker command line.<br />
+This will happen even if you implement the required symlinks described in the <a class="reference internal" href="#workarounds"><span class="std std-doc">workaround section</span></a>.</p>
+</div>
 </section>
 <section id="how-to-check-if-you-are-affected">
 <h3>How to check if you are affected<a class="headerlink" href="#how-to-check-if-you-are-affected" title="Permalink to this headline">#</a></h3>
