@@ -90,9 +90,6 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA GPU Driver
      - | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ (default, recommended)
-       | `570.133.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html>`_
-       | `570.124.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-124-06/index.html>`_
-       | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_
        | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
        | `535.247.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html>`_
 
@@ -113,7 +110,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.17.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.17.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.12.1 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__
