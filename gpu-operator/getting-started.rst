@@ -160,6 +160,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
    * - ``daemonsets.labels``
      - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
+  
+   * - ``dcgmExporter.service.internalTrafficPolicy``
+     - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#internal-traffic-policy>`_ for the DCGM Exporter service.
+       Available values are ``Cluster`` (default) or ``Local``.
+     - ``Cluster``
 
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
