@@ -24,6 +24,8 @@ About the NVIDIA GPU Operator
 .. image:: graphics/nvidia-gpu-operator-image.jpg
    :width: 600
 
+This is an update.
+
 Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices
 through the `device plugin framework <https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/>`_.
 However, configuring and managing nodes with these hardware resources requires
