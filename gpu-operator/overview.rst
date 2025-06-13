@@ -154,3 +154,7 @@ By installing and using the GPU Operator, you accept the terms and conditions of
    * - NVIDIA Kata Manager for Kubernetes
      - Image
      - |pstai|_
+
+   * - NVIDIA GDRCopy Driver
+     - Image
+     - |pstai|_
