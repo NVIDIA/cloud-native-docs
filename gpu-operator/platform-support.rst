@@ -153,6 +153,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
+    |NVIDIA RTX PRO 6000      | NVIDIA Blackwell       |
+    |Blackwell Server Edition |                        |
+    +-------------------------+------------------------+
     | NVIDIA Quadro RTX 8000  | Turing                 |
     +-------------------------+------------------------+
     | NVIDIA Quadro RTX 6000  | Turing                 |
@@ -167,6 +170,13 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
+
+     .. note::
+
+      NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
+        * Driver versions 575.57.08 or later is required.  
+        * MIG is not supported on the 575.57.08 driver release.
+        * You must disable High Memory Mode (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
   .. tab-item:: B-series Products
 
