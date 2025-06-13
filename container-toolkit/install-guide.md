@@ -56,8 +56,8 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1 \
-      sudo apt-get install -y \
+   $ export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
+     sudo apt-get install -y \
          nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
          nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
          libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
@@ -89,8 +89,8 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1 \
-      sudo dnf install -y \
+   $ export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
+     sudo dnf install -y \
          nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
          nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
          libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
@@ -116,7 +116,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $  NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1 \
+   $  export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
       sudo zypper --gpg-auto-import-keys install -y \
          nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
          nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
