@@ -62,9 +62,9 @@ If you are impacted by this issue, its recommended that you continue to use Cont
 
 **Using `apt` (Ubuntu, Debian):**
 
-```
-NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \
-    apt-get install -y --allow-downgrades \
+```console
+NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1
+sudo apt-get install -y --allow-downgrades \
         nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
         nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
         libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
@@ -73,9 +73,9 @@ NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \
 
 **Using `dnf` (RHEL/CentOS, Fedora, Amazon Linux):**
 
-```  
-NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \
-    dnf install -y \
+```console
+NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1
+sudo dnf install -y \
         nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
         nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
         libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
