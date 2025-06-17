@@ -156,8 +156,6 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
-    | NVIDIA RTX A3000        | NVIDIA Ampere          |
-    +-------------------------+------------------------+
     | NVIDIA Quadro RTX 8000  | Turing                 |
     +-------------------------+------------------------+
     | NVIDIA Quadro RTX 6000  | Turing                 |
