@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 13, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 17, 2025"/>
 
 
 
@@ -431,12 +431,12 @@ TODO:
 -->
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
-   sudo apt-get install -y <span class="se">\</span>
-      nvidia-container-toolkit<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      nvidia-container-toolkit-base<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container-tools<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container1<span class="o">=</span><span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1
+<span class="go">  sudo apt-get install -y \</span>
+<span class="go">      nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
 </pre></div>
 </div>
 </li>
@@ -460,12 +460,12 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
-   sudo dnf install -y <span class="se">\</span>
-      nvidia-container-toolkit-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      nvidia-container-toolkit-base-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container-tools-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container1-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1
+<span class="go">  sudo dnf install -y \</span>
+<span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
 </pre></div>
 </div>
 </li>
@@ -484,12 +484,12 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1 <span class="se">\</span>
-   sudo zypper --gpg-auto-import-keys install -y <span class="se">\</span>
-      nvidia-container-toolkit-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      nvidia-container-toolkit-base-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container-tools-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span> <span class="se">\</span>
-      libnvidia-container1-<span class="si">${</span><span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.17.8-1
+<span class="go">   sudo zypper --gpg-auto-import-keys install -y \</span>
+<span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">      libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
 </pre></div>
 </div>
 </li>
