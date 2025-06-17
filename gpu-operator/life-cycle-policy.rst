@@ -89,7 +89,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - ${version}
 
    * - NVIDIA GPU Driver
-     - | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ (recommended)
+     - | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
+       | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ (recommended)
        | `570.133.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html>`_ 
        | `570.124.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-124-06/index.html>`_ (default)
        | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_ 
