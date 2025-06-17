@@ -145,6 +145,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | Product                 | Architecture           |
     +=========================+========================+
+    | NVIDIA RTX PRO 6000      | NVIDIA Blackwell      |
+    | Blackwell Server Edition |                       |
+    +-------------------------+------------------------+
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |
     +-------------------------+------------------------+
     | NVIDIA RTX A5000        | NVIDIA Ampere          |
@@ -153,8 +156,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA RTX A4000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
-    |NVIDIA RTX PRO 6000      | NVIDIA Blackwell       |
-    |Blackwell Server Edition |                        |
+    | NVIDIA RTX A3000        | NVIDIA Ampere          |
     +-------------------------+------------------------+
     | NVIDIA Quadro RTX 8000  | Turing                 |
     +-------------------------+------------------------+
