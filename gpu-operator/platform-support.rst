@@ -167,6 +167,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
+     
      .. note::
 
       NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
