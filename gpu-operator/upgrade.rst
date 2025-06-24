@@ -70,10 +70,10 @@ With this procedure, all existing GPU operator resources are updated inline and 
    .. code-block:: console
 
       $ kubectl apply -f \
-          https://github.com/NVIDIA/gpu-operator/blob/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
       $ kubectl apply -f \
-          https://github.com/NVIDIA/gpu-operator/blob/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
 
    *Example Output*
 
@@ -87,7 +87,7 @@ With this procedure, all existing GPU operator resources are updated inline and 
    .. code-block:: console
 
       $ kubectl apply -f \
-          https://github.com/NVIDIA/gpu-operator/blob/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 
 
    *Example Output*
