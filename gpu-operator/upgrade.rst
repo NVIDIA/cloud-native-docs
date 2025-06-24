@@ -63,7 +63,7 @@ With this procedure, all existing GPU operator resources are updated inline and 
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v${version}
+      $ export RELEASE_TAG=${version}
 
 #. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
 
@@ -147,7 +147,7 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v${version}
+      $ export RELEASE_TAG=${version}
 
 #. Update the information about the Operator chart:
 
