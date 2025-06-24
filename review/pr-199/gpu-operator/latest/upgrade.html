@@ -464,10 +464,10 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 </li>
 <li><p>Apply the custom resource definitions for the cluster policy and NVIDIA driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://github.com/NVIDIA/gpu-operator/blob/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
 <span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://github.com/NVIDIA/gpu-operator/blob/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -478,7 +478,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 </li>
 <li><p>Apply the custom resource definition for Node Feature Discovery:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://github.com/NVIDIA/gpu-operator/blob/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
