@@ -70,7 +70,6 @@ With this procedure, all existing GPU operator resources are updated inline and 
    .. code-block:: console
 
       $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
           https://github.com/NVIDIA/gpu-operator/blob/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
       $ kubectl apply -f \
