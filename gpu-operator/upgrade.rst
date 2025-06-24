@@ -63,17 +63,17 @@ With this procedure, all existing GPU operator resources are updated inline and 
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v23.9.0
+      $ export RELEASE_TAG=v${version}
 
 #. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
 
    .. code-block:: console
 
       $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
       $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
 
    *Example Output*
 
@@ -87,7 +87,7 @@ With this procedure, all existing GPU operator resources are updated inline and 
    .. code-block:: console
 
       $ kubectl apply -f \
-          https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 
    *Example Output*
 
@@ -121,7 +121,7 @@ With this procedure, all existing GPU operator resources are updated inline and 
 
    .. code-block:: console
 
-      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml
+      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-$RELEASE_TAG.yaml --version $RELEASE_TAG
 
    *Example Output*
 
@@ -147,7 +147,7 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
 
    .. code-block:: console
 
-      $ export RELEASE_TAG=v23.9.0
+      $ export RELEASE_TAG=v${version}
 
 #. Update the information about the Operator chart:
 
@@ -176,7 +176,7 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
    .. code-block:: console
 
       $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
-          --disable-openapi-validation -f values-$RELEASE_TAG.yaml
+          --disable-openapi-validation -f values-$RELEASE_TAG.yaml --version $RELEASE_TAG
 
    .. note::
 
