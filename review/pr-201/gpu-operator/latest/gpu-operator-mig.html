@@ -493,6 +493,13 @@ Refer to <a class="reference internal" href="#mig-with-preinstalled-drivers"><sp
 In some cases, the node may need to be rebooted, such as a CSP, so the node might need to be cordoned
 before changing the MIG mode or the MIG geometry on the GPUs.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Known Issue: For drivers 570.124.06, 570.133.20 and 570.148.08 and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and Full GPUs.
+This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+The solution is to downgrade the driver to version 570.86.15 to work around this issue.</p>
+</div>
 </li>
 </ol>
 </section>
