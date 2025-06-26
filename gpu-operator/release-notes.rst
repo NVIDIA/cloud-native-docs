@@ -69,6 +69,16 @@ New Features
   You can configure this in the Helm chart value by setting `dcgmexporter.service.internalTrafficPolicy` to `Local` or `Cluster` (default). 
   Choose Local if you want to route internal traffic within the node only.
 
+.. _v25.3.1-known-issues:
+
+Known Issues
+------------
+
+* For drivers 570.124.06, 570.133.20 and 570.148.08 and 570.158.01, 
+  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and Full GPUs. 
+  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+  The solution is to downgrade the driver to version 570.86.15 to work around this issue.
+
 .. _v25.3.1-fixed-issues:
 
 Fixed Issues
