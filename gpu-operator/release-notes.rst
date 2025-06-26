@@ -77,7 +77,7 @@ Known Issues
 * For drivers 570.124.06, 570.133.20, and 570.148.08, 
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
-  The solution is to downgrade the driver to version 570.86.15 to work around this issue.
+  It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
   For more detailed information, see GitHub issue `NVIDIA/gpu-operator#1361 <https://github.com/NVIDIA/gpu-operator/issues/1361>`_.
 
 

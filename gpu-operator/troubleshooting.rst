@@ -45,7 +45,7 @@ This is due to a regression in NVML introduced in the R570 drivers starting from
 .. rubric:: Action
    :class: h4
 
-Downgrade to driver version 570.86.15 to work around this issue.
+It's recommended that you downgrade to driver version 570.86.15 to work around this issue.
 
 ****************************************************
 GPU Operator Validator: Failed to Create Pod Sandbox
