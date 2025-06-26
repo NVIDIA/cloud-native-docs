@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 26, 2025"/>
 
 
 
@@ -481,8 +481,8 @@ This flag was added to the <code class="docutils literal notranslate"><span clas
 <section id="pin-dependencies-to-container-toolkit-1-17-6">
 <h4>Pin dependencies to Container Toolkit 1.17.6<a class="headerlink" href="#pin-dependencies-to-container-toolkit-1-17-6" title="Permalink to this headline">#</a></h4>
 <p><strong>Using <code class="docutils literal notranslate"><span class="pre">apt</span></code> (Ubuntu, Debian):</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \</span>
-<span class="go">    apt-get install -y --allow-downgrades \</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1</span>
+<span class="go">sudo apt-get install -y --allow-downgrades \</span>
 <span class="go">        nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">        nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">        libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
@@ -490,8 +490,8 @@ This flag was added to the <code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 <p><strong>Using <code class="docutils literal notranslate"><span class="pre">dnf</span></code> (RHEL/CentOS, Fedora, Amazon Linux):</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1 \</span>
-<span class="go">    dnf install -y \</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1</span>
+<span class="go">sudo dnf install -y \</span>
 <span class="go">        nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">        nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">        libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>

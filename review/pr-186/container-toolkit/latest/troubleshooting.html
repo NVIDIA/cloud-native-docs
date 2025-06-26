@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 26, 2025"/>
 
 
 
@@ -491,265 +491,45 @@ Review the SELinux policies on your system.</p>
 </section>
 <section id="containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">
 <h2>Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”<a class="headerlink" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error" title="Permalink to this headline">#</a></h2>
-<p>Under specific conditions, it’s possible that containerized GPU workloads may suddenly lose access to their GPUs.
-This situation occurs when <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is used to manage the cgroups of the container and it is triggered to reload any Unit files that have references to NVIDIA GPUs (e.g. with something as simple as a systemctl daemon-reload).</p>
+<p>When using the NVIDIA Container Runtime Hook (i.e. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
+the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
+The result is that updates to the container may remove access to the requested GPUs.</p>
 <p>When the container loses access to the GPU, you will see the following error message from the console output:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Failed to initialize NVML: Unknown Error</span>
 </pre></div>
 </div>
+<p>The message may differ depending on the type of application that is running in
+the container.</p>
 <p>The container needs to be deleted once the issue occurs.
-When it is restarted (manually or automatically depending if you are using a container orchestration platform), it will regain access to the GPU.</p>
-<p>The issue originates from the fact that recent versions of <code class="docutils literal notranslate"><span class="pre">runc</span></code> require that symlinks be present under <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> to any device nodes being injected into a container. Unfortunately, these symlinks are not present for NVIDIA devices, and the NVIDIA GPU driver does not provide a means for them to be created automatically.</p>
-<p>A fix will be present in the next patch release of all supported NVIDIA GPU drivers.</p>
+When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.</p>
 <section id="affected-environments">
 <h3>Affected environments<a class="headerlink" href="#affected-environments" title="Permalink to this headline">#</a></h3>
-<p>You many be affected by this issue if you are use <code class="docutils literal notranslate"><span class="pre">runc</span></code> and enable <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">cgroup</span></code> management at the high-level container runtime.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If the system is NOT using <code class="docutils literal notranslate"><span class="pre">systemd</span></code> to manage <code class="docutils literal notranslate"><span class="pre">cgroups</span></code>, then it is NOT subject to this issue.</p>
-</div>
-<p>Below is a full list of affected environments:</p>
-<ul>
-<li><p>Docker environment using <code class="docutils literal notranslate"><span class="pre">containerd</span></code> / <code class="docutils literal notranslate"><span class="pre">runc</span></code> and you have the following configurations:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cgroup</span> <span class="pre">driver</span></code> enabled with <code class="docutils literal notranslate"><span class="pre">systemd</span></code>.
-For example, parameter <code class="docutils literal notranslate"><span class="pre">&quot;exec-opts&quot;:</span> <span class="pre">[&quot;native.cgroupdriver=systemd&quot;]</span></code> set in /etc/docker/daemon.json.</p></li>
-<li><p>Newer docker version is used where <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">cgroup</span></code> management is the default, like on Ubuntu 22.04.</p></li>
-</ul>
-<p>To check if Docker uses systemd cgroup management, run the following command (the output below indicates that systemd cgroup driver is enabled) :</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker info  
-<span class="go">...  </span>
-<span class="go">Cgroup Driver: systemd  </span>
-<span class="go">Cgroup Version: 1</span>
-</pre></div>
-</div>
-</li>
-<li><p>K8s environment using <code class="docutils literal notranslate"><span class="pre">containerd</span></code> / <code class="docutils literal notranslate"><span class="pre">runc</span></code> with the following configruations:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">SystemdCgroup</span> <span class="pre">=</span> <span class="pre">true</span></code> in the containerd configuration file (usually located in <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code>) as shown below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd.runtimes.nvidia.options]</span>
-<span class="go">BinaryName = &quot;/usr/local/nvidia/toolkit/nvidia-container-runtime&quot;</span>
-<span class="go">...</span>
-<span class="go">SystemdCgroup = true</span>
-</pre></div>
-</div>
-<p>To check if containerd uses systemd cgroup management, issue the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo crictl info  
-</pre></div>
-</div>
-<p><em>Example output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">...  </span>
-<span class="go">&quot;runtimes&quot;: {</span>
-<span class="go">    &quot;nvidia&quot;: {</span>
-<span class="go">        &quot;runtimeType&quot;: &quot;io.containerd.runc.v2&quot;,</span>
-<span class="go">        ...</span>
-<span class="go">        &quot;options&quot;: {</span>
-<span class="go">        &quot;BinaryName&quot;: &quot;/usr/local/nvidia/toolkit/nvidia-container-runtime&quot;,</span>
-<span class="go">        ...</span>
-<span class="go">        &quot;ShimCgroup&quot;: &quot;&quot;,</span>
-<span class="go">        &quot;SystemdCgroup&quot;: true</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</li>
-<li><p>K8s environment (including OpenShift) using <code class="docutils literal notranslate"><span class="pre">cri-o</span></code> / <code class="docutils literal notranslate"><span class="pre">runc</span></code> with the following configurations:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">cgroup_manager</span></code> enabled with systemd in the cri-o configuration file usually located in <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> or <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf.d/00-default</span></code> as shown below (sample with OpenShift):</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[crio.runtime]</span>
-<span class="go">...</span>
-<span class="go">cgroup_manager = &quot;systemd&quot;</span>
-
-<span class="go">hooks_dir = [</span>
-<span class="go">&quot;/etc/containers/oci/hooks.d&quot;,</span>
-<span class="go">&quot;/run/containers/oci/hooks.d&quot;,</span>
-<span class="go">&quot;/usr/share/containers/oci/hooks.d&quot;,</span>
-<span class="go">]</span>
-</pre></div>
-</div>
-<p>Podman environments use <code class="docutils literal notranslate"><span class="pre">crun</span></code> by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.</p>
-</li>
-</ul>
-</li>
-</ul>
+<p>On certain systems this behavior is not limited to <em>explicit</em> container updates
+such as adjusting CPU and Memory limits for a container.
+On systems where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is used to manage the cgroups of the container, reloading the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> unit files (<code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code>) is sufficient to trigger container updates and cause a loss of GPU access.</p>
+</section>
+<section id="mitigations-and-workarounds">
+<h3>Mitigations and  Workarounds<a class="headerlink" href="#mitigations-and-workarounds" title="Permalink to this headline">#</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>If you are using the container runtime in <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime#legacy-mode">legacy mode</a>, the container updates (or <code class="docutils literal notranslate"><span class="pre">cgroup</span></code> changes) that are triggered when running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> will always cause the container to lose access to the injected devices when the <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">cgroup</span> <span class="pre">driver</span></code> is used and the device nodes are not requested on the docker command line.<br />
-This will happen even if you implement the required symlinks described in the <a class="reference internal" href="#workarounds"><span class="std std-doc">workaround section</span></a>.</p>
+<p>Certain <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions show similar behaviour with the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup driver when <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for the required devices are missing on the system.
+Refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133">GitHub disccusion #1133</a> for more details around this issue.
+It should be noted that the behaviour persisted even if device nodes were requested on the command line.
+Newer <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions do not show this behaviour and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions.</p>
 </div>
-</section>
-<section id="how-to-check-if-you-are-affected">
-<h3>How to check if you are affected<a class="headerlink" href="#how-to-check-if-you-are-affected" title="Permalink to this headline">#</a></h3>
-<p>You can use the following steps to confirm that your system is affected. After you implement one of the workarounds (mentioned in the next section), you can repeat the steps to confirm that the error is no longer reproducible.</p>
-<section id="for-docker-environments">
-<h4>For Docker environments<a class="headerlink" href="#for-docker-environments" title="Permalink to this headline">#</a></h4>
-<ol class="arabic">
-<li><p>Run a test container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run -d --rm --runtime<span class="o">=</span>nvidia --gpus all <span class="se">\</span>
-    --device<span class="o">=</span>/dev/nvidia-uvm <span class="se">\</span>
-    --device<span class="o">=</span>/dev/nvidia-uvm-tools <span class="se">\</span>
-    --device<span class="o">=</span>/dev/nvidia-modeset <span class="se">\</span>
-    --device<span class="o">=</span>/dev/nvidiactl <span class="se">\</span>
-    --device<span class="o">=</span>/dev/nvidia0 <span class="se">\</span>
-    nvcr.io/nvidia/cuda:12.0.0-base-ubuntu20.04 bash -c <span class="s2">&quot;while [ true ]; do nvidia-smi -L; sleep 5; done&quot;</span>  
-
-<span class="go">    bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b</span>
-</pre></div>
-</div>
-<p>Make sure to mount the different devices as shown above. They are needed to narrow the problem down to this specific issue.</p>
-<p>If your system has more than 1 GPU, append the above command with the additional –device mount. Example with a system that has 2 GPUs:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run -d --rm --runtime<span class="o">=</span>nvidia --gpus all <span class="se">\</span>
-    ...
-<span class="go">    --device=/dev/nvidia0 \</span>
-<span class="go">    --device=/dev/nvidia1 \</span>
-<span class="go">    ...</span>
-</pre></div>
-</div>
-</li>
-<li><p>Check the logs from the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker logs  bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b
-</pre></div>
-</div>
-<p><em>Example output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-<span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Initiate a daemon-reload:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl daemon-reload
-</pre></div>
-</div>
-</li>
-<li><p>Check the logs from the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker logs bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b
-</pre></div>
-</div>
-<p><em>Example output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-<span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-<span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-<span class="go">GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)</span>
-<span class="go">Failed to initialize NVML: Unknown Error</span>
-<span class="go">Failed to initialize NVML: Unknown Error</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="for-kubernetes-environments">
-<h4>For Kubernetes environments<a class="headerlink" href="#for-kubernetes-environments" title="Permalink to this headline">#</a></h4>
-<ol class="arabic">
-<li><p>Run a test pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat nvidia-smi-loop.yaml
-
-<span class="go">apiVersion: v1</span>
-<span class="go">kind: Pod</span>
-<span class="go">metadata:</span>
-<span class="go">name: cuda-nvidia-smi-loop</span>
-<span class="go">spec:</span>
-<span class="go">restartPolicy: OnFailure</span>
-<span class="go">containers:</span>
-<span class="go">- name: cuda</span>
-<span class="go">    image: &quot;nvcr.io/nvidia/cuda:12.0.0-base-ubuntu20.04&quot;</span>
-<span class="go">    command: [&quot;/bin/sh&quot;, &quot;-c&quot;]</span>
-<span class="go">    args: [&quot;while true; do nvidia-smi -L; sleep 5; done&quot;]</span>
-<span class="go">    resources:</span>
-<span class="go">    limits:</span>
-<span class="go">        nvidia.com/gpu: 1</span>
-
-
-<span class="gp">$ </span>kubectl apply -f nvidia-smi-loop.yaml  
-</pre></div>
-</div>
-</li>
-<li><p>Check the logs from the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs cuda-nvidia-smi-loop
-</pre></div>
-</div>
-<p><em>Example output:</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)</span>
-<span class="go">GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Initiate a <code class="docutils literal notranslate"><span class="pre">daemon-reload</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl daemon-reload
-</pre></div>
-</div>
-</li>
-<li><p>Check the logs from the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs cuda-nvidia-smi-loop
-</pre></div>
-</div>
-<p>*Example output:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)</span>
-<span class="go">GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)</span>
-<span class="go">Failed to initialize NVML: Unknown Error</span>
-<span class="go">Failed to initialize NVML: Unknown Error</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="workarounds">
-<h3>Workarounds<a class="headerlink" href="#workarounds" title="Permalink to this headline">#</a></h3>
-<p>The following workarounds are available for both standalone docker environments and Kubernetes environments.</p>
-</section>
-<section id="id1">
-<h3>For Docker environments<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<p>The recommended workaround for Docker environments is to <strong>use the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> utility.</strong>
-The NVIDIA Container Toolkit v1.12.0 and later includes this utility for creating symlinks in <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> for all possible NVIDIA device nodes required for using GPUs in containers.
-This can be run as follows:</p>
-<ol class="arabic">
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk system create-dev-char-symlinks <span class="se">\</span>
-    --create-all
-</pre></div>
-</div>
-<p>In cases where the NVIDIA GPU Driver Container is used, the path to the driver installation must be specified. In this case the command should be modified to:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk system create-dev-symlinks <span class="se">\</span>
-    --create-all <span class="se">\</span>
-    --driver-root<span class="o">={{</span>NVIDIA_DRIVER_ROOT<span class="o">}}</span>
-</pre></div>
-</div>
-<p>Where {{NVIDIA_DRIVER_ROOT}} is the path to which the NVIDIA GPU Driver container installs the NVIDIA GPU driver and creates the NVIDIA Device Nodes.</p>
-</li>
-<li><p>Configure this command to run at boot on each node where GPUs will be used in containers.
-The command requires that the NVIDIA driver kernel modules have been loaded at the point where it is run.</p>
-<p>A simple <code class="docutils literal notranslate"><span class="pre">udev</span></code> rule to enforce this can be seen below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>This will create /dev/char symlinks to all device nodes
-<span class="go">ACTION==&quot;add&quot;, DEVPATH==&quot;/bus/pci/drivers/nvidia&quot;, RUN+=&quot;/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all&quot;</span>
-</pre></div>
-</div>
-<p>A good place to install this rule would be in <code class="docutils literal notranslate"><span class="pre">/lib/udev/rules.d/71-nvidia-dev-char.rules</span></code></p>
-</li>
-</ol>
-<p>Some additional workarounds for Docker environments:</p>
+<p>Use the following workarounds to prevent containers from losing access to requested GPUs when a <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> command is run:</p>
 <ul class="simple">
-<li><p><strong>Explicitly disabling systemd cgroup management in Docker.</strong></p>
-<ul>
-<li><p>Set the parameter <code class="docutils literal notranslate"><span class="pre">&quot;exec-opts&quot;:</span> <span class="pre">[&quot;native.cgroupdriver=cgroupfs&quot;]</span></code> in the <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code> file and restart docker.</p></li>
+<li><p>Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container.
+For the Docker CLI, this is done by adding the relevant <code class="docutils literal notranslate"><span class="pre">--device</span></code> flags.
+In the case of the NVIDIA Kubernetes Device Plugin the <code class="docutils literal notranslate"><span class="pre">compatWithCPUManager=</span> <span class="pre">true</span></code> <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values">Helm option</a> will ensure the same thing.</p></li>
+<li><p>Use the Container Device Interface (CDI) to inject devices into a container.
+When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config.
+This means that even if the container is updated it will still have access to the required devices.</p></li>
+<li><p>For Docker, use cgroupfs as the cgroup driver for containers.
+This will ensure that the container will not lose access to devices when <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> is run.
+This approach does not change the behaviour for explicit container updates and a container will still lose access to devices in this case.</p></li>
 </ul>
-</li>
-<li><p><strong>Downgrading to <code class="docutils literal notranslate"><span class="pre">docker.io</span></code> packages where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is not the default <code class="docutils literal notranslate"><span class="pre">cgroup</span></code> manager.</strong></p></li>
-</ul>
-<section id="for-k8s-environments">
-<h4>For K8s environments<a class="headerlink" href="#for-k8s-environments" title="Permalink to this headline">#</a></h4>
-<p>The recommended workaround is to deploy GPU Operator 22.9.2 or later to automatically fix the issue on all K8s nodes of the cluster.
-The fix is integrated inside the validator pod which will run when a new node is deployed or at every reboot of the node.</p>
-<p>Some additional workarounds for Kubernets environments:</p>
-<ul class="simple">
-<li><p>For deployments using the standalone  k8s-device-plugin    (i.e. not through the use of the operator), installation of a <code class="docutils literal notranslate"><span class="pre">udev</span></code> rule as described in the previous section can be made to work around this issue. Be sure to pass the correct <code class="docutils literal notranslate"><span class="pre">{{NVIDIA_DRIVER_ROOT}}</span></code> in cases where the driver container is also in use.</p></li>
-<li><p>Explicitly disabling <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">cgroup</span></code> management in <code class="docutils literal notranslate"><span class="pre">containerd</span></code> or <code class="docutils literal notranslate"><span class="pre">cri-o</span></code>:</p>
-<ul>
-<li><p>Remove the parameter <code class="docutils literal notranslate"><span class="pre">cgroup_manager</span> <span class="pre">=</span> <span class="pre">&quot;systemd&quot;</span></code> from <code class="docutils literal notranslate"><span class="pre">cri-o</span></code> configuration file (usually located here: <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> or <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf.d/00-default</span></code>) and restart <code class="docutils literal notranslate"><span class="pre">cri-o</span></code>.</p></li>
-</ul>
-</li>
-<li><p>Downgrading to a version of the <code class="docutils literal notranslate"><span class="pre">containerd.io</span></code> package where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is not the default <code class="docutils literal notranslate"><span class="pre">cgroup</span></code> manager (and not overriding that, of course).</p></li>
-</ul>
-</section>
 </section>
 </section>
 </section>
@@ -814,16 +594,7 @@ The fix is integrated inside the validator pod which will run when a new node is
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvml-insufficient-permissions-and-selinux">NVML: Insufficient Permissions and SELinux</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#affected-environments">Affected environments</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-check-if-you-are-affected">How to check if you are affected</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#for-docker-environments">For Docker environments</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#for-kubernetes-environments">For Kubernetes environments</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workarounds">Workarounds</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">For Docker environments</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#for-k8s-environments">For K8s environments</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mitigations-and-workarounds">Mitigations and  Workarounds</a></li>
 </ul>
 </li>
 </ul>

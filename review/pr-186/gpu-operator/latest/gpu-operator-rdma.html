@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 26, 2025"/>
 
 
 
@@ -526,14 +526,14 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -648,8 +648,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="9ed00827-5a15-4feb-9641-de4673c3f2d8" name="f9ed5a0a-cf1e-4d63-9567-f7848df9c0ea" type="radio">
-</input><label class="sd-tab-label" for="9ed00827-5a15-4feb-9641-de4673c3f2d8">
+<input checked="checked" id="93d551a3-551b-4001-864b-821ce0d9b247" name="4f59c998-a5d3-45de-8ea5-70411da4bac7" type="radio">
+</input><label class="sd-tab-label" for="93d551a3-551b-4001-864b-821ce0d9b247">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -694,8 +694,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="d86c1412-57af-45f1-8e74-085c75b6cba7" name="f9ed5a0a-cf1e-4d63-9567-f7848df9c0ea" type="radio">
-</input><label class="sd-tab-label" for="d86c1412-57af-45f1-8e74-085c75b6cba7">
+<input id="cca00529-a406-4bdc-bfbb-5dd506076ecd" name="4f59c998-a5d3-45de-8ea5-70411da4bac7" type="radio">
+</input><label class="sd-tab-label" for="cca00529-a406-4bdc-bfbb-5dd506076ecd">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -852,7 +852,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
