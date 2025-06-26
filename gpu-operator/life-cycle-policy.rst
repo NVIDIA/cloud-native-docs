@@ -73,6 +73,8 @@ GPU Operator Component Matrix
 
 .. _gds: #gds-open-kernel
 .. |gds| replace:: :sup:`1`
+.. _ki: #known-issue
+.. |ki| replace:: :sup:`2`
 
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
@@ -86,9 +88,9 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - Version
 
    * - NVIDIA GPU Operator
-     - ${version}
+     - ${version} 
 
-   * - NVIDIA GPU Driver
+   * - NVIDIA GPU Driver |ki|_
      - | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_ 
        | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ (default, recommended)
        | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
@@ -147,6 +149,14 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
    Refer to :doc:`gpu-operator-rdma` for more information.
 
+.. _known-issue:
+
+   :sup:`2`
+   **Known Issue:** For drivers 570.124.06, 570.133.20 and 570.148.08 and 570.158.01, 
+   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and Full GPUs. 
+   This manifests as GPU pods getting stuck indefinitely in the `Pending` state. 
+   The solution is to downgrade the driver to version 570.86.15 to work around this issue.
+   
 .. note::
 
    - Driver version could be different with NVIDIA vGPU, as it depends on the driver
