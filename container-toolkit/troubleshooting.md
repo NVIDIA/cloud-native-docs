@@ -124,8 +124,10 @@ Review the SELinux policies on your system.
 
 ## Containers losing access to GPUs with error: "Failed to initialize NVML: Unknown Error"
 
-Under specific conditions, it’s possible that containerized GPU workloads may suddenly lose access to their GPUs. 
-This situation occurs when `systemd` is used to manage the cgroups of the container and it is triggered to reload any Unit files that have references to NVIDIA GPUs (e.g. with something as simple as a systemctl daemon-reload).
+When using the NVIDIA Container Runtime Hook (i.e. the Docker `--gpus` flag or
+the NVIDIA Container Runtime in `legacy` mode) to inject requested GPUs and driver
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. `runc`) being aware of these changes. 
+The result is that updates to the container may remove access to the requested GPUs.
 
 When the container loses access to the GPU, you will see the following error message from the console output:
 
@@ -133,272 +135,35 @@ When the container loses access to the GPU, you will see the following error mes
 Failed to initialize NVML: Unknown Error
 ```
 
+The message may differ depending on the type of application that is running in
+the container.
+
 The container needs to be deleted once the issue occurs.
-When it is restarted (manually or automatically depending if you are using a container orchestration platform), it will regain access to the GPU.
-
-The issue originates from the fact that recent versions of `runc` require that symlinks be present under `/dev/char` to any device nodes being injected into a container. Unfortunately, these symlinks are not present for NVIDIA devices, and the NVIDIA GPU driver does not provide a means for them to be created automatically.
-
-A fix will be present in the next patch release of all supported NVIDIA GPU drivers.
+When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.
 
 ### Affected environments
 
-You many be affected by this issue if you are use `runc` and enable `systemd cgroup` management at the high-level container runtime.
+On certain systems this behavior is not limited to *explicit* container updates
+such as adjusting CPU and Memory limits for a container. 
+On systems where `systemd` is used to manage the cgroups of the container, reloading the `systemd` unit files (`systemctl daemon-reload`) is sufficient to trigger container updates and cause a loss of GPU access.
 
-```{note}
-If the system is NOT using `systemd` to manage `cgroups`, then it is NOT subject to this issue.
-```
-
-Below is a full list of affected environments:
-
-- Docker environment using `containerd` / `runc` and you have the following configurations:
-    - `cgroup driver` enabled with `systemd`.
-    For example, parameter `"exec-opts": ["native.cgroupdriver=systemd"]` set in /etc/docker/daemon.json.
-    - Newer docker version is used where `systemd cgroup` management is the default, like on Ubuntu 22.04.
-
-   To check if Docker uses systemd cgroup management, run the following command (the output below indicates that systemd cgroup driver is enabled) :
-
-    ```console 
-    $ docker info  
-    ...  
-    Cgroup Driver: systemd  
-    Cgroup Version: 1
-    ```
-
-- K8s environment using `containerd` / `runc` with the following configruations:
-  - `SystemdCgroup = true` in the containerd configuration file (usually located in `/etc/containerd/config.toml`) as shown below:
-
-    ```console
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
-    BinaryName = "/usr/local/nvidia/toolkit/nvidia-container-runtime"
-    ...
-    SystemdCgroup = true
-    ```
-
-    To check if containerd uses systemd cgroup management, issue the following command:
-
-    ```console
-    $ sudo crictl info  
-    ```
-
-    *Example output:*
-
-    ```output
-    ...  
-    "runtimes": {
-        "nvidia": {
-            "runtimeType": "io.containerd.runc.v2",
-            ...
-            "options": {
-            "BinaryName": "/usr/local/nvidia/toolkit/nvidia-container-runtime",
-            ...
-            "ShimCgroup": "",
-            "SystemdCgroup": true
-    ```
-
-- K8s environment (including OpenShift) using `cri-o` / `runc` with the following configurations:
-  - `cgroup_manager` enabled with systemd in the cri-o configuration file usually located in `/etc/crio/crio.conf` or `/etc/crio/crio.conf.d/00-default` as shown below (sample with OpenShift):
-
-    ```console
-    [crio.runtime]
-    ...
-    cgroup_manager = "systemd"
-
-    hooks_dir = [
-    "/etc/containers/oci/hooks.d",
-    "/run/containers/oci/hooks.d",
-    "/usr/share/containers/oci/hooks.d",
-    ]
-    ```
-
-    Podman environments use `crun` by default and are not subject to this issue unless runc is configured as the low-level container runtime to be used.
+### Mitigations and  Workarounds
 
 ```{warning}
-If you are using the container runtime in [legacy mode](https://github.com/NVIDIA/nvidia-container-toolkit/tree/main/cmd/nvidia-container-runtime#legacy-mode), the container updates (or `cgroup` changes) that are triggered when running `systemctl daemon-reload` will always cause the container to lose access to the injected devices when the `systemd cgroup driver` is used and the device nodes are not requested on the docker command line.  
-This will happen even if you implement the required symlinks described in the [workaround section](#workarounds). 
+Certain `runc` versions show similar behaviour with the `systemd` cgroup driver when `/dev/char` symlinks for the required devices are missing on the system. 
+Refer to [GitHub disccusion #1133](https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133) for more details around this issue.
+It should be noted that the behaviour persisted even if device nodes were requested on the command line. 
+Newer `runc` versions do not show this behaviour and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected `runc` versions.
 ```
 
-### How to check if you are affected
+Use the following workarounds to prevent containers from losing access to requested GPUs when a `systemctl daemon-reload` command is run:
 
-You can use the following steps to confirm that your system is affected. After you implement one of the workarounds (mentioned in the next section), you can repeat the steps to confirm that the error is no longer reproducible.
-
-#### For Docker environments
-
-1. Run a test container:
-
-    ```console
-    $ docker run -d --rm --runtime=nvidia --gpus all \
-        --device=/dev/nvidia-uvm \
-        --device=/dev/nvidia-uvm-tools \
-        --device=/dev/nvidia-modeset \
-        --device=/dev/nvidiactl \
-        --device=/dev/nvidia0 \
-        nvcr.io/nvidia/cuda:12.0.0-base-ubuntu20.04 bash -c "while [ true ]; do nvidia-smi -L; sleep 5; done"  
-
-        bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b
-    ```
-
-     Make sure to mount the different devices as shown above. They are needed to narrow the problem down to this specific issue.
-
-   If your system has more than 1 GPU, append the above command with the additional --device mount. Example with a system that has 2 GPUs:
-
-    ```console
-    $ docker run -d --rm --runtime=nvidia --gpus all \
-        ...
-        --device=/dev/nvidia0 \
-        --device=/dev/nvidia1 \
-        ...
-    ```
-
-1. Check the logs from the container:
-
-    ```console
-    $ docker logs  bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b
-    ```
-
-    *Example output:*
-
-    ```output
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    ```
-
-1. Initiate a daemon-reload:
-
-    ```console
-    $ sudo systemctl daemon-reload
-    ```
-
-1. Check the logs from the container:
-
-    ```console
-    $ docker logs bc045274b44bdf6ec2e4cc10d2968d1d2a046c47cad0a1d2088dc0a430add24b
-    ```
-
-    *Example output:*
-
-    ```output
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    GPU 0: Tesla K80 (UUID: GPU-05ea3312-64dd-a4e7-bc72-46d2f6050147)
-    Failed to initialize NVML: Unknown Error
-    Failed to initialize NVML: Unknown Error
-    ```
-
-#### For Kubernetes environments
-
-1. Run a test pod:
-
-    ```console
-    $ cat nvidia-smi-loop.yaml
-
-    apiVersion: v1
-    kind: Pod
-    metadata:
-    name: cuda-nvidia-smi-loop
-    spec:
-    restartPolicy: OnFailure
-    containers:
-    - name: cuda
-        image: "nvcr.io/nvidia/cuda:12.0.0-base-ubuntu20.04"
-        command: ["/bin/sh", "-c"]
-        args: ["while true; do nvidia-smi -L; sleep 5; done"]
-        resources:
-        limits:
-            nvidia.com/gpu: 1
-
-
-    $ kubectl apply -f nvidia-smi-loop.yaml  
-    ```
-
-1. Check the logs from the pod:
-
-    ```console
-    $ kubectl logs cuda-nvidia-smi-loop
-    ```
-
-    *Example output:*
-
-    ```console output
-    GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)
-    GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)
-    ```
-
-1. Initiate a `daemon-reload`:
-
-    ```console
-    $ sudo systemctl daemon-reload
-    ```
-
-1. Check the logs from the pod:
-
-    ```console
-    $ kubectl logs cuda-nvidia-smi-loop
-    ```
-
-    *Example output:
-
-    ```output
-    GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)
-    GPU 0: NVIDIA A100-PCIE-40GB (UUID: GPU-551720f0-caf0-22b7-f525-2a51a6ab478d)
-    Failed to initialize NVML: Unknown Error
-    Failed to initialize NVML: Unknown Error
-    ```
-
-### Workarounds
-
-The following workarounds are available for both standalone docker environments and Kubernetes environments. 
-
-### For Docker environments
-
-The recommended workaround for Docker environments is to **use the `nvidia-ctk` utility.** 
-The NVIDIA Container Toolkit v1.12.0 and later includes this utility for creating symlinks in `/dev/char` for all possible NVIDIA device nodes required for using GPUs in containers. 
-This can be run as follows:
-
-1. Run `nvidia-ctk`: 
-
-    ```console
-    $ sudo nvidia-ctk system create-dev-char-symlinks \
-        --create-all
-    ```
-  
-    In cases where the NVIDIA GPU Driver Container is used, the path to the driver installation must be specified. In this case the command should be modified to:
-
-    ```console
-    $ sudo nvidia-ctk system create-dev-symlinks \
-        --create-all \
-        --driver-root={{NVIDIA_DRIVER_ROOT}}
-    ```
-
-    Where {{NVIDIA_DRIVER_ROOT}} is the path to which the NVIDIA GPU Driver container installs the NVIDIA GPU driver and creates the NVIDIA Device Nodes.
-
-1. Configure this command to run at boot on each node where GPUs will be used in containers.
-  The command requires that the NVIDIA driver kernel modules have been loaded at the point where it is run.
-
-    A simple `udev` rule to enforce this can be seen below:
-
-    ```console
-    # This will create /dev/char symlinks to all device nodes
-    ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all"
-    ```
-
-    A good place to install this rule would be in `/lib/udev/rules.d/71-nvidia-dev-char.rules`
-
-Some additional workarounds for Docker environments:
-
-- **Explicitly disabling systemd cgroup management in Docker.**
-  - Set the parameter `"exec-opts": ["native.cgroupdriver=cgroupfs"]` in the `/etc/docker/daemon.json` file and restart docker.
-- **Downgrading to `docker.io` packages where `systemd` is not the default `cgroup` manager.**
-
-#### For K8s environments
-
-The recommended workaround is to deploy GPU Operator 22.9.2 or later to automatically fix the issue on all K8s nodes of the cluster.
-The fix is integrated inside the validator pod which will run when a new node is deployed or at every reboot of the node. 
-
-Some additional workarounds for Kubernets environments:
-
-- For deployments using the standalone  k8s-device-plugin    (i.e. not through the use of the operator), installation of a `udev` rule as described in the previous section can be made to work around this issue. Be sure to pass the correct `{{NVIDIA_DRIVER_ROOT}}` in cases where the driver container is also in use.
-
-- Explicitly disabling `systemd cgroup` management in `containerd` or `cri-o`:
-  - Remove the parameter `cgroup_manager = "systemd"` from `cri-o` configuration file (usually located here: `/etc/crio/crio.conf` or `/etc/crio/crio.conf.d/00-default`) and restart `cri-o`.
-- Downgrading to a version of the `containerd.io` package where `systemd` is not the default `cgroup` manager (and not overriding that, of course).
+* Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container. 
+  For the Docker CLI, this is done by adding the relevant `--device` flags. 
+  In the case of the NVIDIA Kubernetes Device Plugin the `compatWithCPUManager= true` [Helm option](https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values) will ensure the same thing.
+* Use the Container Device Interface (CDI) to inject devices into a container. 
+  When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config. 
+  This means that even if the container is updated it will still have access to the required devices.
+* For Docker, use cgroupfs as the cgroup driver for containers. 
+  This will ensure that the container will not lose access to devices when `systemctl daemon-reload` is run. 
+  This approach does not change the behaviour for explicit container updates and a container will still lose access to devices in this case.
