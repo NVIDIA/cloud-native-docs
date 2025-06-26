@@ -421,7 +421,8 @@
 <h2>Pods stuck in Pending state in mixed MIG + full GPU environments<a class="headerlink" href="#pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments" title="Permalink to this headline">#</a></h2>
 <p class="h4 rubric">Issue</p>
 <p>For drivers 570.124.06, 570.133.20, and 570.148.08,
-GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.</p>
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+For more detailed information, see GitHub issue <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
 <p class="h4 rubric">Observation</p>
 <p>When a GPU pod is created on a node that has a mix of MIG slices and full GPUs,
 the GPU pod gets stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.</p>
