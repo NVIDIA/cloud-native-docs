@@ -21,19 +21,19 @@ Troubleshooting the NVIDIA GPU Operator
 #######################################
 
 ****************************************************************
-Pods stuck in Pending state in mixed MIG + Full GPU Environments
+Pods stuck in Pending state in mixed MIG + full GPU environments
 ****************************************************************
 
 .. rubric:: Issue
    :class: h4
 
-For drivers 570.124.06, 570.133.20 and 570.148.08 and 570.158.01, 
-GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and Full GPUs.
+For drivers 570.124.06, 570.133.20, and 570.148.08, 
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 
 .. rubric:: Observation
    :class: h4
 
-When a GPU pod is created on a node that has a mix of MIG slices and Full GPUs, 
+When a GPU pod is created on a node that has a mix of MIG slices and full GPUs, 
 the GPU pod gets stuck indefinitely in the ``Pending`` state. 
 
 .. rubric:: Root Cause
