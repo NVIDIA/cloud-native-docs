@@ -508,7 +508,6 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 24.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
 Red Hat Core OS                                                4.12---4.18      4.13---4.18
