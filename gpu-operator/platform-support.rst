@@ -508,7 +508,6 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 24.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
 Red Hat Core OS                                                4.12---4.18      4.13---4.18
@@ -539,7 +538,11 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 Note that HGX platforms are not supported.
 
-Support for GPUDirect RDMA
+.. note::
+  
+  KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
+
+Support for GPUDirect RDMA 
 --------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
