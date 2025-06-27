@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: time-slicing-verification
+  name: mps-verification
   labels:
-    app: time-slicing-verification
+    app: mps-verification
 spec:
   replicas: 5
   selector:
     matchLabels:
-      app: time-slicing-verification
+      app: mps-verification
   template:
     metadata:
       labels:
-        app: time-slicing-verification
+        app: mps-verification
     spec:
       tolerations:
         - key: nvidia.com/gpu
@@ -29,4 +29,4 @@ spec:
            limits:
              nvidia.com/gpu: 1
       nodeSelector:
-        nvidia.com/gpu.sharing-strategy: time-slicing
+        nvidia.com/gpu.sharing-strategy: mps

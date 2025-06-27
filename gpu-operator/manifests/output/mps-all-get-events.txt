@@ -1,0 +1,11 @@
+LAST SEEN   TYPE     REASON             OBJECT                                              MESSAGE                                                                               
+38s         Normal   SuccessfulDelete   daemonset/nvidia-device-plugin-daemonset            Deleted pod: nvidia-device-plugin-daemonset-l86fw                                     
+38s         Normal   SuccessfulDelete   daemonset/gpu-feature-discovery                     Deleted pod: gpu-feature-discovery-shj2m
+38s         Normal   Killing            pod/gpu-feature-discovery-shj2m                     Stopping container gpu-feature-discovery                                              
+38s         Normal   Killing            pod/nvidia-device-plugin-daemonset-l86fw            Stopping container nvidia-device-plugin
+37s         Normal   Scheduled          pod/nvidia-device-plugin-daemonset-lcklx            Successfully assigned gpu-operator/nvidia-device-plugin-daemonset-lcklx to worker-1
+37s         Normal   SuccessfulCreate   daemonset/gpu-feature-discovery                     Created pod: gpu-feature-discovery-pgx9l
+37s         Normal   Scheduled          pod/gpu-feature-discovery-pgx9l                     Successfully assigned gpu-operator/gpu-feature-discovery-pgx9l to worker-0            
+37s         Normal   SuccessfulCreate   daemonset/nvidia-device-plugin-daemonset            Created pod: nvidia-device-plugin-daemonset-lcklx                                     
+36s         Normal   Created            pod/nvidia-device-plugin-daemonset-lcklx            Created container config-manager-init                                                 
+36s         Normal   Pulled             pod/nvidia-device-plugin-daemonset-lcklx            Container image "nvcr.io/nvidia/cloud-native/gpu-operator-validator:v24.3.0" already present on machine 
