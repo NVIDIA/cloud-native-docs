@@ -541,7 +541,7 @@ Note that HGX platforms are not supported.
 
 .. note::
   
-  KubeVirt with NVIDIA vGPU is supported on devices with Linux kernel < 6.0, such as Ubuntu 22.04.
+  KubeVirt with NVIDIA vGPU is supported on `nodes` with Linux kernel < 6.0, such as Ubuntu 22.04 `LTS`.
 
 Support for GPUDirect RDMA 
 --------------------------
