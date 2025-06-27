@@ -539,7 +539,11 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 Note that HGX platforms are not supported.
 
-Support for GPUDirect RDMA
+.. note::
+  
+  KubeVirt with NVIDIA vGPU is supported on devices with Linux kernel < 6.0, such as Ubuntu 22.04.
+
+Support for GPUDirect RDMA 
 --------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
