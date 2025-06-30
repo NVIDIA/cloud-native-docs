@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 27, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
 
 
 
@@ -434,7 +434,7 @@ The hook and dependencies are not needed on machines that use CDI exclusively.</
 <span class="c1"># Add other nvidia-ctk environment variables as needed</span>
 </pre></div>
 </div>
-<p>For a complete list of available environment variables, refer to the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command documentation.</p>
+<p>For a complete list of available environment variables, run <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span> <span class="pre">--help</span></code> to see the command’s documentation.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>After modifying the environment file, you must reload the systemd daemon and restart the service for changes to take effect:</p>
@@ -495,7 +495,7 @@ The hook and dependencies are not needed on machines that use CDI exclusively.</
 </section>
 <section id="manual-cdi-specification-generation">
 <h3>Manual CDI Specification Generation<a class="headerlink" href="#manual-cdi-specification-generation" title="Permalink to this headline">#</a></h3>
-<p>If you need to manually generate a CDI specification (for example, after MIG configuration changes or when using older versions), follow this procedure:</p>
+<p>If you need to manually generate a CDI specification, for example, after MIG configuration changes or if you are using a Container Toolkit version before v1.18.0, follow this procedure:</p>
 <p>Two common locations for CDI specifications are <code class="docutils literal notranslate"><span class="pre">/etc/cdi/</span></code> and <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code>.
 The contents of the <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code> directory are cleared on boot.</p>
 <p>However, the path to create and use can depend on the container engine that you use.</p>
