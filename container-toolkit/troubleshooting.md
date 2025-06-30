@@ -166,4 +166,4 @@ Use the following workarounds to prevent containers from losing access to reques
   This means that even if the container is updated it will still have access to the required devices.
 * For Docker, use cgroupfs as the cgroup driver for containers. 
   This will ensure that the container will not lose access to devices when `systemctl daemon-reload` is run. 
-  This approach does not change the behaviour for explicit container updates and a container will still lose access to devices in this case.
+  This approach does not change the behavior for explicit container updates and a container will still lose access to devices in this case.

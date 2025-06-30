@@ -140,7 +140,7 @@ when using the NVIDIA Container Runtime Hook (i.e. the Docker `--gpus` flag or
 the NVIDIA Container Runtime in `legacy` mode) to inject requested GPUs and driver
 libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. `runc`) being aware of these changes. 
 The result is that updates to the container may remove access to the requested GPUs.
-Its recommended that you use the `nvidia-ctk` untility when installing.
+It's recommended that you use the `nvidia-ctk` untility when installing.
 If you need to use a different Docker configuration, refer to the [troubleshooting guide](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) for details on suggested workarounds for this issue. 
 ```
 
