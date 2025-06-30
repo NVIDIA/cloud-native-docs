@@ -71,6 +71,9 @@ The product life cycle and versioning are subject to change in the future.
 GPU Operator Component Matrix
 *****************************
 
+.. _ki: #known-issue
+.. |ki| replace:: :sup:`1`
+
 The following table shows the operands and default operand versions that correspond to a GPU Operator version.
 
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
@@ -145,6 +148,15 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA GDRCopy Driver
      - `v2.4.1-1 <https://github.com/NVIDIA/gdrcopy/releases>`__
+
+.. _known-issue:
+
+   :sup:`1`
+   Known Issue: For drivers 570.124.06, 570.133.20, and 570.148.08, 
+   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
+   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+   It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
 .. note::
     
