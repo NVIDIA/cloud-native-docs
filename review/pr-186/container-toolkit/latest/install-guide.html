@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 26, 2025"/>
+    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
 
 
 
@@ -528,7 +528,7 @@ when using the NVIDIA Container Runtime Hook (i.e. the Docker <code class="docut
 the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
 libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
 The result is that updates to the container may remove access to the requested GPUs.
-Its recommended that you use the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> untility when installing.
+It’s recommended that you use the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> untility when installing.
 If you need to use a different Docker configuration, refer to the <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">troubleshooting guide</span></a> for details on suggested workarounds for this issue.</p>
 </div>
 <section id="rootless-mode">
