@@ -194,11 +194,9 @@ This is an illustrated example of a situation where the deployment of the Operat
 
       FATAL: failed to install elfutils packages. RHEL entitlement may be improperly deployed
 
-   This message maybe associated with the unsuccessful deployment of the driver toolkit. To confirm the driver toolkit is successfully deployed follow the guidance in :ref:`verify_toolkit`.
-   If you see this message a workaround is to edit the created ``gpu-cluster-policy`` YAML file in the OpenShift Container Platform console and set ``use_ocp_driver_toolkit`` to ``false``.
-
-   Set up the entitlement.
-   Refer to :ref:`cluster-entitlement` for more information.
+   This message may be associated with the unsuccessful deployment of the driver toolkit. To confirm the driver toolkit is successfully deployed follow the guidance in :ref:`verify_toolkit`.
+   If you see this message, you should troubleshoot the underlying issue instead of relying on RHEL entitlement. Entitled driver builds are deprecated and not supported on recent versions of Red Hat OpenShift.
+   See :ref:`broken-dtk-troubleshooting` for more information.
 
 .. _verify_toolkit:
 
