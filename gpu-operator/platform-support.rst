@@ -295,7 +295,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          -
          -
-         - 2.12, 2.13
+         - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 22.04 LTS |fn2|_
          - 1.29---1.33
@@ -304,7 +304,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          -
          - 1.26
-         - 2.12, 2.13
+         - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
          - 1.29---1.33
