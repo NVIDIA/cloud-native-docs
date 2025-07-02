@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>NVIDIA Dynamic Resource Allocation Driver for GPUs &#8212; NVIDIA GPU Operator</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 29, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 02, 2025"/>
 
 
 
@@ -333,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
@@ -399,7 +400,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">NVIDIA Dynamic Resource Allocation Driver for GPUs</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -415,37 +416,30 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="nvidia-dynamic-resource-allocation-driver-for-gpus">
-<h1>NVIDIA Dynamic Resource Allocation Driver for GPUs<a class="headerlink" href="#nvidia-dynamic-resource-allocation-driver-for-gpus" title="Permalink to this headline">#</a></h1>
-<p>GPU Operator 25.3.0 and later supports the NVIDIA Dynamic Resource Allocation (DRA) Driver for GPUs.
-This is an additional component that can be installed after the NVIDIA GPU Operator which enables allocating compute domains for multi-node workload jobs on NVIDIA HGX GB200 NVL GPUs with Multi-Node NVLink (MNNVL) support.
-Before GPU Operator 25.3.0, GPU allocation was handled through NVIDIA k8s-device plugin as the default and only mode of GPU resource management.
-While the device-plugin is still the default for GPU resource management in the GPU Operator, the DRA Driver for GPUs provides additional capabilities for managing specialized resources like GPUs.</p>
-<p>The DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to manage GPU resources and allocation on your cluster.
-Kuberntes DRA, available as Beta in 1.32, enables you to treat specialize hardward resources, like GPUs, on your cluster similarly to volume provisioning.
-Using DRA, you can create templates for your specialized resources that can be references in your workload templates, giving you more flexible and sophisticated resource management capabilities for resources compared to the traditional device-pulgin based approach.</p>
-<p>This page provides an overview of the DRA Driver for GPUs, its supported functionality, installing the component with the GPU Operator, and examples of using the DRA Driver for GPUs with supported use cases.</p>
-<p>Before continuing, you should be familiar with the components of the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Kubernetes DRA feature</a>.</p>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<p>This page provides an overview of the NVIDIA DRA Driver for GPUs, its supported functionality, instructions for how to install it alongside the GPU Operator, and usage examples.</p>
+<p>Before continuing, you should be familiar with the concept of Dynamic Resource Allocation (DRA) in Kubernetes (<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">docs</a>).</p>
 <section id="supported-use-cases">
 <h2>Supported Use Cases<a class="headerlink" href="#supported-use-cases" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA DRA Driver for GPUs v25.3.0 supports the following use cases:</p>
+<p>The NVIDIA DRA Driver for GPUs v25.3.0 enables allocating</p>
 <ul class="simple">
-<li><p>Full support for Multi-Node NVLink (MNNVL) with NVIDIA HGX GB200 NVL GPUs</p></li>
-<li><p>Technology Preview support for GPU resource allocation.</p></li>
+<li><p>so-called <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>s for enabling Multi-Node NVLink (MNNVL) workloads on NVIDIA GB200 systems (full support).</p></li>
+<li><p>GPUs, as an alternative to the traditional device plugin method (Technology Preview support).</p></li>
 </ul>
-<section id="multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus">
-<h3>Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs<a class="headerlink" href="#multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus" title="Permalink to this headline">#</a></h3>
-<p>NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks (MNNVL) to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
-MNNVL allows you to get the most use out of your available GPUs without any additional latency overhead.</p>
-<p>The NVIDIA DRA Driver for GPUs supports Multi-Node NVLink (MNNVL) by introducing a new custom resource called <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.
-This allows you to define resource requirements for multi-node workloads as a compute domain on your cluster.
-When a workload is created that references a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, the NVIDIA DRA Driver for GPUs will handle establishing an IMEX channel to run multinode workloads across a set of NVIDIA HGX GB200 NVL GPUs.</p>
+<p>Future versions of the GPU Operator (newer than 25.3.x) will include the NVIDIA DRA Driver for GPUs.
+For now, it needs to be installed manually (via its Helm chart, see below).</p>
+<section id="multi-node-nvlink-support-for-nvidia-gb200">
+<h3>Multi-Node NVLink Support for NVIDIA GB200<a class="headerlink" href="#multi-node-nvlink-support-for-nvidia-gb200" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA GB200 systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines – each with a small number of GPUs – into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.</p>
+<p>The NVIDIA DRA Driver for GPUs supports MNNVL by introducing a new concept called <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p>
+<p>Under the hood, when a workload is created that references a specific <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, the NVIDIA DRA Driver for GPUs will handle establishing a shared IMEX domain and IMEX channel that guarantees MNNVL-reachability between all pods in the workload.</p>
 </section>
 <section id="gpu-resource-allocation-technology-preview">
 <h3>GPU resource allocation (Technology Preview)<a class="headerlink" href="#gpu-resource-allocation-technology-preview" title="Permalink to this headline">#</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>NVIDIA DRA Driverw features are not supported in production environments
+<p>The GPU allocation features are not supported in production environments
 and are not functionally complete.
 Technology Preview features provide early access to upcoming product features,
 enabling customers to test functionality and provide feedback during the development process.
@@ -454,14 +448,14 @@ These releases may not have any documentation, and testing is limited.</p>
 <p>Full support for defining and allocating GPU resources using DRA</p>
 </section>
 </section>
-<section id="install-the-nvidia-dra-driver-for-gpus">
-<h2>Install the NVIDIA DRA Driver for GPUs<a class="headerlink" href="#install-the-nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h2>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <p>The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetes cluster.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>A Mult-Node NVIDIA HGX GB200 NVL GPUs with at least 2 GPUs Multi-Node NVLink support.</p></li>
-<li><p>A Kubernetes v1.32 cluster with the <cite>DynamicResourceAllocation</cite> feature gate enabled and the <cite>resource.k8s.io</cite> API group enabled.</p>
+<li><p>A Multi-Node NVIDIA GB200 system.</p></li>
+<li><p>A Kubernetes cluster (v1.32 or newer) with the <cite>DynamicResourceAllocation</cite> feature gate enabled and the <cite>resource.k8s.io</cite> API group enabled.</p>
 <p>The following is a sample for enabling the required feature gates and API groups.
 Refer to the Kubernetes documentation for full details on <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">enabling DRA on your cluster</a>.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -497,14 +491,12 @@ Refer to the install documentation for details on <a class="reference external" 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
         -n gpu-operator --create-namespace <span class="se">\</span>
         nvidia/gpu-operator <span class="se">\</span>
-        --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+        --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
         --set cdi.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>If you want to install the DRA Driver for GPUs using pre-installed drivers, you must install NVIDIA GPU Driver 565 or later, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
 Refer to the documentation on <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">installing the GPU Operator with pre-installed drivers</a> for more details.</p>
-<p>NVIDIA DRA Driver for GPUs also requires the NVIDIA Container Toolkit (nvidia-ctk) v1.17.5 or later, which is installed by default with the NVIDIA GPU Operator v25.3.0 and later.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html">NVIDIA Container Toolkit documentation</a> for installation instructions.</p>
 </li>
 </ul>
 </section>
@@ -517,25 +509,25 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </pre></div>
 </div>
 </li>
-<li><p>Install NVIDIA DRA Driver:</p>
+<li><p>Install the NVIDIA DRA Driver for GPUs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
       --version<span class="o">=</span><span class="s2">&quot;25.3.0&quot;</span> <span class="se">\</span>
       --create-namespace <span class="se">\</span>
       --namespace nvidia-dra-driver-gpu <span class="se">\</span>
       --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver <span class="se">\</span>
-      --set <span class="nv">nvidiaCtkPath</span><span class="o">=</span>/usr/local/nvidia/toolkit/nvidia-ctk <span class="se">\</span>
       --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
 </li>
 </ol>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver at that location.
+That configuration parameter must be changed in case the GPU drivers are installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p>
 </section>
 <section id="common-chart-customization-options">
 <h3>Common Chart Customization Options<a class="headerlink" href="#common-chart-customization-options" title="Permalink to this headline">#</a></h3>
-<p>The following options are available when using the Helm chart.
-These options can be used with <code class="docutils literal notranslate"><span class="pre">--set</span></code> when installing with Helm.</p>
-<p>The following table identifies the most frequently used options.
-To view all the options, run <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/nvidia-dra-driver-gpu</span></code>.</p>
+<p>The following options are available when installing the Helm chart.
+These options can be used with <code class="docutils literal notranslate"><span class="pre">--set</span></code> when installing with Helm (these are just the most frequently used options –
+all parameters can be listed by running <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/nvidia-dra-driver-gpu</span></code>).</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
 <col style="width: 20%" />
@@ -574,7 +566,7 @@ To use with MNNVL, set to <code class="docutils literal notranslate"><span class
 <section id="verify-installation">
 <h3>Verify installation<a class="headerlink" href="#verify-installation" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
-<li><p>Validate that the NVIDIA DRA Driver for GPUs components are running and in a Ready state.</p>
+<li><p>Validate that the components are running and in a <code class="docutils literal notranslate"><span class="pre">READY</span></code> state.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod -n nvidia-dra-driver-gpu
 </pre></div>
 </div>
@@ -1137,11 +1129,11 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-use-cases">Supported Use Cases</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-nvlink-support-with-nvidia-hgx-gb200-nvl-gpus">Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-nvlink-support-for-nvidia-gb200">Multi-Node NVLink Support for NVIDIA GB200</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-resource-allocation-technology-preview">GPU resource allocation (Technology Preview)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-dra-driver-for-gpus">Install the NVIDIA DRA Driver for GPUs</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-dra-driver-for-gpus-with-helm">Install the NVIDIA DRA Driver for GPUs with Helm</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-chart-customization-options">Common Chart Customization Options</a></li>
