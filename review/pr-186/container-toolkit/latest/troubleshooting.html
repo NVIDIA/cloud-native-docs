@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 02, 2025"/>
 
 
 
@@ -513,10 +513,10 @@ On systems where <code class="docutils literal notranslate"><span class="pre">sy
 <h3>Mitigations and  Workarounds<a class="headerlink" href="#mitigations-and-workarounds" title="Permalink to this headline">#</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Certain <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions show similar behaviour with the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup driver when <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for the required devices are missing on the system.
+<p>Certain <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions show similar behavior with the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup driver when <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for the required devices are missing on the system.
 Refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133">GitHub disccusion #1133</a> for more details around this issue.
-It should be noted that the behaviour persisted even if device nodes were requested on the command line.
-Newer <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions do not show this behaviour and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions.</p>
+It should be noted that the behavior persisted even if device nodes were requested on the command line.
+Newer <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions.</p>
 </div>
 <p>Use the following workarounds to prevent containers from losing access to requested GPUs when a <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> command is run:</p>
 <ul class="simple">

@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 02, 2025"/>
 
 
 
@@ -521,16 +521,6 @@ The file is updated so that Docker can use the NVIDIA Container Runtime.</p>
 </div>
 </li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>There is a <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">known issue</span></a>
-when using the NVIDIA Container Runtime Hook (i.e. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
-the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
-libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
-The result is that updates to the container may remove access to the requested GPUs.
-It’s recommended that you use the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> untility when installing.
-If you need to use a different Docker configuration, refer to the <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">troubleshooting guide</span></a> for details on suggested workarounds for this issue.</p>
-</div>
 <section id="rootless-mode">
 <h4>Rootless mode<a class="headerlink" href="#rootless-mode" title="Permalink to this headline">#</a></h4>
 <p>To configure the container runtime for Docker running in <a class="reference external" href="https://docs.docker.com/engine/security/rootless/">Rootless mode</a>,
