@@ -209,7 +209,13 @@ Create the cluster policy using the web console
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-      .. note:: You can use this screen to customize the ClusterPolicy however the default are sufficient to get the GPU configured and running.
+      .. note:: You can use this screen to customize the ClusterPolicy; although, the default values are sufficient to get the GPU configured and running in most cases.
+
+      .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
+
+         - **version**: 570.148.08 (or another supported version)
+         - **image**: driver (or another supported image)
+         - **repository**: nvcr.io/nvidia (or another supported repository)
 
 #. Click **Create**.
 
@@ -229,6 +235,17 @@ Create the cluster policy using the CLI
    .. code-block:: console
 
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+
+
+   .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` (optional). The below snippet is shown as an example, please change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
+
+   .. code-block:: json
+
+         "driver": {
+              "repository": "nvcr.io/nvidia",
+              "image": "driver",
+              "version": "570.148.08"
+         }
 
    .. code-block:: console
 
