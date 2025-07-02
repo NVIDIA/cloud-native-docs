@@ -150,10 +150,10 @@ On systems where `systemd` is used to manage the cgroups of the container, reloa
 ### Mitigations and  Workarounds
 
 ```{warning}
-Certain `runc` versions show similar behaviour with the `systemd` cgroup driver when `/dev/char` symlinks for the required devices are missing on the system. 
+Certain `runc` versions show similar behavior with the `systemd` cgroup driver when `/dev/char` symlinks for the required devices are missing on the system. 
 Refer to [GitHub disccusion #1133](https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133) for more details around this issue.
-It should be noted that the behaviour persisted even if device nodes were requested on the command line. 
-Newer `runc` versions do not show this behaviour and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected `runc` versions.
+It should be noted that the behavior persisted even if device nodes were requested on the command line. 
+Newer `runc` versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected `runc` versions.
 ```
 
 Use the following workarounds to prevent containers from losing access to requested GPUs when a `systemctl daemon-reload` command is run:
