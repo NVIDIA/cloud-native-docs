@@ -2,46 +2,40 @@
   SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0
 
-##################################################
-NVIDIA Dynamic Resource Allocation Driver for GPUs 
-##################################################
+##########################
+NVIDIA DRA Driver for GPUs
+##########################
 
-GPU Operator 25.3.0 and later supports the NVIDIA Dynamic Resource Allocation (DRA) Driver for GPUs.
-This is an additional component that can be installed after the NVIDIA GPU Operator which enables allocating compute domains for multi-node workload jobs on NVIDIA HGX GB200 NVL GPUs with Multi-Node NVLink (MNNVL) support.
-Before GPU Operator 25.3.0, GPU allocation was handled through NVIDIA k8s-device plugin as the default and only mode of GPU resource management.
-While the device-plugin is still the default for GPU resource management in the GPU Operator, the DRA Driver for GPUs provides additional capabilities for managing specialized resources like GPUs.
+This page provides an overview of the NVIDIA DRA Driver for GPUs, its supported functionality, instructions for how to install it alongside the GPU Operator, and usage examples.
 
-The DRA Driver for GPUs leverages the Kubernetes Dynamic Resource Allocation (DRA) API to manage GPU resources and allocation on your cluster.
-Kuberntes DRA, available as Beta in 1.32, enables you to treat specialize hardward resources, like GPUs, on your cluster similarly to volume provisioning.
-Using DRA, you can create templates for your specialized resources that can be references in your workload templates, giving you more flexible and sophisticated resource management capabilities for resources compared to the traditional device-pulgin based approach.
-
-This page provides an overview of the DRA Driver for GPUs, its supported functionality, installing the component with the GPU Operator, and examples of using the DRA Driver for GPUs with supported use cases.
-
-Before continuing, you should be familiar with the components of the `Kubernetes DRA feature <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
+Before continuing, you should be familiar with the concept of Dynamic Resource Allocation (DRA) in Kubernetes (`docs <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_).
 
 *******************
 Supported Use Cases
 *******************
 
-NVIDIA DRA Driver for GPUs v25.3.0 supports the following use cases:
+The NVIDIA DRA Driver for GPUs v25.3.0 enables allocating
 
-* Full support for Multi-Node NVLink (MNNVL) with NVIDIA HGX GB200 NVL GPUs 
-* Technology Preview support for GPU resource allocation.
+* so-called ``ComputeDomain``\s for enabling Multi-Node NVLink (MNNVL) workloads on NVIDIA GB200 systems (full support).
+* GPUs, as an alternative to the traditional device plugin method (Technology Preview support).
 
-Multi-Node NVLink Support with NVIDIA HGX GB200 NVL GPUs 
-========================================================
+Future versions of the GPU Operator (newer than 25.3.x) will include the NVIDIA DRA Driver for GPUs.
+For now, it needs to be installed manually (via its Helm chart, see below).
 
-NVIDIA HGX GB200 NVL systems are designed specifically to leverage the use Multi-Node NVLinks (MNNVL) to turn a rack of GPU machines, each with a small number of GPUs, into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
-MNNVL allows you to get the most use out of your available GPUs without any additional latency overhead.
 
-The NVIDIA DRA Driver for GPUs supports Multi-Node NVLink (MNNVL) by introducing a new custom resource called ``ComputeDomain``.
-This allows you to define resource requirements for multi-node workloads as a compute domain on your cluster. 
-When a workload is created that references a ``ComputeDomain``, the NVIDIA DRA Driver for GPUs will handle establishing an IMEX channel to run multinode workloads across a set of NVIDIA HGX GB200 NVL GPUs.
+Multi-Node NVLink Support for NVIDIA GB200
+==========================================
+
+NVIDIA GB200 systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+
+The NVIDIA DRA Driver for GPUs supports MNNVL by introducing a new concept called ``ComputeDomain``.
+
+Under the hood, when a workload is created that references a specific ``ComputeDomain``, the NVIDIA DRA Driver for GPUs will handle establishing a shared IMEX domain and IMEX channel that guarantees MNNVL-reachability between all pods in the workload.
 
 GPU resource allocation (Technology Preview)
 ============================================
 
-.. note:: NVIDIA DRA Driverw features are not supported in production environments
+.. note:: The GPU allocation features are not supported in production environments
           and are not functionally complete.
           Technology Preview features provide early access to upcoming product features,
           enabling customers to test functionality and provide feedback during the development process.
@@ -49,20 +43,20 @@ GPU resource allocation (Technology Preview)
 
 Full support for defining and allocating GPU resources using DRA
 
-**************************************
-Install the NVIDIA DRA Driver for GPUs
-**************************************
+************
+Installation
+************
 
 The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetes cluster.
 
 Prerequisites
 =============
 
-- A Mult-Node NVIDIA HGX GB200 NVL GPUs with at least 2 GPUs Multi-Node NVLink support.
+- A Multi-Node NVIDIA GB200 system.
 
-- A Kubernetes v1.32 cluster with the `DynamicResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
+- A Kubernetes cluster (v1.32 or newer) with the `DynamicResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
 
-  The following is a sample for enabling the required feature gates and API groups. 
+  The following is a sample for enabling the required feature gates and API groups.
   Refer to the Kubernetes documentation for full details on `enabling DRA on your cluster <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`__.
 
   .. literalinclude:: ./manifests/input/kubeadm-init-config.yaml
@@ -70,7 +64,7 @@ Prerequisites
     :caption: Sample Kubeadm Init Config with DRA Feature Gates Enabled
 
 - The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.
-  
+
   A sample Helm install command below includes enabling CDI with ``cdi.enabled=true``.
   Refer to the install documentation for details on `enabling CDI <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
 
@@ -85,9 +79,6 @@ Prerequisites
   If you want to install the DRA Driver for GPUs using pre-installed drivers, you must install NVIDIA GPU Driver 565 or later, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
   Refer to the documentation on `installing the GPU Operator with pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__ for more details.
 
-  NVIDIA DRA Driver for GPUs also requires the NVIDIA Container Toolkit (nvidia-ctk) v1.17.5 or later, which is installed by default with the NVIDIA GPU Operator v25.3.0 and later.
-  Refer to the `NVIDIA Container Toolkit documentation <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>`__ for installation instructions. 
-
 Install the NVIDIA DRA Driver for GPUs with Helm
 ================================================
 
@@ -98,7 +89,7 @@ Install the NVIDIA DRA Driver for GPUs with Helm
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
           && helm repo update
 
-#. Install NVIDIA DRA Driver:
+#. Install the NVIDIA DRA Driver for GPUs:
 
    .. code-block:: console
 
@@ -107,17 +98,17 @@ Install the NVIDIA DRA Driver for GPUs with Helm
             --create-namespace \
             --namespace nvidia-dra-driver-gpu \
             --set nvidiaDriverRoot=/run/nvidia/driver \
-            --set nvidiaCtkPath=/usr/local/nvidia/toolkit/nvidia-ctk \
             --set resources.gpus.enabled=false
+
+Note that ``--set nvidiaDriverRoot=/run/nvidia/driver`` above expects a GPU Operator-provided GPU driver at that location.
+That configuration parameter must be changed in case the GPU drivers are installed straight on the host (typically at ``/``, which is the default value for ``nvidiaDriverRoot``).
 
 Common Chart Customization Options
 ==================================
 
-The following options are available when using the Helm chart.
-These options can be used with ``--set`` when installing with Helm.
-
-The following table identifies the most frequently used options.
-To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
+The following options are available when installing the Helm chart.
+These options can be used with ``--set`` when installing with Helm (these are just the most frequently used options --
+all parameters can be listed by running ``helm show values nvidia/nvidia-dra-driver-gpu``).
 
 .. list-table::
    :widths: 20 50 30
@@ -137,7 +128,7 @@ To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
      - Specifies the path of the NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
        For GPU Operator-installed NVIDIA Container Toolkit (recommended), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
        For a pre-installed NVIDIA Container Toolkit, use ``/usr/bin/nvidia-ctk``.
-     - ``/usr/bin/nvidia-ctk`` 
+     - ``/usr/bin/nvidia-ctk``
 
    * - ``resources.gpus.enabled``
      - Specifies whether to enable the NVIDIA DRA Driver for GPUs to manage GPU resource allocation.
@@ -149,7 +140,7 @@ To view all the options, run ``helm show values nvidia/nvidia-dra-driver-gpu``.
 Verify installation
 ===================
 
-#. Validate that the NVIDIA DRA Driver for GPUs components are running and in a Ready state.
+#. Validate that the components are running and in a ``READY`` state.
 
    .. code-block:: console
 
@@ -158,7 +149,7 @@ Verify installation
    *Example Output*
 
    .. code-block:: output
-    
+
       NAME                                                           READY   STATUS    RESTARTS   AGE
       nvidia-dra-driver-k8s-dra-driver-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s
       nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-7kdg9          1/1     Running   0          7m27s
@@ -179,19 +170,19 @@ Verify installation
    *Example Output*
 
    .. code-block:: output
-    
+
       NODE                  LABEL                  CLIQUE
       node1                 nvidia.com/gpu.clique  9277d399-0674-44a9-b64e-d85bb19ce2b0.32766
       node2                 nvidia.com/gpu.clique  9277d399-0674-44a9-b64e-d85bb19ce2b0.32766
 
-The `NVIDIA GPU Feature Discovery <https://github.com/NVIDIA/k8s-device-plugin/tree/main/docs/gpu-feature-discovery>`_ adds a Clique ID to each GPU node. 
-This is a unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other. 
+The `NVIDIA GPU Feature Discovery <https://github.com/NVIDIA/k8s-device-plugin/tree/main/docs/gpu-feature-discovery>`_ adds a Clique ID to each GPU node.
+This is a unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other.
 
-The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same <ClusterUUID.Clique ID> pair. 
+The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. All GPUs on a given node are guaranteed to have the same <ClusterUUID.Clique ID> pair.
 
-The ClusterUUID is a unique identifier for a given NVLink Domain. 
-It can be queried on a GPU by GPU basis via the ``nvidia-smi`` commandline tool. 
-All GPUs on a given node are guaranteed to have the same Cluster UUID. 
+The ClusterUUID is a unique identifier for a given NVLink Domain.
+It can be queried on a GPU by GPU basis via the ``nvidia-smi`` commandline tool.
+All GPUs on a given node are guaranteed to have the same Cluster UUID.
 
 
 ***************************************
@@ -207,7 +198,7 @@ The ComputeDomain custom resource defines a `Kubernetes DRA ResourceClaimTemplat
    :language: yaml
    :caption: Sample NVIDIA DRA Driver ComputeDomain Custom Resource Manifest
 
-You can then reference the ResourceClaimTemplate in your workload specs as a ``resourceClaims.resourceClaimTemplateName``. 
+You can then reference the ResourceClaimTemplate in your workload specs as a ``resourceClaims.resourceClaimTemplateName``.
 
 .. code-block:: yaml
   :emphasize-lines: 12-17
@@ -230,22 +221,22 @@ You can then reference the ResourceClaimTemplate in your workload specs as a ``r
     - name: imex-channel-0
       resourceClaimTemplateName: imex-channel-0
 
-If a subset of the nodes associated with a ComputeDomain are capable of communicating over MNNVL, the NVIDIA DRA Driver for GPUs will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections. 
-Multiple IMEX domains will be created as necessary depending on the number and availability of nodes allocated to the ComputeDomain. 
+If a subset of the nodes associated with a ComputeDomain are capable of communicating over MNNVL, the NVIDIA DRA Driver for GPUs will set up a one-off IMEX domain to allow GPUs to communicate over their multi-node NVLink connections.
+Multiple IMEX domains will be created as necessary depending on the number and availability of nodes allocated to the ComputeDomain.
 
 A multi-node workload should run in its own compute domain.
-When you create the compute domain you can specify how many nodes you want to be a part of it in the ``numNodes`` field. 
-This can be any number, less than a rack, equal to a rack, more than a rack. 
+When you create the compute domain you can specify how many nodes you want to be a part of it in the ``numNodes`` field.
+This can be any number, less than a rack, equal to a rack, more than a rack.
 The compute domain controller is able to create 0-or-more IMEX domains depending on where the workers of a multi-node job that reference the compute domain actually land in your cluster
 
 When a worker for a multi-node job that references a ComputeDomain's ResourceClaimTemplate is scheduled on your cluster, the DRA Driver for GPUs triggers an IMEX daemon to started on the node the worker lands on and will block the worker from running until the compute domain is ready.
-Once the number of IMEX daemons running equals the number of nodes specified in the compute domain, the DRA Driver for GPUs will mark the compute domain as ready and will release the worker pods themselves, allowing them to start running. 
-Since the compute domain is per workload, only one channel is needed to link all of the worker pods of the workload. 
+Once the number of IMEX daemons running equals the number of nodes specified in the compute domain, the DRA Driver for GPUs will mark the compute domain as ready and will release the worker pods themselves, allowing them to start running.
+Since the compute domain is per workload, only one channel is needed to link all of the worker pods of the workload.
 
-The value of the <cluster-uuid, clique-id> tuple associated with the node where a workload lands determines which IMEX domain it will be a part of. 
-Nodes with the same <cluster-uuid, clique-id> values will be part of the same IMEX domain and will be able to communicate over MNNVL with each other. 
-Nodes with different <cluster-uuid, clique-id> values will be associated with different IMEX domains and will not be able to communicate over MNNVL with each other. 
-Nodes without a <cluster-uuid, clique-id> setting at all are still allowed, but no IMEX daemon will be started on such nodes and no MNNVL communication with them is possible from any other nodes in the compute domain. 
+The value of the <cluster-uuid, clique-id> tuple associated with the node where a workload lands determines which IMEX domain it will be a part of.
+Nodes with the same <cluster-uuid, clique-id> values will be part of the same IMEX domain and will be able to communicate over MNNVL with each other.
+Nodes with different <cluster-uuid, clique-id> values will be associated with different IMEX domains and will not be able to communicate over MNNVL with each other.
+Nodes without a <cluster-uuid, clique-id> setting at all are still allowed, but no IMEX daemon will be started on such nodes and no MNNVL communication with them is possible from any other nodes in the compute domain.
 The nodes are still be able to communicate over IB or Ethernet.
 
 Once all workloads running in a ComputeDomain have run to completion, the label gets removed even if the ComputeDomain itself hasn't been deleted yet.
@@ -275,12 +266,12 @@ The following table describes some of the fields in the ComputeDomain custom res
 Node and Pod Affinity Strategies
 =================================
 
-For the DRA Driver for GPUs, a ComputeDomain means running workloads across a group of compute nodes. 
+For the DRA Driver for GPUs, a ComputeDomain means running workloads across a group of compute nodes.
 This means even if some nodes are not MNNVL capable, they can still be part of the same ComputeDomain.
 You must apply NodeAffinity and PodAffinity rules to your nodes and pods to make sure your workloads run on MNNVL capable nodes.
 
-For example you could set PodAffinity with a required topologyKey set to ``nvidia.com/gpu.clique`` when you require all workloads deployed into the same NVLink domain, but don't care which one. 
-Or use a preferred topologyKey set to ``nvidia.com/gpu.clique`` for workloads to span MNNVL domains but want them packed as tightly as possible. 
+For example you could set PodAffinity with a required topologyKey set to ``nvidia.com/gpu.clique`` when you require all workloads deployed into the same NVLink domain, but don't care which one.
+Or use a preferred topologyKey set to ``nvidia.com/gpu.clique`` for workloads to span MNNVL domains but want them packed as tightly as possible.
 
 Example: Create a ComputeDomain and Run a Workload
 ==================================================
@@ -380,7 +371,7 @@ Example: Create a ComputeDomain and Run a Workload
 
    *Example Output*
 
-   .. code-block:: output 
+   .. code-block:: output
 
       /etc/nvidia-imex/nodes_config.cfg:
       10.115.131.8
@@ -413,7 +404,7 @@ Example: Create a ComputeDomain and Run a Workload
       [Mar 27 2025 15:47:10] [INFO] [tid 67] Connection established to node 0 with ip address 10.115.131.8. Number of times connected: 1
       [Mar 27 2025 15:47:10] [INFO] [tid 39] GPU event successfully subscribed
 
-  
+
 #. Delete ``imex-channel-injection`` example.
 
    .. code-block:: console
@@ -432,10 +423,10 @@ Example: Create a ComputeDomain and Run a Workload
 Run a Multi-node nvbandwidth Test Requiring IMEX Channels with MPI
 ******************************************************************
 
-This example demonstrates how to run a workload across multiple nodes using a ComputeDomain. 
+This example demonstrates how to run a workload across multiple nodes using a ComputeDomain.
 The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your MNNVL setup is working correctly.
 
-**Example notes:** 
+**Example notes:**
 
 - This example uses `Kubeflow MPI Operator <https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr>`__.
 
@@ -475,7 +466,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
      - 8
 
 
-**Example Steps:** 
+**Example Steps:**
 
 #. Install Kubeflow MPI Operator.
 
@@ -613,9 +604,9 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
       nvbandwidth-test-launcher-lzv84   1/1     Running   0          8s
       nvbandwidth-test-worker-0         1/1     Running   0          15s
       nvbandwidth-test-worker-1         1/1     Running   0          15s
-  
 
-#. Verify that the ComputeDomain pods were created for each node. 
+
+#. Verify that the ComputeDomain pods were created for each node.
 
    .. code-block:: console
 
@@ -624,7 +615,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
    *Example Output*
 
    .. code-block:: output
-    
+
       NAME                                          READY   STATUS    RESTARTS   AGE
       nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s
       nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s
