@@ -1,9 +1,0 @@
-apiVersion: resource.nvidia.com/v1beta1
-kind: ComputeDomain
-metadata:
-  name: imex-channel-injection
-spec:
-  numNodes: 1
-  channel:
-    resourceClaimTemplate:
-      name: imex-channel-0
