@@ -120,13 +120,15 @@ A fix for this issue has been merged in the following releases:
 About the Broken Driver Toolkit
 *******************************
 
-OpenShift 4.8.19, 4.8.21, 4.9.8 are known to have a broken Driver Toolkit image.
-The following messages are recorded in the driver pod containers.
-Follow the guidance in :ref:`enabling a Cluster-wide entitlement <cluster-entitlement>`.
-Afterward, the ``nvidia-driver-daemonset`` automatically uses an entitlement-based fallback.
+.. important::
 
-To disable the use of Driver Toolkit image altogether, edit the cluster policy instance and set ``operator.use_ocp_driver_toolkit`` option to ``false``.
-Also, we recommend maintaining entitlements for OpenShift versions < 4.9.9.
+   **Entitled NVIDIA driver builds are deprecated and not supported.**
+
+OpenShift 4.8.19, 4.8.21, 4.9.8 are known to have a broken Driver Toolkit image. However, on newer OpenShift versions the driver builds rely on Driver Toolkit (DTK). With these versions, entitled builds are not supported and might not work.
+
+When the DTK image is broken, the following messages are recorded in the driver pod containers. Follow the guidance in :ref:`broken-dtk-troubleshooting` to troubleshoot the underlying issue.
+
+If you need to force entitled builds, disable the use of Driver Toolkit image by editing the cluster policy instance and setting ``operator.use_ocp_driver_toolkit`` option to ``false``.
 
 #. View the logs from the OpenShift Driver Toolkit container:
 
