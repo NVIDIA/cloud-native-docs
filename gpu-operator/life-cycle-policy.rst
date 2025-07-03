@@ -90,7 +90,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA GPU Driver
      - | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_ 
-       | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ (recommended)
+       | `570.158.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-158-01/index.html>`_ (recommended)
+       | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_ 
        | `570.133.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-133-20/index.html>`_ 
        | `570.86.15 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-86-15/index.html>`_ 
        | `565.57.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-565-57-01/index.html>`_
@@ -152,7 +153,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 .. _known-issue:
 
    :sup:`1`
-   Known Issue: For drivers 570.124.06, 570.133.20, and 570.148.08, 
+   Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, 570.158.01,
    GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
    This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
    It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
