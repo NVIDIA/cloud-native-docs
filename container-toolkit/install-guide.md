@@ -18,7 +18,6 @@ For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
-
 (installing-with-apt)=
 
 ### With `apt`: Ubuntu, Debian
