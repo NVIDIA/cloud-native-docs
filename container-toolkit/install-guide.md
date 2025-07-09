@@ -18,7 +18,7 @@ For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
-```note
+```{note}
 There is a [known issue](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) on systems
 where `systemd` cgroup drivers are used that cause containers to lose access to requested GPUs when
 `systemctl daemon reload` is run. Please see the troubleshooting documentation for more information.
