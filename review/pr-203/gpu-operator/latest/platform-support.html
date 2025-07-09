@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 09, 2025"/>
 
 
 
@@ -437,8 +437,8 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <li><p>Upgrades are only supported within a major release or to the next major release.</p></li>
 </ul>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id5">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id5" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id6">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -481,10 +481,11 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <tr class="row-even"><td><p>NVIDIA GPU Operator</p></td>
 <td><p>v25.3.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA GPU Driver</p></td>
+<tr class="row-odd"><td><p>NVIDIA GPU Driver <a class="reference external" href="#known-issue"><sup>1</sup></a></p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html">575.57.08</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html">570.148.08</a> (default, recommended)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-158-01/index.html">570.158.01</a> (recommended)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html">570.148.08</a> (default)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html">550.163.01</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html">535.247.01</a></div>
 </div>
@@ -527,7 +528,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <tr class="row-even"><td><p>NVIDIA vGPU Device Manager</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.3.0</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>1</sup></a></p></td>
+<tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Kata Manager for Kubernetes</p></td>
@@ -546,8 +547,16 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </tbody>
 </table>
 </div>
-<blockquote id="gds-open-kernel">
+<blockquote id="known-issue">
 <div><p><sup>1</sup>
+Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+It’s recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
+</div></blockquote>
+<blockquote id="gds-open-kernel">
+<div><p><sup>2</sup>
 This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
 Refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a> for more information.</p>
 </div></blockquote>
@@ -565,8 +574,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="2f2945eb-2484-4df4-a607-e1ad1554252c" name="3ecdd0a9-75ad-441d-862a-25e9e7bd2b45" type="radio">
-</input><label class="sd-tab-label" for="2f2945eb-2484-4df4-a607-e1ad1554252c">
+<input id="eddb7f3c-149c-4cb3-b4e6-5c0478bb535d" name="cfb87331-e82c-4de4-8fb6-23577669d53f" type="radio">
+</input><label class="sd-tab-label" for="eddb7f3c-149c-4cb3-b4e6-5c0478bb535d">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -591,8 +600,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="15a49244-9be7-4153-a5a4-a58b8cfe173e" name="3ecdd0a9-75ad-441d-862a-25e9e7bd2b45" type="radio">
-</input><label class="sd-tab-label" for="15a49244-9be7-4153-a5a4-a58b8cfe173e">
+<input checked="checked" id="3da7955c-0759-4de4-837b-cd0dbe0a1bec" name="cfb87331-e82c-4de4-8fb6-23577669d53f" type="radio">
+</input><label class="sd-tab-label" for="3da7955c-0759-4de4-837b-cd0dbe0a1bec">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -698,8 +707,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="fef2fe27-db6c-4316-8f2c-1eaf95d50548" name="3ecdd0a9-75ad-441d-862a-25e9e7bd2b45" type="radio">
-</input><label class="sd-tab-label" for="fef2fe27-db6c-4316-8f2c-1eaf95d50548">
+<input id="efb9fe10-5d2f-4dfd-947d-e7ae6165504c" name="cfb87331-e82c-4de4-8fb6-23577669d53f" type="radio">
+</input><label class="sd-tab-label" for="efb9fe10-5d2f-4dfd-947d-e7ae6165504c">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -731,8 +740,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="84a7a682-c73c-4f50-adcf-8cca42b2c1b6" name="3ecdd0a9-75ad-441d-862a-25e9e7bd2b45" type="radio">
-</input><label class="sd-tab-label" for="84a7a682-c73c-4f50-adcf-8cca42b2c1b6">
+<input id="6e1b3919-208e-479d-aa69-3b1b71c98da2" name="cfb87331-e82c-4de4-8fb6-23577669d53f" type="radio">
+</input><label class="sd-tab-label" for="6e1b3919-208e-479d-aa69-3b1b71c98da2">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -799,8 +808,8 @@ Blackwell Server Edition</p></td>
 </div>
 </div></blockquote>
 </div>
-<input id="998bedd7-9c69-4f44-9b30-e752c4f1aa72" name="3ecdd0a9-75ad-441d-862a-25e9e7bd2b45" type="radio">
-</input><label class="sd-tab-label" for="998bedd7-9c69-4f44-9b30-e752c4f1aa72">
+<input id="1498727c-e4a2-4063-9f97-70babc2073f7" name="cfb87331-e82c-4de4-8fb6-23577669d53f" type="radio">
+</input><label class="sd-tab-label" for="1498727c-e4a2-4063-9f97-70babc2073f7">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -909,8 +918,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="e325d390-f604-4552-acb6-c2532392d7d4" name="817d16dc-781a-4de0-bac5-ca7290bf7063" type="radio">
-</input><label class="sd-tab-label" for="e325d390-f604-4552-acb6-c2532392d7d4">
+<input checked="checked" id="35b1b9b6-9f64-4789-a1c3-3e4ca54dd520" name="2aa40b71-1d61-4659-8687-c8f9695dea67" type="radio">
+</input><label class="sd-tab-label" for="35b1b9b6-9f64-4789-a1c3-3e4ca54dd520">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -971,7 +980,7 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 <td><p>1.29—1.33</p></td>
 <td></td>
 <td></td>
-<td><p>2.12, 2.13</p></td>
+<td><p>2.12, 2.13, 2.14, 2.15</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
 <td><p>1.29—1.33</p></td>
@@ -980,7 +989,7 @@ Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-con
 <td><p>1.29—1.33</p></td>
 <td></td>
 <td><p>1.26</p></td>
-<td><p>2.12, 2.13</p></td>
+<td><p>2.12, 2.13, 2.14, 2.15</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
 <td><p>1.29—1.33</p></td>
@@ -1054,8 +1063,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="6f941629-a369-4663-a445-5d42247dce0a" name="817d16dc-781a-4de0-bac5-ca7290bf7063" type="radio">
-</input><label class="sd-tab-label" for="6f941629-a369-4663-a445-5d42247dce0a">
+<input id="8fddb475-f3a2-4af6-bc76-4d3d3a5cdee9" name="2aa40b71-1d61-4659-8687-c8f9695dea67" type="radio">
+</input><label class="sd-tab-label" for="8fddb475-f3a2-4af6-bc76-4d3d3a5cdee9">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1102,8 +1111,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="9530967d-cbc3-441e-a386-0d2e9dca798d" name="817d16dc-781a-4de0-bac5-ca7290bf7063" type="radio">
-</input><label class="sd-tab-label" for="9530967d-cbc3-441e-a386-0d2e9dca798d">
+<input id="ac97242c-3365-4c18-b1d7-56de0fce84de" name="2aa40b71-1d61-4659-8687-c8f9695dea67" type="radio">
+</input><label class="sd-tab-label" for="ac97242c-3365-4c18-b1d7-56de0fce84de">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1305,28 +1314,21 @@ AWS, Oracle</p></td>
 </tr>
 </thead>
 <tbody>
-<tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
+<tr class="row-odd"><td><p>Ubuntu 20.04 LTS</p></td>
 <td><p>1.23—1.29</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>Ubuntu 20.04 LTS</p></td>
+<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
 <td><p>1.23—1.29</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>Ubuntu 22.04 LTS</p></td>
-<td><p>1.23—1.29</p></td>
-<td><p>0.36+</p></td>
-<td><p>0.59.1+</p></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Red Hat Core OS</p></td>
+<tr class="row-odd"><td><p>Red Hat Core OS</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1355,6 +1357,10 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 </li>
 </ul>
 <p>Note that HGX platforms are not supported.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>KubeVirt with NVIDIA vGPU is supported on <code class="docutils literal notranslate"><span class="pre">nodes</span></code> with Linux kernel &lt; 6.0, such as Ubuntu 22.04 <code class="docutils literal notranslate"><span class="pre">LTS</span></code>.</p>
+</div>
 </section>
 <section id="support-for-gpudirect-rdma">
 <h3>Support for GPUDirect RDMA<a class="headerlink" href="#support-for-gpudirect-rdma" title="Permalink to this headline">#</a></h3>

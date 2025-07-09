@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 30, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 09, 2025"/>
 
 
 
@@ -417,6 +417,20 @@
                   
   <section id="troubleshooting-the-nvidia-gpu-operator">
 <h1>Troubleshooting the NVIDIA GPU Operator<a class="headerlink" href="#troubleshooting-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
+<section id="pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments">
+<h2>Pods stuck in Pending state in mixed MIG + full GPU environments<a class="headerlink" href="#pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Issue</p>
+<p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
+<p class="h4 rubric">Observation</p>
+<p>When a GPU pod is created on a node that has a mix of MIG slices and full GPUs,
+the GPU pod gets stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.</p>
+<p class="h4 rubric">Root Cause</p>
+<p>This is due to a regression in NVML introduced in the R570 drivers starting from 570.124.06.</p>
+<p class="h4 rubric">Action</p>
+<p>It’s recommended that you downgrade to driver version 570.86.15 to work around this issue.</p>
+</section>
 <section id="gpu-operator-validator-failed-to-create-pod-sandbox">
 <h2>GPU Operator Validator: Failed to Create Pod Sandbox<a class="headerlink" href="#gpu-operator-validator-failed-to-create-pod-sandbox" title="Permalink to this headline">#</a></h2>
 <p class="h4 rubric">Issue</p>
@@ -651,6 +665,7 @@ The return values for the <code class="docutils literal notranslate"><span class
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments">Pods stuck in Pending state in mixed MIG + full GPU environments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-validator-failed-to-create-pod-sandbox">GPU Operator Validator: Failed to Create Pod Sandbox</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-gpu-driver-or-operand-pods-running">No GPU Driver or Operand Pods Running</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-stuck-in-crash-loop">GPU Operator Pods Stuck in Crash Loop</a></li>
