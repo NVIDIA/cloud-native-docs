@@ -229,7 +229,6 @@ See also the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/
 
 For Podman, NVIDIA recommends using [CDI](./cdi-support.md) for accessing NVIDIA devices in containers.
 
-
 ## Next Steps
 
 - [](./sample-workload.md)
