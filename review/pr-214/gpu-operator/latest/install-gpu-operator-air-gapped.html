@@ -1,0 +1,933 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Install NVIDIA GPU Operator in Air-Gapped Environments &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'install-gpu-operator-air-gapped';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Install GPU Operator with Service Mesh" href="install-gpu-operator-service-mesh.html" />
+    <link rel="prev" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jul 09, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Install NVIDIA GPU Operator in Air-Gapped Environments</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="install-nvidia-gpu-operator-in-air-gapped-environments">
+<span id="install-gpu-operator-air-gapped"></span><h1>Install NVIDIA GPU Operator in Air-Gapped Environments<a class="headerlink" href="#install-nvidia-gpu-operator-in-air-gapped-environments" title="Permalink to this headline">#</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#about-air-gapped-installations" id="id1">About Air-Gapped Installations</a></p></li>
+<li><p><a class="reference internal" href="#local-image-registry" id="id2">Local Image Registry</a></p></li>
+<li><p><a class="reference internal" href="#local-package-repository" id="id3">Local Package Repository</a></p></li>
+<li><p><a class="reference internal" href="#deploy-gpu-operator" id="id4">Deploy GPU Operator</a></p></li>
+</ul>
+</div>
+<section id="about-air-gapped-installations">
+<h2>About Air-Gapped Installations<a class="headerlink" href="#about-air-gapped-installations" title="Permalink to this headline">#</a></h2>
+<p>This page describes how to successfully deploy the GPU Operator in clusters with restricted internet access.
+By default, The GPU Operator requires internet access for the following reasons:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Container images need to be pulled during GPU Operator installation.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">driver</span></code> container needs to download several OS packages prior to driver installation.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Using <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> removes the need for the <code class="docutils literal notranslate"><span class="pre">driver</span></code> containers to
+download operating system packages and removes the need to create a local package repository.</p>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>To address these requirements, it may be necessary to create a local image registry and/or a local package repository
+so that the necessary images and packages are available for your cluster. In subsequent sections, we detail how to
+configure the GPU Operator to use local image registries and local package repositories. If your cluster is behind
+a proxy, also follow the steps from <a class="reference internal" href="install-gpu-operator-proxy.html#install-gpu-operator-proxy"><span class="std std-ref">Install GPU Operator in Proxy Environments</span></a>.</p>
+<p>Different steps are required for different environments with varying levels of internet connectivity.
+The supported use cases/environments are listed in the below table:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 26%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" colspan="2"></th>
+<th class="head" colspan="2"><p>Network Flow</p></th>
+</tr>
+<tr class="row-even"><th class="head" colspan="2"><p>Use Case</p></th>
+<th class="head"><p>Pulling Images</p></th>
+<th class="head"><p>Pulling Packages</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p><strong>1</strong></p></td>
+<td><p>HTTP Proxy with
+full Internet
+access</p></td>
+<td><p>K8s node –&gt; HTTP
+Proxy –&gt; Internet
+Image Registry</p></td>
+<td><p>Driver container
+–&gt; HTTP Proxy –&gt;
+Internet Package
+Repository</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>2</strong></p></td>
+<td><p>HTTP Proxy with
+limited Internet
+access</p></td>
+<td><p>K8s node –&gt; HTTP
+Proxy –&gt; Internet
+Image Registry</p></td>
+<td><p>Driver container
+–&gt; HTTP Proxy –&gt;
+Local Package
+Repository</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>3a</strong></p></td>
+<td><p>Full Air-Gapped
+(w/ HTTP Proxy)</p></td>
+<td><p>K8s node –&gt; Local
+Image Registry</p></td>
+<td><p>Driver container
+–&gt; HTTP Proxy –&gt;
+Local Package
+Repository</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>3b</strong></p></td>
+<td><p>Full Air-Gapped
+(w/o HTTP Proxy)</p></td>
+<td><p>K8s node –&gt; Local
+Image Registry</p></td>
+<td><p>Driver container–&gt;
+Local Package
+Repository</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b),
+refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mirror-gpu-ocp-disconnected.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Deploy GPU Operators in a disconnected or airgapped environment</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that Kubernetes nodes can successfully reach the local DNS server(s).
+Public name resolution for image registry and package repositories are
+mandatory for use cases 1 and 2.</p>
+</div>
+<p>Before proceeding to the next sections, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">v1.7.0</span></code> in the above command with the version you want to use.</p>
+</div>
+</section>
+<section id="local-image-registry">
+<h2>Local Image Registry<a class="headerlink" href="#local-image-registry" title="Permalink to this headline">#</a></h2>
+<p>Without internet access, the GPU Operator requires all images to be hosted in a local image registry that is accessible
+to all nodes in the cluster. To allow the GPU Operator to work with a local registry, users can specify local
+repository, image, tag along with pull secrets in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
+<p>To pull the correct images from the NVIDIA registry, you can leverage the fields <code class="docutils literal notranslate"><span class="pre">repository</span></code>, <code class="docutils literal notranslate"><span class="pre">image</span></code> and <code class="docutils literal notranslate"><span class="pre">version</span></code>
+specified in the file <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
+<p>The general syntax for the container image is <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;image&gt;:&lt;version&gt;</span></code>.</p>
+<p>If the version is not specified, you can retrieve the information from the NVIDIA NGC catalog at <a class="reference external" href="https://catalog.ngc.nvidia.com/containers">https://catalog.ngc.nvidia.com/containers</a>.
+Search for an image, such as <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> and then check the available tags for the image.</p>
+<p>An example is shown below with the Operator container image:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">operator</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v25.3.1&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For instance, to pull the gpu-operator image version v25.3.1, use the following instruction:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/gpu-operator:v25.3.1
+</pre></div>
+</div>
+<p>There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;570.148.08&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>To pull the driver image for Ubuntu 20.04:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/driver:570.148.08-ubuntu20.04
+</pre></div>
+</div>
+<p>To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.</p>
+<p>Using the above examples, this will result in:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v25.3.1 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.1
+<span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:570.148.08-ubuntu20.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.148.08-ubuntu20.04
+</pre></div>
+</div>
+<p>Finally, push the images to the local registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.1
+<span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:570.148.08-ubuntu20.04
+</pre></div>
+</div>
+<p>Update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with local registry information in the repository field.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Replace &lt;repo.example.com:port&gt; below with your local image registry URL and port.</p>
+</div>
+<p>Sample of <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> for GPU Operator v1.9.0:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">operator</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.9.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">initContainer</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">11.4.2-base-ubi8</span><span class="w"></span>
+
+<span class="w w-Error"> </span><span class="nt">validator</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-validator</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.9.0</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;470.82.01&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">   </span><span class="nt">manager</span><span class="p">:</span><span class="w"></span>
+<span class="w">     </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s-driver-manager</span><span class="w"></span>
+<span class="w">     </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.2.0</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container-toolkit</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.7.2-ubuntu18.04</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">devicePlugin</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s-device-plugin</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.10.0-ubi8</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">dcgmExporter</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcgm-exporter</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.3.1-2.6.0-ubuntu20.04</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">gfd</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-feature-discovery</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.4.1</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">nodeStatusExporter</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-validator</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1.9.0&quot;</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">migManager</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s-mig-manager</span><span class="w"></span>
+<span class="w">   </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.2.0-ubuntu20.04</span><span class="w"></span>
+
+<span class="w"> </span><span class="nt">node-feature-discovery</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">image</span><span class="p">:</span><span class="w"></span>
+<span class="w">     </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">pullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">     </span><span class="c1"># tag, if defined will use the given image tag, else Chart.AppVersion will be used</span><span class="w"></span>
+<span class="w">     </span><span class="c1"># tag:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="local-package-repository">
+<h2>Local Package Repository<a class="headerlink" href="#local-package-repository" title="Permalink to this headline">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">driver</span></code> container deployed as part of the GPU operator requires certain packages to be available as part of the
+driver installation. In restricted internet access or air-gapped installations, users are required to create a
+local mirror repository for their OS distribution and make the following packages available:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>KERNEL_VERSION is the underlying running kernel version on the GPU node
+GCC_VERSION is the gcc version matching the one used for building underlying kernel</p>
+<p>Configuring a local package repository is not necessary for clusters that
+can run <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a>.</p>
+</div>
+<p class="rubric">Required Packages</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ubuntu</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">linux-headers-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">linux-image-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">linux-modules-${KERNEL_VERSION}</span><span class="w"></span>
+
+<span class="nt">centos</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">elfutils-libelf.x86_64</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">elfutils-libelf-devel.x86_64</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-headers-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-devel-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-core-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">gcc-${GCC_VERSION}</span><span class="w"></span>
+
+<span class="nt">rhel/rhcos</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-headers-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-devel-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-core-${KERNEL_VERSION}</span><span class="w"></span>
+<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">gcc-${GCC_VERSION}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For example, for Ubuntu, these packages can be found at <code class="docutils literal notranslate"><span class="pre">archive.ubuntu.com</span></code>.
+This is the mirror to be replicate locally for your cluster.
+You can use <code class="docutils literal notranslate"><span class="pre">apt-mirror</span></code> to mirror these packages to your local package repository server.</p>
+<p>For CentOS, <code class="docutils literal notranslate"><span class="pre">reposync</span></code> can be used to create the local mirror.</p>
+<p>After all the required packages are mirrored to the local repository, repo lists need to be created following
+distribution specific documentation. A <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> containing the repo list file needs to be created in
+the namespace where the GPU Operator gets deployed.</p>
+<p>An example of repo list is shown below for Ubuntu 22.04 (access to local package repository via HTTP):</p>
+<p><code class="docutils literal notranslate"><span class="pre">custom-repo.list</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy main universe</span>
+<span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-updates main universe</span>
+<span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-security main universe</span>
+</pre></div>
+</div>
+<p>An example of repo list is shown below for Ubuntu 20.04 (access to local package repository via HTTP):</p>
+<p><code class="docutils literal notranslate"><span class="pre">custom-repo.list</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu focal main universe</span>
+<span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu focal-updates main universe</span>
+<span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu focal-security main universe</span>
+</pre></div>
+</div>
+<p>An example of repo list is shown below for CentOS 8 (access to local package repository via HTTP):</p>
+<p><code class="docutils literal notranslate"><span class="pre">custom-repo.repo</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[baseos]</span>
+<span class="go">name=CentOS Linux $releasever - BaseOS</span>
+<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/baseos/</span>
+<span class="go">gpgcheck=0</span>
+<span class="go">enabled=1</span>
+
+<span class="go">[appstream]</span>
+<span class="go">name=CentOS Linux $releasever - AppStream</span>
+<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/appstream/</span>
+<span class="go">gpgcheck=0</span>
+<span class="go">enabled=1</span>
+
+<span class="go">[extras]</span>
+<span class="go">name=CentOS Linux $releasever - Extras</span>
+<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/extras/</span>
+<span class="go">gpgcheck=0</span>
+<span class="go">enabled=1</span>
+</pre></div>
+</div>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> object from the file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap repo-config -n gpu-operator --from-file<span class="o">=</span>&lt;path-to-repo-list-file&gt;
+</pre></div>
+</div>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">custom-repo.list</span></code> file and config map as appropriate if the containerization software platform, such as Tanzu, upgrades the Kubernetes cluster nodes to a newer operating system version.</p>
+<p>After the config map is created, update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with this information to let the GPU Operator mount the repo configuration
+within the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to pull required packages. Based on the OS distribution the GPU Operator automatically mounts this config map into the appropriate directory.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">repoConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">configMapName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">repo-config</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If self-signed certificates are used for an HTTPS based internal repository then you must add a config map for those certificates.
+You then specify the config map during the GPU Operator install.
+Based on the OS distribution the GPU Operator automatically mounts this config map into the appropriate directory.
+Similarly, the certificate file format and suffix, such as <code class="docutils literal notranslate"><span class="pre">.crt</span></code> or <code class="docutils literal notranslate"><span class="pre">.pem</span></code>, also depends on the OS distribution.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap cert-config -n gpu-operator --from-file<span class="o">=</span>&lt;path-to-cert-file-1&gt; --from-file<span class="o">=</span>&lt;path-to-cert-file-2&gt;
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">certConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cert-config</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="deploy-gpu-operator">
+<h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
+<p>Fetch the chart from the NGC repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.1.tgz
+</pre></div>
+</div>
+<p>Install the GPU Operator with the customized <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     gpu-operator-v25.3.1.tgz <span class="se">\</span>
+     -f values.yaml
+</pre></div>
+</div>
+<p>Check the status of the pods to ensure all the containers are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="install-gpu-operator-proxy.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Install GPU Operator in Proxy Environments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="install-gpu-operator-service-mesh.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Install GPU Operator with Service Mesh</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-air-gapped-installations">About Air-Gapped Installations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-image-registry">Local Image Registry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-package-repository">Local Package Repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-gpu-operator">Deploy GPU Operator</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
