@@ -21,7 +21,7 @@ you can verify your installation by running a sample workload.
 
 ## Running a Sample Workload with Podman
 
-After you install and configure the toolkit (including [generating a CDI specification](cdi-support.md)) and install an NVIDIA GPU Driver,
+After you install and configura the toolkit (including [generating a CDI specification](cdi-support.md)) and install an NVIDIA GPU Driver,
 you can verify your installation by running a sample workload.
 
 - Run a sample CUDA container:
