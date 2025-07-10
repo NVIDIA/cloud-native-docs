@@ -255,7 +255,7 @@ The following packages are included:
 - `libnvidia-container-tools 1.17.2`
 - `libnvidia-container1 1.17.2`
 
-The following `container-toolkit` containers are included:
+The following `container-toolkit` conatiners are included:
 
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubi8`
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.17.2`)
