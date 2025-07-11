@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 02, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 11, 2025"/>
 
 
 
@@ -401,6 +401,12 @@ For information about installing the driver with a package manager, refer to
 the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html"><em>NVIDIA Driver Installation Quickstart Guide</em></a>.
 Alternatively, you can install the driver by <a class="reference external" href="https://www.nvidia.com/en-us/drivers/">downloading</a> a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">known issue</span></a> on systems
+where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup drivers are used that cause containers to lose access to requested GPUs when
+<code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon</span> <span class="pre">reload</span></code> is run. Please see the troubleshooting documentation for more information.</p>
+</div>
 </section>
 <section id="with-apt-ubuntu-debian">
 <span id="installing-with-apt"></span><h3>With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian<a class="headerlink" href="#with-apt-ubuntu-debian" title="Permalink to this headline">#</a></h3>
