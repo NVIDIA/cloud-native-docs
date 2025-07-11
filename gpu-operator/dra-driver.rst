@@ -137,7 +137,7 @@ all parameters can be listed by running ``helm show values nvidia/nvidia-dra-dri
 
    * - ``resources.gpus.enabled``
      - Specifies whether to enable the NVIDIA DRA Driver for GPUs to manage GPU resource allocation.
-       This feature is in Technolody Preview and only recommended for testing, not production enviroments.
+       This feature is in Technology Preview and only recommended for testing, not production environments.
        To use with MNNVL use cases only, set to ``false``.
      - ``true``
 
