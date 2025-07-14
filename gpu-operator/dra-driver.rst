@@ -6,86 +6,65 @@
 NVIDIA DRA Driver for GPUs
 ##########################
 
-This page provides an overview of the NVIDIA DRA Driver for GPUs, its supported functionality, instructions for how to install it alongside the GPU Operator, and usage examples.
+************
+Introduction
+************
 
-Before continuing, you should be familiar with the concept of Dynamic Resource Allocation (DRA) in Kubernetes (`docs <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_).
+The NVIDIA DRA Driver for GPUs enables your Kubernetes workload to allocate and consume the following two resource types:
 
-*******************
-Supported Use Cases
-*******************
+* ComputeDomains, for robust and secure Multi-Node NVLink for NVIDIA GB200 and similar systems (full support).
+* GPUs, for controlled GPU sharing and on-the-fly reconfiguration (a modern alternative to traditional GPU allocation via the `NVIDIA device plugin <https://github.com/NVIDIA/k8s-device-plugin>`_; note that this is part of the driver is a Technology Preview and not yet fully supported).
 
-The NVIDIA DRA Driver for GPUs v25.3.0 enables allocating the following resources for your workloads:
+A primer on DRA
+===============
 
-* A ``ComputeDomain`` for enabling Multi-Node NVLink (MNNVL) workloads on NVIDIA GB200 systems (full support).
-* GPUs, as an alternative to the traditional device plugin method (Technology Preview support).
+Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
+DRA puts resource configuration and scheduling into the hands of device vendors, via drivers like this one.
+Before going ahead, we recommend for you to become familiar with the `DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
 
-Multi-Node NVLink Support for NVIDIA GB200
-==========================================
+The two parts of this driver
+============================
 
-NVIDIA GB200 systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+The ComputeDomain and GPU parts of this driver operate independently of each other.
+Below, you can find instructions for how to install both parts or just one of them.
 
-The NVIDIA DRA Driver for GPUs supports MNNVL by introducing a new concept called ``ComputeDomain``.
+Additionally, we have prepared two separate documentation chapters:
 
-When a workload is created that references a specific ``ComputeDomain``, the NVIDIA DRA Driver for GPUs will handle establishing a shared IMEX domain and IMEX channel that guarantees MNNVL-reachability between all pods in the workload.
+- documentation for GPU support
+- documentation for ComputeDomain support
 
-GPU resource allocation (Technology Preview)
-============================================
-
-.. note:: 
-  The GPU allocation features of the NVIDIA DRA Driver for GPUs are not supported in production environment  and are not functionally complete.
-  Technology Preview features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
-  These releases may not have full documentation, and testing is limited.
-
-Dynamic resource allocation was imlpemented in Kubernetes to allow users to more esily define and request specialized reousrces for their workloads
-Before DRA, requesting GPUs and other specilized resources handled by a device plugin, like the [NVIDIA Kubernetes Device plugin](https://github.com/NVIDIA/k8s-device-plugin). 
-The device-plugin along with a set of node labels added by GPU Feature Discovery, enabled users to allocate the desired number of GPUs on a node with desired type of GPUs. 
-
-The improvements made with Kuberntes DRA introduce an API that allows you to define resource claim templates for your GPUs resources that can be referenced in your workloads as a resource claim and allocated at deploy time. 
-This new API allows you to move away from the limited  "countable" API  provided by the previous implementation using device-plugins, to something much more flexible in terms of controlling which resources are consumed and where.
-
-Full support and implementation of the DRA using the DRA Driver for GPUs is not yet available. 
-The current release offers a Technology Preview of DRA support with the GPU Operator. 
 
 ************
 Installation
 ************
 
-The NVIDIA DRA Driver for GPUs is an additional component that can be installed alongside the GPU Operator on your Kubernetes cluster.
-The instructions below cover installing the DRA Driver for GPUs to be used to allocate reources for workloads that require Multi-Node NVLink on NVIDIA GB200 GPUs.
-
 Prerequisites
 =============
 
-- A Multi-Node NVIDIA GB200 system.
+- A Kubernetes cluster (v1.32 or newer) with the Dynamic Resource Allocation (DRA) `enabled <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`_.
 
-- A Kubernetes cluster (v1.32 or newer) with the `DynamicResourceAllocation` feature gate enabled and the `resource.k8s.io` API group enabled.
-
-  The following is a sample for enabling the required feature gates and API groups.
-  Refer to the Kubernetes documentation for full details on `enabling DRA on your cluster <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`__.
-
-  .. literalinclude:: ./manifests/input/kubeadm-init-config.yaml
-    :language: yaml
-    :caption: Sample Kubeadm Init Config with DRA Feature Gates Enabled
-
-- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled on all nodes and NVIDIA GPU Driver 565 or later.
-
-  A sample Helm install command below includes enabling CDI with ``cdi.enabled=true``.
-  Refer to the install documentation for details on `enabling CDI <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
+- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled and NVIDIA GPU Driver 565 or later.
+  The following command shows how to enable CDI upon GPU Operator installation:
 
   .. code-block:: console
 
       $ helm install --wait --generate-name \
-              -n gpu-operator --create-namespace \
-              nvidia/gpu-operator \
-              --version=${version} \
-              --set cdi.enabled=true
+          -n gpu-operator --create-namespace \
+          nvidia/gpu-operator \
+          --version=${version} \
+          --set cdi.enabled=true
 
-  If you want to install the DRA Driver for GPUs using pre-installed drivers, you must install NVIDIA GPU Driver 565 or later, the corresponding IMEX packages on GPU nodes, and disable the IMEX systemd service before installing the GPU Operator.
+  For completeness, please refer to the GPU Operator `installation documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
+
+  If you want to install the NVIDIA DRA Driver for GPUs using a pre-installed NVIDIA GPU Driver, you must make sure to have the corresponding IMEX packages installed, and disable the IMEX systemd service before installing the GPU Operator.
   Refer to the documentation on `installing the GPU Operator with pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__ for more details.
 
-Install the NVIDIA DRA Driver for GPUs with Helm
-================================================
+
+Configure and Helm-install the driver
+=====================================
+
+The NVIDIA DRA Driver for GPUs must be installed as a separate Helm chart (in a future release, it will be included in the NVIDIA GPU Operator).
 
 #. Add the NVIDIA Helm repository:
 
@@ -94,7 +73,7 @@ Install the NVIDIA DRA Driver for GPUs with Helm
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
           && helm repo update
 
-#. Install the NVIDIA DRA Driver for GPUs:
+#. Install the driver, providing install-time configuration paramters:
 
    .. code-block:: console
 
@@ -105,62 +84,42 @@ Install the NVIDIA DRA Driver for GPUs with Helm
             --set nvidiaDriverRoot=/run/nvidia/driver \
             --set resources.gpus.enabled=false
 
-Note that ``--set nvidiaDriverRoot=/run/nvidia/driver`` above expects a GPU Operator-provided GPU driver at that location.
-That configuration parameter must be changed in case the GPU drivers are installed straight on the host (typically at ``/``, which is the default value for ``nvidiaDriverRoot``).
+Note that
 
-Common Chart Customization Options
-==================================
+- a common mode of operation for now is to enable only ComputeDomain support and have GPUs allocated using the traditional device plugin -- the example above achieves that by setting ``resources.gpus.enabled=false``.
+- setting  ``nvidiaDriverRoot=/run/nvidia/driver`` above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU drivers are installed straight on the host (typically at ``/``, which is the default value for ``nvidiaDriverRoot``).
 
-The following options are available when installing the Helm chart.
-These options can be used with ``--set`` when installing with Helm (these are just the most frequently used options --
-all parameters can be listed by running ``helm show values nvidia/nvidia-dra-driver-gpu``).
-
-.. list-table::
-   :widths: 20 50 30
-   :header-rows: 1
-
-   * - Parameter
-     - Description
-     - Default
-
-   * - ``nvidiaDriverRoot``
-     - Specifies the driver root on the host.
-       For GPU Operator-managed drivers (recommended), use ``/run/nvidia/driver``.
-       For pre-installed drivers, use ``/``.
-     - ``/``
-
-   * - ``nvidiaCtkPath``
-     - Specifies the path of the NVIDIA Container Toolkit CLI binary (nvidia-ctk) on the host.
-       For GPU Operator-installed NVIDIA Container Toolkit (recommended), use ``/usr/local/nvidia/toolkit/nvidia-ctk``.
-       For a pre-installed NVIDIA Container Toolkit, use ``/usr/bin/nvidia-ctk``.
-     - ``/usr/bin/nvidia-ctk``
-
-   * - ``resources.gpus.enabled``
-     - Specifies whether to enable the NVIDIA DRA Driver for GPUs to manage GPU resource allocation.
-       This feature is in Technology Preview and only recommended for testing, not production environments.
-       To use with MNNVL use cases only, set to ``false``.
-     - ``true``
+All install-time configuration parameters can be listed by running ``helm show values nvidia/nvidia-dra-driver-gpu``.
 
 
 Verify Installation
 ===================
 
-#. Validate that the components are running and in a ``READY`` state.
+Validate that the components are running and in a ``READY`` state.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ kubectl get pod -n nvidia-dra-driver-gpu
+  $ kubectl get pod -n nvidia-dra-driver-gpu
 
-   *Example Output*
+*Example Output*
 
-   .. code-block:: output
+.. code-block:: output
 
-      NAME                                                           READY   STATUS    RESTARTS   AGE
-      nvidia-dra-driver-k8s-dra-driver-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s
-      nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-7kdg9          1/1     Running   0          7m27s
-      nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bd6gn          1/1     Running   0          7m27s
-      nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bzm6p          1/1     Running   0          7m26s
-      nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-xjm4p          1/1     Running   0          7m27s
+  NAME                                                           READY   STATUS    RESTARTS   AGE
+  nvidia-dra-driver-k8s-dra-driver-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s
+  nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-7kdg9          1/1     Running   0          7m27s
+  nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bd6gn          1/1     Running   0          7m27s
+  nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-bzm6p          1/1     Running   0          7m26s
+  nvidia-dra-driver-k8s-dra-driver-kubelet-plugin-xjm4p          1/1     Running   0          7m27s
+
+Further verification steps are documented separately in the more in-depth documentation chapters for GPUs and ComputeDomains.
+
+**************
+ComputeDomains
+**************
+
+TODO
+
 
 
 #. Confirm that all GPU nodes are labeled with clique ids.
@@ -183,12 +142,44 @@ Verify Installation
 The `NVIDIA GPU Feature Discovery <https://github.com/NVIDIA/k8s-device-plugin/tree/main/docs/gpu-feature-discovery>`_ adds a Clique ID to each GPU node.
 This is a unique identifier within an NVLink domain (physically connected GPUs over NVLink) that indicates which GPUs within that domain are physically capable of talking to each other.
 
-The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer. 
+The partitioning of GPUs into a set of cliques is done at the NVSwitch layer, not at the individual node layer.
 All GPUs on a given node are guaranteed to have the same <ClusterUUID.Clique ID> pair.
 
 The ClusterUUID is a unique identifier for a given NVLink Domain.
 It can be queried on a GPU by GPU basis via the ``nvidia-smi`` commandline tool.
 All GPUs on a given node are guaranteed to have the same Cluster UUID.
+
+
+
+
+
+Multi-Node NVLink Support for NVIDIA GB200
+==========================================
+
+NVIDIA GB200 systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a giant supercomputer with up to 72 GPUs communicating at full NVLink bandwidth.
+
+The NVIDIA DRA Driver for GPUs supports MNNVL by introducing a new concept called ``ComputeDomain``.
+
+When a workload is created that references a specific ``ComputeDomain``, the NVIDIA DRA Driver for GPUs will handle establishing a shared IMEX domain and IMEX channel that guarantees MNNVL-reachability between all pods in the workload.
+
+GPU resource allocation (Technology Preview)
+============================================
+
+.. note::
+  The GPU allocation features of the NVIDIA DRA Driver for GPUs are not supported in production environment  and are not functionally complete.
+  Technology Preview features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+  These releases may not have full documentation, and testing is limited.
+
+Dynamic resource allocation was imlpemented in Kubernetes to allow users to more esily define and request specialized reousrces for their workloads
+Before DRA, requesting GPUs and other specilized resources handled by a device plugin, like the [NVIDIA Kubernetes Device plugin](https://github.com/NVIDIA/k8s-device-plugin).
+The device-plugin along with a set of node labels added by GPU Feature Discovery, enabled users to allocate the desired number of GPUs on a node with desired type of GPUs.
+
+The improvements made with Kuberntes DRA introduce an API that allows you to define resource claim templates for your GPUs resources that can be referenced in your workloads as a resource claim and allocated at deploy time.
+This new API allows you to move away from the limited  "countable" API  provided by the previous implementation using device-plugins, to something much more flexible in terms of controlling which resources are consumed and where.
+
+Full support and implementation of the DRA using the DRA Driver for GPUs is not yet available.
+The current release offers a Technology Preview of DRA support with the GPU Operator.
+
 
 
 ***************************************
