@@ -10,29 +10,34 @@ NVIDIA DRA Driver for GPUs
 Introduction
 ************
 
-The NVIDIA DRA Driver for GPUs enables your Kubernetes workload to allocate and consume the following two resource types:
+With NVIDIA's DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two resource types:
 
-* ComputeDomains, for robust and secure Multi-Node NVLink for NVIDIA GB200 and similar systems (full support).
-* GPUs, for controlled GPU sharing and on-the-fly reconfiguration (a modern alternative to traditional GPU allocation via the `NVIDIA device plugin <https://github.com/NVIDIA/k8s-device-plugin>`_; note that this is part of the driver is a Technology Preview and not yet fully supported).
+* **ComputeDomains**: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.
+* **GPUs**: for controlled sharing and reconfiguration of GPUs. This is a modern alternative to traditional device allocation via the `NVIDIA device plugin <https://github.com/NVIDIA/k8s-device-plugin>`_. This part of the driver is a Technology Preview and not yet fully supported.
 
 A primer on DRA
 ===============
 
 Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
-DRA puts resource configuration and scheduling into the hands of device vendors, via drivers like this one.
-Before going ahead, we recommend for you to become familiar with the `DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
+It puts resource configuration and scheduling into the hands of device vendors (via drivers like this one) and provides
+
+- a clean way to allocate cross-machine resources in Kubernetes (we leverage that for providing securely isolated MNNVL connectivity between pods running on different nodes).
+- mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.
+
+To make best use of use NVIDIA's DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the `official DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
 
 The two parts of this driver
 ============================
 
-The ComputeDomain and GPU parts of this driver operate independently of each other.
+NVIDIA's DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.
+
+
 Below, you can find instructions for how to install both parts or just one of them.
+Additionally, we have prepared two separate documentation chapters for you to consult after installation:
 
-Additionally, we have prepared two separate documentation chapters:
-
-- documentation for GPU support
-- documentation for ComputeDomain support
+- `Docs for GPU support in NVIDIA's DRA Driver for GPUs <foo1>`_
+- `Docs for ComputeDomain support in NVIDIA's DRA Driver for GPUs <foo2>`_
 
 
 ************
@@ -42,29 +47,31 @@ Installation
 Prerequisites
 =============
 
-- A Kubernetes cluster (v1.32 or newer) with the Dynamic Resource Allocation (DRA) `enabled <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`_.
+- Kubernetes v1.32 or newer.
+- DRA and corresponding API groups must be enabled (`see Kubernetes docs <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`_).
+- GPU Driver 565 or later.
+- NVIDIA's GPU Operator v25.3.0 or later, installed with CDI enabled (use the ``--set cdi.enabled=true`` commandline argument during ``helm install``). For reference, please refer to the GPU Operator `installation documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
 
-- The NVIDIA GPU Operator v25.3.0 or later installed with CDI enabled and NVIDIA GPU Driver 565 or later.
-  The following command shows how to enable CDI upon GPU Operator installation:
-
+..
+  For convenience, the following example shows how to enable CDI upon GPU Operator installation:
   .. code-block:: console
-
       $ helm install --wait --generate-name \
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
           --version=${version} \
           --set cdi.enabled=true
 
-  For completeness, please refer to the GPU Operator `installation documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`__.
+.. note::
 
-  If you want to install the NVIDIA DRA Driver for GPUs using a pre-installed NVIDIA GPU Driver, you must make sure to have the corresponding IMEX packages installed, and disable the IMEX systemd service before installing the GPU Operator.
-  Refer to the documentation on `installing the GPU Operator with pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__ for more details.
+  If you want to use ComputeDomains and a pre-installed NVIDIA GPU Driver:
+
+  - Make sure to have the corresponding ``nvidia-imex-*`` packages installed.
+  - Disable the IMEX systemd service before installing the GPU Operator.
+  - Refer to the `docs on installing the GPU Operator with a pre-installed GPU driver <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__.
 
 
-Configure and Helm-install the driver
-=====================================
-
-The NVIDIA DRA Driver for GPUs must be installed as a separate Helm chart (in a future release, it will be included in the NVIDIA GPU Operator).
+Configure and Helm-install the DRA driver
+=========================================
 
 #. Add the NVIDIA Helm repository:
 
@@ -73,7 +80,7 @@ The NVIDIA DRA Driver for GPUs must be installed as a separate Helm chart (in a 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
           && helm repo update
 
-#. Install the driver, providing install-time configuration paramters:
+#. Install the driver, providing install-time configuration parameters. Example:
 
    .. code-block:: console
 
@@ -84,24 +91,26 @@ The NVIDIA DRA Driver for GPUs must be installed as a separate Helm chart (in a 
             --set nvidiaDriverRoot=/run/nvidia/driver \
             --set resources.gpus.enabled=false
 
-Note that
-
-- a common mode of operation for now is to enable only ComputeDomain support and have GPUs allocated using the traditional device plugin -- the example above achieves that by setting ``resources.gpus.enabled=false``.
-- setting  ``nvidiaDriverRoot=/run/nvidia/driver`` above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU drivers are installed straight on the host (typically at ``/``, which is the default value for ``nvidiaDriverRoot``).
-
 All install-time configuration parameters can be listed by running ``helm show values nvidia/nvidia-dra-driver-gpu``.
 
+.. note::
+
+  - A common mode of operation for now is to enable only the ComputeDomain subsystem (to have GPUs allocated using the traditional device plugin). The example above achieves that by setting ``resources.gpus.enabled=false``.
+  - Setting  ``nvidiaDriverRoot=/run/nvidia/driver`` above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at ``/``, which is the default value for ``nvidiaDriverRoot``).
+  - In a future release, NVIDIA's DRA Driver for GPUs will be bundled with the NVIDIA GPU Operator (and does not need to be installed as a separate Helm chart anymore).
+
+.. _verifyInstall:
 
 Verify Installation
 ===================
 
-Validate that the components are running and in a ``READY`` state.
+Validate that the components are running and in a ``READY`` state:
 
 .. code-block:: console
 
   $ kubectl get pod -n nvidia-dra-driver-gpu
 
-*Example Output*
+Example Output:
 
 .. code-block:: output
 
@@ -114,11 +123,15 @@ Validate that the components are running and in a ``READY`` state.
 
 Further verification steps are documented separately in the more in-depth documentation chapters for GPUs and ComputeDomains.
 
+
 **************
 ComputeDomains
 **************
 
-TODO
+.. _verifyCD:
+
+Verify Installation
+===================
 
 
 
