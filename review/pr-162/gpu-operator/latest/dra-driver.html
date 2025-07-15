@@ -535,61 +535,46 @@ Upon workload completion, all <code class="docutils literal notranslate"><span c
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>.</p>
 <p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about exporting GPU memory though IMEX/NVLink.</p>
 <p>If you are looking for a higher-level communication library, <cite>NVIDIA’s NCCL &lt;https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html&gt;_</cite> newer than version 2.25 supports MNNVL.</p>
-</section>
-<section id="usage">
-<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h3>
-<p>TODO: api fields, parameters</p>
-<section id="example-run-a-multi-node-nvbandwidth-test">
-<h4>Example: Run a multi-node nvbandwidth test<a class="headerlink" href="#example-run-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h4>
-<p>This example demonstrates how to run a workload across multiple nodes using a ComputeDomain.
-The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your MNNVL setup is working correctly.</p>
-<p><strong>Example notes:</strong></p>
+<section id="usage-example-a-multi-node-nvbandwidth-test">
+<h4>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h4>
+<p>This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.</p>
+<p>Notes:</p>
 <ul>
 <li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
-<li><p>This example is configured for a 2 node cluster with 4 GPUs per node.</p>
-<p>If you are using a cluster with a different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:</p>
-</li>
-</ul>
-<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<li><p>This example is configured to run across two nodes, using four GPUs per node.
+If you want to use different numbers, please adjust parameters according to the table below:</p>
+<div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 15%" />
-<col style="width: 55%" />
-<col style="width: 30%" />
+<col style="width: 50%" />
+<col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Parameter to update</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Value in example</p></th>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value (in example)</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomain.spec.numNodes</span></code></p></td>
-<td><p>Total number of nodes in the cluster</p></td>
-<td><p>2</p></td>
+<td><p>Total number of nodes to use in the test (2).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.slotsPerWorker</span></code></p></td>
-<td><p>Number of GPUs per node, this should match the ppr number</p></td>
-<td><p>4</p></td>
+<td><p>Number of GPUs per node to use – this must match the <code class="docutils literal notranslate"><span class="pre">ppr</span></code> number below (4).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.mpiReplicaSpecs.Worker.replicas</span></code></p></td>
-<td><p>Number of worker nodes</p></td>
-<td><p>2</p></td>
+<td><p>Also set this to the number of nodes (2).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-ppr:4:node</span></code></p></td>
-<td><ul class="simple">
-<li><p>Number of GPUs per node as the process-per-resource number</p></li>
-</ul>
-</td>
-<td><p>4</p></td>
+<td><p>Set this tot he number of GPUs to use per node (4)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-np</span></code> value</p></td>
-<td><p>Total processes to be the number of GPU per node * the number of nodes in the cluster</p></td>
-<td><p>8</p></td>
+<td><p>Set this to the total number of GPUs in the test (8).</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>Example Steps:</strong></p>
+</li>
+</ul>
+<p><strong>Steps:</strong></p>
 <ol class="arabic">
 <li><p>Install Kubeflow MPI Operator.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
@@ -879,9 +864,8 @@ These releases may not have full documentation, and testing is limited.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computedomains">ComputeDomains</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-run-a-multi-node-nvbandwidth-test">Example: Run a multi-node nvbandwidth test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
 </ul>
 </li>
 </ul>
