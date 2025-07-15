@@ -548,13 +548,12 @@ Since nvbandwidth requires MPI, below we also install the <a class="reference ex
 </pre></div>
 </div>
 </li>
-<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.</p></li>
-</ol>
-<blockquote>
-<div><p>To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.
+<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.
+To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.
 This example is configured to run across two nodes, using four GPUs per node.
 If you want to use different numbers, please adjust the parameters in the spec according to the table below:</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<blockquote>
+<div><div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -575,7 +574,7 @@ If you want to use different numbers, please adjust the parameters in the spec a
 <td><p>Also set this to the number of nodes (2).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-ppr:4:node</span></code></p></td>
-<td><p>Set this tot he number of GPUs to use per node (4)</p></td>
+<td><p>Set this to the number of GPUs to use per node (4)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-np</span></code> value</p></td>
 <td><p>Set this to the total number of GPUs in the test (8).</p></td>
@@ -584,7 +583,7 @@ If you want to use different numbers, please adjust the parameters in the spec a
 </table>
 </div>
 </div></blockquote>
-<ol class="arabic">
+</li>
 <li><p>Apply the manifest.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f nvbandwidth-test-job.yaml
 </pre></div>
