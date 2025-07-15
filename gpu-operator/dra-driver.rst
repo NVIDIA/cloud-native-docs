@@ -155,7 +155,7 @@ If you are looking for a higher-level communication library, `NVIDIA's NCCL <htt
 
 
 Usage example: a multi-node nvbandwidth test
-********************************************
+============================================
 
 This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.
 
@@ -163,8 +163,22 @@ Notes:
 
 - This example uses `Kubeflow MPI Operator <https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr>`__.
 
-- This example is configured to run across two nodes, using four GPUs per node.
-  If you want to use different numbers, please adjust parameters according to the table below:
+
+
+
+**Steps:**
+
+#. Install Kubeflow MPI Operator.
+
+   .. code-block:: console
+
+      $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
+
+#. Create a test job file called ``nvbandwidth-test-job.yaml``.
+
+  To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
+  This example is configured to run across two nodes, using four GPUs per node.
+  If you want to use different numbers, please adjust the parameters in the spec according to the table below:
 
   .. list-table::
     :header-rows: 1
@@ -186,19 +200,6 @@ Notes:
 
     * - ``mpirun`` command argument ``-np`` value
       - Set this to the total number of GPUs in the test (8).
-
-
-**Steps:**
-
-#. Install Kubeflow MPI Operator.
-
-   .. code-block:: console
-
-      $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
-
-#. Create a test job file called ``nvbandwidth-test-job.yaml``.
-   To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
-
 
 #. Apply the manifest.
 
@@ -255,13 +256,10 @@ Notes:
 
       Warning: Permanently added '[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222' (ECDSA) to the list of known hosts.
       Warning: Permanently added '[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222' (ECDSA) to the list of known hosts.
-      [nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-0:00025] MCW rank 1 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-0:00025] MCW rank 2 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-0:00025] MCW rank 3 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-1:00025] MCW rank 4 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-1:00025] MCW rank 5 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
-      [nvbandwidth-test-worker-1:00025] MCW rank 6 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
+      [nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]:
+
+      [...]
+
       [nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
       nvbandwidth Version: v0.7
       Built from Git version: v0.7
@@ -296,19 +294,11 @@ Notes:
 
       NOTE: The reported results may not reflect the full capabilities of the platform.
 
-#. Delete test.
+#. Clean up.
 
    .. code-block:: console
 
       $ kubectl delete -f nvbandwidth-test-job.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-      computedomain.resource.nvidia.com "nvbandwidth-test-compute-domain" deleted
-      mpijob.kubeflow.org "nvbandwidth-test" deleted
-
 
 ****
 GPUs
