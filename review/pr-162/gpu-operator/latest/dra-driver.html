@@ -530,7 +530,7 @@ Upon workload completion, all <code class="docutils literal notranslate"><span c
 </section>
 <section id="a-deeper-dive-related-resources">
 <h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
-<p>For more background on how <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see this doc and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.</p>
+<p>For more background on how <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.</p>
 <p>For an outlook on improvements on the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> concept that we have planned to release in the future, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>.</p>
 <p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about exporting GPU memory though IMEX/NVLink.</p>
@@ -797,20 +797,22 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
 </section>
 <section id="gpus">
 <h2>GPUs<a class="headerlink" href="#gpus" title="Permalink to this headline">#</a></h2>
+<p>The GPU allocation side of this DRA driver enables various critical scenarios, such as</p>
+<ul class="simple">
+<li><p>controlled sharing of individual GPUs between multiple pods and/or containers.</p></li>
+<li><p>GPU selection via complex constraints expressed via <a class="reference external" href="https://kubernetes.io/docs/reference/using-api/cel/">CEL</a>.</p></li>
+</ul>
+<p>To learn more about this part of the DRA driver and about what we are planning to build in the future (such as dynamic allocation of MIG devices), please have a look at <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">these release notes</a>.</p>
+<p>While the GPU allocation features of this driver can be tried out, they are not yet officially supported.
+Hence, the GPU kubelet plugin is currently disabled by default in the Helm chart installation.</p>
+<p>For documentation on how to use and test the current set of GPU allocation features, please head over to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu?tab=readme-ov-file#a-kind-demo">demo section</a> of the driver’s README and to its <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/tree/main/demo/specs/quickstart">quickstart directory</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The GPU allocation features of the NVIDIA DRA Driver for GPUs are in <strong>Technology Preview</strong>.
-They are not supported in production environments and are not functionally complete.
+<p>This part of the NVIDIA DRA Driver for GPUs is in <strong>Technology Preview</strong>.
+They are not yet supported in production environments and are not functionally complete.
 Technology Preview features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
 These releases may not have full documentation, and testing is limited.</p>
 </div>
-<p>Dynamic resource allocation was imlpemented in Kubernetes to allow users to more esily define and request specialized reousrces for their workloads</p>
-<p>Before DRA, requesting GPUs and other specilized resources handled by a device plugin, like the [NVIDIA Kubernetes Device plugin](<a class="github reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA/k8s-device-plugin</a>).</p>
-<p>The device-plugin along with a set of node labels added by GPU Feature Discovery, enabled users to allocate the desired number of GPUs on a node with desired type of GPUs.</p>
-<p>The improvements made with Kuberntes DRA introduce an API that allows you to define resource claim templates for your GPUs resources that can be referenced in your workloads as a resource claim and allocated at deploy time.
-This new API allows you to move away from the limited  “countable” API  provided by the previous implementation using device-plugins, to something much more flexible in terms of controlling which resources are consumed and where.</p>
-<p>Full support and implementation of the DRA using the DRA Driver for GPUs is not yet available.
-The current release offers a Technology Preview of DRA support with the GPU Operator.</p>
 </section>
 </section>
 
