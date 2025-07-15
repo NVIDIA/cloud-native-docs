@@ -25,7 +25,7 @@ It puts resource configuration and scheduling into the hands of device vendors (
 - a clean way to allocate cross-machine resources in Kubernetes (this driver leverages that for providing NVLink connectivity across pods running on different nodes).
 - mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.
 
-To make best use of use NVIDIA's DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the `official DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
+To make best use of NVIDIA's DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the `official DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
 
 The two parts of this driver
@@ -114,11 +114,8 @@ To that end, we have prepared separate documentation:
 ComputeDomains
 **************
 
-Overview
-========
-
 Motivation
-**********
+==========
 
 NVIDIA's `GB200 NVL72 <https://www.nvidia.com/en-us/data-center/gb200-nvl72/>`_ and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a giant supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth.
 
@@ -130,7 +127,7 @@ Advanced users may appreciate to know that -- under the hood -- NVIDIA's DRA Dri
 A design goal of this DRA driver is to make IMEX be, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.
 
 Guarantees
-**********
+==========
 
 At a high level, an individual ComputeDomain guarantees
 
@@ -144,7 +141,7 @@ That means: only once workload pods get scheduled onto specific nodes, the ``Com
 Upon workload completion, all ``ComputeDomain``-associated resources get torn down automatically.
 
 A deeper dive: related resources
-********************************
+================================
 
 For more background on how ``ComputeDomain``\s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see this doc and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
 
