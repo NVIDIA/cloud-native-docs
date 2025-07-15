@@ -154,58 +154,41 @@ CUDA API documentation for `cuMemCreate <https://docs.nvidia.com/cuda/cuda-drive
 If you are looking for a higher-level communication library, `NVIDIA's NCCL <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html>_` newer than version 2.25 supports MNNVL.
 
 
-Usage
-=====
+Usage example: a multi-node nvbandwidth test
+********************************************
 
-TODO: api fields, parameters
+This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.
 
-Example: Run a multi-node nvbandwidth test
-******************************************
-
-This example demonstrates how to run a workload across multiple nodes using a ComputeDomain.
-The nvbandwidth test will measure the bandwidth between GPUs across different nodes using IMEX channels, helping you verify that your MNNVL setup is working correctly.
-
-**Example notes:**
+Notes:
 
 - This example uses `Kubeflow MPI Operator <https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr>`__.
 
-- This example is configured for a 2 node cluster with 4 GPUs per node.
+- This example is configured to run across two nodes, using four GPUs per node.
+  If you want to use different numbers, please adjust parameters according to the table below:
 
-  If you are using a cluster with a different number of nodes and GPUs per node, you must adjust the following parameters in the sample files:
+  .. list-table::
+    :header-rows: 1
 
+    * - Parameter
+      - Value (in example)
 
-.. list-table::
-   :widths: 15 55 30
-   :header-rows: 1
+    * - ``ComputeDomain.spec.numNodes``
+      - Total number of nodes to use in the test (2).
 
-   * - Parameter to update
-     - Description
-     - Value in example
+    * - ``MPIJob.spec.slotsPerWorker``
+      - Number of GPUs per node to use -- this must match the ``ppr`` number below (4).
 
-   * - ``ComputeDomain.spec.numNodes``
-     - Total number of nodes in the cluster
-     - 2
+    * - ``MPIJob.spec.mpiReplicaSpecs.Worker.replicas``
+      - Also set this to the number of nodes (2).
 
-   * - ``MPIJob.spec.slotsPerWorker``
-     - Number of GPUs per node, this should match the ppr number
-     - 4
+    * - ``mpirun`` command argument ``-ppr:4:node``
+      - Set this tot he number of GPUs to use per node (4)
 
-   * - ``MPIJob.spec.mpiReplicaSpecs.Worker.replicas``
-     - Number of worker nodes
-     - 2
-
-   * - ``mpirun`` command argument ``-ppr:4:node``
-
-     -
-       * Number of GPUs per node as the process-per-resource number
-     - 4
-
-   * - ``mpirun`` command argument ``-np`` value
-     - Total processes to be the number of GPU per node * the number of nodes in the cluster
-     - 8
+    * - ``mpirun`` command argument ``-np`` value
+      - Set this to the total number of GPUs in the test (8).
 
 
-**Example Steps:**
+**Steps:**
 
 #. Install Kubeflow MPI Operator.
 
@@ -214,6 +197,7 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
       $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
 
 #. Create a nvbandwidth test job file called ``nvbandwidth-test-job.yaml``.
+
 
    .. code-block:: yaml
 
