@@ -538,11 +538,9 @@ Upon workload completion, all <code class="docutils literal notranslate"><span c
 </section>
 <section id="usage-example-a-multi-node-nvbandwidth-test">
 <h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
-<p>This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.</p>
-<p>Notes:</p>
-<ul class="simple">
-<li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
-</ul>
+<p>This example demonstrates how to run an MNNVL workload across multiple nodes using a ComputeDomain.
+As example CUDA workload that performs MNNVL communication we have picked <a class="reference external" href="https://github.com/NVIDIA/nvbandwidth">nvbandwidth</a>.
+Since nvbandwidth requires MPI, below we also install the <a class="reference external" href="https://github.com/kubeflow/mpi-operator">Kubeflow MPI Operator</a>.</p>
 <p><strong>Steps:</strong></p>
 <ol class="arabic">
 <li><p>Install Kubeflow MPI Operator.</p>
