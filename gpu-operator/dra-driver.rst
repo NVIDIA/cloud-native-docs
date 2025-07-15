@@ -143,7 +143,7 @@ Upon workload completion, all ``ComputeDomain``-associated resources get torn do
 A deeper dive: related resources
 ================================
 
-For more background on how ``ComputeDomain``\s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see this doc and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
+For more background on how ``ComputeDomain``\s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see `this doc <https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so>`_ and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
 
 For an outlook on improvements on the ``ComputeDomain`` concept that we have planned to release in the future, please refer to `this document <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
 
@@ -426,29 +426,25 @@ The nvbandwidth test will measure the bandwidth between GPUs across different no
       mpijob.kubeflow.org "nvbandwidth-test" deleted
 
 
-
-
-
 ****
 GPUs
 ****
 
+The GPU allocation side of this DRA driver enables various critical scenarios, such as
+
+- controlled sharing of individual GPUs between multiple pods and/or containers.
+- GPU selection via complex constraints expressed via `CEL <https://kubernetes.io/docs/reference/using-api/cel/>`_.
+
+To learn more about this part of the DRA driver and about what we are planning to build in the future (such as dynamic allocation of MIG devices), please have a look at `these release notes <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
+
+While the GPU allocation features of this driver can be tried out, they are not yet officially supported.
+Hence, the GPU kubelet plugin is currently disabled by default in the Helm chart installation.
+
+For documentation on how to use and test the current set of GPU allocation features, please head over to the `demo section <https://github.com/NVIDIA/k8s-dra-driver-gpu?tab=readme-ov-file#a-kind-demo>`_ of the driver's README and to its `quickstart directory <https://github.com/NVIDIA/k8s-dra-driver-gpu/tree/main/demo/specs/quickstart>`_.
 
 .. note::
-  The GPU allocation features of the NVIDIA DRA Driver for GPUs are in **Technology Preview**.
-  They are not supported in production environments and are not functionally complete.
+  This part of the NVIDIA DRA Driver for GPUs is in **Technology Preview**.
+  They are not yet supported in production environments and are not functionally complete.
   Technology Preview features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
   These releases may not have full documentation, and testing is limited.
-
-Dynamic resource allocation was imlpemented in Kubernetes to allow users to more esily define and request specialized reousrces for their workloads
-
-Before DRA, requesting GPUs and other specilized resources handled by a device plugin, like the [NVIDIA Kubernetes Device plugin](https://github.com/NVIDIA/k8s-device-plugin).
-
-The device-plugin along with a set of node labels added by GPU Feature Discovery, enabled users to allocate the desired number of GPUs on a node with desired type of GPUs.
-
-The improvements made with Kuberntes DRA introduce an API that allows you to define resource claim templates for your GPUs resources that can be referenced in your workloads as a resource claim and allocated at deploy time.
-This new API allows you to move away from the limited  "countable" API  provided by the previous implementation using device-plugins, to something much more flexible in terms of controlling which resources are consumed and where.
-
-Full support and implementation of the DRA using the DRA Driver for GPUs is not yet available.
-The current release offers a Technology Preview of DRA support with the GPU Operator.
 
