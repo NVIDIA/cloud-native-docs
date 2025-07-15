@@ -196,109 +196,9 @@ Notes:
 
       $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
 
-#. Create a nvbandwidth test job file called ``nvbandwidth-test-job.yaml``.
+#. Create a test job file called ``nvbandwidth-test-job.yaml``.
+   To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
 
-
-   .. code-block:: yaml
-
-      ---
-      apiVersion: resource.nvidia.com/v1beta1
-      kind: ComputeDomain
-      metadata:
-        name: nvbandwidth-test-compute-domain
-      spec:
-        # Update numNodes to match the total number of nodes in your cluster
-        numNodes: 2
-        channel:
-          resourceClaimTemplate:
-            name: nvbandwidth-test-compute-domain-channel
-
-      ---
-      apiVersion: kubeflow.org/v2beta1
-      kind: MPIJob
-      metadata:
-        name: nvbandwidth-test
-      spec:
-        # Update slotsPerWorker to match the number of GPUs per node
-        slotsPerWorker: 4
-        launcherCreationPolicy: WaitForWorkersReady
-        runPolicy:
-          cleanPodPolicy: Running
-        sshAuthMountPath: /home/mpiuser/.ssh
-        mpiReplicaSpecs:
-          Launcher:
-            replicas: 1
-            template:
-              metadata:
-                labels:
-                  nvbandwidth-test-replica: mpi-launcher
-              spec:
-                affinity:
-                  nodeAffinity:
-                    requiredDuringSchedulingIgnoredDuringExecution:
-                      nodeSelectorTerms:
-                      - matchExpressions:
-                        - key: node-role.kubernetes.io/control-plane
-                          operator: Exists
-                containers:
-                - image: ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163
-                  name: mpi-launcher
-                  securityContext:
-                    runAsUser: 1000
-                  command:
-                  - mpirun
-                  args:
-                  - --bind-to
-                  - core
-                  - --map-by
-                  # Update the number (4) to match the number of GPUs per node
-                  - ppr:4:node
-                  - -np
-                  # Update the number (8) to match the total number of GPUs in the cluster, this example has 2 nodes * 4 GPUs per node
-                  - "8"
-                  - --report-bindings
-                  - -q
-                  - nvbandwidth
-                  - -t
-                  - multinode_device_to_device_memcpy_read_ce
-          Worker:
-            # Update replicas to match the number of worker nodes
-            replicas: 2
-            template:
-              metadata:
-                labels:
-                  nvbandwidth-test-replica: mpi-worker
-              spec:
-                affinity:
-                  podAffinity:
-                    requiredDuringSchedulingIgnoredDuringExecution:
-                    - labelSelector:
-                        matchExpressions:
-                        - key: nvbandwidth-test-replica
-                          operator: In
-                          values:
-                          - mpi-worker
-                      topologyKey: nvidia.com/gpu.clique
-                containers:
-                - image: ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163
-                  name: mpi-worker
-                  securityContext:
-                    runAsUser: 1000
-                  env:
-                  command:
-                  - /usr/sbin/sshd
-                  args:
-                  - -De
-                  - -f
-                  - /home/mpiuser/.sshd_config
-                  resources:
-                    limits:
-                      nvidia.com/gpu: 4
-                    claims:
-                    - name: compute-domain-channel
-                resourceClaims:
-                - name: compute-domain-channel
-                  resourceClaimTemplateName: nvbandwidth-test-compute-domain-channel
 
 #. Apply the manifest.
 
@@ -343,7 +243,7 @@ Notes:
       nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s
       nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s
 
-#. Verify the nvbandwidth test results.
+#. Verify the nvbandwidth test output.
 
    .. code-block:: console
 
