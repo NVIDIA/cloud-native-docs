@@ -433,7 +433,7 @@ It puts resource configuration and scheduling into the hands of device vendors (
 <li><p>a clean way to allocate cross-machine resources in Kubernetes (this driver leverages that for providing NVLink connectivity across pods running on different nodes).</p></li>
 <li><p>mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.</p></li>
 </ul>
-<p>To make best use of use NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
+<p>To make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
 </section>
 <section id="the-two-parts-of-this-driver">
 <h3>The two parts of this driver<a class="headerlink" href="#the-two-parts-of-this-driver" title="Permalink to this headline">#</a></h3>
@@ -508,10 +508,8 @@ To that end, we have prepared separate documentation:</p>
 </section>
 <section id="computedomains">
 <h2>ComputeDomains<a class="headerlink" href="#computedomains" title="Permalink to this headline">#</a></h2>
-<section id="overview">
-<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h3>
 <section id="motivation">
-<h4>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h4>
+<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines – each with a small number of GPUs – into a giant supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth.</p>
 <p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept: the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p>
 <p>When workload is created that references a specific <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, NVIDIA’s DRA Driver for GPUs orchestrates the underlying primitives required for establishing a shared NVLink communication channel among all pods that comprise the workload.</p>
@@ -519,7 +517,7 @@ To that end, we have prepared separate documentation:</p>
 A design goal of this DRA driver is to make IMEX be, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.</p>
 </section>
 <section id="guarantees">
-<h4>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h4>
+<h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
 <p>At a high level, an individual ComputeDomain guarantees</p>
 <ul class="simple">
 <li><p>MNNVL-<strong>reachability</strong> between pods that are in the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p></li>
@@ -531,13 +529,12 @@ In terms of placement, a design choice is that a <code class="docutils literal n
 Upon workload completion, all <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>-associated resources get torn down automatically.</p>
 </section>
 <section id="a-deeper-dive-related-resources">
-<h4>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h4>
+<h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
 <p>For more background on how <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see this doc and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.</p>
 <p>For an outlook on improvements on the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> concept that we have planned to release in the future, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>.</p>
 <p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about exporting GPU memory though IMEX/NVLink.</p>
 <p>If you are looking for a higher-level communication library, <cite>NVIDIA’s NCCL &lt;https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html&gt;_</cite> newer than version 2.25 supports MNNVL.</p>
-</section>
 </section>
 <section id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h3>
@@ -878,12 +875,9 @@ The current release offers a Technology Preview of DRA support with the GPU Oper
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computedomains">ComputeDomains</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-run-a-multi-node-nvbandwidth-test">Example: Run a multi-node nvbandwidth test</a></li>
 </ul>
