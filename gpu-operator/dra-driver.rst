@@ -107,7 +107,7 @@ We recommend to perform validation steps to confirm that your setup works as exp
 To that end, we have prepared separate documentation:
 
 - `Testing ComputeDomain allocation <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
-- `Testing GPU allocation <tbd_>`_
+- [TODO] Testing GPU allocation
 
 
 **************
