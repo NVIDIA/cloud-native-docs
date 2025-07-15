@@ -170,31 +170,30 @@ Since nvbandwidth requires MPI, below we also install the `Kubeflow MPI Operator
       $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
 
 #. Create a test job file called ``nvbandwidth-test-job.yaml``.
+   To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
+   This example is configured to run across two nodes, using four GPUs per node.
+   If you want to use different numbers, please adjust the parameters in the spec according to the table below:
 
-  To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
-  This example is configured to run across two nodes, using four GPUs per node.
-  If you want to use different numbers, please adjust the parameters in the spec according to the table below:
+    .. list-table::
+      :header-rows: 1
 
-  .. list-table::
-    :header-rows: 1
+      * - Parameter
+        - Value (in example)
 
-    * - Parameter
-      - Value (in example)
+      * - ``ComputeDomain.spec.numNodes``
+        - Total number of nodes to use in the test (2).
 
-    * - ``ComputeDomain.spec.numNodes``
-      - Total number of nodes to use in the test (2).
+      * - ``MPIJob.spec.slotsPerWorker``
+        - Number of GPUs per node to use -- this must match the ``ppr`` number below (4).
 
-    * - ``MPIJob.spec.slotsPerWorker``
-      - Number of GPUs per node to use -- this must match the ``ppr`` number below (4).
+      * - ``MPIJob.spec.mpiReplicaSpecs.Worker.replicas``
+        - Also set this to the number of nodes (2).
 
-    * - ``MPIJob.spec.mpiReplicaSpecs.Worker.replicas``
-      - Also set this to the number of nodes (2).
+      * - ``mpirun`` command argument ``-ppr:4:node``
+        - Set this to the number of GPUs to use per node (4)
 
-    * - ``mpirun`` command argument ``-ppr:4:node``
-      - Set this tot he number of GPUs to use per node (4)
-
-    * - ``mpirun`` command argument ``-np`` value
-      - Set this to the total number of GPUs in the test (8).
+      * - ``mpirun`` command argument ``-np`` value
+        - Set this to the total number of GPUs in the test (8).
 
 #. Apply the manifest.
 
