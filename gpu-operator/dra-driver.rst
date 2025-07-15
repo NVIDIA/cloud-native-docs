@@ -157,14 +157,9 @@ If you are looking for a higher-level communication library, `NVIDIA's NCCL <htt
 Usage example: a multi-node nvbandwidth test
 ============================================
 
-This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.
-
-Notes:
-
-- This example uses `Kubeflow MPI Operator <https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr>`__.
-
-
-
+This example demonstrates how to run an MNNVL workload across multiple nodes using a ComputeDomain.
+As example CUDA workload that performs MNNVL communication we have picked `nvbandwidth <https://github.com/NVIDIA/nvbandwidth>`_.
+Since nvbandwidth requires MPI, below we also install the `Kubeflow MPI Operator <https://github.com/kubeflow/mpi-operator>`_.
 
 **Steps:**
 
