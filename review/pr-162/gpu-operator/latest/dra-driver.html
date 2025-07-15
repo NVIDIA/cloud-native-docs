@@ -581,108 +581,8 @@ If you want to use different numbers, please adjust parameters according to the 
 </pre></div>
 </div>
 </li>
-<li><p>Create a nvbandwidth test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">---</span><span class="w"></span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ComputeDomain</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># Update numNodes to match the total number of nodes in your cluster</span><span class="w"></span>
-<span class="w">  </span><span class="nt">numNodes</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resourceClaimTemplate</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain-channel</span><span class="w"></span>
-
-<span class="nn">---</span><span class="w"></span>
-<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubeflow.org/v2beta1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MPIJob</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># Update slotsPerWorker to match the number of GPUs per node</span><span class="w"></span>
-<span class="w">  </span><span class="nt">slotsPerWorker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
-<span class="w">  </span><span class="nt">launcherCreationPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitForWorkersReady</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runPolicy</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cleanPodPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Running</span><span class="w"></span>
-<span class="w">  </span><span class="nt">sshAuthMountPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/mpiuser/.ssh</span><span class="w"></span>
-<span class="w">  </span><span class="nt">mpiReplicaSpecs</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">Launcher</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-<span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">nvbandwidth-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
-<span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
-<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-role.kubernetes.io/control-plane</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
-<span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
-<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-launcher</span><span class="w"></span>
-<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
-<span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpirun</span><span class="w"></span>
-<span class="w">            </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--bind-to</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--map-by</span><span class="w"></span>
-<span class="w">            </span><span class="c1"># Update the number (4) to match the number of GPUs per node</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ppr:4:node</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-np</span><span class="w"></span>
-<span class="w">            </span><span class="c1"># Update the number (8) to match the total number of GPUs in the cluster, this example has 2 nodes * 4 GPUs per node</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--report-bindings</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-q</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-t</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multinode_device_to_device_memcpy_read_ce</span><span class="w"></span>
-<span class="w">    </span><span class="nt">Worker</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="c1"># Update replicas to match the number of worker nodes</span><span class="w"></span>
-<span class="w">      </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">nvbandwidth-test-replica</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
-<span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">affinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">podAffinity</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">                  </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w"></span>
-<span class="w">                  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-replica</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span><span class="w"></span>
-<span class="w">                    </span><span class="nt">values</span><span class="p">:</span><span class="w"></span>
-<span class="w">                    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
-<span class="w">                </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu.clique</span><span class="w"></span>
-<span class="w">          </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/nvidia/k8s-samples:nvbandwidth-v0.7-8d103163</span><span class="w"></span>
-<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mpi-worker</span><span class="w"></span>
-<span class="w">            </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
-<span class="w">            </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/sbin/sshd</span><span class="w"></span>
-<span class="w">            </span><span class="nt">args</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-De</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-f</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/mpiuser/.sshd_config</span><span class="w"></span>
-<span class="w">            </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w"></span>
-<span class="w">              </span><span class="nt">claims</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-domain-channel</span><span class="w"></span>
-<span class="w">          </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">compute-domain-channel</span><span class="w"></span>
-<span class="w">            </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvbandwidth-test-compute-domain-channel</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
+<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.
+To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.</p></li>
 <li><p>Apply the manifest.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f nvbandwidth-test-job.yaml
 </pre></div>
@@ -716,7 +616,7 @@ If you want to use different numbers, please adjust parameters according to the 
 </pre></div>
 </div>
 </li>
-<li><p>Verify the nvbandwidth test results.</p>
+<li><p>Verify the nvbandwidth test output.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs --tail<span class="o">=</span>-1 -l job-name<span class="o">=</span>nvbandwidth-test-launcher
 </pre></div>
 </div>
