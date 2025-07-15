@@ -535,14 +535,27 @@ Upon workload completion, all <code class="docutils literal notranslate"><span c
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>.</p>
 <p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about exporting GPU memory though IMEX/NVLink.</p>
 <p>If you are looking for a higher-level communication library, <cite>NVIDIA’s NCCL &lt;https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html&gt;_</cite> newer than version 2.25 supports MNNVL.</p>
+</section>
 <section id="usage-example-a-multi-node-nvbandwidth-test">
-<h4>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h4>
+<h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
 <p>This example demonstrates how to run a MNNVL workload across multiple nodes using a ComputeDomain.</p>
 <p>Notes:</p>
-<ul>
+<ul class="simple">
 <li><p>This example uses <a class="reference external" href="https://www.kubeflow.org/docs/components/trainer/legacy-v1/user-guides/mpi/#installationr">Kubeflow MPI Operator</a>.</p></li>
-<li><p>This example is configured to run across two nodes, using four GPUs per node.
-If you want to use different numbers, please adjust parameters according to the table below:</p>
+</ul>
+<p><strong>Steps:</strong></p>
+<ol class="arabic">
+<li><p>Install Kubeflow MPI Operator.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.</p></li>
+</ol>
+<blockquote>
+<div><p>To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.
+This example is configured to run across two nodes, using four GPUs per node.
+If you want to use different numbers, please adjust the parameters in the spec according to the table below:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
@@ -572,17 +585,8 @@ If you want to use different numbers, please adjust parameters according to the 
 </tbody>
 </table>
 </div>
-</li>
-</ul>
-<p><strong>Steps:</strong></p>
+</div></blockquote>
 <ol class="arabic">
-<li><p>Install Kubeflow MPI Operator.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
-</pre></div>
-</div>
-</li>
-<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.
-To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.</p></li>
 <li><p>Apply the manifest.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f nvbandwidth-test-job.yaml
 </pre></div>
@@ -623,13 +627,10 @@ To do that, follow <a class="reference external" href="https://github.com/NVIDIA
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
 <span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
-<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 1 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 2 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 3 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 4 bound to socket 0[core 0[hwt 0]]: [B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 5 bound to socket 0[core 1[hwt 0]]: [./B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
-<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 6 bound to socket 0[core 2[hwt 0]]: [././B/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]:</span>
+
+<span class="go">[...]</span>
+
 <span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
 <span class="go">nvbandwidth Version: v0.7</span>
 <span class="go">Built from Git version: v0.7</span>
@@ -666,18 +667,12 @@ To do that, follow <a class="reference external" href="https://github.com/NVIDIA
 </pre></div>
 </div>
 </li>
-<li><p>Delete test.</p>
+<li><p>Clean up.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f nvbandwidth-test-job.yaml
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">computedomain.resource.nvidia.com &quot;nvbandwidth-test-compute-domain&quot; deleted</span>
-<span class="go">mpijob.kubeflow.org &quot;nvbandwidth-test&quot; deleted</span>
 </pre></div>
 </div>
 </li>
 </ol>
-</section>
 </section>
 </section>
 <section id="gpus">
@@ -764,10 +759,8 @@ These releases may not have full documentation, and testing is limited.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computedomains">ComputeDomains</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
-</ul>
-</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpus">GPUs</a></li>
