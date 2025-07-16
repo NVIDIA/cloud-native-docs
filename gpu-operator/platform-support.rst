@@ -310,7 +310,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          -
          -
-         -
+         - 1.29---1.33
          -
          -
          -
