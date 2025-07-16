@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Upgrading the NVIDIA GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -52,9 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU=" src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
-    <script src="_static/mermaid-init.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'upgrade';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-intro';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -64,11 +62,10 @@
         </script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
-    <script>initMermaid();</script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Uninstalling the GPU Operator" href="uninstall.html" />
-    <link rel="prev" title="Installing the NVIDIA GPU Operator" href="getting-started.html" />
+    <link rel="next" title="NVIDIA DRA Driver for GPUs" href="dra-install.html" />
+    <link rel="prev" title="NVIDIA GPU Operator with Google GKE" href="google-gke.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -325,10 +322,10 @@
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
 <li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
@@ -369,8 +366,8 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro.html">Introduction</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
@@ -410,7 +407,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Upgrading the NVIDIA GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -426,170 +423,36 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="upgrading-the-nvidia-gpu-operator">
-<span id="operator-upgrades"></span><h1>Upgrading the NVIDIA GPU Operator<a class="headerlink" href="#upgrading-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
-label the namespace for the Operator to set the enforcement policy to privileged:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-<section id="using-helm">
-<h2>Using Helm<a class="headerlink" href="#using-helm" title="Permalink to this headline">#</a></h2>
-<p>The GPU Operator supports dynamic updates to existing resources.
-This ability enables the GPU Operator to ensure settings from the cluster policy specification are always applied and current.</p>
-<p>Because Helm <a class="reference external" href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations">does not support</a> automatic upgrade of existing CRDs,
-you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
-<section id="option-1-manually-upgrading-crds">
-<h3>Option 1: Manually Upgrading CRDs<a class="headerlink" href="#option-1-manually-upgrading-crds" title="Permalink to this headline">#</a></h3>
-<blockquote>
-<div><div data-mermaid="flowchart LR
-
-   A[&quot;Update CRD from
-     the latest chart&quot;]
-   --&gt;
-   B[&quot;Upgrade by
-     using Helm&quot;]"><div class="mermaid">
-            flowchart LR
-
-   A[&quot;Update CRD from
-     the latest chart&quot;]
-   --&gt;
-   B[&quot;Upgrade by
-     using Helm&quot;]
-        </div></div></div></blockquote>
-<p>With this procedure, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<ol class="arabic">
-<li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v25.3.1
-</pre></div>
-</div>
-</li>
-<li><p>Apply the custom resource definitions for the cluster policy and NVIDIA driver:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
-
-<span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured</span>
-<span class="go">customresourcedefinition.apiextensions.k8s.io/nvidiadrivers.nvidia.com created</span>
-</pre></div>
-</div>
-</li>
-<li><p>Apply the custom resource definition for Node Feature Discovery:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">customresourcedefinition.apiextensions.k8s.io/nodefeaturerules.nfd.k8s-sigs.io configured</span>
-</pre></div>
-</div>
-</li>
-<li><p>Update the information about the Operator chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo update nvidia
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Hang tight while we grab the latest from your chart repositories...</span>
-<span class="go">...Successfully got an update from the &quot;nvidia&quot; chart repository</span>
-<span class="go">Update Complete. ⎈Happy Helming!⎈</span>
-</pre></div>
-</div>
-</li>
-<li><p>Fetch the values from the chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm show values nvidia/gpu-operator --version<span class="o">=</span><span class="nv">$RELEASE_TAG</span> &gt; values-<span class="nv">$RELEASE_TAG</span>.yaml
-</pre></div>
-</div>
-</li>
-<li><p>Update the values file as needed.</p></li>
-<li><p>Upgrade the Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-<span class="nv">$RELEASE_TAG</span>.yaml --version <span class="nv">$RELEASE_TAG</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Release &quot;gpu-operator&quot; has been upgraded. Happy Helming!</span>
-<span class="go">NAME: gpu-operator</span>
-<span class="go">LAST DEPLOYED: Thu Apr 20 15:05:52 2023</span>
-<span class="go">NAMESPACE: gpu-operator</span>
-<span class="go">STATUS: deployed</span>
-<span class="go">REVISION: 2</span>
-<span class="go">TEST SUITE: None</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="option-2-automatically-upgrading-crds-using-a-helm-hook">
-<h3>Option 2: Automatically Upgrading CRDs Using a Helm Hook<a class="headerlink" href="#option-2-automatically-upgrading-crds-using-a-helm-hook" title="Permalink to this headline">#</a></h3>
-<p>Starting with GPU Operator v22.09, a <code class="docutils literal notranslate"><span class="pre">pre-upgrade</span></code> Helm <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">hook</a> can automatically upgrade to latest CRD.</p>
-<p>Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.</p>
-<ol class="arabic">
-<li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v25.3.1
-</pre></div>
-</div>
-</li>
-<li><p>Update the information about the Operator chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo update nvidia
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Hang tight while we grab the latest from your chart repositories...</span>
-<span class="go">...Successfully got an update from the &quot;nvidia&quot; chart repository</span>
-<span class="go">Update Complete. ⎈Happy Helming!⎈</span>
-</pre></div>
-</div>
-</li>
-<li><p>Fetch the values from the chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm show values nvidia/gpu-operator --version<span class="o">=</span><span class="nv">$RELEASE_TAG</span> &gt; values-<span class="nv">$RELEASE_TAG</span>.yaml
-</pre></div>
-</div>
-</li>
-<li><p>Update the values file as needed.</p></li>
-<li><p>Upgrade the Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
-    --disable-openapi-validation -f values-<span class="nv">$RELEASE_TAG</span>.yaml --version <span class="nv">$RELEASE_TAG</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two resource types:</p>
 <ul class="simple">
-<li><p>Option <code class="docutils literal notranslate"><span class="pre">--disable-openapi-validation</span></code> is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
-Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.</p></li>
-<li><p>Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-In this case, chart needs to be deleted using <code class="docutils literal notranslate"><span class="pre">--no-hooks</span></code> option to avoid deletion to be hung on hook failures.</p></li>
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
+<li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
 </ul>
-</div>
-</li>
+<section id="a-primer-on-dra">
+<h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
+<p>Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
+DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
+For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
+<ol class="arabic simple">
+<li><p>A clean way to allocate <strong>cross-machine resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly share, partition, and <strong>reconfigure devices on-the-fly</strong> based on user requests.</p></li>
 </ol>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
 </section>
+<section id="the-two-parts-of-this-driver">
+<h3>The two parts of this driver<a class="headerlink" href="#the-two-parts-of-this-driver" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
+<p>Below, you can find instructions for how to install both parts or just one of them.
+Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="foo2">Documentation for ComputeDomain support</a></p></li>
+<li><p><a class="reference external" href="foo1">Documentation for GPU support</a></p></li>
+</ul>
 </section>
-<section id="cluster-policy-updates">
-<h2>Cluster Policy Updates<a class="headerlink" href="#cluster-policy-updates" title="Permalink to this headline">#</a></h2>
-<p>The GPU Operator also supports dynamic updates to the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> CustomResource using <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl edit clusterpolicy
-</pre></div>
-</div>
-<p>After the edits are complete, Kubernetes will automatically apply the updates to cluster.</p>
-</section>
-<section id="additional-controls-for-driver-upgrades">
-<h2>Additional Controls for Driver Upgrades<a class="headerlink" href="#additional-controls-for-driver-upgrades" title="Permalink to this headline">#</a></h2>
-<p>While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
-Refer to <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver-upgrades"><span class="std std-ref">GPU Driver Upgrades</span></a> for more information.</p>
-</section>
-<section id="using-olm-in-openshift">
-<h2>Using OLM in OpenShift<a class="headerlink" href="#using-olm-in-openshift" title="Permalink to this headline">#</a></h2>
-<p>For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators:
-<a class="reference external" href="https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html">https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html</a></p>
 </section>
 </section>
 
@@ -604,20 +467,20 @@ Refer to <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="getting-started.html"
+       href="google-gke.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Installing the NVIDIA GPU Operator</p>
+        <p class="prev-next-title">NVIDIA GPU Operator with Google GKE</p>
       </div>
     </a>
     <a class="right-next"
-       href="uninstall.html"
+       href="dra-install.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Uninstalling the GPU Operator</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -642,15 +505,11 @@ Refer to <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-helm">Using Helm</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-manually-upgrading-crds">Option 1: Manually Upgrading CRDs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-automatically-upgrading-crds-using-a-helm-hook">Option 2: Automatically Upgrading CRDs Using a Helm Hook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-primer-on-dra">A primer on DRA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-parts-of-this-driver">The two parts of this driver</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-policy-updates">Cluster Policy Updates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-controls-for-driver-upgrades">Additional Controls for Driver Upgrades</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-olm-in-openshift">Using OLM in OpenShift</a></li>
 </ul>
   </nav></div>
 
