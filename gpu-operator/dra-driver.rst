@@ -12,9 +12,8 @@ Introduction
 
 With NVIDIA's DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two resource types:
 
+* **GPUs**: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using `NVIDIA's device plugin <https://github.com/NVIDIA/k8s-device-plugin>`_). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).
 * **ComputeDomains**: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.
-* **GPUs**: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using `NVIDIA's device plugin <https://github.com/NVIDIA/k8s-device-plugin>`_). We are excited about this part of the driver, but it is not yet fully supported (Technology Preview).
-
 
 A primer on DRA
 ===============
@@ -39,7 +38,6 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 
 - `Documentation for ComputeDomain support <foo2>`_
 - `Documentation for GPU support <foo1>`_
-
 
 
 ************
@@ -141,7 +139,7 @@ By design, an individual ComputeDomain guarantees
 In terms of lifetime, a ``ComputeDomain`` is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
 In terms of placement, our design choice is that a ``ComputeDomain`` follows the workload.
 
-That means: once workload pods get scheduled onto specific nodes, if they request a``ComputeDomain``, that domain automatically forms around them.
+That means: once workload pods get scheduled onto specific nodes, if they request a ``ComputeDomain``, that domain automatically forms around them.
 Upon workload completion, all ``ComputeDomain``-associated resources get torn down automatically.
 
 A deeper dive: related resources
@@ -155,7 +153,7 @@ Details about IMEX and its relationship to NVLink may be found in `NVIDIA's IMEX
 
 CUDA API documentation for `cuMemCreate <https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c>`_ provides a starting point to learn about exporting GPU memory though IMEX/NVLink.
 
-If you are looking for a higher-level communication library, `NVIDIA's NCCL <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html>_` newer than version 2.25 supports MNNVL.
+If you are looking for a higher-level communication library, `NVIDIA's NCCL <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html>`_ newer than version 2.25 supports MNNVL.
 
 
 Usage example: a multi-node nvbandwidth test
