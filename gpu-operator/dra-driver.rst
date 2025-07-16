@@ -23,8 +23,8 @@ Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly 
 DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
 For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:
 
-#. A clean way to allocate cross-machine resources in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).
-#. Mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.
+#. A clean way to allocate **cross-machine resources** in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).
+#. Mechanisms to explicitly share, partition, and **reconfigure devices on-the-fly** based on user requests.
 
 To understand and make best use of NVIDIA's DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the `official DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
@@ -119,27 +119,29 @@ ComputeDomains
 Motivation
 ==========
 
-NVIDIA's `GB200 NVL72 <https://www.nvidia.com/en-us/data-center/gb200-nvl72/>`_ and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a giant supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth.
+NVIDIA's `GB200 NVL72 <https://www.nvidia.com/en-us/data-center/gb200-nvl72/>`_ and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth (1.8 TB/s cumulative bandwidth on a GB200 NVL72).
 
 NVIDIA's DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept: the ``ComputeDomain``.
 
 When workload is created that references a specific ``ComputeDomain``, NVIDIA's DRA Driver for GPUs orchestrates the underlying primitives required for establishing a shared NVLink communication channel among all pods that comprise the workload.
 
-Advanced users may appreciate to know that -- under the hood -- NVIDIA's DRA Driver for GPUs launches and/or reconfigures IMEX daemons as needed, and establishes and injects a shared  IMEX channel into the relevant containers of the workload.
-A design goal of this DRA driver is to make IMEX be, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.
+.. note::
+
+  Advanced users may appreciate to know that -- under the hood -- NVIDIA's DRA Driver for GPUs launches and/or reconfigures IMEX daemons as needed, and establishes and injects a shared  IMEX channel into the relevant containers of the workload.
+  A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.
 
 Guarantees
 ==========
 
-At a high level, an individual ComputeDomain guarantees
+By design, an individual ComputeDomain guarantees
 
-- MNNVL-**reachability** between pods that are in the ``ComputeDomain``.
-- secure **isolation** from other pods that are not in the ``ComputeDomain``.
+- **MNNVL-reachability** between pods that are in the domain.
+- **secure isolation** from other pods that are not in the domain.
 
 In terms of lifetime, a ``ComputeDomain`` is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
-In terms of placement, a design choice is that a ``ComputeDomain`` follows the workload.
+In terms of placement, our design choice is that a ``ComputeDomain`` follows the workload.
 
-That means: only once workload pods get scheduled onto specific nodes, the ``ComputeDomain`` they request automatically forms around them.
+That means: once workload pods get scheduled onto specific nodes, if they request a``ComputeDomain``, that domain automatically forms around them.
 Upon workload completion, all ``ComputeDomain``-associated resources get torn down automatically.
 
 A deeper dive: related resources
