@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 15, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 16, 2025"/>
 
 
 
@@ -423,17 +423,18 @@
 <p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two resource types:</p>
 <ul class="simple">
 <li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
-<li><p><strong>GPUs</strong>: for controlled sharing and reconfiguration of GPUs. This is a modern alternative to traditional device allocation via the <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA device plugin</a>. This part of the driver is a Technology Preview and not yet fully supported.</p></li>
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver, but it is not yet fully supported (Technology Preview).</p></li>
 </ul>
 <section id="a-primer-on-dra">
 <h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
 <p>Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
-It puts resource configuration and scheduling into the hands of device vendors (via drivers like this one) and provides</p>
-<ul class="simple">
-<li><p>a clean way to allocate cross-machine resources in Kubernetes (this driver leverages that for providing NVLink connectivity across pods running on different nodes).</p></li>
-<li><p>mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.</p></li>
-</ul>
-<p>To make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
+DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
+For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
+<ol class="arabic simple">
+<li><p>A clean way to allocate cross-machine resources in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.</p></li>
+</ol>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
 </section>
 <section id="the-two-parts-of-this-driver">
 <h3>The two parts of this driver<a class="headerlink" href="#the-two-parts-of-this-driver" title="Permalink to this headline">#</a></h3>
@@ -441,8 +442,8 @@ It puts resource configuration and scheduling into the hands of device vendors (
 <p>Below, you can find instructions for how to install both parts or just one of them.
 Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="foo1">Docs for GPU support in NVIDIA’s DRA Driver for GPUs</a></p></li>
-<li><p><a class="reference external" href="foo2">Docs for ComputeDomain support in NVIDIA’s DRA Driver for GPUs</a></p></li>
+<li><p><a class="reference external" href="foo2">Documentation for ComputeDomain support</a></p></li>
+<li><p><a class="reference external" href="foo1">Documentation for GPU support</a></p></li>
 </ul>
 </section>
 </section>
