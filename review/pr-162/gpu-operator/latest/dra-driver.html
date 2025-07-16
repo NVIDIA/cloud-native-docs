@@ -431,8 +431,8 @@
 DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
 For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
 <ol class="arabic simple">
-<li><p>A clean way to allocate cross-machine resources in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).</p></li>
-<li><p>Mechanisms to explicitly share, partition, and reconfigure devices on-the-fly based on user requests.</p></li>
+<li><p>A clean way to allocate <strong>cross-machine resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly share, partition, and <strong>reconfigure devices on-the-fly</strong> based on user requests.</p></li>
 </ol>
 <p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
 </section>
@@ -511,22 +511,25 @@ To that end, we have prepared separate documentation:</p>
 <h2>ComputeDomains<a class="headerlink" href="#computedomains" title="Permalink to this headline">#</a></h2>
 <section id="motivation">
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
-<p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines – each with a small number of GPUs – into a giant supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth.</p>
+<p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth (1.8 TB/s cumulative bandwidth on a GB200 NVL72).</p>
 <p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept: the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p>
 <p>When workload is created that references a specific <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, NVIDIA’s DRA Driver for GPUs orchestrates the underlying primitives required for establishing a shared NVLink communication channel among all pods that comprise the workload.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Advanced users may appreciate to know that – under the hood – NVIDIA’s DRA Driver for GPUs launches and/or reconfigures IMEX daemons as needed, and establishes and injects a shared  IMEX channel into the relevant containers of the workload.
-A design goal of this DRA driver is to make IMEX be, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.</p>
+A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.</p>
+</div>
 </section>
 <section id="guarantees">
 <h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
-<p>At a high level, an individual ComputeDomain guarantees</p>
+<p>By design, an individual ComputeDomain guarantees</p>
 <ul class="simple">
-<li><p>MNNVL-<strong>reachability</strong> between pods that are in the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p></li>
-<li><p>secure <strong>isolation</strong> from other pods that are not in the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>.</p></li>
+<li><p><strong>MNNVL-reachability</strong> between pods that are in the domain.</p></li>
+<li><p><strong>secure isolation</strong> from other pods that are not in the domain.</p></li>
 </ul>
 <p>In terms of lifetime, a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
-In terms of placement, a design choice is that a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> follows the workload.</p>
-<p>That means: only once workload pods get scheduled onto specific nodes, the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> they request automatically forms around them.
+In terms of placement, our design choice is that a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> follows the workload.</p>
+<p>That means: once workload pods get scheduled onto specific nodes, if they request a``ComputeDomain``, that domain automatically forms around them.
 Upon workload completion, all <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>-associated resources get torn down automatically.</p>
 </section>
 <section id="a-deeper-dive-related-resources">
