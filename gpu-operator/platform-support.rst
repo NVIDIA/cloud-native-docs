@@ -421,26 +421,26 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29--1.33
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.23---1.25
+         - 1.29--1.33
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
          - 1.29--1.33
          -
          - 8.0 U2, 8.0 U3
-         -
+         - 1.29--1.33
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
          - 1.29--1.33
          -
          - 
-         -
+         - 1.29--1.33
          - 
 
        * - Red Hat Core OS
          -
-         - 4.12---4.18
+         - 4.12---4.19
          -
          -
          -
