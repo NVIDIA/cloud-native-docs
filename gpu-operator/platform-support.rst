@@ -440,7 +440,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.12---4.18
+         - 4.12---4.19
          -
          -
          -
