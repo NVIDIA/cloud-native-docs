@@ -422,8 +422,8 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two resource types:</p>
 <ul class="simple">
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
 <li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
-<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver, but it is not yet fully supported (Technology Preview).</p></li>
 </ul>
 <section id="a-primer-on-dra">
 <h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
@@ -529,7 +529,7 @@ A design goal of this DRA driver is to make IMEX, as much as possible, an implem
 </ul>
 <p>In terms of lifetime, a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
 In terms of placement, our design choice is that a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> follows the workload.</p>
-<p>That means: once workload pods get scheduled onto specific nodes, if they request a``ComputeDomain``, that domain automatically forms around them.
+<p>That means: once workload pods get scheduled onto specific nodes, if they request a <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>, that domain automatically forms around them.
 Upon workload completion, all <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code>-associated resources get torn down automatically.</p>
 </section>
 <section id="a-deeper-dive-related-resources">
@@ -538,7 +538,7 @@ Upon workload completion, all <code class="docutils literal notranslate"><span c
 <p>For an outlook on improvements on the <code class="docutils literal notranslate"><span class="pre">ComputeDomain</span></code> concept that we have planned to release in the future, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>.</p>
 <p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about exporting GPU memory though IMEX/NVLink.</p>
-<p>If you are looking for a higher-level communication library, <cite>NVIDIA’s NCCL &lt;https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html&gt;_</cite> newer than version 2.25 supports MNNVL.</p>
+<p>If you are looking for a higher-level communication library, <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html">NVIDIA’s NCCL</a> newer than version 2.25 supports MNNVL.</p>
 </section>
 <section id="usage-example-a-multi-node-nvbandwidth-test">
 <h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
