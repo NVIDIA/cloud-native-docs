@@ -1,0 +1,193 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+##########################
+NVIDIA DRA Driver for GPUs
+##########################
+
+**************
+ComputeDomains
+**************
+
+Motivation
+==========
+
+NVIDIA's `GB200 NVL72 <https://www.nvidia.com/en-us/data-center/gb200-nvl72/>`_ and comparable systems are designed specifically around Multi-Node NVLink (MNNVL) to turn a rack of GPU machines -- each with a small number of GPUs -- into a supercomputer with a large number of GPUs communicating all-to-all at full NVLink bandwidth (1.8 TB/s cumulative bandwidth on a GB200 NVL72).
+
+NVIDIA's DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept: the ``ComputeDomain``.
+
+When workload is created that references a specific ``ComputeDomain``, NVIDIA's DRA Driver for GPUs orchestrates the underlying primitives required for establishing a shared NVLink communication channel among all pods that comprise the workload.
+
+.. note::
+
+  Advanced users may appreciate to know that -- under the hood -- NVIDIA's DRA Driver for GPUs launches and/or reconfigures IMEX daemons as needed, and establishes and injects a shared  IMEX channel into the relevant containers of the workload.
+  A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with.
+
+Guarantees
+==========
+
+By design, an individual ComputeDomain guarantees
+
+- **MNNVL-reachability** between pods that are in the domain.
+- **secure isolation** from other pods that are not in the domain.
+
+In terms of lifetime, a ``ComputeDomain`` is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
+In terms of placement, our design choice is that a ``ComputeDomain`` follows the workload.
+
+That means: once workload pods get scheduled onto specific nodes, if they request a ``ComputeDomain``, that domain automatically forms around them.
+Upon workload completion, all ``ComputeDomain``-associated resources get torn down automatically.
+
+A deeper dive: related resources
+================================
+
+For more background on how ``ComputeDomain``\s facilitate orchestrating MNNVL workloads on Kubernetes (and on NVIDIA GB200 systems in particular), see `this doc <https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so>`_ and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
+
+For an outlook on improvements on the ``ComputeDomain`` concept that we have planned to release in the future, please refer to `this document <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
+
+Details about IMEX and its relationship to NVLink may be found in `NVIDIA's IMEX guide <https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html>`_.
+
+CUDA API documentation for `cuMemCreate <https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c>`_ provides a starting point to learn about exporting GPU memory though IMEX/NVLink.
+
+If you are looking for a higher-level communication library, `NVIDIA's NCCL <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html>`_ newer than version 2.25 supports MNNVL.
+
+
+Usage example: a multi-node nvbandwidth test
+============================================
+
+This example demonstrates how to run an MNNVL workload across multiple nodes using a ComputeDomain.
+As example CUDA workload that performs MNNVL communication we have picked `nvbandwidth <https://github.com/NVIDIA/nvbandwidth>`_.
+Since nvbandwidth requires MPI, below we also install the `Kubeflow MPI Operator <https://github.com/kubeflow/mpi-operator>`_.
+
+**Steps:**
+
+#. Install Kubeflow MPI Operator.
+
+   .. code-block:: console
+
+      $ kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
+
+#. Create a test job file called ``nvbandwidth-test-job.yaml``.
+   To do that, follow `this part of the CD validation instructions <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file>`_.
+   This example is configured to run across two nodes, using four GPUs per node.
+   If you want to use different numbers, please adjust the parameters in the spec according to the table below:
+
+    .. list-table::
+      :header-rows: 1
+
+      * - Parameter
+        - Value (in example)
+
+      * - ``ComputeDomain.spec.numNodes``
+        - Total number of nodes to use in the test (2).
+
+      * - ``MPIJob.spec.slotsPerWorker``
+        - Number of GPUs per node to use -- this must match the ``ppr`` number below (4).
+
+      * - ``MPIJob.spec.mpiReplicaSpecs.Worker.replicas``
+        - Also set this to the number of nodes (2).
+
+      * - ``mpirun`` command argument ``-ppr:4:node``
+        - Set this to the number of GPUs to use per node (4)
+
+      * - ``mpirun`` command argument ``-np`` value
+        - Set this to the total number of GPUs in the test (8).
+
+#. Apply the manifest.
+
+   .. code-block:: console
+
+      $ kubectl apply -f nvbandwidth-test-job.yaml
+
+   *Example Output*
+
+   .. code-block:: output
+
+      computedomain.resource.nvidia.com/nvbandwidth-test-compute-domain configured
+      mpijob.kubeflow.org/nvbandwidth-test configured
+
+#. Verify that the nvbandwidth pods were created.
+
+   .. code-block:: console
+
+      $ kubectl get pods
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                              READY   STATUS    RESTARTS   AGE
+      nvbandwidth-test-launcher-lzv84   1/1     Running   0          8s
+      nvbandwidth-test-worker-0         1/1     Running   0          15s
+      nvbandwidth-test-worker-1         1/1     Running   0          15s
+
+
+#. Verify that the ComputeDomain pods were created for each node.
+
+   .. code-block:: console
+
+      $ kubectl get pods -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                                          READY   STATUS    RESTARTS   AGE
+      nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s
+      nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s
+
+#. Verify the nvbandwidth test output.
+
+   .. code-block:: console
+
+      $ kubectl logs --tail=-1 -l job-name=nvbandwidth-test-launcher
+
+   *Example Output*
+
+   .. code-block:: output
+
+      Warning: Permanently added '[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222' (ECDSA) to the list of known hosts.
+      Warning: Permanently added '[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222' (ECDSA) to the list of known hosts.
+      [nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]:
+
+      [...]
+
+      [nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]
+      nvbandwidth Version: v0.7
+      Built from Git version: v0.7
+
+      MPI version: Open MPI v4.1.4, package: Debian OpenMPI, ident: 4.1.4, repo rev: v4.1.4, May 26, 2022
+      CUDA Runtime Version: 12080
+      CUDA Driver Version: 12080
+      Driver Version: 570.124.06
+
+      Process 0 (nvbandwidth-test-worker-0): device 0: HGX GB200 (00000008:01:00)
+      Process 1 (nvbandwidth-test-worker-0): device 1: HGX GB200 (00000009:01:00)
+      Process 2 (nvbandwidth-test-worker-0): device 2: HGX GB200 (00000018:01:00)
+      Process 3 (nvbandwidth-test-worker-0): device 3: HGX GB200 (00000019:01:00)
+      Process 4 (nvbandwidth-test-worker-1): device 0: HGX GB200 (00000008:01:00)
+      Process 5 (nvbandwidth-test-worker-1): device 1: HGX GB200 (00000009:01:00)
+      Process 6 (nvbandwidth-test-worker-1): device 2: HGX GB200 (00000018:01:00)
+      Process 7 (nvbandwidth-test-worker-1): device 3: HGX GB200 (00000019:01:00)
+
+      Running multinode_device_to_device_memcpy_read_ce.
+      memcpy CE GPU(row) -> GPU(column) bandwidth (GB/s)
+                0         1         2         3         4         5         6         7
+      0       N/A    798.02    798.25    798.02    798.02    797.88    797.73    797.95
+      1    798.10       N/A    797.80    798.02    798.02    798.25    797.88    798.02
+      2    797.95    797.95       N/A    797.73    797.80    797.95    797.95    797.65
+      3    798.10    798.02    797.95       N/A    798.02    798.10    797.88    797.73
+      4    797.80    798.02    798.02    798.02       N/A    797.95    797.80    798.02
+      5    797.80    797.95    798.10    798.10    797.95       N/A    797.95    797.88
+      6    797.73    797.95    798.10    798.02    797.95    797.88       N/A    797.80
+      7    797.88    798.02    797.95    798.02    797.88    797.95    798.02       N/A
+
+      SUM multinode_device_to_device_memcpy_read_ce 44685.29
+
+      NOTE: The reported results may not reflect the full capabilities of the platform.
+
+#. Clean up.
+
+   .. code-block:: console
+
+      $ kubectl delete -f nvbandwidth-test-job.yaml

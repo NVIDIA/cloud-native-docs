@@ -76,4 +76,14 @@
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
 
+.. toctree::
+   :caption: NVIDIA DRA Driver for GPUs
+   :titlesonly:
+   :hidden:
+
+   Introduction <dra-intro.rst>
+   Installation <dra-install.rst>
+   GPUs <dra-gpus.rst>
+   ComputeDomains <dra-cds.rst>
+
 .. include:: overview.rst
