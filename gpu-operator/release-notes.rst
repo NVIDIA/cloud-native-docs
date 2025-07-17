@@ -135,6 +135,11 @@ New Features
     * ``2g.47gb`` :math:`\times` 1
     * ``3g.95gb`` :math:`\times` 1
 
+Known Issues
+------------
+
+* GPU Operator in CDI mode is not operational with RKE2.
+
 Improvements 
 ------------
 
