@@ -428,8 +428,8 @@
 <section id="motivation">
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html">MNNVL</a>) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink">130 TB/s cumulative bandwidth</a> on a GB200 NVL72).</p>
-<p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>.
-When workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory securely via NVLink among all pods that comprise the workload.</p>
+<p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>:
+when workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory securely via NVLink among all pods that comprise the workload.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink.</p>
@@ -438,7 +438,7 @@ When workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs 
 </section>
 <section id="guarantees">
 <h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
-<p>By design, the individual ComputeDomain guarantees</p>
+<p>By design, an individual ComputeDomain guarantees</p>
 <ul class="simple">
 <li><p><strong>MNNVL-reachability</strong> between pods that are in the domain.</p></li>
 <li><p><strong>secure isolation</strong> from other pods that are not in the domain.</p></li>
@@ -450,11 +450,11 @@ Upon workload completion, all ComputeDomain-associated resources get torn down a
 </section>
 <section id="a-deeper-dive-related-resources">
 <h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
-<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.</p>
-<p>For an outlook on planned improvements on the ComputeDomain concept, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
-<p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>, and in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">NVIDIA’s NVLink guide</a>.</p>
-<p>CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about how to share GPU memory via IMEX/NVLink.</p>
-<p>If you are looking for a higher-level GPU communication library, <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html">NVIDIA’s NCCL</a> newer than version 2.25 supports MNNVL.</p>
+<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.
+For an outlook on planned improvements on the ComputeDomain concept, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
+<p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>, and in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">NVIDIA’s NVLink guide</a>.
+CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about how to share GPU memory via IMEX/NVLink.
+If you are looking for a higher-level GPU communication library, <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html">NVIDIA’s NCCL</a> newer than version 2.25 supports MNNVL.</p>
 </section>
 <section id="usage-example-a-multi-node-nvbandwidth-test">
 <h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
@@ -591,6 +591,11 @@ If you want to use different numbers, please adjust the parameters in the spec a
 </li>
 </ol>
 </section>
+<section id="additional-remarks">
+<h3>Additional remarks<a class="headerlink" href="#additional-remarks" title="Permalink to this headline">#</a></h3>
+<p>We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices.</p>
+<p>As we iterate on design and implementation, we are particularly interested and open to receiving your feedback – please reach out via the issue tracker or discussion forum in the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu">GitHub repository</a>.</p>
+</section>
 </section>
 </section>
 
@@ -639,6 +644,7 @@ If you want to use different numbers, please adjust the parameters in the spec a
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remarks">Additional remarks</a></li>
 </ul>
 </li>
 </ul>
