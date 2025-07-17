@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 16, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 17, 2025"/>
 
 
 
@@ -424,14 +424,15 @@
                   
   <section id="nvidia-dra-driver-for-gpus">
 <h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
-<section id="gpus">
-<h2>GPUs<a class="headerlink" href="#gpus" title="Permalink to this headline">#</a></h2>
-<p>The GPU allocation side of this DRA driver enables various critical scenarios, such as</p>
-<ul class="simple">
-<li><p>controlled sharing of individual GPUs between multiple pods and/or containers.</p></li>
+<section id="gpu-allocation">
+<h2>GPU allocation<a class="headerlink" href="#gpu-allocation" title="Permalink to this headline">#</a></h2>
+<p>Compared to <a class="reference external" href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/">traditional</a> GPU allocation using undifferentiated count-based requests (such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu:</span> <span class="pre">1</span></code>), the GPU allocation side of this driver enables fine-grained control and powerful features long desired by the community, such as:</p>
+<ol class="arabic simple">
+<li><p>Controlled sharing of individual GPUs between multiple pods and/or containers.</p></li>
 <li><p>GPU selection via complex constraints expressed via <a class="reference external" href="https://kubernetes.io/docs/reference/using-api/cel/">CEL</a>.</p></li>
-</ul>
-<p>To learn more about this part of the DRA driver and about what we are planning to build in the future (such as dynamic allocation of MIG devices), please have a look at <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">these release notes</a>.</p>
+<li><p>Dynamic partitioning.</p></li>
+</ol>
+<p>To learn more about this part of the driver and about what we are planning to build in the future, have a look at <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">these release notes</a>.</p>
 <p>While the GPU allocation features of this driver can be tried out, they are not yet officially supported.
 Hence, the GPU kubelet plugin is currently disabled by default in the Helm chart installation.</p>
 <p>For documentation on how to use and test the current set of GPU allocation features, please head over to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu?tab=readme-ov-file#a-kind-demo">demo section</a> of the driver’s README and to its <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/tree/main/demo/specs/quickstart">quickstart directory</a>.</p>
@@ -494,7 +495,7 @@ These releases may not have full documentation, and testing is limited.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpus">GPUs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-allocation">GPU allocation</a></li>
 </ul>
   </nav></div>
 

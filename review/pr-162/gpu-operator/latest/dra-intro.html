@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 16, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 17, 2025"/>
 
 
 
@@ -437,15 +437,15 @@
 DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
 For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
 <ol class="arabic simple">
-<li><p>A clean way to allocate <strong>cross-machine resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running across multiple nodes).</p></li>
-<li><p>Mechanisms to explicitly share, partition, and <strong>reconfigure devices on-the-fly</strong> based on user requests.</p></li>
+<li><p>A clean way to allocate <strong>cross-machine resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly <strong>share, partition, and reconfigure</strong> devices <strong>on-the-fly</strong> based on user requests.</p></li>
 </ol>
-<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official DRA documentation</a>.</p>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend for you to become familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
 </section>
 <section id="the-two-parts-of-this-driver">
 <h3>The two parts of this driver<a class="headerlink" href="#the-two-parts-of-this-driver" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
-<p>Below, you can find instructions for how to install both parts or just one of them.
+<p>The next documentation chapter contains instructions for how to install both parts or just one of them.
 Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="foo2">Documentation for ComputeDomain support</a></p></li>
