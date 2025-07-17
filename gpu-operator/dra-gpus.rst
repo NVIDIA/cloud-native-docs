@@ -6,6 +6,8 @@
 NVIDIA DRA Driver for GPUs
 ##########################
 
+.. _dra_docs_gpus:
+
 **************
 GPU allocation
 **************

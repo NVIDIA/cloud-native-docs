@@ -28,16 +28,16 @@ For NVIDIA devices, there are two particularly benefical characteristics provide
 To understand and make best use of NVIDIA's DRA Driver for GPUs, we recommend becoming familiar with DRA by working through the `official documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
 
 
-The two parts of this driver
-============================
+The twofold nature of this driver
+=================================
 
 NVIDIA's DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.
 
-The next documentation chapter contains instructions for how to install both parts or just one of them.
+Below, you can find instructions for how to install both parts or just one of them.
 Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:
 
-- `Documentation for ComputeDomain support <foo2>`_
-- `Documentation for GPU support <foo1>`_
+- :ref:`Documentation for ComputeDomain (MNNVL) support <dra_docs_compute_domains>`
+- :ref:`Documentation for GPU support  <dra_docs_gpus>`
 
 
 ************
