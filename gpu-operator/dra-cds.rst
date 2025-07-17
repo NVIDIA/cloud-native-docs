@@ -6,9 +6,9 @@
 NVIDIA DRA Driver for GPUs
 ##########################
 
-*******************************************
-ComputeDomain: Multi-Node NVLink simplified
-*******************************************
+********************************************
+ComputeDomains: Multi-Node NVLink simplified
+********************************************
 
 Motivation
 ==========
