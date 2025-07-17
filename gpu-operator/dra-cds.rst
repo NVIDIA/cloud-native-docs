@@ -15,8 +15,8 @@ Motivation
 
 NVIDIA's `GB200 NVL72 <https://www.nvidia.com/en-us/data-center/gb200-nvl72/>`_ and comparable systems are designed specifically around Multi-Node NVLink (`MNNVL <https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html>`_) to turn a rack of GPU machines -- each with a small number of GPUs -- into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over `130 TB/s cumulative bandwidth <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink>`_ on a GB200 NVL72).
 
-NVIDIA's DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept -- the **ComputeDomain**.
-When workload requests a ComputeDomain, NVIDIA's DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory securely via NVLink among all pods that comprise the workload.
+NVIDIA's DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept -- the **ComputeDomain**:
+when workload requests a ComputeDomain, NVIDIA's DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory securely via NVLink among all pods that comprise the workload.
 
 .. note::
 
@@ -27,7 +27,7 @@ When workload requests a ComputeDomain, NVIDIA's DRA Driver for GPUs performs al
 Guarantees
 ==========
 
-By design, the individual ComputeDomain guarantees
+By design, an individual ComputeDomain guarantees
 
 - **MNNVL-reachability** between pods that are in the domain.
 - **secure isolation** from other pods that are not in the domain.
@@ -42,13 +42,10 @@ A deeper dive: related resources
 ================================
 
 For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see `this doc <https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so>`_ and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
-
 For an outlook on planned improvements on the ComputeDomain concept, please refer to `this document <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
 
 Details about IMEX and its relationship to NVLink may be found in `NVIDIA's IMEX guide <https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html>`_, and in `NVIDIA's NVLink guide <https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service>`_.
-
 CUDA API documentation for `cuMemCreate <https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c>`_ provides a starting point to learn about how to share GPU memory via IMEX/NVLink.
-
 If you are looking for a higher-level GPU communication library, `NVIDIA's NCCL <https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html>`_ newer than version 2.25 supports MNNVL.
 
 
@@ -191,3 +188,11 @@ Since nvbandwidth requires MPI, below we also install the `Kubeflow MPI Operator
    .. code-block:: console
 
       $ kubectl delete -f nvbandwidth-test-job.yaml
+
+
+Additional remarks
+==================
+
+We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices.
+
+As we iterate on design and implementation, we are particularly interested and open to receiving your feedback -- please reach out via the issue tracker or discussion forum in the `GitHub repository <https://github.com/NVIDIA/k8s-dra-driver-gpu>`_.
