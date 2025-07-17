@@ -80,6 +80,7 @@ Known Issues
   It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
+* GPU Operator in CDI mode is not operational with RKE2.
 
 .. _v25.3.1-fixed-issues:
 
