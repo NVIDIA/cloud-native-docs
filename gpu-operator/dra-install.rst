@@ -37,8 +37,8 @@ Prerequisites
   - Refer to the `docs on installing the GPU Operator with a pre-installed GPU driver <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`__.
 
 
-Configure and Helm-install the DRA driver
-=========================================
+Configure and Helm-install the driver
+=====================================
 
 #. Add the NVIDIA Helm repository:
 
@@ -67,7 +67,7 @@ All install-time configuration parameters can be listed by running ``helm show v
   - In a future release, NVIDIA's DRA Driver for GPUs will be bundled with the NVIDIA GPU Operator (and does not need to be installed as a separate Helm chart anymore).
 
 
-Validate Installation
+Validate installation
 =====================
 
 We recommend to perform validation steps to confirm that your setup works as expected.
