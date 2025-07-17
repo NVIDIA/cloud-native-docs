@@ -6,16 +6,17 @@
 NVIDIA DRA Driver for GPUs
 ##########################
 
-****
-GPUs
-****
+**************
+GPU allocation
+**************
 
-The GPU allocation side of this DRA driver enables various critical scenarios, such as
+Compared to `traditional <https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/>`_ GPU allocation using undifferentiated count-based requests (such as ``nvidia.com/gpu: 1``), the GPU allocation side of this driver enables fine-grained control and powerful features long desired by the community, such as:
 
-- controlled sharing of individual GPUs between multiple pods and/or containers.
-- GPU selection via complex constraints expressed via `CEL <https://kubernetes.io/docs/reference/using-api/cel/>`_.
+#. Controlled sharing of individual GPUs between multiple pods and/or containers.
+#. GPU selection via complex constraints expressed via `CEL <https://kubernetes.io/docs/reference/using-api/cel/>`_.
+#. Dynamic partitioning.
 
-To learn more about this part of the DRA driver and about what we are planning to build in the future (such as dynamic allocation of MIG devices), please have a look at `these release notes <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
+To learn more about this part of the driver and about what we are planning to build in the future, have a look at `these release notes <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
 
 While the GPU allocation features of this driver can be tried out, they are not yet officially supported.
 Hence, the GPU kubelet plugin is currently disabled by default in the Helm chart installation.
