@@ -52,7 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-install';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-intro-install';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -65,7 +65,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NVIDIA DRA Driver for GPUs" href="dra-gpus.html" />
-    <link rel="prev" title="NVIDIA DRA Driver for GPUs" href="dra-intro.html" />
+    <link rel="prev" title="NVIDIA GPU Operator with Google GKE" href="google-gke.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -366,8 +366,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro.html">Introduction</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction &amp; Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
@@ -424,6 +423,35 @@
                   
   <section id="nvidia-dra-driver-for-gpus">
 <h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two types of resources:</p>
+<ul class="simple">
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
+<li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
+</ul>
+<section id="a-primer-on-dra">
+<h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
+<p>Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
+DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
+For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
+<ol class="arabic simple">
+<li><p>A clean way to allocate <strong>cross-node resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly <strong>share, partition, and reconfigure</strong> devices <strong>on-the-fly</strong> based on user requests (leveraged here for advanced GPU allocation).</p></li>
+</ol>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend becoming familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
+</section>
+<section id="the-twofold-nature-of-this-driver">
+<h3>The twofold nature of this driver<a class="headerlink" href="#the-twofold-nature-of-this-driver" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
+<p>Below, you can find instructions for how to install both parts or just one of them.
+Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="dra-cds.html#dra-docs-compute-domains"><span class="std std-ref">Documentation for ComputeDomain (MNNVL) support</span></a></p></li>
+<li><p><a class="reference internal" href="dra-gpus.html#dra-docs-gpus"><span class="std std-ref">Documentation for GPU support</span></a></p></li>
+</ul>
+</section>
+</section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <section id="prerequisites">
@@ -497,12 +525,12 @@ To that end, we have prepared separate documentation:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="dra-intro.html"
+       href="google-gke.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
+        <p class="prev-next-title">NVIDIA GPU Operator with Google GKE</p>
       </div>
     </a>
     <a class="right-next"
@@ -535,6 +563,11 @@ To that end, we have prepared separate documentation:</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-primer-on-dra">A primer on DRA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-twofold-nature-of-this-driver">The twofold nature of this driver</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-and-helm-install-the-driver">Configure and Helm-install the driver</a></li>
