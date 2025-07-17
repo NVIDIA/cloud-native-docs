@@ -80,7 +80,7 @@
    :titlesonly:
    :hidden:
 
-   Introduction & Installation <dra-intro.rst>
+   Introduction & Installation <dra-intro-install.rst>
    GPUs <dra-gpus.rst>
    ComputeDomains <dra-cds.rst>
 
