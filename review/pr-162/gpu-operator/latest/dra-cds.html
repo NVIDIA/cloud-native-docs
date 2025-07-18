@@ -70,7 +70,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 17, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 18, 2025"/>
 
 
 
@@ -436,16 +436,17 @@ when workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs 
 </div>
 </section>
 <section id="guarantees">
-<h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
+<span id="dra-docs-cd-guarantees"></span><h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
 <p>By design, an individual ComputeDomain guarantees</p>
-<ul class="simple">
+<ol class="arabic simple">
 <li><p><strong>MNNVL-reachability</strong> between pods that are in the domain.</p></li>
-<li><p><strong>secure isolation</strong> from other pods that are not in the domain.</p></li>
-</ul>
+<li><p><strong>secure isolation</strong> from other pods that are not in the domain and in a different Kubernetes namespace.</p></li>
+</ol>
 <p>In terms of lifetime, a ComputeDomain is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
 In terms of placement, our design choice is that a ComputeDomain follows the workload.</p>
 <p>That means: once workload pods get scheduled onto specific nodes, if they request a ComputeDomain, that domain automatically forms around them.
 Upon workload completion, all ComputeDomain-associated resources get torn down automatically.</p>
+<p>For more detail on the security properties of a ComputeDomain, see <a class="reference internal" href="#dra-docs-cd-security">Security</a>.</p>
 </section>
 <section id="a-deeper-dive-related-resources">
 <h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
@@ -590,9 +591,27 @@ If you want to use different numbers, please adjust the parameters in the spec a
 </li>
 </ol>
 </section>
+<section id="security">
+<span id="dra-docs-cd-security"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">#</a></h3>
+<p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> That deserves clarifying remarks.</p>
+<p>NVLink enables mapping remote GPU memory so that it can be read from / written to with regular CUDA API calls (as if it were normal, local GPU memory).
+From a security point of view, that begs the question: can any other GPU in the same NVLink parition freely read and mutate other GPU’s memory  – or is there an authorization layer inbetween?
+The answer is “yes”:
+IMEX has been introduced specifically as a means for providing secure isolation between GPUs that are in the same NVLink partition.
+With IMEX, every individual GPU memory export/import operation can be subject to fine-grained access control.</p>
+<p>With the following two additional constraints, we can now better understand the security guarantee provided by ComputeDomains:</p>
+<ul class="simple">
+<li><p>The ComputeDomain security boundary is implemented with IMEX.</p></li>
+<li><p>A job submitted to Kubernetes namespace <cite>A</cite> cannot be part of a ComputeDomain created for namespace <cite>B</cite>.</p></li>
+</ul>
+<p>That is, ComputeDomains (only) promise robust IMEX-based isolation between jobs that are <strong>not</strong> part of the same Kubernetes namespace.
+If a bad actor has access to a Kubernetes namespace, they may be able to mutate ComputeDomains (and, as such, IMEX primitives) in that Kubernetes namespace.
+That, in turn, may allow for disabling or trivially working around IMEX access control.</p>
+<p>With ComputeDomains, the overall ambition is that the security isolation between jobs in different Kubernetes namespaces is strong enough to responsibly allow for multi-tenant environments where compute jobs that conceptually cannot trust each other are “only” separated by the Kubernetes namespace boundary.</p>
+</section>
 <section id="additional-remarks">
 <h3>Additional remarks<a class="headerlink" href="#additional-remarks" title="Permalink to this headline">#</a></h3>
-<p>We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices.</p>
+<p>We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices and security.</p>
 <p>As we iterate on design and implementation, we are particularly interested and open to receiving your feedback – please reach out via the issue tracker or discussion forum in the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu">GitHub repository</a>.</p>
 </section>
 </section>
@@ -643,6 +662,7 @@ If you want to use different numbers, please adjust the parameters in the spec a
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#security">Security</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remarks">Additional remarks</a></li>
 </ul>
 </li>
