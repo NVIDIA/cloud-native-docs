@@ -26,19 +26,25 @@ when workload requests a ComputeDomain, NVIDIA's DRA Driver for GPUs performs al
 
    A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects IMEX channels into containers as needed.
 
+
+.. _dra-docs-cd-guarantees:
+
 Guarantees
 ==========
 
 By design, an individual ComputeDomain guarantees
 
-- **MNNVL-reachability** between pods that are in the domain.
-- **secure isolation** from other pods that are not in the domain.
+#. **MNNVL-reachability** between pods that are in the domain.
+#. **secure isolation** from other pods that are not in the domain and in a different Kubernetes namespace.
 
 In terms of lifetime, a ComputeDomain is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
 In terms of placement, our design choice is that a ComputeDomain follows the workload.
 
 That means: once workload pods get scheduled onto specific nodes, if they request a ComputeDomain, that domain automatically forms around them.
 Upon workload completion, all ComputeDomain-associated resources get torn down automatically.
+
+For more detail on the security properties of a ComputeDomain, see `Security <dra-docs-cd-security_>`__.
+
 
 A deeper dive: related resources
 ================================
@@ -191,10 +197,36 @@ Since nvbandwidth requires MPI, below we also install the `Kubeflow MPI Operator
 
       $ kubectl delete -f nvbandwidth-test-job.yaml
 
+.. _dra-docs-cd-security:
+
+Security
+========
+
+As indicated in `Guarantees <dra-docs-cd-guarantees_>`__, the ComputeDomain primitive provides a *security boundary.* That deserves clarifying remarks.
+
+NVLink enables mapping remote GPU memory so that it can be read from / written to with regular CUDA API calls (as if it were normal, local GPU memory).
+From a security point of view, that begs the question: can any other GPU in the same NVLink parition freely read and mutate other GPU's memory  -- or is there an authorization layer inbetween?
+The answer is "yes":
+IMEX has been introduced specifically as a means for providing secure isolation between GPUs that are in the same NVLink partition.
+With IMEX, every individual GPU memory export/import operation can be subject to fine-grained access control.
+
+With the following two additional constraints, we can now better understand the security guarantee provided by ComputeDomains:
+
+- The ComputeDomain security boundary is implemented with IMEX.
+- A job submitted to Kubernetes namespace `A` cannot be part of a ComputeDomain created for namespace `B`.
+
+
+That is, ComputeDomains (only) promise robust IMEX-based isolation between jobs that are **not** part of the same Kubernetes namespace.
+If a bad actor has access to a Kubernetes namespace, they may be able to mutate ComputeDomains (and, as such, IMEX primitives) in that Kubernetes namespace.
+That, in turn, may allow for disabling or trivially working around IMEX access control.
+
+
+With ComputeDomains, the overall ambition is that the security isolation between jobs in different Kubernetes namespaces is strong enough to responsibly allow for multi-tenant environments where compute jobs that conceptually cannot trust each other are "only" separated by the Kubernetes namespace boundary.
+
 
 Additional remarks
 ==================
 
-We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices.
+We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices and security.
 
 As we iterate on design and implementation, we are particularly interested and open to receiving your feedback -- please reach out via the issue tracker or discussion forum in the `GitHub repository <https://github.com/NVIDIA/k8s-dra-driver-gpu>`_.

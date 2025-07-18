@@ -37,7 +37,7 @@ Below, you can find instructions for how to install both parts or just one of th
 Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:
 
 - :ref:`Documentation for ComputeDomain (MNNVL) support <dra_docs_compute_domains>`
-- :ref:`Documentation for GPU support  <dra_docs_gpus>`
+- :ref:`Documentation for GPU support <dra_docs_gpus>`
 
 
 ************
