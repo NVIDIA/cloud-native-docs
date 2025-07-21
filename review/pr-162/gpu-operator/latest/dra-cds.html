@@ -70,7 +70,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 18, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 21, 2025"/>
 
 
 
@@ -428,10 +428,10 @@
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html">MNNVL</a>) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink">130 TB/s cumulative bandwidth</a> on a GB200 NVL72).</p>
 <p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>:
-when workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory securely via NVLink among all pods that comprise the workload.</p>
+when workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory <strong>securely</strong> via NVLink among all pods that comprise the workload.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink.</p>
+<p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink <em>securely</em>: IMEX provides an access control system to lock down GPU memory even between GPUs on the same NVLink partition.</p>
 <p>A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects IMEX channels into containers as needed.</p>
 </div>
 </section>
@@ -593,13 +593,12 @@ If you want to use different numbers, please adjust the parameters in the spec a
 </section>
 <section id="security">
 <span id="dra-docs-cd-security"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">#</a></h3>
-<p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> That deserves clarifying remarks.</p>
+<p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> This section helps clarify why that boundary is needed, and how it works.</p>
 <p>NVLink enables mapping remote GPU memory so that it can be read from / written to with regular CUDA API calls (as if it were normal, local GPU memory).
-From a security point of view, that begs the question: can any other GPU in the same NVLink parition freely read and mutate other GPU’s memory  – or is there an authorization layer inbetween?
-The answer is “yes”:
-IMEX has been introduced specifically as a means for providing secure isolation between GPUs that are in the same NVLink partition.
-With IMEX, every individual GPU memory export/import operation can be subject to fine-grained access control.</p>
-<p>With the following two additional constraints, we can now better understand the security guarantee provided by ComputeDomains:</p>
+From a security point of view, that begs the question: can any other GPU in the same NVLink partition freely read and mutate another GPU’s memory – or is there an access control layer inbetween?</p>
+<p>IMEX has been introduced specifically as a means for providing secure isolation between GPUs that are in the same NVLink partition.
+With IMEX, every individual GPU memory export/import operation is subject to fine-grained access control.</p>
+<p>To better understand ComputeDomains, we also need to know:</p>
 <ul class="simple">
 <li><p>The ComputeDomain security boundary is implemented with IMEX.</p></li>
 <li><p>A job submitted to Kubernetes namespace <cite>A</cite> cannot be part of a ComputeDomain created for namespace <cite>B</cite>.</p></li>
