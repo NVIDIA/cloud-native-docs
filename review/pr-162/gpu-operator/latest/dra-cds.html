@@ -594,11 +594,12 @@ If you want to use different numbers, please adjust the parameters in the spec a
 <section id="security">
 <span id="dra-docs-cd-security"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">#</a></h3>
 <p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> This section helps clarify why that boundary is needed, and how it works.</p>
-<p>NVLink enables mapping remote GPU memory so that it can be read from / written to with regular CUDA API calls (as if it were normal, local GPU memory).
-From a security point of view, that begs the question: can any other GPU in the same NVLink partition freely read and mutate another GPU’s memory – or is there an access control layer inbetween?</p>
-<p>IMEX has been introduced specifically as a means for providing secure isolation between GPUs that are in the same NVLink partition.
+<p>NVLink enables mapping a remote GPU’s memory to “local” GPU’s memory (so that it can be read from and written to with regular CUDA API calls).
+From a security point of view, that begs the question: can a process running on a GPU in a certain NVLink partition freely read and mutate the memory of other GPUs in the same NVLink partition – or is there some notion of access control layer inbetween?</p>
+<p>IMEX has been introduced specifically as that layer of access control.
+It is a means for providing secure isolation between GPUs that are in the same NVLink partition.
 With IMEX, every individual GPU memory export/import operation is subject to fine-grained access control.</p>
-<p>To better understand ComputeDomains, we also need to know:</p>
+<p>To understand ComputeDomains, we additionally need to know:</p>
 <ul class="simple">
 <li><p>The ComputeDomain security boundary is implemented with IMEX.</p></li>
 <li><p>A job submitted to Kubernetes namespace <cite>A</cite> cannot be part of a ComputeDomain created for namespace <cite>B</cite>.</p></li>
