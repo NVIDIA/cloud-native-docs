@@ -483,11 +483,11 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 </li>
 <li><p>Install the driver, providing install-time configuration parameters. Example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
-      --version<span class="o">=</span><span class="s2">&quot;25.3.0&quot;</span> <span class="se">\</span>
-      --create-namespace <span class="se">\</span>
-      --namespace nvidia-dra-driver-gpu <span class="se">\</span>
-      --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver <span class="se">\</span>
-      --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0&quot;</span> <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
 </li>
@@ -504,7 +504,8 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 </section>
 <section id="validate-installation">
 <h3>Validate installation<a class="headerlink" href="#validate-installation" title="Permalink to this headline">#</a></h3>
-<p>We recommend to perform validation steps to confirm that your setup works as expected.
+<p>A lot can go wrong, depending on the exact nature of your Kubernetes environment and specific hardware and driver choices as well as configuration options chosen.
+That is why we recommend to perform a set of validation tests to confirm the basic functionality of your setup.
 To that end, we have prepared separate documentation:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation">Testing ComputeDomain allocation</a></p></li>
