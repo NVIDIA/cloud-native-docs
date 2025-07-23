@@ -70,7 +70,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 21, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 23, 2025"/>
 
 
 
@@ -428,11 +428,11 @@
 <h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html">MNNVL</a>) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink">130 TB/s cumulative bandwidth</a> on a GB200 NVL72).</p>
 <p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>:
-when workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory <strong>securely</strong> via NVLink among all pods that comprise the workload.</p>
+when a workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory <strong>securely</strong> via NVLink among all pods that comprise the workload.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink <em>securely</em>: IMEX provides an access control system to lock down GPU memory even between GPUs on the same NVLink partition.</p>
-<p>A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects IMEX channels into containers as needed.</p>
+<p>A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/imexchannels.html">IMEX channels</a> into containers as needed.</p>
 </div>
 </section>
 <section id="guarantees">

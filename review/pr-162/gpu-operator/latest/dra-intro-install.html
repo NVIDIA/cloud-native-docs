@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 21, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 23, 2025"/>
 
 
 
@@ -459,8 +459,8 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <ul class="simple">
 <li><p>Kubernetes v1.32 or newer.</p></li>
 <li><p>DRA and corresponding API groups must be enabled (<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">see Kubernetes docs</a>).</p></li>
-<li><p>GPU Driver 565 or later.</p></li>
-<li><p>NVIDIA’s GPU Operator v25.3.0 or later, installed with CDI enabled (use the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> commandline argument during <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code>). For reference, please refer to the GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.</p></li>
+<li><p>NVIDIA GPU Driver 565 or later.</p></li>
+<li><p>While not strictly required, we recommend using NVIDIA’s GPU Operator v25.3.0 or later, installed with CDI enabled (use the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> commandline argument during <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code>). For reference, please refer to the GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -481,12 +481,19 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 </pre></div>
 </div>
 </li>
-<li><p>Install the driver, providing install-time configuration parameters. Example:</p>
+<li><p>Install the DRA driver, providing install-time configuration parameters.</p>
+<p>Example for <em>Operator-provided</em> GPU driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
     --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
-    --create-namespace <span class="se">\</span>
-    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --create-namespace --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver <span class="se">\</span>
+</pre></div>
+</div>
+<p>Example for <em>host-provided</em> GPU driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
+    --create-namespace --namespace nvidia-dra-driver-gpu <span class="se">\</span>
     --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
