@@ -459,9 +459,12 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <ul class="simple">
 <li><p>Kubernetes v1.32 or newer.</p></li>
 <li><p>DRA and corresponding API groups must be enabled (<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">see Kubernetes docs</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface?tab=readme-ov-file#how-to-configure-cdi">CDI</a> must be enabled in the underlying container runtime (such as containerd or CRI-O).</p></li>
 <li><p>NVIDIA GPU Driver 565 or later.</p></li>
-<li><p>While not strictly required, we recommend using NVIDIA’s GPU Operator v25.3.0 or later, installed with CDI enabled (use the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> commandline argument during <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code>). For reference, please refer to the GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.</p></li>
 </ul>
+<p>For the last two items on the list above, as well as for other reasons, we recommend installing NVIDIA’s GPU Operator v25.3.0 or later.
+For detailed instructions, see the official GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.
+Also note that, in the near future, the preferred method to install NVIDIA’s DRA Driver for GPUs will be through the GPU Operator (the DRA driver will no longer require installation as a separate Helm chart).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you want to use ComputeDomains and a pre-installed NVIDIA GPU Driver:</p>
@@ -485,7 +488,8 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <p>Example for <em>Operator-provided</em> GPU driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
     --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
-    --create-namespace --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
     --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver
 </pre></div>
@@ -493,7 +497,8 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <p>Example for <em>host-provided</em> GPU driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
     --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
-    --create-namespace --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
     --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -505,7 +510,6 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <ul class="simple">
 <li><p>A common mode of operation for now is to enable only the ComputeDomain subsystem (to have GPUs allocated using the traditional device plugin). The example above achieves that by setting <code class="docutils literal notranslate"><span class="pre">resources.gpus.enabled=false</span></code>.</p></li>
 <li><p>Setting  <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p></li>
-<li><p>In a future release, NVIDIA’s DRA Driver for GPUs will be bundled with the NVIDIA GPU Operator (and does not need to be installed as a separate Helm chart anymore).</p></li>
 </ul>
 </div>
 </section>
