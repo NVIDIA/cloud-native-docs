@@ -72,13 +72,16 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
      | | NVIDIA H200,          | NVIDIA Hopper             |
      | | NVIDIA H200 NVL       |                           |
      +-------------------------+---------------------------+
-     | NVIDIA HGX H200         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
      | NVIDIA DGX H100         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
+     | NVIDIA DGX H200         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
      | NVIDIA HGX H100         | NVIDIA Hopper and         |
+     |                         | NVSwitch                  |
+     +-------------------------+---------------------------+
+     | NVIDIA HGX H200         | NVIDIA Hopper and         |
      |                         | NVSwitch                  |
      +-------------------------+---------------------------+
      | | NVIDIA H100,          | NVIDIA Hopper             |
@@ -142,6 +145,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | Product                 | Architecture           |
     +=========================+========================+
+    | NVIDIA RTX PRO 6000     | NVIDIA Blackwell       |
+    | Blackwell Server Edition|                        |
+    +-------------------------+------------------------+
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |
     +-------------------------+------------------------+
     | NVIDIA RTX A5000        | NVIDIA Ampere          |
@@ -165,15 +171,28 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
+     .. note::
+
+      NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
+        * Driver versions 575.57.08 or later is required.  
+        * MIG is not supported on the 575.57.08 driver release.
+        * You must disable High Memory Mode (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
+
   .. tab-item:: B-series Products
 
     +-------------------------+------------------------+
     | Product                 | Architecture           |
     +=========================+========================+
+    | NVIDIA DGX B200         | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
     | NVIDIA HGX B200         | NVIDIA Blackwell       |
     +-------------------------+------------------------+
-    | NVIDIA HGX GB200 NVL    | NVIDIA Blackwell       |
+    | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |
     +-------------------------+------------------------+
+
+     .. note::
+
+       * HGX B200 requires a driver container version of 570.133.20 or later.
 
 
 .. _gpu-operator-arm-platforms:
@@ -239,6 +258,8 @@ Supported Operating Systems and Kubernetes Platforms
 .. |fn1| replace:: :sup:`1`
 .. _fn2: #ubuntu-kernel
 .. |fn2| replace:: :sup:`2`
+.. _fn3: #rhel-9
+.. |fn3| replace:: :sup:`3`
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -268,37 +289,48 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
-         - 2.12, 2.13
+         - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 8.0 U2, 8.0 U3
-         - 1.29---1.32
+         - 1.29---1.33
          -
          - 1.26
-         - 2.12, 2.13
+         - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
-         -
+         - 1.29---1.33
          -
          -
          -
 
        * - Red Hat Core OS
          -
-         - | 4.12---4.18
+         - | 4.12---4.19
          -
          -
+         -
+         -
+         -
+
+       * - | Red Hat
+           | Enterprise
+           | Linux 9.2, 9.4, 9.5, 9.6 |fn3|_
+         - 1.29---1.33
+         -
+         -
+         - 1.29---1.33
          -
          -
          -
@@ -307,25 +339,14 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
-         - 1.29---1.32
-         -
-         -
-         -
-
-       * - | Red Hat
-           | Enterprise
-           | Linux 8.4, 8.5
+         - 1.29---1.33
          -
          -
          -
-         -
-         - 5.5
-         -
-         -
-
+         
     .. _kubernetes-version:
 
     :sup:`1`
@@ -342,7 +363,12 @@ The GPU Operator has been validated in the following scenarios:
     `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
     NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
     by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
- 
+
+    .. _rhel-9:
+
+    :sup:`3`
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+    They are not available for ARM based systems.
 
     .. note::
 
@@ -392,29 +418,29 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.23---1.25
+         - 1.29--1.33
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 8.0 U2, 8.0 U3
-         -
+         - 1.29--1.33
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
-         - 1.29--1.32
+         - 1.29--1.33
          -
          - 
-         -
+         - 1.29--1.33
          - 
 
        * - Red Hat Core OS
          -
-         - 4.12---4.18
+         - 4.12---4.19
          -
          -
          -
@@ -423,10 +449,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.4,
            | 8.6---8.10
-         - 1.29---1.32
+         - 1.29---1.33
          -
          -
-         - 1.29---1.32
+         - 1.29---1.33
          -
 
 
@@ -466,6 +492,8 @@ The GPU Operator has been validated in the following scenarios:
 +----------------------------+------------------------+----------------+
 | Red Hat Enterprise Linux 8 | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
+| Red Hat Enterprise Linux 9 | Yes                    | Yes            |
++----------------------------+------------------------+----------------+
 
 
 Support for KubeVirt and OpenShift Virtualization
@@ -480,7 +508,6 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 24.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
 Red Hat Core OS                                                4.12---4.18      4.13---4.18
@@ -511,7 +538,11 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 Note that HGX platforms are not supported.
 
-Support for GPUDirect RDMA
+.. note::
+  
+  KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
+
+Support for GPUDirect RDMA 
 --------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
@@ -519,8 +550,8 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 - RHEL 8 with Network Operator 25.1.0.
 - Ubuntu 24.04 LTS with Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
+- Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 with Network Operator 25.1.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0.
-
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 

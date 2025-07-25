@@ -9,36 +9,37 @@
 NVIDIA GPU Operator with OpenShift Virtualization
 #################################################
 
-.. contents::
-   :depth: 2
-   :backlinks: none
-   :local:
-
 ************
 Introduction
 ************
 
 
 There is a growing demand among Red Hat customers to use virtual GPUs (NVIDIA vGPU)
-with Red Hat OpenShift Virtualization. Red Hat OpenShift Virtualization is based on KubeVirt, a
-virtual machine (VM) management add-on to Kubernetes that allows you to run and manage VMs in
-a Kubernetes cluster. It eliminates the need to manage separate clusters for VM and container workloads,
-as both can now coexist in a single Kubernetes cluster. Red Hat OpenShift Virtualization is an
-OpenShift feature to run virtual machines (VMs) orchestrated by OpenShift (Kubernetes).
+with Red Hat OpenShift Virtualization.
+Red Hat OpenShift Virtualization is based on KubeVirt, a virtual machine (VM) management add-on to Kubernetes that allows you to run and manage VMs in a Kubernetes cluster.
+It eliminates the need to manage separate clusters for VM and container workloads, as both can now coexist in a single Kubernetes cluster.
+Red Hat OpenShift Virtualization is an OpenShift feature to run virtual machines (VMs) orchestrated by OpenShift (Kubernetes).
 
-Up until this point, the GPU Operator only provisioned worker nodes for running GPU-accelerated containers.
-Now, the GPU Operator can also be used to provision worker nodes for running GPU-accelerated VMs.
+In addition to the GPU Operator being able to provision worker nodes for running GPU-accelerated containers, the GPU Operator can also be used to provision worker nodes for running GPU-accelerated virtual machines.
 
-The prerequisites needed for running containers and VMs with GPU(s) differs, with the primary difference
-being the drivers required. For example, the datacenter driver is needed for containers, the vfio-pci driver
-is needed for GPU passthrough, and the NVIDIA vGPU Manager is needed for creating vGPU devices.
+There are some different prerequisites required virtual machines with GPU(s) than running containers with GPU(s).
+The primary difference is the drivers required.
+For example, the datacenter driver is needed for containers, the vfio-pci driver is needed for GPU passthrough, and the `NVIDIA vGPU Manager <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#installing-configuring-grid-vgpu>`_ is needed for creating vGPU devices.
 
-The GPU Operator can now be configured to deploy different software components on worker nodes depending
-on what GPU workload is configured to run on those nodes. Consider the following example.
+.. _configure-worker-nodes-for-gpu-operator-components:
 
-| Node A is configured to run containers.
-| Node B is configured to run VMs with Passthrough GPU.
-| Node C is configured to run VMs with vGPU.
+Configure Worker Nodes for GPU Operator components
+==================================================
+
+The GPU Operator can now be configured to deploy different software components on worker nodes depending on what GPU workload is configured to run on those nodes.
+This is configured by adding a ``nvidia.com/gpu.workload.config`` label to the worker node with the value of ``container``, ``vm-passthrough``, or ``vm-vgpu`` depending on if you are planning to use vGPU or not.
+The GPU Operator will use the label to determine which software components to deploy on the worker nodes.
+
+Given the following node configuration:
+
+* Node A is configured to run containers.
+* Node B is configured to run VMs with Passthrough GPU.
+* Node C is configured to run VMs with vGPU.
 
 Node A receives the following software components:
 
@@ -47,23 +48,42 @@ Node A receives the following software components:
 * ``NVIDIA Kubernetes Device Plugin`` - To discover and advertise GPU resources to the kubelet.
 * ``NVIDIA DCGM and DCGM Exporter`` - To monitor the GPU(s).
 
-Node B receives the following software components:
+There are two approaches to configuring GPU passthrough and vGPU for virtual machines:
 
-* ``VFIO Manager`` - Optional. To load vfio-pci and bind it to all GPUs on the node.
-* ``Sandbox Device Plugin`` - Optional. To discover and advertise the passthrough GPUs to the kubelet.
-* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
+1. **NVIDIA GPU Operator approach** - Uses the GPU Operator to deploy and manage GPU software components.
+2. **Red Hat OpenShift Virtualization approach** - Uses Red Hat OpenShift Virtualization native procedures, which are tested and supported by Red Hat.
 
-Node C receives the following software components:
+Node B (GPU Passthrough) receives the following software components:
+
+**NVIDIA GPU Operator approach:**
+
+* ``VFIO Manager`` - To load vfio-pci and bind it to all GPUs on the node.
+* ``Sandbox Device Plugin`` - To discover and advertise the passthrough GPUs to the kubelet.
+* ``Sandbox Validator`` - Validates that Sandbox Device Plugin is working.
+
+**Red Hat OpenShift Virtualization approach:**
+
+* Uses Red Hat OpenShift Virtualization's `PCI passthrough configuration <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/virtualization/index#virt-configuring-pci-passthrough>`_.
+* When using this approach, NVIDIA GPU Operator's operands must be disabled on the node to avoid conflicts.
+
+Node C (vGPU) receives the following software components:
+
+**NVIDIA GPU Operator approach:**
 
 * ``NVIDIA vGPU Manager`` - To install the driver.
 * ``NVIDIA vGPU Device Manager`` - To create vGPU devices on the node.
-* ``Sandbox Device Plugin`` -Optional. To discover and advertise the vGPU devices to kubelet.
-* ``Sandbox Validator`` -Optional. Validates that Sandbox Device Plugin is working.
+* ``Sandbox Device Plugin`` - To discover and advertise the vGPU devices to kubelet.
+* ``Sandbox Validator`` - Validates that Sandbox Device Plugin is working.
+
+**Red Hat OpenShift Virtualization approach:**
+
+* Uses Red Hat OpenShift Virtualization's `vGPU configuration <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/virtualization/index#virt-configuring-virtual-gpus>`_.
+* Relies on OpenShift Virtualization’s capabilities to configure mediated devices.
+* The NVIDIA GPU Operator is only used for installing drivers with the NVIDIA vGPU Manager. The GPU Operator does not configure mediated devices.
 
 
-******************************************
 Assumptions, constraints, and dependencies
-******************************************
+===========================================
 
 * A worker node can run GPU-accelerated containers, or GPU accelerated VMs with GPU passthrough, or GPU accelerated-VMs with vGPU, but not a combination of any of them.
 
@@ -100,6 +120,29 @@ Prerequisites
 
 * If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu>`_ to ensure you have met all of the prerequisites for using NVIDIA vGPU.
 
+***********************************************************
+Configure NVIDIA GPU Operator with OpenShift Virtualization
+***********************************************************
+
+After configuring the :ref:`prerequisites<prerequisites>`, the high level workflow for using the NVIDIA GPU Operator with OpenShift Virtualization is as follows:
+
+* :ref:`Enable the IOMMU driver <enable-iommu-driver>`.
+* :ref:`Label worker nodes <label-worker-nodes>` based on the GPU workloads they will run.
+* :ref:`Install the GPU Operator <install-the-gpu-operator>` and set ``sandboxWorkloads.enabled=true``.
+
+
+If you are planning to deploy VMs with vGPU, the workflow is as follows:
+   * :ref:`Build the NVIDIA vGPU Manager image <build-vgpu-manager-image>`, before installing the GPU Operator.
+   * :ref:`Label the node for the vGPU configuration <vgpu-device-configuration>`
+   * :ref:`Add vGPU resources to the HyperConverged Custom Resource <add-vgpu-resources-to-the-hyperconverged-custom-resource>`
+   * :ref:`Create a virtual machine with vGPU <create-a-virtual-machine-with-gpu>`
+
+If you are planning to deploy VMs with GPU passthrough, the workflow is as follows:
+   * :ref:`Add GPU resources to the HyperConverged Custom Resource <add-gpu-resources-to-the-hyperconverged-custom-resource>`.
+   * :ref:`Create a virtual machine with GPU passthrough <create-a-virtual-machine-with-gpu>`
+
+
+.. _enable-iommu-driver:
 
 **********************************
 Enabling the IOMMU driver on hosts
@@ -150,6 +193,8 @@ Procedure
       $ oc get machineconfig
 
 
+.. _label-worker-nodes:
+
 *********************
 Labeling worker nodes
 *********************
@@ -166,6 +211,7 @@ The GPU Operator uses the value of this label to determine which operands to dep
 If the node label ``nvidia.com/gpu.workload.config`` does not exist on the node, the GPU Operator assumes the default GPU workload configuration, ``container``, and deploys the software components needed to support this workload type.
 To change the default GPU workload configuration, set the following value in ``ClusterPolicy``: ``sandboxWorkloads.defaultWorkload=<config>``.
 
+.. _build-vgpu-manager-image:
 
 *******************************
 Building the vGPU Manager image
@@ -220,7 +266,7 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11 
+      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11
 
 .. note::
 
@@ -241,9 +287,11 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
       $ docker push ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG}
 
-************************************************
-Installing the NVIDIA GPU Operator using the CLI
-************************************************
+.. _install-the-gpu-operator:
+
+**********************************
+Installing the NVIDIA GPU Operator
+**********************************
 
 Install the NVIDIA GPU Operator using the guidance at :ref:`Installing the NVIDIA GPU Operator <install-nvidiagpu>`.
 
@@ -302,15 +350,18 @@ Create the cluster policy using the CLI:
 
 #. Modify the ``clusterpolicy.json`` file as follows:
 
-   * sandboxWorloads.enabled=true
-   * vgpuManager.enabled=true
-   * vgpuManager.repository=<path to private repository>
-   * vgpuManager.image=vgpu-manager
-   * vgpuManager.version=<driver version>
-   * vgpuManager.imagePullSecrets={<name of image pull secret>}
-   
-
-   The ``vgpuManager`` options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.
+   * sandboxWorkloads.enabled=true
+   * sandboxDevicePlugin.enabled=true
+   * For GPU passthrough:
+      * vfioManager.enabled=true
+      * Optionally, sandboxWorkloads.defaultWorkload=vm-passthrough (if you want passthrough to be the default mode)
+   * For vGPU:
+      * vgpuManager.enabled=true
+      * vgpuManager.repository=<path to private repository>
+      * vgpuManager.image=vgpu-manager
+      * vgpuManager.version=<driver version>
+      * vgpuManager.imagePullSecrets={<name of image pull secret>}
+      * vgpuDeviceManager.enabled=true
 
    In general, the flag ``sandboxWorkloads.enabled`` in ``ClusterPolicy`` controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used.
 
@@ -337,7 +388,7 @@ Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Plat
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.
 
-#. Navigate to **Operators** > **Installed Operators** and find your installed NVIDIA GPU Operator. 
+#. Navigate to **Operators** > **Installed Operators** and find your installed NVIDIA GPU Operator.
 
 #. Under *Provided APIs*, click **ClusterPolicy**.
 
@@ -360,14 +411,21 @@ As a cluster administrator, you can create a ClusterPolicy using the OpenShift C
 
    .. image:: graphics/cluster_policy_enable_sandbox_workloads.png
 
-#. If you are planning to use NVIDIA vGPU, expand the **NVIDIA vGPU Manager config** section and fill in your desired configuration settings, including:
+#. Expand the **Sandbox Device Plugin config** section and make sure that the **enabled** checkbox is checked.
 
-   * Select the **enabled** checkbox to enable the NVIDIA vGPU Manager.
-   * Add your **imagePullSecrets**.
-   * Under *driverManager*, fill in **repository** with the path to your private repository.
-   * Under *env*, fill in **image** with ``vgpu-manager`` and the **version** with your driver version. 
+#. If you are planning to use NVIDIA vGPU
 
-   If you are only using GPU passthrough, you dont need to fill this section out.
+   * Expand the **NVIDIA vGPU Manager config** section and fill in your desired configuration settings, including:
+      * Select the **enabled** checkbox to enable the NVIDIA vGPU Manager.
+      * Add your **imagePullSecrets**.
+      * Under *driverManager*, fill in **repository** with the path to your private repository.
+      * Under *env*, fill in **image** with ``vgpu-manager`` and the **version** with your driver version.
+   * Expand the **NVIDIA vGPU Device Manager config** section and make sure that the **enabled** checkbox is checked.
+
+   If you are only using GPU passthrough, you don't need to fill these sections out.
+
+   * Expand the **VFIO Manager config** section and select the **enabled** checkbox.
+   * Optionally, in the **Sandbox Workloads config** section, set **defaultWorkload** to ``vm-passthrough`` if you want passthrough to be the default mode.
 
    .. image:: graphics/cluster_policy_configure_vgpu.png
 
@@ -384,7 +442,75 @@ Add GPU Resources to the HyperConverged Custom Resource
 
 Update the ``HyperConverged`` custom resource so that all GPU and vGPU devices in your cluster are permitted and can be assigned to virtual machines.
 
-The following example permits the A10 GPU device and A10-24Q vGPU device.
+.. _add-gpu-resources-to-the-hyperconverged-custom-resource:
+
+Add GPU passthrough resources to the HyperConverged Custom Resource
+===================================================================
+
+The following example permits the A10 GPU device, the device names for the GPUs on your cluster will likely be different.
+
+#. Determine the resource names for the GPU devices:
+
+   .. code-block:: console
+
+      $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+
+   *Example Output*
+
+   .. code-blocK:: output
+
+      {
+        "nvidia.com/GA102GL_A10": "1"
+      }
+
+#. Determine the PCI device IDs for the GPUs.
+
+   * You can search by device name in the `PCI IDs database <https://pci-ids.ucw.cz/v2.2/pci.ids>`_.
+
+   * If you have host access to the node, you can list the NVIDIA GPU devices with a command like the following example:
+
+     .. code-block:: console
+
+        $ lspci -nnk -d 10de:
+
+     *Example Output*
+
+     .. code-block:: output
+        :emphasize-lines: 1
+
+        65:00.0 3D controller [0302]: NVIDIA Corporation GA102GL [A10] [10de:2236] (rev a1)
+                Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
+                Kernel modules: nvidiafb, nouveau
+
+#. Modify the ``HyperConverged`` custom resource like the following partial examples.
+
+   .. code-block:: yaml
+
+      ...
+      spec:
+         featureGates:
+            disableMDevConfiguration: true
+         permittedHostDevices: # Defines VM devices to import.
+            pciHostDevices: # Include for GPU passthrough
+            - externalResourceProvider: true
+              pciDeviceSelector: 10DE:2236
+              resourceName: nvidia.com/GA102GL_A10
+      ...
+
+   Replace the values in the YAML as follows:
+
+   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU type.
+
+   * Set ``externalResourceProvider=true`` to indicate that this resource is provided by an external device plugin, in this case the ``sandbox-device-plugin`` that is deployed by the GPU Operator.
+
+Refer to the `KubeVirt user guide <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information on the configuration options.
+
+.. _add-vgpu-resources-to-the-hyperconverged-custom-resource:
+
+Add vGPU resources to the HyperConverged Custom Resource
+========================================================
+
+The following example permits the A10-12Q vGPU device, the device names for the GPUs on your cluster will likely be different.
 
 #. Determine the resource names for the GPU devices:
 
@@ -419,7 +545,7 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
                 Subsystem: NVIDIA Corporation GA102GL [A10] [10de:1482]
                 Kernel modules: nvidiafb, nouveau
 
-#. Modify the ``HyperConverged`` custom resource like the following partial example:
+#. Modify the ``HyperConverged`` custom resource like the following partial examples.
 
    .. code-block:: yaml
 
@@ -428,23 +554,13 @@ The following example permits the A10 GPU device and A10-24Q vGPU device.
         featureGates:
           disableMDevConfiguration: true
         permittedHostDevices: # Defines VM devices to import.
-          pciHostDevices: # Include for GPU passthrough
-          - externalResourceProvider: true
-            pciDeviceSelector: 10DE:2236
-            resourceName: nvidia.com/GA102GL_A10
           mediatedDevices: # Include for vGPU
           - externalResourceProvider: true
-            mdevNameSelector: NVIDIA A10-24Q
-            resourceName: nvidia.com/NVIDIA_A10-24Q
+            mdevNameSelector: NVIDIA A10-12Q
+            resourceName: nvidia.com/NVIDIA_A10-12Q
       ...
 
    Replace the values in the YAML as follows:
-
-   * Include ``permittedHostDevices`` for GPU passthrough.
-
-   * Include ``mediatedDevices`` for vGPU.
-
-   * ``pciDeviceSelector`` and ``resourceName`` under ``pciHostDevices`` to correspond to your GPU model.
 
    * ``mdevNameSelector`` and ``resourceName`` under ``mediatedDevices`` to correspond to your vGPU type.
 
@@ -460,6 +576,7 @@ A physical device that is divided into one or more virtual devices. A vGPU is a 
 devices to one or more virtual machines (VMs), but the number of guests must be compatible with your GPU.
 Some GPUs do not support multiple guests.
 
+.. _create-a-virtual-machine-with-gpu:
 
 *************************************
 Creating a virtual machine with GPU
@@ -472,32 +589,45 @@ Prerequisites
 
 * The GPU devices are configured in the ``HyperConverged`` custom resource (CR).
 
-
 Procedure
 =========
 
 #. Assign the GPU devices to a virtual machine (VM) by editing the ``spec.domain.devices.gpus`` field of the ``VirtualMachine`` manifest:
 
+   Example for GPU passthrough:
+
    .. code-block:: yaml
 
-      apiVersion: kubevirt.io/v1
-      kind: VirtualMachine
+      apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
       ...
       spec:
-        domain:
-          devices:
+      domain:
+         devices:
             gpus:
             - deviceName: nvidia.com/GA102GL_A10
-              name: gpu1
-            - deviceName: nvidia.com/GRID_T4-1Q
-              name: gpu2
+            name: gpu1
+      ...
+
+   Example for vGPU:
+
+   .. code-block:: yaml
+
+      apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
+      ...
+      spec:
+      domain:
+         devices:
+            gpus:
+            - deviceName: nvidia.com/NVIDIA_A10-12Q
+            name: gpu1
       ...
 
    * ``deviceName`` The resource name associated with the GPU.
    * ``name`` A name to identify the device on the VM.
 
-..
-  .. _vgpu-device-configuration:
+.. _vgpu-device-configuration:
 
 **************************
 vGPU Device Configuration

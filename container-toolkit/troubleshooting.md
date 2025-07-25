@@ -120,3 +120,56 @@ Without this option, you might observe this error when running GPU containers:
 However, using this option disables SELinux separation in the container and the container is executed
 in an unconfined type.
 Review the SELinux policies on your system.
+
+
+## Containers losing access to GPUs with error: "Failed to initialize NVML: Unknown Error"
+
+When using the NVIDIA Container Runtime Hook (i.e. the Docker `--gpus` flag or
+the NVIDIA Container Runtime in `legacy` mode) to inject requested GPUs and driver
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. `runc`) being aware of these changes.
+The result is that updates to the container may remove access to the requested GPUs.
+
+When the container loses access to the GPU, you will see the following error message from the console output:
+
+```console
+Failed to initialize NVML: Unknown Error
+```
+
+The message may differ depending on the type of application that is running in
+the container.
+
+The container needs to be deleted once the issue occurs.
+When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.
+
+### Affected environments
+
+On certain systems this behavior is not limited to *explicit* container updates
+such as adjusting CPU and Memory limits for a container.
+On systems where `systemd` is used to manage the cgroups of the container, reloading the `systemd` unit files (`systemctl daemon-reload`) is sufficient to trigger container updates and cause a loss of GPU access.
+
+### Mitigations and  Workarounds
+
+```{warning}
+Certain `runc` versions show similar behavior with the `systemd` cgroup driver when `/dev/char` symlinks for the required devices are missing on the system.
+Refer to [GitHub disccusion #1133](https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133) for more details around this issue.
+It should be noted that the behavior persisted even if device nodes were requested on the command line.
+Newer `runc` versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected `runc` versions.
+```
+
+Use the following workarounds to prevent containers from losing access to requested GPUs when a `systemctl daemon-reload` command is run:
+
+* For Docker, use cgroupfs as the cgroup driver for containers. To do this, update the `/etc/docker/daemon.json` to include:
+  ```json
+  {
+    "exec-opts": ["native.cgroupdriver=cgroupfs"]
+  }
+  ```
+  and restart docker by running `systemctl restart docker`.
+  This will ensure that the container will not lose access to devices when `systemctl daemon-reload` is run.
+  This approach does not change the behavior for explicit container updates and a container will still lose access to devices in this case.
+* Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container.
+  For the Docker CLI, this is done by adding the relevant `--device` flags.
+  In the case of the NVIDIA Kubernetes Device Plugin the `compatWithCPUManager= true` [Helm option](https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values) will ensure the same thing.
+* Use the Container Device Interface (CDI) to inject devices into a container.
+  When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config.
+  This means that even if the container is updated it will still have access to the required devices.

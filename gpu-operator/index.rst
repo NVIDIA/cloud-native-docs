@@ -31,6 +31,7 @@
    gpu-driver-upgrades.rst
    install-gpu-operator-vgpu.rst
    install-gpu-operator-nvaie.rst
+   Security Considerations <security.rst>
 
 
 
@@ -74,5 +75,14 @@
    Amazon EKS <amazon-eks.rst>
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
+
+.. toctree::
+   :caption: NVIDIA DRA Driver for GPUs
+   :titlesonly:
+   :hidden:
+
+   Introduction & Installation <dra-intro-install.rst>
+   GPUs <dra-gpus.rst>
+   ComputeDomains <dra-cds.rst>
 
 .. include:: overview.rst

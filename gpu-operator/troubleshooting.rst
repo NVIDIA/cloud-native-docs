@@ -20,6 +20,33 @@
 Troubleshooting the NVIDIA GPU Operator
 #######################################
 
+****************************************************************
+Pods stuck in Pending state in mixed MIG + full GPU environments
+****************************************************************
+
+.. rubric:: Issue
+   :class: h4
+
+For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
+
+.. rubric:: Observation
+   :class: h4
+
+When a GPU pod is created on a node that has a mix of MIG slices and full GPUs, 
+the GPU pod gets stuck indefinitely in the ``Pending`` state. 
+
+.. rubric:: Root Cause
+   :class: h4
+
+This is due to a regression in NVML introduced in the R570 drivers starting from 570.124.06.
+
+.. rubric:: Action
+   :class: h4
+
+It's recommended that you downgrade to driver version 570.86.15 to work around this issue.
+
 ****************************************************
 GPU Operator Validator: Failed to Create Pod Sandbox
 ****************************************************

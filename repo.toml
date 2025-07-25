@@ -101,7 +101,8 @@ project_build_order = [
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.17.6"
+version = "1.17.8"
+source_substitutions = {version = "1.17.8"}
 copyright_start = 2020
 redirects = [
   { path="concepts.html", target="index.html" },
@@ -165,8 +166,8 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "25.3.0"
-source_substitutions = { version = "v25.3.0", recommended = "570.124.06" }
+version = "25.3.1"
+source_substitutions = { version = "v25.3.1", recommended = "570.148.08" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -224,7 +225,7 @@ output_format = "linkcheck"
 docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "25.3.0"
+version = "25.3.1"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",

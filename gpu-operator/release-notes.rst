@@ -33,6 +33,64 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.1:
+
+25.3.1
+======
+
+.. _v25.3.1-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Container Toolkit version v1.17.8
+  - NVIDIA DCGM v4.2.3
+  - NVIDIA DCGM Exporter v4.2.3-4.1.3
+  - NVIDIA Kubernetes Device Plugin v0.17.2
+  - Node Feature Discovery v0.17.3
+  - NVIDIA GDRCopy Driver v2.5.0
+
+* Added support for the following NVIDIA Data Center GPU Driver versions:
+
+  - 570.148.08 (default, recommended)
+  - 570.133.20 
+  - 550.163.01
+  - 535.247.01
+
+* Added support for Red Hat Enterprise Linux 9.
+  Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+  They are not available for ARM based systems.
+
+* Added support for Kubernetes v1.33.
+
+* Added support for setting the internalTrafficPolicy for the DCGM Exporter service.
+  You can configure this in the Helm chart value by setting `dcgmexporter.service.internalTrafficPolicy` to `Local` or `Cluster` (default). 
+  Choose Local if you want to route internal traffic within the node only.
+
+.. _v25.3.1-known-issues:
+
+Known Issues
+------------
+
+* For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
+  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+  It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+  For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
+
+* GPU Operator in CDI mode is not operational with RKE2.
+
+.. _v25.3.1-fixed-issues:
+
+Fixed Issues
+------------
+
+* Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet. 
+  This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
+  Refer to Github `pull request #1416 <https://github.com/NVIDIA/gpu-operator/pull/1416>`__ for more details.
+
 .. _v25.3.0:
 
 25.3.0
@@ -83,6 +141,7 @@ New Features
 * Added support for Ubuntu 24.04 LTS.
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
+  Note that HGX B200 requires a driver container version of 570.133.20 or later.
 
 * Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
 
@@ -2262,3 +2321,4 @@ Known Limitations
 
 * After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
   ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+

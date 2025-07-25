@@ -18,6 +18,11 @@ For information about installing the driver with a package manager, refer to
 the [_NVIDIA Driver Installation Quickstart Guide_](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html).
 Alternatively, you can install the driver by [downloading](https://www.nvidia.com/en-us/drivers/) a `.run` installer.
 
+```{note}
+There is a [known issue](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) on systems
+where `systemd` cgroup drivers are used that cause containers to lose access to requested GPUs when
+`systemctl daemon reload` is run. Please see the troubleshooting documentation for more information.
+```
 
 (installing-with-apt)=
 
@@ -56,7 +61,12 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ sudo apt-get install -y nvidia-container-toolkit
+   $ export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
+     sudo apt-get install -y \
+         nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}
    ```
 
 (installing-with-yum-or-dnf)=
@@ -84,7 +94,12 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ sudo dnf install -y nvidia-container-toolkit
+   $ export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
+     sudo dnf install -y \
+         nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}
    ```
 
 (installing-with-zypper)=
@@ -106,7 +121,12 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 1. Install the NVIDIA Container Toolkit packages:
 
    ```console
-   $ sudo zypper --gpg-auto-import-keys install -y nvidia-container-toolkit
+   $  export NVIDIA_CONTAINER_TOOLKIT_VERSION=${version}-1
+      sudo zypper --gpg-auto-import-keys install -y \
+         nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+         libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}
    ```
 
 ## Configuration
