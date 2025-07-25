@@ -33,6 +33,35 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.2:
+
+25.3.2
+======
+
+.. _v25.3.2-new-features:
+
+New Features
+------------
+
+* Added support for the following software component versions:
+
+  - NVIDIA Kubernetes Device Plugin/NVIDIA GPU Feature Discovery v0.17.3
+  - NVIDIA MIG Manager for Kubernetes v0.12.2
+
+.. _v25.3.2-known-issues:
+
+Known Issues
+------------
+
+* For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
+  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+  NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
+  For more detailed information, see GitHub issue #1361 <https://github.com/NVIDIA/gpu-operator/issue/1361>__.
+
+* Configuring the Operator to enable CDI is not supported on Rancher Kubernetes Engine 2 (RKE2).
+
+
 .. _v25.3.1:
 
 25.3.1
