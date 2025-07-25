@@ -432,10 +432,41 @@
 <p>GPU Operator beta releases are documented on <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/releases">GitHub</a>. NVIDIA AI Enterprise builds are not posted on GitHub.</p>
 </div>
 <hr class="docutils" />
-<section id="v25-3-1">
-<span id="id1"></span><h2>25.3.1<a class="headerlink" href="#v25-3-1" title="Permalink to this headline">#</a></h2>
+<section id="v25-3-2">
+<span id="id1"></span><h2>25.3.2<a class="headerlink" href="#v25-3-2" title="Permalink to this headline">#</a></h2>
 <section id="new-features">
-<span id="v25-3-1-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="v25-3-2-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added support for the following software component versions:</p>
+<ul>
+<li><p>NVIDIA Kubernetes Device Plugin v0.17.3</p></li>
+<li><p>NVIDIA MIG Manager for Kubernetes v0.12.2</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="known-issues">
+<span id="v25-3-2-known-issues"></span><h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+It’s recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p></li>
+<li><p>GPU Operator in CDI mode is not operational with RKE2.</p></li>
+</ul>
+</section>
+<section id="fixed-issues">
+<span id="v25-3-2-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fixed an issue where</p></li>
+</ul>
+</section>
+</section>
+<section id="v25-3-1">
+<span id="id2"></span><h2>25.3.1<a class="headerlink" href="#v25-3-1" title="Permalink to this headline">#</a></h2>
+<section id="v25-3-1-new-features">
+<span id="id3"></span><h3>New Features<a class="headerlink" href="#v25-3-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for the following software component versions:</p>
 <ul>
@@ -464,8 +495,8 @@ You can configure this in the Helm chart value by setting <cite>dcgmexporter.ser
 Choose Local if you want to route internal traffic within the node only.</p></li>
 </ul>
 </section>
-<section id="known-issues">
-<span id="v25-3-1-known-issues"></span><h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<section id="v25-3-1-known-issues">
+<span id="id4"></span><h3>Known Issues<a class="headerlink" href="#v25-3-1-known-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
@@ -475,8 +506,8 @@ For more detailed information, see GitHub issue <a class="github reference exter
 <li><p>GPU Operator in CDI mode is not operational with RKE2.</p></li>
 </ul>
 </section>
-<section id="fixed-issues">
-<span id="v25-3-1-fixed-issues"></span><h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
+<section id="v25-3-1-fixed-issues">
+<span id="id5"></span><h3>Fixed Issues<a class="headerlink" href="#v25-3-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet.
 This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
@@ -485,9 +516,9 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </section>
 </section>
 <section id="v25-3-0">
-<span id="id2"></span><h2>25.3.0<a class="headerlink" href="#v25-3-0" title="Permalink to this headline">#</a></h2>
+<span id="id6"></span><h2>25.3.0<a class="headerlink" href="#v25-3-0" title="Permalink to this headline">#</a></h2>
 <section id="v25-3-0-new-features">
-<span id="id3"></span><h3>New Features<a class="headerlink" href="#v25-3-0-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>New Features<a class="headerlink" href="#v25-3-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the following software component versions:</p>
 <ul class="simple">
@@ -589,7 +620,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 </ul>
 </section>
 <section id="v25-3-0-fixed-issues">
-<span id="id4"></span><h3>Fixed Issues<a class="headerlink" href="#v25-3-0-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Fixed Issues<a class="headerlink" href="#v25-3-0-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Removed default liveness probe from the <code class="docutils literal notranslate"><span class="pre">nvidia-fs-ctr</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-gdrcopy-ctr</span></code> containers of the GPU driver daemonset.
 Long response times of the <cite>lsmod</cite> commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.</p></li>
@@ -600,9 +631,9 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </section>
 </section>
 <section id="v24-9-2">
-<span id="id5"></span><h2>24.9.2<a class="headerlink" href="#v24-9-2" title="Permalink to this headline">#</a></h2>
+<span id="id9"></span><h2>24.9.2<a class="headerlink" href="#v24-9-2" title="Permalink to this headline">#</a></h2>
 <section id="v24-9-2-new-features">
-<span id="id6"></span><h3>New Features<a class="headerlink" href="#v24-9-2-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id10"></span><h3>New Features<a class="headerlink" href="#v24-9-2-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 570.86.15.</p></li>
 <li><p>The default driver in this version is now 550.144.03.
@@ -616,9 +647,9 @@ on the platform support page for more details on supported drivers.</p></li>
 </section>
 </section>
 <section id="v24-9-1">
-<span id="id7"></span><h2>24.9.1<a class="headerlink" href="#v24-9-1" title="Permalink to this headline">#</a></h2>
+<span id="id11"></span><h2>24.9.1<a class="headerlink" href="#v24-9-1" title="Permalink to this headline">#</a></h2>
 <section id="v24-9-1-new-features">
-<span id="id8"></span><h3>New Features<a class="headerlink" href="#v24-9-1-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id12"></span><h3>New Features<a class="headerlink" href="#v24-9-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the NVIDIA Data Center GPU Driver versions 550.127.08 and 535.216.03.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
@@ -652,7 +683,7 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 </ul>
 </section>
 <section id="v24-9-1-fixed-issues">
-<span id="id9"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-1-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id13"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where NVIDIA Container Toolkit would fail to start on Rancher RKE2, K3s, and Canonical MicroK8s.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1109">issue #1109</a> for more details.</p></li>
@@ -662,9 +693,9 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </section>
 </section>
 <section id="v24-9-0">
-<span id="id10"></span><h2>24.9.0<a class="headerlink" href="#v24-9-0" title="Permalink to this headline">#</a></h2>
+<span id="id14"></span><h2>24.9.0<a class="headerlink" href="#v24-9-0" title="Permalink to this headline">#</a></h2>
 <section id="v24-9-0-new-features">
-<span id="id11"></span><h3>New Features<a class="headerlink" href="#v24-9-0-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id15"></span><h3>New Features<a class="headerlink" href="#v24-9-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>This release adds support for NVIDIA Container Toolkit 1.17.0.
 This version includes updates for the following CVEs:</p>
@@ -736,7 +767,7 @@ This change follows the principle of least privilege and improves the security p
 </ul>
 </section>
 <section id="v24-9-0-fixed-issues">
-<span id="id12"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-0-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id16"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-0-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
 On clusters that have nodes with taints, even when <code class="docutils literal notranslate"><span class="pre">operator.tolerations</span></code> includes tolerations, the jobs are not scheduled.
@@ -760,9 +791,9 @@ You can specify the <code class="docutils literal notranslate"><span class="pre"
 </section>
 </section>
 <section id="v24-6-2">
-<span id="id13"></span><h2>24.6.2<a class="headerlink" href="#v24-6-2" title="Permalink to this headline">#</a></h2>
+<span id="id17"></span><h2>24.6.2<a class="headerlink" href="#v24-6-2" title="Permalink to this headline">#</a></h2>
 <section id="v24-6-2-new-features">
-<span id="id14"></span><h3>New Features<a class="headerlink" href="#v24-6-2-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id18"></span><h3>New Features<a class="headerlink" href="#v24-6-2-new-features" title="Permalink to this headline">#</a></h3>
 <p><strong>This release provides critical security updates and is recommended for all users.</strong></p>
 <p>This release adds support for NVIDIA Container Toolkit 1.16.2.
 This version includes updates for the following CVEs:</p>
@@ -775,9 +806,9 @@ This version includes updates for the following CVEs:</p>
 </section>
 </section>
 <section id="v24-6-1">
-<span id="id15"></span><h2>24.6.1<a class="headerlink" href="#v24-6-1" title="Permalink to this headline">#</a></h2>
+<span id="id19"></span><h2>24.6.1<a class="headerlink" href="#v24-6-1" title="Permalink to this headline">#</a></h2>
 <section id="v24-6-1-new-features">
-<span id="id16"></span><h3>New Features<a class="headerlink" href="#v24-6-1-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id20"></span><h3>New Features<a class="headerlink" href="#v24-6-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the following software component versions:</p>
 <ul class="simple">
@@ -790,7 +821,7 @@ on the platform support page.</p>
 </ul>
 </section>
 <section id="v24-6-1-fixed-issues">
-<span id="id17"></span><h3>Fixed Issues<a class="headerlink" href="#v24-6-1-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id21"></span><h3>Fixed Issues<a class="headerlink" href="#v24-6-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
 Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/883">issue #883</a> for more details.</p></li>
@@ -801,9 +832,9 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </section>
 </section>
 <section id="v24-6-0">
-<span id="id18"></span><h2>24.6.0<a class="headerlink" href="#v24-6-0" title="Permalink to this headline">#</a></h2>
+<span id="id22"></span><h2>24.6.0<a class="headerlink" href="#v24-6-0" title="Permalink to this headline">#</a></h2>
 <section id="v24-6-0-new-features">
-<span id="id19"></span><h3>New Features<a class="headerlink" href="#v24-6-0-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id23"></span><h3>New Features<a class="headerlink" href="#v24-6-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.90.07.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
@@ -876,7 +907,7 @@ Refer to <a class="reference internal" href="gpu-operator-mig.html#example-custo
 </ul>
 </section>
 <section id="v24-6-0-fixed-issues">
-<span id="id20"></span><h3>Fixed Issues<a class="headerlink" href="#v24-6-0-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id24"></span><h3>Fixed Issues<a class="headerlink" href="#v24-6-0-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Role-based access controls for the following components were reviewed and revised to use least-required privileges:</p>
 <ul class="simple">
@@ -913,7 +944,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/ku
 </ul>
 </section>
 <section id="v24-6-0-known-limitations">
-<span id="id21"></span><h3>Known Limitations<a class="headerlink" href="#v24-6-0-known-limitations" title="Permalink to this headline">#</a></h3>
+<span id="id25"></span><h3>Known Limitations<a class="headerlink" href="#v24-6-0-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">1g.12gb</span></code> MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code>.</p></li>
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
@@ -945,9 +976,9 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <section id="v24-3-0">
-<span id="id22"></span><h2>24.3.0<a class="headerlink" href="#v24-3-0" title="Permalink to this headline">#</a></h2>
+<span id="id26"></span><h2>24.3.0<a class="headerlink" href="#v24-3-0" title="Permalink to this headline">#</a></h2>
 <section id="v24-3-0-new-features">
-<span id="id23"></span><h3>New Features<a class="headerlink" href="#v24-3-0-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id27"></span><h3>New Features<a class="headerlink" href="#v24-3-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support to enable NVIDIA GDRCopy v2.4.1.</p>
 <p>When you enable support for GDRCopy, the Operator configures the GDRCopy Driver container image
@@ -996,7 +1027,7 @@ PSP was deprecated in the Kubernetes v1.21 release and removed in v1.25.</p></li
 </ul>
 </section>
 <section id="v24-3-0-fixed-issues">
-<span id="id24"></span><h3>Fixed Issues<a class="headerlink" href="#v24-3-0-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id28"></span><h3>Fixed Issues<a class="headerlink" href="#v24-3-0-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Installation on Red Hat OpenShift Container Platform 4.15 no longer requires a workaround related to
 secrets and storage for the integrated image registry.</p></li>
@@ -1019,7 +1050,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </ul>
 </section>
 <section id="v24-3-0-known-limitations">
-<span id="id25"></span><h3>Known Limitations<a class="headerlink" href="#v24-3-0-known-limitations" title="Permalink to this headline">#</a></h3>
+<span id="id29"></span><h3>Known Limitations<a class="headerlink" href="#v24-3-0-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>NVIDIA vGPU Manager does not work correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
 The logs for vGPU Device Manager pods include lines like the following example:</p>
@@ -1085,9 +1116,9 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <section id="v23-9-2">
-<span id="id26"></span><h2>23.9.2<a class="headerlink" href="#v23-9-2" title="Permalink to this headline">#</a></h2>
+<span id="id30"></span><h2>23.9.2<a class="headerlink" href="#v23-9-2" title="Permalink to this headline">#</a></h2>
 <section id="v23-9-2-new-features">
-<span id="id27"></span><h3>New Features<a class="headerlink" href="#v23-9-2-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id31"></span><h3>New Features<a class="headerlink" href="#v23-9-2-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.54.14.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
@@ -1113,7 +1144,7 @@ Refer to <a class="reference internal" href="install-gpu-operator-nvaie.html"><s
 </ul>
 </section>
 <section id="v23-9-2-fixed-issues">
-<span id="id28"></span><h3>Fixed issues<a class="headerlink" href="#v23-9-2-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id32"></span><h3>Fixed issues<a class="headerlink" href="#v23-9-2-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Previously, duplicate image pull secrets were added to some daemon sets and caused an error
 like the following when a node is deleted and the controller manager deleted the pods.</p>
@@ -1147,7 +1178,7 @@ deploys. You can now disable this pod by setting the following environment varia
 </ul>
 </section>
 <section id="v23-9-2-known-limitations">
-<span id="id29"></span><h3>Known Limitations<a class="headerlink" href="#v23-9-2-known-limitations" title="Permalink to this headline">#</a></h3>
+<span id="id33"></span><h3>Known Limitations<a class="headerlink" href="#v23-9-2-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>When installing on Red Hat OpenShift Container Platform 4.15 clusters that disable the integrated image registry,
 secrets are no longer automatically generated and this change causes installation of the Operator to stall.
@@ -1189,9 +1220,9 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <section id="v23-9-1">
-<span id="id30"></span><h2>23.9.1<a class="headerlink" href="#v23-9-1" title="Permalink to this headline">#</a></h2>
+<span id="id34"></span><h2>23.9.1<a class="headerlink" href="#v23-9-1" title="Permalink to this headline">#</a></h2>
 <section id="v23-9-1-new-features">
-<span id="id31"></span><h3>New Features<a class="headerlink" href="#v23-9-1-new-features" title="Permalink to this headline">#</a></h3>
+<span id="id35"></span><h3>New Features<a class="headerlink" href="#v23-9-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for NVIDIA GH200 Grace Hopper Superchip as a technology preview feature.
 Refer to <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a>.</p>
@@ -1238,14 +1269,14 @@ on the platform support page.</p>
 </ul>
 </section>
 <section id="v23-9-1-improvements">
-<span id="id32"></span><h3>Improvements<a class="headerlink" href="#v23-9-1-improvements" title="Permalink to this headline">#</a></h3>
+<span id="id36"></span><h3>Improvements<a class="headerlink" href="#v23-9-1-improvements" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">must-gather.sh</span></code> script that is used for support is enhanced to collect logs
 from NVIDIA vGPU Manager pods.</p></li>
 </ul>
 </section>
 <section id="v23-9-1-fixed-issues">
-<span id="id33"></span><h3>Fixed issues<a class="headerlink" href="#v23-9-1-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id37"></span><h3>Fixed issues<a class="headerlink" href="#v23-9-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Previously, the technical preview NVIDIA driver custom resource did not support adding
 custom labels, annotations, or tolerations to the pods that run as part of the driver daemon set.
@@ -1286,7 +1317,7 @@ The error was related to the <code class="docutils literal notranslate"><span cl
 </ul>
 </section>
 <section id="v23-9-1-known-limitations">
-<span id="id34"></span><h3>Known Limitations<a class="headerlink" href="#v23-9-1-known-limitations" title="Permalink to this headline">#</a></h3>
+<span id="id38"></span><h3>Known Limitations<a class="headerlink" href="#v23-9-1-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">1g.12gb</span></code> MIG profile does not operate as expected on the NVIDIA GH200 GPU when the MIG configuration is set to <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code>.</p></li>
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
@@ -1324,10 +1355,10 @@ Additionally, network-restricted environments are not supported.</p></li>
 </ul>
 </section>
 </section>
-<section id="id35">
-<h2>23.9.0<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h2>
-<section id="id36">
-<h3>New Features<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h3>
+<section id="id39">
+<h2>23.9.0<a class="headerlink" href="#id39" title="Permalink to this headline">#</a></h2>
+<section id="id40">
+<h3>New Features<a class="headerlink" href="#id40" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for an NVIDIA driver custom resource definition that enables
 running multiple GPU driver types and versions on the same cluster and adds
@@ -1370,8 +1401,8 @@ on the platform support page.</p>
 </li>
 </ul>
 </section>
-<section id="id37">
-<h3>Fixed issues<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h3>
+<section id="id41">
+<h3>Fixed issues<a class="headerlink" href="#id41" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Previously, if the <code class="docutils literal notranslate"><span class="pre">RHEL_VERSION</span></code> environment variable was set for the Operator, the variable was
 propagated to the driver container and used in the <code class="docutils literal notranslate"><span class="pre">--releasever</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">dnf</span></code> command.
@@ -1383,8 +1414,8 @@ The upgrade to Node Feature Discovery v0.14.2 includes an enhancement to garbage
 ensures the objects are removed after a node is deleted.</p></li>
 </ul>
 </section>
-<section id="id38">
-<h3>Known Limitations<a class="headerlink" href="#id38" title="Permalink to this headline">#</a></h3>
+<section id="id42">
+<h3>Known Limitations<a class="headerlink" href="#id42" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
 because of the missing <code class="docutils literal notranslate"><span class="pre">kernel-headers</span></code> package within the container.
@@ -1422,10 +1453,10 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <section id="v23-6-2">
-<span id="id39"></span><h2>23.6.2<a class="headerlink" href="#v23-6-2" title="Permalink to this headline">#</a></h2>
+<span id="id43"></span><h2>23.6.2<a class="headerlink" href="#v23-6-2" title="Permalink to this headline">#</a></h2>
 <p>This patch release back ports a fix that was introduced in the v23.9.1 release.</p>
 <section id="v23-6-2-fixed-issues">
-<span id="id40"></span><h3>Fixed Issues<a class="headerlink" href="#v23-6-2-fixed-issues" title="Permalink to this headline">#</a></h3>
+<span id="id44"></span><h3>Fixed Issues<a class="headerlink" href="#v23-6-2-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Previously, when you specified the <code class="docutils literal notranslate"><span class="pre">operator.upgradeCRD=true</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">upgrade</span></code>
 command, the pre-upgrade hook ran with the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> service account
@@ -1440,10 +1471,10 @@ The update prevents failures with Argo CD.</p>
 </ul>
 </section>
 </section>
-<section id="id41">
-<h2>23.6.1<a class="headerlink" href="#id41" title="Permalink to this headline">#</a></h2>
-<section id="id42">
-<h3>New Features<a class="headerlink" href="#id42" title="Permalink to this headline">#</a></h3>
+<section id="id45">
+<h2>23.6.1<a class="headerlink" href="#id45" title="Permalink to this headline">#</a></h2>
+<section id="id46">
+<h3>New Features<a class="headerlink" href="#id46" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for NVIDIA L40S GPUs.</p></li>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 535.104.05.
@@ -1451,8 +1482,8 @@ Refer to the <a class="reference internal" href="platform-support.html#gpu-opera
 on the platform support page.</p></li>
 </ul>
 </section>
-<section id="id43">
-<h3>Fixed issues<a class="headerlink" href="#id43" title="Permalink to this headline">#</a></h3>
+<section id="id47">
+<h3>Fixed issues<a class="headerlink" href="#id47" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Previously, the NVIDIA Container Toolkit daemon set could fail when running on
 nodes with certain types of GPUs.
@@ -1475,10 +1506,10 @@ The error message is similar to the following example:</p>
 </ul>
 </section>
 </section>
-<section id="id44">
-<h2>23.6.0<a class="headerlink" href="#id44" title="Permalink to this headline">#</a></h2>
-<section id="id45">
-<h3>New Features<a class="headerlink" href="#id45" title="Permalink to this headline">#</a></h3>
+<section id="id48">
+<h2>23.6.0<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h2>
+<section id="id49">
+<h3>New Features<a class="headerlink" href="#id49" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for configuring Kata Containers for GPU workloads as a technology preview feature.
 This feature introduces NVIDIA Kata Manager for Kubernetes as an operand of GPU Operator.
@@ -1508,8 +1539,8 @@ on the platform support page.</p></li>
 </li>
 </ul>
 </section>
-<section id="id46">
-<h3>Improvements<a class="headerlink" href="#id46" title="Permalink to this headline">#</a></h3>
+<section id="id50">
+<h3>Improvements<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>The Operator is updated to use the <code class="docutils literal notranslate"><span class="pre">node-role.kubernetes.io/control-plane</span></code> label
 that is the default label for Kubernetes version 1.27.
@@ -1536,8 +1567,8 @@ To override the new behavior and run a plugin validation workload, specify
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">validator.plugin.env.WITH_WORKLOAD=true</span></code> when you install or upgrade the Operator.</p></li>
 </ul>
 </section>
-<section id="id47">
-<h3>Fixed issues<a class="headerlink" href="#id47" title="Permalink to this headline">#</a></h3>
+<section id="id51">
+<h3>Fixed issues<a class="headerlink" href="#id51" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>In clusters that use a network proxy and configure GPU Direct Storage, the <code class="docutils literal notranslate"><span class="pre">nvidia-fs-ctr</span></code>
 container can use the network proxy and any other environment variable that you specify
@@ -1548,8 +1579,8 @@ the status reported in the <code class="docutils literal notranslate"><span clas
 In this release, the status is reported as <code class="docutils literal notranslate"><span class="pre">notReady</span></code> until the upgrade is complete.</p></li>
 </ul>
 </section>
-<section id="id48">
-<h3>Known Limitations<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h3>
+<section id="id52">
+<h3>Known Limitations<a class="headerlink" href="#id52" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The GPU Driver container does not run on hosts that have a custom kernel with the SEV-SNP CPU feature
 because of the missing <code class="docutils literal notranslate"><span class="pre">kernel-headers</span></code> package within the container.
@@ -1584,10 +1615,10 @@ Additionally, network-restricted environments are not supported.</p></li>
 </ul>
 </section>
 </section>
-<section id="id49">
-<h2>23.3.2<a class="headerlink" href="#id49" title="Permalink to this headline">#</a></h2>
-<section id="id50">
-<h3>New Features<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h3>
+<section id="id53">
+<h2>23.3.2<a class="headerlink" href="#id53" title="Permalink to this headline">#</a></h2>
+<section id="id54">
+<h3>New Features<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Kubernetes v1.27.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>
@@ -1609,8 +1640,8 @@ Refer to <a class="reference internal" href="microsoft-aks.html"><span class="do
 and support for CRI-0 v1.27 with Ubuntu 20.04.</p></li>
 </ul>
 </section>
-<section id="id51">
-<h3>Improvements<a class="headerlink" href="#id51" title="Permalink to this headline">#</a></h3>
+<section id="id55">
+<h3>Improvements<a class="headerlink" href="#id55" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Increased the default timeout for the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command that is used by the
 NVIDIA Driver Container startup probe and made the timeout configurable.
@@ -1621,8 +1652,8 @@ runs slowly.
 Refer to <a class="reference internal" href="getting-started.html#id1"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p></li>
 </ul>
 </section>
-<section id="id52">
-<h3>Fixed issues<a class="headerlink" href="#id52" title="Permalink to this headline">#</a></h3>
+<section id="id56">
+<h3>Fixed issues<a class="headerlink" href="#id56" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Fixed an issue with NVIDIA GPU Direct Storage (GDS) and Ubuntu 22.04.
 The Operator was not able to deploy GDS and other daemon sets.</p>
@@ -1633,8 +1664,8 @@ The Operator was not able to deploy GDS and other daemon sets.</p>
 </li>
 </ul>
 </section>
-<section id="id53">
-<h3>Known Limitations<a class="headerlink" href="#id53" title="Permalink to this headline">#</a></h3>
+<section id="id57">
+<h3>Known Limitations<a class="headerlink" href="#id57" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>If you cordon a node while the GPU driver upgrade process is already in progress,
 the Operator uncordons the node and upgrades the driver on the node.
@@ -1665,14 +1696,14 @@ Additionally, network-restricted environments are not supported.</p></li>
 </ul>
 </section>
 </section>
-<section id="id54">
-<h2>23.3.1<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h2>
+<section id="id58">
+<h2>23.3.1<a class="headerlink" href="#id58" title="Permalink to this headline">#</a></h2>
 <p>This release provides a packaging-only update to the 23.3.0 release to fix installation on Red Hat OpenShift Container Platform. Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/513">issue #513</a>.</p>
 </section>
-<section id="id55">
-<h2>23.3.0<a class="headerlink" href="#id55" title="Permalink to this headline">#</a></h2>
-<section id="id56">
-<h3>New Features<a class="headerlink" href="#id56" title="Permalink to this headline">#</a></h3>
+<section id="id59">
+<h2>23.3.0<a class="headerlink" href="#id59" title="Permalink to this headline">#</a></h2>
+<section id="id60">
+<h3>New Features<a class="headerlink" href="#id60" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 525.105.17.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
@@ -1709,8 +1740,8 @@ For more information, see <a class="reference internal" href="precompiled-driver
 <li><p>Added support for the NVIDIA H800 GPU in the <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a> table on the Platform Support page.</p></li>
 </ul>
 </section>
-<section id="id57">
-<h3>Improvements<a class="headerlink" href="#id57" title="Permalink to this headline">#</a></h3>
+<section id="id61">
+<h3>Improvements<a class="headerlink" href="#id61" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>The upgrade process for the GPU driver is enhanced.
 This release introduces a <code class="docutils literal notranslate"><span class="pre">maxUnavailable</span></code> field that you can use to specify
@@ -1740,8 +1771,8 @@ The value is overwritten when you label the node with a MIG profile.
 For configuration information, see <a class="reference internal" href="gpu-operator-mig.html"><span class="doc">GPU Operator with MIG</span></a>.</p></li>
 </ul>
 </section>
-<section id="id58">
-<h3>Fixed issues<a class="headerlink" href="#id58" title="Permalink to this headline">#</a></h3>
+<section id="id62">
+<h3>Fixed issues<a class="headerlink" href="#id62" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue that prevented building the GPU driver container when a <a class="reference internal" href="install-gpu-operator-air-gapped.html#local-package-repository"><span class="std std-ref">Local Package Repository</span></a>
 is used.
@@ -1815,8 +1846,8 @@ These CVEs are from the base images and are not in libraries that are used by th
 <li><p><code class="docutils literal notranslate"><span class="pre">platform-python</span></code> and <code class="docutils literal notranslate"><span class="pre">python3-libs</span></code> - <a class="reference external" href="https://access.redhat.com/security/cve/CVE-2023-24329">CVE-2023-24329</a></p></li>
 </ul>
 </section>
-<section id="id59">
-<h3>Known Limitations<a class="headerlink" href="#id59" title="Permalink to this headline">#</a></h3>
+<section id="id63">
+<h3>Known Limitations<a class="headerlink" href="#id63" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.</p></li>
 <li><p>When installing the Operator on Amazon EKS and using Kubernetes versions lower than
@@ -1842,10 +1873,10 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id60">
-<h2>22.9.2<a class="headerlink" href="#id60" title="Permalink to this headline">#</a></h2>
-<section id="id61">
-<h3>New Features<a class="headerlink" href="#id61" title="Permalink to this headline">#</a></h3>
+<section id="id64">
+<h2>22.9.2<a class="headerlink" href="#id64" title="Permalink to this headline">#</a></h2>
+<section id="id65">
+<h3>New Features<a class="headerlink" href="#id65" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Kubernetes v1.26 and Red Hat OpenShift 4.12.
 Refer to <a class="reference internal" href="platform-support.html"><span class="doc">Platform Support</span></a> for more details.</p></li>
@@ -1860,8 +1891,8 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/15
 These updates enable support for the NVIDIA HGX H100 System.</p></li>
 </ul>
 </section>
-<section id="id62">
-<h3>Improvements<a class="headerlink" href="#id62" title="Permalink to this headline">#</a></h3>
+<section id="id66">
+<h3>Improvements<a class="headerlink" href="#id66" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Enhanced the driver validation logic to make sure that the current instance of the driver container has successfully finished installing drivers.
 This enhancement prevents other operands from incorrectly starting with previously loaded drivers.</p></li>
@@ -1869,8 +1900,8 @@ This enhancement prevents other operands from incorrectly starting with previous
 The increased timeout improves the installation experience for clusters with slow networks by avoiding unnecessary driver container restarts.</p></li>
 </ul>
 </section>
-<section id="id63">
-<h3>Fixed issues<a class="headerlink" href="#id63" title="Permalink to this headline">#</a></h3>
+<section id="id67">
+<h3>Fixed issues<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where containers allocated GPU lose access to them when systemd is triggered to run some reevaluation of the cgroups it manages.
 The issue affects systems using runc configured with systemd cgroups.
@@ -1878,8 +1909,8 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 <li><p>Fixed an issue that prevented the GPU operator from applying PSA labels on the namespace when no prior labels existed.</p></li>
 </ul>
 </section>
-<section id="id64">
-<h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#id64" title="Permalink to this headline">#</a></h3>
+<section id="id68">
+<h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#id68" title="Permalink to this headline">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.2</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.2-ubi8</span></code> images have the following known high-vulnerability CVEs.
 These CVEs are from the base images and are not in libraries that are used by the GPU operator:</p>
 <blockquote>
@@ -1888,8 +1919,8 @@ These CVEs are from the base images and are not in libraries that are used by th
 </ul>
 </div></blockquote>
 </section>
-<section id="id65">
-<h3>Known Limitations<a class="headerlink" href="#id65" title="Permalink to this headline">#</a></h3>
+<section id="id69">
+<h3>Known Limitations<a class="headerlink" href="#id69" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>All worker nodes within the Kubernetes cluster must use the same operating system version.</p></li>
 <li><p>NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.</p></li>
@@ -1906,10 +1937,10 @@ Additionally, network-restricted environments are not supported.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id66">
-<h2>22.9.1<a class="headerlink" href="#id66" title="Permalink to this headline">#</a></h2>
-<section id="id67">
-<h3>New Features<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h3>
+<section id="id70">
+<h2>22.9.1<a class="headerlink" href="#id70" title="Permalink to this headline">#</a></h2>
+<section id="id71">
+<h3>New Features<a class="headerlink" href="#id71" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for CUDA 12.0 / R525 Data Center drivers on x86 / ARM servers.</p></li>
 <li><p>Support for RHEL 8.7 with Kubernetes and Containerd or CRI-O.</p></li>
@@ -1922,8 +1953,8 @@ Additionally, network-restricted environments are not supported.</p></li>
 <li><p>Support for HPE Ezmeral Runtime Enterprise. Version 5.5 - with RHEL 8.4 and 8.5</p></li>
 </ul>
 </section>
-<section id="id68">
-<h3>Improvements<a class="headerlink" href="#id68" title="Permalink to this headline">#</a></h3>
+<section id="id72">
+<h3>Improvements<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added helm parameters to control operator logging levels and time encoding.</p></li>
 <li><p>When using CRI-O runtime with Kubernetes, it is no longer required to update the CRI-O config file to include <code class="docutils literal notranslate"><span class="pre">/run/containers/oci/hooks.d</span></code> as an additional path for OCI hooks. By default, the NVIDIA OCI runtime hook gets installed at <code class="docutils literal notranslate"><span class="pre">/usr/share/containers/oci/hooks.d</span></code> which is the default path configured with CRI-O.</p></li>
@@ -1934,15 +1965,15 @@ This can be configured using <code class="docutils literal notranslate"><span cl
 This eliminates the requirement to drain the entire node currently.</p></li>
 </ul>
 </section>
-<section id="id69">
-<h3>Fixed issues<a class="headerlink" href="#id69" title="Permalink to this headline">#</a></h3>
+<section id="id73">
+<h3>Fixed issues<a class="headerlink" href="#id73" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fix repeated restarts of container-toolkit when used with containerd versions <code class="docutils literal notranslate"><span class="pre">v1.6.9</span></code> and above. Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/432">issue #432</a> for more details.</p></li>
 <li><p>Disable creation of PodSecurityPolicies (PSP) with K8s versions <code class="docutils literal notranslate"><span class="pre">1.25</span></code> and above as it is removed.</p></li>
 </ul>
 </section>
-<section id="id70">
-<h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#id70" title="Permalink to this headline">#</a></h3>
+<section id="id74">
+<h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#id74" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed - Updated driver images for <code class="docutils literal notranslate"><span class="pre">515.86.01</span></code>, <code class="docutils literal notranslate"><span class="pre">510.108.03</span></code>, <code class="docutils literal notranslate"><span class="pre">470.161.03</span></code>, <code class="docutils literal notranslate"><span class="pre">450.216.04</span></code> to address CVEs noted <a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5415">here</a>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.1</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.1-ubi8</span></code> images have been released with the following known HIGH Vulnerability CVEs.
@@ -1953,8 +1984,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </li>
 </ul>
 </section>
-<section id="id71">
-<h3>Known Limitations<a class="headerlink" href="#id71" title="Permalink to this headline">#</a></h3>
+<section id="id75">
+<h3>Known Limitations<a class="headerlink" href="#id75" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>All worker nodes within the Kubernetes cluster must use the same operating system version.</p></li>
 <li><p>NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.</p></li>
@@ -1967,10 +1998,10 @@ in this case for the driver installation to succeed.</p></li>
 </ul>
 </section>
 </section>
-<section id="id72">
-<h2>22.9.0<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h2>
-<section id="id73">
-<h3>New Features<a class="headerlink" href="#id73" title="Permalink to this headline">#</a></h3>
+<section id="id76">
+<h2>22.9.0<a class="headerlink" href="#id76" title="Permalink to this headline">#</a></h2>
+<section id="id77">
+<h3>New Features<a class="headerlink" href="#id77" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for Hopper (H100) GPU with CUDA 11.8 / R520 Data Center drivers on x86 servers.</p></li>
 <li><p>Support for RHEL 8 with Kubernetes and Containerd or CRI-O.</p></li>
@@ -1983,24 +2014,24 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>Support for <a class="reference external" href="https://kubernetes.io/docs/concepts/security/pod-security-admission/">Pod Security Admission (PSA)</a> through the <code class="docutils literal notranslate"><span class="pre">psp.enabled</span></code> flag. If enabled, the namespace where the operator is installed in will be labeled with the <code class="docutils literal notranslate"><span class="pre">privileged</span></code> pod security level.</p></li>
 </ul>
 </section>
-<section id="id74">
-<h3>Improvements<a class="headerlink" href="#id74" title="Permalink to this headline">#</a></h3>
+<section id="id78">
+<h3>Improvements<a class="headerlink" href="#id78" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support automatic upgrade and cleanup of <code class="docutils literal notranslate"><span class="pre">clusterpolicies.nvidia.com</span></code> CRD using Helm hooks. Refer to <a class="reference internal" href="upgrade.html#operator-upgrades"><span class="std std-ref">Operator upgrades</span></a> for more info.</p></li>
 <li><p>Support for dynamically enabling/disabling GFD, MIG Manager, DCGM and DCGM-Exporter.</p></li>
 <li><p>Switched to calendar versioning starting from this release for better life cycle management and support. Refer to <a class="reference internal" href="platform-support.html#operator-versioning"><span class="std std-ref">NVIDIA GPU Operator Versioning</span></a> for more info.</p></li>
 </ul>
 </section>
-<section id="id75">
-<h3>Fixed issues<a class="headerlink" href="#id75" title="Permalink to this headline">#</a></h3>
+<section id="id79">
+<h3>Fixed issues<a class="headerlink" href="#id79" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Remove CUDA compat libs from the operator and all operand images to avoid mismatch with installed CUDA driver version. More info <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/391">here</a> and <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/389">here</a>.</p></li>
 <li><p>Migrate to <code class="docutils literal notranslate"><span class="pre">node.k8s.io/v1</span></code> API for creation of <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> objects. More info <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/409">here</a>.</p></li>
 <li><p>Remove PodSecurityPolicy (PSP) starting with Kubernetes v1.25. Setting <code class="docutils literal notranslate"><span class="pre">psp.enabled</span></code> will now enable Pod Security Admission (PSA) instead.</p></li>
 </ul>
 </section>
-<section id="id76">
-<h3>Known Limitations<a class="headerlink" href="#id76" title="Permalink to this headline">#</a></h3>
+<section id="id80">
+<h3>Known Limitations<a class="headerlink" href="#id80" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>All worker nodes within the Kubernetes cluster must use the same operating system version.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
@@ -2020,18 +2051,18 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id79">
-<h2>1.11.1<a class="headerlink" href="#id79" title="Permalink to this headline">#</a></h2>
-<section id="id80">
-<h3>Improvements<a class="headerlink" href="#id80" title="Permalink to this headline">#</a></h3>
+<section id="id83">
+<h2>1.11.1<a class="headerlink" href="#id83" title="Permalink to this headline">#</a></h2>
+<section id="id84">
+<h3>Improvements<a class="headerlink" href="#id84" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">startupProbe</span></code> to NVIDIA driver container to allow RollingUpgrades to progress to other nodes only after driver modules are successfully loaded on current one.</p></li>
 <li><p>Added support for <code class="docutils literal notranslate"><span class="pre">driver.rollingUpdate.maxUnavailable</span></code> parameter to specify maximum nodes for simultaneous driver upgrades. Default is 1.</p></li>
 <li><p>NVIDIA driver container will auto-disable itself on the node with pre-installed drivers by applying label <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.driver=pre-installed</span></code>. This is useful for heterogeneous clusters where only some GPU nodes have pre-installed drivers(e.g. DGX OS).</p></li>
 </ul>
 </section>
-<section id="id81">
-<h3>Fixed issues<a class="headerlink" href="#id81" title="Permalink to this headline">#</a></h3>
+<section id="id85">
+<h3>Fixed issues<a class="headerlink" href="#id85" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Apply tolerations to <code class="docutils literal notranslate"><span class="pre">cuda-validator</span></code> and <code class="docutils literal notranslate"><span class="pre">device-plugin-validator</span></code> Pods based on <code class="docutils literal notranslate"><span class="pre">deamonsets.tolerations</span></code> in <cite>ClusterPolicy</cite>. For more info refer <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/360">here</a>.</p></li>
 <li><p>Fixed an issue causing <code class="docutils literal notranslate"><span class="pre">cuda-validator</span></code> Pod to fail when <code class="docutils literal notranslate"><span class="pre">accept-nvidia-visible-devices-envvar-when-unprivileged</span> <span class="pre">=</span> <span class="pre">false</span></code> is set with NVIDIA Container Toolkit. For more info refer <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/365">here</a>.</p></li>
@@ -2040,10 +2071,10 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id82">
-<h2>1.11.0<a class="headerlink" href="#id82" title="Permalink to this headline">#</a></h2>
-<section id="id83">
-<h3>New Features<a class="headerlink" href="#id83" title="Permalink to this headline">#</a></h3>
+<section id="id86">
+<h2>1.11.0<a class="headerlink" href="#id86" title="Permalink to this headline">#</a></h2>
+<section id="id87">
+<h3>New Features<a class="headerlink" href="#id87" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for NVIDIA Data Center GPU Driver version <code class="docutils literal notranslate"><span class="pre">515.48.07</span></code>.</p></li>
 <li><p>Support for NVIDIA AI Enterprise 2.1.</p></li>
@@ -2060,8 +2091,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>[Technical Preview] - Kubernetes on ARM with Server Base System Architecture (SBSA).</p></li>
 </ul>
 </section>
-<section id="id84">
-<h3>Improvements<a class="headerlink" href="#id84" title="Permalink to this headline">#</a></h3>
+<section id="id88">
+<h3>Improvements<a class="headerlink" href="#id88" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>GPUDirect RDMA is now supported with CentOS using MOFED installed on the node.</p></li>
 <li><p>The NVIDIA vGPU Manager can now be upgraded to a newer branch while using an older, compatible guest driver.</p></li>
@@ -2070,8 +2101,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Improved the container-toolkit to handle v1 containerd configurations.</p></li>
 </ul>
 </section>
-<section id="id85">
-<h3>Fixed issues<a class="headerlink" href="#id85" title="Permalink to this headline">#</a></h3>
+<section id="id89">
+<h3>Fixed issues<a class="headerlink" href="#id89" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fix for incorrect reporting of <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED</span></code> where reserved memory is reported as used memory. For more details refer to <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/348">GitHub issue</a>.</p></li>
 <li><p>Fixed nvidia-peermem sidecar container to correctly load the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> module when MOFED is directly installed on the node.</p></li>
@@ -2080,8 +2111,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Fixed readiness check for MOFED driver installation by the NVIDIA Network Operator. This will avoid the GPU driver containers to be in <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code> while waiting for MOFED drivers to be ready.</p></li>
 </ul>
 </section>
-<section id="id86">
-<h3>Known Limitations<a class="headerlink" href="#id86" title="Permalink to this headline">#</a></h3>
+<section id="id90">
+<h3>Known Limitations<a class="headerlink" href="#id90" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>All worker nodes within the Kubernetes cluster must use the same operating system version.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
@@ -2098,23 +2129,23 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id87">
-<h2>1.10.1<a class="headerlink" href="#id87" title="Permalink to this headline">#</a></h2>
-<section id="id88">
-<h3>Improvements<a class="headerlink" href="#id88" title="Permalink to this headline">#</a></h3>
+<section id="id91">
+<h2>1.10.1<a class="headerlink" href="#id91" title="Permalink to this headline">#</a></h2>
+<section id="id92">
+<h3>Improvements<a class="headerlink" href="#id92" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Validated secure boot with signed NVIDIA Data Center Driver R510.</p></li>
 <li><p>Validated cgroup v2 with Ubuntu Server 20.04 LTS.</p></li>
 </ul>
 </section>
-<section id="id89">
-<h3>Fixed issues<a class="headerlink" href="#id89" title="Permalink to this headline">#</a></h3>
+<section id="id93">
+<h3>Fixed issues<a class="headerlink" href="#id93" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when GPU Operator was installed and MIG was already enabled on a GPU. The GPU Operator will now install successfully and MIG can either be disabled via the label <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config=all-disabled</span></code> or configured with the required MIG profiles.</p></li>
 </ul>
 </section>
-<section id="id90">
-<h3>Known Limitations<a class="headerlink" href="#id90" title="Permalink to this headline">#</a></h3>
+<section id="id94">
+<h3>Known Limitations<a class="headerlink" href="#id94" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v1.10.1</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator:v1.10.1-ubi8</span></code> images have been released with the following known HIGH Vulnerability CVEs.
 These are from the base images and are not in libraries used by GPU Operator:</p>
@@ -2128,10 +2159,10 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id92">
-<h2>1.10.0<a class="headerlink" href="#id92" title="Permalink to this headline">#</a></h2>
-<section id="id93">
-<h3>New Features<a class="headerlink" href="#id93" title="Permalink to this headline">#</a></h3>
+<section id="id96">
+<h2>1.10.0<a class="headerlink" href="#id96" title="Permalink to this headline">#</a></h2>
+<section id="id97">
+<h3>New Features<a class="headerlink" href="#id97" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for NVIDIA Data Center GPU Driver version <cite>510.47.03</cite>.</p></li>
 <li><p>Support NVIDIA A2, A100X and A30X</p></li>
@@ -2143,15 +2174,15 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Support for NVIDIA Virtual Compute Server 14 (vGPU).</p></li>
 </ul>
 </section>
-<section id="id94">
-<h3>Improvements<a class="headerlink" href="#id94" title="Permalink to this headline">#</a></h3>
+<section id="id98">
+<h3>Improvements<a class="headerlink" href="#id98" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Enabling/Disabling of GPU System Processor (GSP) Mode through NVIDIA driver module parameters.</p></li>
 <li><p>Ability to avoid deploying GPU Operator Operands on certain worker nodes through labels. Useful for running VMs with GPUs using KubeVirt.</p></li>
 </ul>
 </section>
-<section id="id95">
-<h3>Fixed issues<a class="headerlink" href="#id95" title="Permalink to this headline">#</a></h3>
+<section id="id99">
+<h3>Fixed issues<a class="headerlink" href="#id99" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Increased lease duration of GPU Operator to 60s to avoid restarts during etcd defrag. More details <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/326">here</a>.</p></li>
 <li><p>Avoid spurious alerts generated of type <code class="docutils literal notranslate"><span class="pre">GPUOperatorOpenshiftDriverToolkitEnabledNfdTooOld</span></code> on RedHat OpenShift when there are no GPU nodes in the cluster.</p></li>
@@ -2160,8 +2191,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Fabric Manager (required for NVSwitch based systems) with CentOS 7 is now supported.</p></li>
 </ul>
 </section>
-<section id="id96">
-<h3>Known Limitations<a class="headerlink" href="#id96" title="Permalink to this headline">#</a></h3>
+<section id="id100">
+<h3>Known Limitations<a class="headerlink" href="#id100" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Upgrading to a new NVIDIA AI Enterprise major branch:</p>
 <p>Upgrading the vGPU host driver to a newer major branch than the vGPU guest driver will result in GPU driver pod transitioning to a failed state. This happens for instance when the Host is upgraded to vGPU version 14.x while the Kubernetes nodes are still running with vGPU version 13.x.</p>
@@ -2191,16 +2222,16 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id98">
-<h2>1.9.1<a class="headerlink" href="#id98" title="Permalink to this headline">#</a></h2>
-<section id="id99">
-<h3>Improvements<a class="headerlink" href="#id99" title="Permalink to this headline">#</a></h3>
+<section id="id102">
+<h2>1.9.1<a class="headerlink" href="#id102" title="Permalink to this headline">#</a></h2>
+<section id="id103">
+<h3>Improvements<a class="headerlink" href="#id103" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Improved logic in the driver container for waiting on MOFED driver readiness. This ensures that <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> is built and installed correctly.</p></li>
 </ul>
 </section>
-<section id="id100">
-<h3>Fixed issues<a class="headerlink" href="#id100" title="Permalink to this headline">#</a></h3>
+<section id="id104">
+<h3>Fixed issues<a class="headerlink" href="#id104" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Allow <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to fallback to using cluster entitlements on Red Hat OpenShift on build failures. This issue exposed itself when using GPU Operator with some Red Hat OpenShift 4.8.z versions and Red Hat OpenShift 4.9.8. GPU Operator 1.9+ with Red Hat OpenShift 4.9.9+ doesn’t require entitlements.</p></li>
 <li><p>Fixed an issue when DCGM-Exporter didn’t work correctly with using the separate DCGM host engine that is part of the standalone DCGM pod. Fixed the issue and changed the default behavior to use the DCGM Host engine that is embedded in DCGM-Exporter. The standalone DCGM pod will not be launched by default but can be enabled for use with DGX A100.</p></li>
@@ -2211,10 +2242,10 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id101">
-<h2>1.9.0<a class="headerlink" href="#id101" title="Permalink to this headline">#</a></h2>
-<section id="id102">
-<h3>New Features<a class="headerlink" href="#id102" title="Permalink to this headline">#</a></h3>
+<section id="id105">
+<h2>1.9.0<a class="headerlink" href="#id105" title="Permalink to this headline">#</a></h2>
+<section id="id106">
+<h3>New Features<a class="headerlink" href="#id106" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for NVIDIA Data Center GPU Driver version <cite>470.82.01</cite>.</p></li>
 <li><p>Support for DGX A100 with DGX OS 5.1+.</p></li>
@@ -2225,8 +2256,8 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Support for NVIDIA Virtual Compute Server 13.1 (vGPU).</p></li>
 </ul>
 </section>
-<section id="id103">
-<h3>Improvements<a class="headerlink" href="#id103" title="Permalink to this headline">#</a></h3>
+<section id="id107">
+<h3>Improvements<a class="headerlink" href="#id107" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Automatic detection of default runtime used in the cluster. Deprecate the operator.defaultRuntime parameter.</p></li>
 <li><p>GPU Operator and its operands are installed into a single user specified namespace.</p></li>
@@ -2234,14 +2265,14 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 <li><p>Added an option to mount a ConfigMap of self-signed certificates into the driver container. Enables SSL connections to private package repositories.</p></li>
 </ul>
 </section>
-<section id="id104">
-<h3>Fixed issues<a class="headerlink" href="#id104" title="Permalink to this headline">#</a></h3>
+<section id="id108">
+<h3>Fixed issues<a class="headerlink" href="#id108" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue when DCGM Exporter was in CrashLoopBackOff as it could not connect to the DCGM port on the same node.</p></li>
 </ul>
 </section>
-<section id="id105">
-<h3>Known Limitations<a class="headerlink" href="#id105" title="Permalink to this headline">#</a></h3>
+<section id="id109">
+<h3>Known Limitations<a class="headerlink" href="#id109" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>GPUDirect RDMA is only supported with R470 drivers on Ubuntu 20.04 LTS and is not supported on other distributions (e.g. CoreOS, CentOS etc.)</p></li>
 <li><p>The GPU Operator supports GPUDirect RDMA only in conjunction with the Network Operator. The Mellanox OFED drivers can be installed by the Network Operator or pre-installed on the host.</p></li>
@@ -2253,10 +2284,10 @@ These are from the base images and are not in libraries used by GPU Operator:</p
 </section>
 </section>
 <hr class="docutils" />
-<section id="id106">
-<h2>1.8.2<a class="headerlink" href="#id106" title="Permalink to this headline">#</a></h2>
-<section id="id107">
-<h3>Fixed issues<a class="headerlink" href="#id107" title="Permalink to this headline">#</a></h3>
+<section id="id110">
+<h2>1.8.2<a class="headerlink" href="#id110" title="Permalink to this headline">#</a></h2>
+<section id="id111">
+<h3>Fixed issues<a class="headerlink" href="#id111" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where Driver Daemonset was spuriously updated on RedHat OpenShift causing repeated restarts in Proxy environments.</p></li>
 <li><p>The MIG Manager version was bumped to <cite>v0.1.3</cite> to fix an issue when checking whether a GPU was in MIG mode or not.
@@ -2265,28 +2296,28 @@ Please refer to the <a class="reference external" href="https://github.com/NVIDI
 <li><p>Container Toolkit bumped to version <cite>v1.7.1</cite> to fix an issue when using A100 80GB.</p></li>
 </ul>
 </section>
-<section id="id109">
-<h3>Improvements<a class="headerlink" href="#id109" title="Permalink to this headline">#</a></h3>
+<section id="id113">
+<h3>Improvements<a class="headerlink" href="#id113" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for user-defined MIG partition configuration via a <cite>ConfigMap</cite>.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id110">
-<h2>1.8.1<a class="headerlink" href="#id110" title="Permalink to this headline">#</a></h2>
-<section id="id111">
-<h3>Fixed issues<a class="headerlink" href="#id111" title="Permalink to this headline">#</a></h3>
+<section id="id114">
+<h2>1.8.1<a class="headerlink" href="#id114" title="Permalink to this headline">#</a></h2>
+<section id="id115">
+<h3>Fixed issues<a class="headerlink" href="#id115" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with using the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/">NVIDIA License System</a> in NVIDIA AI Enterprise deployments.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id112">
-<h2>1.8.0<a class="headerlink" href="#id112" title="Permalink to this headline">#</a></h2>
-<section id="id113">
-<h3>New Features<a class="headerlink" href="#id113" title="Permalink to this headline">#</a></h3>
+<section id="id116">
+<h2>1.8.0<a class="headerlink" href="#id116" title="Permalink to this headline">#</a></h2>
+<section id="id117">
+<h3>New Features<a class="headerlink" href="#id117" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Support for NVIDIA Data Center GPU Driver version <cite>470.57.02</cite>.</p></li>
 <li><p>Added support for NVSwitch systems such as HGX A100. The driver container detects the presence of NVSwitches
@@ -2309,8 +2340,8 @@ to be deployed and connect to the existing DCGM container.</p></li>
 information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).</p></li>
 </ul>
 </section>
-<section id="id114">
-<h3>Improvements<a class="headerlink" href="#id114" title="Permalink to this headline">#</a></h3>
+<section id="id118">
+<h3>Improvements<a class="headerlink" href="#id118" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Reduced the size of the ClusterPolicy CRD by removing duplicates and redundant fields.</p></li>
 <li><p>The GPU Operator now supports detection of the virtual PCIe topology of the system and makes the topology available to
@@ -2321,15 +2352,15 @@ vGPU drivers via a configuration file. The driver container starts the <code cla
 <li><p>Added new debug options (logging, verbosity levels) for <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code></p></li>
 </ul>
 </section>
-<section id="id115">
-<h3>Fixed issues<a class="headerlink" href="#id115" title="Permalink to this headline">#</a></h3>
+<section id="id119">
+<h3>Fixed issues<a class="headerlink" href="#id119" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The driver container now loads <code class="docutils literal notranslate"><span class="pre">ipmi_devintf</span></code> by default. This allows tools such as <code class="docutils literal notranslate"><span class="pre">ipmitool</span></code> that rely on <code class="docutils literal notranslate"><span class="pre">ipmi</span></code> char devices
 to be created and available.</p></li>
 </ul>
 </section>
-<section id="id116">
-<h3>Known Limitations<a class="headerlink" href="#id116" title="Permalink to this headline">#</a></h3>
+<section id="id120">
+<h3>Known Limitations<a class="headerlink" href="#id120" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>GPUDirect RDMA is only supported with R470 drivers on Ubuntu 20.04 LTS and is not supported on other distributions (e.g. CoreOS, CentOS etc.)</p></li>
 <li><p>The operator supports building and loading of <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> only in conjunction with the Network Operator. Use with pre-installed MOFED drivers
@@ -2341,20 +2372,20 @@ This will be fixed in an upcoming patch release <cite>v1.8.2</cite>.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id117">
-<h2>1.7.1<a class="headerlink" href="#id117" title="Permalink to this headline">#</a></h2>
-<section id="id118">
-<h3>Fixed issues<a class="headerlink" href="#id118" title="Permalink to this headline">#</a></h3>
+<section id="id121">
+<h2>1.7.1<a class="headerlink" href="#id121" title="Permalink to this headline">#</a></h2>
+<section id="id122">
+<h3>Fixed issues<a class="headerlink" href="#id122" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>NFD version bumped to <cite>v0.8.2</cite> to support correct kernel version labelling on Anthos nodes. See <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/pull/402">NFD issue</a> for more details.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id119">
-<h2>1.7.0<a class="headerlink" href="#id119" title="Permalink to this headline">#</a></h2>
-<section id="id120">
-<h3>New Features<a class="headerlink" href="#id120" title="Permalink to this headline">#</a></h3>
+<section id="id123">
+<h2>1.7.0<a class="headerlink" href="#id123" title="Permalink to this headline">#</a></h2>
+<section id="id124">
+<h3>New Features<a class="headerlink" href="#id124" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for NVIDIA Data Center GPU Driver version <cite>460.73.01</cite>.</p></li>
 <li><p>Added support for automatic configuration of MIG geometry on NVIDIA Ampere products (e.g. A100) using the <code class="docutils literal notranslate"><span class="pre">k8s-mig-manager</span></code>.</p></li>
@@ -2364,8 +2395,8 @@ This will be fixed in an upcoming patch release <cite>v1.8.2</cite>.</p></li>
 <li><p>The Operator now supports <code class="docutils literal notranslate"><span class="pre">PodSecurityPolicies</span></code> when enabled in the cluster.</p></li>
 </ul>
 </section>
-<section id="id121">
-<h3>Improvements<a class="headerlink" href="#id121" title="Permalink to this headline">#</a></h3>
+<section id="id125">
+<h3>Improvements<a class="headerlink" href="#id125" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Changed the label selector used by the DaemonSets of the different states of the GPU Operator. Instead of having a global
 label <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.present=true</span></code>, each DaemonSet now has its own label, <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.&lt;state&gt;=true</span></code>. This
@@ -2379,15 +2410,15 @@ new behavior allows a finer grain of control over the components deployed on eac
 <li><p>Added an option to skip plugin validation workload pod during the Operator deployment.</p></li>
 </ul>
 </section>
-<section id="id122">
-<h3>Fixed issues<a class="headerlink" href="#id122" title="Permalink to this headline">#</a></h3>
+<section id="id126">
+<h3>Fixed issues<a class="headerlink" href="#id126" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator-resources</span></code> namespace is now created by the Operator so that they can be used by both Helm
 and OpenShift installations.</p></li>
 </ul>
 </section>
-<section id="id123">
-<h3>Known Limitations<a class="headerlink" href="#id123" title="Permalink to this headline">#</a></h3>
+<section id="id127">
+<h3>Known Limitations<a class="headerlink" href="#id127" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.</p></li>
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
@@ -2398,10 +2429,10 @@ modify the pod spec to apply correct resource type to match the MIG devices conf
 </section>
 </section>
 <hr class="docutils" />
-<section id="id124">
-<h2>1.6.2<a class="headerlink" href="#id124" title="Permalink to this headline">#</a></h2>
-<section id="id125">
-<h3>Fixed issues<a class="headerlink" href="#id125" title="Permalink to this headline">#</a></h3>
+<section id="id128">
+<h2>1.6.2<a class="headerlink" href="#id128" title="Permalink to this headline">#</a></h2>
+<section id="id129">
+<h3>Fixed issues<a class="headerlink" href="#id129" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with NVIDIA Container Toolkit 1.4.6 which causes an error with containerd as <code class="docutils literal notranslate"><span class="pre">Error</span> <span class="pre">while</span> <span class="pre">dialing</span> <span class="pre">dial</span> <span class="pre">unix</span> <span class="pre">/run/containerd/containerd.sock:</span> <span class="pre">connect:</span> <span class="pre">connection</span> <span class="pre">refused</span></code>. NVIDIA Container Toolkit 1.4.7 now sets <code class="docutils literal notranslate"><span class="pre">version</span></code> as an integer to fix this error.</p></li>
 <li><p>Fixed an issue with NVIDIA Container Toolkit which causes nvidia-container-runtime settings to be persistent across node reboot and causes driver pod to fail. Now nvidia-container-runtime will fallback to using <code class="docutils literal notranslate"><span class="pre">runc</span></code> when driver modules are not yet loaded during node reboot.</p></li>
@@ -2410,20 +2441,20 @@ modify the pod spec to apply correct resource type to match the MIG devices conf
 </section>
 </section>
 <hr class="docutils" />
-<section id="id126">
-<h2>1.6.1<a class="headerlink" href="#id126" title="Permalink to this headline">#</a></h2>
-<section id="id127">
-<h3>Fixed issues<a class="headerlink" href="#id127" title="Permalink to this headline">#</a></h3>
+<section id="id130">
+<h2>1.6.1<a class="headerlink" href="#id130" title="Permalink to this headline">#</a></h2>
+<section id="id131">
+<h3>Fixed issues<a class="headerlink" href="#id131" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with NVIDIA Container Toolkit 1.4.5 when used with containerd and an empty containerd configuration which file causes error <code class="docutils literal notranslate"><span class="pre">Error</span> <span class="pre">while</span> <span class="pre">dialing</span> <span class="pre">dial</span> <span class="pre">unix</span> <span class="pre">/run/containerd/containerd.sock:</span> <span class="pre">connect:</span> <span class="pre">connection</span> <span class="pre">refused</span></code>. NVIDIA Container Toolkit 1.4.6 now explicitly sets the <code class="docutils literal notranslate"><span class="pre">version=2</span></code> along with other changes when the default containerd configuration file is empty.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id128">
-<h2>1.6.0<a class="headerlink" href="#id128" title="Permalink to this headline">#</a></h2>
-<section id="id129">
-<h3>New Features<a class="headerlink" href="#id129" title="Permalink to this headline">#</a></h3>
+<section id="id132">
+<h2>1.6.0<a class="headerlink" href="#id132" title="Permalink to this headline">#</a></h2>
+<section id="id133">
+<h3>New Features<a class="headerlink" href="#id133" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Support for Red Hat OpenShift 4.7.</p></li>
 <li><p>Support for NVIDIA Data Center GPU Driver version <cite>460.32.03</cite>.</p></li>
@@ -2436,22 +2467,22 @@ modify the pod spec to apply correct resource type to match the MIG devices conf
 <li><p>Report NVIDIA vGPU licensing status and row-remapping metrics for Ampere GPUs</p></li>
 </ul>
 </section>
-<section id="id130">
-<h3>Improvements<a class="headerlink" href="#id130" title="Permalink to this headline">#</a></h3>
+<section id="id134">
+<h3>Improvements<a class="headerlink" href="#id134" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>NVIDIA vGPU licensing configuration (gridd.conf) can be provided as a ConfigMap</p></li>
 <li><p>ClusterPolicy CRD has been updated from v1beta1 to v1. As a result minimum supported Kubernetes version is 1.16 from GPU Operator 1.6.0 onwards.</p></li>
 </ul>
 </section>
-<section id="id131">
-<h3>Fixed issues<a class="headerlink" href="#id131" title="Permalink to this headline">#</a></h3>
+<section id="id135">
+<h3>Fixed issues<a class="headerlink" href="#id135" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixes for DCGM Exporter to work with CPU Manager.</p></li>
 <li><p>nvidia-gridd daemon logs are now collected on host by rsyslog.</p></li>
 </ul>
 </section>
-<section id="id132">
-<h3>Known Limitations<a class="headerlink" href="#id132" title="Permalink to this headline">#</a></h3>
+<section id="id136">
+<h3>Known Limitations<a class="headerlink" href="#id136" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.</p></li>
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
@@ -2464,58 +2495,58 @@ label manually when project is created.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id133">
-<h2>1.5.2<a class="headerlink" href="#id133" title="Permalink to this headline">#</a></h2>
-<section id="id134">
-<h3>Improvements<a class="headerlink" href="#id134" title="Permalink to this headline">#</a></h3>
+<section id="id137">
+<h2>1.5.2<a class="headerlink" href="#id137" title="Permalink to this headline">#</a></h2>
+<section id="id138">
+<h3>Improvements<a class="headerlink" href="#id138" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Allow <code class="docutils literal notranslate"><span class="pre">mig.strategy=single</span></code> on nodes with non-MIG GPUs.</p></li>
 <li><p>Pre-create MIG related <code class="docutils literal notranslate"><span class="pre">nvcaps</span></code> at startup.</p></li>
 <li><p>Updated device-plugin and toolkit validation to work with CPU Manager.</p></li>
 </ul>
 </section>
-<section id="id135">
-<h3>Fixed issues<a class="headerlink" href="#id135" title="Permalink to this headline">#</a></h3>
+<section id="id139">
+<h3>Fixed issues<a class="headerlink" href="#id139" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed issue which causes GFD pods to fail with error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">load</span> <span class="pre">NVML</span></code> error even after driver is loaded.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id136">
-<h2>1.5.1<a class="headerlink" href="#id136" title="Permalink to this headline">#</a></h2>
-<section id="id137">
-<h3>Improvements<a class="headerlink" href="#id137" title="Permalink to this headline">#</a></h3>
+<section id="id140">
+<h2>1.5.1<a class="headerlink" href="#id140" title="Permalink to this headline">#</a></h2>
+<section id="id141">
+<h3>Improvements<a class="headerlink" href="#id141" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Kubelet’s cgroup driver as <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is now supported.</p></li>
 </ul>
 </section>
-<section id="id138">
-<h3>Fixed issues<a class="headerlink" href="#id138" title="Permalink to this headline">#</a></h3>
+<section id="id142">
+<h3>Fixed issues<a class="headerlink" href="#id142" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Device-Plugin stuck in <code class="docutils literal notranslate"><span class="pre">init</span></code> phase on node reboot or when new node is added to the cluster.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id139">
-<h2>1.5.0<a class="headerlink" href="#id139" title="Permalink to this headline">#</a></h2>
-<section id="id140">
-<h3>New Features<a class="headerlink" href="#id140" title="Permalink to this headline">#</a></h3>
+<section id="id143">
+<h2>1.5.0<a class="headerlink" href="#id143" title="Permalink to this headline">#</a></h2>
+<section id="id144">
+<h3>New Features<a class="headerlink" href="#id144" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for NVIDIA vGPU</p></li>
 </ul>
 </section>
-<section id="id141">
-<h3>Improvements<a class="headerlink" href="#id141" title="Permalink to this headline">#</a></h3>
+<section id="id145">
+<h3>Improvements<a class="headerlink" href="#id145" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Driver Validation container is run as an initContainer within device-plugin Daemonset pods. Thus driver installation on each NVIDIA GPU/vGPU node will be validated.</p></li>
 <li><p>GFD will label vGPU nodes with driver version and branch name of NVIDIA vGPU installed on Hypervisor.</p></li>
 <li><p>Driver container will perform automatic compatibility check of NVIDIA vGPU driver with the version installed on the underlying Hypervisor.</p></li>
 </ul>
 </section>
-<section id="id142">
-<h3>Fixed issues<a class="headerlink" href="#id142" title="Permalink to this headline">#</a></h3>
+<section id="id146">
+<h3>Fixed issues<a class="headerlink" href="#id146" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>GPU Operator will no longer crash when no GPU nodes are found.</p></li>
 <li><p>Container Toolkit pods wait for drivers to be loaded on the system before setting the default container runtime as <cite>nvidia</cite>.</p></li>
@@ -2523,8 +2554,8 @@ label manually when project is created.</p></li>
 <li><p>Fixed device-plugin issue causing <code class="docutils literal notranslate"><span class="pre">symbol</span> <span class="pre">lookup</span> <span class="pre">error:</span> <span class="pre">nvidia-device-plugin:</span> <span class="pre">undefined</span> <span class="pre">symbol:</span> <span class="pre">nvmlEventSetWait_v2</span></code> error.</p></li>
 </ul>
 </section>
-<section id="id143">
-<h3>Known Limitations<a class="headerlink" href="#id143" title="Permalink to this headline">#</a></h3>
+<section id="id147">
+<h3>Known Limitations<a class="headerlink" href="#id147" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.</p></li>
 <li><p>GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.</p></li>
@@ -2539,10 +2570,10 @@ label manually when project is created.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id144">
-<h2>1.4.0<a class="headerlink" href="#id144" title="Permalink to this headline">#</a></h2>
-<section id="id145">
-<h3>New Features<a class="headerlink" href="#id145" title="Permalink to this headline">#</a></h3>
+<section id="id148">
+<h2>1.4.0<a class="headerlink" href="#id148" title="Permalink to this headline">#</a></h2>
+<section id="id149">
+<h3>New Features<a class="headerlink" href="#id149" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Added support for CentOS 7 and 8.</p>
 <div class="admonition note">
@@ -2561,8 +2592,8 @@ using the following Helm command:</p>
 <li><p>Added support for <code class="docutils literal notranslate"><span class="pre">containerd</span></code> as a container runtime under Kubernetes.</p></li>
 </ul>
 </section>
-<section id="id146">
-<h3>Improvements<a class="headerlink" href="#id146" title="Permalink to this headline">#</a></h3>
+<section id="id150">
+<h3>Improvements<a class="headerlink" href="#id150" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated DCGM-Exporter to <code class="docutils literal notranslate"><span class="pre">2.1.2</span></code>, which uses DCGM 2.0.13.</p></li>
 <li><p>Added the ability to pass arguments to the NVIDIA device plugin to enable <code class="docutils literal notranslate"><span class="pre">migStrategy</span></code> and <code class="docutils literal notranslate"><span class="pre">deviceListStrategy</span></code> flags
@@ -2571,8 +2602,8 @@ that allow additional configuration of the plugin.</p></li>
 state at launch in these configurations.</p></li>
 </ul>
 </section>
-<section id="id147">
-<h3>Fixed issues<a class="headerlink" href="#id147" title="Permalink to this headline">#</a></h3>
+<section id="id151">
+<h3>Fixed issues<a class="headerlink" href="#id151" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed the issue where the removal of the GPU Operator from the cluster required a restart of the Docker daemon (since the Operator
 sets the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> as the default runtime).</p></li>
@@ -2580,8 +2611,8 @@ sets the <code class="docutils literal notranslate"><span class="pre">nvidia</sp
 <li><p>Fixed an issue where the GFD and <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> container images were artificially limited to R450+ (CUDA 11.0+) drivers.</p></li>
 </ul>
 </section>
-<section id="id148">
-<h3>Known Limitations<a class="headerlink" href="#id148" title="Permalink to this headline">#</a></h3>
+<section id="id152">
+<h3>Known Limitations<a class="headerlink" href="#id152" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
@@ -2589,18 +2620,18 @@ sets the <code class="docutils literal notranslate"><span class="pre">nvidia</sp
 </section>
 </section>
 <hr class="docutils" />
-<section id="id149">
-<h2>1.3.0<a class="headerlink" href="#id149" title="Permalink to this headline">#</a></h2>
-<section id="id150">
-<h3>New Features<a class="headerlink" href="#id150" title="Permalink to this headline">#</a></h3>
+<section id="id153">
+<h2>1.3.0<a class="headerlink" href="#id153" title="Permalink to this headline">#</a></h2>
+<section id="id154">
+<h3>New Features<a class="headerlink" href="#id154" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Integrated <a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery">GPU Feature Discovery</a> to automatically generate labels for GPUs leveraging NFD.</p></li>
 <li><p>Added support for Red Hat OpenShift 4.4+ (i.e. 4.4.29+, 4.5 and 4.6). The GPU Operator can be deployed from OpenShift OperatorHub. See the catalog
 <a class="reference external" href="https://catalog.redhat.com/software/operators/nvidia/gpu-operator/5ea882962937381642a232cd">listing</a> for more information.</p></li>
 </ul>
 </section>
-<section id="id151">
-<h3>Improvements<a class="headerlink" href="#id151" title="Permalink to this headline">#</a></h3>
+<section id="id155">
+<h3>Improvements<a class="headerlink" href="#id155" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated DCGM-Exporter to <code class="docutils literal notranslate"><span class="pre">2.1.0</span></code> and added profiling metrics by default.</p></li>
 <li><p>Added further capabilities to configure tolerations, node affinity, node selectors, pod security context, resource requirements through the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p></li>
@@ -2608,15 +2639,15 @@ sets the <code class="docutils literal notranslate"><span class="pre">nvidia</sp
 <li><p>Validation images are now configurable for air-gapped installations.</p></li>
 </ul>
 </section>
-<section id="id152">
-<h3>Fixed issues<a class="headerlink" href="#id152" title="Permalink to this headline">#</a></h3>
+<section id="id156">
+<h3>Fixed issues<a class="headerlink" href="#id156" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue
 where the NVIDIA container toolkit would be setup as the default runtime, causing the driver container initialization to fail.</p></li>
 </ul>
 </section>
-<section id="id153">
-<h3>Known Limitations<a class="headerlink" href="#id153" title="Permalink to this headline">#</a></h3>
+<section id="id157">
+<h3>Known Limitations<a class="headerlink" href="#id157" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
@@ -2624,32 +2655,32 @@ where the NVIDIA container toolkit would be setup as the default runtime, causin
 </section>
 </section>
 <hr class="docutils" />
-<section id="id154">
-<h2>1.2.0<a class="headerlink" href="#id154" title="Permalink to this headline">#</a></h2>
-<section id="id155">
-<h3>New Features<a class="headerlink" href="#id155" title="Permalink to this headline">#</a></h3>
+<section id="id158">
+<h2>1.2.0<a class="headerlink" href="#id158" title="Permalink to this headline">#</a></h2>
+<section id="id159">
+<h3>New Features<a class="headerlink" href="#id159" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Ubuntu 20.04.z LTS.</p></li>
 <li><p>Added support for the NVIDIA A100 GPU (and appropriate updates to the underlying components of the operator).</p></li>
 </ul>
 </section>
-<section id="id156">
-<h3>Improvements<a class="headerlink" href="#id156" title="Permalink to this headline">#</a></h3>
+<section id="id160">
+<h3>Improvements<a class="headerlink" href="#id160" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated Node Feature Discovery (NFD) to 0.6.0.</p></li>
 <li><p>Container images are now hosted (and mirrored) on both <a class="reference external" href="https://hub.docker.com/u/nvidiadocker.io">DockerHub</a> and <a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:gpu-operator">NGC</a>.</p></li>
 </ul>
 </section>
-<section id="id157">
-<h3>Fixed issues<a class="headerlink" href="#id157" title="Permalink to this headline">#</a></h3>
+<section id="id161">
+<h3>Fixed issues<a class="headerlink" href="#id161" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where the GPU operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.</p></li>
 <li><p>Fixed a race condition where some of the NVIDIA pods would start out of order resulting in some pods in <code class="docutils literal notranslate"><span class="pre">RunContainerError</span></code> state.</p></li>
 <li><p>Fixed an issue in the driver container where the container would fail to install on systems with the <code class="docutils literal notranslate"><span class="pre">linux-gke</span></code> kernel due to not finding the kernel headers.</p></li>
 </ul>
 </section>
-<section id="id158">
-<h3>Known Limitations<a class="headerlink" href="#id158" title="Permalink to this headline">#</a></h3>
+<section id="id162">
+<h3>Known Limitations<a class="headerlink" href="#id162" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
@@ -2657,24 +2688,24 @@ where the NVIDIA container toolkit would be setup as the default runtime, causin
 </section>
 </section>
 <hr class="docutils" />
-<section id="id159">
-<h2>1.1.0<a class="headerlink" href="#id159" title="Permalink to this headline">#</a></h2>
-<section id="id160">
-<h3>New features<a class="headerlink" href="#id160" title="Permalink to this headline">#</a></h3>
+<section id="id163">
+<h2>1.1.0<a class="headerlink" href="#id163" title="Permalink to this headline">#</a></h2>
+<section id="id164">
+<h3>New features<a class="headerlink" href="#id164" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>DCGM is now deployed as part of the GPU Operator on OpenShift 4.3.</p></li>
 </ul>
 </section>
-<section id="id161">
-<h3>Improvements<a class="headerlink" href="#id161" title="Permalink to this headline">#</a></h3>
+<section id="id165">
+<h3>Improvements<a class="headerlink" href="#id165" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The operator CRD has been renamed to <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p></li>
 <li><p>The operator image is now based on UBI8.</p></li>
 <li><p>Helm chart has been refactored to fix issues and follow some best practices.</p></li>
 </ul>
 </section>
-<section id="id162">
-<h3>Fixed issues<a class="headerlink" href="#id162" title="Permalink to this headline">#</a></h3>
+<section id="id166">
+<h3>Fixed issues<a class="headerlink" href="#id166" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with the toolkit container which would setup the NVIDIA runtime under <code class="docutils literal notranslate"><span class="pre">/run/nvidia</span></code> with a symlink to <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia</span></code>.
 If a node was rebooted, this would prevent any containers from being run with Docker as the container runtime configured in <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code>
@@ -2684,18 +2715,18 @@ would not be available after reboot.</p></li>
 </section>
 </section>
 <hr class="docutils" />
-<section id="id163">
-<h2>1.0.0<a class="headerlink" href="#id163" title="Permalink to this headline">#</a></h2>
-<section id="id164">
-<h3>New Features<a class="headerlink" href="#id164" title="Permalink to this headline">#</a></h3>
+<section id="id167">
+<h2>1.0.0<a class="headerlink" href="#id167" title="Permalink to this headline">#</a></h2>
+<section id="id168">
+<h3>New Features<a class="headerlink" href="#id168" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for Helm v3. Note that installing the GPU Operator using Helm v2 is no longer supported.</p></li>
 <li><p>Added support for Red Hat OpenShift 4 (4.1, 4.2 and 4.3) using Red Hat Enterprise Linux Core OS (RHCOS) and CRI-O runtime on GPU worker nodes.</p></li>
 <li><p>GPU Operator now deploys NVIDIA DCGM for GPU telemetry on Ubuntu 18.04 LTS</p></li>
 </ul>
 </section>
-<section id="id165">
-<h3>Fixed Issues<a class="headerlink" href="#id165" title="Permalink to this headline">#</a></h3>
+<section id="id169">
+<h3>Fixed Issues<a class="headerlink" href="#id169" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The driver container now sets up the required dependencies on <code class="docutils literal notranslate"><span class="pre">i2c</span></code> and <code class="docutils literal notranslate"><span class="pre">ipmi_msghandler</span></code> modules.</p></li>
 <li><p>Fixed an issue with the validation steps (for the driver and device plugin) taking considerable time. Node provisioning times are now improved by 5x.</p></li>
@@ -2704,7 +2735,7 @@ would not be available after reboot.</p></li>
 </ul>
 </section>
 <section id="operator-known-limitations">
-<span id="id166"></span><h3>Known Limitations<a class="headerlink" href="#operator-known-limitations" title="Permalink to this headline">#</a></h3>
+<span id="id170"></span><h3>Known Limitations<a class="headerlink" href="#operator-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
 <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
@@ -2762,10 +2793,16 @@ would not be available after reboot.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-1">25.3.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-2">25.3.2</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-1">25.3.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-1-new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-1-known-issues">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-1-fixed-issues">Fixed Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-0">25.3.0</a><ul class="nav section-nav flex-column">
@@ -2823,193 +2860,193 @@ would not be available after reboot.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v23-9-1-known-limitations">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">23.9.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">23.9.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">Known Limitations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v23-6-2">23.6.2</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v23-6-2-fixed-issues">Fixed Issues</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">23.6.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">Fixed issues</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">23.6.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">Improvements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">23.6.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">23.3.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">23.6.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">23.3.1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">23.3.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">23.3.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">Known Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">23.3.1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">23.3.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">Fixed issues</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-vulnerabilities-and-exposures-cves">Common Vulnerabilities and Exposures (CVEs)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">Known Limitations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">22.9.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">Common Vulnerabilities and Exposures (CVEs)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">22.9.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id67">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id68">Common Vulnerabilities and Exposures (CVEs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id69">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">22.9.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id67">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id68">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id69">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id70">Common Vulnerabilities and Exposures (CVEs)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id71">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id70">22.9.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id71">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id72">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id73">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id74">Common Vulnerabilities and Exposures (CVEs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id75">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id72">22.9.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id73">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id74">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id75">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id76">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id76">22.9.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id77">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id78">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id79">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id80">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id79">1.11.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id80">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id81">Fixed issues</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id82">1.11.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id83">New Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id83">1.11.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id84">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id85">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id86">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id87">1.10.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id86">1.11.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id87">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id88">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id89">Fixed issues</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id90">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id92">1.10.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id93">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id94">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id95">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id96">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id91">1.10.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id92">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id93">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id94">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id98">1.9.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id99">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id100">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id96">1.10.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id97">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id98">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id99">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id100">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id101">1.9.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id102">New Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id102">1.9.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id103">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id104">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id105">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id106">1.8.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id107">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id109">Improvements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id105">1.9.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id106">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id107">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id108">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id109">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id110">1.8.1</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id110">1.8.2</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id111">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id113">Improvements</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id112">1.8.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id113">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id114">Improvements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id114">1.8.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id115">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id116">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id117">1.7.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id118">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id116">1.8.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id117">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id118">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id119">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id120">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id119">1.7.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id120">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id121">Improvements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id121">1.7.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id122">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id123">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id124">1.6.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id125">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id123">1.7.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id124">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id125">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id126">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id127">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id126">1.6.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id127">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id128">1.6.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id129">Fixed issues</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id128">1.6.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id129">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id130">Improvements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id130">1.6.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id131">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id132">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id133">1.5.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id132">1.6.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id133">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id134">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id135">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id136">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id136">1.5.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id137">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id138">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id137">1.5.2</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id138">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id139">Fixed issues</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id139">1.5.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id140">New Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id140">1.5.1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id141">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id142">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id143">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id144">1.4.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id145">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id146">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id147">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id148">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id143">1.5.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id144">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id145">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id146">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id147">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id149">1.3.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id150">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id151">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id152">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id153">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id148">1.4.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id149">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id150">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id151">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id152">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id154">1.2.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id155">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id156">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id157">Fixed issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id158">Known Limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id153">1.3.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id154">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id155">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id156">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id157">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id159">1.1.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id160">New features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id161">Improvements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id162">Fixed issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id158">1.2.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id159">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id160">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id161">Fixed issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id162">Known Limitations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id163">1.0.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id164">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id165">Fixed Issues</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id163">1.1.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id164">New features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id165">Improvements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id166">Fixed issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id167">1.0.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id168">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id169">Fixed Issues</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-known-limitations">Known Limitations</a></li>
 </ul>
 </li>
