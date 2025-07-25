@@ -45,7 +45,7 @@ New Features
 
 * Added support for the following software component versions:
 
-  - NVIDIA Kubernetes Device Plugin v0.17.3
+  - NVIDIA Kubernetes Device Plugin/NVIDIA GPU Feature Discovery v0.17.3
   - NVIDIA MIG Manager for Kubernetes v0.12.2
 
 .. _v25.3.2-known-issues:

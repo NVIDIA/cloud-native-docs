@@ -114,7 +114,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.17.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.17.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.12.2 <https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator>`__

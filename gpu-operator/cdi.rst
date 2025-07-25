@@ -56,7 +56,9 @@ Limitations and Restrictions
 ============================
 
 * Enabling CDI is not supported with Red Hat OpenShift Container Platform.
+
 * Enabling CDI is not supported with Rancher Kubernetes Engine 2 (RKE2).
+
 Refer to the :ref:`Supported Operating Systems and Kubernetes Platforms`.
 
 
