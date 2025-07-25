@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -68,13 +68,13 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Time-Slicing GPUs in Kubernetes" href="gpu-sharing.html" />
-    <link rel="prev" title="NVIDIA AI Enterprise" href="install-gpu-operator-nvaie.html" />
+    <link rel="prev" title="Security Considerations" href="security.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 25, 2025"/>
 
 
 
@@ -336,6 +336,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
@@ -365,6 +366,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -435,7 +442,7 @@ Alternatively, you can specify the <code class="docutils literal notranslate"><s
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
     --set mig.strategy<span class="o">=</span>single
 </pre></div>
 </div>
@@ -491,6 +498,14 @@ Refer to <a class="reference internal" href="#mig-with-preinstalled-drivers"><sp
 <p>MIG Manager requires that no user workloads are running on the GPUs being configured.
 In some cases, the node may need to be rebooted, such as a CSP, so the node might need to be cordoned
 before changing the MIG mode or the MIG geometry on the GPUs.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+It’s recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
 </div>
 </li>
 </ol>
@@ -1021,7 +1036,7 @@ can be used to install the GPU Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
     --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -1063,7 +1078,7 @@ Alternatively, you can create a custom config map for use by MIG Manager by perf
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
     --set migManager.gpuClientsConfig.name<span class="o">=</span>gpu-clients
 <span class="go">    --set driver.enabled=false</span>
 </pre></div>
@@ -1161,12 +1176,12 @@ G -- on failure --&gt; I
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="install-gpu-operator-nvaie.html"
+       href="security.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA AI Enterprise</p>
+        <p class="prev-next-title">Security Considerations</p>
       </div>
     </a>
     <a class="right-next"

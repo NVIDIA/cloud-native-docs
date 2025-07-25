@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Sample Implementation Details &#8212; Securing NVIDIA Services with Istio and Keycloak</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -52,11 +52,11 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'implementation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-gpus';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -64,8 +64,8 @@
     <script src="_static/social-media.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configure RBAC" href="configure.html" />
-    <link rel="prev" title="Platform Support" href="platform-support.html" />
+    <link rel="next" title="NVIDIA DRA Driver for GPUs" href="dra-cds.html" />
+    <link rel="prev" title="NVIDIA DRA Driver for GPUs" href="dra-intro-install.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -144,11 +144,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
   
   
-    <p class="title logo__title">Securing NVIDIA Services with Istio and Keycloak</p>
+    <p class="title logo__title">NVIDIA GPU Operator</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
   
   
-    <p class="title logo__title">Securing NVIDIA Services with Istio and Keycloak</p>
+    <p class="title logo__title">NVIDIA GPU Operator</p>
   
 </a>
 
@@ -321,12 +321,54 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Securing NVIDIA MicroServices</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">   About the Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="platform-support.html">   Platform Support</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">   Implementation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure.html">   Configure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -361,9 +403,9 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="index.html">Securing NVIDIA Services with Istio and Keycloak</a>
+      <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Sample Implementation Details</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -379,185 +421,27 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!--
-  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-  SPDX-License-Identifier: Apache-2.0
--->
-<section class="tex2jax_ignore mathjax_ignore" id="sample-implementation-details">
-<h1>Sample Implementation Details<a class="headerlink" href="#sample-implementation-details" title="Permalink to this headline">#</a></h1>
-<p>The service mesh uses an Istio-based service mesh for creating a secure, observable, and highly configurable communication layer.
-OIDC is provided by tools like Keycloak, DEX, or other commercial solutions as an OIDC provider. NVIDIA developed and tested this document using the following installations methods.</p>
-<div class="contents local topic" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#prerequisites" id="id1">Prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#service-mesh-installation-using-istio" id="id2">Service Mesh Installation Using Istio</a></p></li>
-<li><p><a class="reference internal" href="#install-oidc-keycloak" id="id3">Install OIDC Keycloak</a></p>
-<ul>
-<li><p><a class="reference internal" href="#configure-keycloak" id="id4">Configure KeyCloak</a></p></li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#next-steps" id="id5">Next Steps</a></p></li>
-</ul>
-</div>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>A Kubernetes cluster and the cluster-admin role.
-Refer to <a class="reference internal" href="platform-support.html"><span class="doc std std-doc">Platform Support</span></a> for information about supported operating systems and Kubernetes platforms.</p></li>
-<li><p>A Linux VM or WSL on Windows.</p></li>
-</ul>
-</section>
-<section id="service-mesh-installation-using-istio">
-<h2>Service Mesh Installation Using Istio<a class="headerlink" href="#service-mesh-installation-using-istio" title="Permalink to this headline">#</a></h2>
-<ol class="arabic">
-<li><p>Run the following command to download Istio.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl https://raw.githubusercontent.com/istio/istio/release-1.23/release/downloadIstioCandidate.sh | sh -</span>
-</pre></div>
-</div>
-<p>The download creates a directory with name such as <code class="docutils literal notranslate"><span class="pre">istio-1.2x.x</span></code>.</p>
-</li>
-<li><p>Change directory into the Istio directory.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd istio-1.23.2</span>
-</pre></div>
-</div>
-</li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">istioctl</span></code> to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export PATH=$PWD/bin:$PATH</span>
-</pre></div>
-</div>
-</li>
-<li><p>Optional: For VMware Tanzu Kubernetes or Red Hat OpenShift, create a namespace and label the namespace to run privileged pods.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl create ns istio-system</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl label --overwrite ns istio-system pod-security.kubernetes.io/warn=privileged  pod-security.kubernetes.io/enforce=privileged</span>
-</pre></div>
-</div>
-</li>
-<li><p>Install Istio with the demonstration profile.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">istioctl install --set profile=demo -y</span>
-</pre></div>
-</div>
-</li>
-<li><p>Determine the storage classes on the cluster.
-Grafana Loki uses persistent storage and you must specify a storage class.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get storageclass</span>
-</pre></div>
-</div>
-</li>
-<li><p>Update the storage class for Loki.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sed -i &#39;/accessModes:/i\        storageClassName: &lt;storage-class-name&gt; &#39; samples/addons/loki.yaml</span>
-</pre></div>
-</div>
-</li>
-<li><p>Run the below command to install the add-ons like Prometheus, Grafana and Jaeger.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl rollout status deployment/kiali -n istio-system</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl rollout status deployment/kiali -n istio-system</span>
-</pre></div>
-</div>
-</li>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="gpu-allocation">
+<span id="dra-docs-gpus"></span><h2>GPU allocation<a class="headerlink" href="#gpu-allocation" title="Permalink to this headline">#</a></h2>
+<p>Compared to <a class="reference external" href="https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/#using-device-plugins/">traditional GPU allocation</a> using coarse-grained count-based requests, the GPU allocation side of this driver enables fine-grained control and powerful features long desired by the community, such as:</p>
+<ol class="arabic simple">
+<li><p>Controlled sharing of individual GPUs between multiple pods and/or containers.</p></li>
+<li><p>GPU selection via complex constraints expressed via <a class="reference external" href="https://kubernetes.io/docs/reference/using-api/cel/">CEL</a>.</p></li>
+<li><p>Dynamic partitioning.</p></li>
 </ol>
-</section>
-<section id="install-oidc-keycloak">
-<h2>Install OIDC Keycloak<a class="headerlink" href="#install-oidc-keycloak" title="Permalink to this headline">#</a></h2>
-<ol class="arabic">
-<li><p>Label the default namespace to run the privileged pods.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl label --overwrite ns default pod-security.kubernetes.io/warn=privileged  pod-security.kubernetes.io/enforce=privileged</span>
-</pre></div>
+<p>To learn more about this part of the driver and about what we are planning to build in the future, have a look at <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">these release notes</a>.</p>
+<p>While the GPU allocation features of this driver can be tried out, they are not yet officially supported.
+Hence, the GPU kubelet plugin is currently disabled by default in the Helm chart installation.</p>
+<p>For documentation on how to use and test the current set of GPU allocation features, please head over to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu?tab=readme-ov-file#a-kind-demo">demo section</a> of the driver’s README and to its <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/tree/main/demo/specs/quickstart">quickstart directory</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This part of the NVIDIA DRA Driver for GPUs is in <strong>Technology Preview</strong>.
+It is not yet supported in production environments and not yet functionally complete.
+Generally spoken, Technology Preview features provide early access to upcoming product features, enabling users to test functionality and provide feedback during the development process.
+Technology Preview releases may not have full documentation, and testing is limited.</p>
 </div>
-</li>
-<li><p>Install KeyCloak.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl create -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes/keycloak.yaml</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<section id="configure-keycloak">
-<h3>Configure KeyCloak<a class="headerlink" href="#configure-keycloak" title="Permalink to this headline">#</a></h3>
-<ol class="arabic">
-<li><p>Determine the node port of the Keycloak service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get svc</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME       TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)          AGE</span>
-<span class="go">keycloak   LoadBalancer   10.108.216.157   10.28.234.100   8080:30111/TCP   21h</span>
-</pre></div>
-</div>
-</li>
-<li><p>List the worker IP addresses and then use any one of them with the service node port.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">for node in `kubectl get nodes | awk &#39;{print $1}&#39; | grep -v NAME`; do echo $node &#39; &#39; | tr -d &#39;\n&#39;; kubectl describe node $node | grep -i &#39;internalIP:&#39; | awk &#39;{print $2}&#39;; done</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">test-cluster-03-worker-nbhk9-56b4b888dd-8lpqd  10.120.199.16</span>
-<span class="go">test-cluster-03-worker-nbhk9-56b4b888dd-hnrxr  10.120.199.23</span>
-</pre></div>
-</div>
-</li>
-<li><p>Use any of the worker IP addresses to access the Keycloak administration interface.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">10.120.199.15:30111</span>
-</pre></div>
-</div>
-</li>
-<li><p>After you access the application, you can see the page like the following.
-Click on <strong>Administration Console</strong>.</p>
-<p><img alt="" src="_images/keycloak-1.png" /></p>
-</li>
-<li><p>Enter the default credentials as <code class="docutils literal notranslate"><span class="pre">admin</span></code> and <code class="docutils literal notranslate"><span class="pre">admin</span></code> and then sign in.</p>
-<p><img alt="" src="_images/keycloak-2.png" /></p>
-</li>
-<li><p>Create a new <strong>Realm</strong>.</p>
-<p><img alt="" src="_images/keycloak-3.png" /></p>
-</li>
-<li><p>Enter the <strong>Realm Name</strong> as <code class="docutils literal notranslate"><span class="pre">nvidia-nim</span></code> and click <strong>Create</strong>.</p>
-<p><img alt="" src="_images/keycloak-4.png" /></p>
-</li>
-<li><p>Click <strong>Clients</strong> on the navigation bar and then click <strong>Create client</strong>.</p>
-<p><img alt="" src="_images/keycloak-5.png" /></p>
-</li>
-<li><p>Provide <strong>Client ID</strong> as <code class="docutils literal notranslate"><span class="pre">nvidia-nim</span></code> and click <strong>Next</strong> with default values for steps 2 and 3.</p>
-<p><img alt="" src="_images/keycloak-6.png" /></p>
-</li>
-<li><p>Navigate to <strong>Realm roles</strong> on the left side pane and click <strong>Create</strong> to create a role.</p>
-<p><img alt="" src="_images/keycloak-7.png" /></p>
-</li>
-<li><p>Create role with name <code class="docutils literal notranslate"><span class="pre">chat</span></code> and save.</p>
-<p><img alt="" src="_images/keycloak-8.png" /></p>
-</li>
-<li><p>Create another role with name <code class="docutils literal notranslate"><span class="pre">completions</span></code> and save.</p>
-<p><img alt="" src="_images/keycloak-9.png" /></p>
-</li>
-<li><p>Navigate to <strong>Users</strong> on left side pane and click <strong>Add user</strong>.</p>
-<p><img alt="" src="_images/keycloak-10.png" /></p>
-</li>
-<li><p>Create a user with name <code class="docutils literal notranslate"><span class="pre">nim</span></code> and click <strong>Create</strong>.</p>
-<p><img alt="" src="_images/keycloak-11.png" /></p>
-<p>Keycloak displays the <code class="docutils literal notranslate"><span class="pre">nim</span></code> User details page.</p>
-</li>
-<li><p>On the <code class="docutils literal notranslate"><span class="pre">nim</span></code> User details page, click <strong>Credentials</strong> and then click <strong>Set password</strong> to create a password.</p>
-<p><img alt="" src="_images/keycloak-12.png" /></p>
-</li>
-<li><p>Enter the password <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, set the <strong>Temporary</strong> switch to <strong>Off</strong>, and click <strong>Save</strong>.</p>
-<p><img alt="" src="_images/keycloak-13.png" /></p>
-<p><img alt="" src="_images/keycloak-14.png" /></p>
-</li>
-<li><p>Navigate to the <strong>Role Mapping0</strong> tab for <code class="docutils literal notranslate"><span class="pre">nimuser</span></code> and click <strong>Assign Role</strong>.</p>
-<p><img alt="" src="_images/keycloak-15.png" /></p>
-</li>
-<li><p>Enable <strong>chat</strong> and <strong>completion</strong> roles for <code class="docutils literal notranslate"><span class="pre">nimuser</span></code> and click <strong>Assign</strong>.</p>
-<p><img alt="" src="_images/keycloak-16.png" /></p>
-</li>
-</ol>
-</section>
-</section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Refer to <a class="reference internal" href="configure.html"><span class="doc std std-doc">Configure RBAC</span></a> to create and validate ingress resources.</p></li>
-</ul>
 </section>
 </section>
 
@@ -572,20 +456,20 @@ Click on <strong>Administration Console</strong>.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="platform-support.html"
+       href="dra-intro-install.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Platform Support</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
     </a>
     <a class="right-next"
-       href="configure.html"
+       href="dra-cds.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configure RBAC</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -610,13 +494,7 @@ Click on <strong>Administration Console</strong>.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#service-mesh-installation-using-istio">Service Mesh Installation Using Istio</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-oidc-keycloak">Install OIDC Keycloak</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-keycloak">Configure KeyCloak</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-allocation">GPU allocation</a></li>
 </ul>
   </nav></div>
 
@@ -703,7 +581,7 @@ Click on <strong>Administration Console</strong>.</p>
 
   <p class="copyright">
     
-      Copyright © 2024-2025, NVIDIA Corporation.
+      Copyright © 2020-2025, NVIDIA Corporation.
       <br/>
     
   </p>

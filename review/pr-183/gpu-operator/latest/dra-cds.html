@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Container Device Interface Support in the GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -52,7 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'cdi';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-cds';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -64,8 +64,7 @@
     <script src="_static/social-media.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
-    <link rel="prev" title="NVIDIA GPU Driver Custom Resource Definition" href="gpu-driver-configuration.html" />
+    <link rel="prev" title="NVIDIA DRA Driver for GPUs" href="dra-gpus.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -336,7 +335,7 @@
 <li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
@@ -344,7 +343,7 @@
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Container Device Interface Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -365,10 +364,10 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -405,7 +404,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Container Device Interface Support in the GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -421,241 +420,200 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="container-device-interface-support-in-the-gpu-operator">
-<h1>Container Device Interface Support in the GPU Operator<a class="headerlink" href="#container-device-interface-support-in-the-gpu-operator" title="Permalink to this headline">#</a></h1>
-<section id="about-the-container-device-interface">
-<h2>About the Container Device Interface<a class="headerlink" href="#about-the-container-device-interface" title="Permalink to this headline">#</a></h2>
-<p>The Container Device Interface (CDI) is a specification for container runtimes
-such as cri-o, containerd, and podman that standardizes access to complex
-devices like NVIDIA GPUs by the container runtimes.
-CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
-that support for Kubernetes clusters.</p>
-<p>Use of CDI is transparent to cluster administrators and application developers.
-The benefits of CDI are largely to reduce development and support for runtime-specific
-plugins.</p>
-<p>When CDI is enabled, two runtime classes, nvidia-cdi and nvidia-legacy, become available.
-These two runtime classes are in addition to the default runtime class, nvidia.</p>
-<p>If you do not set CDI as the default runtime, the runtime resolves to the
-legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
-machines or any architecture that has NVML libraries installed.</p>
-<p>Optionally, you can specify the runtime class for a workload.
-See <a class="reference internal" href="#optional-specifying-the-runtime-class-for-a-pod"><span class="std std-ref">Optional: Specifying the Runtime Class for a Pod</span></a> for an example.</p>
-<section id="support-for-multi-instance-gpu">
-<h3>Support for Multi-Instance GPU<a class="headerlink" href="#support-for-multi-instance-gpu" title="Permalink to this headline">#</a></h3>
-<p>Configuring CDI is supported with Multi-Instance GPU (MIG).
-Both the <code class="docutils literal notranslate"><span class="pre">single</span></code> and <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategies are supported.</p>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="computedomains-multi-node-nvlink-simplified">
+<span id="dra-docs-compute-domains"></span><h2>ComputeDomains: Multi-Node NVLink simplified<a class="headerlink" href="#computedomains-multi-node-nvlink-simplified" title="Permalink to this headline">#</a></h2>
+<section id="motivation">
+<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html">MNNVL</a>) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink">130 TB/s cumulative bandwidth</a> on a GB200 NVL72).</p>
+<p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>:
+when a workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory <strong>securely</strong> via NVLink among all pods that comprise the workload.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink <em>securely</em>: IMEX provides an access control system to lock down GPU memory even between GPUs on the same NVLink partition.</p>
+<p>A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/imexchannels.html">IMEX channels</a> into containers as needed.</p>
+</div>
 </section>
-<section id="limitations-and-restrictions">
-<h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h3>
-<p>Enabling CDI is not supported with Red Hat OpenShift Container Platform.
-Refer to the <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p>
-</section>
-</section>
-<section id="enabling-cdi-during-installation">
-<h2>Enabling CDI During Installation<a class="headerlink" href="#enabling-cdi-during-installation" title="Permalink to this headline">#</a></h2>
-<p>Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
-<p>When you install the Operator with Helm, specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> argument.
-Optionally, also specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.default=true</span></code> argument to use the CDI runtime class by default for all pods.</p>
-</section>
-<section id="enabling-cdi-after-installation">
-<h2>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline">#</a></h2>
-<p class="rubric">Prerequisites</p>
-<ul>
-<li><p>You installed version 22.3.0 or newer.</p></li>
-<li><p>(Optional) Confirm that the only runtime class is <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> by running the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclasses
-</pre></div>
-</div>
-<p><strong>Example Output</strong></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME     HANDLER   AGE</span>
-<span class="go">nvidia   nvidia    47h</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<p class="rubric">Procedure</p>
-<p>To enable CDI support, perform the following steps:</p>
-<ol class="arabic">
-<li><p>Enable CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:true}]&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
-</pre></div>
-</div>
-</li>
-<li><p>(Optional) Set the default container runtime mode to CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/default&quot;, &quot;value&quot;:true}]&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
-</pre></div>
-</div>
-</li>
-<li><p>(Optional) Confirm that the container toolkit and device plugin pods restart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS      RESTARTS   AGE</span>
-<span class="go">gpu-feature-discovery-qnw2q                                   1/1     Running     0          47h</span>
-<span class="go">gpu-operator-6d59774ff-hznmr                                  1/1     Running     0          2d</span>
-<span class="go">gpu-operator-node-feature-discovery-master-6d6649d597-7l8bj   1/1     Running     0          2d</span>
-<span class="go">gpu-operator-node-feature-discovery-worker-v86vj              1/1     Running     0          2d</span>
-<span class="hll"><span class="go">nvidia-container-toolkit-daemonset-2768s                      1/1     Running     0          2m11s</span>
-</span><span class="go">nvidia-cuda-validator-ls4vc                                   0/1     Completed   0          47h</span>
-<span class="go">nvidia-dcgm-exporter-fxp9h                                    1/1     Running     0          47h</span>
-<span class="hll"><span class="go">nvidia-device-plugin-daemonset-dvp4v                          1/1     Running     0          2m26s</span>
-</span><span class="go">nvidia-device-plugin-validator-kvxbs                          0/1     Completed   0          47h</span>
-<span class="go">nvidia-driver-daemonset-m86r7                                 1/1     Running     0          2d</span>
-<span class="go">nvidia-operator-validator-xg98r                               1/1     Running     0          47h</span>
-</pre></div>
-</div>
-</li>
-<li><p>Verify that the runtime classes include nvidia-cdi and nvidia-legacy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclasses
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME            HANDLER         AGE</span>
-<span class="go">nvidia          nvidia          2d</span>
-<span class="go">nvidia-cdi      nvidia-cdi      5m7s</span>
-<span class="go">nvidia-legacy   nvidia-legacy   5m7s</span>
-</pre></div>
-</div>
-</li>
+<section id="guarantees">
+<span id="dra-docs-cd-guarantees"></span><h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
+<p>By design, an individual ComputeDomain guarantees</p>
+<ol class="arabic simple">
+<li><p><strong>MNNVL-reachability</strong> between pods that are in the domain.</p></li>
+<li><p><strong>secure isolation</strong> from other pods that are not in the domain and in a different Kubernetes namespace.</p></li>
 </ol>
+<p>In terms of lifetime, a ComputeDomain is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
+In terms of placement, our design choice is that a ComputeDomain follows the workload.</p>
+<p>That means: once workload pods get scheduled onto specific nodes, if they request a ComputeDomain, that domain automatically forms around them.
+Upon workload completion, all ComputeDomain-associated resources get torn down automatically.</p>
+<p>For more detail on the security properties of a ComputeDomain, see <a class="reference internal" href="#dra-docs-cd-security">Security</a>.</p>
 </section>
-<section id="disabling-cdi">
-<h2>Disabling CDI<a class="headerlink" href="#disabling-cdi" title="Permalink to this headline">#</a></h2>
-<p>To disable CDI support, perform the following steps:</p>
-<ol class="arabic">
-<li><p>If your nodes use the CRI-O container runtime, then temporarily disable the
-GPU Operator validator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="se">\</span>
-    nvidia.com/gpu.deploy.operator-validator<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    -l nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --overwrite
-</pre></div>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You can run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">nodes</span> <span class="pre">-o</span> <span class="pre">wide</span></code> and view the <code class="docutils literal notranslate"><span class="pre">CONTAINER-RUNTIME</span></code>
-column to determine if your nodes use CRI-O.</p>
-</div>
-</li>
-<li><p>Disable CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:false}]&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
-</pre></div>
-</div>
-</li>
-<li><p>If you temporarily disabled the GPU Operator validator, re-enable the validator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes <span class="se">\</span>
-    nvidia.com/gpu.deploy.operator-validator<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --overwrite
-</pre></div>
-</div>
-</li>
-<li><p>(Optional) Verify that the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-legacy</span></code> runtime classes
-are no longer available:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME     HANDLER   AGE</span>
-<span class="go">nvidia   nvidia    11d</span>
-</pre></div>
-</div>
-</li>
-</ol>
+<section id="a-deeper-dive-related-resources">
+<h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
+<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.
+For an outlook on planned improvements on the ComputeDomain concept, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
+<p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>, and in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">NVIDIA’s NVLink guide</a>.
+CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about how to share GPU memory via IMEX/NVLink.
+If you are looking for a higher-level GPU communication library, <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html">NVIDIA’s NCCL</a> newer than version 2.25 supports MNNVL.</p>
 </section>
-<section id="optional-specifying-the-runtime-class-for-a-pod">
-<h2>Optional: Specifying the Runtime Class for a Pod<a class="headerlink" href="#optional-specifying-the-runtime-class-for-a-pod" title="Permalink to this headline">#</a></h2>
-<p>If you enabled CDI mode for the default container runtime, then no action is required to use CDI.
-However, you can use the following procedure to specify the legacy mode for a workload if you experience trouble.</p>
-<p>If you did not enable CDI mode for the default container runtime, then you can
-use the following procedure to verify that CDI is enabled and as a
-routine practice to use the CDI mode of the container runtime.</p>
+<section id="usage-example-a-multi-node-nvbandwidth-test">
+<h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
+<p>This example demonstrates how to run an MNNVL workload across multiple nodes using a ComputeDomain (CD).
+As example CUDA workload that performs MNNVL communication, we have picked <a class="reference external" href="https://github.com/NVIDIA/nvbandwidth">nvbandwidth</a>.
+Since nvbandwidth requires MPI, below we also install the <a class="reference external" href="https://github.com/kubeflow/mpi-operator">Kubeflow MPI Operator</a>.</p>
+<p><strong>Steps:</strong></p>
 <ol class="arabic">
-<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-cdi.yaml</span></code>, with contents like the following example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
-<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-cdi</span><span class="w"></span>
-</span><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
-<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
-</pre></div>
-</div>
-<p>As an alternative, specify <code class="docutils literal notranslate"><span class="pre">nvidia-legacy</span></code> to use the legacy mode of the container runtime.</p>
-</li>
-<li><p>(Optional) Create a temporary namespace:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns demo
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace/demo created</span>
+<li><p>Install the MPI Operator.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
 </pre></div>
 </div>
 </li>
-<li><p>Start the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n demo -f cuda-vectoradd-cdi.yaml
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd created</span>
-</pre></div>
-</div>
-</li>
-<li><p>View the logs from the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n demo cuda-vectoradd
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
-<span class="go">Copy input data from the host memory to the CUDA device</span>
-<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
-<span class="go">Copy output data from the CUDA device to the host memory</span>
-<span class="go">Test PASSED</span>
-<span class="go">Done</span>
-</pre></div>
-</div>
-</li>
-<li><p>Delete the temporary namespace:</p></li>
-</ol>
+<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.
+To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.
+This example is configured to run across two nodes, using four GPUs per node.
+If you want to use different numbers, please adjust the parameters in the spec according to the table below:</p>
 <blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete ns demo
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace &quot;demo&quot; deleted</span>
-</pre></div>
+<div><div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value (in example)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomain.spec.numNodes</span></code></p></td>
+<td><p>Total number of nodes to use in the test (2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.slotsPerWorker</span></code></p></td>
+<td><p>Number of GPUs per node to use – this must match the <code class="docutils literal notranslate"><span class="pre">ppr</span></code> number below (4).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.mpiReplicaSpecs.Worker.replicas</span></code></p></td>
+<td><p>Also set this to the number of nodes (2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-ppr:4:node</span></code></p></td>
+<td><p>Set this to the number of GPUs to use per node (4)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-np</span></code> value</p></td>
+<td><p>Set this to the total number of GPUs in the test (8).</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div></blockquote>
+</li>
+<li><p>Apply the manifest.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f nvbandwidth-test-job.yaml
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">computedomain.resource.nvidia.com/nvbandwidth-test-compute-domain configured</span>
+<span class="go">mpijob.kubeflow.org/nvbandwidth-test configured</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the nvbandwidth pods were created.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                              READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvbandwidth-test-launcher-lzv84   1/1     Running   0          8s</span>
+<span class="go">nvbandwidth-test-worker-0         1/1     Running   0          15s</span>
+<span class="go">nvbandwidth-test-worker-1         1/1     Running   0          15s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the ComputeDomain pods were created for each node.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the nvbandwidth test output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs --tail<span class="o">=</span>-1 -l job-name<span class="o">=</span>nvbandwidth-test-launcher
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
+<span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]:</span>
+
+<span class="go">[...]</span>
+
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">nvbandwidth Version: v0.7</span>
+<span class="go">Built from Git version: v0.7</span>
+
+<span class="go">MPI version: Open MPI v4.1.4, package: Debian OpenMPI, ident: 4.1.4, repo rev: v4.1.4, May 26, 2022</span>
+<span class="go">CUDA Runtime Version: 12080</span>
+<span class="go">CUDA Driver Version: 12080</span>
+<span class="go">Driver Version: 570.124.06</span>
+
+<span class="go">Process 0 (nvbandwidth-test-worker-0): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 1 (nvbandwidth-test-worker-0): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 2 (nvbandwidth-test-worker-0): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 3 (nvbandwidth-test-worker-0): device 3: HGX GB200 (00000019:01:00)</span>
+<span class="go">Process 4 (nvbandwidth-test-worker-1): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 5 (nvbandwidth-test-worker-1): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 6 (nvbandwidth-test-worker-1): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 7 (nvbandwidth-test-worker-1): device 3: HGX GB200 (00000019:01:00)</span>
+
+<span class="go">Running multinode_device_to_device_memcpy_read_ce.</span>
+<span class="go">memcpy CE GPU(row) -&gt; GPU(column) bandwidth (GB/s)</span>
+<span class="go">          0         1         2         3         4         5         6         7</span>
+<span class="go">0       N/A    798.02    798.25    798.02    798.02    797.88    797.73    797.95</span>
+<span class="go">1    798.10       N/A    797.80    798.02    798.02    798.25    797.88    798.02</span>
+<span class="go">2    797.95    797.95       N/A    797.73    797.80    797.95    797.95    797.65</span>
+<span class="go">3    798.10    798.02    797.95       N/A    798.02    798.10    797.88    797.73</span>
+<span class="go">4    797.80    798.02    798.02    798.02       N/A    797.95    797.80    798.02</span>
+<span class="go">5    797.80    797.95    798.10    798.10    797.95       N/A    797.95    797.88</span>
+<span class="go">6    797.73    797.95    798.10    798.02    797.95    797.88       N/A    797.80</span>
+<span class="go">7    797.88    798.02    797.95    798.02    797.88    797.95    798.02       N/A</span>
+
+<span class="go">SUM multinode_device_to_device_memcpy_read_ce 44685.29</span>
+
+<span class="go">NOTE: The reported results may not reflect the full capabilities of the platform.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Clean up.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f nvbandwidth-test-job.yaml
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
-<section id="related-information">
-<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
+<section id="security">
+<span id="dra-docs-cd-security"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">#</a></h3>
+<p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> This section helps clarify why that boundary is needed, and how it works.</p>
+<p>NVLink enables mapping a remote GPU’s memory to “local” GPU’s memory (so that it can be read from and written to with regular CUDA API calls).
+From a security point of view, that begs the question: can a process running on a GPU in a certain NVLink partition freely read and mutate the memory of other GPUs in the same NVLink partition – or is there some notion of access control layer inbetween?</p>
+<p>IMEX has been introduced specifically as that layer of access control.
+It is a means for providing secure isolation between GPUs that are in the same NVLink partition.
+With IMEX, every individual GPU memory export/import operation is subject to fine-grained access control.</p>
+<p>To understand ComputeDomains, we additionally need to know:</p>
 <ul class="simple">
-<li><p>For more information about CDI, see the container device interface
-<a class="reference external" href="https://github.com/container-orchestrated-devices/container-device-interface">repository</a>
-on GitHub.</p></li>
+<li><p>The ComputeDomain security boundary is implemented with IMEX.</p></li>
+<li><p>A job submitted to Kubernetes namespace <cite>A</cite> cannot be part of a ComputeDomain created for namespace <cite>B</cite>.</p></li>
 </ul>
+<p>That is, ComputeDomains (only) promise robust IMEX-based isolation between jobs that are <strong>not</strong> part of the same Kubernetes namespace.
+If a bad actor has access to a Kubernetes namespace, they may be able to mutate ComputeDomains (and, as such, IMEX primitives) in that Kubernetes namespace.
+That, in turn, may allow for disabling or trivially working around IMEX access control.</p>
+<p>With ComputeDomains, the overall ambition is that the security isolation between jobs in different Kubernetes namespaces is strong enough to responsibly allow for multi-tenant environments where compute jobs that conceptually cannot trust each other are “only” separated by the Kubernetes namespace boundary.</p>
+</section>
+<section id="additional-remarks">
+<h3>Additional remarks<a class="headerlink" href="#additional-remarks" title="Permalink to this headline">#</a></h3>
+<p>We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices and security.</p>
+<p>As we iterate on design and implementation, we are particularly interested and open to receiving your feedback – please reach out via the issue tracker or discussion forum in the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu">GitHub repository</a>.</p>
+</section>
 </section>
 </section>
 
@@ -670,22 +628,13 @@ on GitHub.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="gpu-driver-configuration.html"
+       href="dra-gpus.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA GPU Driver Custom Resource Definition</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="gpu-operator-kubevirt.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GPU Operator with KubeVirt</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -708,16 +657,15 @@ on GitHub.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-container-device-interface">About the Container Device Interface</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-multi-instance-gpu">Support for Multi-Instance GPU</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computedomains-multi-node-nvlink-simplified">ComputeDomains: Multi-Node NVLink simplified</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#security">Security</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remarks">Additional remarks</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-during-installation">Enabling CDI During Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-after-installation">Enabling CDI After Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-cdi">Disabling CDI</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-specifying-the-runtime-class-for-a-pod">Optional: Specifying the Runtime Class for a Pod</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-information">Related Information</a></li>
 </ul>
   </nav></div>
 

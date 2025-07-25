@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 25, 2025"/>
 
 
 
@@ -570,7 +570,16 @@ when using <strong>NVIDIA vGPU</strong>. Please refer to appropriate sections be
 <blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You can use this screen to customize the ClusterPolicy however the default are sufficient to get the GPU configured and running.</p>
+<p>You can use this screen to customize the ClusterPolicy; although, the default values are sufficient to get the GPU configured and running in most cases.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the <strong>Driver</strong> section and set the following fields:</p>
+<ul class="simple">
+<li><p><strong>version</strong>: 570.148.08 (or another supported version)</p></li>
+<li><p><strong>image</strong>: driver (or another supported image)</p></li>
+<li><p><strong>repository</strong>: nvcr.io/nvidia (or another supported repository)</p></li>
+</ul>
 </div>
 </div></blockquote>
 </li>
@@ -588,6 +597,17 @@ when using <strong>NVIDIA vGPU</strong>. Please refer to appropriate sections be
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify clusterpolicy.json file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> (optional). The below snippet is shown as an example, please change values accordingly. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/release-notes.html#operator-release-notes" title="(in NVIDIA GPU Operator)"><span>Release Notes</span></a> for recommended driver versions.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;570.148.08&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json

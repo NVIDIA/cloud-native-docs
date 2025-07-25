@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 25, 2025"/>
 
 
 
@@ -558,10 +558,9 @@ Refer to <a class="reference internal" href="install-gpu-ocp.html#create-cluster
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">FATAL: failed to install elfutils packages. RHEL entitlement may be improperly deployed</span>
 </pre></div>
 </div>
-<p>This message maybe associated with the unsuccessful deployment of the driver toolkit. To confirm the driver toolkit is successfully deployed follow the guidance in <a class="reference internal" href="#verify-toolkit"><span class="std std-ref">Verify the OpenShift Driver Toolkit</span></a>.
-If you see this message a workaround is to edit the created <code class="docutils literal notranslate"><span class="pre">gpu-cluster-policy</span></code> YAML file in the OpenShift Container Platform console and set <code class="docutils literal notranslate"><span class="pre">use_ocp_driver_toolkit</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
-<p>Set up the entitlement.
-Refer to <a class="reference internal" href="appendix-ocp.html#cluster-entitlement"><span class="std std-ref">Enabling a Cluster-wide entitlement</span></a> for more information.</p>
+<p>This message may be associated with the unsuccessful deployment of the driver toolkit. To confirm the driver toolkit is successfully deployed follow the guidance in <a class="reference internal" href="#verify-toolkit"><span class="std std-ref">Verify the OpenShift Driver Toolkit</span></a>.
+If you see this message, you should troubleshoot the underlying issue instead of relying on RHEL entitlement. Entitled driver builds are deprecated and not supported on recent versions of Red Hat OpenShift.
+See <a class="reference internal" href="appendix-ocp.html#broken-dtk-troubleshooting"><span class="std std-ref">Troubleshooting Broken Driver Toolkit Errors</span></a> for more information.</p>
 </li>
 </ol>
 </section>

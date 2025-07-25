@@ -1,7 +1,6 @@
 
 
 
-
 <!DOCTYPE html>
 
 
@@ -9,7 +8,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Search - NVIDIA GPU Operator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -43,7 +44,6 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -52,7 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'search';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-intro-install';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -62,16 +62,10 @@
         </script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
-
-<script src="_static/searchtools.js"></script>
-
-<script src="_static/language_data.js"></script>
-
-<script src="searchindex.js"></script>
-
-
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NVIDIA DRA Driver for GPUs" href="dra-gpus.html" />
+    <link rel="prev" title="NVIDIA GPU Operator with Google GKE" href="google-gke.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -103,7 +97,7 @@
   <dialog id="pst-search-dialog">
     
 <form class="bd-search d-flex align-items-center"
-      action="#"
+      action="search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -225,6 +219,10 @@
     </div>
   
 
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
   
 </div>
 
@@ -367,8 +365,8 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction &amp; Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
@@ -407,7 +405,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"></li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -418,42 +416,119 @@
 </div>
               
               
-  <div class="bd-search-container">
-    <h1>Search</h1>
-    <noscript>
-      <div class="admonition error">
-        <p class="admonition-title">Error</p>
-        <p>Please activate JavaScript to enable the search functionality.</p>
-      </div>
-    </noscript>
-    
-<form class="bd-search d-flex align-items-center"
-      action="#"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         placeholder="Search the docs ..."
-         aria-label="Search the docs ..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    <div id="search-results"></div>
-  </div>
-  <script>
-    // Activate the search field on page load
-    let searchInput = document.querySelector("form.bd-search input");
-    if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-        console.log("[PST]: Set focus on search field.");
-    }
-  </script>
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two types of resources:</p>
+<ul class="simple">
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
+<li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
+</ul>
+<section id="a-primer-on-dra">
+<h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
+<p>Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
+DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
+For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
+<ol class="arabic simple">
+<li><p>A clean way to allocate <strong>cross-node resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly <strong>share, partition, and reconfigure</strong> devices <strong>on-the-fly</strong> based on user requests (leveraged here for advanced GPU allocation).</p></li>
+</ol>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend becoming familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
+</section>
+<section id="the-twofold-nature-of-this-driver">
+<h3>The twofold nature of this driver<a class="headerlink" href="#the-twofold-nature-of-this-driver" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
+<p>Below, you can find instructions for how to install both parts or just one of them.
+Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="dra-cds.html#dra-docs-compute-domains"><span class="std std-ref">Documentation for ComputeDomain (MNNVL) support</span></a></p></li>
+<li><p><a class="reference internal" href="dra-gpus.html#dra-docs-gpus"><span class="std std-ref">Documentation for GPU support</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Kubernetes v1.32 or newer.</p></li>
+<li><p>DRA and corresponding API groups must be enabled (<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">see Kubernetes docs</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface?tab=readme-ov-file#how-to-configure-cdi">CDI</a> must be enabled in the underlying container runtime (such as containerd or CRI-O).</p></li>
+<li><p>NVIDIA GPU Driver 565 or later.</p></li>
+</ul>
+<p>For the last two items on the list above, as well as for other reasons, we recommend installing NVIDIA’s GPU Operator v25.3.0 or later.
+For detailed instructions, see the official GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.
+Also note that, in the near future, the preferred method to install NVIDIA’s DRA Driver for GPUs will be through the GPU Operator (the DRA driver will then no longer require installation as a separate Helm chart).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to use ComputeDomains and a pre-installed NVIDIA GPU Driver:</p>
+<ul class="simple">
+<li><p>Make sure to have the corresponding <code class="docutils literal notranslate"><span class="pre">nvidia-imex-*</span></code> packages installed.</p></li>
+<li><p>Disable the IMEX systemd service before installing the GPU Operator.</p></li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">docs on installing the GPU Operator with a pre-installed GPU driver</a>.</p></li>
+</ul>
+</div>
+</section>
+<section id="configure-and-helm-install-the-driver">
+<h3>Configure and Helm-install the driver<a class="headerlink" href="#configure-and-helm-install-the-driver" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Add the NVIDIA Helm repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+</li>
+<li><p>Install the DRA driver, providing install-time configuration parameters.</p>
+<p>Example for <em>Operator-provided</em> GPU driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver
+</pre></div>
+</div>
+<p>Example for <em>host-provided</em> GPU driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>All install-time configuration parameters can be listed by running <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/nvidia-dra-driver-gpu</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>A common mode of operation for now is to enable only the ComputeDomain subsystem (to have GPUs allocated using the traditional device plugin). The example above achieves that by setting <code class="docutils literal notranslate"><span class="pre">resources.gpus.enabled=false</span></code>.</p></li>
+<li><p>Setting  <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p></li>
+</ul>
+</div>
+</section>
+<section id="validate-installation">
+<h3>Validate installation<a class="headerlink" href="#validate-installation" title="Permalink to this headline">#</a></h3>
+<p>A lot can go wrong, depending on the exact nature of your Kubernetes environment and specific hardware and driver choices as well as configuration options chosen.
+That is why we recommend to perform a set of validation tests to confirm the basic functionality of your setup.
+To that end, we have prepared separate documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation">Testing ComputeDomain allocation</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation">Testing GPU allocation</a></p></li>
+</ul>
+</section>
+</section>
+</section>
 
+
+                </article>
+              
               
               
               
@@ -461,6 +536,24 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="google-gke.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NVIDIA GPU Operator with Google GKE</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dra-gpus.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -468,9 +561,35 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-primer-on-dra">A primer on DRA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-twofold-nature-of-this-driver">The twofold nature of this driver</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-and-helm-install-the-driver">Configure and Helm-install the driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-installation">Validate installation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 
