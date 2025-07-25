@@ -547,10 +547,11 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
+- RHEL 8 with Network Operator 25.1.0.
 - Ubuntu 24.04 LTS with Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
 - Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 with Network Operator 25.1.0.
-- Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0
+- Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0.
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -560,7 +561,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
--Ubuntu 24.04 LTS Network Operator 25.1.0
+- Ubuntu 24.04 LTS Network Operator 25.1.0
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
 - Red Hat OpenShift Container Platform 4.12 and higher
 
