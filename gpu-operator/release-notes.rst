@@ -44,7 +44,12 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 New Features
 ------------
 
-* Added support for the NVIDIA Data Center GPU Driver version 570.86.15. 
+* Added support for the NVIDIA Data Center GPU Driver versions:
+
+  - 570.172.08
+  - 535.261.03
+  - 570.86.15
+
 * The default driver in this version is now 550.144.03.
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page for more details on supported drivers.
