@@ -20,7 +20,7 @@ A primer on DRA
 
 Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
 DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
-For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:
+For NVIDIA devices, there are two particularly beneficial characteristics provided by DRA:
 
 #. A clean way to allocate **cross-node resources** in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).
 #. Mechanisms to explicitly **share, partition, and reconfigure** devices **on-the-fly** based on user requests (leveraged here for advanced GPU allocation).
@@ -82,7 +82,7 @@ Configure and Helm-install the driver
    .. code-block:: console
 
       $ helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-          --version="25.3.0-rc.4" \
+          --version="25.3.0-rc.5" \
           --create-namespace \
           --namespace nvidia-dra-driver-gpu \
           --set resources.gpus.enabled=false \
@@ -93,7 +93,7 @@ Configure and Helm-install the driver
    .. code-block:: console
 
       $ helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-          --version="25.3.0-rc.4" \
+          --version="25.3.0-rc.5" \
           --create-namespace \
           --namespace nvidia-dra-driver-gpu \
           --set resources.gpus.enabled=false
