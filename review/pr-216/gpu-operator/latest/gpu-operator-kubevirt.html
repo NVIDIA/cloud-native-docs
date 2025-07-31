@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 31, 2025"/>
 
 
 
@@ -364,6 +364,12 @@
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
 </div>
 </nav></div>
     </div>
@@ -557,7 +563,7 @@ We use the term <code class="docutils literal notranslate"><span class="pre">san
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+      --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -584,7 +590,7 @@ Follow the steps provided in <a class="reference internal" href="#build-vgpu-man
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+      --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.repository<span class="o">=</span>&lt;path to private repository&gt; <span class="se">\</span>

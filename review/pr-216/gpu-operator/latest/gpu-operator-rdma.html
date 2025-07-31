@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 31, 2025"/>
 
 
 
@@ -364,6 +364,12 @@
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
 </div>
 </nav></div>
     </div>
@@ -526,14 +532,14 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -648,8 +654,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="6ff53573-4bda-4ac1-aac5-aea0ac82f22a" name="46bcec6f-d59b-45ba-8626-033b6a5271d6" type="radio">
-</input><label class="sd-tab-label" for="6ff53573-4bda-4ac1-aac5-aea0ac82f22a">
+<input checked="checked" id="12de8f84-9e49-4fd1-bf26-17075558547d" name="7632cd7c-ccb2-4edf-84bf-406d4b5171f5" type="radio">
+</input><label class="sd-tab-label" for="12de8f84-9e49-4fd1-bf26-17075558547d">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -694,8 +700,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="d28730b6-0358-47d7-87b8-ab30401aa84b" name="46bcec6f-d59b-45ba-8626-033b6a5271d6" type="radio">
-</input><label class="sd-tab-label" for="d28730b6-0358-47d7-87b8-ab30401aa84b">
+<input id="5789327d-eec3-47bc-909a-4885825fcdcc" name="7632cd7c-ccb2-4edf-84bf-406d4b5171f5" type="radio">
+</input><label class="sd-tab-label" for="5789327d-eec3-47bc-909a-4885825fcdcc">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -852,7 +858,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>

@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Install GPU Operator in Proxy Environments &#8212; NVIDIA GPU Operator</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -52,7 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'install-gpu-operator-proxy';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-intro-install';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -64,8 +64,8 @@
     <script src="_static/social-media.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Install NVIDIA GPU Operator in Air-Gapped Environments" href="install-gpu-operator-air-gapped.html" />
-    <link rel="prev" title="GPU Operator with Confidential Containers and Kata" href="gpu-operator-confidential-containers.html" />
+    <link rel="next" title="NVIDIA DRA Driver for GPUs" href="dra-gpus.html" />
+    <link rel="prev" title="NVIDIA GPU Operator with Google GKE" href="google-gke.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -353,8 +353,8 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">HTTP Proxy</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
 </ul>
@@ -365,8 +365,8 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction &amp; Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
@@ -405,7 +405,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Install GPU Operator in Proxy Environments</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -421,94 +421,108 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="install-gpu-operator-in-proxy-environments">
-<span id="install-gpu-operator-proxy"></span><h1>Install GPU Operator in Proxy Environments<a class="headerlink" href="#install-gpu-operator-in-proxy-environments" title="Permalink to this headline">#</a></h1>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
-<p>This page describes how to successfully deploy the GPU Operator in clusters behind an HTTP proxy.
-By default, the GPU Operator requires internet access for the following reasons:</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>Container images need to be pulled during GPU Operator installation.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">driver</span></code> container needs to download several OS packages prior to driver installation.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Using <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> removes the need for the <code class="docutils literal notranslate"><span class="pre">driver</span></code> containers to
-download operating system packages.</p>
+<p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two types of resources:</p>
+<ul class="simple">
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
+<li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
+</ul>
+<section id="a-primer-on-dra">
+<h3>A primer on DRA<a class="headerlink" href="#a-primer-on-dra" title="Permalink to this headline">#</a></h3>
+<p>Dynamic Resource Allocation (DRA) is a novel concept in Kubernetes for flexibly requesting, configuring, and sharing specialized devices like GPUs.
+DRA puts device configuration and scheduling into the hands of device vendors via drivers like this one.
+For NVIDIA devices, there are two particularly benefical characteristics provided by DRA:</p>
+<ol class="arabic simple">
+<li><p>A clean way to allocate <strong>cross-node resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).</p></li>
+<li><p>Mechanisms to explicitly <strong>share, partition, and reconfigure</strong> devices <strong>on-the-fly</strong> based on user requests (leveraged here for advanced GPU allocation).</p></li>
+</ol>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend becoming familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
+</section>
+<section id="the-twofold-nature-of-this-driver">
+<h3>The twofold nature of this driver<a class="headerlink" href="#the-twofold-nature-of-this-driver" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
+<p>Below, you can find instructions for how to install both parts or just one of them.
+Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="dra-cds.html#dra-docs-compute-domains"><span class="std std-ref">Documentation for ComputeDomain (MNNVL) support</span></a></p></li>
+<li><p><a class="reference internal" href="dra-gpus.html#dra-docs-gpus"><span class="std std-ref">Documentation for GPU support</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Kubernetes v1.32 or newer.</p></li>
+<li><p>DRA and corresponding API groups must be enabled (<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation">see Kubernetes docs</a>).</p></li>
+<li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface?tab=readme-ov-file#how-to-configure-cdi">CDI</a> must be enabled in the underlying container runtime (such as containerd or CRI-O).</p></li>
+<li><p>NVIDIA GPU Driver 565 or later.</p></li>
+</ul>
+<p>For the last two items on the list above, as well as for other reasons, we recommend installing NVIDIA’s GPU Operator v25.3.0 or later.
+For detailed instructions, see the official GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.
+Also note that, in the near future, the preferred method to install NVIDIA’s DRA Driver for GPUs will be through the GPU Operator (the DRA driver will then no longer require installation as a separate Helm chart).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to use ComputeDomains and a pre-installed NVIDIA GPU Driver:</p>
+<ul class="simple">
+<li><p>Make sure to have the corresponding <code class="docutils literal notranslate"><span class="pre">nvidia-imex-*</span></code> packages installed.</p></li>
+<li><p>Disable the IMEX systemd service before installing the GPU Operator.</p></li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers">docs on installing the GPU Operator with a pre-installed GPU driver</a>.</p></li>
+</ul>
+</div>
+</section>
+<section id="configure-and-helm-install-the-driver">
+<h3>Configure and Helm-install the driver<a class="headerlink" href="#configure-and-helm-install-the-driver" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Add the NVIDIA Helm repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+</li>
+<li><p>Install the DRA driver, providing install-time configuration parameters.</p>
+<p>Example for <em>Operator-provided</em> GPU driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    --set <span class="nv">nvidiaDriverRoot</span><span class="o">=</span>/run/nvidia/driver
+</pre></div>
+</div>
+<p>Example for <em>host-provided</em> GPU driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu <span class="se">\</span>
+    --version<span class="o">=</span><span class="s2">&quot;25.3.0-rc.4&quot;</span> <span class="se">\</span>
+    --create-namespace <span class="se">\</span>
+    --namespace nvidia-dra-driver-gpu <span class="se">\</span>
+    --set resources.gpus.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
 </div>
 </li>
 </ol>
-</div></blockquote>
-<p>To address these requirements, all Kubernetes nodes as well as the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container need proper configuration
-in order to direct traffic through the proxy.</p>
-<p>This document demonstrates how to configure the GPU Operator so that the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container can successfully
-download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
-a proxy is not specific to the GPU Operator, we do not include those instructions here.</p>
-<p>The instructions for Openshift are different, so skip the section titled <a class="reference internal" href="#proxy-config-openshift"><span class="std std-ref">HTTP Proxy Configuration for Openshift</span></a> if you are not running Openshift.</p>
-</section>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)</p></li>
-</ul>
-</section>
-<section id="http-proxy-configuration-for-openshift">
-<span id="proxy-config-openshift"></span><h2>HTTP Proxy Configuration for Openshift<a class="headerlink" href="#http-proxy-configuration-for-openshift" title="Permalink to this headline">#</a></h2>
-<p>For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
-from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container
-based on information present in the cluster-wide Proxy object.</p>
-</section>
-<section id="http-proxy-configuration">
-<h2>HTTP Proxy Configuration<a class="headerlink" href="#http-proxy-configuration" title="Permalink to this headline">#</a></h2>
-<p>First, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.3.2/deployments/gpu-operator/values.yaml
-</pre></div>
-</div>
-<p>Specify <code class="docutils literal notranslate"><span class="pre">driver.env</span></code> in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
-(in both uppercase and lowercase).</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NO_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;example.com&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;example.com&gt;</span><span class="w"></span>
-</pre></div>
-</div>
+<p>All install-time configuration parameters can be listed by running <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span> <span class="pre">nvidia/nvidia-dra-driver-gpu</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>Proxy related ENV are automatically injected by GPU Operator into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to indicate proxy information used when downloading necessary packages.</p></li>
-<li><p>If HTTPS Proxy server is setup then change the values of HTTPS_PROXY and https_proxy to use <code class="docutils literal notranslate"><span class="pre">https</span></code> instead.</p></li>
+<li><p>A common mode of operation for now is to enable only the ComputeDomain subsystem (to have GPUs allocated using the traditional device plugin). The example above achieves that by setting <code class="docutils literal notranslate"><span class="pre">resources.gpus.enabled=false</span></code>.</p></li>
+<li><p>Setting  <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p></li>
 </ul>
 </div>
 </section>
-<section id="deploy-gpu-operator">
-<h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
-<p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.2.tgz
-</pre></div>
-</div>
-<p>Install the GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
-     -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v25.3.2.tgz <span class="se">\</span>
-     -f values.yaml
-</pre></div>
-</div>
-<p>Check the status of the pods to ensure all the containers are running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
-</pre></div>
-</div>
+<section id="validate-installation">
+<h3>Validate installation<a class="headerlink" href="#validate-installation" title="Permalink to this headline">#</a></h3>
+<p>A lot can go wrong, depending on the exact nature of your Kubernetes environment and specific hardware and driver choices as well as configuration options chosen.
+That is why we recommend to perform a set of validation tests to confirm the basic functionality of your setup.
+To that end, we have prepared separate documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation">Testing ComputeDomain allocation</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation">Testing GPU allocation</a></p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -523,20 +537,20 @@ based on information present in the cluster-wide Proxy object.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="gpu-operator-confidential-containers.html"
+       href="google-gke.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GPU Operator with Confidential Containers and Kata</p>
+        <p class="prev-next-title">NVIDIA GPU Operator with Google GKE</p>
       </div>
     </a>
     <a class="right-next"
-       href="install-gpu-operator-air-gapped.html"
+       href="dra-gpus.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Install NVIDIA GPU Operator in Air-Gapped Environments</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -561,11 +575,17 @@ based on information present in the cluster-wide Proxy object.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-proxy-configuration-for-openshift">HTTP Proxy Configuration for Openshift</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-proxy-configuration">HTTP Proxy Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-gpu-operator">Deploy GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-primer-on-dra">A primer on DRA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-twofold-nature-of-this-driver">The twofold nature of this driver</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-and-helm-install-the-driver">Configure and Helm-install the driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-installation">Validate installation</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

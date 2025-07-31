@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 31, 2025"/>
 
 
 
@@ -421,18 +421,36 @@ The GPU Operator will use the label to determine which software components to de
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">Kubernetes</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - To discover and advertise GPU resources to the kubelet.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">DCGM</span> <span class="pre">and</span> <span class="pre">DCGM</span> <span class="pre">Exporter</span></code> - To monitor the GPU(s).</p></li>
 </ul>
-<p>Node B receives the following software components:</p>
+<p>There are two approaches to configuring GPU passthrough and vGPU for virtual machines:</p>
+<ol class="arabic simple">
+<li><p><strong>NVIDIA GPU Operator approach</strong> - Uses the GPU Operator to deploy and manage GPU software components.</p></li>
+<li><p><strong>Red Hat OpenShift Virtualization approach</strong> - Uses Red Hat OpenShift Virtualization native procedures, which are tested and supported by Red Hat.</p></li>
+</ol>
+<p>Node B (GPU Passthrough) receives the following software components:</p>
+<p><strong>NVIDIA GPU Operator approach:</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">VFIO</span> <span class="pre">Manager</span></code> - Optional. To load vfio-pci and bind it to all GPUs on the node.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - Optional. To discover and advertise the passthrough GPUs to the kubelet.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VFIO</span> <span class="pre">Manager</span></code> - To load vfio-pci and bind it to all GPUs on the node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - To discover and advertise the passthrough GPUs to the kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> - Validates that Sandbox Device Plugin is working.</p></li>
 </ul>
-<p>Node C receives the following software components:</p>
+<p><strong>Red Hat OpenShift Virtualization approach:</strong></p>
+<ul class="simple">
+<li><p>Uses Red Hat OpenShift Virtualization’s <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/virtualization/index#virt-configuring-pci-passthrough">PCI passthrough configuration</a>.</p></li>
+<li><p>When using this approach, NVIDIA GPU Operator’s operands must be disabled on the node to avoid conflicts.</p></li>
+</ul>
+<p>Node C (vGPU) receives the following software components:</p>
+<p><strong>NVIDIA GPU Operator approach:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Manager</span></code> - To install the driver.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">vGPU</span> <span class="pre">Device</span> <span class="pre">Manager</span></code> - To create vGPU devices on the node.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> -Optional. To discover and advertise the vGPU devices to kubelet.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> -Optional. Validates that Sandbox Device Plugin is working.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Device</span> <span class="pre">Plugin</span></code> - To discover and advertise the vGPU devices to kubelet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sandbox</span> <span class="pre">Validator</span></code> - Validates that Sandbox Device Plugin is working.</p></li>
+</ul>
+<p><strong>Red Hat OpenShift Virtualization approach:</strong></p>
+<ul class="simple">
+<li><p>Uses Red Hat OpenShift Virtualization’s <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html-single/virtualization/index#virt-configuring-virtual-gpus">vGPU configuration</a>.</p></li>
+<li><p>Relies on OpenShift Virtualization’s capabilities to configure mediated devices.</p></li>
+<li><p>The NVIDIA GPU Operator is only used for installing drivers with the NVIDIA vGPU Manager. The GPU Operator does not configure mediated devices.</p></li>
 </ul>
 </section>
 <section id="assumptions-constraints-and-dependencies">
@@ -672,14 +690,29 @@ Create the cluster policy using the CLI:</p>
 </li>
 <li><p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file as follows:</p>
 <ul class="simple">
-<li><p>sandboxWorloads.enabled=true</p></li>
+<li><p>sandboxWorkloads.enabled=true</p></li>
+<li><p>sandboxDevicePlugin.enabled=true</p></li>
+<li><dl class="simple">
+<dt>For GPU passthrough:</dt><dd><ul>
+<li><p>vfioManager.enabled=true</p></li>
+<li><p>Optionally, sandboxWorkloads.defaultWorkload=vm-passthrough (if you want passthrough to be the default mode)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>For vGPU:</dt><dd><ul>
 <li><p>vgpuManager.enabled=true</p></li>
 <li><p>vgpuManager.repository=&lt;path to private repository&gt;</p></li>
 <li><p>vgpuManager.image=vgpu-manager</p></li>
 <li><p>vgpuManager.version=&lt;driver version&gt;</p></li>
 <li><p>vgpuManager.imagePullSecrets={&lt;name of image pull secret&gt;}</p></li>
+<li><p>vgpuDeviceManager.enabled=true</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">vgpuManager</span></code> options are only required if you want to use the NVIDIA vGPU. If you are only using GPU passthrough, these options should not be set.</p>
+</dd>
+</dl>
+</li>
+</ul>
 <p>In general, the flag <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
 <p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
 </li>
@@ -714,14 +747,26 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 * Click <strong>Create</strong> to create the ClusterPolicy.</p>
 <img alt="_images/cluster_policy_enable_sandbox_workloads.png" src="_images/cluster_policy_enable_sandbox_workloads.png" />
 </li>
-<li><p>If you are planning to use NVIDIA vGPU, expand the <strong>NVIDIA vGPU Manager config</strong> section and fill in your desired configuration settings, including:</p>
+<li><p>Expand the <strong>Sandbox Device Plugin config</strong> section and make sure that the <strong>enabled</strong> checkbox is checked.</p></li>
+<li><p>If you are planning to use NVIDIA vGPU</p>
 <ul class="simple">
+<li><dl class="simple">
+<dt>Expand the <strong>NVIDIA vGPU Manager config</strong> section and fill in your desired configuration settings, including:</dt><dd><ul>
 <li><p>Select the <strong>enabled</strong> checkbox to enable the NVIDIA vGPU Manager.</p></li>
 <li><p>Add your <strong>imagePullSecrets</strong>.</p></li>
 <li><p>Under <em>driverManager</em>, fill in <strong>repository</strong> with the path to your private repository.</p></li>
 <li><p>Under <em>env</em>, fill in <strong>image</strong> with <code class="docutils literal notranslate"><span class="pre">vgpu-manager</span></code> and the <strong>version</strong> with your driver version.</p></li>
 </ul>
-<p>If you are only using GPU passthrough, you dont need to fill this section out.</p>
+</dd>
+</dl>
+</li>
+<li><p>Expand the <strong>NVIDIA vGPU Device Manager config</strong> section and make sure that the <strong>enabled</strong> checkbox is checked.</p></li>
+</ul>
+<p>If you are only using GPU passthrough, you don’t need to fill these sections out.</p>
+<ul class="simple">
+<li><p>Expand the <strong>VFIO Manager config</strong> section and select the <strong>enabled</strong> checkbox.</p></li>
+<li><p>Optionally, in the <strong>Sandbox Workloads config</strong> section, set <strong>defaultWorkload</strong> to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> if you want passthrough to be the default mode.</p></li>
+</ul>
 <img alt="_images/cluster_policy_configure_vgpu.png" src="_images/cluster_policy_configure_vgpu.png" />
 </li>
 <li><p>Click <strong>Create</strong> to create the ClusterPolicy.</p>

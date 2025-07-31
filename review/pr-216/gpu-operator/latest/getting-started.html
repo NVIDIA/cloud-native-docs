@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 31, 2025"/>
 
 
 
@@ -364,6 +364,12 @@
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
 </div>
 </nav></div>
     </div>
@@ -472,7 +478,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.1
+    --version<span class="o">=</span>v25.3.2
 </pre></div>
 </div>
 </li>
@@ -480,7 +486,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
     --set &lt;option-name&gt;<span class="o">=</span>&lt;option-value&gt;
 </pre></div>
 </div>
@@ -680,7 +686,7 @@ For example, to install the GPU Operator in the <code class="docutils literal no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n nvidia-gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
 </pre></div>
 </div>
 <p>If you do not specify a namespace during installation, all GPU Operator components are installed in the <code class="docutils literal notranslate"><span class="pre">default</span></code> namespace.</p>
@@ -709,7 +715,7 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set toolkit.version<span class="o">=</span>v1.16.1-ubi8
 </pre></div>
 </div>
@@ -726,7 +732,7 @@ Note, network restricted environments are not supported.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -748,7 +754,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
@@ -769,7 +775,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -797,7 +803,7 @@ the Helm install command. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
      --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="s2">&quot;465.27&quot;</span>
 </pre></div>
@@ -828,7 +834,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v25.3.1 \</span>
+<span class="go">    --version=v25.3.2 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/etc/containerd/config.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -893,7 +899,7 @@ in the RKE2 documentation.</p>
 <p>These options can be passed to GPU Operator during install time as below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v25.3.1 \</span>
+<span class="go">    --version=v25.3.2 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>

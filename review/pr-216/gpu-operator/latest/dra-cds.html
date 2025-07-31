@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Install GPU Operator in Proxy Environments &#8212; NVIDIA GPU Operator</title>
+    <title>NVIDIA DRA Driver for GPUs &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -52,7 +52,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'install-gpu-operator-proxy';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-cds';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -64,8 +64,7 @@
     <script src="_static/social-media.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Install NVIDIA GPU Operator in Air-Gapped Environments" href="install-gpu-operator-air-gapped.html" />
-    <link rel="prev" title="GPU Operator with Confidential Containers and Kata" href="gpu-operator-confidential-containers.html" />
+    <link rel="prev" title="NVIDIA DRA Driver for GPUs" href="dra-gpus.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -353,8 +352,8 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">HTTP Proxy</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
 </ul>
@@ -365,10 +364,10 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -405,7 +404,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Install GPU Operator in Proxy Environments</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA DRA Driver for GPUs</li>
   </ul>
 </nav></div>
       
@@ -421,94 +420,200 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="install-gpu-operator-in-proxy-environments">
-<span id="install-gpu-operator-proxy"></span><h1>Install GPU Operator in Proxy Environments<a class="headerlink" href="#install-gpu-operator-in-proxy-environments" title="Permalink to this headline">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
-<p>This page describes how to successfully deploy the GPU Operator in clusters behind an HTTP proxy.
-By default, the GPU Operator requires internet access for the following reasons:</p>
+  <section id="nvidia-dra-driver-for-gpus">
+<h1>NVIDIA DRA Driver for GPUs<a class="headerlink" href="#nvidia-dra-driver-for-gpus" title="Permalink to this headline">#</a></h1>
+<section id="computedomains-multi-node-nvlink-simplified">
+<span id="dra-docs-compute-domains"></span><h2>ComputeDomains: Multi-Node NVLink simplified<a class="headerlink" href="#computedomains-multi-node-nvlink-simplified" title="Permalink to this headline">#</a></h2>
+<section id="motivation">
+<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h3>
+<p>NVIDIA’s <a class="reference external" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/">GB200 NVL72</a> and comparable systems are designed specifically around Multi-Node NVLink (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html">MNNVL</a>) to turn a rack of GPU machines – each with a small number of GPUs – into a supercomputer with a large number of GPUs communicating at high bandwidth (1.8 TB/s chip-to-chip, and over <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html#fifth-generation-nvlink">130 TB/s cumulative bandwidth</a> on a GB200 NVL72).</p>
+<p>NVIDIA’s DRA Driver for GPUs enables MNNVL for Kubernetes workloads by introducing a new concept – the <strong>ComputeDomain</strong>:
+when a workload requests a ComputeDomain, NVIDIA’s DRA Driver for GPUs performs all the heavy lifting required for sharing GPU memory <strong>securely</strong> via NVLink among all pods that comprise the workload.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users may appreciate to know that – under the hood – NVIDIA Internode Memory Exchange (<a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">IMEX</a>) primitives need to be orchestrated for mapping GPU memory over NVLink <em>securely</em>: IMEX provides an access control system to lock down GPU memory even between GPUs on the same NVLink partition.</p>
+<p>A design goal of this DRA driver is to make IMEX, as much as possible, an implementation detail that workload authors and cluster operators do not need to be concerned with: the driver launches and/or reconfigures IMEX daemons and establishes and injects <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/imexchannels.html">IMEX channels</a> into containers as needed.</p>
+</div>
+</section>
+<section id="guarantees">
+<span id="dra-docs-cd-guarantees"></span><h3>Guarantees<a class="headerlink" href="#guarantees" title="Permalink to this headline">#</a></h3>
+<p>By design, an individual ComputeDomain guarantees</p>
+<ol class="arabic simple">
+<li><p><strong>MNNVL-reachability</strong> between pods that are in the domain.</p></li>
+<li><p><strong>secure isolation</strong> from other pods that are not in the domain and in a different Kubernetes namespace.</p></li>
+</ol>
+<p>In terms of lifetime, a ComputeDomain is ephemeral: its lifetime is bound to the lifetime of the consuming workload.
+In terms of placement, our design choice is that a ComputeDomain follows the workload.</p>
+<p>That means: once workload pods get scheduled onto specific nodes, if they request a ComputeDomain, that domain automatically forms around them.
+Upon workload completion, all ComputeDomain-associated resources get torn down automatically.</p>
+<p>For more detail on the security properties of a ComputeDomain, see <a class="reference internal" href="#dra-docs-cd-security">Security</a>.</p>
+</section>
+<section id="a-deeper-dive-related-resources">
+<h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
+<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.
+For an outlook on planned improvements on the ComputeDomain concept, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
+<p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>, and in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">NVIDIA’s NVLink guide</a>.
+CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about how to share GPU memory via IMEX/NVLink.
+If you are looking for a higher-level GPU communication library, <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/nccl.html">NVIDIA’s NCCL</a> newer than version 2.25 supports MNNVL.</p>
+</section>
+<section id="usage-example-a-multi-node-nvbandwidth-test">
+<h3>Usage example: a multi-node nvbandwidth test<a class="headerlink" href="#usage-example-a-multi-node-nvbandwidth-test" title="Permalink to this headline">#</a></h3>
+<p>This example demonstrates how to run an MNNVL workload across multiple nodes using a ComputeDomain (CD).
+As example CUDA workload that performs MNNVL communication, we have picked <a class="reference external" href="https://github.com/NVIDIA/nvbandwidth">nvbandwidth</a>.
+Since nvbandwidth requires MPI, below we also install the <a class="reference external" href="https://github.com/kubeflow/mpi-operator">Kubeflow MPI Operator</a>.</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic">
+<li><p>Install the MPI Operator.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create -f https://github.com/kubeflow/mpi-operator/releases/download/v0.6.0/mpi-operator.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Create a test job file called <code class="docutils literal notranslate"><span class="pre">nvbandwidth-test-job.yaml</span></code>.
+To do that, follow <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation#create-the-spec-file">this part of the CD validation instructions</a>.
+This example is configured to run across two nodes, using four GPUs per node.
+If you want to use different numbers, please adjust the parameters in the spec according to the table below:</p>
 <blockquote>
-<div><ol class="arabic">
-<li><p>Container images need to be pulled during GPU Operator installation.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">driver</span></code> container needs to download several OS packages prior to driver installation.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Using <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> removes the need for the <code class="docutils literal notranslate"><span class="pre">driver</span></code> containers to
-download operating system packages.</p>
+<div><div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value (in example)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomain.spec.numNodes</span></code></p></td>
+<td><p>Total number of nodes to use in the test (2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.slotsPerWorker</span></code></p></td>
+<td><p>Number of GPUs per node to use – this must match the <code class="docutils literal notranslate"><span class="pre">ppr</span></code> number below (4).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MPIJob.spec.mpiReplicaSpecs.Worker.replicas</span></code></p></td>
+<td><p>Also set this to the number of nodes (2).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-ppr:4:node</span></code></p></td>
+<td><p>Set this to the number of GPUs to use per node (4)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mpirun</span></code> command argument <code class="docutils literal notranslate"><span class="pre">-np</span></code> value</p></td>
+<td><p>Set this to the total number of GPUs in the test (8).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></blockquote>
+</li>
+<li><p>Apply the manifest.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f nvbandwidth-test-job.yaml
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">computedomain.resource.nvidia.com/nvbandwidth-test-compute-domain configured</span>
+<span class="go">mpijob.kubeflow.org/nvbandwidth-test configured</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the nvbandwidth pods were created.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                              READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvbandwidth-test-launcher-lzv84   1/1     Running   0          8s</span>
+<span class="go">nvbandwidth-test-worker-0         1/1     Running   0          15s</span>
+<span class="go">nvbandwidth-test-worker-1         1/1     Running   0          15s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the ComputeDomain pods were created for each node.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n nvidia-dra-driver-gpu -l resource.nvidia.com/computeDomain
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-9jhmj   1/1     Running   0          20s</span>
+<span class="go">nvbandwidth-test-compute-domain-ht24d-rcn2c   1/1     Running   0          20s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the nvbandwidth test output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs --tail<span class="o">=</span>-1 -l job-name<span class="o">=</span>nvbandwidth-test-launcher
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-0.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
+<span class="go">Warning: Permanently added &#39;[nvbandwidth-test-worker-1.nvbandwidth-test.default.svc]:2222&#39; (ECDSA) to the list of known hosts.</span>
+<span class="go">[nvbandwidth-test-worker-0:00025] MCW rank 0 bound to socket 0[core 0[hwt 0]]:</span>
+
+<span class="go">[...]</span>
+
+<span class="go">[nvbandwidth-test-worker-1:00025] MCW rank 7 bound to socket 0[core 3[hwt 0]]: [./././B/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.][./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././.]</span>
+<span class="go">nvbandwidth Version: v0.7</span>
+<span class="go">Built from Git version: v0.7</span>
+
+<span class="go">MPI version: Open MPI v4.1.4, package: Debian OpenMPI, ident: 4.1.4, repo rev: v4.1.4, May 26, 2022</span>
+<span class="go">CUDA Runtime Version: 12080</span>
+<span class="go">CUDA Driver Version: 12080</span>
+<span class="go">Driver Version: 570.124.06</span>
+
+<span class="go">Process 0 (nvbandwidth-test-worker-0): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 1 (nvbandwidth-test-worker-0): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 2 (nvbandwidth-test-worker-0): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 3 (nvbandwidth-test-worker-0): device 3: HGX GB200 (00000019:01:00)</span>
+<span class="go">Process 4 (nvbandwidth-test-worker-1): device 0: HGX GB200 (00000008:01:00)</span>
+<span class="go">Process 5 (nvbandwidth-test-worker-1): device 1: HGX GB200 (00000009:01:00)</span>
+<span class="go">Process 6 (nvbandwidth-test-worker-1): device 2: HGX GB200 (00000018:01:00)</span>
+<span class="go">Process 7 (nvbandwidth-test-worker-1): device 3: HGX GB200 (00000019:01:00)</span>
+
+<span class="go">Running multinode_device_to_device_memcpy_read_ce.</span>
+<span class="go">memcpy CE GPU(row) -&gt; GPU(column) bandwidth (GB/s)</span>
+<span class="go">          0         1         2         3         4         5         6         7</span>
+<span class="go">0       N/A    798.02    798.25    798.02    798.02    797.88    797.73    797.95</span>
+<span class="go">1    798.10       N/A    797.80    798.02    798.02    798.25    797.88    798.02</span>
+<span class="go">2    797.95    797.95       N/A    797.73    797.80    797.95    797.95    797.65</span>
+<span class="go">3    798.10    798.02    797.95       N/A    798.02    798.10    797.88    797.73</span>
+<span class="go">4    797.80    798.02    798.02    798.02       N/A    797.95    797.80    798.02</span>
+<span class="go">5    797.80    797.95    798.10    798.10    797.95       N/A    797.95    797.88</span>
+<span class="go">6    797.73    797.95    798.10    798.02    797.95    797.88       N/A    797.80</span>
+<span class="go">7    797.88    798.02    797.95    798.02    797.88    797.95    798.02       N/A</span>
+
+<span class="go">SUM multinode_device_to_device_memcpy_read_ce 44685.29</span>
+
+<span class="go">NOTE: The reported results may not reflect the full capabilities of the platform.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Clean up.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f nvbandwidth-test-job.yaml
+</pre></div>
 </div>
 </li>
 </ol>
-</div></blockquote>
-<p>To address these requirements, all Kubernetes nodes as well as the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container need proper configuration
-in order to direct traffic through the proxy.</p>
-<p>This document demonstrates how to configure the GPU Operator so that the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container can successfully
-download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
-a proxy is not specific to the GPU Operator, we do not include those instructions here.</p>
-<p>The instructions for Openshift are different, so skip the section titled <a class="reference internal" href="#proxy-config-openshift"><span class="std std-ref">HTTP Proxy Configuration for Openshift</span></a> if you are not running Openshift.</p>
 </section>
-<section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<section id="security">
+<span id="dra-docs-cd-security"></span><h3>Security<a class="headerlink" href="#security" title="Permalink to this headline">#</a></h3>
+<p>As indicated in <a class="reference internal" href="#dra-docs-cd-guarantees">Guarantees</a>, the ComputeDomain primitive provides a <em>security boundary.</em> This section helps clarify why that boundary is needed, and how it works.</p>
+<p>NVLink enables mapping a remote GPU’s memory to “local” GPU’s memory (so that it can be read from and written to with regular CUDA API calls).
+From a security point of view, that begs the question: can a process running on a GPU in a certain NVLink partition freely read and mutate the memory of other GPUs in the same NVLink partition – or is there some notion of access control layer inbetween?</p>
+<p>IMEX has been introduced specifically as that layer of access control.
+It is a means for providing secure isolation between GPUs that are in the same NVLink partition.
+With IMEX, every individual GPU memory export/import operation is subject to fine-grained access control.</p>
+<p>To understand ComputeDomains, we additionally need to know:</p>
 <ul class="simple">
-<li><p>Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)</p></li>
+<li><p>The ComputeDomain security boundary is implemented with IMEX.</p></li>
+<li><p>A job submitted to Kubernetes namespace <cite>A</cite> cannot be part of a ComputeDomain created for namespace <cite>B</cite>.</p></li>
 </ul>
+<p>That is, ComputeDomains (only) promise robust IMEX-based isolation between jobs that are <strong>not</strong> part of the same Kubernetes namespace.
+If a bad actor has access to a Kubernetes namespace, they may be able to mutate ComputeDomains (and, as such, IMEX primitives) in that Kubernetes namespace.
+That, in turn, may allow for disabling or trivially working around IMEX access control.</p>
+<p>With ComputeDomains, the overall ambition is that the security isolation between jobs in different Kubernetes namespaces is strong enough to responsibly allow for multi-tenant environments where compute jobs that conceptually cannot trust each other are “only” separated by the Kubernetes namespace boundary.</p>
 </section>
-<section id="http-proxy-configuration-for-openshift">
-<span id="proxy-config-openshift"></span><h2>HTTP Proxy Configuration for Openshift<a class="headerlink" href="#http-proxy-configuration-for-openshift" title="Permalink to this headline">#</a></h2>
-<p>For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Follow the procedure described in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html">Configuring the cluster-wide proxy</a>
-from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container
-based on information present in the cluster-wide Proxy object.</p>
+<section id="additional-remarks">
+<h3>Additional remarks<a class="headerlink" href="#additional-remarks" title="Permalink to this headline">#</a></h3>
+<p>We are planning to extend the documentation for ComputeDomains, with a focus on API reference documentation and known limitations as well as best practices and security.</p>
+<p>As we iterate on design and implementation, we are particularly interested and open to receiving your feedback – please reach out via the issue tracker or discussion forum in the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu">GitHub repository</a>.</p>
 </section>
-<section id="http-proxy-configuration">
-<h2>HTTP Proxy Configuration<a class="headerlink" href="#http-proxy-configuration" title="Permalink to this headline">#</a></h2>
-<p>First, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.3.2/deployments/gpu-operator/values.yaml
-</pre></div>
-</div>
-<p>Specify <code class="docutils literal notranslate"><span class="pre">driver.env</span></code> in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
-(in both uppercase and lowercase).</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPS_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTP_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NO_PROXY</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;example.com&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;example.proxy.com:port&gt;</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no_proxy</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;example.com&gt;</span><span class="w"></span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>Proxy related ENV are automatically injected by GPU Operator into the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container to indicate proxy information used when downloading necessary packages.</p></li>
-<li><p>If HTTPS Proxy server is setup then change the values of HTTPS_PROXY and https_proxy to use <code class="docutils literal notranslate"><span class="pre">https</span></code> instead.</p></li>
-</ul>
-</div>
-</section>
-<section id="deploy-gpu-operator">
-<h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
-<p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.2.tgz
-</pre></div>
-</div>
-<p>Install the GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
-     -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v25.3.2.tgz <span class="se">\</span>
-     -f values.yaml
-</pre></div>
-</div>
-<p>Check the status of the pods to ensure all the containers are running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
-</pre></div>
-</div>
 </section>
 </section>
 
@@ -523,22 +628,13 @@ based on information present in the cluster-wide Proxy object.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="gpu-operator-confidential-containers.html"
+       href="dra-gpus.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GPU Operator with Confidential Containers and Kata</p>
+        <p class="prev-next-title">NVIDIA DRA Driver for GPUs</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="install-gpu-operator-air-gapped.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Install NVIDIA GPU Operator in Air-Gapped Environments</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -561,11 +657,15 @@ based on information present in the cluster-wide Proxy object.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-proxy-configuration-for-openshift">HTTP Proxy Configuration for Openshift</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-proxy-configuration">HTTP Proxy Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-gpu-operator">Deploy GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computedomains-multi-node-nvlink-simplified">ComputeDomains: Multi-Node NVLink simplified</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guarantees">Guarantees</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-deeper-dive-related-resources">A deeper dive: related resources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-example-a-multi-node-nvbandwidth-test">Usage example: a multi-node nvbandwidth test</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#security">Security</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-remarks">Additional remarks</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

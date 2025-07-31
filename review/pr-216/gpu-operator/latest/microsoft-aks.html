@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2025"/>
+    <meta name="docbuild:last-update" content="Jul 31, 2025"/>
 
 
 
@@ -364,6 +364,12 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
 </div>
 </nav></div>
     </div>
@@ -484,7 +490,7 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.</p>
 <li><p>Install the Operator without the driver containers and toolkit:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.1 <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
     --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set operator.runtimeClass<span class="o">=</span>nvidia-container-runtime
