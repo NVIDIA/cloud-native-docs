@@ -48,6 +48,11 @@ New Features
   - NVIDIA Kubernetes Device Plugin/NVIDIA GPU Feature Discovery v0.17.3
   - NVIDIA MIG Manager for Kubernetes v0.12.2
 
+* Added support for the following NVIDIA Data Center GPU Driver versions:
+
+  - 570.172.08 (default, recommended)
+  - 535.261.03 
+
 .. _v25.3.2-known-issues:
 
 Known Issues
@@ -56,8 +61,8 @@ Known Issues
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
-  NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
-  For more detailed information, see GitHub issue #1361 <https://github.com/NVIDIA/gpu-operator/issue/1361>__.
+  NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
+  For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issue/1361.
 
 * Configuring the Operator to enable CDI is not supported on Rancher Kubernetes Engine 2 (RKE2).
 
@@ -83,7 +88,9 @@ New Features
 
 * Added support for the following NVIDIA Data Center GPU Driver versions:
 
-  - 570.148.08 (default, recommended)
+  - 570.172.08 (default, recommended)
+  - 535.261.03 
+  - 570.148.08
   - 570.133.20 
   - 550.163.01
   - 535.247.01
@@ -106,7 +113,7 @@ Known Issues
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
-  It's recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+  NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
 * GPU Operator in CDI mode is not operational with RKE2.

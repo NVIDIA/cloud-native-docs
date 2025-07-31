@@ -213,7 +213,7 @@ Create the cluster policy using the web console
 
       .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
 
-         - **version**: 570.148.08 (or another supported version)
+         - **version**: 570.172.08 (or another supported version)
          - **image**: driver (or another supported image)
          - **repository**: nvcr.io/nvidia (or another supported repository)
 
@@ -244,7 +244,7 @@ Create the cluster policy using the CLI
          "driver": {
               "repository": "nvcr.io/nvidia",
               "image": "driver",
-              "version": "570.148.08"
+              "version": "570.172.08"
          }
 
    .. code-block:: console
