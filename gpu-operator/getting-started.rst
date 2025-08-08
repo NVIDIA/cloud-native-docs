@@ -161,6 +161,12 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
   
+   * - ``dcgmExporter.enabled``
+     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
+       Set this value to ``false`` to disable it.
+       Available values are ``true`` (default) or ``false``.
+     - ``true``
+
    * - ``dcgmExporter.service.internalTrafficPolicy``
      - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#internal-traffic-policy>`_ for the DCGM Exporter service.
        Available values are ``Cluster`` (default) or ``Local``.
