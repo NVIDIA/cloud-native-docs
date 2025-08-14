@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 13, 2025"/>
+    <meta name="docbuild:last-update" content="Aug 14, 2025"/>
 
 
 
@@ -437,13 +437,13 @@
 <section id="new-features">
 <span id="v25-3-2-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Added support for the following software component versions:</p>
+<li><p>Updated software component versions:</p>
 <ul>
 <li><p>NVIDIA Kubernetes Device Plugin/NVIDIA GPU Feature Discovery v0.17.3</p></li>
 <li><p>NVIDIA MIG Manager for Kubernetes v0.12.2</p></li>
 </ul>
 </li>
-<li><p>Added support for the following NVIDIA Data Center GPU Driver versions:</p>
+<li><p>Supports these NVIDIA Data Center GPU Driver versions:</p>
 <ul>
 <li><p>580.65.06 (recommended)</p></li>
 <li><p>570.172.08 (default)</p></li>
@@ -459,8 +459,12 @@
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
 NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
-For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issue/1361">NVIDIA/gpu-operator</a>.</p></li>
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p></li>
 <li><p>Configuring the Operator to enable CDI is not supported on Rancher Kubernetes Engine 2 (RKE2).</p></li>
+<li><p>The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
+For more details on CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.
+Note that MIG does not work when CDMM is enabled, which means that the 580.65.06 driver container does not support MIG on GB200.
+Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.</p></li>
 </ul>
 </section>
 </section>
@@ -469,7 +473,7 @@ For more detailed information, see GitHub issue <a class="github reference exter
 <section id="v25-3-1-new-features">
 <span id="id3"></span><h3>New Features<a class="headerlink" href="#v25-3-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul>
 <li><p>NVIDIA Container Toolkit version v1.17.8</p></li>
 <li><p>NVIDIA DCGM v4.2.3</p></li>
@@ -479,13 +483,14 @@ For more detailed information, see GitHub issue <a class="github reference exter
 <li><p>NVIDIA GDRCopy Driver v2.5.0</p></li>
 </ul>
 </li>
-<li><p>Added support for the following NVIDIA Data Center GPU Driver versions:</p>
+<li><p>Supports these NVIDIA Data Center GPU Driver versions:</p>
 <ul>
-<li><p>570.172.08 (default, recommended)</p></li>
-<li><p>535.261.03</p></li>
+<li><p>580.65.06 (recommended)</p></li>
+<li><p>570.172.08 (default)</p></li>
 <li><p>570.148.08</p></li>
 <li><p>570.133.20</p></li>
 <li><p>550.163.01</p></li>
+<li><p>535.261.03</p></li>
 <li><p>535.247.01</p></li>
 </ul>
 </li>
@@ -494,7 +499,7 @@ Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, an
 They are not available for ARM based systems.</p></li>
 <li><p>Added support for Kubernetes v1.33.</p></li>
 <li><p>Added support for setting the internalTrafficPolicy for the DCGM Exporter service.
-You can configure this in the Helm chart value by setting <cite>dcgmexporter.service.internalTrafficPolicy</cite> to <cite>Local</cite> or <cite>Cluster</cite> (default).
+You can configure this in the Helm chart value by setting <code class="docutils literal notranslate"><span class="pre">dcgmexporter.service.internalTrafficPolicy</span></code> to <code class="docutils literal notranslate"><span class="pre">Local</span></code> or <code class="docutils literal notranslate"><span class="pre">Cluster</span></code> (default).
 Choose Local if you want to route internal traffic within the node only.</p></li>
 </ul>
 </section>
@@ -514,7 +519,7 @@ For more detailed information, see GitHub issue <a class="github reference exter
 <ul class="simple">
 <li><p>Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet.
 This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1416">pull request #1416</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1416">pull request #1416</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -523,7 +528,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 <section id="v25-3-0-new-features">
 <span id="id6"></span><h3>New Features<a class="headerlink" href="#v25-3-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul class="simple">
 <li><p>NVIDIA Container Toolkit version v1.17.5</p></li>
 <li><p>NVIDIA Driver Manager for Kubernetes v0.8.0</p></li>
@@ -540,7 +545,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 </ul>
 </li>
 <li><p>Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.</p>
-<p>This component is an additional component that can be installed alongside the the GPU Operator.
+<p>This component can be installed alongside the GPU Operator.
 It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator.</p>
 </li>
 <li><p>Transitioned to installing the open kernel modules by default starting with R570 driver containers.</p></li>
@@ -555,7 +560,7 @@ It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, a
 550 and 535 branch drivers do not yet support this mode.</p>
 <p>In previous versions, the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field specified the driver containers to install the NVIDIA Open GPU kernel module driver.
 This field is now deprecated and will be removed in a future release.
-If you were using the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field, it’s recommended that you update your configuration to use the <code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code> field instead.</p>
+If you were using the <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> field, NVIDIA recommends that you update your configuration to use the <code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code> field instead.</p>
 </li>
 <li><p>Added support for Ubuntu 24.04 LTS.</p></li>
 <li><p>Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
@@ -570,7 +575,7 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 Note that the minimum supported Kubernetes versions has been updated to v1.29.</p></li>
 <li><p>Added support for new MIG profiles with HGX B200.</p>
 <ul class="simple">
-<li><p>Added support for the following profiles:</p>
+<li><p>Supports these profiles:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.23gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.23gb+me</span></code></p></li>
@@ -581,7 +586,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <li><p><code class="docutils literal notranslate"><span class="pre">7g.180gb</span></code></p></li>
 </ul>
 </li>
-<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile creates the following GPU instances:</p>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile that creates the following GPU instances:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.23gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2g.45gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
@@ -592,7 +597,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 </li>
 <li><p>Added support for new MIG profiles with HGX GB200.</p>
 <ul class="simple">
-<li><p>Added support for the following profiles:</p>
+<li><p>Supports these profiles:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.24gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.24gb+me</span></code></p></li>
@@ -603,7 +608,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <li><p><code class="docutils literal notranslate"><span class="pre">7g.189gb</span></code></p></li>
 </ul>
 </li>
-<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile creates the following GPU instances:</p>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile that creates the following GPU instances:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.24gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2g.47gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
@@ -628,7 +633,7 @@ Note that the minimum supported Kubernetes versions has been updated to v1.29.</
 <li><p>Removed default liveness probe from the <code class="docutils literal notranslate"><span class="pre">nvidia-fs-ctr</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-gdrcopy-ctr</span></code> containers of the GPU driver daemonset.
 Long response times of the <cite>lsmod</cite> commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.</p></li>
 <li><p>Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1207">issue #1207</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1207">issue #1207</a> for more details.</p></li>
 <li><p>Removed deprecated <cite>operator.defaultRuntime`</cite> parameter.</p></li>
 </ul>
 </section>
@@ -642,7 +647,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 <li><p>The default driver in this version is now 550.144.03.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page for more details on supported drivers.</p></li>
-<li><p>This release adds support for NVIDIA Container Toolkit 1.17.4. This version includes updates for <a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5616">NVIDIA CVE-2025-23359</a>.</p>
+<li><p>Added support for NVIDIA Container Toolkit 1.17.4. This version includes updates for <a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5616">NVIDIA CVE-2025-23359</a>.</p>
 <p>To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <a class="reference external" href="https://www.nvidia.com/en-us/security/">https://www.nvidia.com/en-us/security/</a>.</p>
 <p>For more information regarding NVIDIA security vulnerability remediation policies, refer to <a class="reference external" href="https://www.nvidia.com/en-us/security/psirt-policies/">https://www.nvidia.com/en-us/security/psirt-policies/</a>.</p>
 </li>
@@ -657,7 +662,7 @@ on the platform support page for more details on supported drivers.</p></li>
 <li><p>Added support for the NVIDIA Data Center GPU Driver versions 550.127.08 and 535.216.03.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page.</p></li>
-<li><p>This release adds support for NVIDIA Container Toolkit 1.17.3.
+<li><p>Added support for NVIDIA Container Toolkit 1.17.3.
 This version includes updates for:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5599">NVIDIA CVE-2024-0135</a></p></li>
@@ -667,7 +672,7 @@ This version includes updates for:</p>
 <p>To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <a class="reference external" href="https://www.nvidia.com/en-us/security/">https://www.nvidia.com/en-us/security/</a>.</p>
 <p>For more information regarding NVIDIA security vulnerability remediation policies, refer to <a class="reference external" href="https://www.nvidia.com/en-us/security/psirt-policies/">https://www.nvidia.com/en-us/security/psirt-policies/</a>.</p>
 </li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul class="simple">
 <li><p>NVIDIA Container Toolkit v1.17.3</p></li>
 <li><p>NVIDIA DCGM v3.3.9-1</p></li>
@@ -689,9 +694,9 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 <span id="id12"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where NVIDIA Container Toolkit would fail to start on Rancher RKE2, K3s, and Canonical MicroK8s.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1109">issue #1109</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1109">issue #1109</a> for more details.</p></li>
 <li><p>Fixed an issue where events were not being generated by the NVIDIA driver upgrade controller.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1101">issue #1101</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1101">issue #1101</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -700,7 +705,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 <section id="v24-9-0-new-features">
 <span id="id14"></span><h3>New Features<a class="headerlink" href="#v24-9-0-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>This release adds support for NVIDIA Container Toolkit 1.17.0.
+<li><p>Added support for NVIDIA Container Toolkit 1.17.0.
 This version includes updates for the following CVEs:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5585">NVIDIA CVE-2024-0134</a></p></li>
@@ -712,7 +717,7 @@ This version includes updates for the following CVEs:</p>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.127.05.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page.</p></li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul class="simple">
 <li><p>NVIDIA Container Toolkit v1.17.0</p></li>
 <li><p>NVIDIA Driver Manager for Kubernetes v0.7.0</p></li>
@@ -739,7 +744,7 @@ This release sets the default value to <code class="docutils literal notranslate
 For more information, refer to <a class="reference internal" href="upgrade.html#option-2-automatically-upgrading-crds-using-a-helm-hook"><span class="std std-ref">Option 2: Automatically Upgrading CRDs Using a Helm Hook</span></a>.</p></li>
 <li><p>Added support for new MIG profiles with GH200 NVL2 144GB HBM3e.</p>
 <ul class="simple">
-<li><p>Added support for the following profiles:</p>
+<li><p>Supports these profiles:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb+me</span></code></p></li>
@@ -750,7 +755,7 @@ For more information, refer to <a class="reference internal" href="upgrade.html#
 <li><p><code class="docutils literal notranslate"><span class="pre">7g.144gb</span></code></p></li>
 </ul>
 </li>
-<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile creates the following GPU instances:</p>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile that creates the following GPU instances:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.18gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2g.36gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
@@ -760,7 +765,7 @@ For more information, refer to <a class="reference internal" href="upgrade.html#
 </ul>
 </li>
 <li><p>Added support for KubeVirt and OpenShift Virtualization with vGPU v17.4 for A30, A100, and H100 GPUs.
-These GPUs are supported with an NVIDIA AI Enterpise subscription only and require building the NVIDIA vGPU Manager container image with the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file.</p></li>
+These GPUs are supported with an NVIDIA AI Enterprise subscription only and require building the NVIDIA vGPU Manager container image with the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file.</p></li>
 <li><p>Revised roles and role-based access controls for the Operator.
 The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, <code class="docutils literal notranslate"><span class="pre">openshift</span></code>.
 The OpenShift namespace is required for the Operator to monitor for changes to image stream objects.
@@ -772,7 +777,7 @@ This change follows the principle of least privilege and improves the security p
 <section id="v24-9-0-fixed-issues">
 <span id="id15"></span><h3>Fixed Issues<a class="headerlink" href="#v24-9-0-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
+<li><p>Fixed an issue with the cleanup CRD and upgrade CRD jobs that are triggered by Helm hooks.
 On clusters that have nodes with taints, even when <code class="docutils literal notranslate"><span class="pre">operator.tolerations</span></code> includes tolerations, the jobs are not scheduled.
 In this release, the tolerations that you specify for the Operator are applied to the jobs.
 For more information about the hooks, refer to <a class="reference internal" href="upgrade.html#option-2-automatically-upgrading-crds-using-a-helm-hook"><span class="std std-ref">Option 2: Automatically Upgrading CRDs Using a Helm Hook</span></a>.</p></li>
@@ -798,7 +803,7 @@ You can specify the <code class="docutils literal notranslate"><span class="pre"
 <section id="v24-6-2-new-features">
 <span id="id17"></span><h3>New Features<a class="headerlink" href="#v24-6-2-new-features" title="Permalink to this headline">#</a></h3>
 <p><strong>This release provides critical security updates and is recommended for all users.</strong></p>
-<p>This release adds support for NVIDIA Container Toolkit 1.16.2.
+<p>Added support for NVIDIA Container Toolkit 1.16.2.
 This version includes updates for the following CVEs:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">NVIDIA CVE-2024-0132</a></p></li>
@@ -813,7 +818,7 @@ This version includes updates for the following CVEs:</p>
 <section id="v24-6-1-new-features">
 <span id="id19"></span><h3>New Features<a class="headerlink" href="#v24-6-1-new-features" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul class="simple">
 <li><p>NVIDIA Kubernetes Device Plugin v0.16.2</p></li>
 <li><p>NVIDIA GPU Feature Discovery for Kubernetes v0.16.2</p></li>
@@ -827,10 +832,10 @@ on the platform support page.</p>
 <span id="id20"></span><h3>Fixed Issues<a class="headerlink" href="#v24-6-1-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/883">issue #883</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/883">issue #883</a> for more details.</p></li>
 <li><p>Fixed an issue with role-based access controls in the GPU Operator validator that prevented retrieving NVIDIA Driver daemon set information.
 On OpenShift Container Platform, this issue triggered <cite>GPUOperatorNodeDeploymentDriverFailed</cite> alerts.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/892">issue #892</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/892">issue #892</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -842,7 +847,7 @@ Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gp
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.90.07.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page.</p></li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>NVIDIA Container Toolkit v1.16.1</p></li>
@@ -896,7 +901,7 @@ The tags for the first containers with this support are as follows:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">7g.141gb</span></code></p></li>
 </ul>
 </li>
-<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile for H20 devices that creates the following GPU instances:</p>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile for H200 devices that creates the following GPU instances:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">1g.12gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">2g.24gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
@@ -928,22 +933,22 @@ Refer to <a class="reference internal" href="gpu-operator-mig.html#example-custo
 <li><p>Fixed an issue with Node Feature Discovery (NFD).
 When an NFD pod was deleted or restarted, all NFD node labels were removed from the node and GPU Operator operands were restarted.
 The v0.16.2 release of NFD fixes the issue.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/782">issue #782</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/782">issue #782</a> for more details.</p></li>
 <li><p>Fixed an issue with NVIDIA vGPU Manager not working correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/761">issue #761</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/761">issue #761</a> for more details.</p></li>
 <li><p>DGCM is revised to use a cluster IP and a service with the internal traffic policy set to <code class="docutils literal notranslate"><span class="pre">Local</span></code>.
 In previous releases, DCGM was a host networked pod.
 The <code class="docutils literal notranslate"><span class="pre">dcgm.hostPort</span></code> field of the NVIDIA cluster policy resource is now deprecated.</p></li>
 <li><p>Fixed an issue that prevented enabling GDRCopy and additional volume mounts with the NVIDIA Driver custom resource.
 Previously, the driver daemon set did not update with the change and the Operator logs included an error message.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/713">issue #713</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/713">issue #713</a> for more details.</p></li>
 <li><p>Fixed an issue with deleting GPU Driver daemon sets due to having misscheduled pods rather than zero pods.
 Previously, if a node had an untolerated taint such as <code class="docutils literal notranslate"><span class="pre">node.kubernetes.io/unreachable:NoSchedule</span></code>,
 the Operator could repeatedly delete and recreate the driver daemon sets.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/715">issue #715</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/715">issue #715</a> for more details.</p></li>
 <li><p>Fixed an issue with reporting the correct GPU capacity and allocatable resources from the KubeVirt GPU Device Plugin.
 Previously, if a GPU became unavailable, the reported GPU capacity and allocatable resources remained unchanged.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin/issues/97">issue #97</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin/issues/97">issue #97</a> for more details.</p></li>
 </ul>
 </section>
 <section id="v24-6-0-known-limitations">
@@ -970,7 +975,7 @@ The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluste
 The technical preview feature that provides <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> is an alternative.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
 at the host level, containerd must also be configured for SELinux, such as setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code>
 configuration option.
@@ -993,7 +998,7 @@ This feature is supported on Ubuntu 22.04 and RHCOS operating systems and on X86
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.54.15.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page.</p></li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>NVIDIA Container Toolkit version v1.15.0</p></li>
@@ -1039,17 +1044,17 @@ secrets and storage for the integrated image registry.</p></li>
 In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.</p></li>
 <li><p>Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the <code class="docutils literal notranslate"><span class="pre">/etc/os-release</span></code> file.
 In this release, the Kernel version is determined from the running kernel to prevent the issue.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/617">issue #617</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/617">issue #617</a> for more details.</p></li>
 <li><p>Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
 specified the name of the config map as <code class="docutils literal notranslate"><span class="pre">&lt;namespace&gt;:&lt;config-map&gt;</span></code> in the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_CONFIGMAP_DATA</span></code> environment variable, the exporter
 pods could not read the configuration from the config map.
 In this release, the role used by the exporter is granted access to read from config maps.</p></li>
 <li><p>Previously, under load, the Operator could fail with the message <code class="docutils literal notranslate"><span class="pre">fatal</span> <span class="pre">error:</span> <span class="pre">concurrent</span> <span class="pre">map</span> <span class="pre">read</span> <span class="pre">and</span> <span class="pre">map</span> <span class="pre">write</span></code>.
 In this release, the Operator controller is refactored to prevent the race condition.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/689">issue #689</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/689">issue #689</a> for more details.</p></li>
 <li><p>Previously, if any node in the cluster was in the <code class="docutils literal notranslate"><span class="pre">NotReady</span></code> state, the GPU driver upgrade controller failed to make progress.
 In this release, the upgrade library is updated and skips unhealthy nodes.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/688">issue #688</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/688">issue #688</a> for more details.</p></li>
 </ul>
 </section>
 <section id="v24-3-0-known-limitations">
@@ -1110,7 +1115,7 @@ The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluste
 The technical preview feature that provides <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> is an alternative.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
 at the host level, containerd must also be configured for SELinux, such as setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code>
 configuration option.
@@ -1132,7 +1137,7 @@ on the platform support page.</p></li>
 <li><p>Added support for Red Hat OpenShift Container Platform 4.15.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>
 on the platform support page.</p></li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>NVIDIA Data Center GPU Driver version 550.54.14</p></li>
@@ -1158,10 +1163,10 @@ like the following when a node is deleted and the controller manager deleted the
 </li>
 <li><p>Previously, common daemon set labels, annotations, and tolerations configured in ClusterPolicy were not
 also applied to the default NVIDIADriver CR instance.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/665">issue #665</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/665">issue #665</a> for more details.</p></li>
 <li><p>Previously, the technical preview NVIDIA driver custom resource was failing to render the <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code>
 volume mount that is required for licensing a vGPU guest driver.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/672">issue #672</a> for more details.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/672">issue #672</a> for more details.</p></li>
 <li><p>Previously, the technical preview NVIDIA driver custom resource was broken when GDS was enabled.
 An OS suffix was not appended to the image path of the GDS driver container image.
 Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/608">issue #608</a> for more details.</p></li>
@@ -1214,7 +1219,7 @@ The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluste
 The technical preview feature that provides <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> is an alternative.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
 at the host level, containerd must also be configured for SELinux, such as setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code>
 configuration option.
@@ -1250,7 +1255,7 @@ with the open kernel modules.</p>
 if you manage the driver containers with the technology preview NVIDIA driver custom resource.</p></li>
 </ul>
 </li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul>
 <li><p>NVIDIA Data Center GPU Driver version 535.129.03</p></li>
 <li><p>NVIDIA Driver Manager for Kubernetes v0.6.5</p></li>
@@ -1350,7 +1355,7 @@ The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluste
 The technical preview feature that provides <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> is an alternative.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
 at the host level, containerd must also be configured for SELinux, such as setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code>
 configuration option.
@@ -1383,7 +1388,7 @@ and steps to build your own driver container.</p>
 the current state of the cluster policy.
 When you view the cluster policy with a command like <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">cluster-policy</span></code>, the response
 now includes a <code class="docutils literal notranslate"><span class="pre">Status.Conditions</span></code> field.</p></li>
-<li><p>Added support for the following software component versions:</p>
+<li><p>Includes these software component versions:</p>
 <ul class="simple">
 <li><p>NVIDIA Data Center GPU Driver version 535.104.12.</p></li>
 <li><p>NVIDIA Driver Manager for Kubernetes v0.6.4</p></li>
@@ -1447,7 +1452,7 @@ The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluste
 The technical preview feature that provides <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> is an alternative.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
 at the host level, containerd must also be configured for SELinux, such as setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code>
 configuration option.
@@ -1612,7 +1617,7 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
 Additionally, network-restricted environments are not supported.</p></li>
 </ul>
@@ -1693,7 +1698,7 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
 Additionally, network-restricted environments are not supported.</p></li>
 </ul>
@@ -1720,8 +1725,8 @@ on the platform support page.</p></li>
 Refer to <a class="reference internal" href="platform-support.html#supported-container-runtimes"><span class="std std-ref">Supported Container Runtimes</span></a>
 on the platform support page.</p></li>
 <li><p>Added support for Node Feature Discovery v0.12.1.
-This release adds support for using the NodeFeature API CRD for labelling nodes
-instead of labelling nodes over gRPC.
+Added support for using the NodeFeature API CRD for labeling nodes
+instead of labeling nodes over gRPC.
 The <a class="reference internal" href="upgrade.html#operator-upgrades"><span class="std std-ref">documentation for upgrading the Operator manually</span></a>
 is updated to include applying the custom resource definitions for Node Feature Discovery.</p></li>
 <li><p>Added support for running the NVIDIA GPU Operator in <a class="reference internal" href="amazon-eks.html"><span class="doc">Amazon EKS</span></a>
@@ -1843,7 +1848,7 @@ performing the upgrade.</p></li>
 <section id="common-vulnerabilities-and-exposures-cves">
 <h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#common-vulnerabilities-and-exposures-cves" title="Permalink to this headline">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v23.3.0</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator-validator:v23.3.0</span></code> images have the following known high-vulnerability CVEs.
-These CVEs are from the base images and are not in libraries that are used by the GPU operator:</p>
+These CVEs are from the base images and are not in libraries that are used by the GPU Operator:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">openssl-libs</span></code> - <a class="reference external" href="https://access.redhat.com/security/cve/CVE-2023-0286">CVE-2023-0286</a></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">platform-python</span></code> and <code class="docutils literal notranslate"><span class="pre">python3-libs</span></code> - <a class="reference external" href="https://access.redhat.com/security/cve/CVE-2023-24329">CVE-2023-24329</a></p></li>
@@ -1869,7 +1874,7 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
 Additionally, network-restricted environments are not supported.</p></li>
 </ul>
@@ -1908,14 +1913,14 @@ The increased timeout improves the installation experience for clusters with slo
 <ul class="simple">
 <li><p>Fixed an issue where containers allocated GPU lose access to them when systemd is triggered to run some reevaluation of the cgroups it manages.
 The issue affects systems using runc configured with systemd cgroups.
-Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/430">issue #430</a> for more details.</p></li>
-<li><p>Fixed an issue that prevented the GPU operator from applying PSA labels on the namespace when no prior labels existed.</p></li>
+Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/430">issue #430</a> for more details.</p></li>
+<li><p>Fixed an issue that prevented the GPU Operator from applying PSA labels on the namespace when no prior labels existed.</p></li>
 </ul>
 </section>
 <section id="id67">
 <h3>Common Vulnerabilities and Exposures (CVEs)<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.2</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu-operator:v22.9.2-ubi8</span></code> images have the following known high-vulnerability CVEs.
-These CVEs are from the base images and are not in libraries that are used by the GPU operator:</p>
+These CVEs are from the base images and are not in libraries that are used by the GPU Operator:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">libksba</span></code> - <a class="reference external" href="https://access.redhat.com/security/cve/CVE-2022-47629">CVE-2022-47629</a></p></li>
@@ -1933,7 +1938,7 @@ in this case for the driver installation to succeed.</p></li>
 <li><p>The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
-Additionally, all GPU operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
+Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
 <li><p>When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
 Additionally, network-restricted environments are not supported.</p></li>
 </ul>
@@ -1971,7 +1976,7 @@ This eliminates the requirement to drain the entire node currently.</p></li>
 <section id="id72">
 <h3>Fixed issues<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fix repeated restarts of container-toolkit when used with containerd versions <code class="docutils literal notranslate"><span class="pre">v1.6.9</span></code> and above. Refer to Github <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/432">issue #432</a> for more details.</p></li>
+<li><p>Fix repeated restarts of container-toolkit when used with containerd versions <code class="docutils literal notranslate"><span class="pre">v1.6.9</span></code> and above. Refer to GitHub <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/432">issue #432</a> for more details.</p></li>
 <li><p>Disable creation of PodSecurityPolicies (PSP) with K8s versions <code class="docutils literal notranslate"><span class="pre">1.25</span></code> and above as it is removed.</p></li>
 </ul>
 </section>
@@ -2380,7 +2385,7 @@ This will be fixed in an upcoming patch release <cite>v1.8.2</cite>.</p></li>
 <section id="id121">
 <h3>Fixed issues<a class="headerlink" href="#id121" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>NFD version bumped to <cite>v0.8.2</cite> to support correct kernel version labelling on Anthos nodes. See <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/pull/402">NFD issue</a> for more details.</p></li>
+<li><p>NFD version bumped to <cite>v0.8.2</cite> to support correct kernel version labeling on Anthos nodes. See <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/pull/402">NFD issue</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -2424,8 +2429,8 @@ and OpenShift installations.</p></li>
 <h3>Known Limitations<a class="headerlink" href="#id126" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.</p></li>
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 <li><p>When MIG strategy of <code class="docutils literal notranslate"><span class="pre">mixed</span></code> is configured, device-plugin-validation may stay in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state due to incorrect GPU resource request type. User would need to
 modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.</p></li>
 </ul>
@@ -2488,8 +2493,8 @@ modify the pod spec to apply correct resource type to match the MIG devices conf
 <h3>Known Limitations<a class="headerlink" href="#id135" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.</p></li>
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 <li><p>When MIG strategy of <code class="docutils literal notranslate"><span class="pre">mixed</span></code> is configured, device-plugin-validation may stay in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state due to incorrect GPU resource request type. User would need to
 modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gpu-operator-resources</span></code> project in Red Hat OpenShift requires label <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=true</span></code> for Prometheus to collect DCGM metrics. User will need to add this
@@ -2563,8 +2568,8 @@ label manually when project is created.</p></li>
 <li><p>The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.</p></li>
 <li><p>GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.</p></li>
 <li><p>DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.</p></li>
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 <li><p>When MIG strategy of <code class="docutils literal notranslate"><span class="pre">mixed</span></code> is configured, device-plugin-validation may stay in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state due to incorrect GPU resource request type. User would need to
 modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gpu-operator-resources</span></code> project in Red Hat OpenShift requires label <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=true</span></code> for Prometheus to collect DCGM metrics. User will need to add this
@@ -2617,8 +2622,8 @@ sets the <code class="docutils literal notranslate"><span class="pre">nvidia</sp
 <section id="id151">
 <h3>Known Limitations<a class="headerlink" href="#id151" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 </ul>
 </section>
 </section>
@@ -2646,14 +2651,14 @@ sets the <code class="docutils literal notranslate"><span class="pre">nvidia</sp
 <h3>Fixed issues<a class="headerlink" href="#id155" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue
-where the NVIDIA container toolkit would be setup as the default runtime, causing the driver container initialization to fail.</p></li>
+where the NVIDIA container toolkit would be set up as the default runtime, causing the driver container initialization to fail.</p></li>
 </ul>
 </section>
 <section id="id156">
 <h3>Known Limitations<a class="headerlink" href="#id156" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 </ul>
 </section>
 </section>
@@ -2677,7 +2682,7 @@ where the NVIDIA container toolkit would be setup as the default runtime, causin
 <section id="id160">
 <h3>Fixed issues<a class="headerlink" href="#id160" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed an issue where the GPU operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.</p></li>
+<li><p>Fixed an issue where the GPU Operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.</p></li>
 <li><p>Fixed a race condition where some of the NVIDIA pods would start out of order resulting in some pods in <code class="docutils literal notranslate"><span class="pre">RunContainerError</span></code> state.</p></li>
 <li><p>Fixed an issue in the driver container where the container would fail to install on systems with the <code class="docutils literal notranslate"><span class="pre">linux-gke</span></code> kernel due to not finding the kernel headers.</p></li>
 </ul>
@@ -2685,8 +2690,8 @@ where the NVIDIA container toolkit would be setup as the default runtime, causin
 <section id="id161">
 <h3>Known Limitations<a class="headerlink" href="#id161" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 </ul>
 </section>
 </section>
@@ -2710,7 +2715,7 @@ where the NVIDIA container toolkit would be setup as the default runtime, causin
 <section id="id165">
 <h3>Fixed issues<a class="headerlink" href="#id165" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed an issue with the toolkit container which would setup the NVIDIA runtime under <code class="docutils literal notranslate"><span class="pre">/run/nvidia</span></code> with a symlink to <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia</span></code>.
+<li><p>Fixed an issue with the toolkit container which would set up the NVIDIA runtime under <code class="docutils literal notranslate"><span class="pre">/run/nvidia</span></code> with a symlink to <code class="docutils literal notranslate"><span class="pre">/usr/local/nvidia</span></code>.
 If a node was rebooted, this would prevent any containers from being run with Docker as the container runtime configured in <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code>
 would not be available after reboot.</p></li>
 <li><p>Fixed a race condition with the creation of the CRD and registration.</p></li>
@@ -2733,15 +2738,15 @@ would not be available after reboot.</p></li>
 <ul class="simple">
 <li><p>The driver container now sets up the required dependencies on <code class="docutils literal notranslate"><span class="pre">i2c</span></code> and <code class="docutils literal notranslate"><span class="pre">ipmi_msghandler</span></code> modules.</p></li>
 <li><p>Fixed an issue with the validation steps (for the driver and device plugin) taking considerable time. Node provisioning times are now improved by 5x.</p></li>
-<li><p>The SRO custom resource definition is setup as part of the operator.</p></li>
-<li><p>Fixed an issue with the clean up of driver mount files when deleting the operator from the cluster. This issue used to require a reboot of the node, which is no longer required.</p></li>
+<li><p>The SRO custom resource definition is set up as part of the operator.</p></li>
+<li><p>Fixed an issue with the cleanup of driver mount files when deleting the operator from the cluster. This issue previously required a reboot of the node.</p></li>
 </ul>
 </section>
 <section id="operator-known-limitations">
 <span id="id169"></span><h3>Known Limitations<a class="headerlink" href="#operator-known-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator again.</p></li>
+<li><p>After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">nvidia</span> <span class="pre">nvidia_modeset</span> <span class="pre">nvidia_uvm</span></code> command before re-installing GPU Operator.</p></li>
 </ul>
 </section>
 </section>
