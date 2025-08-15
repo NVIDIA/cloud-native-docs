@@ -54,11 +54,12 @@ New Features
 
 * Added support for the following NVIDIA Data Center GPU Driver versions:
 
-  - 570.172.08 (default, recommended)
-  - 535.261.03 
+  - 580.65.06 (recommended)
+  - 570.172.08 (default)
   - 570.148.08
-  - 570.133.20 
+  - 570.133.20
   - 550.163.01
+  - 535.261.03
   - 535.247.01
 
 * Added support for Red Hat Enterprise Linux 9.
@@ -68,13 +69,19 @@ New Features
 * Added support for Kubernetes v1.33.
 
 * Added support for setting the internalTrafficPolicy for the DCGM Exporter service.
-  You can configure this in the Helm chart value by setting `dcgmexporter.service.internalTrafficPolicy` to `Local` or `Cluster` (default). 
+  You can configure this in the Helm chart value by setting ``dcgmexporter.service.internalTrafficPolicy`` to ``Local`` or ``Cluster`` (default). 
   Choose Local if you want to route internal traffic within the node only.
 
 .. _v25.3.1-known-issues:
 
 Known Issues
 ------------
+
+* The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
+  For more details on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
+  Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
+  Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
+  NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
@@ -84,6 +91,10 @@ Known Issues
 
 * GPU Operator in CDI mode is not operational with RKE2.
 
+* The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+  Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
+
 .. _v25.3.1-fixed-issues:
 
 Fixed Issues
@@ -91,7 +102,7 @@ Fixed Issues
 
 * Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet. 
   This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
-  Refer to Github `pull request #1416 <https://github.com/NVIDIA/gpu-operator/pull/1416>`__ for more details.
+  Refer to GitHub `pull request #1416 <https://github.com/NVIDIA/gpu-operator/pull/1416>`__ for more details.
 
 .. _v25.3.0:
 
@@ -120,7 +131,7 @@ New Features
 
 * Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.
 
-  This component is an additional component that can be installed alongside the the GPU Operator. 
+  This is an additional component that can be installed alongside the GPU Operator. 
   It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
 
 * Transitioned to installing the open kernel modules by default starting with R570 driver containers. 
@@ -138,7 +149,7 @@ New Features
 
   In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU kernel module driver. 
   This field is now deprecated and will be removed in a future release.
-  If you were using the ``useOpenKernelModules`` field, it's recommended that you update your configuration to use the ``kernelModuleType`` field instead.   
+  If you were using the ``useOpenKernelModules`` field, NVIDIA recommends that you update your configuration to use the ``kernelModuleType`` field instead.   
 
 * Added support for Ubuntu 24.04 LTS.
 
@@ -171,7 +182,7 @@ New Features
     * ``4g.90gb``
     * ``7g.180gb``
 
-  * Added an ``all-balanced`` profile creates the following GPU instances:
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
 
     * ``1g.23gb`` :math:`\times` 2
     * ``2g.45gb`` :math:`\times` 1
@@ -189,7 +200,7 @@ New Features
     * ``4g.95gb``
     * ``7g.189gb``
 
-  * Added an ``all-balanced`` profile creates the following GPU instances:
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
 
     * ``1g.24gb`` :math:`\times` 2
     * ``2g.47gb`` :math:`\times` 1
@@ -213,7 +224,7 @@ Fixed Issues
   Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
 
 * Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
-  Refer to Github `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
+  Refer to GitHub `issue #1207 <https://github.com/NVIDIA/gpu-operator/issues/1207>`__ for more details.
 
 * Removed deprecated `operator.defaultRuntime`` parameter.
 
@@ -253,7 +264,7 @@ New Features
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page.
 
-* This release adds support for NVIDIA Container Toolkit 1.17.3.
+* Added support for NVIDIA Container Toolkit 1.17.3.
   This version includes updates for:
 
   * `NVIDIA CVE-2024-0135 <https://nvidia.custhelp.com/app/answers/detail/a_id/5599>`__
@@ -285,10 +296,10 @@ Fixed Issues
 ------------
 
 * Fixed an issue where NVIDIA Container Toolkit would fail to start on Rancher RKE2, K3s, and Canonical MicroK8s.
-  Refer to Github `issue #1109 <https://github.com/NVIDIA/gpu-operator/issues/1109>`__ for more details.
+  Refer to GitHub `issue #1109 <https://github.com/NVIDIA/gpu-operator/issues/1109>`__ for more details.
 
 * Fixed an issue where events were not being generated by the NVIDIA driver upgrade controller.
-  Refer to Github `issue #1101 <https://github.com/NVIDIA/gpu-operator/issues/1101>`__ for more details.
+  Refer to GitHub `issue #1101 <https://github.com/NVIDIA/gpu-operator/issues/1101>`__ for more details.
 
 .. _v24.9.0:
 
@@ -300,7 +311,7 @@ Fixed Issues
 New Features
 ------------
 
-* This release adds support for NVIDIA Container Toolkit 1.17.0.
+* Added support for NVIDIA Container Toolkit 1.17.0.
   This version includes updates for the following CVEs:
 
   * `NVIDIA CVE-2024-0134 <https://nvidia.custhelp.com/app/answers/detail/a_id/5585>`__
@@ -354,14 +365,14 @@ New Features
     * ``4g.72gb``
     * ``7g.144gb``
 
-  * Added an ``all-balanced`` profile creates the following GPU instances:
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
 
     * ``1g.18gb`` :math:`\times` 2
     * ``2g.36gb`` :math:`\times` 1
     * ``3g.72gb`` :math:`\times` 1
 
 * Added support for KubeVirt and OpenShift Virtualization with vGPU v17.4 for A30, A100, and H100 GPUs.
-  These GPUs are supported with an NVIDIA AI Enterpise subscription only and require building the NVIDIA vGPU Manager container image with the ``aie`` .run file.
+  These GPUs are supported with an NVIDIA AI Enterprise subscription only and require building the NVIDIA vGPU Manager container image with the ``aie`` .run file.
 
 * Revised roles and role-based access controls for the Operator.
   The Operator is revised to use Kubernetes controller-runtime caching that is limited to the Operator namespace and the OpenShift namespace, ``openshift``.
@@ -376,7 +387,7 @@ New Features
 Fixed Issues
 ------------
 
-* Fixed an issue with the clean up CRD and upgrade CRD jobs that are triggered by Helm hooks.
+* Fixed an issue with the cleanup CRD and upgrade CRD jobs that are triggered by Helm hooks.
   On clusters that have nodes with taints, even when ``operator.tolerations`` includes tolerations, the jobs are not scheduled.
   In this release, the tolerations that you specify for the Operator are applied to the jobs.
   For more information about the hooks, refer to :ref:`Option 2: Automatically Upgrading CRDs Using a Helm Hook`.
@@ -409,7 +420,7 @@ New Features
 
 **This release provides critical security updates and is recommended for all users.**
 
-This release adds support for NVIDIA Container Toolkit 1.16.2.
+Added support for NVIDIA Container Toolkit 1.16.2.
 This version includes updates for the following CVEs:
 
 * `NVIDIA CVE-2024-0132 <https://nvidia.custhelp.com/app/answers/detail/a_id/5582>`__
@@ -443,10 +454,10 @@ Fixed Issues
 ------------
 
 * Fixed an issue with role-based access controls that prevented a service account from accessing config maps.
-  Refer to Github `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
+  Refer to GitHub `issue #883 <https://github.com/NVIDIA/gpu-operator/issues/883>`__ for more details.
 * Fixed an issue with role-based access controls in the GPU Operator validator that prevented retrieving NVIDIA Driver daemon set information.
   On OpenShift Container Platform, this issue triggered `GPUOperatorNodeDeploymentDriverFailed` alerts.
-  Refer to Github `issue #892 <https://github.com/NVIDIA/gpu-operator/issues/892>`__ for more details.
+  Refer to GitHub `issue #892 <https://github.com/NVIDIA/gpu-operator/issues/892>`__ for more details.
 
 
 .. _v24.6.0:
@@ -516,7 +527,7 @@ New Features
     * ``4g.71gb``
     * ``7g.141gb``
 
-  * Added an ``all-balanced`` profile for H20 devices that creates the following GPU instances:
+  * Added an ``all-balanced`` profile for H200 devices that creates the following GPU instances:
 
     * ``1g.12gb`` :math:`\times` 2
     * ``2g.24gb`` :math:`\times` 1
@@ -546,10 +557,10 @@ Fixed Issues
 * Fixed an issue with Node Feature Discovery (NFD).
   When an NFD pod was deleted or restarted, all NFD node labels were removed from the node and GPU Operator operands were restarted.
   The v0.16.2 release of NFD fixes the issue.
-  Refer to Github `issue #782 <https://github.com/NVIDIA/gpu-operator/issues/782>`__ for more details.
+  Refer to GitHub `issue #782 <https://github.com/NVIDIA/gpu-operator/issues/782>`__ for more details.
 
 * Fixed an issue with NVIDIA vGPU Manager not working correctly on nodes with GPUs that require Open Kernel module drivers and GPU System Processor (GSP) firmware.
-  Refer to Github `issue #761 <https://github.com/NVIDIA/gpu-operator/issues/761>`__ for more details.
+  Refer to GitHub `issue #761 <https://github.com/NVIDIA/gpu-operator/issues/761>`__ for more details.
 
 * DGCM is revised to use a cluster IP and a service with the internal traffic policy set to ``Local``.
   In previous releases, DCGM was a host networked pod.
@@ -557,16 +568,16 @@ Fixed Issues
 
 * Fixed an issue that prevented enabling GDRCopy and additional volume mounts with the NVIDIA Driver custom resource.
   Previously, the driver daemon set did not update with the change and the Operator logs included an error message.
-  Refer to Github `issue #713 <https://github.com/NVIDIA/gpu-operator/issues/713>`__ for more details.
+  Refer to GitHub `issue #713 <https://github.com/NVIDIA/gpu-operator/issues/713>`__ for more details.
 
 * Fixed an issue with deleting GPU Driver daemon sets due to having misscheduled pods rather than zero pods.
   Previously, if a node had an untolerated taint such as ``node.kubernetes.io/unreachable:NoSchedule``,
   the Operator could repeatedly delete and recreate the driver daemon sets.
-  Refer to Github `issue #715 <https://github.com/NVIDIA/gpu-operator/issues/715>`__ for more details.
+  Refer to GitHub `issue #715 <https://github.com/NVIDIA/gpu-operator/issues/715>`__ for more details.
 
 * Fixed an issue with reporting the correct GPU capacity and allocatable resources from the KubeVirt GPU Device Plugin.
   Previously, if a GPU became unavailable, the reported GPU capacity and allocatable resources remained unchanged.
-  Refer to Github `issue #97 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin/issues/97>`__ for more details.
+  Refer to GitHub `issue #97 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin/issues/97>`__ for more details.
 
 .. _v24.6.0-known-limitations:
 
@@ -594,7 +605,7 @@ Known Limitations
   The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
   at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
   configuration option.
@@ -671,17 +682,17 @@ Fixed Issues
   In this release, the init container no longer runs because the MOFED installation check is performed by the Kubernetes Driver Manager init container.
 * Previously, for Red Hat OpenShift Container Platform, the GPU driver installation would fail when the Linux kernel version did not match the ``/etc/os-release`` file.
   In this release, the Kernel version is determined from the running kernel to prevent the issue.
-  Refer to Github `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
+  Refer to GitHub `issue #617 <https://github.com/NVIDIA/gpu-operator/issues/617>`__ for more details.
 * Previously, if the metrics for DCGM Exporter were configured in a config map and the cluster policy
   specified the name of the config map as ``<namespace>:<config-map>`` in the ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable, the exporter
   pods could not read the configuration from the config map.
   In this release, the role used by the exporter is granted access to read from config maps.
 * Previously, under load, the Operator could fail with the message ``fatal error: concurrent map read and map write``.
   In this release, the Operator controller is refactored to prevent the race condition.
-  Refer to Github `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
+  Refer to GitHub `issue #689 <https://github.com/NVIDIA/gpu-operator/issues/689>`__ for more details.
 * Previously, if any node in the cluster was in the ``NotReady`` state, the GPU driver upgrade controller failed to make progress.
   In this release, the upgrade library is updated and skips unhealthy nodes.
-  Refer to Github `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
+  Refer to GitHub `issue #688 <https://github.com/NVIDIA/gpu-operator/issues/688>`__ for more details.
 
 
 .. _v24.3.0-known-limitations:
@@ -750,7 +761,7 @@ Known Limitations
   The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
   at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
   configuration option.
@@ -803,11 +814,11 @@ Fixed issues
 
 * Previously, common daemon set labels, annotations, and tolerations configured in ClusterPolicy were not
   also applied to the default NVIDIADriver CR instance.
-  Refer to Github `issue #665 <https://github.com/NVIDIA/gpu-operator/issues/665>`__ for more details.
+  Refer to GitHub `issue #665 <https://github.com/NVIDIA/gpu-operator/issues/665>`__ for more details.
 
 * Previously, the technical preview NVIDIA driver custom resource was failing to render the ``licensing-config``
   volume mount that is required for licensing a vGPU guest driver.
-  Refer to Github `issue #672 <https://github.com/NVIDIA/gpu-operator/issues/672>`__ for more details.
+  Refer to GitHub `issue #672 <https://github.com/NVIDIA/gpu-operator/issues/672>`__ for more details.
 
 * Previously, the technical preview NVIDIA driver custom resource was broken when GDS was enabled.
   An OS suffix was not appended to the image path of the GDS driver container image.
@@ -865,7 +876,7 @@ Known Limitations
   The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
   at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
   configuration option.
@@ -941,7 +952,7 @@ Fixed issues
 * Previously, the technical preview NVIDIA driver custom resource did not support adding
   custom labels, annotations, or tolerations to the pods that run as part of the driver daemon set.
   This limitation prevented scheduling the driver daemon set in some environments.
-  Refer to GitHub `issue #602 <https://github.com/NVIDIA/gpu-operator/issues/602>`_ for more details.
+  Refer to GitHub `issue #602 <https://github.com/NVIDIA/gpu-operator/issues/602>`__ for more details.
 
 * Previously, when you specified the ``operator.upgradeCRD=true`` argument to the ``helm upgrade``
   command, the pre-upgrade hook ran with the ``gpu-operator`` service account
@@ -1014,7 +1025,7 @@ Known Limitations
   The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
   at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
   configuration option.
@@ -1111,7 +1122,7 @@ Known Limitations
   The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode)
   at the host level, containerd must also be configured for SELinux, such as setting the ``enable_selinux=true``
   configuration option.
@@ -1281,7 +1292,7 @@ Known Limitations
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
   Additionally, network-restricted environments are not supported.
 
@@ -1368,7 +1379,7 @@ Known Limitations
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
   Additionally, network-restricted environments are not supported.
 
@@ -1468,20 +1479,20 @@ Fixed issues
   is used.
   Previously, if you needed to provide CA certificates, the certificates were not installed correctly.
   The certificates are now installed in the correct directories.
-  Refer to GitHub `issue #299 <https://github.com/NVIDIA/gpu-operator/issues/299>`_ for more details.
+  Refer to GitHub `issue #299 <https://github.com/NVIDIA/gpu-operator/issues/299>`__ for more details.
 
 * Fixed an issue that created audit log records related to deprecated API requests for pod security policy.
   on Red Hat OpenShift Container Platform.
   Refer to GitHub `issue #451 <https://github.com/NVIDIA/gpu-operator/issues/451>`_
-  and `issue #490 <https://github.com/NVIDIA/gpu-operator/issues/490>`_ for more details.
+  and `issue #490 <https://github.com/NVIDIA/gpu-operator/issues/490>`__ for more details.
 
 * Fixed an issue that caused the Operator to attempt to add a pod security policy on pre-release versions
   of Kubernetes v1.25.
-  Refer to GitHub `issue #484 <https://github.com/NVIDIA/gpu-operator/issues/484>`_ for more details.
+  Refer to GitHub `issue #484 <https://github.com/NVIDIA/gpu-operator/issues/484>`__ for more details.
 
 * Fixed a race condition that is related to preinstalled GPU drivers, validator pods, and the device plugin pods.
   The race condition can cause the device plugin pods to set the wrong path to the GPU driver.
-  Refer to GitHub `issue #508 <https://github.com/NVIDIA/gpu-operator/issues/508>`_ for more details.
+  Refer to GitHub `issue #508 <https://github.com/NVIDIA/gpu-operator/issues/508>`__ for more details.
 
 * Fixed an issue with the driver manager that prevented the manager from accurately detecting whether a
   node has preinstalled GPU drivers.
@@ -1490,7 +1501,7 @@ Fixed issues
   and to check the output from executing the file.
 
 * Fixed an issue that prevented adding custom annotations to daemon sets that the Operator starts.
-  Refer to GitHub `issue #499 <https://github.com/NVIDIA/gpu-operator/issues/499>`_ for more details.
+  Refer to GitHub `issue #499 <https://github.com/NVIDIA/gpu-operator/issues/499>`__ for more details.
 
 * Fixed an issue that is related to not starting the GPU Feature Discovery (GFD) pods when the DCGM Exporter
   service monitor is enabled, but a service monitor custom resource definition does not exist.
@@ -1533,7 +1544,7 @@ Common Vulnerabilities and Exposures (CVEs)
 -------------------------------------------
 
 The ``gpu-operator:v23.3.0`` and ``gpu-operator-validator:v23.3.0`` images have the following known high-vulnerability CVEs.
-These CVEs are from the base images and are not in libraries that are used by the GPU operator:
+These CVEs are from the base images and are not in libraries that are used by the GPU Operator:
 
 * ``openssl-libs`` - `CVE-2023-0286 <https://access.redhat.com/security/cve/CVE-2023-0286>`_
 * ``platform-python`` and ``python3-libs`` - `CVE-2023-24329 <https://access.redhat.com/security/cve/CVE-2023-24329>`_
@@ -1559,7 +1570,7 @@ Known Limitations
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
   Additionally, network-restricted environments are not supported.
 
@@ -1597,14 +1608,14 @@ Fixed issues
 
 * Fixed an issue where containers allocated GPU lose access to them when systemd is triggered to run some reevaluation of the cgroups it manages.
   The issue affects systems using runc configured with systemd cgroups.
-  Refer to Github `issue #430 <https://github.com/NVIDIA/gpu-operator/issues/430>`_ for more details.
-* Fixed an issue that prevented the GPU operator from applying PSA labels on the namespace when no prior labels existed.
+  Refer to GitHub `issue #430 <https://github.com/NVIDIA/gpu-operator/issues/430>`__ for more details.
+* Fixed an issue that prevented the GPU Operator from applying PSA labels on the namespace when no prior labels existed.
 
 Common Vulnerabilities and Exposures (CVEs)
 -------------------------------------------
 
 The ``gpu-operator:v22.9.2`` and ``gpu-operator:v22.9.2-ubi8`` images have the following known high-vulnerability CVEs.
-These CVEs are from the base images and are not in libraries that are used by the GPU operator:
+These CVEs are from the base images and are not in libraries that are used by the GPU Operator:
 
     * ``libksba`` - `CVE-2022-47629 <https://access.redhat.com/security/cve/CVE-2022-47629>`_
 
@@ -1619,7 +1630,7 @@ Known Limitations
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version. The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
-  Additionally, all GPU operator pods become stuck in the ``Init`` state.
+  Additionally, all GPU Operator pods become stuck in the ``Init`` state.
 * When using RHEL 8 with Kubernetes, SELinux must be enabled (either in permissive or enforcing mode) for use with the GPU Operator.
   Additionally, network-restricted environments are not supported.
 
@@ -1655,7 +1666,7 @@ Improvements
 Fixed issues
 ------------
 
-* Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to Github `issue #432 <https://github.com/NVIDIA/gpu-operator/issues/432>`_ for more details.
+* Fix repeated restarts of container-toolkit when used with containerd versions ``v1.6.9`` and above. Refer to GitHub `issue #432 <https://github.com/NVIDIA/gpu-operator/issues/432>`__ for more details.
 * Disable creation of PodSecurityPolicies (PSP) with K8s versions ``1.25`` and above as it is removed.
 
 Common Vulnerabilities and Exposures (CVEs)
@@ -2016,7 +2027,7 @@ Known Limitations
 
 Fixed issues
 ------------
-* NFD version bumped to `v0.8.2` to support correct kernel version labelling on Anthos nodes. See `NFD issue <https://github.com/kubernetes-sigs/node-feature-discovery/pull/402>`_ for more details.
+* NFD version bumped to `v0.8.2` to support correct kernel version labelling on Anthos nodes. See `NFD issue <https://github.com/kubernetes-sigs/node-feature-discovery/pull/402>`__ for more details.
 
 ----
 
@@ -2053,8 +2064,8 @@ Fixed issues
 Known Limitations
 ------------------
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 * When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 
@@ -2108,8 +2119,8 @@ Fixed issues
 Known Limitations
 ------------------
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 * When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 * ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this
@@ -2170,8 +2181,8 @@ Known Limitations
 * The GPU Operator v1.5.x does not support mixed types of GPUs in the same cluster. All GPUs within a cluster need to be either NVIDIA vGPUs, GPU Passthrough GPUs or Bare Metal GPUs.
 * GPU Operator v1.5.x with NVIDIA vGPUs support Turing and newer GPU architectures.
 * DCGM does not support profiling metrics on RTX 6000 and RTX 8000. Support will be added in a future release of DCGM Exporter.
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 * When MIG strategy of ``mixed`` is configured, device-plugin-validation may stay in ``Pending`` state due to incorrect GPU resource request type. User would need to
   modify the pod spec to apply correct resource type to match the MIG devices configured in the cluster.
 * ``gpu-operator-resources`` project in Red Hat OpenShift requires label ``openshift.io/cluster-monitoring=true`` for Prometheus to collect DCGM metrics. User will need to add this
@@ -2219,8 +2230,8 @@ Fixed issues
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 
 ----
 
@@ -2243,12 +2254,12 @@ Improvements
 Fixed issues
 ------------
 * Fixed the ordering of the state machine to ensure that the driver daemonset is deployed before the other components. This fix addresses the issue
-  where the NVIDIA container toolkit would be setup as the default runtime, causing the driver container initialization to fail.
+  where the NVIDIA container toolkit would be set up as the default runtime, causing the driver container initialization to fail.
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 
 ----
 
@@ -2267,14 +2278,14 @@ Improvements
 
 Fixed issues
 ------------
-* Fixed an issue where the GPU operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.
+* Fixed an issue where the GPU Operator would not correctly detect GPU nodes due to inconsistent PCIe node labels.
 * Fixed a race condition where some of the NVIDIA pods would start out of order resulting in some pods in ``RunContainerError`` state.
 * Fixed an issue in the driver container where the container would fail to install on systems with the ``linux-gke`` kernel due to not finding the kernel headers.
 
 Known Limitations
 ------------------
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 
 ----
 
@@ -2293,7 +2304,7 @@ Improvements
 
 Fixed issues
 ------------
-* Fixed an issue with the toolkit container which would setup the NVIDIA runtime under ``/run/nvidia`` with a symlink to ``/usr/local/nvidia``.
+* Fixed an issue with the toolkit container which would set up the NVIDIA runtime under ``/run/nvidia`` with a symlink to ``/usr/local/nvidia``.
   If a node was rebooted, this would prevent any containers from being run with Docker as the container runtime configured in ``/etc/docker/daemon.json``
   would not be available after reboot.
 * Fixed a race condition with the creation of the CRD and registration.
@@ -2313,14 +2324,14 @@ Fixed Issues
 -------------
 * The driver container now sets up the required dependencies on ``i2c`` and ``ipmi_msghandler`` modules.
 * Fixed an issue with the validation steps (for the driver and device plugin) taking considerable time. Node provisioning times are now improved by 5x.
-* The SRO custom resource definition is setup as part of the operator.
-* Fixed an issue with the clean up of driver mount files when deleting the operator from the cluster. This issue used to require a reboot of the node, which is no longer required.
+* The SRO custom resource definition is set up as part of the operator.
+* Fixed an issue with the cleanup of driver mount files when deleting the operator from the cluster. This issue previously required a reboot of the node.
 
 .. _operator-known-limitations:
 
 Known Limitations
 ------------------
 
-* After un-install of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
-  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator again.
+* After uninstall of GPU Operator, NVIDIA driver modules might still be loaded. Either reboot the node or forcefully remove them using
+  ``sudo rmmod nvidia nvidia_modeset nvidia_uvm`` command before re-installing GPU Operator.
 
