@@ -455,17 +455,17 @@
 <section id="known-issues">
 <span id="v25-3-2-known-issues"></span><h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
+<li><p>The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
+For more details on CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.
+Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
+Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
+NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.</p></li>
 <li><p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
 NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
 For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p></li>
 <li><p>Configuring the Operator to enable CDI is not supported on Rancher Kubernetes Engine 2 (RKE2).</p></li>
-<li><p>The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
-For more details on CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.
-Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
-Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
-NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
 Additionally, all GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">Init</span></code> state.</p></li>
