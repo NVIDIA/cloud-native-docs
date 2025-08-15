@@ -148,6 +148,12 @@ New Features
 Known Issues
 ------------
 
+* The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
+  For more details on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
+  Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
+  Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
+  NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.
+
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
@@ -155,12 +161,6 @@ Known Issues
   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
 * GPU Operator in CDI mode is not operational with RKE2.
-
-* The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
-  For more details on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
-  Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
-  Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
-  NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.
 
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
