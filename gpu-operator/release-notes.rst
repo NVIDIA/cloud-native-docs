@@ -73,6 +73,16 @@ Known Issues
   Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
   NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.
 
+.. _v25.3.2-fixed-issues:
+
+Fixed Issues
+------------
+
+* Fixed security vulnerabilities in NVIDIA Container Toolkit and related components.
+  This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) which could allow 
+  arbitrary code execution and link following attacks in container environments.
+  For complete details, refer to the `NVIDIA Security Bulletin <https://nvidia.custhelp.com/app/answers/detail/a_id/5659>`__.
+
 .. _v25.3.1:
 
 25.3.1
