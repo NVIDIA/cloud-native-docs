@@ -145,7 +145,7 @@ Operator validator pods crashing with "error code system not yet initialized"
 *****************************************************************************
 
 When the operator validator pods are crashing with this error, this most likely points to a GPU node that is NVSwitch-based and requires the nvidia-fabricmanager to be installed. 
-NVSwitch-based systems, like NVIDIA DGX and NVIDIA HGX server systems, require the memory fabric to be setup after the GPU driver is installed.
+NVSwitch-based systems, like NVIDIA DGX and NVIDIA HGX server systems, require the memory fabric to be set up after the GPU driver is installed.
 Learn more about the Fabric Manager from the `Fabric Manager user guide <https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html>`_
 
 .. rubric:: Action
@@ -304,7 +304,7 @@ The above node only advertises 7 GPU devices as allocatable when we expect it to
 DCGM Exporter pods go into CrashLoopBackoff
 *******************************************
 
-By default, the gpu-operator only deploys the ``dcgm-exporter`` while disabling the standalone ``dcgm``. In this setup, the ``dcgm-exporter`` spawns a dcgm process locally. If, however, ``dcgm`` is enabled and deployed as a separate pod/container, then the ``dcgm-exporter`` will attempt to connect to the ``dcgm`` pod through a Kubernetes service. If the cluster networking settings aren't applied correctly, you would likely see error messages as mentioned below in the ``dcgm-exporter`` logs:
+By default, the GPU Operator only deploys the ``dcgm-exporter`` while disabling the standalone ``dcgm``. In this setup, the ``dcgm-exporter`` spawns a dcgm process locally. If, however, ``dcgm`` is enabled and deployed as a separate pod/container, then the ``dcgm-exporter`` will attempt to connect to the ``dcgm`` pod through a Kubernetes service. If the cluster networking settings aren't applied correctly, you would likely see error messages as mentioned below in the ``dcgm-exporter`` logs:
 
 .. code-block:: console
 
@@ -376,7 +376,7 @@ This is due to a regression in NVML introduced in the R570 drivers starting from
 .. rubric:: Action
    :class: h4
 
-It's recommended that you downgrade to driver version 570.86.15 to work around this issue.
+NVIDIA recommends that you downgrade to driver version 570.86.15 to work around this issue.
 
 ****************************************************
 GPU Operator Validator: Failed to Create Pod Sandbox
@@ -601,7 +601,7 @@ The return values for the ``nvidia-smi`` command are listed below.
 .. rubric:: Root Cause
    :class: h4
 
-The ``nvidia-smi`` command should return a success code (return code 0) for the driver-validator container to pass and GPU operator to successfully deploy driver pod on the node.
+The ``nvidia-smi`` command should return a success code (return code 0) for the driver-validator container to pass and GPU Operator to successfully deploy driver pod on the node.
 
 .. rubric:: Action
    :class: h4

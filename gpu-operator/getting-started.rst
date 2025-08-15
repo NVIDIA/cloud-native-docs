@@ -277,7 +277,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``{}``
 
    * - ``psp.enabled``
-     - The GPU operator deploys ``PodSecurityPolicies`` if enabled.
+     - The GPU Operator deploys ``PodSecurityPolicies`` if enabled.
      - ``false``
 
    * - ``sandboxWorkloads.defaultWorkload``

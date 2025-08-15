@@ -459,8 +459,8 @@ The GPU Operator has been validated in the following scenarios:
 Supported Precompiled Drivers
 -----------------------------
 
-The GPU Operator has been validated with the following precomplied drivers.
-See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
+The GPU Operator has been validated with the following precompiled drivers.
+See the :doc:`precompiled-drivers` page for more information about using precompiled drivers.
 
 +----------------------------+------------------------+----------------+---------------------+
 | Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
@@ -477,10 +477,10 @@ See the :doc:`precompiled-drivers` page for more on using precompiled drivers.
 Supported Container Runtimes
 ----------------------------
 
-The GPU Operator has been validated in the following scenarios:
+The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.6 - 2.0   | CRI-O          |
+| Operating System           | Containerd 1.6 - 2.1   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+

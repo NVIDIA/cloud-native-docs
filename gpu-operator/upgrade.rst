@@ -57,7 +57,7 @@ Option 1: Manually Upgrading CRDs
          B["Upgrade by
            using Helm"]
 
-With this procedure, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from ``values.yaml``.
+With this procedure, all existing GPU Operator resources are updated inline and the cluster policy resource is patched with updates from ``values.yaml``.
 
 #. Specify the Operator release tag in an environment variable:
 
