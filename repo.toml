@@ -166,7 +166,7 @@ docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "25.3.0"
-source_substitutions = { version = "v25.3.0", recommended = "570.172.08" }
+source_substitutions = { version = "v25.3.0", recommended = "580.65.06" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
