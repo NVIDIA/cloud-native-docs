@@ -428,7 +428,7 @@ On GPU nodes where the running kernel is not the latest, the <code class="docuti
 (e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container logs, you will most likely
 see the following error message: <code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">resolve</span> <span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">version</span></code>.</p>
 <p>In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
-workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.</p>
+workaround to successfully deploy the GPU Operator when GPU nodes in your cluster may not be running the latest kernel.</p>
 <section id="add-archived-package-repositories">
 <h2>Add Archived Package Repositories<a class="headerlink" href="#add-archived-package-repositories" title="Permalink to this headline">#</a></h2>
 <p>The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package

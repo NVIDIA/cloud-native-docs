@@ -561,7 +561,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
-It’s recommended that you downgrade the driver to version 570.86.15 to work around this issue.
+NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
 For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
 </div></blockquote>
 <blockquote id="gds-open-kernel">
@@ -583,8 +583,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="8a28e401-f578-4a0d-8820-da0cd307ebb1" name="72f98aef-0052-4a52-9b3b-5e44131b5ba4" type="radio">
-</input><label class="sd-tab-label" for="8a28e401-f578-4a0d-8820-da0cd307ebb1">
+<input id="02cad353-4f02-40fc-bf34-5b4e22356f26" name="a19b67e9-3843-4517-a500-58e1783f2142" type="radio">
+</input><label class="sd-tab-label" for="02cad353-4f02-40fc-bf34-5b4e22356f26">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -609,8 +609,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="fb929566-0443-4c57-8e71-a08943a49f00" name="72f98aef-0052-4a52-9b3b-5e44131b5ba4" type="radio">
-</input><label class="sd-tab-label" for="fb929566-0443-4c57-8e71-a08943a49f00">
+<input checked="checked" id="0824cc96-5db6-4331-823b-3ad73951e000" name="a19b67e9-3843-4517-a500-58e1783f2142" type="radio">
+</input><label class="sd-tab-label" for="0824cc96-5db6-4331-823b-3ad73951e000">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -716,8 +716,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="57df9af6-ddb1-4bd9-9163-04636c7d78c6" name="72f98aef-0052-4a52-9b3b-5e44131b5ba4" type="radio">
-</input><label class="sd-tab-label" for="57df9af6-ddb1-4bd9-9163-04636c7d78c6">
+<input id="8af47a98-2fdd-4656-8c5c-381503de24c3" name="a19b67e9-3843-4517-a500-58e1783f2142" type="radio">
+</input><label class="sd-tab-label" for="8af47a98-2fdd-4656-8c5c-381503de24c3">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -749,8 +749,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="73f2cd92-229b-4119-bc1f-c81008c1bc30" name="72f98aef-0052-4a52-9b3b-5e44131b5ba4" type="radio">
-</input><label class="sd-tab-label" for="73f2cd92-229b-4119-bc1f-c81008c1bc30">
+<input id="0ee129ca-8d82-4f7f-99be-2208ae7c8aed" name="a19b67e9-3843-4517-a500-58e1783f2142" type="radio">
+</input><label class="sd-tab-label" for="0ee129ca-8d82-4f7f-99be-2208ae7c8aed">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -817,8 +817,8 @@ Blackwell Server Edition</p></td>
 </div>
 </div></blockquote>
 </div>
-<input id="4c1a2e1b-df2c-4b8e-8096-a9c638379f36" name="72f98aef-0052-4a52-9b3b-5e44131b5ba4" type="radio">
-</input><label class="sd-tab-label" for="4c1a2e1b-df2c-4b8e-8096-a9c638379f36">
+<input id="e14f8cbf-0e7c-4c45-aca1-e58f631b5936" name="a19b67e9-3843-4517-a500-58e1783f2142" type="radio">
+</input><label class="sd-tab-label" for="e14f8cbf-0e7c-4c45-aca1-e58f631b5936">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -927,8 +927,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="3d095094-9797-47f6-9760-0a9b2ad5ac13" name="adb3b650-ce33-47ec-84c6-42b1908126b5" type="radio">
-</input><label class="sd-tab-label" for="3d095094-9797-47f6-9760-0a9b2ad5ac13">
+<input checked="checked" id="ac185522-47a1-41d6-ae10-90fac8531ee3" name="db2ef758-f025-47d9-80b6-f079d4cd8b9c" type="radio">
+</input><label class="sd-tab-label" for="ac185522-47a1-41d6-ae10-90fac8531ee3">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1072,8 +1072,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="b3c32092-56e2-4de5-b730-cdee846603fe" name="adb3b650-ce33-47ec-84c6-42b1908126b5" type="radio">
-</input><label class="sd-tab-label" for="b3c32092-56e2-4de5-b730-cdee846603fe">
+<input id="c4cc334b-54e3-4753-8911-a56d95a35a18" name="db2ef758-f025-47d9-80b6-f079d4cd8b9c" type="radio">
+</input><label class="sd-tab-label" for="c4cc334b-54e3-4753-8911-a56d95a35a18">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1120,8 +1120,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="2d431843-23a6-4732-bb2b-5f3f52bb395a" name="adb3b650-ce33-47ec-84c6-42b1908126b5" type="radio">
-</input><label class="sd-tab-label" for="2d431843-23a6-4732-bb2b-5f3f52bb395a">
+<input id="7f007354-63fd-4124-8b3a-faaed4d8f374" name="db2ef758-f025-47d9-80b6-f079d4cd8b9c" type="radio">
+</input><label class="sd-tab-label" for="7f007354-63fd-4124-8b3a-faaed4d8f374">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>

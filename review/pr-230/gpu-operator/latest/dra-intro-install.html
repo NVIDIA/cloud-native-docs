@@ -427,7 +427,7 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>With NVIDIA’s DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two types of resources:</p>
 <ul class="simple">
-<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). We are excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
+<li><p><strong>GPUs</strong>: for controlled sharing and dynamic reconfiguration of GPUs. A modern replacement for the traditional GPU allocation method (using <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin">NVIDIA’s device plugin</a>). NVIDIA is excited about this part of the driver; it is however not yet fully supported (Technology Preview).</p></li>
 <li><p><strong>ComputeDomains</strong>: for robust and secure Multi-Node NVLink (MNNVL) for NVIDIA GB200 and similar systems. Fully supported.</p></li>
 </ul>
 <section id="a-primer-on-dra">
@@ -439,13 +439,13 @@ For NVIDIA devices, there are two particularly beneficial characteristics provid
 <li><p>A clean way to allocate <strong>cross-node resources</strong> in Kubernetes (leveraged here for providing NVLink connectivity across pods running on multiple nodes).</p></li>
 <li><p>Mechanisms to explicitly <strong>share, partition, and reconfigure</strong> devices <strong>on-the-fly</strong> based on user requests (leveraged here for advanced GPU allocation).</p></li>
 </ol>
-<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, we recommend becoming familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
+<p>To understand and make best use of NVIDIA’s DRA Driver for GPUs, NVIDIA recommends becoming familiar with DRA by working through the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">official documentation</a>.</p>
 </section>
 <section id="the-twofold-nature-of-this-driver">
 <h3>The twofold nature of this driver<a class="headerlink" href="#the-twofold-nature-of-this-driver" title="Permalink to this headline">#</a></h3>
 <p>NVIDIA’s DRA Driver for GPUs is comprised of two subsystems that are largely independent of each other: one manages GPUs, and the other one manages ComputeDomains.</p>
 <p>Below, you can find instructions for how to install both parts or just one of them.
-Additionally, we have prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
+Additionally, NVIDIA has prepared two separate documentation chapters, providing more in-depth information for each of the two subsystems:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="dra-cds.html#dra-docs-compute-domains"><span class="std std-ref">Documentation for ComputeDomain (MNNVL) support</span></a></p></li>
 <li><p><a class="reference internal" href="dra-gpus.html#dra-docs-gpus"><span class="std std-ref">Documentation for GPU support</span></a></p></li>
@@ -462,7 +462,7 @@ Additionally, we have prepared two separate documentation chapters, providing mo
 <li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface?tab=readme-ov-file#how-to-configure-cdi">CDI</a> must be enabled in the underlying container runtime (such as containerd or CRI-O).</p></li>
 <li><p>NVIDIA GPU Driver 565 or later.</p></li>
 </ul>
-<p>For the last two items on the list above, as well as for other reasons, we recommend installing NVIDIA’s GPU Operator v25.3.0 or later.
+<p>For the last two items on the list above, as well as for other reasons, NVIDIA recommends installing NVIDIA’s GPU Operator v25.3.0 or later.
 For detailed instructions, see the official GPU Operator <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options">installation documentation</a>.
 Also note that, in the near future, the preferred method to install NVIDIA’s DRA Driver for GPUs will be through the GPU Operator (the DRA driver will then no longer require installation as a separate Helm chart).</p>
 <div class="admonition note">
@@ -475,8 +475,8 @@ Also note that, in the near future, the preferred method to install NVIDIA’s D
 </ul>
 </div>
 </section>
-<section id="configure-and-helm-install-the-driver">
-<h3>Configure and Helm-install the driver<a class="headerlink" href="#configure-and-helm-install-the-driver" title="Permalink to this headline">#</a></h3>
+<section id="configure-and-install-the-driver-with-helm">
+<h3>Configure and install the driver with Helm<a class="headerlink" href="#configure-and-install-the-driver-with-helm" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Add the NVIDIA Helm repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
@@ -509,15 +509,15 @@ Also note that, in the near future, the preferred method to install NVIDIA’s D
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>A common mode of operation for now is to enable only the ComputeDomain subsystem (to have GPUs allocated using the traditional device plugin). The example above achieves that by setting <code class="docutils literal notranslate"><span class="pre">resources.gpus.enabled=false</span></code>.</p></li>
-<li><p>Setting  <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p></li>
+<li><p>Setting <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot=/run/nvidia/driver</span></code> above expects a GPU Operator-provided GPU driver. That configuration parameter must be changed in case the GPU driver is installed straight on the host (typically at <code class="docutils literal notranslate"><span class="pre">/</span></code>, which is the default value for <code class="docutils literal notranslate"><span class="pre">nvidiaDriverRoot</span></code>).</p></li>
 </ul>
 </div>
 </section>
 <section id="validate-installation">
 <h3>Validate installation<a class="headerlink" href="#validate-installation" title="Permalink to this headline">#</a></h3>
 <p>A lot can go wrong, depending on the exact nature of your Kubernetes environment and specific hardware and driver choices as well as configuration options chosen.
-That is why we recommend to perform a set of validation tests to confirm the basic functionality of your setup.
-To that end, we have prepared separate documentation:</p>
+That is why NVIDIA recommends performing a set of validation tests to confirm the basic functionality of your setup.
+To that end, NVIDIA has prepared separate documentation:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation">Testing ComputeDomain allocation</a></p></li>
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation">Testing GPU allocation</a></p></li>
@@ -582,7 +582,7 @@ To that end, we have prepared separate documentation:</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-and-helm-install-the-driver">Configure and Helm-install the driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-and-install-the-driver-with-helm">Configure and install the driver with Helm</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-installation">Validate installation</a></li>
 </ul>
 </li>

@@ -528,7 +528,7 @@ The runtime handler is added by the nvidia-container-toolkit, so this error mess
 <section id="operator-validator-pods-crashing-with-error-code-system-not-yet-initialized">
 <h2>Operator validator pods crashing with “error code system not yet initialized”<a class="headerlink" href="#operator-validator-pods-crashing-with-error-code-system-not-yet-initialized" title="Permalink to this headline">#</a></h2>
 <p>When the operator validator pods are crashing with this error, this most likely points to a GPU node that is NVSwitch-based and requires the nvidia-fabricmanager to be installed.
-NVSwitch-based systems, like NVIDIA DGX and NVIDIA HGX server systems, require the memory fabric to be setup after the GPU driver is installed.
+NVSwitch-based systems, like NVIDIA DGX and NVIDIA HGX server systems, require the memory fabric to be set up after the GPU driver is installed.
 Learn more about the Fabric Manager from the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html">Fabric Manager user guide</a></p>
 <p class="h4 rubric">Action</p>
 <ol class="arabic">
@@ -674,7 +674,7 @@ Here are some example device-plugin logs in the event of an Xid error:</p>
 </section>
 <section id="dcgm-exporter-pods-go-into-crashloopbackoff">
 <h2>DCGM Exporter pods go into CrashLoopBackoff<a class="headerlink" href="#dcgm-exporter-pods-go-into-crashloopbackoff" title="Permalink to this headline">#</a></h2>
-<p>By default, the gpu-operator only deploys the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> while disabling the standalone <code class="docutils literal notranslate"><span class="pre">dcgm</span></code>. In this setup, the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> spawns a dcgm process locally. If, however, <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> is enabled and deployed as a separate pod/container, then the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> will attempt to connect to the <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> pod through a Kubernetes service. If the cluster networking settings aren’t applied correctly, you would likely see error messages as mentioned below in the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> logs:</p>
+<p>By default, the GPU Operator only deploys the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> while disabling the standalone <code class="docutils literal notranslate"><span class="pre">dcgm</span></code>. In this setup, the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> spawns a dcgm process locally. If, however, <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> is enabled and deployed as a separate pod/container, then the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> will attempt to connect to the <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> pod through a Kubernetes service. If the cluster networking settings aren’t applied correctly, you would likely see error messages as mentioned below in the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">time=&quot;2025-06-25T20:09:25Z&quot; level=info msg=&quot;Attempting to connect to remote hostengine at nvidia-dcgm:5555&quot;</span>
 <span class="go">time=&quot;2025-06-25T20:09:30Z&quot; level=error msg=&quot;Encountered a failure.&quot; stacktrace=&quot;goroutine 1 [running]:\nruntime/debug.Stack()</span>
 <span class="go">/usr/local/go/src/runtime/debug/stack.go:24 +0x5e\ngithub.com/NVIDIA/dcgm-exporter/pkg/cmd.action.func1.1()</span>
@@ -725,7 +725,7 @@ the GPU pod gets stuck indefinitely in the <code class="docutils literal notrans
 <p class="h4 rubric">Root Cause</p>
 <p>This is due to a regression in NVML introduced in the R570 drivers starting from 570.124.06.</p>
 <p class="h4 rubric">Action</p>
-<p>It’s recommended that you downgrade to driver version 570.86.15 to work around this issue.</p>
+<p>NVIDIA recommends that you downgrade to driver version 570.86.15 to work around this issue.</p>
 </section>
 <section id="gpu-operator-validator-failed-to-create-pod-sandbox">
 <h2>GPU Operator Validator: Failed to Create Pod Sandbox<a class="headerlink" href="#gpu-operator-validator-failed-to-create-pod-sandbox" title="Permalink to this headline">#</a></h2>
@@ -895,7 +895,7 @@ The return values for the <code class="docutils literal notranslate"><span class
 </pre></div>
 </div>
 <p class="h4 rubric">Root Cause</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command should return a success code (return code 0) for the driver-validator container to pass and GPU operator to successfully deploy driver pod on the node.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command should return a success code (return code 0) for the driver-validator container to pass and GPU Operator to successfully deploy driver pod on the node.</p>
 <p class="h4 rubric">Action</p>
 <p>Replace the faulty GPU.</p>
 </section>
