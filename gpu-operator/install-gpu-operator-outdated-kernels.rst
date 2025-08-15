@@ -12,7 +12,7 @@ On GPU nodes where the running kernel is not the latest, the ``driver`` containe
 see the following error message: ``Could not resolve Linux kernel version``.
 
 In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
-workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.
+workaround to successfully deploy the GPU Operator when GPU nodes in your cluster may not be running the latest kernel.
 
 Add Archived Package Repositories
 =================================

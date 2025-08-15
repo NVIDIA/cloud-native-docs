@@ -19,8 +19,8 @@
 ..
    lingo:
 
-   It's "Kata Containers" when referring to the software component.
-   It's "Kata container" when it's a container that uses the Kata Containers runtime.
+   It is "Kata Containers" when referring to the software component.
+   It is "Kata container" when it is a container that uses the Kata Containers runtime.
    Treat our operands as proper nouns and use title case.
 
 #################################

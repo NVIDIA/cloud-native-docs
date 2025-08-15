@@ -92,7 +92,7 @@ a `prestart` hook into it, and then calls out to the native `runC`, passing it t
 For versions of the NVIDIA Container Runtime from `v1.12.0`, this runtime also performs additional modifications to the OCI runtime spec to inject
 specific devices and mounts not handled by the NVIDIA Container CLI.
 
-It's important to note that this component is not necessarily specific to docker (but it is specific to `runC`).
+It is important to note that this component is not necessarily specific to docker (but it is specific to `runC`).
 
 ### The NVIDIA Container Toolkit CLI
 

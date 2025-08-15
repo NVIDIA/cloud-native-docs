@@ -37,7 +37,7 @@ Given the following node configuration:
 * Node B is configured with the label ``nvidia.com/gpu.workload.config=vm-passthrough`` and configured to run virtual machines with Passthrough GPU.
 * Node C is configured with the label ``nvidia.com/gpu.workload.config=vm-vgpu`` and configured to run virtual machines with vGPU.
 
-The GPU operator will deploy the following software components on each node:
+The GPU Operator will deploy the following software components on each node:
 
 * Node A receives the following software components:
    * ``NVIDIA Datacenter Driver`` - to install the driver

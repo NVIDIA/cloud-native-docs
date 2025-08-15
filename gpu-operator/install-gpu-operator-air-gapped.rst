@@ -246,7 +246,7 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
 Local Package Repository
 ************************
 
-The ``driver`` container deployed as part of the GPU operator requires certain packages to be available as part of the
+The ``driver`` container deployed as part of the GPU Operator requires certain packages to be available as part of the
 driver installation. In restricted internet access or air-gapped installations, users are required to create a
 local mirror repository for their OS distribution and make the following packages available:
 
