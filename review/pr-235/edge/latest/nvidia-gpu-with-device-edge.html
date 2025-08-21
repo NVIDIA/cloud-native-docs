@@ -481,7 +481,7 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 <p>The NVIDIA container toolkit supports the distributions listed in the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installation-guide/">NVIDIA Container Toolkit repository</a>.</p>
 <ol class="arabic">
 <li><p>Add the <code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/rhel8.7/libnvidia-container.repo <span class="p">|</span> sudo tee /etc/yum.repos.d/libnvidia-container.repo
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> sudo tee /etc/yum.repos.d/libnvidia-container.repo
 </pre></div>
 </div>
 </li>
@@ -554,17 +554,17 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 <p>The deployment consists of adding manifests and a <code class="docutils literal notranslate"><span class="pre">kustomize</span></code> configuration to the <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests</span></code> folder where MicroShift checks for manifests to create at start time. This is explained in the <a class="reference external" href="https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift/4.12/html/configuring/index">Configuring section of the MicroShift documentation</a>.</p>
 <ol class="arabic">
 <li><p>Create the <code class="docutils literal notranslate"><span class="pre">manifests</span></code> folder:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo mkdir -p /etc/microshift/manifests
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo mkdir -p /etc/microshift/manifests.d/nvidia-device-plugin
 </pre></div>
 </div>
 </li>
 <li><p>The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code>. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests/nvidia-device-plugin.yml</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/refs/heads/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml <span class="p">|</span> sudo tee /etc/microshift/manifests/nvidia-device-plugin.yml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/refs/heads/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml <span class="p">|</span> sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/nvidia-device-plugin.yml
 </pre></div>
 </div>
 </li>
 <li><p>The resources are not created automatically even though the files exist. You need to add them to the <code class="docutils literal notranslate"><span class="pre">kustomize</span></code> configuration. Do this by adding a single <code class="docutils literal notranslate"><span class="pre">kustomization.yaml</span></code> file in the <code class="docutils literal notranslate"><span class="pre">manifests</span></code> folder that references all the resources you want to create.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> sudo tee /etc/microshift/manifests/kustomization.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/kustomization.yaml
 <span class="go">---</span>
 <span class="go">apiVersion: kustomize.config.k8s.io/v1beta1</span>
 <span class="go">kind: Kustomization</span>
