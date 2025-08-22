@@ -433,20 +433,12 @@
 <li><p>The GPU driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.</p></li>
 <li><p>All GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">init</span></code> state.</p></li>
 </ul>
-<p class="h4 rubric">Root Cause</p>
-<ul class="simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module is loaded.</p></li>
-</ul>
 <p class="h4 rubric">Action</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.</p>
 <p>On each node, run the following commands to prevent loading the <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module on boot:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo tee /etc/modules-load.d/ipmi.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;ipmi_msghandler&quot;</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo tee /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;blacklist nouveau&quot;</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;options nouveau modeset=0&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo tee /etc/modules-load.d/ipmi.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;ipmi_msghandler&quot;</span> <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> sudo tee /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;blacklist nouveau&quot;</span> <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;options nouveau modeset=0&quot;</span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-initramfs -u
