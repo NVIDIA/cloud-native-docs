@@ -285,7 +285,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          -
          -
-         - 2.12, 2.13, 2.14, 2.15
+         - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
          - 1.29---1.33
@@ -324,7 +324,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.32
          -
          -
-         -
+         - 2.12, 2.13, 2.14, 2.15
 
        * - | Red Hat
            | Enterprise
@@ -335,7 +335,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 5.5
          -
-         -
+         - 2.12, 2.13, 2.14, 2.15
 
     .. _kubernetes-version:
 
