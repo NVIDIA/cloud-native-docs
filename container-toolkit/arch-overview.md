@@ -130,7 +130,7 @@ For the different components:
 
 :::{note}
 As of the release of version `1.6.0` of the NVIDIA Container Toolkit the packages for all components are
-published to the `libnvidia-container` `repository <https://nvidia.github.io/libnvidia-container/>` listed above. For older package versions please see the documentation archives.
+published to the `libnvidia-container` `repository <https://nvidia.github.io/libnvidia-container/>` listed above. For older package versions, refer to the documentation archives.
 :::
 
 Releases of the software are also hosted on `experimental` branch of the repository and are graduated to `stable` after test/validation. To get access to the latest

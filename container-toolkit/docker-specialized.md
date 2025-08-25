@@ -236,7 +236,7 @@ generic `NVIDIA_REQUIRE_*` case and it is set by official CUDA images. If the ve
 is insufficient to run this version of CUDA, the container will not be started. This variable
 can be specified in the form `major.minor`
 
-The possible values for this variable: `cuda>=7.5`, `cuda>=8.0`, `cuda>=9.0` and so on.
+The possible values for this variable: `cuda>=7.5`, `cuda>=8.0`, or `cuda>=9.0`.
 
 ### Dockerfiles
 

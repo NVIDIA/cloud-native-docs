@@ -138,7 +138,7 @@ $ sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode=cdi
 In this case, the `NVIDIA_VISIBLE_DEVICES` environment variable is still used to select the
 devices to inject into the container, but the `nvidia-container-runtime.modes.cdi.default-kind`
 (with a default value of `nvidia.com/gpu`) is used to construct a fully-qualified CDI device name
-only when you specify a device index such as `all`, `0`, or `1`, and so on.
+only when you specify a device index such as `all`, `0`, or `1`.
 
 This means that if CDI mode is explicitly enabled, the following sample command has the same effect as
 specifying `NVIDIA_VISIBLE_DEVICES=nvidia.com/gpu=all`.

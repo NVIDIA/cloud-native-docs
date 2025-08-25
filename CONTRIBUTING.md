@@ -34,10 +34,10 @@ If you need more levels, then consider creating a new document. A document has o
 
 ### Guideline for Kubernetes Object Types in Body Text
 
-Prefer lowercase plain text such as namespace, pod, daemon set, container, service, and so on.
+Prefer lowercase plain text such as namespace, pod, daemon set, container, or service.
 This guideline applies to multi-word types like custom resource definition.
 
-Use the camel case name only if you follow the name with object, resource, and so on.
+Use the camel case name only if you follow the name with object or resource.
 For example, "Delete the ``Pod`` object..."
 However, that example is not compelling and is just as clear when written as "Delete the pod..."
 

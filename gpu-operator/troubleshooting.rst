@@ -440,7 +440,7 @@ On some clusters, taints are applied to nodes with a taint effect of ``NoSchedul
 .. rubric:: Observation
    :class: h4
 
-- Running ``kubectl get ds -n gpu-operator`` shows ``0`` for ``DESIRED``, ``CURRENT``, ``READY`` and so on.
+- Running ``kubectl get ds -n gpu-operator`` shows ``0`` for ``DESIRED``, ``CURRENT``, and ``READY``.
 
   .. code-block:: console
 

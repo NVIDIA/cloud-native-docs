@@ -193,12 +193,12 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 Create the ClusterPolicy instance
 *********************************
 
-When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.
+When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, and pod restrictions/credentials.
 
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
-when using **NVIDIA vGPU**. Please refer to appropriate sections below.
+when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 
 .. _create-cluster-policy-web-console:
 
@@ -262,7 +262,7 @@ Create the ClusterPolicy instance with NVIDIA vGPU
 Pre-requisites
 --------------
 
-* Please refer to :ref:`install-gpu-operator-vgpu` section for pre-requisite steps for using NVIDIA vGPU on RedHat OpenShift.
+* Refer to the :ref:`install-gpu-operator-vgpu` section for prerequisite steps for using NVIDIA vGPU on RedHat OpenShift.
 
 Create the cluster policy using the web console
 -----------------------------------------------
@@ -271,11 +271,11 @@ Create the cluster policy using the web console
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-#. Provide name of the licensing ``ConfigMap`` under **Driver** section, this should be created during pre-requsite steps above for NVIDIA vGPU. Refer to below screenshots for example and modify values accordingly.
+#. Provide name of the licensing ``ConfigMap`` under **Driver** section, this should be created during prerequisite steps above for NVIDIA vGPU. Refer to the following screenshots for example and modify values accordingly.
 
  .. image:: graphics/cluster_policy_vgpu_1.png
 
-#. Specify ``repository`` path, ``image`` name and NVIDIA vGPU driver ``version`` bundled under **Driver** section. If the registry is not public, please specify the ``imagePullSecret`` created during pre-requisite step under **Driver** advanced configurations section.
+#. Specify ``repository`` path, ``image`` name and NVIDIA vGPU driver ``version`` bundled under **Driver** section. If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under **Driver** advanced configurations section.
 
  .. image:: graphics/cluster_policy_vgpu_2.png
 
@@ -297,7 +297,7 @@ Create the cluster policy using the CLI
 
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
-   Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
+   Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during prerequisite steps. The following snippet is shown as an example; change values accordingly.
 
    .. code-block:: json
 
