@@ -33,6 +33,29 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.3:
+
+25.3.3
+======
+
+.. _v25.3.3-new-features:
+
+New Features
+------------
+
+* Added support for additional features:
+
+  - RTX Pro 6000 BSE: R580TRD2 by default 
+  - MIG profiles support 
+  - Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only) 
+  - Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)
+
+* Added support for NVIDIA Network Operator v25.7.0.
+
+* Added support for Kubernetes v1.34.
+
+* Added support for NVIDIA DCGM v4.4.0.
+
 .. _v25.3.2:
 
 25.3.2
