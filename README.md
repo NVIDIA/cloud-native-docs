@@ -108,13 +108,13 @@ Always update the openshift docset when there is a new gpu-operator docset versi
     copyright_start = 2020
    ```
 
-1. Update the version in `<component-name>/versions1.json`:
+1. Update the version in `<component-name>/versions.json`:
 
    ```diff
-   diff --git a/container-toolkit/versions1.json b/container-toolkit/versions1.json
+   diff --git a/container-toolkit/versions.json b/container-toolkit/versions.json
    index 95429953..e2738987 100644
-   --- a/container-toolkit/versions1.json
-   +++ b/container-toolkit/versions1.json
+   --- a/container-toolkit/versions.json
+   +++ b/container-toolkit/versions.json
    @@ -1,6 +1,10 @@
     [
       {
