@@ -437,14 +437,25 @@
 <section id="new-features">
 <span id="v25-3-3-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
+<li><p>Supports these NVIDIA Data Center GPU Driver versions:</p>
+<ul>
+<li><p>580.82.07 (default, recommended)</p></li>
+</ul>
+</li>
 <li><p>Added support for additional features:</p>
 <ul>
-<li><p>RTX Pro 6000 BSE: R580TRD2 by default
-- MIG profiles support
-- Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)
-- Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)</p></li>
-<li><p>RTX Pro 6000D BSE: R580TRD2 by default
-- Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
+<li><p>RTX Pro 6000 BSE: R580TRD2 by default</p>
+<ul>
+<li><p>MIG profiles support</p></li>
+<li><p>Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
+<li><p>Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)</p></li>
+</ul>
+</li>
+<li><p>RTX Pro 6000D BSE: R580TRD2 by default</p>
+<ul>
+<li><p>Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Includes these software component versions:</p>
@@ -458,11 +469,6 @@
 <li><p>NVIDIA vGPU Device Manager v0.3.0</p></li>
 </ul>
 </li>
-<li><p>Supports these NVIDIA Data Center GPU Driver versions:</p>
-<ul>
-<li><p>580.82.07 (default, recommended)</p></li>
-</ul>
-</li>
 </ul>
 </section>
 <section id="notes">
@@ -470,10 +476,8 @@
 <ul class="simple">
 <li><p>The driver container image tag for OpenShift has changed after the <cite>OCP 4.19</cite> release.</p>
 <ul>
-<li><p>Pre OCP 4.19:
-- The driver image tag is formed with suffix <cite>-rhcos4.17</cite> (for example with OCP 4.17).</p></li>
-<li><p>Starting OCP 4.19 and onwards:
-- The driver image tag is formed with suffix <cite>-rhel9.6</cite> (for example with OCP 4.19).</p></li>
+<li><p>Pre OCP 4.19: The driver image tag is formed with suffix <cite>-rhcos4.17</cite> (for example with OCP 4.17).</p></li>
+<li><p>Starting OCP 4.19 and onwards: The driver image tag is formed with suffix <cite>-rhel9.6</cite> (for example with OCP 4.19).</p></li>
 </ul>
 </li>
 </ul>
