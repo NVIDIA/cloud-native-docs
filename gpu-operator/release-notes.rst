@@ -43,14 +43,20 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 New Features
 ------------
 
+* Supports these NVIDIA Data Center GPU Driver versions:
+
+  - 580.82.07 (default, recommended)
+
 * Added support for additional features:
 
-  - RTX Pro 6000 BSE: R580TRD2 by default 
+  - RTX Pro 6000 BSE: R580TRD2 by default
+
     - MIG profiles support
     - Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)
     - Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)
 
   - RTX Pro 6000D BSE: R580TRD2 by default 
+
     - Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)
 
 * Includes these software component versions:
@@ -63,19 +69,13 @@ New Features
   - NVIDIA MIG Manager for Kubernetes v0.12.3
   - NVIDIA vGPU Device Manager v0.3.0
 
-* Supports these NVIDIA Data Center GPU Driver versions:
-
-  - 580.82.07 (default, recommended)
-
 Notes
 -----
-* The driver container image tag for OpenShift has changed after the `OCP 4.19` release.
+* The driver container image tag for OpenShift has changed after the ``OCP 4.19`` release.
 
-  - Pre OCP 4.19:
-    - The driver image tag is formed with suffix `-rhcos4.17` (for example with OCP 4.17).
+  - Pre OCP 4.19: The driver image tag is formed with suffix ``-rhcos4.17`` (for example with OCP 4.17).
 
-  - Starting OCP 4.19 and onwards:
-    - The driver image tag is formed with suffix `-rhel9.6` (for example with OCP 4.19).
+  - Starting OCP 4.19 and onwards: The driver image tag is formed with suffix ``-rhel9.6`` (for example with OCP 4.19).
 
 .. _v25.3.2:
 
