@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 02, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 05, 2025"/>
 
 
 
@@ -444,43 +444,31 @@
 </li>
 <li><p>Added support for additional features:</p>
 <ul>
-<li><p>RTX Pro 6000 BSE: R580TRD2 by default</p>
+<li><p>RTX Pro 6000 Blackwell Server Edition</p>
 <ul>
 <li><p>MIG profiles support</p></li>
-<li><p>Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
-<li><p>Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)</p></li>
+<li><p>KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
+<li><p>KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)</p></li>
 </ul>
 </li>
-<li><p>RTX Pro 6000D BSE: R580TRD2 by default</p>
+<li><p>RTX Pro 6000D Blackwell Server Edition</p>
 <ul>
-<li><p>Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
+<li><p>KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>Includes these software component versions:</p>
-<ul>
-<li><p>NVIDIA DCGM v4.4.1</p></li>
-<li><p>NVIDIA DCGM Exporter v4.4.0-4.5.0</p></li>
-<li><p>NVIDIA GDRCopy Driver v2.5.1</p></li>
-<li><p>NVIDIA Kubernetes Device Plugin v0.17.3</p></li>
-<li><p>NVIDIA Kubevirt GPU Device Plugin v1.3.1</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes v0.12.3</p></li>
-<li><p>NVIDIA vGPU Device Manager v0.3.0</p></li>
 </ul>
-</li>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The driver container image tag for OpenShift has changed after the <code class="docutils literal notranslate"><span class="pre">OCP</span> <span class="pre">4.19</span></code> release.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Pre OCP 4.19: The driver image tag is formed with the suffix <code class="docutils literal notranslate"><span class="pre">-rhcos4.17</span></code> (for example with OCP 4.17).</p></li>
+<li><p>Starting OCP 4.19 and onwards: The driver image tag is formed with the suffix <code class="docutils literal notranslate"><span class="pre">-rhel9.6</span></code> (for example with OCP 4.19).</p></li>
 </ul>
-</section>
-<section id="notes">
-<h3>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>The driver container image tag for OpenShift has changed after the <code class="docutils literal notranslate"><span class="pre">OCP</span> <span class="pre">4.19</span></code> release.</p>
-<ul>
-<li><p>Pre OCP 4.19: The driver image tag is formed with suffix <code class="docutils literal notranslate"><span class="pre">-rhcos4.17</span></code> (for example with OCP 4.17).</p></li>
-<li><p>Starting OCP 4.19 and onwards: The driver image tag is formed with suffix <code class="docutils literal notranslate"><span class="pre">-rhel9.6</span></code> (for example with OCP 4.19).</p></li>
-</ul>
-</li>
-</ul>
+</div></blockquote>
+</div>
 </section>
 </section>
 <section id="v25-3-2">
@@ -2867,7 +2855,6 @@ would not be available after reboot.</p></li>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-3">25.3.3</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-2">25.3.2</a><ul class="nav section-nav flex-column">
