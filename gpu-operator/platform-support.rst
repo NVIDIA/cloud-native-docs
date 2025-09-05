@@ -149,7 +149,6 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | Blackwell Server Edition|                        |
     +-------------------------+------------------------+
     | NVIDIA RTX PRO 6000D    | NVIDIA Blackwell       |
-    | Blackwell Server Edition|                        |
     +-------------------------+------------------------+
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |
     +-------------------------+------------------------+
@@ -511,8 +510,8 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 20.04 LTS    1.23---1.29   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.23---1.29   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.23---1.33   0.36+           0.59.1+
+Ubuntu 22.04 LTS    1.23---1.33   0.36+           0.59.1+
 Red Hat Core OS                                                4.12---4.19      4.13---4.19
 ================    ===========   =============   =========    =============    ===========
 
@@ -526,6 +525,8 @@ you must set the ``DisableMDEVConfiguration`` feature gate.
 Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
+
+- RTX Pro 6000 Blackwell Server Edition, RTX 6000D
 
 - H200NVL
 

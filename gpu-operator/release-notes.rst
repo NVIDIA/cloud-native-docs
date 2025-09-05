@@ -49,33 +49,15 @@ New Features
 
 * Added support for additional features:
 
-  - RTX Pro 6000 BSE: R580TRD2 by default
+  - RTX Pro 6000 Blackwell Server Edition
 
     - MIG profiles support
-    - Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)
-    - Kubevirt/OSV: VM with time-slice vGPU (Ubuntu 22.04 only)
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
+    - KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)
 
-  - RTX Pro 6000D BSE: R580TRD2 by default 
+  - RTX Pro 6000D Blackwell Server Edition 
 
-    - Kubevirt/OSV: VM with GPU passthrough (Ubuntu 22.04 only)
-
-* Includes these software component versions:
-
-  - NVIDIA DCGM v4.4.1
-  - NVIDIA DCGM Exporter v4.4.0-4.5.0
-  - NVIDIA GDRCopy Driver v2.5.1
-  - NVIDIA Kubernetes Device Plugin v0.17.3
-  - NVIDIA Kubevirt GPU Device Plugin v1.3.1
-  - NVIDIA MIG Manager for Kubernetes v0.12.3
-  - NVIDIA vGPU Device Manager v0.3.0
-
-Notes
------
-* The driver container image tag for OpenShift has changed after the ``OCP 4.19`` release.
-
-  - Pre OCP 4.19: The driver image tag is formed with suffix ``-rhcos4.17`` (for example with OCP 4.17).
-
-  - Starting OCP 4.19 and onwards: The driver image tag is formed with suffix ``-rhel9.6`` (for example with OCP 4.19).
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
 
 .. _v25.3.2:
 
