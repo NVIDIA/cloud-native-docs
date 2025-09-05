@@ -33,6 +33,40 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.3:
+
+25.3.3
+======
+
+.. _v25.3.3-new-features:
+
+New Features
+------------
+
+* Supports these NVIDIA Data Center GPU Driver versions:
+
+  - 580.82.07 (default, recommended)
+
+* Added support for additional features:
+
+  - RTX Pro 6000 Blackwell Server Edition
+
+    - MIG profiles support
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
+    - KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)
+
+  - RTX Pro 6000D Blackwell Server Edition 
+
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
+
+
+.. note::
+
+  The driver container image tag for OpenShift has changed after the ``OCP 4.19`` release.
+
+  - Pre OCP 4.19: The driver image tag is formed with the suffix ``-rhcos4.17`` (for example with OCP 4.17).
+  - Starting OCP 4.19 and onwards: The driver image tag is formed with the suffix ``-rhel9.6`` (for example with OCP 4.19).
+
 .. _v25.3.2:
 
 25.3.2
