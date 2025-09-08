@@ -8,6 +8,36 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.18.0 
+
+This release of the NVIDIA Container Toolkit `v1.18.0` is a feature update and bugfix release.
+
+### Fixes and Features
+
+- Added automatic generation of CDI specifications for available devices.
+- Fixed a mount leak issue where the number of mounts after shared mount propagation is not the same as before the shared mount propagation.
+- Fixed an issue where the CDI specification is not created even when the `nvidia-cdi-refresh.service` and `nvidia-cdi-refresh.path` are active.
+- Fixed an issue where the CDI specification is not created with the default installation.
+
+#### Enhancements to libnvidia-container
+
+- 
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.18.0`
+- `nvidia-container-toolkit-base 1.18.0`
+- `libnvidia-container-tools 1.18.0`
+- `libnvidia-container1 1.18.0`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.0-ubi8`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.0-ubuntu20.04` (also as `nvcr.io/nvidia/k8s/container-toolkit:v1.18.0`)
+
+
 ## NVIDIA Container Toolkit 1.17.8
 
 This release of the NVIDIA Container Toolkit `v1.17.8` is a bugfix release.
