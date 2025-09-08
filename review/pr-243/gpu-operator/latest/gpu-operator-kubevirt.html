@@ -478,7 +478,7 @@ To override the default GPU workload configuration, set the following value in <
 <section id="assumptions-constraints-and-dependencies">
 <span id="gpu-operator-kubevirt-limitations"></span><h3>Assumptions, constraints, and dependencies<a class="headerlink" href="#assumptions-constraints-and-dependencies" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>A GPU worker node can run GPU workloads of a particular type, such as containers, virtual machines with GPU Passthrough, or virtual machines with vGPU,but not a combination of any of them.</p></li>
+<li><p>A GPU worker node can run GPU workloads of a particular type, such as containers, virtual machines with GPU Passthrough, or virtual machines with vGPU, but not a combination of any of them.</p></li>
 <li><p>The cluster admin or developer has knowledge about their cluster ahead of time and can properly label nodes to indicate what types of GPU workloads they will run.</p></li>
 <li><p>Worker nodes running GPU accelerated virtual machines (with GPU passthrough or vGPU) are assumed to be bare metal.</p></li>
 <li><p>The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.</p></li>
