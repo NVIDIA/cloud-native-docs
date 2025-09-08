@@ -62,7 +62,7 @@ To override the default GPU workload configuration, set the following value in `
 Assumptions, constraints, and dependencies
 ------------------------------------------
 
-* A GPU worker node can run GPU workloads of a particular type, such as containers, virtual machines with GPU Passthrough, or virtual machines with vGPU,but not a combination of any of them.
+* A GPU worker node can run GPU workloads of a particular type, such as containers, virtual machines with GPU Passthrough, or virtual machines with vGPU, but not a combination of any of them.
 
 * The cluster admin or developer has knowledge about their cluster ahead of time and can properly label nodes to indicate what types of GPU workloads they will run.
 
