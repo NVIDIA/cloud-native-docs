@@ -13,18 +13,18 @@ Installing the NVIDIA GPU Operator by using the web console
 
 #. In the OpenShift Container Platform web console from the side menu, navigate to  **Operators** > **OperatorHub** and select **All Projects**.
 
-#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information see the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the subsequent screen click **Install**.
 
   .. note:: Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace under **Select a Namespace**.
 
-            If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
-            If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
+      If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+      If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
 
-            .. code-block:: console
+      .. code-block:: console
 
-               $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
+         $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
 Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator <create-cluster-policy>`.
 
@@ -46,13 +46,13 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
            name: nvidia-gpu-operator
 
       .. note:: The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace name.
-                If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+         If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
 
-                If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
+         If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
 
-                 .. code-block:: console
+         .. code-block:: console
 
-                    $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
+            $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
    #. Create the namespace by running the following command:
 
@@ -89,7 +89,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
          operatorgroup.operators.coreos.com/nvidia-gpu-operator-group created
 
-#. Run the following command to get the ``channel`` value required for step number 5.
+#. Run the following command to get the ``channel`` value required for step 5.
 
    .. code-block:: console
 
@@ -101,7 +101,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
       v22.9
 
-#. Run the following commands to get the ``startingCSV`` value required for step number 5.
+#. Run the following commands to get the ``startingCSV`` value required for step 5.
 
    .. code-block:: console
 
@@ -134,7 +134,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
         sourceNamespace: openshift-marketplace
         startingCSV: "gpu-operator-certified.v22.9.0"
 
-   .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in step 3 and 4.
+   .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in steps 3 and 4.
 
 #. Create the subscription object by running the following command:
 
@@ -198,7 +198,7 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 .. note:: If you create a ClusterPolicy that contains an empty specification, such as ``spec{}``, the ClusterPolicy fails to deploy.
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
-when using **NVIDIA vGPU**. Please refer to appropriate sections below.
+when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 
 .. _create-cluster-policy-web-console:
 
@@ -209,7 +209,7 @@ Create the cluster policy using the web console
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-      .. note:: You can use this screen to customize the ClusterPolicy; although, the default values are sufficient to get the GPU configured and running in most cases.
+      .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
 
       .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
 
@@ -219,7 +219,7 @@ Create the cluster policy using the web console
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
@@ -237,7 +237,7 @@ Create the cluster policy using the CLI
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
 
-   .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` (optional). The below snippet is shown as an example, please change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
+   .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` (optional). The following snippet is shown as an example. Change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
 
    .. code-block:: json
 
@@ -262,7 +262,7 @@ Create the ClusterPolicy instance with NVIDIA vGPU
 Pre-requisites
 --------------
 
-* Please refer to :ref:`install-gpu-operator-vgpu` section for pre-requisite steps for using NVIDIA vGPU on RedHat OpenShift.
+* Refer to the :ref:`install-gpu-operator-vgpu` section for prerequisite steps for using NVIDIA vGPU on Red Hat OpenShift.
 
 Create the cluster policy using the web console
 -----------------------------------------------
@@ -271,17 +271,17 @@ Create the cluster policy using the web console
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-#. Provide name of the licensing ``ConfigMap`` under **Driver** section, this should be created during pre-requsite steps above for NVIDIA vGPU. Refer to below screenshots for example and modify values accordingly.
+#. Provide the name of the licensing ``ConfigMap`` under the **Driver** section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.
 
  .. image:: graphics/cluster_policy_vgpu_1.png
 
-#. Specify ``repository`` path, ``image`` name and NVIDIA vGPU driver ``version`` bundled under **Driver** section. If the registry is not public, please specify the ``imagePullSecret`` created during pre-requisite step under **Driver** advanced configurations section.
+#. Specify the ``repository`` path, ``image`` name, and NVIDIA vGPU driver ``version`` bundled under the **Driver** section. If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under the **Driver** advanced configurations section.
 
  .. image:: graphics/cluster_policy_vgpu_2.png
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
@@ -297,7 +297,7 @@ Create the cluster policy using the CLI
 
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
-   Modify clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version`` and ``driver.imagePullSecrets`` created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.
+   Modify the clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
 
    .. code-block:: json
 
@@ -372,7 +372,7 @@ The GPU Operator generates GPU performance metrics (DCGM-export), status metrics
 When the GPU Operator is installed in the suggested ``nvidia-gpu-operator`` namespace, the GPU Operator automatically enables monitoring if the ``openshift.io/cluster-monitoring`` label is not defined.
 If the label is defined, the GPU Operator will not change its value.
 
-Disable cluster monitoring in the ``nvidia-gpu-operator`` namespace by setting ``openshift.io/cluster-monitoring=false`` as shown:
+Disable cluster monitoring in the ``nvidia-gpu-operator`` namespace by setting ``openshift.io/cluster-monitoring=false``:
 
    .. code-block:: console
 
@@ -414,7 +414,7 @@ The ``nvidia-driver-daemonset`` pod has two containers.
 Running a sample GPU Application
 *************************************************************
 
-Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure the GPUs have bootstrapped correctly.
+Run a simple CUDA VectorAdd sample that adds two vectors together to ensure the GPUs have bootstrapped correctly.
 
 #. Run the following:
 
@@ -459,7 +459,7 @@ Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure th
 Getting information about the GPU
 *************************************************************
 
-The ``nvidia-smi`` shows memory usage, GPU utilization, and the temperature of the GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
+The ``nvidia-smi`` command shows memory usage, GPU utilization, and the temperature of the GPU. Test the GPU access by running the popular ``nvidia-smi`` command within the pod.
 
 To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemonset.
 
@@ -481,7 +481,7 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
       nvidia-driver-daemonset-410.84.202203290245-0-xxgdv   2/2     Running   0          23m   10.130.2.18   ip-10-0-143-147.ec2.internal   <none>           <none>
 
 
-   .. note:: With the Pod and node name, run the ``nvidia-smi`` on the correct node.
+   .. note:: With the pod and node name, run the ``nvidia-smi`` command on the correct node.
 
 #. Run the ``nvidia-smi`` command within the pod:
 
@@ -513,6 +513,6 @@ To view GPU utilization, run ``nvidia-smi`` from a pod in the GPU Operator daemo
       |  No running processes found                                                 |
       +-----------------------------------------------------------------------------+
 
-   Two tables are generated. The first table reflects the information about all available GPUs (the example shows one GPU). The second table provides details on the processes using the GPUs.
+   Two tables are generated. The first table reflects the information about all available GPUs (the example shows one GPU). The second table provides details about the processes using the GPUs.
 
-   For more information describing the contents of the tables see the man page for ``nvidia-smi``.
+   For more information describing the contents of the tables, refer to the man page for ``nvidia-smi``.
