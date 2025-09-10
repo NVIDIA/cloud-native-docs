@@ -39,7 +39,7 @@ Limitations and Restrictions
 Building a Precompiled Driver Image
 ***********************************
 
-Perform the following steps to build a custom driver image for use with Red Hat OpenShift Contain Platform.
+Perform the following steps to build a custom driver image for use with Red Hat OpenShift Container Platform.
 
 .. rubric:: Prerequisites
 
