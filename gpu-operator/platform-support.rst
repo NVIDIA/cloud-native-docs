@@ -470,6 +470,9 @@ See the :doc:`precompiled-drivers` page for more information about using precomp
 | Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550, R570   |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  6.8           |  R535, R570         |
+|                            | AWS, Oracle            |                |                     |
++----------------------------+------------------------+----------------+---------------------+
 | Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550, R570         |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
