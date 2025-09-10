@@ -526,7 +526,7 @@ Refer to :ref:`GPU Operator with KubeVirt` or :ref:`NVIDIA GPU Operator with Ope
 
 KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
 
-- RTX Pro 6000 Blackwell Server Edition, RTX 6000D
+- RTX Pro 6000 Blackwell Server Edition
 
 - H200NVL
 

@@ -55,7 +55,7 @@ New Features
     - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
     - KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)
 
-  - RTX Pro 6000D Blackwell Server Edition 
+  - RTX Pro 6000D 
 
     - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
 
