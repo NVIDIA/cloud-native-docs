@@ -8,6 +8,29 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.18.0 
+
+This release of the NVIDIA Container Toolkit `v1.18.0` is a feature update and bugfix release.
+
+### Fixes and Features
+
+- Added automatic generation of CDI specifications for available devices.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.18.0`
+- `nvidia-container-toolkit-base 1.18.0`
+- `libnvidia-container-tools 1.18.0`
+- `libnvidia-container1 1.18.0`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.0`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.0-packaging`
+
+
 ## NVIDIA Container Toolkit 1.17.8
 
 This release of the NVIDIA Container Toolkit `v1.17.8` is a bugfix release.
