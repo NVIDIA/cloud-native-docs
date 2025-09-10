@@ -44,7 +44,7 @@ The ``nouveau`` driver fails to initialize the GPU
 .. rubric:: Action
    :class: h4
 
-The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
+The ``nouveau`` driver must be denylisted when using NVIDIA vGPU.
 
 Follow the instructions in the `NVIDIA AI Enterprise: VMware Deployment Guide <https://docs.nvidia.com/ai-enterprise/deployment/vmware/latest/nouveau.html#disable-nouveau>`_ 
 to disable ``nouveau`` on your OS/distro to resolve this issue.
