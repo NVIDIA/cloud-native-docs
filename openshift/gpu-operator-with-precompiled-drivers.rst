@@ -126,6 +126,10 @@ Perform the following steps to build a custom driver image for use with Red Hat 
       - Before OCP 4.19: The driver image tag is formed with the suffix ``-rhcos4.17`` (such as with OCP 4.17).
       - Starting OCP 4.19 and later: The driver image tag is formed with the suffix ``-rhel9.6`` (such as with OCP 4.19).
 
+      Refer to `RHEL Versions Utilized by RHEL CoreOS and OCP <https://access.redhat.com/articles/6907891>`_
+      and `Split RHCOS into layers: /etc/os-release <https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release>`_
+      for more information.
+
 #. Build and push the image:
 
    .. code-block:: console
