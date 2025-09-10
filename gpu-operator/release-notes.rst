@@ -62,7 +62,8 @@ New Features
 Fixed Issues
 -------------
 
-* Fixed an issue where user-supplied environment variables configured in ClusterPolicy were not getting set in the rendered DaemonSet. User-supplied environment variables now take precedence over environment variables set by the ClusterPolicy controller.
+* Fixed an issue where user-supplied environment variables configured in ClusterPolicy were not getting set in the rendered DaemonSet.
+  User-supplied environment variables now take precedence over environment variables set by the ClusterPolicy controller.
 
 .. _v25.3.2:
 
