@@ -26,6 +26,29 @@ If you are facing an issue that is not covered by this page, please file an issu
 `NVIDIA GPU Operator GitHub repository <https://github.com/NVIDIA/gpu-operator/issues>`_.
 
 
+**************************************************
+The ``nouveau`` driver fails to initialize the GPU
+**************************************************
+
+.. rubric:: Observation
+   :class: h4
+
+- The GPU driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
+- All GPU Operator pods become stuck in the ``init`` state.
+
+.. rubric:: Root Cause
+   :class: h4
+
+- The ``nouveau`` Linux kernel module is loaded.
+
+.. rubric:: Action
+   :class: h4
+
+The ``nouveau`` driver must be denylisted when using NVIDIA vGPU.
+
+Follow the instructions in the `NVIDIA AI Enterprise: VMware Deployment Guide <https://docs.nvidia.com/ai-enterprise/deployment/vmware/latest/nouveau.html#disable-nouveau>`_ 
+to disable ``nouveau`` on your OS/distro to resolve this issue.
+
 ***********************************
 GPU Operator pods are stuck in Init
 ***********************************
