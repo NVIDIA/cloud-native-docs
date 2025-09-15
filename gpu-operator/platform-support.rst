@@ -392,14 +392,19 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.25---1.28
-         - 1.25---1.28
-         - 1.25---1.28
+         - 1.29---1.33
+         - 1.29---1.33
+         - 1.29---1.33
 
        * - Ubuntu 22.04 LTS
-         - 1.25---1.28
-         - 1.25---1.28
-         - 1.25---1.28
+         - 1.29---1.33
+         - 1.29---1.33
+         - 1.29---1.33
+
+       * - Ubuntu 24.04 LTS
+         - 1.29---1.33
+         - 1.29---1.33
+         - 1.29---1.33
 
   .. tab-item:: Virtual Machines with NVIDIA vGPU
 
