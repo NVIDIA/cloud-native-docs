@@ -401,6 +401,11 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          - 1.29---1.33
 
+       * - Ubuntu 24.04 LTS
+         - 1.29---1.33
+         - 1.29---1.33
+         - 1.29---1.33
+
   .. tab-item:: Virtual Machines with NVIDIA vGPU
 
     .. list-table::
