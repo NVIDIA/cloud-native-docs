@@ -42,14 +42,14 @@ sphinx_conf_py_extra = """
 
   html_domain_indices = False
   html_use_index = False
-  html_extra_path = ["versions1.json"]
+  html_extra_path = ["versions.json"]
   html_static_path = ["${root}/css"]
   html_css_files = ["custom.css"]
 
   html_theme_options = {
     "icon_links": [],
     "switcher": {
-      "json_url": "../versions1.json",
+      "json_url": "../versions.json",
       "version_match": release,
     },
   }
