@@ -11,8 +11,8 @@ Installation and Upgrade Overview on OpenShift
 
 .. warning::
 
-   Do not use or upgrade to OpenShift 4.18.22 or 4.18.23 because they have a breaking change that causes a `known issue <https://issues.redhat.com/browse/OCPBUGS-60663>`_ with the GPU Operator.
-   Instead, use OpenShift 4.18.24 or later, which fixes the issue.
+   Do not use or upgrade to OpenShift `4.18.22` or `4.18.23` because they have a breaking change to `crun` that causes a known issue with the GPU Operator.
+   Instead, update your OCP cluster to version `4.18.24` or later, which includes a fix for the issue.
 
 ****************
 High-Level Steps
