@@ -156,7 +156,7 @@ Follow one of the below subsections for installing the GPU Operator, depending o
    This ``ClusterPolicy`` flag controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. 
    This flag is disabled by default, meaning all nodes get provisioned with the same software to enable container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used. 
 
-   The term ``sandboxing`` refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine). 
+   The term *sandboxing* refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine). 
    We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -514,7 +514,7 @@ This section covers building the NVIDIA vGPU Manager container image and pushing
 
 Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
-* Log in to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
+* Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
 * The NVIDIA vGPU Software is located in the **Software Downloads** section of the NVIDIA Licensing Portal.
 * The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
 
