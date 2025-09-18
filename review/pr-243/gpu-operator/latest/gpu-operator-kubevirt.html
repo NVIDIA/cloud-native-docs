@@ -552,7 +552,7 @@ To override the default GPU workload configuration, set the following value in <
 <p>The following commands set the <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> flag.
 This <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> flag controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads.
 This flag is disabled by default, meaning all nodes get provisioned with the same software to enable container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
-<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine).
+<p>The term <em>sandboxing</em> refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine).
 We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
 </div>
 <section id="install-the-gpu-operator-without-nvidia-vgpu">
