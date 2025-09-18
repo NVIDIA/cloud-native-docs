@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 10, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2025"/>
 
 
 
@@ -550,33 +550,33 @@ Search for an image, such as <code class="docutils literal notranslate"><span cl
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">operator</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v25.3.2&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v25.3.3&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>For instance, to pull the gpu-operator image version v25.3.2, use the following instruction:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/gpu-operator:v25.3.2
+<p>For instance, to pull the gpu-operator image version v25.3.3, use the following instruction:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/gpu-operator:v25.3.3
 </pre></div>
 </div>
 <p>There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580.65.06&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580.82.07&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>To pull the driver image for Ubuntu 20.04:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/driver:580.65.06-ubuntu20.04
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/driver:580.82.07-ubuntu20.04
 </pre></div>
 </div>
 <p>To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.</p>
 <p>Using the above examples, this will result in:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v25.3.2 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.2
-<span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:580.65.06-ubuntu20.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.65.06-ubuntu20.04
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v25.3.3 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.3
+<span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:580.82.07-ubuntu20.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.82.07-ubuntu20.04
 </pre></div>
 </div>
 <p>Finally, push the images to the local registry:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.2
-<span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.65.06-ubuntu20.04
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v25.3.3
+<span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.82.07-ubuntu20.04
 </pre></div>
 </div>
 <p>Update <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with local registry information in the repository field.</p>
@@ -761,13 +761,13 @@ Similarly, the certificate file format and suffix, such as <code class="docutils
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.2.tgz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.3.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with the customized <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v25.3.2.tgz <span class="se">\</span>
+     gpu-operator-v25.3.3.tgz <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>
