@@ -394,13 +394,11 @@
 <span id="install-nvidiagpu"></span><h1>Installing the NVIDIA GPU Operator on OpenShift<a class="headerlink" href="#installing-the-nvidia-gpu-operator-on-openshift" title="Permalink to this headline">#</a></h1>
 <section id="installing-the-nvidia-gpu-operator-by-using-the-web-console">
 <h2>Installing the NVIDIA GPU Operator by using the web console<a class="headerlink" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console" title="Permalink to this headline">#</a></h2>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>In the OpenShift Container Platform web console, from the side menu, navigate to <strong>Operators</strong> &gt; <strong>OperatorHub</strong> and select <strong>All Projects</strong>.</p></li>
 <li><p>In <strong>Operators</strong> &gt; <strong>OperatorHub</strong>, search for the <strong>NVIDIA GPU Operator</strong>. For additional information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
-<li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the following screen, click <strong>Install</strong>.</p></li>
-</ol>
-<blockquote>
-<div><div class="admonition note">
+<li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the following screen, click <strong>Install</strong>.</p>
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace under <strong>Select a Namespace</strong>.</p>
 <p>If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator will <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts will <strong>not</strong> be collected by Prometheus.
@@ -409,7 +407,8 @@ If only trusted operators are installed in this namespace, you can manually enab
 </pre></div>
 </div>
 </div>
-</div></blockquote>
+</li>
+</ol>
 <p>Proceed to <a class="reference internal" href="#create-cluster-policy"><span class="std std-ref">Create the cluster policy for the NVIDIA GPU Operator</span></a>.</p>
 </section>
 <section id="installing-the-nvidia-gpu-operator-using-the-cli">
@@ -430,11 +429,9 @@ If only trusted operators are installed in this namespace, you can manually enab
 <p>The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace.
 If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator will <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts will <strong>not</strong> be collected by Prometheus.</p>
 <p>If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
-</div></blockquote>
 </div>
 </li>
 <li><p>Create the namespace by running the following command:</p>
@@ -456,8 +453,8 @@ If you install in any other namespace other than <code class="docutils literal n
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator-group</span><span class="w"></span>
 <span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w"> </span><span class="nt">targetNamespaces</span><span class="p">:</span><span class="w"></span>
-<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+<span class="w">  </span><span class="nt">targetNamespaces</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -784,13 +781,13 @@ If the label is defined, the GPU Operator will not change its value.</p>
 <span class="go">metadata:</span>
 <span class="go">  name: cuda-vectoradd</span>
 <span class="go">spec:</span>
-<span class="go"> restartPolicy: OnFailure</span>
-<span class="go"> containers:</span>
-<span class="go"> - name: cuda-vectoradd</span>
-<span class="go">   image: &quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubi8&quot;</span>
-<span class="go">   resources:</span>
-<span class="go">     limits:</span>
-<span class="go">       nvidia.com/gpu: 1</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-vectoradd</span>
+<span class="go">    image: &quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubi8&quot;</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">        nvidia.com/gpu: 1</span>
 <span class="go">EOF</span>
 </pre></div>
 </div>
