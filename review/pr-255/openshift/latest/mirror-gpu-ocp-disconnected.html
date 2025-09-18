@@ -968,12 +968,10 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <p>Operator catalogs that source content provided by Red Hat and community projects are configured for OperatorHub by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator. You can then configure OperatorHub to use local catalog sources.</p>
 <ul>
 <li><p>Disable the sources for the default catalogs by adding <code class="docutils literal notranslate"><span class="pre">disableAllDefaultSources:</span> <span class="pre">true</span></code> to the OperatorHub object:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch OperatorHub cluster --type json <span class="se">\</span>
-    -p <span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/disableAllDefaultSources&quot;, &quot;value&quot;: true}]&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch OperatorHub cluster --type json <span class="se">\</span>
+   -p <span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/disableAllDefaultSources&quot;, &quot;value&quot;: true}]&#39;</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </section>
