@@ -15,7 +15,7 @@ Introduction
 ************
 
 NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
-The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
+The new NVIDIA Ampere architecture's MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.
 
 The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
@@ -94,9 +94,9 @@ The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that ca
    * All the **single** configurations are possible
    * A “balanced” configuration:
 
-     * 1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and
-     * 2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and
-     * 3g.20gb: 1 nvidia.com/mig-3g.20gb instance
+      * 1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and
+      * 2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and
+      * 3g.20gb: 1 nvidia.com/mig-3g.20gb instance
 
    .. image:: graphics/mig-mixed-profile-A100.png
 
@@ -888,7 +888,7 @@ For information about the initial default MIG configuration and viewing it, refe
 Running a sample GPU application
 *************************************************************
 
-Let’s run a simple CUDA sample, in this case ``vectorAdd`` by requesting a GPU resource as you would normally do in Kubernetes.
+Let's run a simple CUDA sample, in this case ``vectorAdd`` by requesting a GPU resource as you would normally do in Kubernetes.
 
 If the cluster is configured with the ``mixed`` advertisement strategy.
 
@@ -963,10 +963,10 @@ Disable the MIG mode
 
 To turn MIG mode off so that you can utilize the full capacity of the GPU run the following:
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ MIG_CONFIGURATION=all-disabled && \
-        oc label node/$NODE_NAME nvidia.com/mig.config=$MIG_CONFIGURATION --overwrite
+   $ MIG_CONFIGURATION=all-disabled && \
+      oc label node/$NODE_NAME nvidia.com/mig.config=$MIG_CONFIGURATION --overwrite
 
 *************************************************************
 Troubleshooting
@@ -982,14 +982,14 @@ The MIG reconfiguration is handled exclusively by the controller deployed within
 
    The cluster administrator is expected to drain the node from any GPU workload, before requesting the MIG reconfiguration. If the node is not properly drained, the ``nvidia-mig-manager`` will fail with this error in the logs:
 
-      .. code-block:: console
+   .. code-block:: console
 
-          Updating MIG config: map[2g.10gb:3]
-         Error clearing MigConfig: error destroying Compute instance for profile '(0, 0)': In use by another client
-         Error clearing MIG config on GPU 0, erroneous devices may persist
-         Error setting MIGConfig: error attempting multiple config orderings: all orderings failed
-         Restarting all GPU clients previously shutdown by reenabling their component-specific nodeSelector labels
-         Changing the 'nvidia.com/mig.config.state' node label to 'failed'
+      Updating MIG config: map[2g.10gb:3]
+      Error clearing MigConfig: error destroying Compute instance for profile '(0, 0)': In use by another client
+      Error clearing MIG config on GPU 0, erroneous devices may persist
+      Error setting MIGConfig: error attempting multiple config orderings: all orderings failed
+      Restarting all GPU clients previously shutdown by reenabling their component-specific nodeSelector labels
+      Changing the 'nvidia.com/mig.config.state' node label to 'failed'
 
 Resolve this issue by:
 

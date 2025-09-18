@@ -148,51 +148,51 @@ Creating the slicing configurations
 
    .. code-block:: yaml
 
-        version: v1
-        sharing:
-          timeSlicing:
-            renameByDefault: false
-            resources:
-              - name: nvidia.com/gpu
-                replicas: 8
+      version: v1
+      sharing:
+        timeSlicing:
+          renameByDefault: false
+          resources:
+            - name: nvidia.com/gpu
+              replicas: 8
 
 #. Verify that GFD labels have been added to indicate time-sharing.
 
    .. code-block:: console
 
       $ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
-       | jq '.items[0].metadata.labels' | grep nvidia
+        | jq '.items[0].metadata.labels' | grep nvidia
 
    **Example Output**
 
    .. code-block:: console
 
-       "nvidia.com/cuda.driver.major": "510",
-       "nvidia.com/cuda.driver.minor": "73",
-       "nvidia.com/cuda.driver.rev": "08",
-       "nvidia.com/cuda.runtime.major": "11",
-       "nvidia.com/cuda.runtime.minor": "7",
-       "nvidia.com/device-plugin.config": "Tesla-T4",
-       "nvidia.com/gfd.timestamp": "1655482336",
-       "nvidia.com/gpu.compute.major": "7",
-       "nvidia.com/gpu.compute.minor": "5",
-       "nvidia.com/gpu.count": "1",
-       "nvidia.com/gpu.deploy.container-toolkit": "true",
-       "nvidia.com/gpu.deploy.dcgm": "true",
-       "nvidia.com/gpu.deploy.dcgm-exporter": "true",
-       "nvidia.com/gpu.deploy.device-plugin": "true",
-       "nvidia.com/gpu.deploy.driver": "true",
-       "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
-       "nvidia.com/gpu.deploy.node-status-exporter": "true",
-       "nvidia.com/gpu.deploy.nvsm": "",
-       "nvidia.com/gpu.deploy.operator-validator": "true",
-       "nvidia.com/gpu.family": "turing",
-       "nvidia.com/gpu.machine": "g4dn.xlarge",
-       "nvidia.com/gpu.memory": "16106127360",
-       "nvidia.com/gpu.present": "true",
-       "nvidia.com/gpu.product": "Tesla-T4-SHARED",
-       "nvidia.com/gpu.replicas": "8",
-       "nvidia.com/mig.strategy": "single",
+      "nvidia.com/cuda.driver.major": "510",
+      "nvidia.com/cuda.driver.minor": "73",
+      "nvidia.com/cuda.driver.rev": "08",
+      "nvidia.com/cuda.runtime.major": "11",
+      "nvidia.com/cuda.runtime.minor": "7",
+      "nvidia.com/device-plugin.config": "Tesla-T4",
+      "nvidia.com/gfd.timestamp": "1655482336",
+      "nvidia.com/gpu.compute.major": "7",
+      "nvidia.com/gpu.compute.minor": "5",
+      "nvidia.com/gpu.count": "1",
+      "nvidia.com/gpu.deploy.container-toolkit": "true",
+      "nvidia.com/gpu.deploy.dcgm": "true",
+      "nvidia.com/gpu.deploy.dcgm-exporter": "true",
+      "nvidia.com/gpu.deploy.device-plugin": "true",
+      "nvidia.com/gpu.deploy.driver": "true",
+      "nvidia.com/gpu.deploy.gpu-feature-discovery": "true",
+      "nvidia.com/gpu.deploy.node-status-exporter": "true",
+      "nvidia.com/gpu.deploy.nvsm": "",
+      "nvidia.com/gpu.deploy.operator-validator": "true",
+      "nvidia.com/gpu.family": "turing",
+      "nvidia.com/gpu.machine": "g4dn.xlarge",
+      "nvidia.com/gpu.memory": "16106127360",
+      "nvidia.com/gpu.present": "true",
+      "nvidia.com/gpu.product": "Tesla-T4-SHARED",
+      "nvidia.com/gpu.replicas": "8",
+      "nvidia.com/mig.strategy": "single",
 
    If you remove the label, the node configuration is reset to its default.
 
@@ -211,11 +211,11 @@ Consider a MachineSet named ``worker-gpu-nvidia-t4-us-east-1``, with
 You want to ensure the new nodes will have time slicing enabled automatically, that is, you want to apply the
 label to every new node. This can be done by setting the label in the MachineSet template.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc patch machineset worker-gpu-nvidia-t4-us-east-1a \
-          -n openshift-machine-api --type merge \
-          --patch '{"spec": {"template": {"spec": {"metadata": {"labels": {"nvidia.com/device-plugin.config": "Tesla-T4"}}}}}}'
+  $ oc patch machineset worker-gpu-nvidia-t4-us-east-1a \
+      -n openshift-machine-api --type merge \
+      --patch '{"spec": {"template": {"spec": {"metadata": {"labels": {"nvidia.com/device-plugin.config": "Tesla-T4"}}}}}}'
 
 Now, any new machine created by the Machine Autoscaler for this MachineSet will have the label, and time-slicing enabled.
 

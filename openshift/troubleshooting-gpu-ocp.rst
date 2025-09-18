@@ -109,25 +109,25 @@ Validate the GPU stack
 
 The GPU Operator validates the stack using the ``nvidia-device-plugin-validator`` and the ``nvidia-cuda-validator`` pod. If they report the status ``Completed``, the stack works as expected.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc get po -n nvidia-gpu-operator
+   $ oc get po -n nvidia-gpu-operator
 
-   .. code-block:: console
+.. code-block:: console
 
-      NAME                                                              READY   STATUS      RESTARTS   AGE
-      bb0dd90f1b757a8c7b338785a4a65140732d30447093bc2c4f6ae8e75844gfv   0/1     Completed   0          125m
-      gpu-feature-discovery-hlpgs                                       1/1     Running     0          122m
-      gpu-operator-8dc8d6648-jzhnr                                      1/1     Running     0          125m
-      nvidia-container-toolkit-daemonset-z2wh7                          1/1     Running     0          122m
-      nvidia-cuda-validator-8fx22                                       0/1     Completed   0          117m
-      nvidia-dcgm-exporter-ds9xd                                        1/1     Running     0          122m
-      nvidia-dcgm-k7tz6                                                 1/1     Running     0          122m
-      nvidia-device-plugin-daemonset-nqxmc                              1/1     Running     0          122m
-      nvidia-device-plugin-validator-87zdl                              0/1     Completed   0          117m
-      nvidia-driver-daemonset-48.84.202110270303-0-9df9j                2/2     Running     0          122m
-      nvidia-node-status-exporter-7bhdk                                 1/1     Running     0          122m
-      nvidia-operator-validator-kjznr                                   1/1     Running     0          122m
+   NAME                                                              READY   STATUS      RESTARTS   AGE
+   bb0dd90f1b757a8c7b338785a4a65140732d30447093bc2c4f6ae8e75844gfv   0/1     Completed   0          125m
+   gpu-feature-discovery-hlpgs                                       1/1     Running     0          122m
+   gpu-operator-8dc8d6648-jzhnr                                      1/1     Running     0          125m
+   nvidia-container-toolkit-daemonset-z2wh7                          1/1     Running     0          122m
+   nvidia-cuda-validator-8fx22                                       0/1     Completed   0          117m
+   nvidia-dcgm-exporter-ds9xd                                        1/1     Running     0          122m
+   nvidia-dcgm-k7tz6                                                 1/1     Running     0          122m
+   nvidia-device-plugin-daemonset-nqxmc                              1/1     Running     0          122m
+   nvidia-device-plugin-validator-87zdl                              0/1     Completed   0          117m
+   nvidia-driver-daemonset-48.84.202110270303-0-9df9j                2/2     Running     0          122m
+   nvidia-node-status-exporter-7bhdk                                 1/1     Running     0          122m
+   nvidia-operator-validator-kjznr                                   1/1     Running     0          122m
 
 #. Verify the cuda validator logs:
 
