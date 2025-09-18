@@ -26,7 +26,7 @@ The Node Feature Discovery (NFD) Operator is a prerequisite for the **NVIDIA GPU
       NAME                                      READY   STATUS    RESTARTS   AGE
       nfd-controller-manager-7f86ccfb58-nqgxm   2/2     Running   0          11m
 
-#. When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the **NodeFeatureDiscovery** tab.
+#. When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the **NodeFeatureDiscovery** tab:
 
    #. Click **Operators** > **Installed Operators** from the side menu.
 
@@ -38,7 +38,7 @@ The Node Feature Discovery (NFD) Operator is a prerequisite for the **NVIDIA GPU
 
    #. In the following screen, click **Create**. This starts the Node Feature Discovery Operator that proceeds to label the nodes in the cluster that have GPUs.
 
-      .. note:: The values prepopulated by the OperatorHub are valid for the GPU Operator.
+   .. note:: The values prepopulated by the OperatorHub are valid for the GPU Operator.
 
 *************************************************************************
 Verify that the Node Feature Discovery Operator is functioning correctly
@@ -61,7 +61,7 @@ The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in 
 
    .. note:: ``0x10de`` is the PCI vendor ID assigned to NVIDIA.
 
-#. Verify that the GPU device (``pci-10de``) is discovered on the GPU node.
+#. Verify that the GPU device (``pci-10de``) is discovered on the GPU node:
 
    .. code-block:: console
 

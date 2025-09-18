@@ -17,7 +17,7 @@ Red Hat OpenShift Container Platform includes enhancements to Kubernetes so user
 
 The NVIDIA GPU Operator uses the operator framework within Kubernetes to automate the management of all NVIDIA software components needed to provision GPU. These components include the NVIDIA drivers (to enable CUDA),
 Kubernetes device plugin for GPUs, the `NVIDIA Container Toolkit <https://github.com/NVIDIA/nvidia-container-toolkit>`_,
-automatic node labeling using `GFD <https://github.com/NVIDIA/gpu-feature-discovery>`_, `DCGM <https://developer.nvidia.com/dcgm>`_-based monitoring and others.
+automatic node labeling using `GFD <https://github.com/NVIDIA/gpu-feature-discovery>`_, `DCGM <https://developer.nvidia.com/dcgm>`_-based monitoring, and others.
 
 For guidance on the specific NVIDIA support entitlement needs,
 refer |essug|_ if you have an NVIDIA AI Enterprise entitlement.

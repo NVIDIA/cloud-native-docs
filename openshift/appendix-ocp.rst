@@ -63,5 +63,5 @@ For additional troubleshooting resources:
 * `Node Feature Discovery documentation <https://kubernetes-sigs.github.io/node-feature-discovery/>`_.
 * `Red Hat Node Feature Discovery Operator documentation <https://docs.openshift.com/container-platform/latest/hardware_enablement/psap-node-feature-discovery-operator.html>`_
 * `OpenShift Driver Toolkit documentation <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/specialized_hardware_and_driver_enablement/driver-toolkit>`_
-* `OpenShift Driver Toolkit GihHub repository <https://github.com/openshift/driver-toolkit/>`_
+* `OpenShift Driver Toolkit GitHub repository <https://github.com/openshift/driver-toolkit/>`_
 * `OpenShift troubleshooting guide <https://docs.openshift.com/container-platform/latest/support/troubleshooting/>`_
