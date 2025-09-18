@@ -365,7 +365,7 @@ Create the cluster policy using the CLI:
 
    In general, the flag ``sandboxWorkloads.enabled`` in ``ClusterPolicy`` controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used.
 
-   The term ``sandboxing`` refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine). We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+   The term *sandboxing* refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine). We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
 
 
 #. Apply the changes:

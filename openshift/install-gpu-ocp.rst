@@ -19,7 +19,7 @@ Installing the NVIDIA GPU Operator by using the web console
 
   .. note:: Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace under **Select a Namespace**.
 
-      If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator will **not** automatically enable namespace monitoring, and metrics and alerts will **not** be collected by Prometheus.
+      If you install in any other namespace other than ``nvidia-gpu-operator``, the GPU Operator does **not** automatically enable namespace monitoring, and metrics and alerts are **not** collected by Prometheus.
       If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:
 
       .. code-block:: console
@@ -297,7 +297,7 @@ Create the cluster policy using the CLI
 
       $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
 
-   Modify the clusterpolicy.json file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
+   Modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
 
    .. code-block:: json
 
