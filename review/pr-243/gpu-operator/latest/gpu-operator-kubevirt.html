@@ -774,18 +774,18 @@ For example, labeling a node with <code class="docutils literal notranslate"><sp
 If the node is not labeled, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be applied.
 The <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device is half the total GPU memory.
 For example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create two <strong>A10-12Q</strong> devices on all <strong>A10</strong> GPUs, two <strong>V100-8Q</strong> devices on all <strong>V100</strong> GPUs, and two <strong>T4-8Q</strong> devices on all <strong>T4</strong> GPUs.</p>
-<p>You can also create different vGPU Q profiles on same GPU using vGPU Device Manager configuration.
-For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-8Q</strong> device on same GPU by creating a vGPU Device Manager configuration with the following content:</p>
+<p>You can also create different vGPU Q profiles on the same GPU using vGPU Device Manager configuration.
+For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</strong> device on same GPU by creating a vGPU Device Manager configuration with the following content:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">vgpu-configs</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">custom-L4-config</span><span class="p">:</span><span class="w"></span>
+<span class="w">   </span><span class="nt">custom-A10-config</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"></span>
 <span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">vgpu-devices</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">         </span><span class="s">&quot;L4-4Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
-<span class="w">         </span><span class="s">&quot;L4-8Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">         </span><span class="s">&quot;A10-4Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="w">         </span><span class="s">&quot;A10-6Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 </pre></div>
 </div>
-<p>If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:</p>
+<p>If custom vGPU device configuration is desired, more than the default config map provides, you can create your own config map:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap custom-vgpu-config -n gpu-operator --from-file<span class="o">=</span>config.yaml<span class="o">=</span>/path/to/file
 </pre></div>
 </div>
