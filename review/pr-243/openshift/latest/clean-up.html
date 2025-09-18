@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 08, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2025"/>
 
 
 
@@ -388,10 +388,10 @@
                   
   <section id="cleanup">
 <span id="clean-up"></span><h1>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">#</a></h1>
-<p>This section describes how to clean up (remove) the GPU Operator in case it is no longer needed.</p>
+<p>This section describes how to clean up (remove) the GPU Operator if it is no longer needed.</p>
 <ol class="arabic">
 <li><p>Delete the NVIDIA GPU Operator from the cluster following the guidance outlined in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-deleting-operators-from-cluster.html">Deleting Operators from a cluster</a>.</p></li>
-<li><p>Delete the cluster policy using the OpenShift Container Platform CLI:</p>
+<li><p>Delete the cluster policy by using the OpenShift Container Platform CLI.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete crd clusterpolicies.nvidia.com
 </pre></div>
 </div>

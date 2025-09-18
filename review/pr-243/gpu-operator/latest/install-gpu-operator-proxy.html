@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 08, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2025"/>
 
 
 
@@ -462,7 +462,7 @@ based on information present in the cluster-wide Proxy object.</p>
 <section id="http-proxy-configuration">
 <h2>HTTP Proxy Configuration<a class="headerlink" href="#http-proxy-configuration" title="Permalink to this headline">#</a></h2>
 <p>First, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.3.2/deployments/gpu-operator/values.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.3.3/deployments/gpu-operator/values.yaml
 </pre></div>
 </div>
 <p>Specify <code class="docutils literal notranslate"><span class="pre">driver.env</span></code> in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
@@ -495,13 +495,13 @@ based on information present in the cluster-wide Proxy object.</p>
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.2.tgz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.3.3.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v25.3.2.tgz <span class="se">\</span>
+     gpu-operator-v25.3.3.tgz <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>

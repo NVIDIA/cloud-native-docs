@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 08, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2025"/>
 
 
 
@@ -426,30 +426,34 @@
 <section id="about-installing-the-operator-and-nvidia-vgpu">
 <h2>About Installing the Operator and NVIDIA vGPU<a class="headerlink" href="#about-installing-the-operator-and-nvidia-vgpu" title="Permalink to this headline">#</a></h2>
 <p>NVIDIA Virtual GPU (vGPU) enables multiple virtual machines (VMs) to have simultaneous,
-direct access to a single physical GPU, using the same NVIDIA graphics drivers that are
-deployed on non-virtualized operating systems.</p>
+direct access to a single physical GPU, using the same NVIDIA graphics drivers that are deployed on non-virtualized operating systems.</p>
 <p>The installation steps assume <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> as the default namespace for installing the NVIDIA GPU Operator.
 In case of Red Hat OpenShift Container Platform, the default namespace is <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>.
 Change the namespace shown in the commands accordingly based on your cluster configuration.
-Also replace <code class="docutils literal notranslate"><span class="pre">kubectl</span></code> in the below commands with <code class="docutils literal notranslate"><span class="pre">oc</span></code> when running on RedHat OpenShift.</p>
+Also replace <code class="docutils literal notranslate"><span class="pre">kubectl</span></code> in the following commands with <code class="docutils literal notranslate"><span class="pre">oc</span></code> when running on Red Hat OpenShift.</p>
 <p>NVIDIA vGPU is only supported with the NVIDIA License System.</p>
 </section>
 <section id="platform-support">
 <h2>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline">#</a></h2>
-<p>For information about the supported platforms, see <a class="reference internal" href="platform-support.html#supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products"><span class="std std-ref">Supported Deployment Options</span></a>.</p>
-<p>For Red Hat OpenShift Virtualization, see <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html#nvidia-gpu-operator-with-openshift-virtualization" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA GPU Operator with OpenShift Virtualization</span></a>.</p>
+<p>For information about the supported platforms, refer to <a class="reference internal" href="platform-support.html#supported-deployment-options-hypervisors-and-nvidia-vgpu-based-products"><span class="std std-ref">Supported Deployment Options</span></a>.</p>
+<p>For Red Hat OpenShift Virtualization, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/openshift-virtualization.html#nvidia-gpu-operator-with-openshift-virtualization" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA GPU Operator with OpenShift Virtualization</span></a>.</p>
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>Before installing the GPU Operator on NVIDIA vGPU, ensure the following:</p>
 <ul>
 <li><p>The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines.
-Refer to <a class="reference external" href="https://docs.nvidia.com/grid/">NVIDIA Virtual GPU Software Documentation</a> for details.</p></li>
+Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/">NVIDIA Virtual GPU Software Documentation</a> for details.</p></li>
 <li><p>You must have access to the NVIDIA Enterprise Application Hub at <a class="reference external" href="https://nvid.nvidia.com/dashboard/">https://nvid.nvidia.com/dashboard/</a> and the NVIDIA Licensing Portal.</p></li>
 <li><p>Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).</p></li>
 <li><p>You must generate and download a client configuration token for your CLS instance or DLS instance.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/"><em>NVIDIA License System Quick Start Guide</em></a> for information about generating a token.</p></li>
-<li><p>You have access to a private registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.</p></li>
+Refer to the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/"><em>NVIDIA License System Quick Start Guide</em></a> for information about generating a token.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For vGPU 18.0 and later, ensure that you use DLS 3.4 or later.</p>
+</div>
+</li>
+<li><p>You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.</p></li>
 <li><p>Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.</p></li>
 <li><p>Each Kubernetes worker node in the cluster has access to the private registry.
 Private registry access is usually managed through image pull secrets.
@@ -516,7 +520,7 @@ The guest driver file name follows the pattern <code class="docutils literal not
 For Red Hat OpenShift Container Platform, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.&lt;x&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">x</span></code> is the supported minor OCP version.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a> for the list of supported OS distributions.</p>
 </li>
-<li><p>Specify the driver container image tag, such as <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>:</p>
+<li><p>Specify the driver container image tag such as <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.0.0
 </pre></div>
 </div>
@@ -527,9 +531,8 @@ The value is used to install the Operator in a subsequent step.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.8.0
 </pre></div>
 </div>
-<p>The CUDA version only specifies which base image is used to build the driver container.
-The version does not have any correlation to the version of CUDA that is associated with or supported by the
-resulting driver container.</p>
+<p>The CUDA version only specifies the base image used to build the driver container.
+The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.</p>
 </li>
 <li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append <code class="docutils literal notranslate"><span class="pre">-grid</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">525</span>.60.13-grid
@@ -583,12 +586,11 @@ FeatureType=1
 </pre></div>
 </div>
 </li>
-<li><p>Rename the client configuration token file that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>
-using a command like the following example:</p>
+<li><p>Rename the client configuration token file that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> using a command like the following example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp ~/Downloads/client_configuration_token_03-28-2023-16-16-36.tok client_configuration_token.tok
 </pre></div>
 </div>
-<p>The file must be named <code class="docutils literal notranslate"><span class="pre">client_configuraton_token.tok</span></code>.</p>
+<p>The file must be named <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.</p>
 </li>
 <li><p>Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
