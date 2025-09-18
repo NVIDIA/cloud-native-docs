@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 16, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2025"/>
 
 
 
@@ -597,7 +597,7 @@ FeatureType=1
 </pre></div>
 </div>
 </li>
-<li><p>Create a ConfigMap that is named <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> using the <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> files:</p>
+<li><p>Create a config map that is named <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> using the <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> files:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config <span class="se">\</span>
     -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>client_configuration_token.tok
 </pre></div>
