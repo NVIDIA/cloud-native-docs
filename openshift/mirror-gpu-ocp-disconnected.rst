@@ -67,17 +67,17 @@ Prerequisites
 
   .. note::
 
-    When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended ``-addext "subjectAltName=DNS:${JUMP_HOST}"`` to your ``openssl`` command, otherwise OpenShift Container Platform cannot pull images from the private registry.
+      When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended ``-addext "subjectAltName=DNS:${JUMP_HOST}"`` to your ``openssl`` command, otherwise OpenShift Container Platform cannot pull images from the private registry.
 
-    If you do not set a Subject Alternative Name, before running the ``oc`` commands in the subsequent sections export the environment variable ``GODEBUG=x509ignoreCN=0``. If you do not set this variable, the ``oc`` commands will fail with the following error:
+      If you do not set a Subject Alternative Name, before running the ``oc`` commands in the subsequent sections export the environment variable ``GODEBUG=x509ignoreCN=0``. If you do not set this variable, the ``oc`` commands will fail with the following error:
 
-  .. code-block:: console
+      .. code-block:: console
 
-    $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
+         $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
 
   .. note::
 
-    If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
+      If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
 
 **On the jump host:**
 
