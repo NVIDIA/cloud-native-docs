@@ -421,20 +421,20 @@ If the node is not labeled, the ``default`` configuration will be applied.
 The ``default`` configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device is half the total GPU memory.
 For example, the ``default`` configuration will create two **A10-12Q** devices on all **A10** GPUs, two **V100-8Q** devices on all **V100** GPUs, and two **T4-8Q** devices on all **T4** GPUs.
 
-You can also create different vGPU Q profiles on same GPU using vGPU Device Manager configuration.
-For example, you can create a **A10-4Q** and a **A10-8Q** device on same GPU by creating a vGPU Device Manager configuration with the following content:
+You can also create different vGPU Q profiles on the same GPU using vGPU Device Manager configuration.
+For example, you can create a **A10-4Q** and a **A10-6Q** device on same GPU by creating a vGPU Device Manager configuration with the following content:
 
 .. code-block:: yaml
 
    version: v1
    vgpu-configs:
-      custom-L4-config:
+      custom-A10-config:
          - devices: all
             vgpu-devices:
-            "L4-4Q": 2
-            "L4-8Q": 2
+            "A10-4Q": 3
+            "A10-6Q": 2
 
-If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:
+If custom vGPU device configuration is desired, more than the default config map provides, you can create your own config map:
 
 .. code-block:: console
 
