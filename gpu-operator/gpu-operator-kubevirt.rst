@@ -509,10 +509,10 @@ Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidi
 
   .. note::
 
-      NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
-      Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
-      ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
-      Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
+     NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
+     Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
+     ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
+     Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
   .. end-nvaie-run-file
 
 Next, clone the driver container repository and build the driver image with the following steps.
