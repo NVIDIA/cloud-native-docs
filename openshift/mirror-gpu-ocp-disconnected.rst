@@ -41,12 +41,15 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 Prerequisites
 **************
 
-* A working OpenShift cluster up and running with a GPU worker node. See `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`_ for guidance on installing OpenShift Container Platform.
+* A working OpenShift cluster up and running with a GPU worker node.
+  Refer to the `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`_ guide for guidance on installing OpenShift Container Platform.
 
-  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
+  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below.
+      For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
 * Access to the cluster as a user with the ``cluster-admin`` role.
-* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the bastion host. This can be one of the following registries:
+* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_.
+  A private registry **must** be configured on the bastion host. This can be one of the following registries:
 
   * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`__
   * `JFrog Artifactory <https://jfrog.com/artifactory/>`_
@@ -62,18 +65,17 @@ Prerequisites
   For more information, refer to `About disconnected install mirroring <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`__
   in the Red Hat OpenShift Container Platform documentation.
 
-   .. note::
+  .. note::
 
       When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended ``-addext "subjectAltName=DNS:${JUMP_HOST}"`` to your ``openssl`` command, otherwise OpenShift Container Platform cannot pull images from the private registry.
 
       If you do not set a Subject Alternative Name, before running the ``oc`` commands in the subsequent sections export the environment variable ``GODEBUG=x509ignoreCN=0``. If you do not set this variable, the ``oc`` commands will fail with the following error:
 
-   .. code-block:: console
+      .. code-block:: console
 
-      $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
+         $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
 
-
-   .. note::
+  .. note::
 
       If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
 
@@ -230,9 +232,9 @@ Follow the guidance below to sync the required ``yum`` repositories:
 
 #. Run ``reposync`` to synchronize the AppStream repos to the locally created directory:
 
-    .. code-block:: console
+   .. code-block:: console
 
-       $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
+      $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
         --releasever=8.4 \
         --download-path=/opt/mirror-repos/ \
         --downloadcomps \
@@ -325,26 +327,26 @@ Configure a private registry on the the jump host, using the following steps:
 
    At the prompts, provide the required values for the certificate:
 
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         |       Field                                         |             Description                                                                          |
-         +=====================================================+==================================================================================================+
-         | Country Name (2 letter code)                        | Specify the two-letter ISO country code for your location.                                       |
-         |                                                     | See the `ISO 3166 country codes standard <https://www.iso.org/iso-3166-country-codes.html>`_.    |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         | State or Province Name (full name)                  | Enter the full name of your state or province.                                                   |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         | Locality Name (eg, city)                            | Enter the name of your city.                                                                     |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         | Organization Name (eg, company)                     | Enter your company name.                                                                         |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         | Organizational Unit Name (eg, section)              | Enter your department name.                                                                      |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         |Common Name (eg, your name or your server’s hostname)| Enter the hostname for the registry host.                                                        |
-         |                                                     | Ensure that your hostname is in DNS and that it resolves to the expected IP address.             |
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
-         | Email Address                                       | For more information, see the `req                                                               |
-         |                                                     | <https://www.openssl.org/docs/man1.1.1/man1/req.html>`_ description in the OpenSSL documentation.|
-         +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   |       Field                                         |             Description                                                                          |
+   +=====================================================+==================================================================================================+
+   | Country Name (2 letter code)                        | Specify the two-letter ISO country code for your location.                                       |
+   |                                                     | See the `ISO 3166 country codes standard <https://www.iso.org/iso-3166-country-codes.html>`_.    |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   | State or Province Name (full name)                  | Enter the full name of your state or province.                                                   |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   | Locality Name (eg, city)                            | Enter the name of your city.                                                                     |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   | Organization Name (eg, company)                     | Enter your company name.                                                                         |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   | Organizational Unit Name (eg, section)              | Enter your department name.                                                                      |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   |Common Name (eg, your name or your server’s hostname)| Enter the hostname for the registry host.                                                        |
+   |                                                     | Ensure that your hostname is in DNS and that it resolves to the expected IP address.             |
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
+   | Email Address                                       | For more information, see the `req                                                               |
+   |                                                     | <https://www.openssl.org/docs/man1.1.1/man1/req.html>`_ description in the OpenSSL documentation.|
+   +-----------------------------------------------------+--------------------------------------------------------------------------------------------------+
 
 #. Generate a ``user name`` and a ``password`` for your registry that uses the ``bcrpt`` format:
 
@@ -501,9 +503,9 @@ Configuring credentials that allow images to be mirrored
 
 Create a container image registry credentials file that allows mirroring images from Red Hat to your mirror registry.
 
-  .. warning:: Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
+.. warning:: Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.
 
-  .. warning:: This process requires that you have write access to a container image registry on the mirror registry and adds the credentials to a registry pull secret.
+.. warning:: This process requires that you have write access to a container image registry on the mirror registry and adds the credentials to a registry pull secret.
 
 #. Download your pull secret from the `Pull Secret <https://console.redhat.com/openshift/install/pull-secret>`_ page on the Red Hat OpenShift Cluster Manager site.
 
@@ -640,10 +642,10 @@ Operator catalogs that source content provided by Red Hat and community projects
 
 * Disable the sources for the default catalogs by adding ``disableAllDefaultSources: true`` to the OperatorHub object:
 
-   .. code-block:: console
+  .. code-block:: console
 
       $ oc patch OperatorHub cluster --type json \
-          -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+         -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
 
 
 **************************************************************************
@@ -908,7 +910,7 @@ Mirror the GPU CatalogSource
      * Set ``catalog`` to ``registry.redhat.io/redhat/redhat-operator-index:v4.12``.
      * Set ``packages`` ``name`` to ``gpu-operator-certified``.
 
-     .. code-block:: yaml
+       .. code-block:: yaml
 
         kind: ImageSetConfiguration
         apiVersion: mirror.openshift.io/v1alpha2

@@ -23,7 +23,7 @@ This document provides an overview of the necessary software to enable MIG suppo
 Refer to the `MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`__ for more details on the technical concepts,
 setting up MIG and the NVIDIA Container Toolkit for running containers with MIG.
 
-The deployment workflow requires these pre-requisites:
+The deployment workflow requires these prerequisites:
 
 #. You have installed the NVIDIA R450+ datacenter (450.80.02+) drivers required for NVIDIA A100.
 #. You have installed the NVIDIA Container Toolkit v2.5.0+
