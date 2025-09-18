@@ -7,12 +7,12 @@
 Troubleshooting
 *****************************************
 
-This section includes errors that users may encounter when performing various checks during installing the **NVIDIA GPU Operator** on the OpenShift Container Platform cluster.
+This section includes errors that users might encounter when performing various checks during installation of the **NVIDIA GPU Operator** on the OpenShift Container Platform cluster.
 
 Node Feature Discovery checks
 -----------------------------------
 
-#. Verify the Node Feature Discovery has been created:
+#. Verify that the Node Feature Discovery has been created.
 
    .. code-block:: console
 
@@ -25,9 +25,9 @@ Node Feature Discovery checks
 
    .. note::
 
-      If empty the Node Feature Discovery Custom Resource (CR) must be created.
+      If empty, the Node Feature Discovery Custom Resource (CR) must be created.
 
-#. Ensure there are nodes with GPU. In this example the check is performed for the NVIDIA GPU which uses the PCI ID 10de.
+#. Ensure that there are nodes with GPUs. In this example, the check is performed for the NVIDIA GPU that uses the PCI ID ``10de``.
 
    .. code-block:: console
 
@@ -41,7 +41,7 @@ Node Feature Discovery checks
 GPU Operator checks
 -------------------
 
-#. Verify the Custom Resource Definition (CRD) is deployed.
+#. Verify that the Custom Resource Definition (CRD) is deployed.
 
    .. code-block:: console
 

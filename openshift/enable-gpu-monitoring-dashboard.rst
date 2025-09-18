@@ -83,9 +83,9 @@ The following table provides a brief description of the graphs on the default da
 +--------------------------+------------------------------------------------------------+
 | Graph                    | Description                                                |
 +==========================+============================================================+
-| GPU Temperature          | GPU temperature in C.                                      |
+| GPU Temperature          | GPU temperature in Celsius.                                      |
 +--------------------------+------------------------------------------------------------+
-| GPU Avg. Temp            | Average GPU temperature in C.                              |
+| GPU Avg. Temp            | Average GPU temperature in Celsius.                              |
 +--------------------------+------------------------------------------------------------+
 | GPU Power Usage          | Power usage in watts for each GPU.                         |
 +--------------------------+------------------------------------------------------------+
