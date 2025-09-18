@@ -957,11 +957,11 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</strong> device on same GPU by creating a vGPU Device Manager configuration with the following content:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">vgpu-configs</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">custom-A10-config</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"></span>
-<span class="w">         </span><span class="l l-Scalar l-Scalar-Plain">vgpu-devices</span><span class="p p-Indicator">:</span><span class="w"></span>
-<span class="w">            </span><span class="s">&quot;A10-4Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
-<span class="w">            </span><span class="s">&quot;A10-6Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">  </span><span class="nt">custom-A10-config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span><span class="w"></span>
+<span class="w">       </span><span class="l l-Scalar l-Scalar-Plain">vgpu-devices</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">         </span><span class="s">&quot;A10-4Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<span class="w">         </span><span class="s">&quot;A10-6Q&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:</p>
