@@ -230,9 +230,9 @@ Follow the guidance below to sync the required ``yum`` repositories:
 
 #. Run ``reposync`` to synchronize the AppStream repos to the locally created directory:
 
-    .. code-block:: console
+   .. code-block:: console
 
-       $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
+      $ reposync --gpgcheck --repoid=rhel-8-for-x86_64-appstream-rpms \
         --releasever=8.4 \
         --download-path=/opt/mirror-repos/ \
         --downloadcomps \
@@ -908,7 +908,7 @@ Mirror the GPU CatalogSource
      * Set ``catalog`` to ``registry.redhat.io/redhat/redhat-operator-index:v4.12``.
      * Set ``packages`` ``name`` to ``gpu-operator-certified``.
 
-     .. code-block:: yaml
+       .. code-block:: yaml
 
         kind: ImageSetConfiguration
         apiVersion: mirror.openshift.io/v1alpha2
