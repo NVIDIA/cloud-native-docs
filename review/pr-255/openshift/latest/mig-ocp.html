@@ -483,34 +483,28 @@ In this strategy, all the GPUs in a single node must be configured in a homogene
 This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users.
 Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.</p>
 <p>Examples for the A100-40GB:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>1g.5gb:  7 nvidia.com/gpu instances, or</p></li>
 <li><p>2g.10gb: 3 nvidia.com/gpu instances, or</p></li>
 <li><p>3g.20gb: 2 nvidia.com/gpuinstances, or</p></li>
 <li><p>7g.40gb: 1 nvidia.com/gpu instances</p></li>
 </ul>
-</div></blockquote>
 <img alt="_images/Mig-profile-A100.png" src="_images/Mig-profile-A100.png" />
 </li>
 <li><p><strong>Mixed</strong> defines a heterogeneous advertisement strategy.
 There is no constraint on the geometry; all the combinations allowed by the GPU are permitted.
 This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.</p>
 <p>Examples for the A100-40GB:</p>
-<blockquote>
-<div><ul>
+<ul class="simple">
 <li><p>All the <strong>single</strong> configurations are possible</p></li>
 <li><p>A “balanced” configuration:</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p>1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and</p></li>
 <li><p>2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and</p></li>
 <li><p>3g.20gb: 1 nvidia.com/mig-3g.20gb instance</p></li>
 </ul>
-</div></blockquote>
 </li>
 </ul>
-</div></blockquote>
 <img alt="_images/mig-mixed-profile-A100.png" src="_images/mig-mixed-profile-A100.png" />
 </li>
 </ul>
