@@ -579,16 +579,14 @@ update the system firewall rules allowing inbound packets on HTTP and HTTPS.</p>
 </div>
 </li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">reposync</span></code> to synchronize the AppStream repos to the locally created directory:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-appstream-rpms <span class="se">\</span>
- --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
- --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
- --downloadcomps <span class="se">\</span>
- --download-metadata <span class="se">\</span>
- --nodocs
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-appstream-rpms <span class="se">\</span>
+  --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
+  --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
+  --downloadcomps <span class="se">\</span>
+  --download-metadata <span class="se">\</span>
+  --nodocs
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 <li><p>Create a directory to host and serve the AppStream RPM packages:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir -p /var/www/html/content/dist/rhel8/8/x86_64/appstream/</span>
@@ -1210,11 +1208,10 @@ Create the <code class="docutils literal notranslate"><span class="pre">pull-sec
 <li><p>Edit the <code class="docutils literal notranslate"><span class="pre">imageset-config-gpu.yaml</span></code> file to mirror the Operator images that you want to mirror.</p>
 <ul>
 <li><p>To mirror all versions of the Operator, perform the following edits:</p>
-<ul class="simple">
+<ul>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">skipTLS</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">catalog</span></code> to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-operator-index:v4.12</span></code>.</p></li>
-<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">gpu-operator-certified</span></code>.</p></li>
-</ul>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">gpu-operator-certified</span></code>.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v1alpha2</span><span class="w"></span>
 <span class="nt">storageConfig</span><span class="p">:</span><span class="w"></span>
@@ -1235,6 +1232,8 @@ Create the <code class="docutils literal notranslate"><span class="pre">pull-sec
 <span class="nt">helm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 </pre></div>
 </div>
+</li>
+</ul>
 </li>
 <li><p>To mirror only v22.9.0, make the same edits as the preceding example and also specify the <code class="docutils literal notranslate"><span class="pre">minversion</span></code> value:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>

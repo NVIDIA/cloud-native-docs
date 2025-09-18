@@ -439,9 +439,7 @@ installed on the guest VM. Guest VMs use the NVIDIA vGPUs in the same manner as 
 This requires powering down running worker VMs. The template must be converted to a VM, then change the boot method to EFI, then convert back
 to a template.</p>
 <p>Secure boot also needs to be disabled as shown:</p>
-<blockquote>
-<div><img alt="_images/vmx_secure_boot.png" src="_images/vmx_secure_boot.png" />
-</div></blockquote>
+<img alt="_images/vmx_secure_boot.png" src="_images/vmx_secure_boot.png" />
 <p>When using the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/installing-vsphere.html#installation-vsphere-machines_installing-vsphere">UPI install method</a>, after <strong>Step 8</strong> of the “Installing RHCOS and starting the OpenShift
 Container Platform bootstrap process” change the boot method to EFI before <strong>continuing to Step 9</strong>.</p>
 <p>When using the IPI method, each VM’s boot method can be changed to EFI after VM deployment.</p>
@@ -449,9 +447,7 @@ Container Platform bootstrap process” change the boot method to EFI before <st
 <p><strong>VM Settings</strong> &gt; <strong>VM options</strong> &gt; <strong>Advanced</strong> &gt; <strong>Configuration Parameters</strong> &gt; <strong>Edit Configuration</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.use64bitMMIO</span> <span class="pre">TRUE</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.64bitMMIOSizeGB</span> <span class="pre">512</span></code></p>
-<blockquote>
-<div><img alt="_images/pci_passthrough.png" src="_images/pci_passthrough.png" />
-</div></blockquote>
+<img alt="_images/pci_passthrough.png" src="_images/pci_passthrough.png" />
 <p>To support GPUDirect RDMA ensure that the VM has the following configuration parameters set:</p>
 <p><strong>VM Settings</strong> &gt; <strong>VM options</strong> &gt; <strong>Advanced</strong> &gt; <strong>Configuration Parameters</strong> &gt; <strong>Edit Configuration</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.allowP2P</span> <span class="pre">=</span> <span class="pre">true</span></code></p>
