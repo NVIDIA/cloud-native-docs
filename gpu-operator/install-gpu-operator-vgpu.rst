@@ -234,7 +234,7 @@ Configure the Cluster with the vGPU License Information and the Driver Container
 
       $ kubectl create namespace gpu-operator
 
-#. Create a ConfigMap that is named ``licensing-config`` using the ``gridd.conf`` and ``client_configuration_token.tok`` files:
+#. Create a config map that is named ``licensing-config`` using the ``gridd.conf`` and ``client_configuration_token.tok`` files:
 
    .. code-block:: console
 
