@@ -719,21 +719,17 @@ The pods of the <code class="docutils literal notranslate"><span class="pre">Dae
 <p>When the GPU Operator is installed in the suggested <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace, the GPU Operator automatically enables monitoring if the <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring</span></code> label is not defined.
 If the label is defined, the GPU Operator will not change its value.</p>
 <p>Disable cluster monitoring in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace by setting <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=false</span></code> as shown:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">false</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>If the GPU Operator is not installed in the suggested namespace, the GPU Operator will not automatically enable monitoring. Set the label manually as shown:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Only do this if trusted operators are installed in this namespace.</p>
 </div>
-</div></blockquote>
 </section>
 <section id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">#</a></h2>
