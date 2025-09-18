@@ -85,7 +85,7 @@ The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that ca
    * 3g.20gb: 2 nvidia.com/gpuinstances, or
    * 7g.40gb: 1 nvidia.com/gpu instances
 
-     .. image:: graphics/Mig-profile-A100.png
+   .. image:: graphics/Mig-profile-A100.png
 
 * **Mixed** defines a heterogeneous advertisement strategy. There is no constraint on the geometry; all the combinations allowed by the GPU are permitted. This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.
 
@@ -98,7 +98,7 @@ The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that ca
      * 2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and
      * 3g.20gb: 1 nvidia.com/mig-3g.20gb instance
 
-     .. image:: graphics/mig-mixed-profile-A100.png
+   .. image:: graphics/mig-mixed-profile-A100.png
 
 Version 1.8 and greater of the NVIDIA GPU Operator supports updating the **Strategy** in the ClusterPolicy after deployment.
 
