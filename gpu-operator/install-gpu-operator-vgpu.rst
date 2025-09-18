@@ -29,13 +29,12 @@ About Installing the Operator and NVIDIA vGPU
 *********************************************
 
 NVIDIA Virtual GPU (vGPU) enables multiple virtual machines (VMs) to have simultaneous,
-direct access to a single physical GPU, using the same NVIDIA graphics drivers that are
-deployed on non-virtualized operating systems.
+direct access to a single physical GPU, using the same NVIDIA graphics drivers that are deployed on non-virtualized operating systems.
 
 The installation steps assume ``gpu-operator`` as the default namespace for installing the NVIDIA GPU Operator.
 In case of Red Hat OpenShift Container Platform, the default namespace is ``nvidia-gpu-operator``.
 Change the namespace shown in the commands accordingly based on your cluster configuration.
-Also replace ``kubectl`` in the below commands with ``oc`` when running on RedHat OpenShift.
+Also replace ``kubectl`` in the following commands with ``oc`` when running on Red Hat OpenShift.
 
 NVIDIA vGPU is only supported with the NVIDIA License System.
 
@@ -43,9 +42,9 @@ NVIDIA vGPU is only supported with the NVIDIA License System.
 Platform Support
 ****************
 
-For information about the supported platforms, see :ref:`Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products`.
+For information about the supported platforms, refer to :ref:`Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products`.
 
-For Red Hat OpenShift Virtualization, see :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
+For Red Hat OpenShift Virtualization, refer to :ref:`NVIDIA GPU Operator with OpenShift Virtualization`.
 
 
 *************
@@ -55,12 +54,17 @@ Prerequisites
 Before installing the GPU Operator on NVIDIA vGPU, ensure the following:
 
 * The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines.
-  Refer to `NVIDIA Virtual GPU Software Documentation <https://docs.nvidia.com/grid/>`_ for details.
+  Refer to the `NVIDIA Virtual GPU Software Documentation <https://docs.nvidia.com/grid/>`_ for details.
 * You must have access to the NVIDIA Enterprise Application Hub at https://nvid.nvidia.com/dashboard/ and the NVIDIA Licensing Portal.
 * Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).
 * You must generate and download a client configuration token for your CLS instance or DLS instance.
   Refer to the |license-system-qs-guide-link|_ for information about generating a token.
-* You have access to a private registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
+
+  .. note::
+
+      For vGPU 18.0 and later, ensure that you use DLS 3.4 or later.
+
+* You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.
 * Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.
 * Each Kubernetes worker node in the cluster has access to the private registry.
   Private registry access is usually managed through image pull secrets.
@@ -143,7 +147,7 @@ Perform the following steps to build and push a container image that includes th
      For Red Hat OpenShift Container Platform, specify ``rhcos4.<x>`` where ``x`` is the supported minor OCP version.
      Refer to :ref:`Supported Operating Systems and Kubernetes Platforms` for the list of supported OS distributions.
 
-   - Specify the driver container image tag, such as ``1.0.0``:
+   - Specify the driver container image tag such as ``1.0.0``:
 
      .. code-block:: console
 
@@ -158,9 +162,8 @@ Perform the following steps to build and push a container image that includes th
 
         $ export CUDA_VERSION=11.8.0
 
-     The CUDA version only specifies which base image is used to build the driver container.
-     The version does not have any correlation to the version of CUDA that is associated with or supported by the
-     resulting driver container.
+     The CUDA version only specifies the base image used to build the driver container.
+     The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.
 
    - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
 
@@ -217,14 +220,13 @@ Configure the Cluster with the vGPU License Information and the Driver Container
       # 4 => for NVIDIA Virtual Compute Server
       FeatureType=1
 
-#. Rename the client configuration token file that you downloaded to ``client_configuration_token.tok``
-   using a command like the following example:
+#. Rename the client configuration token file that you downloaded to ``client_configuration_token.tok`` using a command like the following example:
 
    .. code-block:: console
 
       $ cp ~/Downloads/client_configuration_token_03-28-2023-16-16-36.tok client_configuration_token.tok
 
-   The file must be named ``client_configuraton_token.tok``.
+   The file must be named ``client_configuration_token.tok``.
 
 #. Create the ``gpu-operator`` namespace:
 

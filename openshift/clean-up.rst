@@ -6,11 +6,11 @@
 *****************************************
 Cleanup
 *****************************************
-This section describes how to clean up (remove) the GPU Operator in case it is no longer needed.
+This section describes how to clean up (remove) the GPU Operator if it is no longer needed.
 
 #. Delete the NVIDIA GPU Operator from the cluster following the guidance outlined in `Deleting Operators from a cluster <https://docs.openshift.com/container-platform/latest/operators/admin/olm-deleting-operators-from-cluster.html>`_.
 
-#. Delete the cluster policy using the OpenShift Container Platform CLI:
+#. Delete the cluster policy by using the OpenShift Container Platform CLI.
 
    .. code-block:: console
 

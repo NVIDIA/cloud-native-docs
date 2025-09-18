@@ -44,7 +44,7 @@ The Node Feature Discovery (NFD) Operator is a prerequisite for the **NVIDIA GPU
 Verify that the Node Feature Discovery Operator is functioning correctly
 *************************************************************************
 
-The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID 10de. Use the OpenShift Container Platform web console or the CLI to verify that the Node Feature Discovery Operator is functioning correctly.
+The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID ``10de``. Use the OpenShift Container Platform web console or the CLI to verify that the Node Feature Discovery Operator is functioning correctly.
 
 
 #. In the OpenShift Container Platform web console, click **Compute** > **Nodes** from the side menu.
