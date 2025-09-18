@@ -400,12 +400,12 @@
 <p><strong>Entitled NVIDIA driver builds are deprecated and not supported starting with Red Hat OpenShift 4.10.</strong></p>
 <p>The Driver Toolkit (DTK) enables entitlement-free deployments of the GPU Operator. In the past, entitled builds were used pre-DTK and for some OpenShift versions where Driver Toolkit images were broken.</p>
 <p>If you encounter the <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">“broken driver toolkit detected”</span></a> warning on OpenShift 4.10 or later, you should <a class="reference internal" href="#broken-dtk-troubleshooting"><span class="std std-ref">troubleshoot</span></a> to find the root cause instead of falling back to entitled driver builds.</p>
-<p>If the broken DTK warning is encountered on an older version of OpenShift, refer to the documentation for an older version of the NVIDIA GPU operator to enable entitled builds. Keep in mind that older versions of OpenShift might no longer be supported.</p>
+<p>If the broken DTK warning is encountered on an older version of OpenShift, refer to the documentation for an older version of the NVIDIA GPU Operator to enable entitled builds. Keep in mind that older versions of OpenShift might no longer be supported.</p>
 </div>
 </section>
 <section id="troubleshooting-broken-driver-toolkit-errors">
 <span id="broken-dtk-troubleshooting"></span><h3>Troubleshooting Broken Driver Toolkit Errors<a class="headerlink" href="#troubleshooting-broken-driver-toolkit-errors" title="Permalink to this headline">#</a></h3>
-<p>The most likely reason for the broken DTK message is Node Feature Discovery (NFD) not working correctly. NFD might be disabled, failing, or not updating the kernel version label for other reasons. Another cause might be a missing or incomplete DTK image stream, e.g. because of broken mirroring.</p>
+<p>The most likely reason for the broken DTK message is Node Feature Discovery (NFD) not working correctly. NFD might be disabled, failing, or not updating the kernel version label for other reasons. Another cause might be a missing or incomplete DTK image stream, for example, because of broken mirroring.</p>
 <p>Follow these steps for initial troubleshooting of Node Feature Discovery:</p>
 <ol class="arabic">
 <li><p><strong>Check Node Feature Discovery (NFD) status:</strong></p>
@@ -418,13 +418,13 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nodes -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{range .items[*]}{.metadata.name}{&quot;:\t&quot;}{.metadata.labels.feature\.node\.kubernetes\.io/kernel-version\.full}{&quot;\n&quot;}{end}&#39;</span>
 </pre></div>
 </div>
-<p>Ensure nodes have proper kernel version labels that match current OpenShift version of the cluster.</p>
+<p>Ensure nodes have proper kernel version labels that match the current OpenShift version of the cluster.</p>
 </li>
 <li><p><strong>Check Driver Toolkit image stream:</strong></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get -n openshift is/driver-toolkit
 </pre></div>
 </div>
-<p>Verify the driver-toolkit image stream exists and has the correct tags that correspond to current OpenShift version.</p>
+<p>Verify the driver-toolkit image stream exists and has the correct tags that correspond to the current OpenShift version.</p>
 </li>
 </ol>
 <p>For additional troubleshooting resources:</p>
