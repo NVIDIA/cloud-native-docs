@@ -573,14 +573,14 @@ If you plan to use GPU Passthrough only, skip this section.</p>
 <p>Use the following steps to build the vGPU Manager container and push it to a private registry.</p>
 <ol class="arabic">
 <li><p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
-<ul>
+<ul class="simple">
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <strong>Software Downloads</strong> section.</p></li>
 <li><p>The NVIDIA vGPU Software is located on the <strong>Driver downloads</strong> tab of the <strong>Software Downloads</strong> page.</p></li>
 <li><p>Click the <strong>Download</strong> link for the Linux KVM complete vGPU package.
 Confirm that the <strong>Product Version</strong> column shows the vGPU version to install.
-Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p>
+Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p></li>
+</ul>
 <blockquote>
-<div><blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image.
@@ -589,9 +589,6 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 Refer to the <code class="docutils literal notranslate"><span class="pre">Infrastructure</span> <span class="pre">Support</span> <span class="pre">Matrix</span></code> under section under the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a> for details on supported version number to use.</p>
 </div>
 </div></blockquote>
-</div></blockquote>
-</li>
-</ul>
 <p>Use the following steps to clone the driver container repository and build the driver image.</p>
 </li>
 <li><p>Open a terminal and clone the driver container image repository:</p>
