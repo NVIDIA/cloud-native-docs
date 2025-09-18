@@ -564,8 +564,7 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections that 
 <ol class="arabic">
 <li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Operators</strong> &gt; <strong>Installed Operators</strong>, and click <strong>NVIDIA GPU Operator</strong>.</p></li>
 <li><p>Select the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You can use this screen to customize the ClusterPolicy; although, the default values are sufficient to get the GPU configured and running in most cases.</p>
 </div>
@@ -578,16 +577,14 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections that 
 <li><p><strong>repository</strong>: nvcr.io/nvidia (or another supported repository)</p></li>
 </ul>
 </div>
-</div></blockquote>
 </li>
 <li><p>Click <strong>Create</strong>.</p>
 <p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.</p>
 </li>
-<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p></li>
+<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
+<img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
+</li>
 </ol>
-<blockquote>
-<div><img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
-</div></blockquote>
 </section>
 <section id="create-the-cluster-policy-using-the-cli">
 <span id="verify-gpu-operator-install-ocp"></span><h3>Create the cluster policy using the CLI<a class="headerlink" href="#create-the-cluster-policy-using-the-cli" title="Permalink to this headline">#</a></h3>
@@ -627,29 +624,22 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections that 
 </section>
 <section id="id1">
 <h3>Create the cluster policy using the web console<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Operators</strong> &gt; <strong>Installed Operators</strong>, and click <strong>NVIDIA GPU Operator</strong>.</p></li>
 <li><p>Select the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p></li>
-<li><p>Provide the name of the licensing <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> under the <strong>Driver</strong> section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.</p></li>
-</ol>
-<blockquote>
-<div><img alt="_images/cluster_policy_vgpu_1.png" src="_images/cluster_policy_vgpu_1.png" />
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>Specify <code class="docutils literal notranslate"><span class="pre">repository</span></code> path, <code class="docutils literal notranslate"><span class="pre">image</span></code> name and NVIDIA vGPU driver <code class="docutils literal notranslate"><span class="pre">version</span></code> bundled under <strong>Driver</strong> section. If the registry is not public, please specify the <code class="docutils literal notranslate"><span class="pre">imagePullSecret</span></code> created during pre-requisite step under <strong>Driver</strong> advanced configurations section.</p></li>
-</ol>
-<blockquote>
-<div><img alt="_images/cluster_policy_vgpu_2.png" src="_images/cluster_policy_vgpu_2.png" />
-</div></blockquote>
-<ol class="arabic">
+<li><p>Provide the name of the licensing <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> under the <strong>Driver</strong> section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.</p>
+<img alt="_images/cluster_policy_vgpu_1.png" src="_images/cluster_policy_vgpu_1.png" />
+</li>
+<li><p>Specify <code class="docutils literal notranslate"><span class="pre">repository</span></code> path, <code class="docutils literal notranslate"><span class="pre">image</span></code> name and NVIDIA vGPU driver <code class="docutils literal notranslate"><span class="pre">version</span></code> bundled under <strong>Driver</strong> section. If the registry is not public, please specify the <code class="docutils literal notranslate"><span class="pre">imagePullSecret</span></code> created during pre-requisite step under <strong>Driver</strong> advanced configurations section.</p>
+<img alt="_images/cluster_policy_vgpu_2.png" src="_images/cluster_policy_vgpu_2.png" />
+</li>
 <li><p>Click <strong>Create</strong>.</p>
 <p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.</p>
 </li>
-<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p></li>
+<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
+<img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
+</li>
 </ol>
-<blockquote>
-<div><img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
-</div></blockquote>
 </section>
 <section id="id2">
 <h3>Create the cluster policy using the CLI<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
@@ -660,13 +650,13 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections that 
 </div>
 <p>Modify clusterpolicy.json file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;&lt;repository-path&gt;&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;repository-path&gt;&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;imagePullSecrets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;licensingConfig&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">       </span><span class="nt">&quot;configMapName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;licensing-config&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">       </span><span class="nt">&quot;nlsEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
-<span class="w">     </span><span class="p">}</span><span class="w"></span>
+<span class="w">     </span><span class="p">},</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;470.82.01&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
