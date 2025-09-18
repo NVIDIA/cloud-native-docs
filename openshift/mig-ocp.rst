@@ -76,33 +76,40 @@ MIG advertisement strategies
 The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that can be requested and exposed into Pods and containers. The first step of the MIG configuration is to decide what **Strategy** you want. The advertisement strategies are described here:
 
 
-* **Single** defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs. This strategy exposes the MIG instances as ``nvidia.com/gpu`` resources, identically, as usual non-MIG capable (or with MIG disabled) devices. In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size). This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users. Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.
+* **Single** defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs.
+  This strategy exposes the MIG instances as ``nvidia.com/gpu`` resources, identically, as usual non-MIG capable (or with MIG disabled) devices.
+  In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size).
+  This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users.
+  Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.
 
-   Examples for the A100-40GB:
+  Examples for the A100-40GB:
 
-   * 1g.5gb:  7 nvidia.com/gpu instances, or
-   * 2g.10gb: 3 nvidia.com/gpu instances, or
-   * 3g.20gb: 2 nvidia.com/gpuinstances, or
-   * 7g.40gb: 1 nvidia.com/gpu instances
+  * 1g.5gb:  7 nvidia.com/gpu instances, or
+  * 2g.10gb: 3 nvidia.com/gpu instances, or
+  * 3g.20gb: 2 nvidia.com/gpuinstances, or
+  * 7g.40gb: 1 nvidia.com/gpu instances
 
-   .. image:: graphics/Mig-profile-A100.png
+  .. image:: graphics/Mig-profile-A100.png
 
-* **Mixed** defines a heterogeneous advertisement strategy. There is no constraint on the geometry; all the combinations allowed by the GPU are permitted. This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.
+* **Mixed** defines a heterogeneous advertisement strategy.
+  There is no constraint on the geometry; all the combinations allowed by the GPU are permitted.
+  This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.
 
-   Examples for the A100-40GB:
+  Examples for the A100-40GB:
 
-   * All the **single** configurations are possible
-   * A “balanced” configuration:
+  * All the **single** configurations are possible
+  * A “balanced” configuration:
 
-      * 1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and
-      * 2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and
-      * 3g.20gb: 1 nvidia.com/mig-3g.20gb instance
+    * 1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and
+    * 2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and
+    * 3g.20gb: 1 nvidia.com/mig-3g.20gb instance
 
-   .. image:: graphics/mig-mixed-profile-A100.png
+  .. image:: graphics/mig-mixed-profile-A100.png
 
 Version 1.8 and greater of the NVIDIA GPU Operator supports updating the **Strategy** in the ClusterPolicy after deployment.
 
-The `default configmap <https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB. The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
+The `default configmap <https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
+The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
 The tables below describe these configurations:
 
 .. table:: Single configuration

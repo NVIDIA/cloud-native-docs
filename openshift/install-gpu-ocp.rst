@@ -259,7 +259,7 @@ Create the cluster policy using the CLI
 Create the ClusterPolicy instance with NVIDIA vGPU
 ***************************************************************************
 
-Pre-requisites
+Prerequisites
 --------------
 
 * Refer to the :ref:`install-gpu-operator-vgpu` section for prerequisite steps for using NVIDIA vGPU on Red Hat OpenShift.

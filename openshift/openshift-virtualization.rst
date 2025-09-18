@@ -232,9 +232,12 @@ Use the following steps to build the vGPU Manager container and push it to a pri
      Confirm that the **Product Version** column shows the vGPU version to install.
      Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
 
-      .. include:: ../gpu-operator/gpu-operator-kubevirt.rst
-         :start-after: start-nvaie-run-file
-         :end-before: end-nvaie-run-file
+     .. note::
+
+         NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
+         Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
+         ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
+         Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
 
    Use the following steps to clone the driver container repository and build the driver image.
 
@@ -317,17 +320,17 @@ private container registry).
 
 #. Enter the following into each field:
 
-    * **Secret name**: private-registry-secret
+   * **Secret name**: private-registry-secret
 
-    * **Authentication type**: Image registry credentials
+   * **Authentication type**: Image registry credentials
 
-    * **Registry server address**: <private-registry_address>
+   * **Registry server address**: <private-registry_address>
 
-    * **Username**: $oauthtoken
+   * **Username**: $oauthtoken
 
-    * **Password**: <API-KEY>
+   * **Password**: <API-KEY>
 
-    * **Email**: <YOUR-EMAIL>
+   * **Email**: <YOUR-EMAIL>
 
 #. Click **Create**.
 
@@ -655,9 +658,9 @@ For example, the ``default`` configuration will create two **A10-12Q** devices o
 
 If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:
 
-   .. code-block:: console
+.. code-block:: console
 
-       $ oc create configmap custom-vgpu-config -n gpu-operator --from-file=config.yaml=/path/to/file
+      $ oc create configmap custom-vgpu-config -n gpu-operator --from-file=config.yaml=/path/to/file
 
 And then configure the GPU Operator to use it by setting ``vgpuDeviceManager.config.name=custom-vgpu-config``.
 
@@ -673,44 +676,44 @@ To apply a new configuration after GPU Operator install, simply update the ``nvi
 
 Let's run through an example on a system with two **A10** GPUs.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ nvidia-smi -L
-      GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)
-      GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)
+   $ nvidia-smi -L
+   GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)
+   GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)
 
 After installing the GPU Operator as detailed in the previous sections and without labeling the node with ``nvidia.com/vgpu.config``, the ``default`` vGPU config get applied -- four **A10-12Q** devices get created (two per GPU):
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
-      {
-        "nvidia.com/NVIDIA_A10-12Q": "4"
-      }
+   $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+   {
+      "nvidia.com/NVIDIA_A10-12Q": "4"
+   }
 
 If instead you want to create **A10-4Q** devices, we can label the node like such:
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc label node <node-name> --overwrite nvidia.com/vgpu.config=A10-4Q
+   $ oc label node <node-name> --overwrite nvidia.com/vgpu.config=A10-4Q
 
 After the vGPU Device Manager finishes applying the new configuration, all GPU Operator pods should return to the Running state.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc get pods -n gpu-operator
-      NAME                                                          READY   STATUS    RESTARTS   AGE
-      ...
-      nvidia-sandbox-device-plugin-daemonset-brtb6                  1/1     Running   0          10s
-      nvidia-sandbox-validator-ljnwg                                1/1     Running   0          10s
-      nvidia-vgpu-device-manager-8mgg8                              1/1     Running   0          30m
-      nvidia-vgpu-manager-daemonset-fpplc                           1/1     Running   0          31m
+   $ oc get pods -n gpu-operator
+   NAME                                                          READY   STATUS    RESTARTS   AGE
+   ...
+   nvidia-sandbox-device-plugin-daemonset-brtb6                  1/1     Running   0          10s
+   nvidia-sandbox-validator-ljnwg                                1/1     Running   0          10s
+   nvidia-vgpu-device-manager-8mgg8                              1/1     Running   0          30m
+   nvidia-vgpu-manager-daemonset-fpplc                           1/1     Running   0          31m
 
 You should now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices can be created per **A10** GPU.
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
-      {
-        "nvidia.com/NVIDIA_A10-4Q": "12"
-      }
+   $ oc get node cnt-server-2 -o json | jq '.status.allocatable | with_entries(select(.key | startswith("nvidia.com/"))) | with_entries(select(.value != "0"))'
+   {
+      "nvidia.com/NVIDIA_A10-4Q": "12"
+   }

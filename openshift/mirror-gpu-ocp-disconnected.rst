@@ -41,40 +41,43 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 Prerequisites
 **************
 
-* A working OpenShift cluster up and running with a GPU worker node. See `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`_ for guidance on installing OpenShift Container Platform.
+* A working OpenShift cluster up and running with a GPU worker node.
+  Refer to the `OpenShift Container Platform installation <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`_ guide for guidance on installing OpenShift Container Platform.
 
-   .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below. For more information see :ref:`broken driver toolkit <broken-dtk>`.
+  .. note:: If installing the **NVIDIA GPU Operator** on OpenShift Container Platform version <``4.9.9`` you need to carry out the steps highlighted as **Optional** below.
+      For more information see :ref:`broken driver toolkit <broken-dtk>`.
 
 * Access to the cluster as a user with the ``cluster-admin`` role.
-* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. A private registry **must** be configured on the bastion host. This can be one of the following registries:
+* Access to a registry that supports `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_.
+  A private registry **must** be configured on the bastion host. This can be one of the following registries:
 
-   * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`__
-   * `JFrog Artifactory <https://jfrog.com/artifactory/>`_
-   * `Sonatype Nexus Repository <https://www.sonatype.com/products/repository-oss?topnav=true>`_
-   * `Harbor <https://goharbor.io/>`_
+  * `Red Hat Quay <https://www.redhat.com/en/technologies/cloud-computing/quay>`__
+  * `JFrog Artifactory <https://jfrog.com/artifactory/>`_
+  * `Sonatype Nexus Repository <https://www.sonatype.com/products/repository-oss?topnav=true>`_
+  * `Harbor <https://goharbor.io/>`_
 
-   Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`__ and in the section :ref:`Creating a private registry`.
+  Create a private registry using ``podman`` and guidance on this can be found `here <https://www.redhat.com/sysadmin/simple-container-registry>`__ and in the section :ref:`Creating a private registry`.
 
-   If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for
-   `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`__
-   or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`__.
-   If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
-   For more information, refer to `About disconnected install mirroring <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`__
-   in the Red Hat OpenShift Container Platform documentation.
+  If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for
+  `proof-of-concept purposes <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/>`__
+  or by using the `Quay Operator <https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/>`__.
+  If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
+  For more information, refer to `About disconnected install mirroring <https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html>`__
+  in the Red Hat OpenShift Container Platform documentation.
 
-   .. note::
+  .. note::
 
-      When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended ``-addext "subjectAltName=DNS:${JUMP_HOST}"`` to your ``openssl`` command, otherwise OpenShift Container Platform cannot pull images from the private registry.
+    When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended ``-addext "subjectAltName=DNS:${JUMP_HOST}"`` to your ``openssl`` command, otherwise OpenShift Container Platform cannot pull images from the private registry.
 
-      If you do not set a Subject Alternative Name, before running the ``oc`` commands in the subsequent sections export the environment variable ``GODEBUG=x509ignoreCN=0``. If you do not set this variable, the ``oc`` commands will fail with the following error:
+    If you do not set a Subject Alternative Name, before running the ``oc`` commands in the subsequent sections export the environment variable ``GODEBUG=x509ignoreCN=0``. If you do not set this variable, the ``oc`` commands will fail with the following error:
 
-   .. code-block:: console
+  .. code-block:: console
 
-      $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
+    $ x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with ``GODEBUG=x509ignoreCN=0``.
 
-   .. note::
+  .. note::
 
-      If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
+    If you use HTTP, in Openshift Container Platform add ``insecureRegistries`` to ``image.config.openshift.io/cluster``. Guidance on that configuration is provided `here <https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html>`__.
 
 **On the jump host:**
 
@@ -639,10 +642,10 @@ Operator catalogs that source content provided by Red Hat and community projects
 
 * Disable the sources for the default catalogs by adding ``disableAllDefaultSources: true`` to the OperatorHub object:
 
-   .. code-block:: console
+  .. code-block:: console
 
       $ oc patch OperatorHub cluster --type json \
-          -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
+         -p '[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'
 
 
 **************************************************************************

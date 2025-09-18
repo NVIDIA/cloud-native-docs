@@ -13,7 +13,7 @@ This document provides steps on getting started and running some example CUDA wo
 on MIG-enabled GPUs in a Kubernetes cluster.
 
 ************************
-Software Pre-requisites
+Software Prerequisites
 ************************
 
 The deployment workflow requires these prerequisites. Once these prerequisites have been met, 
