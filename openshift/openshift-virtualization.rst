@@ -661,13 +661,13 @@ For example, you can create a **A10-4Q** and a **A10-6Q** device on same GPU by 
 
 .. code-block:: yaml
 
-   version: v1
-   vgpu-configs:
+    version: v1
+    vgpu-configs:
       custom-A10-config:
-         - devices: all
-            vgpu-devices:
-               "A10-4Q": 3
-               "A10-6Q": 2
+        - devices: all
+           vgpu-devices:
+             "A10-4Q": 3
+             "A10-6Q": 2
 
 If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:
 
