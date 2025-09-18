@@ -11,4 +11,4 @@ Entitled Driver Builds No Longer Supported
 
    **Entitled NVIDIA driver builds are deprecated and not supported.**
 
-   If you encounter issues with the NVIDIA GPU driver build that might require entitlement, please refer to the Driver Toolkit (DTK) troubleshooting section: :ref:`broken-dtk-troubleshooting`
+   If you encounter issues with the NVIDIA GPU driver build that might require entitlement, refer to the Driver Toolkit (DTK) troubleshooting section: :ref:`broken-dtk-troubleshooting`.

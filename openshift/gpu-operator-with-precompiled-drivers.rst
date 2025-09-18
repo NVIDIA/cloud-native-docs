@@ -17,7 +17,7 @@ About Precompiled Driver Containers
 ***********************************
 
 By default, NVIDIA GPU drivers are built on the cluster nodes when you deploy the GPU Operator.
-Driver compilation and packaging is done on every Kubernetes node, which leads to bursts of compute demand, waste of resources, and long provisioning times.
+Driver compilation and packaging is done on every Kubernetes node, leading to bursts of compute demand, waste of resources, and long provisioning times.
 In contrast, using container images with precompiled drivers makes the drivers immediately available on all nodes, resulting in faster provisioning and cost savings in public cloud deployments.
 
 ***********************************
@@ -39,11 +39,11 @@ Limitations and Restrictions
 Building a Precompiled Driver Image
 ***********************************
 
-Perform the following steps to build a custom driver image for use with Red Hat OpenShift Contain Platform.
+Perform the following steps to build a custom driver image for use with Red Hat OpenShift Container Platform.
 
 .. rubric:: Prerequisites
 
-* You have access to a container registry, such as NVIDIA NGC Private Registry, Red Hat Quay, or the OpenShift internal container registry, and can push container images to the registry.
+* You have access to a container registry such as NVIDIA NGC Private Registry, Red Hat Quay, or the OpenShift internal container registry and can push container images to the registry.
 
 * You have a valid Red Hat subscription with an activation key.
 
@@ -51,11 +51,11 @@ Perform the following steps to build a custom driver image for use with Red Hat 
 
 * Your build machine has access to the internet to download operating system packages.
 
-* You know a CUDA version, such as ``12.1.0``, that you want to use.
+* You know a CUDA version such as ``12.1.0`` that you want to use.
 
-  One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry at `CUDA | NVIDIA NGC <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags>`_ and view the tags. Use the search field to filter the tags, such as ``base-ubi8`` for RHEL 8   and ``base-ubi9`` for RHEL 9. The filtered results show the CUDA versions, such as ``12.1.0``, ``12.0.1``, ``12.0.0``, and so on.
+  One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry at `CUDA | NVIDIA NGC <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags>`_ and view the tags. Use the search field to filter the tags such as ``base-ubi8`` for RHEL 8 and ``base-ubi9`` for RHEL 9. The filtered results show the CUDA versions such as ``12.1.0``, ``12.0.1``, and ``12.0.0``.
 
-* You know the GPU driver version, such as ``525.105.17``, that you want to use.
+* You know the GPU driver version such as ``525.105.17`` that you want to use.
 
 .. rubric:: Procedure
 
@@ -65,26 +65,26 @@ Perform the following steps to build a custom driver image for use with Red Hat 
 
       $ git clone https://gitlab.com/nvidia/container-images/driver
 
-#. Change the directory to ``rhel8/precompiled`` under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:
+#. Change to the ``rhel8/precompiled`` directory under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:
 
    .. code-block:: console
 
       $ cd driver/rhel8/precompiled
 
-#. Create a Red Hat Customer Portal Activation Key and note your Red Hat Subscription Management (RHSM) organization ID. These are to install packages during a build. Save the values to files, for example, ``$HOME/rhsm_org`` and ``$HOME/rhsm_activationkey``:
+#. Create a Red Hat Customer Portal Activation Key and note your Red Hat Subscription Management (RHSM) organization ID. These are to install packages during a build. Save the values to files such as ``$HOME/rhsm_org`` and ``$HOME/rhsm_activationkey``:
 
    .. code-block:: console
 
       export RHSM_ORG_FILE=$HOME/rhsm_org
       export RHSM_ACTIVATIONKEY_FILE=$HOME/rhsm_activationkey
 
-#. Download your Red Hat OpenShift pull secret and store it in a file, for example, ``${HOME}/pull-secret``:
+#. Download your Red Hat OpenShift pull secret and store it in a file such as ``${HOME}/pull-secret``:
 
    .. code-block:: console
 
       export PULL_SECRET_FILE=$HOME/pull-secret.txt
 
-#. Set the Red Hat OpenShift version and target architecture of your cluster, for example, ``x86_64``:
+#. Set the Red Hat OpenShift version and target architecture of your cluster such as ``x86_64``:
 
    .. code-block:: console
 
@@ -121,15 +121,24 @@ Perform the following steps to build a custom driver image for use with Red Hat 
       export DRIVER_VERSION=525.105.17
       export OS_TAG=rhcos4.12
 
+   .. note:: The driver container image tag for OpenShift has changed after the OCP 4.19 release.
+
+      - Before OCP 4.19: The driver image tag is formed with the suffix ``-rhcos4.17`` (such as with OCP 4.17).
+      - Starting OCP 4.19 and later: The driver image tag is formed with the suffix ``-rhel9.6`` (such as with OCP 4.19).
+
+      Refer to `RHEL Versions Utilized by RHEL CoreOS and OCP <https://access.redhat.com/articles/6907891>`_
+      and `Split RHCOS into layers: /etc/os-release <https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release>`_
+      for more information.
+
 #. Build and push the image:
 
    .. code-block:: console
 
       make image image-push
 
-Optionally, override the ``IMAGE_REGISTRY``, ``IMAGE_NAME``, and ``CONTAINER_TOOL``. You can also override ``BUILDER_USER`` and ``BUILDER_EMAIL`` if you want, otherwise your Git username and email are used. See the Makefile for all available variables.
+Optionally, override the ``IMAGE_REGISTRY``, ``IMAGE_NAME``, and ``CONTAINER_TOOL``. You can also override ``BUILDER_USER`` and ``BUILDER_EMAIL`` if you want. Otherwise, your Git username and email are used. Refer to the Makefile for all available variables.
 
-.. note:: Do not set the ``DRIVER_TYPE``. The only supported value is currently ``passthrough``, which is set by default.
+.. note:: Do not set the ``DRIVER_TYPE``. The only supported value is currently ``passthrough``, and this is set by default.
 
 *********************************************
 Enabling Precompiled Driver Container Support

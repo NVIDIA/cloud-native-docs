@@ -61,37 +61,37 @@ Red Hat OpenShift on VMware vSphere
 
 Follow the steps outlined in the `Installing vSphere section <https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/preparing-to-install-on-vsphere.html>`_ of the RedHat OpenShift documentation installing OpenShift on vSphere.
 
-   .. note::
-      When using virtualized GPUs you must change the boot method of each VM that is deployed as a worker and the VM template to be EFI.
-      This requires powering down running worker VMs. The template must be converted to a VM, then change the boot method to EFI, then convert back
-      to a template.
+.. note::
+   When using virtualized GPUs you must change the boot method of each VM that is deployed as a worker and the VM template to be EFI.
+   This requires powering down running worker VMs. The template must be converted to a VM, then change the boot method to EFI, then convert back
+   to a template.
 
-      Secure boot also needs to be disabled as shown:
+   Secure boot also needs to be disabled as shown:
 
-        .. image:: graphics/vmx_secure_boot.png
+   .. image:: graphics/vmx_secure_boot.png
 
-      When using the `UPI install method <https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/installing-vsphere.html#installation-vsphere-machines_installing-vsphere>`_, after **Step 8** of the “Installing RHCOS and starting the OpenShift
-      Container Platform bootstrap process” change the boot method to EFI before **continuing to Step 9**.
+   When using the `UPI install method <https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/installing-vsphere.html#installation-vsphere-machines_installing-vsphere>`_, after **Step 8** of the “Installing RHCOS and starting the OpenShift
+   Container Platform bootstrap process” change the boot method to EFI before **continuing to Step 9**.
 
-      When using the IPI method, each VM’s boot method can be changed to EFI after VM deployment.
+   When using the IPI method, each VM’s boot method can be changed to EFI after VM deployment.
 
-      In addition to the EFI boot setting, ensure that the VM has the following configuration parameters set:
+   In addition to the EFI boot setting, ensure that the VM has the following configuration parameters set:
 
-      **VM Settings** > **VM options** > **Advanced** > **Configuration Parameters** > **Edit Configuration**
+   **VM Settings** > **VM options** > **Advanced** > **Configuration Parameters** > **Edit Configuration**
 
-      ``pciPassthru.use64bitMMIO TRUE``
+   ``pciPassthru.use64bitMMIO TRUE``
 
-      ``pciPassthru.64bitMMIOSizeGB 512``
+   ``pciPassthru.64bitMMIOSizeGB 512``
 
-         .. image:: graphics/pci_passthrough.png
+   .. image:: graphics/pci_passthrough.png
 
-      To support GPUDirect RDMA ensure that the VM has the following configuration parameters set:
+   To support GPUDirect RDMA ensure that the VM has the following configuration parameters set:
 
-      **VM Settings** > **VM options** > **Advanced** > **Configuration Parameters** > **Edit Configuration**
+   **VM Settings** > **VM options** > **Advanced** > **Configuration Parameters** > **Edit Configuration**
 
-      ``pciPassthru.allowP2P = true``
+   ``pciPassthru.allowP2P = true``
 
-      ``pciPassthru.RelaxACSforP2P = true``
+   ``pciPassthru.RelaxACSforP2P = true``
 
 It is also recommended that you reference `Running Red Hat OpenShift Container Platform on VMware Cloud Foundation <https://core.vmware.com/resource/running-red-hat-openshift-container-platform-vmware-cloud-foundation#executive-summary>`_ documentation for deployment best practices, system configuration, and reference architecture.
 
@@ -131,17 +131,17 @@ NGC container registry).
 
 #. Enter the following into each field:
 
-    * **Secret name**: ngc-secret
+   * **Secret name**: ngc-secret
 
-    * **Authentication type**: Image registry credentials
+   * **Authentication type**: Image registry credentials
 
-    * **Registry server address**: ``nvcr.io/nvidia/vgpu``
+   * **Registry server address**: ``nvcr.io/nvidia/vgpu``
 
-    * **Username**: ``$oauthtoken``
+   * **Username**: ``$oauthtoken``
 
-    * **Password**: ``<NGC-API-KEY>``
+   * **Password**: ``<NGC-API-KEY>``
 
-    * **Email**: ``<YOUR-EMAIL>``
+   * **Email**: ``<YOUR-EMAIL>``
 
    .. image:: graphics/secrets_2.png
 
@@ -245,29 +245,29 @@ The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVID
 
 Verify the ClusterPolicy installation by running the following command that displays the node names and GPU counts:
 
-   .. code-block:: console
+.. code-block:: console
 
-      $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
+   $ oc get nodes -o=custom-columns='Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu'
 
-   *Example Output*
+*Example Output*
 
-   .. code-block:: console
+.. code-block:: console
 
-        Node GPUs
+      Node GPUs
 
-        nvaie-ocp-7rfr8-master-0 <none>
+      nvaie-ocp-7rfr8-master-0 <none>
 
-        nvaie-ocp-7rfr8-master-1 <none>
+      nvaie-ocp-7rfr8-master-1 <none>
 
-        nvaie-ocp-7rfr8-master-2 <none>
+      nvaie-ocp-7rfr8-master-2 <none>
 
-        nvaie-ocp-7rfr8-worker-7x5km 1
+      nvaie-ocp-7rfr8-worker-7x5km 1
 
-        nvaie-ocp-7rfr8-worker-9jgmk <none>
+      nvaie-ocp-7rfr8-worker-9jgmk <none>
 
-        nvaie-ocp-7rfr8-worker-jntsp 1
+      nvaie-ocp-7rfr8-worker-jntsp 1
 
-        nvaie-ocp-7rfr8-worker-zkggt <none>
+      nvaie-ocp-7rfr8-worker-zkggt <none>
 
 
 Verify the successful installation of the NVIDIA GPU Operator

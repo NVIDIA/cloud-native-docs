@@ -33,6 +33,38 @@ See the :ref:`GPU Operator Component Matrix` for a list of software components a
 
 ----
 
+.. _v25.3.3:
+
+25.3.3
+======
+
+.. _v25.3.3-new-features:
+
+New Features
+------------
+
+* Supports these NVIDIA Data Center GPU Driver versions:
+
+  - 580.82.07 (default, recommended)
+
+* Added support for additional features:
+
+  - RTX Pro 6000 Blackwell Server Edition
+
+    - MIG profiles support
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
+    - KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)
+
+  - RTX Pro 6000D 
+
+    - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
+
+Fixed Issues
+-------------
+
+* Fixed an issue where user-supplied environment variables configured in ClusterPolicy were not getting set in the rendered DaemonSet.
+  User-supplied environment variables now take precedence over environment variables set by the ClusterPolicy controller.
+
 .. _v25.3.2:
 
 25.3.2
