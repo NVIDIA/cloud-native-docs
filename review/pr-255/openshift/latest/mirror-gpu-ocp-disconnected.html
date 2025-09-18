@@ -414,14 +414,17 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>A working OpenShift cluster up and running with a GPU worker node. See <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">OpenShift Container Platform installation</a> for guidance on installing OpenShift Container Platform.</p>
-<div class="admonition note">
+<blockquote>
+<div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version &lt;<code class="docutils literal notranslate"><span class="pre">4.9.9</span></code> you need to carry out the steps highlighted as <strong>Optional</strong> below. For more information see <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a>.</p>
 </div>
+</div></blockquote>
 </li>
 <li><p>Access to the cluster as a user with the <code class="docutils literal notranslate"><span class="pre">cluster-admin</span></code> role.</p></li>
 <li><p>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li><p><a class="reference external" href="https://www.redhat.com/en/technologies/cloud-computing/quay">Red Hat Quay</a></p></li>
 <li><p><a class="reference external" href="https://jfrog.com/artifactory/">JFrog Artifactory</a></p></li>
 <li><p><a class="reference external" href="https://www.sonatype.com/products/repository-oss?topnav=true">Sonatype Nexus Repository</a></p></li>
@@ -434,8 +437,7 @@ or by using the <a class="reference external" href="https://access.redhat.com/do
 If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
 For more information, refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">About disconnected install mirroring</a>
 in the Red Hat OpenShift Container Platform documentation.</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended <code class="docutils literal notranslate"><span class="pre">-addext</span> <span class="pre">&quot;subjectAltName=DNS:${JUMP_HOST}&quot;</span></code> to your <code class="docutils literal notranslate"><span class="pre">openssl</span></code> command, otherwise OpenShift Container Platform cannot pull images from the private registry.</p>
 <p>If you do not set a Subject Alternative Name, before running the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands in the subsequent sections export the environment variable <code class="docutils literal notranslate"><span class="pre">GODEBUG=x509ignoreCN=0</span></code>. If you do not set this variable, the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands will fail with the following error:</p>
@@ -659,8 +661,7 @@ Refer to the Red Hat OpenShift Container Platform documentation that describes h
 <p>OpenSSL version 1.1.1 or higher is required.</p>
 </div>
 <p>At the prompts, provide the required values for the certificate:</p>
-<blockquote>
-<div><div class="pst-scrollable-table-container"><table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 35%" />
 <col style="width: 65%" />
@@ -697,7 +698,6 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 </tbody>
 </table>
 </div>
-</div></blockquote>
 </li>
 <li><p>Generate a <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">password</span></code> for your registry that uses the <code class="docutils literal notranslate"><span class="pre">bcrpt</span></code> format:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>htpasswd -bBc /opt/registry/auth/htpasswd &lt;user_name&gt; &lt;password&gt;
@@ -837,8 +837,7 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <section id="configuring-credentials-that-allow-images-to-be-mirrored">
 <h2>Configuring credentials that allow images to be mirrored<a class="headerlink" href="#configuring-credentials-that-allow-images-to-be-mirrored" title="Permalink to this headline">#</a></h2>
 <p>Create a container image registry credentials file that allows mirroring images from Red Hat to your mirror registry.</p>
-<blockquote>
-<div><div class="admonition warning">
+<div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.</p>
 </div>
@@ -846,7 +845,6 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <p class="admonition-title">Warning</p>
 <p>This process requires that you have write access to a container image registry on the mirror registry and adds the credentials to a registry pull secret.</p>
 </div>
-</div></blockquote>
 <ol class="arabic">
 <li><p>Download your pull secret from the <a class="reference external" href="https://console.redhat.com/openshift/install/pull-secret">Pull Secret</a> page on the Red Hat OpenShift Cluster Manager site.</p></li>
 <li><p>Generate the base64-encoded user name and password or token for your mirror registry:</p>

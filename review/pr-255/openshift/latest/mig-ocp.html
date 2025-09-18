@@ -492,14 +492,16 @@ of homogeneous instances</p></th>
 <li><p><strong>Mixed</strong> defines a heterogeneous advertisement strategy. There is no constraint on the geometry; all the combinations allowed by the GPU are permitted. This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.</p>
 <blockquote>
 <div><p>Examples for the A100-40GB:</p>
-<ul class="simple">
+<ul>
 <li><p>All the <strong>single</strong> configurations are possible</p></li>
 <li><p>A “balanced” configuration:</p>
-<ul>
+<blockquote>
+<div><ul class="simple">
 <li><p>1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and</p></li>
 <li><p>2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and</p></li>
 <li><p>3g.20gb: 1 nvidia.com/mig-3g.20gb instance</p></li>
 </ul>
+</div></blockquote>
 </li>
 </ul>
 <img alt="_images/mig-mixed-profile-A100.png" src="_images/mig-mixed-profile-A100.png" />
@@ -1366,12 +1368,10 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 <section id="disable-the-mig-mode">
 <h2>Disable the MIG mode<a class="headerlink" href="#disable-the-mig-mode" title="Permalink to this headline">#</a></h2>
 <p>To turn MIG mode off so that you can utilize the full capacity of the GPU run the following:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-disabled <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-disabled <span class="o">&amp;&amp;</span> <span class="se">\</span>
+   oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
 </pre></div>
 </div>
-</div></blockquote>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
@@ -1382,8 +1382,7 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 </pre></div>
 </div>
 <p>The cluster administrator is expected to drain the node from any GPU workload, before requesting the MIG reconfiguration. If the node is not properly drained, the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> will fail with this error in the logs:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> Updating MIG config: map[2g.10gb:3]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Updating MIG config: map[2g.10gb:3]</span>
 <span class="go">Error clearing MigConfig: error destroying Compute instance for profile &#39;(0, 0)&#39;: In use by another client</span>
 <span class="go">Error clearing MIG config on GPU 0, erroneous devices may persist</span>
 <span class="go">Error setting MIGConfig: error attempting multiple config orderings: all orderings failed</span>
@@ -1391,7 +1390,6 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 <span class="go">Changing the &#39;nvidia.com/mig.config.state&#39; node label to &#39;failed&#39;</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ol>
 <p>Resolve this issue by:</p>

@@ -483,8 +483,7 @@ Refer to <a class="reference internal" href="install-gpu-ocp.html#create-cluster
 <section id="validate-the-gpu-stack">
 <h2>Validate the GPU stack<a class="headerlink" href="#validate-the-gpu-stack" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator validates the stack using the <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-validator</span></code> and the <code class="docutils literal notranslate"><span class="pre">nvidia-cuda-validator</span></code> pod. If they report the status <code class="docutils literal notranslate"><span class="pre">Completed</span></code>, the stack works as expected.</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get po -n nvidia-gpu-operator
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get po -n nvidia-gpu-operator
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                              READY   STATUS      RESTARTS   AGE</span>
@@ -502,7 +501,6 @@ Refer to <a class="reference internal" href="install-gpu-ocp.html#create-cluster
 <span class="go">nvidia-operator-validator-kjznr                                   1/1     Running     0          122m</span>
 </pre></div>
 </div>
-</div></blockquote>
 <ol class="arabic">
 <li><p>Verify the cuda validator logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs -f nvidia-cuda-validator-8fx22 -n nvidia-gpu-operator

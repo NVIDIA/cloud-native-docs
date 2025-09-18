@@ -480,12 +480,12 @@ The GPU Operator will use the label to determine which software components to de
 </pre></div>
 </div>
 </li>
-<li><p>If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu">NVIDIA vGPU Documentation</a> to ensure you have met all of the prerequisites for using NVIDIA vGPU.</p></li>
+<li><p>If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu">NVIDIA vGPU Documentation</a> to ensure you have met all the prerequisites for using NVIDIA vGPU.</p></li>
 </ul>
 </section>
 <section id="configure-nvidia-gpu-operator-with-openshift-virtualization">
 <h2>Configure NVIDIA GPU Operator with OpenShift Virtualization<a class="headerlink" href="#configure-nvidia-gpu-operator-with-openshift-virtualization" title="Permalink to this headline">#</a></h2>
-<p>After configuring the <a class="reference internal" href="#id7"><span class="std std-ref">prerequisites</span></a>, the high level workflow for using the NVIDIA GPU Operator with OpenShift Virtualization is as follows:</p>
+<p>After configuring the <a class="reference internal" href="#id7"><span class="std std-ref">prerequisites</span></a>, the high-level workflow for using the NVIDIA GPU Operator with OpenShift Virtualization is as follows:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#enable-iommu-driver"><span class="std std-ref">Enable the IOMMU driver</span></a>.</p></li>
 <li><p><a class="reference internal" href="#label-worker-nodes"><span class="std std-ref">Label worker nodes</span></a> based on the GPU workloads they will run.</p></li>
@@ -521,7 +521,7 @@ The GPU Operator will use the label to determine which software components to de
 <h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create a <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> object that identifies the kernel argument.
-The following example shows a kernel argument for an Intel CPU:</p>
+The following example shows a kernel argument for an Intel CPU.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">machineconfiguration.openshift.io/v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MachineConfig</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
@@ -539,12 +539,12 @@ The following example shows a kernel argument for an Intel CPU:</p>
 </pre></div>
 </div>
 </li>
-<li><p>Create the new <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> object:</p>
+<li><p>Create the new <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> object.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create -f <span class="m">100</span>-worker-kernel-arg-iommu.yaml
 </pre></div>
 </div>
 </li>
-<li><p>Verify that the new <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> object was added:</p>
+<li><p>Verify that the new <code class="docutils literal notranslate"><span class="pre">MachineConfig</span></code> object was added.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get machineconfig
 </pre></div>
 </div>
@@ -554,7 +554,7 @@ The following example shows a kernel argument for an Intel CPU:</p>
 </section>
 <section id="labeling-worker-nodes">
 <span id="label-worker-nodes"></span><h2>Labeling worker nodes<a class="headerlink" href="#labeling-worker-nodes" title="Permalink to this headline">#</a></h2>
-<p>Use the following command to add a label to a worker node:</p>
+<p>Use the following command to add a label to a worker node.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node &lt;node-name&gt; --overwrite nvidia.com/gpu.workload.config<span class="o">=</span>vm-vgpu
 </pre></div>
 </div>
@@ -564,7 +564,7 @@ The GPU Operator uses the value of this label to determine which operands to dep
 To change the default GPU workload configuration, set the following value in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>: <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=&lt;config&gt;</span></code>.</p>
 </section>
 <section id="building-the-vgpu-manager-image">
-<span id="build-vgpu-manager-image"></span><h2>Building the vGPU Manager image<a class="headerlink" href="#building-the-vgpu-manager-image" title="Permalink to this headline">#</a></h2>
+<span id="build-vgpu-manager-image"></span><h2>Building the vGPU Manager Image<a class="headerlink" href="#building-the-vgpu-manager-image" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Building a vGPU Manager image is only required for NVIDIA vGPU.
@@ -573,14 +573,14 @@ If you plan to use GPU Passthrough only, skip this section.</p>
 <p>Use the following steps to build the vGPU Manager container and push it to a private registry.</p>
 <ol class="arabic">
 <li><p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
-<ul class="simple">
+<ul>
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <strong>Software Downloads</strong> section.</p></li>
 <li><p>The NVIDIA vGPU Software is located on the <strong>Driver downloads</strong> tab of the <strong>Software Downloads</strong> page.</p></li>
 <li><p>Click the <strong>Download</strong> link for the Linux KVM complete vGPU package.
 Confirm that the <strong>Product Version</strong> column shows the vGPU version to install.
-Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p></li>
-</ul>
+Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>.</p>
 <blockquote>
+<div><blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image.
@@ -589,6 +589,9 @@ Download the <code class="docutils literal notranslate"><span class="pre">NVIDIA
 Refer to the <code class="docutils literal notranslate"><span class="pre">Infrastructure</span> <span class="pre">Support</span> <span class="pre">Matrix</span></code> under section under the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a> for details on supported version number to use.</p>
 </div>
 </div></blockquote>
+</div></blockquote>
+</li>
+</ul>
 <p>Use the following steps to clone the driver container repository and build the driver image.</p>
 </li>
 <li><p>Open a terminal and clone the driver container image repository:</p>
@@ -607,7 +610,7 @@ Refer to the <code class="docutils literal notranslate"><span class="pre">Infras
 </pre></div>
 </div>
 </li>
-<li><p>Set the following environment variables:</p>
+<li><p>Set the following environment variables.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_REGISTRY</span></code> - Name of the private registry used to store the driver image.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.</p></li>
@@ -622,17 +625,17 @@ For RedHat OpenShift, specify <code class="docutils literal notranslate"><span c
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The recommended registry to use is the Integrated OpenShift Container Platform registry.
-For more information about the registry, see <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html">Accessing the registry</a>.</p>
+For more information about the registry, refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/registry/accessing-the-registry.html">Accessing the registry</a>.</p>
 </div>
 <ol class="arabic">
-<li><p>Build the NVIDIA vGPU Manager image:</p>
+<li><p>Build the NVIDIA vGPU Manager image.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
     --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
     -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
 </pre></div>
 </div>
 </li>
-<li><p>Push the NVIDIA vGPU Manager image to your private registry:</p>
+<li><p>Push the NVIDIA vGPU Manager image to your private registry.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
@@ -714,7 +717,7 @@ Create the cluster policy using the CLI:</p>
 </li>
 </ul>
 <p>In general, the flag <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code> in <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
-<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.</p>
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). The term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> signifies workloads that run in a virtual machine, regardless of the virtualization technology used.</p>
 </li>
 <li><p>Apply the changes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
@@ -743,7 +746,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 <li><p>Expand the <strong>NVIDIA GPU/vGPU Driver config</strong> section.</p></li>
 <li><p>Expand the <strong>Sandbox Workloads config</strong> section and select the checkbox to enable sandbox workloads.</p>
 <p>In general, when sandbox workloads are enabled, <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. This flag is disabled by default, meaning all nodes get provisioned with the same software which enables container workloads, and the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config</span></code> node label is not used.</p>
-<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). We use the term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
+<p>The term <code class="docutils literal notranslate"><span class="pre">sandboxing</span></code> refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). The term <code class="docutils literal notranslate"><span class="pre">sandbox</span> <span class="pre">workloads</span></code> signifies workloads that run in a virtual machine, regardless of the virtualization technology used.
 * Click <strong>Create</strong> to create the ClusterPolicy.</p>
 <img alt="_images/cluster_policy_enable_sandbox_workloads.png" src="_images/cluster_policy_enable_sandbox_workloads.png" />
 </li>
@@ -784,7 +787,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <span id="id3"></span><h3>Add GPU passthrough resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-gpu-passthrough-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h3>
 <p>The following example permits the A10 GPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
-<li><p>Determine the resource names for the GPU devices:</p>
+<li><p>Determine the resource names for the GPU devices.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
 </pre></div>
 </div>
@@ -824,7 +827,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Replace the values in the YAML as follows:</p>
+<p>Replace the values in the YAML as follows.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">pciDeviceSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">pciHostDevices</span></code> to correspond to your GPU type.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
@@ -837,7 +840,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <span id="id4"></span><h3>Add vGPU resources to the HyperConverged Custom Resource<a class="headerlink" href="#add-vgpu-resources-to-the-hyperconverged-custom-resource" title="Permalink to this headline">#</a></h3>
 <p>The following example permits the A10-12Q vGPU device, the device names for the GPUs on your cluster will likely be different.</p>
 <ol class="arabic">
-<li><p>Determine the resource names for the GPU devices:</p>
+<li><p>Determine the resource names for the GPU devices.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node cnt-server-2 -o json <span class="p">|</span> jq <span class="s1">&#39;.status.allocatable | with_entries(select(.key | startswith(&quot;nvidia.com/&quot;))) | with_entries(select(.value != &quot;0&quot;))&#39;</span>
 </pre></div>
 </div>
@@ -877,7 +880,7 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Replace the values in the YAML as follows:</p>
+<p>Replace the values in the YAML as follows.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">mdevNameSelector</span></code> and <code class="docutils literal notranslate"><span class="pre">resourceName</span></code> under <code class="docutils literal notranslate"><span class="pre">mediatedDevices</span></code> to correspond to your vGPU type.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">externalResourceProvider=true</span></code> to indicate that this resource is provided by an external device plugin, in this case the <code class="docutils literal notranslate"><span class="pre">sandbox-device-plugin</span></code> that is deployed by the GPU Operator.</p></li>
@@ -1078,7 +1081,7 @@ For example, the <code class="docutils literal notranslate"><span class="pre">de
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#labeling-worker-nodes">Labeling worker nodes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-vgpu-manager-image">Building the vGPU Manager image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-vgpu-manager-image">Building the vGPU Manager Image</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-nvidia-gpu-operator">Installing the NVIDIA GPU Operator</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-secret">Create the secret</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-clusterpolicy-for-the-gpu-operator-using-the-openshift-container-platform-cli">Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Platform CLI</a></li>
