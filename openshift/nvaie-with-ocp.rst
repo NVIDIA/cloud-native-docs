@@ -68,7 +68,7 @@ Follow the steps outlined in the `Installing vSphere section <https://docs.opens
 
       Secure boot also needs to be disabled as shown:
 
-        .. image:: graphics/vmx_secure_boot.png
+      .. image:: graphics/vmx_secure_boot.png
 
       When using the `UPI install method <https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/installing-vsphere.html#installation-vsphere-machines_installing-vsphere>`_, after **Step 8** of the “Installing RHCOS and starting the OpenShift
       Container Platform bootstrap process” change the boot method to EFI before **continuing to Step 9**.
@@ -83,7 +83,7 @@ Follow the steps outlined in the `Installing vSphere section <https://docs.opens
 
       ``pciPassthru.64bitMMIOSizeGB 512``
 
-         .. image:: graphics/pci_passthrough.png
+      .. image:: graphics/pci_passthrough.png
 
       To support GPUDirect RDMA ensure that the VM has the following configuration parameters set:
 
