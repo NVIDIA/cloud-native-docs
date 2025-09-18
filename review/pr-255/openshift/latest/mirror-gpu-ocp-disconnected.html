@@ -422,7 +422,8 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 </div></blockquote>
 </li>
 <li><p>Access to the cluster as a user with the <code class="docutils literal notranslate"><span class="pre">cluster-admin</span></code> role.</p></li>
-<li><p>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
+<li><dl>
+<dt>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>.</dt><dd><p>A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference external" href="https://www.redhat.com/en/technologies/cloud-computing/quay">Red Hat Quay</a></p></li>
@@ -430,6 +431,7 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 <li><p><a class="reference external" href="https://www.sonatype.com/products/repository-oss?topnav=true">Sonatype Nexus Repository</a></p></li>
 <li><p><a class="reference external" href="https://goharbor.io/">Harbor</a></p></li>
 </ul>
+</div></blockquote>
 <p>Create a private registry using <code class="docutils literal notranslate"><span class="pre">podman</span></code> and guidance on this can be found <a class="reference external" href="https://www.redhat.com/sysadmin/simple-container-registry">here</a> and in the section <a class="reference internal" href="#creating-a-private-registry"><span class="std std-ref">Creating a private registry</span></a>.</p>
 <p>If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for
 <a class="reference external" href="https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/">proof-of-concept purposes</a>
@@ -449,7 +451,8 @@ in the Red Hat OpenShift Container Platform documentation.</p>
 <p class="admonition-title">Note</p>
 <p>If you use HTTP, in Openshift Container Platform add <code class="docutils literal notranslate"><span class="pre">insecureRegistries</span></code> to <code class="docutils literal notranslate"><span class="pre">image.config.openshift.io/cluster</span></code>. Guidance on that configuration is provided <a class="reference external" href="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html">here</a>.</p>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 </li>
 </ul>
 <p><strong>On the jump host:</strong></p>
