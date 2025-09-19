@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 17, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 19, 2025"/>
 
 
 
@@ -392,6 +392,12 @@
                   
   <section id="installation-and-upgrade-overview-on-openshift">
 <span id="steps-overview"></span><h1>Installation and Upgrade Overview on OpenShift<a class="headerlink" href="#installation-and-upgrade-overview-on-openshift" title="Permalink to this headline">#</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not use or upgrade to OpenShift <cite>4.18.22</cite> or <cite>4.18.23</cite>.
+There was a breaking change to <cite>crun</cite> in those versions that causes a known issue with all versions of the GPU Operator.
+Update your OCP cluster to version <cite>4.18.24</cite> or later, which includes a fix for the issue.</p>
+</div>
 <section id="high-level-steps">
 <h2>High-Level Steps<a class="headerlink" href="#high-level-steps" title="Permalink to this headline">#</a></h2>
 <p>Follow these high-level steps to install an entitlement-free supported version of the NVIDIA GPU Operator:</p>
