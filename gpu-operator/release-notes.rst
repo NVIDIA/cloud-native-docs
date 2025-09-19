@@ -43,7 +43,7 @@ Fixed Issues
 
 * Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for ``CONTAINERD_SOCKET`` was provided as input.
   Specifically, the hostPath volumes were not included in the DaemonSet.
-  Refer to GitHub `issue #1694 <https://github.com/NVIDIA/gpu-operator/issues/1694>`__ for more details.
+  Refer to GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1694 for more details.
 
 .. _v25.3.3:
 
