@@ -102,7 +102,7 @@ The basic steps described in this document follows this workflow:
 
 #. Configure nodes
 
-   * Ensure each node (including the control plane) meets the pre-requisites, including time synchronization, correct versions of Docker and other conditions.
+   * Ensure each node (including the control plane) meets the prerequisites, including time synchronization, correct versions of Docker and other conditions.
 
 #. Configure networking (Optional)
 

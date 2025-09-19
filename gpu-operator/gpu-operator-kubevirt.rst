@@ -14,11 +14,11 @@ About the Operator with KubeVirt
 ================================
 
 `KubeVirt <https://kubevirt.io/>`_ is a virtual machine management add-on to Kubernetes that allows you to run and manage virtual machines in a Kubernetes cluster. 
-It eliminates the need to manage separate clusters for virtual machine and container workloads, as both can now coexist in a single Kubernetes cluster.
+It eliminates the need to manage separate clusters for virtual machine and container workloads because both can now coexist in a single Kubernetes cluster.
 
 In addition to the GPU Operator being able to provision worker nodes for running GPU-accelerated containers, the GPU Operator can also be used to provision worker nodes for running GPU-accelerated virtual machines with KubeVirt.
 
-There are some different prerequisites required when running virtual machines with GPU(s) than running containers with GPU(s).
+There are some different prerequisites required when running virtual machines with GPUs compared to running containers with GPUs.
 The primary difference is the drivers required. 
 For example, the datacenter driver is needed for containers, the vfio-pci driver is needed for GPU passthrough, and the `NVIDIA vGPU Manager <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#installing-configuring-grid-vgpu>`_ is needed for creating vGPU devices.
 
@@ -62,15 +62,15 @@ To override the default GPU workload configuration, set the following value in `
 Assumptions, constraints, and dependencies
 ------------------------------------------
 
-* A GPU worker node can run GPU workloads of a particular type - containers, virtual machines with GPU Passthrough, or virtual machines with vGPU - but not a combination of any of them.
+* A GPU worker node can run GPU workloads of a particular type, such as containers, virtual machines with GPU Passthrough, or virtual machines with vGPU, but not a combination of any of them.
 
-* The cluster admin or developer has knowledge about their cluster ahead of time, and can properly label nodes to indicate what types of GPU workloads they will run.
+* The cluster admin or developer has knowledge about their cluster ahead of time and can properly label nodes to indicate what types of GPU workloads they will run.
 
 * Worker nodes running GPU accelerated virtual machines (with GPU passthrough or vGPU) are assumed to be bare metal.
 
 * The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.
 
-* Users must manually add all passthrough GPU and vGPU resources to the ``permittedDevices`` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. See the `KubeVirt documentation <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information.
+* Users must manually add all passthrough GPU and vGPU resources to the ``permittedDevices`` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the `KubeVirt documentation <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information.
 
 * MIG-backed vGPUs are not supported.
 
@@ -83,7 +83,7 @@ Before using KubeVirt with the GPU Operator, ensure the following prerequisites 
 
 * The host is booted with ``intel_iommu=on`` or ``amd_iommu=on`` on the kernel command line.
 
-* If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu>`_ to ensure you have met all of the prerequisites for using NVIDIA vGPU.
+* If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu>`_ to ensure you have met all the prerequisites for using NVIDIA vGPU.
 
 * KubeVirt is installed in the cluster.
 
@@ -110,14 +110,16 @@ After configuring the :ref:`prerequisites<prerequisites>`, the high level workfl
 * :ref:`Install the GPU Operator <install-the-gpu-operator>` and set ``sandboxWorkloads.enabled=true``
 
 If you are planning to deploy VMs with vGPU, the workflow is as follows:
-   * :ref:`Build the NVIDIA vGPU Manager image <build-vgpu-manager-image>`
-   * :ref:`Label the node for the vGPU configuration <vgpu-device-configuration>`
-   * :ref:`Add vGPU resources to KubeVirt CR <add-vgpu-resources-to-kubevirt-cr>`
-   * :ref:`Create a virtual machine with vGPU <create-a-virtual-machine-with-gpu>`
+
+* :ref:`Build the NVIDIA vGPU Manager image <build-vgpu-manager-image>`
+* :ref:`Label the node for the vGPU configuration <vgpu-device-configuration>`
+* :ref:`Add vGPU resources to KubeVirt CR <add-vgpu-resources-to-kubevirt-cr>`
+* :ref:`Create a virtual machine with vGPU <create-a-virtual-machine-with-gpu>`
 
 If you are planning to deploy VMs with GPU passthrough, the workflow is as follows:
-   * :ref:`Add GPU passthrough resources to KubeVirt CR <add-gpu-passthrough-resources-to-kubevirt-cr>`
-   * :ref:`Create a virtual machine with GPU passthrough <create-a-virtual-machine-with-gpu>`
+
+* :ref:`Add GPU passthrough resources to KubeVirt CR <add-gpu-passthrough-resources-to-kubevirt-cr>`
+* :ref:`Create a virtual machine with GPU passthrough <create-a-virtual-machine-with-gpu>`
 
 .. _label-worker-nodes:
 
@@ -150,11 +152,11 @@ Follow one of the below subsections for installing the GPU Operator, depending o
 
 .. note::
 
-   The following commnds set the``sandboxWorkloads.enabled`` flag. 
+   The following commands set the ``sandboxWorkloads.enabled`` flag. 
    This ``ClusterPolicy`` flag controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads. 
    This flag is disabled by default, meaning all nodes get provisioned with the same software to enable container workloads, and the ``nvidia.com/gpu.workload.config`` node label is not used. 
 
-   The term ``sandboxing`` refers to running software in a separate isolated environment, typically for added security (i.e. a virtual machine). 
+   The term *sandboxing* refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine). 
    We use the term ``sandbox workloads`` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -208,9 +210,9 @@ Follow the steps provided in :ref:`this section<build-vgpu-manager-image>`.
             --set vgpuManager.version=<driver version> \
             --set vgpuManager.imagePullSecrets={${REGISTRY_SECRET_NAME}}
 
-The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices which can be assigned to KubeVirt virtual machines.
+The vGPU Device Manager, deployed by the GPU Operator, automatically creates vGPU devices that can be assigned to KubeVirt virtual machines.
 Without additional configuration, the GPU Operator creates a default set of devices on all GPUs.
-To learn more about how the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to :ref:`vGPU Device Configuration<vgpu-device-configuration>`.
+To learn more about the vGPU Device Manager and configure which types of vGPU devices get created in your cluster, refer to :ref:`vGPU Device Configuration<vgpu-device-configuration>`.
 
 Add GPU resources to KubeVirt CR
 -------------------------------------
@@ -410,17 +412,29 @@ At runtime, adminstrators then point the vGPU Device Manager at one of these con
 The configuration file is created as a ConfigMap, and is shared across all worker nodes.
 At runtime, a node label, ``nvidia.com/vgpu.config``, can be used to decide which of these configurations to actually apply to a node at any given time.
 If the node is not labeled, then the ``default`` configuration will be used.
-For more information on this component and how it is configured, refer to the project `README <https://github.com/NVIDIA/vgpu-device-manager>`_.
+For more information on this component and how it is configured, refer to the `NVIDIA vGPU Device Manager README <https://github.com/NVIDIA/vgpu-device-manager>`_.
 
-By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all `vGPU types <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu>`_ supported by NVIDIA vGPU.
+By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all `vGPU types supported by NVIDIA vGPU <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu>`_.
 Users can select a specific configuration for a worker node by applying the ``nvidia.com/vgpu.config`` node label.
-For example, labeling a node with ``nvidia.com/vgpu.config=A10-8Q`` would create 3 vGPU devices of type **A10-8Q** on all **A10** GPUs on the node (note: 3 is the maximum number of **A10-8Q** devices that can be created per GPU).
+For example, labeling a node with ``nvidia.com/vgpu.config=A10-8Q`` would create three vGPU devices of type **A10-8Q** on all **A10** GPUs on the node. Note that three is the maximum number of **A10-8Q** devices that can be created per GPU.
 If the node is not labeled, the ``default`` configuration will be applied.
-The ``default`` configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device
-is half the total GPU memory.
-For example, the ``default`` configuration will create two **A10-12Q** devices on all **A10** GPUs, two **V100-8Q** devices  on all **V100** GPUs, and two **T4-8Q** devices on all **T4** GPUs.
+The ``default`` configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device is half the total GPU memory.
+For example, the ``default`` configuration will create two **A10-12Q** devices on all **A10** GPUs, two **V100-8Q** devices on all **V100** GPUs, and two **T4-8Q** devices on all **T4** GPUs.
 
-If custom vGPU device configuration is desired, more than the default ConfigMap provides, you can create your own ConfigMap:
+You can also create different vGPU Q profiles on the same GPU using vGPU Device Manager configuration.
+For example, you can create a **A10-4Q** and a **A10-6Q** device on same GPU by creating a vGPU Device Manager configuration with the following content:
+
+.. code-block:: yaml
+
+    version: v1
+    vgpu-configs:
+      custom-A10-config:
+        - devices: all
+           vgpu-devices:
+             "A10-4Q": 3
+             "A10-6Q": 2
+
+If custom vGPU device configuration is desired, more than the default config map provides, you can create your own config map:
 
 .. code-block:: console
 
@@ -476,7 +490,7 @@ After the vGPU Device Manager finishes applying the new configuration, all GPU O
    nvidia-vgpu-device-manager-8mgg8                              1/1     Running   0          30m
    nvidia-vgpu-manager-daemonset-fpplc                           1/1     Running   0          31m
 
-You can now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices can be created per **A10** GPU.
+You can now see 12 **A10-4Q** devices on the node, as six **A10-4Q** devices can be created per **A10** GPU.
 
 .. code-block:: console
 
@@ -500,10 +514,9 @@ This section covers building the NVIDIA vGPU Manager container image and pushing
 
 Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
-* Login to the NVIDIA Licensing Portal and navigate to the `Software Downloads` section.
-* The NVIDIA vGPU Software is located in the Software Downloads section of the NVIDIA Licensing Portal.
-* The vGPU Software bundle is packaged as a zip file.
-  Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
+* Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
+* The NVIDIA vGPU Software is located in the **Software Downloads** section of the NVIDIA Licensing Portal.
+* The vGPU Software bundle is packaged as a zip file. Download and unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
 
   .. start-nvaie-run-file
 
@@ -512,7 +525,7 @@ Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidi
      NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
      Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
      ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
-     Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
+     Refer to the **Infrastructure Support Matrix** section under the `NVIDIA AI Enterprise Infrastructure Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
   .. end-nvaie-run-file
 
 Next, clone the driver container repository and build the driver image with the following steps.
@@ -532,7 +545,7 @@ Change to the vgpu-manager directory for your OS. We use Ubuntu 20.04 as an exam
 
 .. note::
 
-   For RedHat OpenShift, run ``cd vgpu-manager/rhel8`` to use the ``rhel8`` folder instead.
+   For Red Hat OpenShift, run ``cd vgpu-manager/rhel8`` to use the ``rhel8`` folder instead.
 
 Copy the NVIDIA vGPU Manager from your extracted zip file
 
@@ -543,7 +556,7 @@ Copy the NVIDIA vGPU Manager from your extracted zip file
 | Set the following environment variables:
 | ``PRIVATE_REGISTRY`` - name of private registry used to store driver image
 | ``VERSION`` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal
-| ``OS_TAG`` - this must match the Guest OS version. In the below example ``ubuntu20.04`` is used. For RedHat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
+| ``OS_TAG`` - this must match the Guest OS version. In the following example ``ubuntu20.04`` is used. For Red Hat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
 | ``CUDA_VERSION`` - CUDA base image version to build the driver image with.
 
 .. code-block:: console
