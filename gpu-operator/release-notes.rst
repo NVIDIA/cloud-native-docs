@@ -23,15 +23,27 @@
 Release Notes
 *****************************************
 
-This document describes the new features, improvements, fixed and known issues for the NVIDIA GPU Operator.
+This document describes the new features, improvements, fixed issues, and known issues for the NVIDIA GPU Operator.
 
-See the :ref:`GPU Operator Component Matrix` for a list of software components and versions included in each release.
+Refer to the :ref:`GPU Operator Component Matrix` for a list of software components and versions included in each release.
 
 .. note::
 
    GPU Operator beta releases are documented on `GitHub <https://github.com/NVIDIA/gpu-operator/releases>`_. NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ----
+
+.. _v25.3.4:
+
+25.3.4
+======
+
+Fixed Issues
+------------
+
+* Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for ``CONTAINERD_SOCKET`` was provided as input.
+  Specifically, the hostPath volumes were not included in the DaemonSet.
+  Refer to GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1694 for more details.
 
 .. _v25.3.3:
 
