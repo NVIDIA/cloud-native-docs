@@ -34,6 +34,8 @@ Use the `Dockerfile` in the repository (under the `docker` directory) to generat
 
 1. Build the docs:
 
+   Use the alias `build-docs` or the full command:
+
    ```bash
    ./repo docs
    ```
@@ -48,6 +50,8 @@ Use the `Dockerfile` in the repository (under the `docker` directory) to generat
    For the GPU Operator, always build it with the OCP docset as well, as shown in the preceding command.
 
 The resulting HTML pages are located in the `_build/docs/.../latest/` directory of your repository clone.
+
+If you are using WSL on Windows, the URL looks like <file://wsl.localhost/Ubuntu/home/username/path/to/repo/cloud-native-docs/_build/docs/gpu-operator/latest/index.html>.
 
 More information about the `repo docs` command is available from
 <http://omniverse-docs.s3-website-us-east-1.amazonaws.com/repo_docs/0.20.3/index.html>.
