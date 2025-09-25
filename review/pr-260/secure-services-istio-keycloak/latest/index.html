@@ -1,0 +1,646 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Securing NVIDIA Services with Istio and Keycloak &#8212; Securing NVIDIA Services with Istio and Keycloak</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Platform Support" href="platform-support.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Sep 25, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+  
+  
+    <p class="title logo__title">Securing NVIDIA Services with Istio and Keycloak</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Securing NVIDIA Services with Istio and Keycloak - Home"/>
+  
+  
+    <p class="title logo__title">Securing NVIDIA Services with Istio and Keycloak</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Securing NVIDIA MicroServices</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">   About the Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">   Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">   Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">   Configure</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="#">Securing NVIDIA Services with Istio and Keycloak</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Securing NVIDIA Services with Istio and Keycloak</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!--
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+-->
+<div class="toctree-wrapper compound">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="securing-nvidia-services-with-istio-and-keycloak">
+<h1>Securing NVIDIA Services with Istio and Keycloak<a class="headerlink" href="#securing-nvidia-services-with-istio-and-keycloak" title="Permalink to this headline">#</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+<li><p><a class="reference internal" href="#nvidia-nim-overview" id="id2">NVIDIA NIM Overview</a></p></li>
+<li><p><a class="reference internal" href="#service-mesh-in-nim" id="id3">Service Mesh in NIM</a></p></li>
+<li><p><a class="reference internal" href="#secure-communication-through-service-mesh" id="id4">Secure Communication Through Service Mesh</a></p></li>
+<li><p><a class="reference internal" href="#architecture-diagram" id="id5">Architecture Diagram</a></p></li>
+<li><p><a class="reference internal" href="#use-cases" id="id6">Use Cases</a></p>
+<ul>
+<li><p><a class="reference internal" href="#secure-api-endpoints" id="id7">Secure API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#ingress-management" id="id8">Ingress Management</a></p></li>
+<li><p><a class="reference internal" href="#opentelemetry-protocol-otlp-telemetry" id="id9">OpenTelemetry Protocol (OTLP) Telemetry</a></p></li>
+<li><p><a class="reference internal" href="#rbac-for-api-endpoints" id="id10">RBAC for API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#load-balancing" id="id11">Load Balancing</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>In the evolving landscape of AI and machine learning, Retrieval Augmented Generation (RAG) stands out for its ability to dynamically retrieve and integrate external knowledge for real-time response generation. However, implementing RAG in a distributed environment poses significant challenges, particularly in secure service communication. This document proposes a reference architecture that leverages a service mesh framework to ensure secure, efficient communication within a RAG system while integrating with an external OpenID Connect (OIDC) provider for robust authentication and authorization.</p>
+</section>
+<section id="nvidia-nim-overview">
+<h2>NVIDIA NIM Overview<a class="headerlink" href="#nvidia-nim-overview" title="Permalink to this headline">#</a></h2>
+<p>NVIDIA NIM microservices are a set of easy-to-use microservices for accelerating the deployment of foundation models on any cloud or data center and helps keep your data secure. NIM microservices have production-grade runtimes including on-going security updates. Run your business applications with stable APIs backed by enterprise-grade support. For more information refer <a class="reference external" href="https://docs.nvidia.com/nim/index.html">NVIDIA NIM</a></p>
+</section>
+<section id="service-mesh-in-nim">
+<h2>Service Mesh in NIM<a class="headerlink" href="#service-mesh-in-nim" title="Permalink to this headline">#</a></h2>
+<p>A service mesh is a configurable infrastructure layer designed to handle service-to-service communication in a microservices architecture, ensuring reliable data transfer, service discovery, load balancing, and more. In a NIM MicroServices, where multiple services (like retrieval microservices, encoding microservices, and language models) need to communicate efficiently, a service mesh serves as a backbone for managing these interactions.</p>
+</section>
+<section id="secure-communication-through-service-mesh">
+<h2>Secure Communication Through Service Mesh<a class="headerlink" href="#secure-communication-through-service-mesh" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>Encryption</p>
+<p>Ensuring that data in transit is encrypted and secure from external threats to ensure data privacy and compliance.</p>
+</li>
+<li><p>Authentication</p>
+<p>Verifying the identity of services within the mesh.</p>
+</li>
+<li><p>Authorization</p>
+<p>Controlling which services can communicate with each other and what resources they can access.</p>
+</li>
+<li><p>Integration with OIDC Provider</p>
+<p>OpenID Connect (OIDC) is an authentication layer on top of OAuth 2.0 in this RAG architecture.</p>
+<ul>
+<li><p>Role of OIDC</p>
+<p>It provides a standardized way for services to authenticate using tokens, ensuring that only authorized services and users can access the RAG system’s components.</p>
+</li>
+<li><p>Integration Steps</p>
+<p>The service mesh can be configured to work with an OIDC provider to validate tokens for each request, ensuring authenticated and authorized communication.</p>
+</li>
+<li><p>Benefits</p>
+<p>When a user or service attempts to access the RAG system, the service mesh intercepts this request and checks for valid authentication tokens provided by the OIDC/OAuth2 service. This ensures that only authenticated users and services can interact with the RAG system, enhancing security and access control.</p>
+</li>
+</ul>
+</li>
+<li><p>Performance and Scalability</p>
+<p>The architecture supports horizontal scaling and can handle varying loads, ensuring high availability and minimal latency.</p>
+</li>
+</ul>
+</section>
+<section id="architecture-diagram">
+<h2>Architecture Diagram<a class="headerlink" href="#architecture-diagram" title="Permalink to this headline">#</a></h2>
+<p>The diagram visualizes the first version of the Operator. Later more microservices can be added.</p>
+<p><img alt="Sample network topology" src="_images/reference-arch-01.png" /></p>
+</section>
+<section id="use-cases">
+<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
+<section id="secure-api-endpoints">
+<h3>Secure API Endpoints<a class="headerlink" href="#secure-api-endpoints" title="Permalink to this headline">#</a></h3>
+<p><strong>Implementation</strong>: The service mesh employs mTLS (mutual Transport Layer Security) to encrypt data transmitted between the API endpoints.</p>
+<p><strong>Functionality</strong>: All incoming and outgoing traffic from the API endpoints passes through the service mesh, where it is encrypted, ensuring data integrity and confidentiality.</p>
+<p><strong>Benefits</strong>: This encryption secures the API endpoints against interception and unauthorized access.</p>
+</section>
+<section id="ingress-management">
+<h3>Ingress Management<a class="headerlink" href="#ingress-management" title="Permalink to this headline">#</a></h3>
+<p><strong>Implementation</strong>: The service mesh acts as an intelligent ingress controller, managing the flow of external traffic into the RAG system.</p>
+<p><strong>Functionality</strong>: It filters and routes incoming requests to the appropriate services within the RAG system, applying necessary security checks and load balancing.</p>
+<p><strong>Benefits</strong>: This ensures controlled and secure access to the system’s resources, preventing unauthorized access and optimizing resource utilization.</p>
+</section>
+<section id="opentelemetry-protocol-otlp-telemetry">
+<h3>OpenTelemetry Protocol (OTLP) Telemetry<a class="headerlink" href="#opentelemetry-protocol-otlp-telemetry" title="Permalink to this headline">#</a></h3>
+<p><strong>Implementation</strong>: The service mesh is configured to support OTLP for collecting and exporting networking telemetry data.</p>
+<p><strong>Functionality</strong>: It captures metrics, access logs, and traces from different parts of the RAG system, forwarding them to an observability platform via OTLP.</p>
+<p><strong>Benefits</strong>: This enables real-time monitoring and analysis of the system’s performance and security, aiding in prompt issue detection and resolution.</p>
+</section>
+<section id="rbac-for-api-endpoints">
+<h3>RBAC for API Endpoints<a class="headerlink" href="#rbac-for-api-endpoints" title="Permalink to this headline">#</a></h3>
+<p><strong>Implementation</strong>: Role-Based Access Control (RBAC) is integrated within the service mesh to manage access to API endpoints.</p>
+<p><strong>Functionality</strong>: The service mesh checks the roles and permissions of authenticated users or services against predefined policies to grant or deny access to specific endpoints.</p>
+<p><strong>Benefits</strong>: This ensures that only users or services with the appropriate permissions, especially those belonging to specific groups, can access certain endpoints, enforcing fine-grained access control.</p>
+</section>
+<section id="load-balancing">
+<h3>Load Balancing<a class="headerlink" href="#load-balancing" title="Permalink to this headline">#</a></h3>
+<p>Service-to-service communication within the mesh has source load-balancing with automatic service discovery. The mesh ingress endpoint creates Kubernetes service of type Load Balancer and is usually automatically realized on the infrastructure layer.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="platform-support.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Platform Support</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-nim-overview">NVIDIA NIM Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#service-mesh-in-nim">Service Mesh in NIM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#secure-communication-through-service-mesh">Secure Communication Through Service Mesh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-diagram">Architecture Diagram</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#secure-api-endpoints">Secure API Endpoints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ingress-management">Ingress Management</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opentelemetry-protocol-otlp-telemetry">OpenTelemetry Protocol (OTLP) Telemetry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rbac-for-api-endpoints">RBAC for API Endpoints</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-balancing">Load Balancing</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2024-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
