@@ -506,11 +506,12 @@ User-supplied environment variables now take precedence over environment variabl
 For more information on CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When CDMM is enabled, the driver container does <strong>not</strong> support <strong>MIG</strong> or <strong>GPU Direct Storage</strong> on GB200.
+<p>CDMM is not compatible with the <strong>Multi-Instance GPUs (MIG)</strong> sharing.
+CDMM is not compatible with <strong>GPU Direct Storage</strong>.
 These limitations will remain in place until a future driver update removes them.</p>
 </div>
 <p>CDMM enablement applies only to <strong>Grace-based systems</strong> such as <strong>GH200</strong> and <strong>GB200</strong> and is ignored on other GPU platforms.
-NVIDIA strongly recommends keeping CDMM enabled with K8s on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.</p>
+NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.</p>
 </li>
 <li><p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
