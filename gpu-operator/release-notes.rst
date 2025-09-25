@@ -108,11 +108,12 @@ Known Issues
   
   .. note::
 
-    When CDMM is enabled, the driver container does **not** support **MIG** or **GPU Direct Storage** on GB200.
+    CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
+    CDMM is not compatible with **GPU Direct Storage**.
     These limitations will remain in place until a future driver update removes them.
   
   CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
-  NVIDIA strongly recommends keeping CDMM enabled with K8s on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
+  NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
