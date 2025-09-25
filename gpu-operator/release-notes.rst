@@ -103,11 +103,16 @@ New Features
 Known Issues
 ------------
 
-* The 580.65.06 driver container comes with Coherent Driver Memory Management (CDMM) enabled by default to support GB200 on Kubernetes.
-  For more details on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
-  Note that the 580.65.06 driver container does not support MIG on GB200 when CDMM is enabled.
-  Additionally, CDMM enablement is only applicable to Grace-based systems like GH200 and GB200, so it is ignored on other GPU machines.
-  NVIDIA strongly recommends keeping CDMM enabled on these systems to avoid memory over-reporting and unrestricted GPU memory access issues.
+* Starting with version **580.65.06**, the driver container has **Coherent Driver Memory Management (CDMM)** enabled by default to support **GB200** on Kubernetes.
+  For more information on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
+  
+  .. note::
+
+    When CDMM is enabled, the driver container does **not** support **MIG** or **GPU Direct Storage** on GB200.
+    These limitations will remain in place until a future driver update removes them.
+  
+  CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
+  NVIDIA strongly recommends keeping CDMM enabled with K8s on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
