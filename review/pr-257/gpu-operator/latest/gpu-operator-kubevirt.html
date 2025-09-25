@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 22, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 25, 2025"/>
 
 
 
@@ -773,7 +773,7 @@ Users can select a specific configuration for a worker node by applying the <cod
 For example, labeling a node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config=A10-8Q</span></code> would create three vGPU devices of type <strong>A10-8Q</strong> on all <strong>A10</strong> GPUs on the node. Note that three is the maximum number of <strong>A10-8Q</strong> devices that can be created per GPU.
 If the node is not labeled, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be applied.
 The <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device is half the total GPU memory.
-For example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create two <strong>A10-12Q</strong> devices on all <strong>A10</strong> GPUs, two <strong>V100-8Q</strong> devices on all <strong>V100</strong> GPUs, and two <strong>T4-8Q</strong> devices on all <strong>T4</strong> GPUs.</p>
+For example, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will create two <strong>A10-12Q</strong> devices on all <strong>A10</strong> GPUs.</p>
 <p>You can also create different vGPU Q profiles on the same GPU using vGPU Device Manager configuration.
 For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</strong> device on same GPU by creating a vGPU Device Manager configuration with the following content:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
