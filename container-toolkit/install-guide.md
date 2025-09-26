@@ -44,7 +44,7 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
    Optionally, configure the repository to use experimental packages:
 
    ```console
-   $ sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
+   $ sudo sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
    ```
 
 1. Update the packages list from the repository:

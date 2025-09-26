@@ -472,13 +472,13 @@ See the :doc:`precompiled-drivers` page for more information about using precomp
 +----------------------------+------------------------+----------------+---------------------+
 | Operating System           | Kernel Flavor          | Kernel Version | CUDA Driver Branch  |
 +============================+========================+================+=====================+
-| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R550, R570   |
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  5.15          |  R535, R570, R580   |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 22.04               | Generic, NVIDIA, Azure |  6.8           |  R535, R570         |
+| Ubuntu 22.04               | Generic, NVIDIA, Azure |  6.8           |  R535, R570, R580   |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
-| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R550, R570         |
+| Ubuntu 24.04               | Generic, NVIDIA, Azure |  6.8           |  R570, R580         |
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
 
