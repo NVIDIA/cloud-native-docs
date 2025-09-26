@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 25, 2025"/>
+    <meta name="docbuild:last-update" content="Sep 26, 2025"/>
 
 
 
@@ -503,12 +503,13 @@ User-supplied environment variables now take precedence over environment variabl
 <span id="v25-3-2-known-issues"></span><h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Starting with version <strong>580.65.06</strong>, the driver container has <strong>Coherent Driver Memory Management (CDMM)</strong> enabled by default to support <strong>GB200</strong> on Kubernetes.
-For more information on CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.</p>
+For more information about CDMM, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support">release notes</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>CDMM is not compatible with the <strong>Multi-Instance GPUs (MIG)</strong> sharing.
-CDMM is not compatible with <strong>GPU Direct Storage</strong>.
-These limitations will remain in place until a future driver update removes them.</p>
+<p>Currently, CDMM is not compatible with the <strong>Multi-Instance GPUs (MIG)</strong> sharing.
+CDMM is also not compatible with <strong>GPU Direct Storage</strong>.
+CDMM support for these features is planned for future driver updates.
+However, these limitations will remain in place until a future driver update removes them.</p>
 </div>
 <p>CDMM enablement applies only to <strong>Grace-based systems</strong> such as <strong>GH200</strong> and <strong>GB200</strong> and is ignored on other GPU platforms.
 NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.</p>
@@ -528,7 +529,7 @@ Additionally, all GPU Operator pods become stuck in the <code class="docutils li
 <span id="id6"></span><h3>Fixed Issues<a class="headerlink" href="#v25-3-2-fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed security vulnerabilities in NVIDIA Container Toolkit and related components.
-This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) which could allow
+This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) that could allow
 arbitrary code execution and link following attacks in container environments.
 For complete details, refer to the <a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5659">NVIDIA Security Bulletin</a>.</p></li>
 </ul>
