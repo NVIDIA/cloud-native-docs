@@ -104,13 +104,14 @@ Known Issues
 ------------
 
 * Starting with version **580.65.06**, the driver container has **Coherent Driver Memory Management (CDMM)** enabled by default to support **GB200** on Kubernetes.
-  For more information on CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
+  For more information about CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
   
   .. note::
 
-    CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
-    CDMM is not compatible with **GPU Direct Storage**.
-    These limitations will remain in place until a future driver update removes them.
+    Currently, CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
+    CDMM is also not compatible with **GPU Direct Storage**.
+    CDMM support for these features is planned for future driver updates.
+    However, these limitations will remain in place until a future driver update removes them.
   
   CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
   NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
@@ -133,7 +134,7 @@ Fixed Issues
 ------------
 
 * Fixed security vulnerabilities in NVIDIA Container Toolkit and related components.
-  This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) which could allow 
+  This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) that could allow 
   arbitrary code execution and link following attacks in container environments.
   For complete details, refer to the `NVIDIA Security Bulletin <https://nvidia.custhelp.com/app/answers/detail/a_id/5659>`__.
 
