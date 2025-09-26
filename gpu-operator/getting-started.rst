@@ -160,9 +160,9 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
    * - ``daemonsets.labels``
      - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
-  
+
    * - ``dcgmExporter.enabled``
-     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
+     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_.
        Set this value to ``false`` to disable it.
        Available values are ``true`` (default) or ``false``.
      - ``true``
@@ -186,10 +186,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.kernelModuleType``
      - Specifies the type of the NVIDIA GPU Kernel modules to use.
-       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
-       
+       Valid values are ``auto`` (default), ``proprietary``, and ``open``.
+
        ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers.
        550 and 535 branch drivers do not yet support this mode.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.
@@ -546,36 +546,17 @@ Refer to the :ref:`v24.9.0-known-limitations`.
 MicroK8s
 ========
 
-For MicroK8s, set the following in the ``ClusterPolicy``.
-
-.. code-block:: yaml
-
-   toolkit:
-      env:
-      - name: CONTAINERD_CONFIG
-        value: /var/snap/microk8s/current/args/containerd-template.toml
-      - name: CONTAINERD_SOCKET
-        value: /var/snap/microk8s/common/run/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: "true"
-
-These options can be passed to GPU Operator during install time as below.
+For MicroK8s, is necessary to install the snap with the ``--classic`` flag and enable the
+``gpu`` addon.
 
 .. code-block:: console
 
-  helm install gpu-operator -n gpu-operator --create-namespace \
-    nvidia/gpu-operator $HELM_OPTIONS \
-      --version=${version} \
-      --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
-      --set toolkit.env[1].name=CONTAINERD_SOCKET \
-      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+  sudo snap install microk8s --classic
+  microk8s enable gpu
+
+This will install the GPU Operator and the NVIDIA Container Toolkit in the
+``gpu-operator-resources`` namespace. For more information, refer to the
+`MicroK8s GPU documentation <https://microk8s.io/docs/addon-gpu>`__.
 
 .. _running sample gpu applications:
 .. _verify gpu operator install:
