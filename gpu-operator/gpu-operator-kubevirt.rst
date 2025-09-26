@@ -419,7 +419,7 @@ Users can select a specific configuration for a worker node by applying the ``nv
 For example, labeling a node with ``nvidia.com/vgpu.config=A10-8Q`` would create three vGPU devices of type **A10-8Q** on all **A10** GPUs on the node. Note that three is the maximum number of **A10-8Q** devices that can be created per GPU.
 If the node is not labeled, the ``default`` configuration will be applied.
 The ``default`` configuration will create Q-series vGPU devices on all GPUs, where the amount of framebuffer memory per vGPU device is half the total GPU memory.
-For example, the ``default`` configuration will create two **A10-12Q** devices on all **A10** GPUs, two **V100-8Q** devices on all **V100** GPUs, and two **T4-8Q** devices on all **T4** GPUs.
+For example, the ``default`` configuration will create two **A10-12Q** devices on all **A10** GPUs.
 
 You can also create different vGPU Q profiles on the same GPU using vGPU Device Manager configuration.
 For example, you can create a **A10-4Q** and a **A10-6Q** device on same GPU by creating a vGPU Device Manager configuration with the following content:

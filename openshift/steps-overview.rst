@@ -14,6 +14,7 @@ Installation and Upgrade Overview on OpenShift
    Do not use or upgrade to OpenShift `4.18.22` or `4.18.23`.
    There was a breaking change to `crun` in those versions that causes a known issue with all versions of the GPU Operator.
    Update your OCP cluster to version `4.18.24` or later, which includes a fix for the issue.
+   Refer to `NVIDIA GPU Operator Validator Pod Error <https://access.redhat.com/solutions/7131271>`_ in the Red Hat Knowledgebase for more information.
 
 ****************
 High-Level Steps
