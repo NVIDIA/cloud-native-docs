@@ -223,10 +223,6 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
    This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
    Alternatively, you can set the default sandbox workload to ``vm-passthrough`` to run confidential containers on all worker nodes.
 
-#. Install the Confidential Containers Operator.
-
-   This step installs the Operator and also the Kata Containers runtime that NVIDIA uses for Kata Containers.
-
 #. Install the NVIDIA GPU Operator.
 
    You install the Operator and specify options to deploy the operands that are required for Kata Containers.
@@ -234,10 +230,6 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 After installation, you can run a sample workload.
 
 .. |project-name| replace:: Kata Containers
-
-.. include:: gpu-operator-confidential-containers.rst
-   :start-after: start-install-coco-operator
-   :end-before: end-install-coco-operator
 
 
 *******************************
