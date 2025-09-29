@@ -32,8 +32,8 @@ Limitations and Restrictions
 
 * Precompiled driver container images for Red Hat OpenShift Container Platform have been tested with the following versions:
 
-  * 4.12 (RHEL 8.6)
-  * 4.13 (RHEL 9.2)
+  * 4.17 (RHEL 9.4)
+  * 4.18 (RHEL 9.4)
 
 ***********************************
 Building a Precompiled Driver Image
