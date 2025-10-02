@@ -33,6 +33,27 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v25.10.0:
+
+25.10.0
+=======
+
+New Features
+------------
+
+* TBD
+
+Fixed Issues
+------------
+
+* TBD
+
+Known Issues
+------------
+
+* TBD
+
+
 .. _v25.3.4:
 
 25.3.4
