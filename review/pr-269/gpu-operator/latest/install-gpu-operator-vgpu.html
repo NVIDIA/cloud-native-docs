@@ -491,24 +491,15 @@ The guest driver file name follows the pattern <code class="docutils literal not
 </pre></div>
 </div>
 </li>
-<li><p>Change directory to the operating system name and version under the driver directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> ubuntu22.04
+<li><p>Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file to the operating system version you want to build the driver container for:</p>
+<p>Copy &lt;local-driver-download-directory&gt;/*-grid.run and vgpuDriverCatalog.yaml to ubuntu22.04/drivers/.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-grid.run ubuntu22.04/drivers/
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp vgpuDriverCatalog.yaml ubuntu22.04/drivers/
 </pre></div>
 </div>
 <p>For Red Hat OpenShift Container Platform, use a directory that includes <code class="docutils literal notranslate"><span class="pre">rhel</span></code> in the directory name.</p>
-</li>
-<li><p>Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-grid.run drivers/
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp vgpuDriverCatalog.yaml drivers/
-</pre></div>
-</div>
-</li>
-<li><p>Return to the root directory of the driver container repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> ..
-</pre></div>
-</div>
 </li>
 <li><p>Set environment variables for building the driver container image.</p>
 <ul>
