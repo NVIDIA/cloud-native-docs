@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 21, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 06, 2025"/>
 
 
 
@@ -558,7 +558,7 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 </pre></div>
 </div>
 </li>
-<li><p>The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code>. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests/nvidia-device-plugin.yml</span></code>.</p>
+<li><p>The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code>. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests.d/nvidia-device-plugin</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/refs/heads/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml <span class="p">|</span> sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/nvidia-device-plugin.yml
 </pre></div>
 </div>
