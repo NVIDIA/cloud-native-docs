@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 02, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 08, 2025"/>
 
 
 
@@ -482,7 +482,7 @@ To override the default GPU workload configuration, set the following value in <
 <li><p>The cluster admin or developer has knowledge about their cluster ahead of time and can properly label nodes to indicate what types of GPU workloads they will run.</p></li>
 <li><p>Worker nodes running GPU accelerated virtual machines (with GPU passthrough or vGPU) are assumed to be bare metal.</p></li>
 <li><p>The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.</p></li>
-<li><p>Users must manually add all passthrough GPU and vGPU resources to the <code class="docutils literal notranslate"><span class="pre">permittedDevices</span></code> list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices">KubeVirt documentation</a> for more information.</p></li>
+<li><p>Users must manually add all passthrough GPU and vGPU resources to the <code class="docutils literal notranslate"><span class="pre">permittedDevices</span></code> list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/compute/host-devices/#listing-permitted-devices">KubeVirt documentation</a> for more information.</p></li>
 <li><p>MIG-backed vGPUs are not supported.</p></li>
 </ul>
 </section>
@@ -842,7 +842,7 @@ This resulted in the creation of four <strong>A10-12Q</strong> devices (two per 
 If only planning to use PCI passthrough, skip this section.</p>
 </div>
 <p>This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.</p>
-<p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
+<p>Download the vGPU Software from the <a class="reference external" href="https://stg.ui.licensing.nvidia.com/">NVIDIA Licensing Portal</a>.</p>
 <ul>
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <strong>Software Downloads</strong> section.</p></li>
 <li><p>The NVIDIA vGPU Software is located in the <strong>Software Downloads</strong> section of the NVIDIA Licensing Portal.</p></li>
