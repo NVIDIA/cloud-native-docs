@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -831,7 +831,7 @@ configuration to all nodes.</p>
 <li><p>Install the operator with Helm:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.10 <span class="se">\</span>
     --set devicePlugin.config.name<span class="o">=</span>time-slicing-config
 </pre></div>
 </div>
