@@ -12,7 +12,7 @@ NVIDIA DRA Driver for GPUs
 GPU allocation
 **************
 
-Compared to `traditional GPU allocation <https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/#using-device-plugins/>`_ using coarse-grained count-based requests, the GPU allocation side of this driver enables fine-grained control and powerful features long desired by the community, such as:
+Compared to `traditional GPU allocation <https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/#using-device-plugins>`_ using coarse-grained count-based requests, the GPU allocation side of this driver enables fine-grained control and powerful features long desired by the community, such as:
 
 #. Controlled sharing of individual GPUs between multiple pods and/or containers.
 #. GPU selection via complex constraints expressed via `CEL <https://kubernetes.io/docs/reference/using-api/cel/>`_.

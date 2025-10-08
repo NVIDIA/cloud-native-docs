@@ -70,7 +70,7 @@ Assumptions, constraints, and dependencies
 
 * The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.
 
-* Users must manually add all passthrough GPU and vGPU resources to the ``permittedDevices`` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the `KubeVirt documentation <https://kubevirt.io/user-guide/virtual_machines/host-devices/#listing-permitted-devices>`_ for more information.
+* Users must manually add all passthrough GPU and vGPU resources to the ``permittedDevices`` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the `KubeVirt documentation <https://kubevirt.io/user-guide/compute/host-devices/#listing-permitted-devices>`_ for more information.
 
 * MIG-backed vGPUs are not supported.
 
@@ -512,7 +512,7 @@ Building the NVIDIA vGPU Manager image
 
 This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.
 
-Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+Download the vGPU Software from the `NVIDIA Licensing Portal <https://stg.ui.licensing.nvidia.com/>`_.
 
 * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
 * The NVIDIA vGPU Software is located in the **Software Downloads** section of the NVIDIA Licensing Portal.

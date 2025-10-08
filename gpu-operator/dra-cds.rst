@@ -49,7 +49,8 @@ For more detail on the security properties of a ComputeDomain, see `Security <dr
 A deeper dive: related resources
 ================================
 
-For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see `this doc <https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so>`_ and `this slide deck <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647>`_.
+For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, refer to the `Kubernetes support for GH200 / GB200 <https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.nfp9friarxam>`_ document
+and the `Supporting GB200 on Kubernetes <https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&slide=id.g373e0ebfa8e_1_142#slide=id.g373e0ebfa8e_1_142>`_ slide deck.
 For an outlook on planned improvements on the ComputeDomain concept, please refer to `this document <https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3>`_.
 
 Details about IMEX and its relationship to NVLink may be found in `NVIDIA's IMEX guide <https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html>`_, and in `NVIDIA's NVLink guide <https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service>`_.

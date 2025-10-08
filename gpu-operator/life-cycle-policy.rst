@@ -167,7 +167,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 .. note::
 
    - Driver version could be different with NVIDIA vGPU, as it depends on the driver
-     version downloaded from the `NVIDIA vGPU Software Portal  <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
+     version downloaded from the `NVIDIA Licensing Portal  <https://ui.licensing.nvidia.com>`_.
    - The GPU Operator is supported on all active NVIDIA data center production drivers.
-     Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#cuda-drivers>`_
+     Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions>`_
      for more information.

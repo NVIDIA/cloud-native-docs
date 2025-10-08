@@ -462,6 +462,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.29---1.33
          -
 
+.. _supported-precompiled-drivers:
 
 Supported Precompiled Drivers
 -----------------------------
