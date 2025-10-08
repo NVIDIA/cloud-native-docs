@@ -41,7 +41,7 @@ Concurrent Job Launch
 Now, let's try a more complex example. In this example, we will use Argo Workflows to launch concurrent 
 jobs on MIG devices. In this example, the A100 has been configured into 2 MIG devices using the: ``3g.20gb`` profile.
 
-First, `install <https://argoproj.github.io/argo-workflows/quick-start/#install-argo-workflows>`_ the Argo Workflows 
+First, `install <https://argo-workflows.readthedocs.io/en/latest/quick-start/#install-argo-workflows>`_ the Argo Workflows 
 components into your Kubernetes cluster. 
 
 .. code-block:: console

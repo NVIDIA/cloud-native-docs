@@ -48,8 +48,8 @@ When you follow this approach, you can install the Operator without any special
 considerations or arguments.
 Refer to :ref:`Install NVIDIA GPU Operator`.
 
-For more information about this preview feature, see
-`Skip GPU driver installation (preview) <https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview>`__
+For more information about this feature, see
+`Skip GPU driver installation <https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?source=recommendations&tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation>`__
 in the Azure Kubernetes Service documentation.
 
 

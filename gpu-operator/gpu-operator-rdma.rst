@@ -99,7 +99,7 @@ The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on 
     * ``pciPassthru.64bitMMIOSizeGB = 128``
 
     For information about configuring the settings, refer to the
-    `Deploy an AI-Ready Enterprise Platform on vSphere 7 <https://core.vmware.com/resource/deploy-ai-ready-vsphere-7#vm-settings-A>`_
+    `Deploy an AI-Ready Enterprise Platform on vSphere 7 <https://www.vmware.com/docs/deploy-an-ai-ready-enterprise-platform-on-vsphere-7-update-2#vm-settings-A>`_
     document from VMWare.
 
 **************************

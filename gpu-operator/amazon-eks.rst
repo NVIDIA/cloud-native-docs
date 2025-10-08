@@ -102,11 +102,10 @@ without any limitations, you perform the following high-level actions:
   the instance type to meet your needs:
 
   * Table of accelerated computing
-    `instance types <https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing>`_
+    `instance types <https://aws.amazon.com/ec2/instance-types/accelerated-computing/>`_
     for information about GPU model and count, RAM, and storage.
 
-  * Table of
-    `maximum network interfaces <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#enis-acceleratedcomputing>`_
+  * `Maximum IP addresses per network interface <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html>`_
     for accelerated computing instance types.
     Make sure the instance type supports enough IP addresses for your workload.
     For example, the ``g4dn.xlarge`` instance type supports ``29`` IP addresses for pods on the node.
@@ -132,7 +131,7 @@ Prerequisites
   and `Configuring the AWS CLI <https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html>`_
   in the AWS CLI documentation.
 * You installed the ``eksctl`` CLI if you prefer it as your client application.
-  The CLI is available from https://eksctl.io/introduction/#installation.
+  The CLI is available from https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update.
 * You have the AMI value from https://cloud-images.ubuntu.com/aws-eks/.
 * You have the EC2 instance type to use for your nodes.
 

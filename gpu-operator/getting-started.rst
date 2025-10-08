@@ -168,7 +168,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``true``
 
    * - ``dcgmExporter.service.internalTrafficPolicy``
-     - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#internal-traffic-policy>`_ for the DCGM Exporter service.
+     - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies>`_ for the DCGM Exporter service.
        Available values are ``Cluster`` (default) or ``Local``.
      - ``Cluster``
 

@@ -48,7 +48,7 @@ Prerequisites
 =============
 
 - Kubernetes v1.32 or newer.
-- DRA and corresponding API groups must be enabled (`see Kubernetes docs <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-dynamic-resource-allocation>`_).
+- DRA and corresponding API groups must be enabled (`see Kubernetes docs <https://kubernetes.io/docs/tasks/configure-pod-container/assign-resources/set-up-dra-cluster/#enable-dra>`_).
 - `CDI <https://github.com/cncf-tags/container-device-interface?tab=readme-ov-file#how-to-configure-cdi>`_ must be enabled in the underlying container runtime (such as containerd or CRI-O).
 - NVIDIA GPU Driver 565 or later.
 

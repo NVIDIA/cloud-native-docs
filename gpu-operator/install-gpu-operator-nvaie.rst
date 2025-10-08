@@ -82,7 +82,7 @@ Prerequisites
   in the *NVIDIA License System User Guide* for more information.
 - An NGC CLI API key that is used to create an image pull secret.
   The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
-  Refer to `Generating Your NGC API Key <https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key>`__
+  Refer to `Generating Your NGC API Key <https://docs.nvidia.com/ngc/latest/ngc-private-registry-user-guide.html#prug-generating-personal-api-key>`__
   in the *NVIDIA NGC Private Registry User Guide* for more information.
 
 Procedure
@@ -179,7 +179,7 @@ The following list summarizes the driver branches for each release.
 
 For newer releases, you can confirm the the supported driver branch by performing the following steps:
 
-#. Refer to the `release documentation <https://docs.nvidia.com/ai-enterprise/#release-documentation>`__
+#. Refer to the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/#infrastructure-software>`__
    for NVIDIA AI Enterprise and access the documentation for your release.
 
 #. In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.
