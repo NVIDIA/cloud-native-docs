@@ -1,24 +1,12 @@
 {
-    "latest": "25.3.4",
+    "latest": "25.3",
     "versions":
     [
         {
-            "version": "25.3.4"
+            "version": "25.3"
         },
         {
-            "version": "25.3.3"
-        },
-        {
-            "version": "25.3.2"
-        },
-        {
-            "version": "25.3.1"
-        },
-        {
-            "version": "25.3.0"
-        },
-        {
-            "version": "24.9.2"
+            "version": "24.9"
         }
     ]
 }
