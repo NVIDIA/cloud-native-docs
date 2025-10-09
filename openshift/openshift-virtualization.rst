@@ -725,3 +725,8 @@ You should now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices ca
    {
       "nvidia.com/NVIDIA_A10-4Q": "12"
    }
+
+.. note::
+   
+   On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
