@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -506,7 +506,7 @@ in the networking documentation for information about the MLNX_OFED, DOCA-OFED, 
 <li><p><code class="docutils literal notranslate"><span class="pre">pciPassthru.64bitMMIOSizeGB</span> <span class="pre">=</span> <span class="pre">128</span></code></p></li>
 </ul>
 <p>For information about configuring the settings, refer to the
-<a class="reference external" href="https://core.vmware.com/resource/deploy-ai-ready-vsphere-7#vm-settings-A">Deploy an AI-Ready Enterprise Platform on vSphere 7</a>
+<a class="reference external" href="https://www.vmware.com/docs/deploy-an-ai-ready-enterprise-platform-on-vsphere-7-update-2#vm-settings-A">Deploy an AI-Ready Enterprise Platform on vSphere 7</a>
 document from VMWare.</p>
 </li>
 </ul>
@@ -532,14 +532,14 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -654,8 +654,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="18c309c4-bcf9-4c3e-998e-be8b5b45fc5e" name="ee98218d-31f9-474f-b84e-ebbe6a2795ab" type="radio">
-</input><label class="sd-tab-label" for="18c309c4-bcf9-4c3e-998e-be8b5b45fc5e">
+<input checked="checked" id="58000e96-7e63-4db7-9d71-d7a12a8db1b8" name="ccc16860-da66-4e87-a59e-3c07b98475c9" type="radio">
+</input><label class="sd-tab-label" for="58000e96-7e63-4db7-9d71-d7a12a8db1b8">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -700,8 +700,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="4cea62b9-d748-496b-87c2-94dabb1fab81" name="ee98218d-31f9-474f-b84e-ebbe6a2795ab" type="radio">
-</input><label class="sd-tab-label" for="4cea62b9-d748-496b-87c2-94dabb1fab81">
+<input id="bc36c32f-80c2-41d6-9264-6c97ec051a40" name="ccc16860-da66-4e87-a59e-3c07b98475c9" type="radio">
+</input><label class="sd-tab-label" for="bc36c32f-80c2-41d6-9264-6c97ec051a40">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -858,7 +858,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>

@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -70,7 +70,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -450,7 +450,8 @@ Upon workload completion, all ComputeDomain-associated resources get torn down a
 </section>
 <section id="a-deeper-dive-related-resources">
 <h3>A deeper dive: related resources<a class="headerlink" href="#a-deeper-dive-related-resources" title="Permalink to this headline">#</a></h3>
-<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, see <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.qkogm924v5so">this doc</a> and <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g28ac369118f_0_1647#slide=id.g28ac369118f_0_1647">this slide deck</a>.
+<p>For more background on how ComputeDomains facilitate orchestrating MNNVL workloads on Kubernetes, refer to the <a class="reference external" href="https://docs.google.com/document/d/1PrdDofsPFVJuZvcv-vtlI9n2eAh-YVf_fRQLIVmDwVY/edit?tab=t.0#heading=h.nfp9friarxam">Kubernetes support for GH200 / GB200</a> document
+and the <a class="reference external" href="https://docs.google.com/presentation/d/1Xupr8IZVAjs5bNFKJnYaK0LE7QWETnJjkz6KOfLu87E/edit?pli=1&amp;slide=id.g373e0ebfa8e_1_142#slide=id.g373e0ebfa8e_1_142">Supporting GB200 on Kubernetes</a> slide deck.
 For an outlook on planned improvements on the ComputeDomain concept, please refer to <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/releases/tag/v25.3.0-rc.3">this document</a>.</p>
 <p>Details about IMEX and its relationship to NVLink may be found in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/imex-guide/overview.html">NVIDIA’s IMEX guide</a>, and in <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/mnnvl-user-guide/overview.html#internode-memory-exchange-service">NVIDIA’s NVLink guide</a>.
 CUDA API documentation for <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-driver-api/group__CUDA__VA.html#group__CUDA__VA_1g899d69a862bba36449789c64b430dc7c">cuMemCreate</a> provides a starting point to learn about how to share GPU memory via IMEX/NVLink.

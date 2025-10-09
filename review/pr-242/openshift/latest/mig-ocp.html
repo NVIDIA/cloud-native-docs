@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -477,38 +477,40 @@ of homogeneous instances</p></th>
 <h3>MIG advertisement strategies<a class="headerlink" href="#mig-advertisement-strategies" title="Permalink to this headline">#</a></h3>
 <p>The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that can be requested and exposed into Pods and containers. The first step of the MIG configuration is to decide what <strong>Strategy</strong> you want. The advertisement strategies are described here:</p>
 <ul>
-<li><p><strong>Single</strong> defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs. This strategy exposes the MIG instances as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resources, identically, as usual non-MIG capable (or with MIG disabled) devices. In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size). This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users. Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.</p>
-<blockquote>
-<div><p>Examples for the A100-40GB:</p>
-<ul>
+<li><p><strong>Single</strong> defines a homogeneous advertisement strategy, with MIG instances exposed as usual GPUs.
+This strategy exposes the MIG instances as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resources, identically, as usual non-MIG capable (or with MIG disabled) devices.
+In this strategy, all the GPUs in a single node must be configured in a homogeneous manner (same number of compute units, same memory size).
+This strategy is best for a large cluster where the infrastructure teams can configure “node pools” of different MIG geometries and make them available to users.
+Another advantage of this strategy is backward compatibility where the existing application does not have to be modified to be scheduled this way.</p>
+<p>Examples for the A100-40GB:</p>
+<ul class="simple">
 <li><p>1g.5gb:  7 nvidia.com/gpu instances, or</p></li>
 <li><p>2g.10gb: 3 nvidia.com/gpu instances, or</p></li>
 <li><p>3g.20gb: 2 nvidia.com/gpuinstances, or</p></li>
-<li><p>7g.40gb: 1 nvidia.com/gpu instances</p>
+<li><p>7g.40gb: 1 nvidia.com/gpu instances</p></li>
+</ul>
 <img alt="_images/Mig-profile-A100.png" src="_images/Mig-profile-A100.png" />
 </li>
-</ul>
-</div></blockquote>
-</li>
-<li><p><strong>Mixed</strong> defines a heterogeneous advertisement strategy. There is no constraint on the geometry; all the combinations allowed by the GPU are permitted. This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.</p>
-<blockquote>
-<div><p>Examples for the A100-40GB:</p>
-<ul>
+<li><p><strong>Mixed</strong> defines a heterogeneous advertisement strategy.
+There is no constraint on the geometry; all the combinations allowed by the GPU are permitted.
+This strategy is appropriate for a smaller cluster, where on a single node with multiple GPUs, each GPU can be configured in a different MIG geometry.</p>
+<p>Examples for the A100-40GB:</p>
+<ul class="simple">
 <li><p>All the <strong>single</strong> configurations are possible</p></li>
 <li><p>A “balanced” configuration:</p>
-<ul class="simple">
+<ul>
 <li><p>1g.5gb:  2 nvidia.com/mig-1g.5gb instances, and</p></li>
 <li><p>2g.10gb: 1 nvidia.com/mig-2g.10gb instance, and</p></li>
 <li><p>3g.20gb: 1 nvidia.com/mig-3g.20gb instance</p></li>
 </ul>
+</li>
+</ul>
 <img alt="_images/mig-mixed-profile-A100.png" src="_images/mig-mixed-profile-A100.png" />
 </li>
 </ul>
-</div></blockquote>
-</li>
-</ul>
 <p>Version 1.8 and greater of the NVIDIA GPU Operator supports updating the <strong>Strategy</strong> in the ClusterPolicy after deployment.</p>
-<p>The <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB. The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
+<p>The <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
+The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
 The tables below describe these configurations:</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id2">
 <caption><span class="caption-text">Single configuration</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
@@ -1367,12 +1369,10 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 <section id="disable-the-mig-mode">
 <h2>Disable the MIG mode<a class="headerlink" href="#disable-the-mig-mode" title="Permalink to this headline">#</a></h2>
 <p>To turn MIG mode off so that you can utilize the full capacity of the GPU run the following:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-disabled <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">MIG_CONFIGURATION</span><span class="o">=</span>all-disabled <span class="o">&amp;&amp;</span> <span class="se">\</span>
+   oc label node/<span class="nv">$NODE_NAME</span> nvidia.com/mig.config<span class="o">=</span><span class="nv">$MIG_CONFIGURATION</span> --overwrite
 </pre></div>
 </div>
-</div></blockquote>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
@@ -1383,8 +1383,7 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 </pre></div>
 </div>
 <p>The cluster administrator is expected to drain the node from any GPU workload, before requesting the MIG reconfiguration. If the node is not properly drained, the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> will fail with this error in the logs:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> Updating MIG config: map[2g.10gb:3]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Updating MIG config: map[2g.10gb:3]</span>
 <span class="go">Error clearing MigConfig: error destroying Compute instance for profile &#39;(0, 0)&#39;: In use by another client</span>
 <span class="go">Error clearing MIG config on GPU 0, erroneous devices may persist</span>
 <span class="go">Error setting MIGConfig: error attempting multiple config orderings: all orderings failed</span>
@@ -1392,7 +1391,6 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 <span class="go">Changing the &#39;nvidia.com/mig.config.state&#39; node label to &#39;failed&#39;</span>
 </pre></div>
 </div>
-</div></blockquote>
 </li>
 </ol>
 <p>Resolve this issue by:</p>

@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -435,7 +435,7 @@ with restricted internet access or sites with resource-constrained hardware.</p>
 <span id="precomp-limitations-restrictions"></span><h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Support for deploying the driver containers with precompiled drivers is limited to
-hosts with the Ubuntu 22.04 operating system and x86_64 architecture.</p>
+hosts with the x86_64 architecture and operating system versions listed in the <a class="reference internal" href="platform-support.html#supported-precompiled-drivers"><span class="std std-ref">Supported Precompiled Drivers</span></a> table.</p>
 <p>For information about using precompiled drivers with OpenShift Container Platform,
 refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/gpu-operator-with-precompiled-drivers.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</span></a>.</p>
 </li>
@@ -495,7 +495,7 @@ Specify the <code class="docutils literal notranslate"><span class="pre">--set</
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
      --set driver.usePrecompiled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="s2">&quot;&lt;driver-branch&gt;&quot;</span>
 </pre></div>

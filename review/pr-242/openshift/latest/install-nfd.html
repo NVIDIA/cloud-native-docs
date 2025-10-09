@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -394,9 +394,9 @@
 <span id="install-nfd"></span><h1>Installing the Node Feature Discovery Operator on OpenShift<a class="headerlink" href="#installing-the-node-feature-discovery-operator-on-openshift" title="Permalink to this headline">#</a></h1>
 <section id="procedure">
 <h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h2>
-<p>The Node Feature Discovery (NFD) Operator is a prerequisite for the <strong>NVIDIA GPU Operator</strong>. Install the NFD Operator using the Red Hat OperatorHub catalog in the OpenShift Container Platform web console .</p>
+<p>The Node Feature Discovery (NFD) Operator is a prerequisite for the <strong>NVIDIA GPU Operator</strong>. Install the NFD Operator using the Red Hat OperatorHub catalog in the OpenShift Container Platform web console.</p>
 <ol class="arabic">
-<li><p>Follow the Red Hat documentation guidance in <a class="reference external" href="https://docs.openshift.com/container-platform/latest/hardware_enablement/psap-node-feature-discovery-operator.html">The Node Feature Discovery Operator</a> to install the Node Feature Discovery Operator.</p></li>
+<li><p>Follow the Red Hat documentation guidance in the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/hardware_enablement/psap-node-feature-discovery-operator.html">Node Feature Discovery Operator guide</a> to install the Node Feature Discovery Operator.</p></li>
 <li><p>Verify the Node Feature Discovery Operator is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n openshift-nfd
 </pre></div>
@@ -406,42 +406,38 @@
 </pre></div>
 </div>
 </li>
-<li><p>When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the <strong>NodeFeatureDiscovery</strong> tab.</p></li>
-</ol>
-<blockquote>
-<div><ol class="arabic">
+<li><p>When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the <strong>NodeFeatureDiscovery</strong> tab:</p>
+<ol class="arabic simple">
 <li><p>Click <strong>Operators</strong> &gt; <strong>Installed Operators</strong> from the side menu.</p></li>
 <li><p>Find the <strong>Node Feature Discovery</strong> entry.</p></li>
 <li><p>Click <strong>NodeFeatureDiscovery</strong> under the <strong>Provided APIs</strong> field.</p></li>
 <li><p>Click <strong>Create NodeFeatureDiscovery</strong>.</p></li>
-<li><p>In the subsequent screen click <strong>Create</strong>. This starts the Node Feature Discovery Operator that proceeds to label the nodes in the cluster that have GPUs.</p>
-<blockquote>
-<div><div class="admonition note">
+<li><p>In the following screen, click <strong>Create</strong>. This starts the Node Feature Discovery Operator that proceeds to label the nodes in the cluster that have GPUs.</p></li>
+</ol>
+<div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The values pre-populated by the OperatorHub are valid for the GPU Operator.</p>
+<p>The values prepopulated by the OperatorHub are valid for the GPU Operator.</p>
 </div>
-</div></blockquote>
 </li>
 </ol>
-</div></blockquote>
 </section>
 <section id="verify-that-the-node-feature-discovery-operator-is-functioning-correctly">
 <h2>Verify that the Node Feature Discovery Operator is functioning correctly<a class="headerlink" href="#verify-that-the-node-feature-discovery-operator-is-functioning-correctly" title="Permalink to this headline">#</a></h2>
-<p>The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID 10de. Use the OpenShift Container Platform web console or the CLI to verify that the Node Feature Discovery Operator is functioning correctly.</p>
+<p>The Node Feature Discovery Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID <code class="docutils literal notranslate"><span class="pre">10de</span></code>. Use the OpenShift Container Platform web console or the CLI to verify that the Node Feature Discovery Operator is functioning correctly.</p>
 <ol class="arabic">
 <li><p>In the OpenShift Container Platform web console, click <strong>Compute</strong> &gt; <strong>Nodes</strong> from the side menu.</p></li>
-<li><p>Select a worker node that you know contains a GPU.</p></li>
+<li><p>Select a worker node that contains a GPU.</p></li>
 <li><p>Click the <strong>Details</strong> tab.</p></li>
-<li><p>Under <strong>Node labels</strong> verify that the following label is present:</p>
+<li><p>Under <strong>Node Labels</strong>, verify that the following label is present:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">feature.node.kubernetes.io/pci-10de.present=true</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">0x10de</span></code> is the PCI vendor ID that is assigned to NVIDIA.</p>
+<p><code class="docutils literal notranslate"><span class="pre">0x10de</span></code> is the PCI vendor ID assigned to NVIDIA.</p>
 </div>
 </li>
-<li><p>Verify the GPU device (<code class="docutils literal notranslate"><span class="pre">pci-10de</span></code>) is discovered on the GPU node:</p>
+<li><p>Verify that the GPU device (<code class="docutils literal notranslate"><span class="pre">pci-10de</span></code>) is discovered on the GPU node:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc describe node <span class="p">|</span> egrep <span class="s1">&#39;Roles|pci&#39;</span> <span class="p">|</span> grep -v master
 </pre></div>
 </div>

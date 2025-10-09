@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -426,6 +426,22 @@
 <p>This page outlines common issues and troubleshooting steps for the NVIDIA GPU Operator.</p>
 <p>If you are facing an issue that is not covered by this page, please file an issue in the
 <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues">NVIDIA GPU Operator GitHub repository</a>.</p>
+<section id="the-nouveau-driver-fails-to-initialize-the-gpu">
+<h2>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver fails to initialize the GPU<a class="headerlink" href="#the-nouveau-driver-fails-to-initialize-the-gpu" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Observation</p>
+<ul class="simple">
+<li><p>The GPU driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.</p></li>
+<li><p>All GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">init</span></code> state.</p></li>
+</ul>
+<p class="h4 rubric">Root Cause</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module is loaded.</p></li>
+</ul>
+<p class="h4 rubric">Action</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be denylisted when using NVIDIA vGPU.</p>
+<p>Follow the instructions in the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/deployment/vmware/latest/nouveau.html#disable-nouveau">NVIDIA AI Enterprise: VMware Deployment Guide</a>
+to disable <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> on your OS/distro to resolve this issue.</p>
+</section>
 <section id="gpu-operator-pods-are-stuck-in-init">
 <h2>GPU Operator pods are stuck in Init<a class="headerlink" href="#gpu-operator-pods-are-stuck-in-init" title="Permalink to this headline">#</a></h2>
 <p class="h4 rubric">Observation</p>
@@ -971,6 +987,7 @@ The final output is an archive file which contains the manifests and logs of all
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nouveau-driver-fails-to-initialize-the-gpu">The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver fails to initialize the GPU</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-are-stuck-in-init">GPU Operator pods are stuck in Init</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-runtime-for-nvidia-is-configured">No runtime for “nvidia” is configured</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-validator-pods-crashing-with-error-code-system-not-yet-initialized">Operator validator pods crashing with “error code system not yet initialized”</a></li>
