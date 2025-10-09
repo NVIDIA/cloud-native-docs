@@ -8,13 +8,49 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
-## NVIDIA Container Toolkit 1.18.0 
+## NVIDIA Container Toolkit 1.18.0
 
-This release of the NVIDIA Container Toolkit `v1.18.0` is a feature update and bugfix release.
+This release of the NVIDIA Container Toolkit `v1.18.0` is feature release with the following high-level changes:
+- The default mode of the NVIDIA Container Runtime has been updated to make use
+  of a just-in-time-generated CDI specification instead of defaulting to the `legacy` mode.
+- Added a systemd unit to generate CDI specifications for available devices automatically. This allows
+  native CDI support in container engines such as Docker and Podman to be used without additional steps.
+
+### Deprecation Notices
+- The OCI `hook`-based config mode for cri-o is now deprecated. Updating the cri-o config through a
+  drop-in config file is now the recommended mechanism to configure this container engine.
+- The `chmod` CDI hook is deprecated. It was implemented as a workaround for `crun` issue that has
+  been resolved for some time now. The inclusion of this hook can still be
+  triggered when explicitly generating CDI specifications.
+- The `legacy` mode of the NVIDIA Container Runtime is deprecated. It is no longer the _default_ mode
+  when using the `nvidia-container-runtime` is used. It is still supported for use cases where it is
+  _required_.
+
+### Packaging Changes
+- This release requires that the version of the `libnvidia-container*` libraries _exactly_ match the
+  version of the `nvidia-container-toolkit*` packages.
+- This release no longer publishes `ppc64le` packages.
 
 ### Fixes and Features
-
 - Added automatic generation of CDI specifications for available devices.
+- Update the behaviour of the `update-ldcache` hook to ALWAYS create an ldcache in the container
+  even if ldconfig is not present in the container being run.
+- Disable the injection of the `chmod` CDI hook by default. The inclusion of this hook can still be
+  triggered when explicitly generating CDI specifications.
+- The generated CDI specification will include `.so` (development) symlinks for ALL driver libraries
+  if these exist on the host.
+- The `nvidia-ctk cdi generate` command loads select settings from the `config.toml` file when generating
+  CDI specifications.
+- Allow CDI hooks to be explicitly disabled or enabled when using the `nvidia-ctk cdi generate` command
+  or the `nvcdi` API.
+
+#### Enhancements to libnvidia-container
+- Add clock_gettime to the set of allowed syscalls under seccomp. This allows ldconfig from distributions
+  such as Arch Linux to be run in the container.
+
+#### Enhancements to container-toolkit Container Images
+- Switched to a single image (based on a distroless base image) for all target plaforms.
+- Default to use drop-in config files to add `nvidia` runtime definitions to containerd and cri-o.
 
 ### Included Packages
 
