@@ -1,0 +1,859 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Precompiled Driver Containers &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'precompiled-drivers';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NVIDIA GPU Driver Custom Resource Definition" href="gpu-driver-configuration.html" />
+    <link rel="prev" title="Customizing NVIDIA GPU Driver Parameters during Installation" href="custom-driver-params.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Precompiled Driver Containers</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="precompiled-driver-containers">
+<span id="install-precompiled-drivers"></span><h1>Precompiled Driver Containers<a class="headerlink" href="#precompiled-driver-containers" title="Permalink to this headline">#</a></h1>
+<section id="about-precompiled-driver-containers">
+<h2>About Precompiled Driver Containers<a class="headerlink" href="#about-precompiled-driver-containers" title="Permalink to this headline">#</a></h2>
+<p>Containers with precompiled drivers do not require internet access to download Linux kernel
+header files, GCC compiler tooling, or operating system packages.</p>
+<p>Using precompiled drivers also avoids the burst of compute demand that is required
+to compile the kernel drivers with the conventional driver containers.</p>
+<p>These two benefits are valuable to most sites, but are especially beneficial to sites
+with restricted internet access or sites with resource-constrained hardware.</p>
+<section id="limitations-and-restrictions">
+<span id="precomp-limitations-restrictions"></span><h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>Support for deploying the driver containers with precompiled drivers is limited to
+hosts with the x86_64 architecture and operating system versions listed in the <a class="reference internal" href="platform-support.html#supported-precompiled-drivers"><span class="std std-ref">Supported Precompiled Drivers</span></a> table.</p>
+<p>For information about using precompiled drivers with OpenShift Container Platform,
+refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/gpu-operator-with-precompiled-drivers.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</span></a>.</p>
+</li>
+<li><p>NVIDIA supports precompiled driver containers for the most recently released long-term
+servicing branch (LTSB) driver branch.</p></li>
+<li><p>NVIDIA builds images for the <code class="docutils literal notranslate"><span class="pre">aws</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">generic</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, and <code class="docutils literal notranslate"><span class="pre">oracle</span></code> kernel variants.
+If your hosts run a different kernel variant, you can build a precompiled driver image
+and use your own container registry.</p></li>
+<li><p>Precompiled driver containers do not support NVIDIA vGPU or GPUDirect Storage (GDS).</p></li>
+</ul>
+</section>
+</section>
+<section id="determining-if-a-precompiled-driver-container-is-available">
+<h2>Determining if a Precompiled Driver Container is Available<a class="headerlink" href="#determining-if-a-precompiled-driver-container-is-available" title="Permalink to this headline">#</a></h2>
+<p>The precompiled driver containers are named according to the following pattern:</p>
+<blockquote>
+<div><p>&lt;driver-branch&gt;-&lt;linux-kernel-version&gt;-&lt;os-tag&gt;</p>
+</div></blockquote>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">525-5.15.0-69-generic-ubuntu22.04</span></code>.</p>
+<p>Use one of the following ways to check if a driver container is available for your Linux kernel and driver branch:</p>
+<ul>
+<li><p>Use a web browser to access the NVIDIA GPU Driver page of the NVIDIA GPU Cloud registry at
+<a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags">https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags</a>.
+Use the search field to filter the tags by your operating system version.</p></li>
+<li><p>Use the <a class="reference external" href="https://ngc.nvidia.com/setup/installers/cli">NGC CLI</a> tool to list the tags for the driver container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ngc registry image info nvidia/driver
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Image Repository Information</span>
+<span class="go">  Name: driver</span>
+<span class="go">  Display Name: NVIDIA GPU Driver</span>
+<span class="go">  Short Description: Provision NVIDIA GPU Driver as a Container.</span>
+<span class="go">  Built By: NVIDIA</span>
+<span class="go">  Publisher: NVIDIA</span>
+<span class="go">  Multinode Support: False</span>
+<span class="go">  Multi-Arch Support: True</span>
+<span class="go">  Logo: https://assets.nvidiagrid.net/ngc/logos/Infrastructure.png</span>
+<span class="go">  Labels: Multi-Arch, NVIDIA AI Enterprise Supported, Infrastructure Software, Kubernetes Infrastructure</span>
+<span class="go">  Public: Yes</span>
+<span class="go">  Last Updated: Apr 20, 2023</span>
+<span class="go">  Latest Image Size: 688.87 MB</span>
+<span class="go">  Latest Tag: 525-5.15.0-69-generic-ubuntu22.04</span>
+<span class="go">  Tags:</span>
+<span class="go">      525-5.15.0-69-generic-ubuntu22.04</span>
+<span class="go">      525-5.15.0-70-generic-ubuntu22.04</span>
+<span class="go">      ...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="enabling-precompiled-driver-container-support-during-installation">
+<h2>Enabling Precompiled Driver Container Support During Installation<a class="headerlink" href="#enabling-precompiled-driver-container-support-during-installation" title="Permalink to this headline">#</a></h2>
+<p>Refer to the common instructions for installing the Operator with Helm at <a class="reference internal" href="getting-started.html#install-gpu-operator"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a>.
+Specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.usePrecompiled=true</span></code> and <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.version=&lt;driver-branch&gt;</span></code> arguments like the following example command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
+     -n gpu-operator --create-namespace <span class="se">\</span>
+     nvidia/gpu-operator <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
+     --set driver.usePrecompiled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+     --set driver.version<span class="o">=</span><span class="s2">&quot;&lt;driver-branch&gt;&quot;</span>
+</pre></div>
+</div>
+<p>Specify a value like <code class="docutils literal notranslate"><span class="pre">525</span></code> for <code class="docutils literal notranslate"><span class="pre">&lt;driver-branch&gt;</span></code>.
+Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for information about other installation options.</p>
+</section>
+<section id="enabling-support-after-installation">
+<h2>Enabling Support After Installation<a class="headerlink" href="#enabling-support-after-installation" title="Permalink to this headline">#</a></h2>
+<p>Perform the following steps to enable support for precompiled driver containers:</p>
+<ol class="arabic">
+<li><p>Enable support by modifying the cluster policy:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+   -p<span class="o">=</span><span class="s1">&#39;[</span>
+<span class="s1">     {&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/driver/usePrecompiled&quot;, &quot;value&quot;:true},</span>
+<span class="s1">     {&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;&lt;driver-branch&gt;&quot;}</span>
+<span class="s1">   ]&#39;</span>
+</pre></div>
+</div>
+<p>Specify a value like <code class="docutils literal notranslate"><span class="pre">525</span></code> for <code class="docutils literal notranslate"><span class="pre">&lt;driver-branch&gt;</span></code>.</p>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Confirm that the driver daemon set pods terminate:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                              READY   STATUS        RESTARTS   AGE</span>
+<span class="go">pod/gpu-feature-discovery-pzzr8                                   2/2     Running       0          19m</span>
+<span class="go">pod/gpu-operator-859cb64846-57hfn                                 1/1     Running       0          47m</span>
+<span class="go">pod/gpu-operator-node-feature-discovery-master-6d6649d597-7l8bj   1/1     Running       0          10d</span>
+<span class="go">pod/gpu-operator-node-feature-discovery-worker-v86vj              1/1     Running       0          10d</span>
+<span class="go">pod/nvidia-container-toolkit-daemonset-6ltbv                      1/1     Running       0          19m</span>
+<span class="go">pod/nvidia-cuda-validator-62w6r                                   0/1     Completed     0          17m</span>
+<span class="go">pod/nvidia-dcgm-exporter-fh5wz                                    1/1     Running       0          19m</span>
+<span class="go">pod/nvidia-device-plugin-daemonset-rwslh                          2/2     Running       0          19m</span>
+<span class="go">pod/nvidia-device-plugin-validator-gq4ww                          0/1     Completed     0          17m</span>
+<span class="hll"><span class="go">pod/nvidia-driver-daemonset-xqrxk                                 1/1     Terminating   0          20m</span>
+</span><span class="go">pod/nvidia-operator-validator-78mzv                               1/1     Running       0          19m</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the driver container pods are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>nvidia-driver-daemonset -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvidia-driver-daemonset-5.15.0-69-generic-ubuntu22.04-thbts   1/1     Running   0          44s</span>
+</pre></div>
+</div>
+<p>Ensure that the pod names include a Linux kernel semantic version number like <code class="docutils literal notranslate"><span class="pre">5.15.0-69-generic</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="disabling-support-for-precompiled-driver-containers">
+<h2>Disabling Support for Precompiled Driver Containers<a class="headerlink" href="#disabling-support-for-precompiled-driver-containers" title="Permalink to this headline">#</a></h2>
+<p>Perform the following steps to disable support for precompiled driver containers:</p>
+<ol class="arabic">
+<li><p>Disable support by modifying the cluster policy:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[</span>
+<span class="s1">      {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/usePrecompiled&quot;, &quot;value&quot;:false},</span>
+<span class="s1">      {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;550.90.07&quot;},</span>
+<span class="s1">    ]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the conventional driver container pods are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -l <span class="nv">app</span><span class="o">=</span>nvidia-driver-daemonset -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                            READY   STATUS    RESTARTS   AGE</span>
+<span class="go">nvidia-driver-daemonset-qwprp   1/1     Running   0          10m</span>
+</pre></div>
+</div>
+<p>Ensure that the pod names do not include a Linux kernel semantic version number.</p>
+</li>
+</ol>
+</section>
+<section id="building-a-custom-driver-container-image">
+<h2>Building a Custom Driver Container Image<a class="headerlink" href="#building-a-custom-driver-container-image" title="Permalink to this headline">#</a></h2>
+<p>If a precompiled driver container for your Linux kernel variant is not available,
+you can perform the following steps to build and run a container image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>NVIDIA provides limited support for custom driver container images.</p>
+</div>
+<p class="rubric">Prerequisites</p>
+<ul>
+<li><p>You have access to a private container registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.</p></li>
+<li><p>Your build machine has access to the internet to download operating system packages.</p></li>
+<li><p>You know a CUDA version, such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>, that you want to use.
+The CUDA version only specifies which base image is used to build the driver container.
+The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.</p>
+<p>One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry
+at <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags">https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags</a> and view the tags.
+Use the search field to filter the tags, such as <code class="docutils literal notranslate"><span class="pre">base-ubuntu22.04</span></code>.
+The filtered results show the CUDA versions, such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">12.0.1</span></code>, <code class="docutils literal notranslate"><span class="pre">12.0.0</span></code>, and so on.</p>
+</li>
+<li><p>You know the GPU driver branch, such as <code class="docutils literal notranslate"><span class="pre">525</span></code>, that you want to use.</p></li>
+</ul>
+<p class="rubric">Procedure</p>
+<ol class="arabic">
+<li><p>Clone the driver container repository and change directory into the repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> driver
+</pre></div>
+</div>
+</li>
+<li><p>Change directory to the operating system name and version under the driver directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> ubuntu22.04/precompiled
+</pre></div>
+</div>
+</li>
+<li><p>Set environment variables for building the driver container image.</p>
+<ul>
+<li><p>Specify your private registry URL:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>&lt;private-registry-url&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Specify the <code class="docutils literal notranslate"><span class="pre">KERNEL_VERSION</span></code> environment variable that matches your kernel variant, such as <code class="docutils literal notranslate"><span class="pre">5.15.0-1033-aws</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">KERNEL_VERSION</span><span class="o">=</span><span class="m">5</span>.15.0-1033-aws
+</pre></div>
+</div>
+</li>
+<li><p>Specify the version of the CUDA base image to use when building the driver container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">12</span>.1.0
+</pre></div>
+</div>
+</li>
+<li><p>Specify the driver branch, such as <code class="docutils literal notranslate"><span class="pre">525</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">DRIVER_BRANCH</span><span class="o">=</span><span class="m">525</span>
+</pre></div>
+</div>
+</li>
+<li><p>Specify the <code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> environment variable to identify the guest operating system name and version:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu22.04
+</pre></div>
+</div>
+<p>The value must match the guest operating system version.</p>
+</li>
+</ul>
+</li>
+<li><p>Build the driver container image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker build <span class="se">\</span>
+    --build-arg <span class="nv">KERNEL_VERSION</span><span class="o">=</span><span class="nv">$KERNEL_VERSION</span> <span class="se">\</span>
+    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="nv">$CUDA_VERSION</span> <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_BRANCH</span><span class="o">=</span><span class="nv">$DRIVER_BRANCH</span> <span class="se">\</span>
+    -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver:<span class="si">${</span><span class="nv">DRIVER_BRANCH</span><span class="si">}</span>-<span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
+</pre></div>
+</div>
+</li>
+<li><p>Push the driver container image to your private registry.</p>
+<ul>
+<li><p>Log in to your private registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker login <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> --username<span class="o">=</span>&lt;username&gt;
+</pre></div>
+</div>
+<p>Enter your password when prompted.</p>
+</li>
+<li><p>Push the driver container image to your private registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver:<span class="si">${</span><span class="nv">DRIVER_BRANCH</span><span class="si">}</span>-<span class="si">${</span><span class="nv">KERNEL_VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<p class="rubric">Next Steps</p>
+<ul>
+<li><p>To use the custom driver container image, follow the steps for enabling support during or after installation.</p>
+<p>If you have not already installed the GPU Operator, in addition to the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.usePrecompiled=true</span></code>
+and <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.version=${DRIVER_BRANCH}</span></code> arguments for Helm, also specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.repository=&quot;$PRIVATE_REGISTRY&quot;</span></code> argument.</p>
+<p>If the container registry is not public, you need to create an image pull secret in the GPU Operator namespace
+and specify it in the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.imagePullSecrets=&lt;pull-secret&gt;</span></code> argument.</p>
+<p>If you already installed the GPU Operator, specify the private registry for the driver in the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;$PRIVATE_REGISTRY&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="custom-driver-params.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Customizing NVIDIA GPU Driver Parameters during Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gpu-driver-configuration.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NVIDIA GPU Driver Custom Resource Definition</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-precompiled-driver-containers">About Precompiled Driver Containers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#determining-if-a-precompiled-driver-container-is-available">Determining if a Precompiled Driver Container is Available</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-precompiled-driver-container-support-during-installation">Enabling Precompiled Driver Container Support During Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-support-after-installation">Enabling Support After Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-support-for-precompiled-driver-containers">Disabling Support for Precompiled Driver Containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-custom-driver-container-image">Building a Custom Driver Container Image</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>

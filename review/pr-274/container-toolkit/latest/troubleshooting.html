@@ -1,0 +1,712 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Troubleshooting &#8212; NVIDIA Container Toolkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'troubleshooting';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.8';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release Notes" href="release-notes.html" />
+    <link rel="prev" title="Platform support" href="supported-platforms.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Container Toolkit</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-guide.html">Installing the Toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="arch-overview.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi-support.html">Container Device Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker-specialized.html">Specialized Configurations with Docker</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Container Toolkit</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Troubleshooting</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="troubleshooting">
+<span id="toolkit-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h1>
+<section id="troubleshooting-with-docker">
+<h2>Troubleshooting with Docker<a class="headerlink" href="#troubleshooting-with-docker" title="Permalink to this headline">#</a></h2>
+<section id="generating-debugging-logs">
+<h3>Generating Debugging Logs<a class="headerlink" href="#generating-debugging-logs" title="Permalink to this headline">#</a></h3>
+<p>For most common issues, you can generate debugging logs to help identify the root cause of the problem.
+To generate debug logs :</p>
+<ul class="simple">
+<li><p>Edit your runtime configuration under <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-runtime/config.toml</span></code> and uncomment the <code class="docutils literal notranslate"><span class="pre">debug=...</span></code> line.</p></li>
+<li><p>Run your container again to reproduce the issue and generate the logs.</p></li>
+</ul>
+</section>
+<section id="generating-core-dumps">
+<h3>Generating Core Dumps<a class="headerlink" href="#generating-core-dumps" title="Permalink to this headline">#</a></h3>
+<p>In the event of a critical failure, core dumps can be automatically generated and can help troubleshoot issues.
+Refer to <a class="reference external" href="http://man7.org/linux/man-pages/man5/core.5.html">core(5)</a> to generate these.
+In particular make check the following items:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/proc/sys/kernel/core_pattern</span></code> is correctly set and points somewhere with write access.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ulimit</span> <span class="pre">-c</span></code> is set to a sensible default.</p></li>
+</ul>
+<p>In case the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> process becomes unresponsive, <a class="reference external" href="http://man7.org/linux/man-pages/man1/gcore.1.html">gcore(1)</a> can also be used.</p>
+</section>
+<section id="sharing-your-debugging-information">
+<h3>Sharing Your Debugging Information<a class="headerlink" href="#sharing-your-debugging-information" title="Permalink to this headline">#</a></h3>
+<p>You can attach a particular output to your issue with a <a class="reference external" href="https://help.github.com/articles/file-attachments-on-issues-and-pull-requests/">drag and drop</a>
+into the comment section.</p>
+</section>
+</section>
+<section id="conflicting-values-set-for-option-signed-by-error-when-running-apt-update">
+<span id="conflicting-signed-by"></span><h2>Conflicting values set for option Signed-By error when running apt update<a class="headerlink" href="#conflicting-values-set-for-option-signed-by-error-when-running-apt-update" title="Permalink to this headline">#</a></h2>
+<p>When following the installation instructions on Ubuntu or Debian-based systems and updating the package repository, the following error could be triggered:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update
+<span class="go">E: Conflicting values set for option Signed-By regarding source https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/amd64/ /: /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg !=</span>
+<span class="go">E: The list of sources could not be read.</span>
+</pre></div>
+</div>
+<p>This is caused by the combination of two things:</p>
+<ol class="arabic simple">
+<li><p>A recent update to the installation instructions to create a repo list file <code class="docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d/nvidia-container-toolkit.list</span></code></p></li>
+<li><p>The deprecation of <code class="docutils literal notranslate"><span class="pre">apt-key</span></code> meaning that the <code class="docutils literal notranslate"><span class="pre">signed-by</span></code> directive is included in the repo list file</p></li>
+</ol>
+<p>If this error is triggered it means that another reference to the same repository exists that does not specify the <code class="docutils literal notranslate"><span class="pre">signed-by</span></code> directive.
+The most likely candidates would be one or more of the files <code class="docutils literal notranslate"><span class="pre">libnvidia-container.list</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-docker.list</span></code>, or <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.list</span></code> in the
+folder <code class="docutils literal notranslate"><span class="pre">/etc/apt/sources.list.d/</span></code>.</p>
+<p>The conflicting repository references can be obtained by running and inspecting the output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>grep <span class="s2">&quot;nvidia.github.io&quot;</span> /etc/apt/sources.list.d/*
+</pre></div>
+</div>
+<p>The list of files with possibly conflicting references can be obtained by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>grep -l <span class="s2">&quot;nvidia.github.io&quot;</span> /etc/apt/sources.list.d/* <span class="p">|</span> grep -vE <span class="s2">&quot;/nvidia-container-toolkit.list\$&quot;</span>
+</pre></div>
+</div>
+<p>Deleting the listed files should resolve the original error.</p>
+</section>
+<section id="permission-denied-error-when-running-the-nvidia-docker-wrapper-under-selinux">
+<h2>Permission denied error when running the nvidia-docker wrapper under SELinux<a class="headerlink" href="#permission-denied-error-when-running-the-nvidia-docker-wrapper-under-selinux" title="Permalink to this headline">#</a></h2>
+<p>When running the <code class="docutils literal notranslate"><span class="pre">nvidia-docker</span></code> wrapper (provided by the <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> package) on SELinux environments
+one may see the following error</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-docker run --gpus<span class="o">=</span>all --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+<span class="go">/bin/nvidia-docker: line 34: /bin/docker: Permission denied</span>
+<span class="go">/bin/nvidia-docker: line 34: /bin/docker: Success</span>
+</pre></div>
+</div>
+<p>With SELinux reporting the following error:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">SELinux is preventing /usr/bin/bash from entrypoint access on the file /usr/bin/docker. For complete SELinux messages run: sealert -l 43932883-bf2e-4e4e-800a-80584c62c218</span>
+<span class="go">SELinux is preventing /usr/bin/bash from entrypoint access on the file /usr/bin/docker.</span>
+
+<span class="go">*****  Plugin catchall (100. confidence) suggests   **************************</span>
+
+<span class="go">If you believe that bash should be allowed entrypoint access on the docker file by default.</span>
+<span class="go">Then you should report this as a bug.</span>
+<span class="go">You can generate a local policy module to allow this access.</span>
+<span class="go">Do</span>
+<span class="go">allow this access for now by executing:</span>
+<span class="gp"># </span>ausearch -c <span class="s1">&#39;nvidia-docker&#39;</span> --raw <span class="p">|</span> audit2allow -M my-nvidiadocker
+<span class="gp"># </span>semodule -X <span class="m">300</span> -i my-nvidiadocker.pp
+</pre></div>
+</div>
+<p>This occurs because <code class="docutils literal notranslate"><span class="pre">nvidia-docker</span></code> forwards the command line arguments with minor modifications to the <code class="docutils literal notranslate"><span class="pre">docker</span></code> executable.</p>
+<p>To address this, specify the NVIDIA runtime in the the <code class="docutils literal notranslate"><span class="pre">docker</span></code> command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker run --gpus<span class="o">=</span>all --runtime<span class="o">=</span>nvidia --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+</pre></div>
+</div>
+<p>Alternatively a local SELinux policy can be generated as suggested:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ausearch -c <span class="s1">&#39;nvidia-docker&#39;</span> --raw <span class="p">|</span> audit2allow -M my-nvidiadocker
+<span class="gp">$ </span>semodule -X <span class="m">300</span> -i my-nvidiadocker.pp
+</pre></div>
+</div>
+</section>
+<section id="nvml-insufficient-permissions-and-selinux">
+<h2>NVML: Insufficient Permissions and SELinux<a class="headerlink" href="#nvml-insufficient-permissions-and-selinux" title="Permalink to this headline">#</a></h2>
+<p>Depending on how your Red Hat Enterprise Linux system is configured with SELinux, you might have to
+specify <code class="docutils literal notranslate"><span class="pre">--security-opt=label=disable</span></code> on the Docker or Podman command line to share parts of the
+host OS that can not be relabeled.
+Without this option, you might observe this error when running GPU containers:
+<code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">initialize</span> <span class="pre">NVML:</span> <span class="pre">Insufficient</span> <span class="pre">Permissions</span></code>.
+However, using this option disables SELinux separation in the container and the container is executed
+in an unconfined type.
+Review the SELinux policies on your system.</p>
+</section>
+<section id="containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">
+<h2>Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”<a class="headerlink" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error" title="Permalink to this headline">#</a></h2>
+<p>When using the NVIDIA Container Runtime Hook (i.e. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
+the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
+The result is that updates to the container may remove access to the requested GPUs.</p>
+<p>When the container loses access to the GPU, you will see the following error message from the console output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Failed to initialize NVML: Unknown Error</span>
+</pre></div>
+</div>
+<p>The message may differ depending on the type of application that is running in
+the container.</p>
+<p>The container needs to be deleted once the issue occurs.
+When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.</p>
+<section id="affected-environments">
+<h3>Affected environments<a class="headerlink" href="#affected-environments" title="Permalink to this headline">#</a></h3>
+<p>On certain systems this behavior is not limited to <em>explicit</em> container updates
+such as adjusting CPU and Memory limits for a container.
+On systems where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is used to manage the cgroups of the container, reloading the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> unit files (<code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code>) is sufficient to trigger container updates and cause a loss of GPU access.</p>
+</section>
+<section id="mitigations-and-workarounds">
+<h3>Mitigations and  Workarounds<a class="headerlink" href="#mitigations-and-workarounds" title="Permalink to this headline">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Certain <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions show similar behavior with the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup driver when <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for the required devices are missing on the system.
+Refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133">GitHub disccusion #1133</a> for more details around this issue.
+It should be noted that the behavior persisted even if device nodes were requested on the command line.
+Newer <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions.</p>
+</div>
+<p>Use the following workarounds to prevent containers from losing access to requested GPUs when a <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> command is run:</p>
+<ul>
+<li><p>For Docker, use cgroupfs as the cgroup driver for containers. To do this, update the <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code> to include:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;exec-opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;native.cgroupdriver=cgroupfs&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>and restart docker by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>.
+This will ensure that the container will not lose access to devices when <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> is run.
+This approach does not change the behavior for explicit container updates and a container will still lose access to devices in this case.</p>
+</li>
+<li><p>Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container.
+For the Docker CLI, this is done by adding the relevant <code class="docutils literal notranslate"><span class="pre">--device</span></code> flags.
+In the case of the NVIDIA Kubernetes Device Plugin the <code class="docutils literal notranslate"><span class="pre">compatWithCPUManager=</span> <span class="pre">true</span></code> <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values">Helm option</a> will ensure the same thing.</p></li>
+<li><p>Use the Container Device Interface (CDI) to inject devices into a container.
+When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config.
+This means that even if the container is updated it will still have access to the required devices.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="supported-platforms.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Platform support</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="release-notes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Release Notes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-with-docker">Troubleshooting with Docker</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-debugging-logs">Generating Debugging Logs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-core-dumps">Generating Core Dumps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sharing-your-debugging-information">Sharing Your Debugging Information</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-values-set-for-option-signed-by-error-when-running-apt-update">Conflicting values set for option Signed-By error when running apt update</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permission-denied-error-when-running-the-nvidia-docker-wrapper-under-selinux">Permission denied error when running the nvidia-docker wrapper under SELinux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvml-insufficient-permissions-and-selinux">NVML: Insufficient Permissions and SELinux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#affected-environments">Affected environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mitigations-and-workarounds">Mitigations and  Workarounds</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
