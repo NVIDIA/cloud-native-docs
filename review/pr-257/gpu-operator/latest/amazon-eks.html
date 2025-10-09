@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
 
 
 
@@ -486,10 +486,9 @@ without any limitations, you perform the following high-level actions:</p>
 the instance type to meet your needs:</p>
 <ul class="simple">
 <li><p>Table of accelerated computing
-<a class="reference external" href="https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing">instance types</a>
+<a class="reference external" href="https://aws.amazon.com/ec2/instance-types/accelerated-computing/">instance types</a>
 for information about GPU model and count, RAM, and storage.</p></li>
-<li><p>Table of
-<a class="reference external" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#enis-acceleratedcomputing">maximum network interfaces</a>
+<li><p><a class="reference external" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html">Maximum IP addresses per network interface</a>
 for accelerated computing instance types.
 Make sure the instance type supports enough IP addresses for your workload.
 For example, the <code class="docutils literal notranslate"><span class="pre">g4dn.xlarge</span></code> instance type supports <code class="docutils literal notranslate"><span class="pre">29</span></code> IP addresses for pods on the node.</p></li>
@@ -513,7 +512,7 @@ Refer to
 and <a class="reference external" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">Configuring the AWS CLI</a>
 in the AWS CLI documentation.</p></li>
 <li><p>You installed the <code class="docutils literal notranslate"><span class="pre">eksctl</span></code> CLI if you prefer it as your client application.
-The CLI is available from <a class="reference external" href="https://eksctl.io/introduction/#installation">https://eksctl.io/introduction/#installation</a>.</p></li>
+The CLI is available from <a class="reference external" href="https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update">https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update</a>.</p></li>
 <li><p>You have the AMI value from <a class="reference external" href="https://cloud-images.ubuntu.com/aws-eks/">https://cloud-images.ubuntu.com/aws-eks/</a>.</p></li>
 <li><p>You have the EC2 instance type to use for your nodes.</p></li>
 </ul>
