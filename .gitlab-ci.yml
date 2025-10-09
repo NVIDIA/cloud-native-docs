@@ -138,7 +138,7 @@ publish_docs:
   script:
   - echo "Pushing docs live to https://docs.nvidia.com/datacenter/cloud-native"
   - |+
-    if [[ "${CI_COMMIT_REF_NAME}" =~ (.+)-v([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+    if [[ "${CI_COMMIT_REF_NAME}" =~ (.+)-v([0-9]+\.[0-9]+(\.[a-zA-Z0-9]+)?) ]]; then
       export DOCSET="${BASH_REMATCH[1]}"
       export VERSION="${BASH_REMATCH[2]}"
     fi
@@ -148,7 +148,7 @@ publish_docs:
       exit 1
     fi
   - |+
-    if [[ "${CI_COMMIT_MESSAGE}" =~ $'\n/not-latest\n' ]]; then
+    if [[ "${CI_COMMIT_MESSAGE}" =~ $'/not-latest\n' ]]; then
       export FORCE_LATEST=false
     fi
   - echo "Publishing docs for ${DOCSET} and version ${VERSION}"
