@@ -47,7 +47,7 @@ The product life cycle and versioning are subject to change in the future.
 
 .. note::
 
-    - Upgrades are only supported within a major release or to the next major release.
+    Upgrades are only supported within a major release or to the next major release.
 
 .. list-table:: Support Status for Releases
    :header-rows: 1
