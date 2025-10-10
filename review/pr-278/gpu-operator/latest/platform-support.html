@@ -483,36 +483,18 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <col style="width: 17%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Component</p></th>
-<th class="head"><div class="line-block">
-<div class="line">GPU Operator</div>
-<div class="line">v25.3.4</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">GPU Operator</div>
-<div class="line">v25.3.3</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">GPU Operator</div>
-<div class="line">v25.3.2</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">GPU Operator</div>
-<div class="line">v25.3.1</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">GPU Operator</div>
-<div class="line">v25.3.0</div>
-</div>
-</th>
+<tr class="row-odd"><th class="head" rowspan="2"><p> Component</p></th>
+<th class="head" colspan="5"><p> GPU Operator Version</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>v25.3.4</p></th>
+<th class="head"><p>v25.3.3</p></th>
+<th class="head"><p>v25.3.2</p></th>
+<th class="head"><p>v25.3.1</p></th>
+<th class="head"><p>v25.3.0</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>NVIDIA GPU Driver <a class="reference external" href="#known-issue"><sup>1</sup></a></p></td>
+<tr class="row-odd"><td><p>NVIDIA GPU Driver <a class="reference external" href="#known-issue"><sup>1</sup></a></p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a> (default, rec.)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html">580.65.06</a></div>
@@ -571,42 +553,42 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </div>
 </td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA Driver Manager for Kubernetes</p></td>
+<tr class="row-even"><td><p>NVIDIA Driver Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.8.1</a></p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.8.1</a></p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.8.0</a></p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.8.0</a></p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.8.0</a></p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA Container Toolkit</p></td>
+<tr class="row-odd"><td><p>NVIDIA Container Toolkit</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.17.8</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.17.8</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.17.8</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.17.8</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.17.5</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA Kubernetes Device Plugin</p></td>
+<tr class="row-even"><td><p>NVIDIA Kubernetes Device Plugin</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.4</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.4</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.2</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.1</a></p></td>
 </tr>
-<tr class="row-even"><td><p>DCGM Exporter</p></td>
+<tr class="row-odd"><td><p>DCGM Exporter</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.3.1-4.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.3.1-4.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.2.3-4.1.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.2.3-4.1.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">4.1.1-4.0.4</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Node Feature Discovery</p></td>
+<tr class="row-even"><td><p>Node Feature Discovery</p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.17.2</a></p></td>
 </tr>
-<tr class="row-even"><td><div class="line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA GPU Feature Discovery</div>
 <div class="line">for Kubernetes</div>
 </div>
@@ -617,56 +599,56 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.17.1</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
+<tr class="row-even"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.12.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.12.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator">0.12.2</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator">0.12.1</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/tree/main/deployments/gpu-operator">0.12.1</a></p></td>
 </tr>
-<tr class="row-even"><td><p>DCGM</p></td>
+<tr class="row-odd"><td><p>DCGM</p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.3.1</a></p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.3.1</a></p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.2.3</a></p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.2.3</a></p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.1.1-2</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Validator for NVIDIA GPU Operator</p></td>
+<tr class="row-even"><td><p>Validator for NVIDIA GPU Operator</p></td>
 <td><p>v25.3.4</p></td>
 <td><p>v25.3.3</p></td>
 <td><p>v25.3.2</p></td>
 <td><p>v25.3.1</p></td>
 <td><p>v25.3.0</p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
+<tr class="row-odd"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.3.1</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.3.1</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.3.1</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA vGPU Device Manager</p></td>
+<tr class="row-even"><td><p>NVIDIA vGPU Device Manager</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.4.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.3.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.3.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.3.0</a></p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
+<tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.20.5</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA Kata Manager for Kubernetes</p></td>
+<tr class="row-even"><td><p>NVIDIA Kata Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
 </tr>
-<tr class="row-even"><td><div class="line-block">
+<tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA Confidential Computing</div>
 <div class="line">Manager for Kubernetes</div>
 </div>
@@ -677,7 +659,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p>v0.1.1</p></td>
 <td><p>v0.1.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA GDRCopy Driver</p></td>
+<tr class="row-even"><td><p>NVIDIA GDRCopy Driver</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.1</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.1</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.0</a></p></td>
@@ -714,8 +696,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="79521f12-3fc9-4028-9f99-b9e3f820c263" name="b73b865a-f708-401d-bd4e-0bc97621e95a" type="radio">
-</input><label class="sd-tab-label" for="79521f12-3fc9-4028-9f99-b9e3f820c263">
+<input id="bc47e74e-6ac0-4d25-b6a4-dc5f0432bd3c" name="bddb28a9-e87b-4932-b59b-a71cae10ceb1" type="radio">
+</input><label class="sd-tab-label" for="bc47e74e-6ac0-4d25-b6a4-dc5f0432bd3c">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -740,8 +722,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="95e572df-0f13-43d9-bc91-13af3e32926c" name="b73b865a-f708-401d-bd4e-0bc97621e95a" type="radio">
-</input><label class="sd-tab-label" for="95e572df-0f13-43d9-bc91-13af3e32926c">
+<input checked="checked" id="9bbec308-4429-4915-a168-bbc02ae7e897" name="bddb28a9-e87b-4932-b59b-a71cae10ceb1" type="radio">
+</input><label class="sd-tab-label" for="9bbec308-4429-4915-a168-bbc02ae7e897">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -847,8 +829,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="f4ae5823-13d0-48b5-9d8e-ef8aa22354f5" name="b73b865a-f708-401d-bd4e-0bc97621e95a" type="radio">
-</input><label class="sd-tab-label" for="f4ae5823-13d0-48b5-9d8e-ef8aa22354f5">
+<input id="77bf3956-348b-426c-9fb3-c10d8f5da48d" name="bddb28a9-e87b-4932-b59b-a71cae10ceb1" type="radio">
+</input><label class="sd-tab-label" for="77bf3956-348b-426c-9fb3-c10d8f5da48d">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -880,8 +862,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="837a77a8-e7ea-4390-96cf-fca161760a33" name="b73b865a-f708-401d-bd4e-0bc97621e95a" type="radio">
-</input><label class="sd-tab-label" for="837a77a8-e7ea-4390-96cf-fca161760a33">
+<input id="f9aa8ac5-db81-4e3a-abc0-c4fdcea1bf7f" name="bddb28a9-e87b-4932-b59b-a71cae10ceb1" type="radio">
+</input><label class="sd-tab-label" for="f9aa8ac5-db81-4e3a-abc0-c4fdcea1bf7f">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -951,8 +933,8 @@ Blackwell Server Edition</p></td>
 </div>
 </div></blockquote>
 </div>
-<input id="6a20e854-d597-4923-83cd-cf7d83e92732" name="b73b865a-f708-401d-bd4e-0bc97621e95a" type="radio">
-</input><label class="sd-tab-label" for="6a20e854-d597-4923-83cd-cf7d83e92732">
+<input id="07ae134d-6f2a-482b-bfea-1883b99dc1b3" name="bddb28a9-e87b-4932-b59b-a71cae10ceb1" type="radio">
+</input><label class="sd-tab-label" for="07ae134d-6f2a-482b-bfea-1883b99dc1b3">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1061,8 +1043,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="57a99529-e170-4c39-a136-2790576294d1" name="833e9290-b166-4f72-95fb-bbe2c8cabaee" type="radio">
-</input><label class="sd-tab-label" for="57a99529-e170-4c39-a136-2790576294d1">
+<input checked="checked" id="1fefad0c-8e0b-4226-8502-63a1bf5bceaf" name="57da5440-cd66-4445-8f62-14516e5feb2e" type="radio">
+</input><label class="sd-tab-label" for="1fefad0c-8e0b-4226-8502-63a1bf5bceaf">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1206,8 +1188,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="2076692b-493c-443d-af79-cf5bc616ef21" name="833e9290-b166-4f72-95fb-bbe2c8cabaee" type="radio">
-</input><label class="sd-tab-label" for="2076692b-493c-443d-af79-cf5bc616ef21">
+<input id="aadd7d32-b827-49ac-a858-5a1ab3d5afe2" name="57da5440-cd66-4445-8f62-14516e5feb2e" type="radio">
+</input><label class="sd-tab-label" for="aadd7d32-b827-49ac-a858-5a1ab3d5afe2">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1259,8 +1241,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="a20b2429-5243-4b8e-9420-8d16f0ae585b" name="833e9290-b166-4f72-95fb-bbe2c8cabaee" type="radio">
-</input><label class="sd-tab-label" for="a20b2429-5243-4b8e-9420-8d16f0ae585b">
+<input id="1df5196d-0292-421f-a34c-b63e43223ae8" name="57da5440-cd66-4445-8f62-14516e5feb2e" type="radio">
+</input><label class="sd-tab-label" for="1df5196d-0292-421f-a34c-b63e43223ae8">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
