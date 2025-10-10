@@ -28,6 +28,7 @@ sphinx_conf_py_extra = """
   ]
   templates_path = ['${root}/templates']
   extensions.extend([
+    "linuxdoc.rstFlatTable",
     "sphinx.ext.autosectionlabel",
     "sphinx_copybutton",
   ])

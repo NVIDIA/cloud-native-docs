@@ -81,20 +81,17 @@ The following table shows the operands and default operand versions that corresp
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
-.. list-table::
-   :header-rows: 1
+.. flat-table::
+   :header-rows: 2
 
-   * - Component
-     - | GPU Operator
-       | v25.3.4
-     - | GPU Operator
-       | v25.3.3
-     - | GPU Operator
-       | v25.3.2
-     - | GPU Operator
-       | v25.3.1
-     - | GPU Operator
-       | v25.3.0
+   * - :rspan:`1` Component
+     - :cspan:`4` GPU Operator Version
+
+   * - v25.3.4
+     - v25.3.3
+     - v25.3.2
+     - v25.3.1
+     - v25.3.0
 
    * - NVIDIA GPU Driver |ki|_
      - | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ (default, rec.)
