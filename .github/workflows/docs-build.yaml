@@ -2,7 +2,7 @@ name: docs-build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, release-* ]
     tags:
       - v*
   workflow_dispatch:
