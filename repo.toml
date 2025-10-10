@@ -28,6 +28,7 @@ sphinx_conf_py_extra = """
   ]
   templates_path = ['${root}/templates']
   extensions.extend([
+    "linuxdoc.rstFlatTable",
     "sphinx.ext.autosectionlabel",
     "sphinx_copybutton",
   ])
@@ -167,7 +168,7 @@ docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "25.10"
-source_substitutions = { version = "v25.10", recommended = "580.82.07" }
+source_substitutions = { minor_version = "25.10", version = "v25.10.0", recommended = "580.82.07" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
