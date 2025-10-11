@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 08, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 11, 2025"/>
 
 
 
@@ -523,18 +523,6 @@ Refer to <a class="reference internal" href="platform-support.html#supported-ope
 <p>The specified value can be any user-defined value.
 The value is used to install the Operator in a subsequent step.</p>
 </li>
-<li><p>Specify the version of the CUDA base image to use when building the driver container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">12</span>.9.1
-</pre></div>
-</div>
-<p>The CUDA version only specifies the base image used to build the driver container.
-The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.</p>
-</li>
-<li><p>Specify the version of the Golang version to use when building the driver container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">GOLANG_VERSION</span><span class="o">=</span><span class="m">1</span>.25.1
-</pre></div>
-</div>
-</li>
 <li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append <code class="docutils literal notranslate"><span class="pre">-grid</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">570</span>.124.06
 </pre></div>
@@ -546,7 +534,7 @@ then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVE
 </ul>
 </li>
 <li><p>Build the driver container image:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver <span class="nv">GOLANG_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">GOLANG_VERSION</span><span class="si">}</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> make build-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver make build-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -559,7 +547,7 @@ then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVE
 <p>Enter your password when prompted.</p>
 </li>
 <li><p>Push the driver container image to your private registry:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver <span class="nv">GOLANG_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">GOLANG_VERSION</span><span class="si">}</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> make push-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver make push-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
