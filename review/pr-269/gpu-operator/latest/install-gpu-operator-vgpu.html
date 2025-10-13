@@ -516,7 +516,7 @@ The guest driver file name follows the pattern <code class="docutils literal not
 For Red Hat OpenShift Container Platform, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.&lt;x&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">x</span></code> is the supported minor OCP version.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a> for the list of supported OS distributions.</p>
 </li>
-<li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append <code class="docutils literal notranslate"><span class="pre">-grid</span></code>:</p>
+<li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.95.05
 </pre></div>
 </div>
@@ -608,7 +608,7 @@ FeatureType=1
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
      --set driver.repository<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
-     --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
+     --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="se">\</span>
      --set driver.imagePullSecrets<span class="o">={</span><span class="nv">$REGISTRY_SECRET_NAME</span><span class="o">}</span> <span class="se">\</span>
      --set driver.licensingConfig.configMapName<span class="o">=</span>licensing-config
 </pre></div>
