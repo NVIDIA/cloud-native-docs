@@ -178,7 +178,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
       NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
         * Driver versions 575.57.08 or later is required.  
         * MIG is not supported on the 575.57.08 driver release.
-        * You must disable High Memory Mode (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
+        * You must disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
   .. tab-item:: B-series Products
 
