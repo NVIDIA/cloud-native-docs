@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Container Device Interface Support in the GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>Container Device Interface (CDI) Support in the GPU Operator &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 13, 2025"/>
 
 
 
@@ -344,7 +344,7 @@
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Container Device Interface Support</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Container Device Interface (CDI) Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -405,7 +405,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Container Device Interface Support in the GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">Container Device Interface (CDI) Support in the GPU Operator</li>
   </ul>
 </nav></div>
       
@@ -421,21 +421,21 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="container-device-interface-support-in-the-gpu-operator">
-<h1>Container Device Interface Support in the GPU Operator<a class="headerlink" href="#container-device-interface-support-in-the-gpu-operator" title="Permalink to this headline">#</a></h1>
+  <section id="container-device-interface-cdi-support-in-the-gpu-operator">
+<h1>Container Device Interface (CDI) Support in the GPU Operator<a class="headerlink" href="#container-device-interface-cdi-support-in-the-gpu-operator" title="Permalink to this headline">#</a></h1>
 <section id="about-the-container-device-interface">
 <h2>About the Container Device Interface<a class="headerlink" href="#about-the-container-device-interface" title="Permalink to this headline">#</a></h2>
 <p>The Container Device Interface (CDI) is a specification for container runtimes
 such as cri-o, containerd, and podman that standardizes access to complex
 devices like NVIDIA GPUs by the container runtimes.
-CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
+Enabled by default in v25.10.0 and later, CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
 that support for Kubernetes clusters.</p>
 <p>Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.</p>
-<p>When CDI is enabled, two runtime classes, nvidia-cdi and nvidia-legacy, become available.
+<p>When CDI is enabled (default), two runtime classes, nvidia-cdi and nvidia-legacy, become available.
 These two runtime classes are in addition to the default runtime class, nvidia.</p>
-<p>If you do not set CDI as the default runtime, the runtime resolves to the
+<p>If you disable CDI as the default runtime, the runtime resolves to the
 legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
 machines or any architecture that has NVML libraries installed.</p>
 <p>Optionally, you can specify the runtime class for a workload.
@@ -456,12 +456,13 @@ CDI is supported on all other platforms listed in <a class="reference internal" 
 </section>
 <section id="enabling-cdi-during-installation">
 <h2>Enabling CDI During Installation<a class="headerlink" href="#enabling-cdi-during-installation" title="Permalink to this headline">#</a></h2>
-<p>Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
-<p>When you install the Operator with Helm, specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.enabled=true</span></code> argument.
-Optionally, also specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.default=true</span></code> argument to use the CDI runtime class by default for all pods.</p>
+<p>CDI is enabled by default during installation.
+Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
 </section>
 <section id="enabling-cdi-after-installation">
 <h2>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline">#</a></h2>
+<p>CDI is enabled by default in GPU Operator v25.10.0 and later.
+Use the following procedure to enable CDI if you disabled CDI during installation.</p>
 <p class="rubric">Prerequisites</p>
 <ul>
 <li><p>You installed version 22.3.0 or newer.</p></li>
@@ -482,16 +483,6 @@ Optionally, also specify the <code class="docutils literal notranslate"><span cl
 <li><p>Enable CDI by modifying the cluster policy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/enabled&quot;, &quot;value&quot;:true}]&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
-</pre></div>
-</div>
-</li>
-<li><p>(Optional) Set the default container runtime mode to CDI by modifying the cluster policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/default&quot;, &quot;value&quot;:true}]&#39;</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>

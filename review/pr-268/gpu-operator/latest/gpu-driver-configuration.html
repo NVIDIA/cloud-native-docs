@@ -64,14 +64,14 @@
     <script src="_static/social-media.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Container Device Interface Support in the GPU Operator" href="cdi.html" />
+    <link rel="next" title="Container Device Interface (CDI) Support in the GPU Operator" href="cdi.html" />
     <link rel="prev" title="Precompiled Driver Containers" href="precompiled-drivers.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 13, 2025"/>
 
 
 
@@ -344,7 +344,7 @@
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -703,7 +703,7 @@ label the worker nodes to identify the driver type and version to install on eac
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10
+    --version<span class="o">=</span>v25.10.0
 <span class="go">    --set driver.nvidiaDriverCRD.enabled=true</span>
 </pre></div>
 </div>
@@ -1033,7 +1033,7 @@ The selectors are set from the NVIDIA driver custom resources:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Container Device Interface Support in the GPU Operator</p>
+        <p class="prev-next-title">Container Device Interface (CDI) Support in the GPU Operator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

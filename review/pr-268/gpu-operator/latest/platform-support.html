@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 13, 2025"/>
 
 
 
@@ -344,7 +344,7 @@
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -439,9 +439,7 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <p>The product life cycle and versioning are subject to change in the future.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>Upgrades are only supported within a major release or to the next major release.</p></li>
-</ul>
+<p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
 <div class="pst-scrollable-table-container"><table class="table" id="id11">
 <caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id11" title="Permalink to this table">#</a></caption>
@@ -473,23 +471,23 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <p>The following table shows the operands and default operand versions that correspond to a GPU Operator version.</p>
 <p>When post-release testing confirms support for newer versions of operands, these updates are identified as <em>recommended updates</em> to a GPU Operator version.
 Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-gpu-operator"><span class="std std-ref">Upgrading the NVIDIA GPU Operator</span></a> for more information.</p>
+<p><strong>D</strong> = Default driver, <strong>R</strong> = Recommended driver</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Component</p></th>
-<th class="head"><p>Version</p></th>
+<tr class="row-odd"><th class="head" rowspan="2"><p> Component</p></th>
+<th class="head"><p>GPU Operator Version</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>v25.10.0</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>NVIDIA GPU Operator</p></td>
-<td><p>v25.10</p></td>
-</tr>
 <tr class="row-odd"><td><p>NVIDIA GPU Driver <a class="reference external" href="#known-issue"><sup>1</sup></a></p></td>
 <td><div class="line-block">
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a> (default, recommended)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a> (<strong>D</strong>, <strong>R</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html">580.65.06</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html">575.57.08</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-172-08/index.html">570.172.08</a></div>
@@ -530,7 +528,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.3.1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Validator for NVIDIA GPU Operator</p></td>
-<td><p>v25.10</p></td>
+<td><p>v25.10.0</p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.4.0</a></p></td>
@@ -562,7 +560,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
-NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
+NVIDIA recommends that you upgrade the driver to version 580.65.06 to resolve this issue.
 For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
 </div></blockquote>
 <blockquote id="gds-open-kernel">
@@ -584,8 +582,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="f7262ff5-47db-4799-b92b-fc1ca5274874" name="e7d8248b-9356-4bfd-b0d3-88ff110e4295" type="radio">
-</input><label class="sd-tab-label" for="f7262ff5-47db-4799-b92b-fc1ca5274874">
+<input id="276c62bf-2295-473e-869b-9517e4a7c099" name="7a5d1986-55dc-40be-b085-7dc05f8e6530" type="radio">
+</input><label class="sd-tab-label" for="276c62bf-2295-473e-869b-9517e4a7c099">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -610,8 +608,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="d631adbd-72d8-4563-bb5e-ac09d286a375" name="e7d8248b-9356-4bfd-b0d3-88ff110e4295" type="radio">
-</input><label class="sd-tab-label" for="d631adbd-72d8-4563-bb5e-ac09d286a375">
+<input checked="checked" id="688617f9-eb9c-48bf-a51d-d415db8c40de" name="7a5d1986-55dc-40be-b085-7dc05f8e6530" type="radio">
+</input><label class="sd-tab-label" for="688617f9-eb9c-48bf-a51d-d415db8c40de">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -717,8 +715,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="ee45f60c-659a-44a7-a298-85870fd8e001" name="e7d8248b-9356-4bfd-b0d3-88ff110e4295" type="radio">
-</input><label class="sd-tab-label" for="ee45f60c-659a-44a7-a298-85870fd8e001">
+<input id="00cbae28-5ce3-4852-9d1b-4fa70a7b2394" name="7a5d1986-55dc-40be-b085-7dc05f8e6530" type="radio">
+</input><label class="sd-tab-label" for="00cbae28-5ce3-4852-9d1b-4fa70a7b2394">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -750,8 +748,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="85993503-70b4-4525-9709-20b708252d5d" name="e7d8248b-9356-4bfd-b0d3-88ff110e4295" type="radio">
-</input><label class="sd-tab-label" for="85993503-70b4-4525-9709-20b708252d5d">
+<input id="e8b44c6b-ae8f-47b6-9972-464c8d2c07f4" name="7a5d1986-55dc-40be-b085-7dc05f8e6530" type="radio">
+</input><label class="sd-tab-label" for="e8b44c6b-ae8f-47b6-9972-464c8d2c07f4">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -821,8 +819,8 @@ Blackwell Server Edition</p></td>
 </div>
 </div></blockquote>
 </div>
-<input id="060f2d0d-f872-4c36-9656-1654bb22a34b" name="e7d8248b-9356-4bfd-b0d3-88ff110e4295" type="radio">
-</input><label class="sd-tab-label" for="060f2d0d-f872-4c36-9656-1654bb22a34b">
+<input id="2d572f2a-0730-457d-8afa-19227e48777a" name="7a5d1986-55dc-40be-b085-7dc05f8e6530" type="radio">
+</input><label class="sd-tab-label" for="2d572f2a-0730-457d-8afa-19227e48777a">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -931,8 +929,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="09b8aa9c-2689-4ca1-a822-c13653c08509" name="247d9d06-69dd-4b16-bd20-e0f6617859ce" type="radio">
-</input><label class="sd-tab-label" for="09b8aa9c-2689-4ca1-a822-c13653c08509">
+<input checked="checked" id="032dcc16-c2f6-4df2-9779-25e4da26fb07" name="d2f42cb5-1c3b-4ca7-8eb4-4ca721195ccc" type="radio">
+</input><label class="sd-tab-label" for="032dcc16-c2f6-4df2-9779-25e4da26fb07">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1076,8 +1074,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="3f959d58-f9f4-4e01-8201-72efaddf3fee" name="247d9d06-69dd-4b16-bd20-e0f6617859ce" type="radio">
-</input><label class="sd-tab-label" for="3f959d58-f9f4-4e01-8201-72efaddf3fee">
+<input id="b2eac707-96e8-48d2-8bdf-a3e25eb77c6f" name="d2f42cb5-1c3b-4ca7-8eb4-4ca721195ccc" type="radio">
+</input><label class="sd-tab-label" for="b2eac707-96e8-48d2-8bdf-a3e25eb77c6f">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1129,8 +1127,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="460aed0e-8951-485f-85cc-9bbbc6a391a9" name="247d9d06-69dd-4b16-bd20-e0f6617859ce" type="radio">
-</input><label class="sd-tab-label" for="460aed0e-8951-485f-85cc-9bbbc6a391a9">
+<input id="d58f468e-d6f7-4914-9b08-10ef10a4b6b1" name="d2f42cb5-1c3b-4ca7-8eb4-4ca721195ccc" type="radio">
+</input><label class="sd-tab-label" for="d58f468e-d6f7-4914-9b08-10ef10a4b6b1">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1270,7 +1268,7 @@ AWS, Oracle</p></td>
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Operating System</p></th>
-<th class="head"><p>Containerd 1.6 - 2.1</p></th>
+<th class="head"><p>Containerd 1.7 - 2.1</p></th>
 <th class="head"><p>CRI-O</p></th>
 </tr>
 </thead>
