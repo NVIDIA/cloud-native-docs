@@ -17,7 +17,7 @@
 .. headings # #, * *, =, -, ^, "
 
 ######################################################
-Container Device Interface Support in the GPU Operator
+Container Device Interface (CDI) Support in the GPU Operator
 ######################################################
 
 ************************************
@@ -27,17 +27,17 @@ About the Container Device Interface
 The Container Device Interface (CDI) is a specification for container runtimes
 such as cri-o, containerd, and podman that standardizes access to complex
 devices like NVIDIA GPUs by the container runtimes.
-CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
+Enabled by default in v25.10.0 and later, CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
 that support for Kubernetes clusters.
 
 Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.
 
-When CDI is enabled, two runtime classes, nvidia-cdi and nvidia-legacy, become available.
+When CDI is enabled (default), two runtime classes, nvidia-cdi and nvidia-legacy, become available.
 These two runtime classes are in addition to the default runtime class, nvidia.
 
-If you do not set CDI as the default runtime, the runtime resolves to the
+If you disable CDI as the default runtime, the runtime resolves to the
 legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
 machines or any architecture that has NVML libraries installed.
 
@@ -65,15 +65,15 @@ Limitations and Restrictions
 Enabling CDI During Installation
 ********************************
 
+CDI is enabled by default during installation.
 Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.
-
-When you install the Operator with Helm, specify the ``--set cdi.enabled=true`` argument.
-Optionally, also specify the ``--set cdi.default=true`` argument to use the CDI runtime class by default for all pods.
-
 
 *******************************
 Enabling CDI After Installation
 *******************************
+
+CDI is enabled by default in GPU Operator v25.10.0 and later.
+Use the following procedure to enable CDI if you disabled CDI during installation.
 
 .. rubric:: Prerequisites
 
@@ -108,19 +108,6 @@ To enable CDI support, perform the following steps:
    .. code-block:: output
 
     clusterpolicy.nvidia.com/cluster-policy patched
-
-#. (Optional) Set the default container runtime mode to CDI by modifying the cluster policy:
-
-   .. code-block:: console
-
-     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-         -p='[{"op": "replace", "path": "/spec/cdi/default", "value":true}]'
-
-   *Example Output*
-
-   .. code-block:: output
-
-     clusterpolicy.nvidia.com/cluster-policy patched
 
 #. (Optional) Confirm that the container toolkit and device plugin pods restart:
 
