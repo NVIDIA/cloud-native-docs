@@ -104,29 +104,25 @@ Perform the following steps to build and push a container image that includes th
 
    .. code-block:: console
 
-      $ git clone https://gitlab.com/nvidia/container-images/driver
+      $ git clone https://github.com/NVIDIA/gpu-driver-container
 
    .. code-block:: console
 
-      $ cd driver
+      $ cd gpu-driver-container
 
-#. Change directory to the operating system name and version under the driver directory:
+#. Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file to the operating system version you want to build the driver container for:
+
+   Copy ``<local-driver-download-directory>/\*-grid.run`` and ``vgpuDriverCatalog.yaml`` to ``ubuntu22.04/drivers/``.
 
    .. code-block:: console
 
-      $ cd ubuntu20.04
+      $ cp <local-driver-download-directory>/*-grid.run ubuntu22.04/drivers/
+
+   .. code-block:: console
+
+      $ cp vgpuDriverCatalog.yaml ubuntu22.04/drivers/
 
    For Red Hat OpenShift Container Platform, use a directory that includes ``rhel`` in the directory name.
-
-#. Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file:
-
-   .. code-block:: console
-
-      $ cp <local-driver-download-directory>/*-grid.run drivers/
-
-   .. code-block:: console
-
-      $ cp vgpuDriverCatalog.yaml drivers/
 
 #. Set environment variables for building the driver container image.
 
@@ -141,35 +137,17 @@ Perform the following steps to build and push a container image that includes th
 
      .. code-block:: console
 
-        $ export OS_TAG=ubuntu20.04
+        $ export OS_TAG=ubuntu22.04
 
      The value must match the guest operating system version.
      For Red Hat OpenShift Container Platform, specify ``rhcos4.<x>`` where ``x`` is the supported minor OCP version.
      Refer to :ref:`Supported Operating Systems and Kubernetes Platforms` for the list of supported OS distributions.
 
-   - Specify the driver container image tag such as ``1.0.0``:
+   - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal:
 
      .. code-block:: console
 
-        $ export VERSION=1.0.0
-
-     The specified value can be any user-defined value.
-     The value is used to install the Operator in a subsequent step.
-
-   - Specify the version of the CUDA base image to use when building the driver container:
-
-     .. code-block:: console
-
-        $ export CUDA_VERSION=11.8.0
-
-     The CUDA version only specifies the base image used to build the driver container.
-     The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.
-
-   - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
-
-     .. code-block:: console
-
-        $ export VGPU_DRIVER_VERSION=525.60.13-grid
+        $ export VGPU_DRIVER_VERSION=580.95.05
 
      The Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
      If you disable the version check by specifying ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when you build the driver image,
@@ -179,12 +157,7 @@ Perform the following steps to build and push a container image that includes th
 
    .. code-block:: console
 
-      $ sudo docker build \
-          --build-arg DRIVER_TYPE=vgpu \
-          --build-arg DRIVER_VERSION=$VGPU_DRIVER_VERSION \
-          --build-arg CUDA_VERSION=$CUDA_VERSION \
-          --build-arg TARGETARCH=amd64 \  # amd64 or arm64
-          -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .
+      $ VGPU_GUEST_DRIVER_VERSION=${VGPU_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/driver make build-vgpuguest-${OS_TAG}
 
 #. Push the driver container image to your private registry.
 
@@ -200,7 +173,7 @@ Perform the following steps to build and push a container image that includes th
 
       .. code-block:: console
 
-         $ sudo docker push ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG}
+         $ VGPU_GUEST_DRIVER_VERSION=${VGPU_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/driver make push-vgpuguest-${OS_TAG}
 
 
 **************************************************************************************
@@ -274,7 +247,7 @@ Install the Operator
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
           --set driver.repository=${PRIVATE_REGISTRY} \
-          --set driver.version=${VERSION} \
+          --set driver.version=${VGPU_DRIVER_VERSION} \
           --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
           --set driver.licensingConfig.configMapName=licensing-config
 
