@@ -143,15 +143,6 @@ Perform the following steps to build and push a container image that includes th
      For Red Hat OpenShift Container Platform, specify ``rhcos4.<x>`` where ``x`` is the supported minor OCP version.
      Refer to :ref:`Supported Operating Systems and Kubernetes Platforms` for the list of supported OS distributions.
 
-   - Specify the driver container image tag such as ``1.0.0``:
-
-     .. code-block:: console
-
-        $ export VERSION=1.0.0
-
-     The specified value can be any user-defined value.
-     The value is used to install the Operator in a subsequent step.
-
    - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
 
      .. code-block:: console
