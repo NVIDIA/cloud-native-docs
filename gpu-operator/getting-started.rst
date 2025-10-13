@@ -555,7 +555,7 @@ For MicroK8s, set the following in the ``ClusterPolicy``.
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/snap/microk8s/current/args/containerd-template.toml
+        value: /var/snap/microk8s/current/args/containerd.toml
       - name: CONTAINERD_SOCKET
         value: /var/snap/microk8s/common/run/containerd.sock
       - name: CONTAINERD_RUNTIME_CLASS
@@ -571,7 +571,7 @@ These options can be passed to GPU Operator during install time as below.
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
