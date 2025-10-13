@@ -143,7 +143,7 @@ Perform the following steps to build and push a container image that includes th
      For Red Hat OpenShift Container Platform, specify ``rhcos4.<x>`` where ``x`` is the supported minor OCP version.
      Refer to :ref:`Supported Operating Systems and Kubernetes Platforms` for the list of supported OS distributions.
 
-   - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append ``-grid``:
+   - Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal:
 
      .. code-block:: console
 
@@ -247,7 +247,7 @@ Install the Operator
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
           --set driver.repository=${PRIVATE_REGISTRY} \
-          --set driver.version=${VERSION} \
+          --set driver.version=${VGPU_DRIVER_VERSION} \
           --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
           --set driver.licensingConfig.configMapName=licensing-config
 
