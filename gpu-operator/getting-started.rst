@@ -478,9 +478,11 @@ options are used with the container-toolkit deployed with GPU Operator:
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /etc/containerd/config.toml
+        value: /var/snap/microk8s/current/args/containerd-template.toml
       - name: CONTAINERD_SOCKET
-        value: /run/containerd/containerd.sock
+        value: /var/snap/microk8s/common/run/containerd.sock
+      - name: RUNTIME_CONFIG_SOURCE
+        value: file=/var/snap/microk8s/current/args/containerd.toml
       - name: CONTAINERD_RUNTIME_CLASS
         value: nvidia
       - name: CONTAINERD_SET_AS_DEFAULT
@@ -496,9 +498,11 @@ If you need to specify custom values, refer to the following sample command for 
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/etc/containerd/config.toml \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
-      --set toolkit.env[1].value=/run/containerd/containerd.sock \
+      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
+      --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
+      --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
       --set toolkit.env[2].value=nvidia \
       --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
