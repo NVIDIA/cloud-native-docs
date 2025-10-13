@@ -156,7 +156,7 @@ Perform the following steps to build and push a container image that includes th
 
      .. code-block:: console
 
-        $ export VGPU_DRIVER_VERSION=570.124.06
+        $ export VGPU_DRIVER_VERSION=580.95.05
 
      The Operator automatically selects the compatible guest driver version from the drivers bundled with the ``driver`` image.
      If you disable the version check by specifying ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when you build the driver image,
