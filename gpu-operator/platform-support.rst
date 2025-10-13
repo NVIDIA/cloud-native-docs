@@ -179,7 +179,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
       * Driver versions 575.57.08 or later is required.  
       * MIG is not supported on the 575.57.08 driver release.
-      * You must disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
+      * In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
   .. tab-item:: B-series Products
 
