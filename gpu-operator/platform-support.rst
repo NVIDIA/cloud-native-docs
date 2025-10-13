@@ -173,12 +173,13 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA T400             | Turing                 |
     +-------------------------+------------------------+
 
-     .. note::
+    .. note::
 
       NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
-        * Driver versions 575.57.08 or later is required.  
-        * MIG is not supported on the 575.57.08 driver release.
-        * You must disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
+
+      * Driver versions 575.57.08 or later is required.  
+      * MIG is not supported on the 575.57.08 driver release.
+      * You must disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
   .. tab-item:: B-series Products
 
@@ -192,9 +193,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |
     +-------------------------+------------------------+
 
-     .. note::
+    .. note::
 
-       * HGX B200 requires a driver container version of 570.133.20 or later.
+      * HGX B200 requires a driver container version of 570.133.20 or later.
 
 
 .. _gpu-operator-arm-platforms:
