@@ -49,7 +49,8 @@ To pass custom parameters, execute the following steps.
 Example using ``nvidia-uvm`` module
 -----------------------------------
 
-This example shows the High Memory Mode being disabled in the ``nvidia-uvm`` module.
+This example shows the Heterogeneous Memory Management (HMM) being disabled in the ``nvidia-uvm`` module.
+Refer to `Simplifying GPU Application Development with Heterogeneous Memory Management <https://developer.nvidia.com/blog/simplifying-gpu-application-development-with-heterogeneous-memory-management/>`_ for more information about HMM.
 
 #. Create a configuration file named ``nvidia-uvm.conf``:
 
