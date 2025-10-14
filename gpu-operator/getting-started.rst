@@ -483,8 +483,6 @@ options are used with the container-toolkit deployed with GPU Operator:
         value: /var/snap/microk8s/common/run/containerd.sock
       - name: RUNTIME_CONFIG_SOURCE
         value: file=/var/snap/microk8s/current/args/containerd.toml
-      - name: NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES
-        value: "cdi.k8s.io/"
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -500,9 +498,7 @@ If you need to specify custom values, refer to the following sample command for 
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
-      --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml \
-      --set toolkit.env[2].name=NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES \
-      --set toolkit.env[2].value="cdi.k8s.io/"
+      --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 
 These options are defined as follows:
 
@@ -527,12 +523,6 @@ RUNTIME_CONFIG_SOURCE
   By default this will point to ``/var/snap/microk8s/current/args/containerd.toml``
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
-
-NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES
-  The annotation prefix for the CDI modes.
-  By default this will point to ``cdi.k8s.io/``
-  (the default prefix for CDI modes). It should be customized if
-  your CDI installation is not in the default location.
 
 
 Rancher Kubernetes Engine 2
