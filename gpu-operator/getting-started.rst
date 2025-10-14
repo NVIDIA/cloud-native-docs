@@ -483,10 +483,8 @@ options are used with the container-toolkit deployed with GPU Operator:
         value: /var/snap/microk8s/common/run/containerd.sock
       - name: RUNTIME_CONFIG_SOURCE
         value: file=/var/snap/microk8s/current/args/containerd.toml
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: true
+      - name: NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES
+        value: "cdi.k8s.io/"
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -503,42 +501,39 @@ If you need to specify custom values, refer to the following sample command for 
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
       --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+      --set toolkit.env[2].name=NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES \
+      --set toolkit.env[2].value="cdi.k8s.io/"
 
 These options are defined as follows:
 
 CONTAINERD_CONFIG
   The path on the host to the ``containerd`` config
   you would like to have updated with support for the ``nvidia-container-runtime``.
-  By default this will point to ``/etc/containerd/config.toml`` (the default
-  location for ``containerd``). It should be customized if your ``containerd``
+  By default this will point to ``/var/snap/microk8s/current/args/containerd-template.toml``
+  (the default location for ``containerd``). It should be customized if your ``containerd``
   installation is not in the default location.
 
 CONTAINERD_SOCKET
   The path on the host to the socket file used to
   communicate with ``containerd``. The operator will use this to send a
   ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
-  default this will point to ``/run/containerd/containerd.sock``
+  default this will point to ``/var/snap/microk8s/common/run/containerd.sock``
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
 
-CONTAINERD_RUNTIME_CLASS
-  The name of the
-  `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_
-  you would like to associate with the ``nvidia-container-runtime``.
-  Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS
-  will always run with the ``nvidia-container-runtime``. The default
-  CONTAINERD_RUNTIME_CLASS is ``nvidia``.
+RUNTIME_CONFIG_SOURCE
+  The path on the host to the runtime config source file used to
+  load the nvidia-container-runtime into the containerd runtime.
+  By default this will point to ``/var/snap/microk8s/current/args/containerd.toml``
+  (the default location for ``containerd``). It should be customized if
+  your ``containerd`` installation is not in the default location.
 
-CONTAINERD_SET_AS_DEFAULT
-  A flag indicating whether you want to set
-  ``nvidia-container-runtime`` as the default runtime used to launch all
-  containers. When set to false, only containers in pods with a ``runtimeClassName``
-  equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
-  The default value is ``true``.
+NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES
+  The annotation prefix for the CDI modes.
+  By default this will point to ``cdi.k8s.io/``
+  (the default prefix for CDI modes). It should be customized if
+  your CDI installation is not in the default location.
+
 
 Rancher Kubernetes Engine 2
 ===========================
