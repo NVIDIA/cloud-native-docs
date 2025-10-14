@@ -835,8 +835,6 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/snap/microk8s/common/run/containerd.sock</span><span class="w"></span>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUNTIME_CONFIG_SOURCE</span><span class="w"></span>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file=/var/snap/microk8s/current/args/containerd.toml</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cdi.k8s.io/&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
@@ -848,9 +846,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
 <span class="go">    --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \</span>
 <span class="go">    --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \</span>
-<span class="go">    --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml \</span>
-<span class="go">    --set toolkit.env[2].name=NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES \</span>
-<span class="go">    --set toolkit.env[2].value=&quot;cdi.k8s.io/&quot;</span>
+<span class="go">    --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml</span>
 </pre></div>
 </div>
 <p>These options are defined as follows:</p>
@@ -873,11 +869,6 @@ load the nvidia-container-runtime into the containerd runtime.
 By default this will point to <code class="docutils literal notranslate"><span class="pre">/var/snap/microk8s/current/args/containerd.toml</span></code>
 (the default location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if
 your <code class="docutils literal notranslate"><span class="pre">containerd</span></code> installation is not in the default location.</p>
-</dd>
-<dt>NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES</dt><dd><p>The annotation prefix for the CDI modes.
-By default this will point to <code class="docutils literal notranslate"><span class="pre">cdi.k8s.io/</span></code>
-(the default prefix for CDI modes). It should be customized if
-your CDI installation is not in the default location.</p>
 </dd>
 </dl>
 <section id="rancher-kubernetes-engine-2">
