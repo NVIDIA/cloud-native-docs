@@ -835,10 +835,8 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/snap/microk8s/common/run/containerd.sock</span><span class="w"></span>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUNTIME_CONFIG_SOURCE</span><span class="w"></span>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">file=/var/snap/microk8s/current/args/containerd.toml</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_RUNTIME_CLASS</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SET_AS_DEFAULT</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cdi.k8s.io/&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
@@ -851,39 +849,35 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="go">    --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \</span>
 <span class="go">    --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \</span>
 <span class="go">    --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml \</span>
-<span class="go">    --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \</span>
-<span class="go">    --set toolkit.env[2].value=nvidia \</span>
-<span class="go">    --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \</span>
-<span class="go">    --set-string toolkit.env[3].value=true</span>
+<span class="go">    --set toolkit.env[2].name=NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES \</span>
+<span class="go">    --set toolkit.env[2].value=&quot;cdi.k8s.io/&quot;</span>
 </pre></div>
 </div>
 <p>These options are defined as follows:</p>
 <dl class="simple">
 <dt>CONTAINERD_CONFIG</dt><dd><p>The path on the host to the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> config
 you would like to have updated with support for the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
-By default this will point to <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> (the default
-location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if your <code class="docutils literal notranslate"><span class="pre">containerd</span></code>
+By default this will point to <code class="docutils literal notranslate"><span class="pre">/var/snap/microk8s/current/args/containerd-template.toml</span></code>
+(the default location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if your <code class="docutils literal notranslate"><span class="pre">containerd</span></code>
 installation is not in the default location.</p>
 </dd>
 <dt>CONTAINERD_SOCKET</dt><dd><p>The path on the host to the socket file used to
 communicate with <code class="docutils literal notranslate"><span class="pre">containerd</span></code>. The operator will use this to send a
 <code class="docutils literal notranslate"><span class="pre">SIGHUP</span></code> signal to the <code class="docutils literal notranslate"><span class="pre">containerd</span></code> daemon to reload its config. By
-default this will point to <code class="docutils literal notranslate"><span class="pre">/run/containerd/containerd.sock</span></code>
+default this will point to <code class="docutils literal notranslate"><span class="pre">/var/snap/microk8s/common/run/containerd.sock</span></code>
 (the default location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if
 your <code class="docutils literal notranslate"><span class="pre">containerd</span></code> installation is not in the default location.</p>
 </dd>
-<dt>CONTAINERD_RUNTIME_CLASS</dt><dd><p>The name of the
-<a class="reference external" href="https://kubernetes.io/docs/concepts/containers/runtime-class">Runtime Class</a>
-you would like to associate with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
-Pods launched with a <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code> equal to CONTAINERD_RUNTIME_CLASS
-will always run with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>. The default
-CONTAINERD_RUNTIME_CLASS is <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>.</p>
+<dt>RUNTIME_CONFIG_SOURCE</dt><dd><p>The path on the host to the runtime config source file used to
+load the nvidia-container-runtime into the containerd runtime.
+By default this will point to <code class="docutils literal notranslate"><span class="pre">/var/snap/microk8s/current/args/containerd.toml</span></code>
+(the default location for <code class="docutils literal notranslate"><span class="pre">containerd</span></code>). It should be customized if
+your <code class="docutils literal notranslate"><span class="pre">containerd</span></code> installation is not in the default location.</p>
 </dd>
-<dt>CONTAINERD_SET_AS_DEFAULT</dt><dd><p>A flag indicating whether you want to set
-<code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> as the default runtime used to launch all
-containers. When set to false, only containers in pods with a <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code>
-equal to CONTAINERD_RUNTIME_CLASS will be run with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>.
-The default value is <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<dt>NVIDIA_CONTAINER_RUNTIME_MODES_CDI_ANNOTATION_PREFIXES</dt><dd><p>The annotation prefix for the CDI modes.
+By default this will point to <code class="docutils literal notranslate"><span class="pre">cdi.k8s.io/</span></code>
+(the default prefix for CDI modes). It should be customized if
+your CDI installation is not in the default location.</p>
 </dd>
 </dl>
 <section id="rancher-kubernetes-engine-2">
