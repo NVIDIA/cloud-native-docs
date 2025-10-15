@@ -21,7 +21,7 @@ Alternatively, you can install the driver by [downloading](https://www.nvidia.co
 ```{note}
 There is a [known issue](troubleshooting.md#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error) on systems
 where `systemd` cgroup drivers are used that cause containers to lose access to requested GPUs when
-`systemctl daemon reload` is run. Please see the troubleshooting documentation for more information.
+`systemctl daemon reload` is run. Refer to the troubleshooting documentation for more information.
 ```
 
 (installing-with-apt)=
@@ -201,7 +201,7 @@ No additional configuration is needed.
 You can just run `nerdctl run --gpus=all`, with root or without root.
 You do not need to run the `nvidia-ctk` command mentioned above for Kubernetes.
 
-See also the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md).
+Refer to the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md) for more information.
 
 ### Configuring CRI-O
 

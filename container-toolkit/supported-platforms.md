@@ -22,17 +22,16 @@ Recent NVIDIA Container Toolkit releases are tested and expected to work on thes
 | Ubuntu 24.04             | X              |         | X                        |
 
 
-## Please report issues
+## Report issues
 
 Our qualification-testing procedures are constantly evolving and we might miss
-certain problems. Please
-[report](https://github.com/NVIDIA/nvidia-container-toolkit/issues) issues in
+certain problems. [Report](https://github.com/NVIDIA/nvidia-container-toolkit/issues) issues in
 particular as they occur on a platform listed above.
 
 
 ## Other Linux distributions
 
-Releases may work on more platforms than indicated in the table above (e.g., on distribution versions older and newer than listed).
+Releases may work on more platforms than indicated in the table above (such as on distribution versions older and newer than listed).
 Give things a try and we invite you to [report](https://github.com/NVIDIA/nvidia-container-toolkit/issues) any issue observed even if your Linux distribution is not listed.
 
 ----
