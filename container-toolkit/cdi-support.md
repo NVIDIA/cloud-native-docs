@@ -84,7 +84,7 @@ $ sudo systemctl restart nvidia-cdi-refresh.service
 
 The `nvidia-cdi-refresh` service consists of two systemd units:
 
-- `nvidia-cdi-refresh.path`: Montiors for for changes to the system and triggers the service
+- `nvidia-cdi-refresh.path`: Monitors for changes to the system and triggers the service.
 - `nvidia-cdi-refresh.service`: Generates the CDI specifications for all available devices based on
   the default configuration and any overrides in the environment file.
 
