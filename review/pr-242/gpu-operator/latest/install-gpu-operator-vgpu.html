@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 15, 2025"/>
 
 
 
@@ -484,26 +484,22 @@ The guest driver file name follows the pattern <code class="docutils literal not
 <p>Perform the following steps to build and push a container image that includes the vGPU Linux guest driver.</p>
 <ol class="arabic">
 <li><p>Clone the driver container repository and change directory into the repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/NVIDIA/gpu-driver-container.git
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> driver
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> gpu-driver-container
 </pre></div>
 </div>
 </li>
-<li><p>Change directory to the operating system name and version under the driver directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> ubuntu20.04
+<li><p>Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file to the operating system version you want to build the driver container for:</p>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">&lt;local-driver-download-directory&gt;/\*-grid.run</span></code> and <code class="docutils literal notranslate"><span class="pre">vgpuDriverCatalog.yaml</span></code> to <code class="docutils literal notranslate"><span class="pre">ubuntu22.04/drivers/</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-grid.run ubuntu22.04/drivers/
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp vgpuDriverCatalog.yaml ubuntu22.04/drivers/
 </pre></div>
 </div>
 <p>For Red Hat OpenShift Container Platform, use a directory that includes <code class="docutils literal notranslate"><span class="pre">rhel</span></code> in the directory name.</p>
-</li>
-<li><p>Copy the NVIDIA vGPU guest driver from your extracted ZIP file and the NVIDIA vGPU driver catalog file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-grid.run drivers/
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp vgpuDriverCatalog.yaml drivers/
-</pre></div>
-</div>
 </li>
 <li><p>Set environment variables for building the driver container image.</p>
 <ul>
@@ -513,29 +509,15 @@ The guest driver file name follows the pattern <code class="docutils literal not
 </div>
 </li>
 <li><p>Specify the <code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> environment variable to identify the guest operating system name and version:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu20.04
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu22.04
 </pre></div>
 </div>
 <p>The value must match the guest operating system version.
 For Red Hat OpenShift Container Platform, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.&lt;x&gt;</span></code> where <code class="docutils literal notranslate"><span class="pre">x</span></code> is the supported minor OCP version.
 Refer to <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a> for the list of supported OS distributions.</p>
 </li>
-<li><p>Specify the driver container image tag such as <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="m">1</span>.0.0
-</pre></div>
-</div>
-<p>The specified value can be any user-defined value.
-The value is used to install the Operator in a subsequent step.</p>
-</li>
-<li><p>Specify the version of the CUDA base image to use when building the driver container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.8.0
-</pre></div>
-</div>
-<p>The CUDA version only specifies the base image used to build the driver container.
-The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.</p>
-</li>
-<li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal and append <code class="docutils literal notranslate"><span class="pre">-grid</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">525</span>.60.13-grid
+<li><p>Specify the Linux guest vGPU driver version that you downloaded from the NVIDIA Licensing Portal:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VGPU_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.95.05
 </pre></div>
 </div>
 <p>The Operator automatically selects the compatible guest driver version from the drivers bundled with the <code class="docutils literal notranslate"><span class="pre">driver</span></code> image.
@@ -545,12 +527,7 @@ then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVE
 </ul>
 </li>
 <li><p>Build the driver container image:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker build <span class="se">\</span>
-    --build-arg <span class="nv">DRIVER_TYPE</span><span class="o">=</span>vgpu <span class="se">\</span>
-    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="nv">$VGPU_DRIVER_VERSION</span> <span class="se">\</span>
-    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="nv">$CUDA_VERSION</span> <span class="se">\</span>
-    --build-arg <span class="nv">TARGETARCH</span><span class="o">=</span>amd64 <span class="se">\ </span> <span class="c1"># amd64 or arm64</span>
-<span class="go">    -t ${PRIVATE_REGISTRY}/driver:${VERSION}-${OS_TAG} .</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver make build-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -563,7 +540,7 @@ then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVE
 <p>Enter your password when prompted.</p>
 </li>
 <li><p>Push the driver container image to your private registry:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver make push-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -631,7 +608,7 @@ FeatureType=1
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
      --set driver.repository<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
-     --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
+     --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="se">\</span>
      --set driver.imagePullSecrets<span class="o">={</span><span class="nv">$REGISTRY_SECRET_NAME</span><span class="o">}</span> <span class="se">\</span>
      --set driver.licensingConfig.configMapName<span class="o">=</span>licensing-config
 </pre></div>

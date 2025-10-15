@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 15, 2025"/>
 
 
 
@@ -433,12 +433,12 @@ In contrast, using container images with precompiled drivers makes the drivers i
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Clone the driver container repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/NVIDIA/gpu-driver-container.git
 </pre></div>
 </div>
 </li>
 <li><p>Change to the <code class="docutils literal notranslate"><span class="pre">rhel8/precompiled</span></code> directory under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> driver/rhel8/precompiled
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> gpu-driver-container/rhel8/precompiled
 </pre></div>
 </div>
 </li>

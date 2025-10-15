@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 15, 2025"/>
 
 
 
@@ -584,8 +584,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="0209b336-e8d1-46ad-9c40-4703f8a99df8" name="783b24ff-a367-4760-b4f4-d56f9f66d1cf" type="radio">
-</input><label class="sd-tab-label" for="0209b336-e8d1-46ad-9c40-4703f8a99df8">
+<input id="d3fac019-0974-4db6-b6b5-3d13542e3561" name="43487837-1bce-4947-b733-12553c2d2ed5" type="radio">
+</input><label class="sd-tab-label" for="d3fac019-0974-4db6-b6b5-3d13542e3561">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -610,8 +610,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="b8af1152-36cc-49b3-9c52-8a0445e2f6a4" name="783b24ff-a367-4760-b4f4-d56f9f66d1cf" type="radio">
-</input><label class="sd-tab-label" for="b8af1152-36cc-49b3-9c52-8a0445e2f6a4">
+<input checked="checked" id="ff2a55bc-8368-4770-b81f-8669480b5960" name="43487837-1bce-4947-b733-12553c2d2ed5" type="radio">
+</input><label class="sd-tab-label" for="ff2a55bc-8368-4770-b81f-8669480b5960">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -717,8 +717,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="8302ef17-3390-4327-969c-211b1c73b6c6" name="783b24ff-a367-4760-b4f4-d56f9f66d1cf" type="radio">
-</input><label class="sd-tab-label" for="8302ef17-3390-4327-969c-211b1c73b6c6">
+<input id="a5f90a18-8569-4ff2-b977-1b93c0329fda" name="43487837-1bce-4947-b733-12553c2d2ed5" type="radio">
+</input><label class="sd-tab-label" for="a5f90a18-8569-4ff2-b977-1b93c0329fda">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -750,8 +750,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="c8d4f43c-aa6e-4632-9c03-28166454c26b" name="783b24ff-a367-4760-b4f4-d56f9f66d1cf" type="radio">
-</input><label class="sd-tab-label" for="c8d4f43c-aa6e-4632-9c03-28166454c26b">
+<input id="7e75c2fa-bee4-4066-ba35-e0cd2f988edb" name="43487837-1bce-4947-b733-12553c2d2ed5" type="radio">
+</input><label class="sd-tab-label" for="7e75c2fa-bee4-4066-ba35-e0cd2f988edb">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -807,22 +807,18 @@ Blackwell Server Edition</p></td>
 </tbody>
 </table>
 </div>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
-<dl class="simple">
-<dt>NVIDIA RTX PRO 6000 Blackwell Server Edition notes:</dt><dd><ul class="simple">
+<p>NVIDIA RTX PRO 6000 Blackwell Server Edition notes:</p>
+<ul class="simple">
 <li><p>Driver versions 575.57.08 or later is required.</p></li>
 <li><p>MIG is not supported on the 575.57.08 driver release.</p></li>
-<li><p>You must disable High Memory Mode (HMM) in UVM by <a class="reference internal" href="custom-driver-params.html#customizing-nvidia-gpu-driver-parameters-during-installation"><span class="std std-ref">Customizing NVIDIA GPU Driver Parameters during Installation</span></a>.</p></li>
+<li><p>In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by <a class="reference internal" href="custom-driver-params.html#customizing-nvidia-gpu-driver-parameters-during-installation"><span class="std std-ref">Customizing NVIDIA GPU Driver Parameters during Installation</span></a>.</p></li>
 </ul>
-</dd>
-</dl>
 </div>
-</div></blockquote>
 </div>
-<input id="6c2e3256-a079-474f-b2c3-ae269e4c7a44" name="783b24ff-a367-4760-b4f4-d56f9f66d1cf" type="radio">
-</input><label class="sd-tab-label" for="6c2e3256-a079-474f-b2c3-ae269e4c7a44">
+<input id="20fd07fe-d3ac-4154-9fc5-2ce22bf83f0e" name="43487837-1bce-4947-b733-12553c2d2ed5" type="radio">
+</input><label class="sd-tab-label" for="20fd07fe-d3ac-4154-9fc5-2ce22bf83f0e">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -847,14 +843,12 @@ B-series Products</label><div class="sd-tab-content docutils">
 </tbody>
 </table>
 </div>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
 <li><p>HGX B200 requires a driver container version of 570.133.20 or later.</p></li>
 </ul>
 </div>
-</div></blockquote>
 </div>
 </div>
 </section>
@@ -931,8 +925,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="f87c7fba-08df-4a20-9fa0-503637f85464" name="f792e475-7498-49b7-bc34-a5153d5c13fe" type="radio">
-</input><label class="sd-tab-label" for="f87c7fba-08df-4a20-9fa0-503637f85464">
+<input checked="checked" id="6883cfb8-de96-43fb-951f-712fec8aba88" name="c8ff5efe-2b52-420f-a7e1-b886469e3e3a" type="radio">
+</input><label class="sd-tab-label" for="6883cfb8-de96-43fb-951f-712fec8aba88">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1076,8 +1070,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="8aa5736c-547d-4fca-9ac5-3058b4801227" name="f792e475-7498-49b7-bc34-a5153d5c13fe" type="radio">
-</input><label class="sd-tab-label" for="8aa5736c-547d-4fca-9ac5-3058b4801227">
+<input id="dca7a947-654f-46ad-b984-46d991a992bf" name="c8ff5efe-2b52-420f-a7e1-b886469e3e3a" type="radio">
+</input><label class="sd-tab-label" for="dca7a947-654f-46ad-b984-46d991a992bf">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1129,8 +1123,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="e371bdb4-8c15-4d59-b226-06133b397725" name="f792e475-7498-49b7-bc34-a5153d5c13fe" type="radio">
-</input><label class="sd-tab-label" for="e371bdb4-8c15-4d59-b226-06133b397725">
+<input id="d6d82c96-c951-4aec-a463-a51d5ca602b8" name="c8ff5efe-2b52-420f-a7e1-b886469e3e3a" type="radio">
+</input><label class="sd-tab-label" for="d6d82c96-c951-4aec-a463-a51d5ca602b8">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>

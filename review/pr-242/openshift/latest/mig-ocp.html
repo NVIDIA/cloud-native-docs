@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 09, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 15, 2025"/>
 
 
 
@@ -509,7 +509,7 @@ This strategy is appropriate for a smaller cluster, where on a single node with 
 </li>
 </ul>
 <p>Version 1.8 and greater of the NVIDIA GPU Operator supports updating the <strong>Strategy</strong> in the ClusterPolicy after deployment.</p>
-<p>The <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
+<p>The <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
 The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
 The tables below describe these configurations:</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id2">
@@ -755,7 +755,7 @@ The tables below describe these configurations:</p>
 <h2>Creating and applying a custom MIG configuration<a class="headerlink" href="#creating-and-applying-a-custom-mig-configuration" title="Permalink to this headline">#</a></h2>
 <p>Follow the guidance below to create a new slicing profile.</p>
 <ol class="arabic">
-<li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
+<li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles">supported profiles</a>.</p>
