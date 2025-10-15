@@ -129,12 +129,19 @@ Generate and download a new NLS client license token. Please refer to Section 4.
 
 Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
 
-Create a new ``licensing-config-new`` ConfigMap object in the ``gpu-operator`` namespace (make sure the name of the configmap is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this ConfigMap:
+:orphan:
+
+.. warning::
+
+   The ``configMap(configMapName)`` is  **deprecated** and will be removed in a future release.
+   Use ``secrets(secretName)`` instead.
+
+Create a new ``licensing-config-new`` Secret object in the ``gpu-operator`` namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:
 
 
 .. code-block:: console
 
-    $ kubectl create configmap licensing-config-new \
+    $ kubectl create secret generic licensing-config-new \
         -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
 
@@ -150,14 +157,14 @@ Go to the driver section and replace the following argument:
 .. code-block:: console
 
   licensingConfig:
-      configMapName: licensing-config
+      secretName: licensing-config
 
 with
 
 .. code-block:: console
 
   licensingConfig:
-      configMapName: licensing-config-new
+      secretName: licensing-config-new
 
 Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
 
