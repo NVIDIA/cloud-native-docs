@@ -245,8 +245,8 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ git clone https://gitlab.com/nvidia/container-images/driver
-      $ cd driver
+      $ git clone https://github.com/NVIDIA/gpu-driver-container
+      $ cd gpu-driver-container
 
 #. Change to the ``vgpu-manager`` directory for your OS:
 
