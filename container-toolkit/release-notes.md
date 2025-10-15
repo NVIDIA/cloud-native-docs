@@ -103,7 +103,7 @@ This release of the NVIDIA Container Toolkit `v1.17.7` is a bugfix and minor fea
 ### Fixes and Features
 - Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to `csv`.
 - Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.
-- Added a `nvidia-container-runtime-modes.legacy.cuda-compat-mode` option to provide finer control of how CUDA Forward Compatibility is handled. The default value (`ldconfig`) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (e.g. the Docker `--gpus` command line flag).
+- Added a `nvidia-container-runtime-modes.legacy.cuda-compat-mode` option to provide finer control of how CUDA Forward Compatibility is handled. The default value (`ldconfig`) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (such as the Docker `--gpus` command line flag).
 - Improved the `update-ldcache` hook to run in isolated namespaces. This improves hook security.
 
 
@@ -386,7 +386,7 @@ The following `container-toolkit` conatiners are included:
 - Added support for requesting IMEX channels as volume mounts.
 - Added a `disable-imex-channel-creation` feature flag to disable the creation of IMEX channel device nodes when creating a container.
 - Added IMEX channel device nodes to the CDI specifications in `management` mode.
-- Added the creation of select driver symlinks (e.g. `libcuda.so`) in CDI specification generation to match the behavior in the `legacy` mode.
+- Added the creation of select driver symlinks (such as `libcuda.so`) in CDI specification generation to match the behavior in the `legacy` mode.
 
 
 ### Enhancements to container-toolkit Container Images
@@ -429,7 +429,7 @@ The following `container-toolkit` conatiners are included:
 ### Fixes and Features
 
 - Excluded `libnvidia-allocator` from graphics mounts. This fixes a bug that leaks mounts when a container is started with bi-directional mount propagation.
-- Used empty string for default `runtime-config-override`. This removes a redundant warning for runtimes (e.g. Docker) where this is not applicable.
+- Used empty string for default `runtime-config-override`. This removes a redundant warning for runtimes (such as Docker) where this is not applicable.
 
 ### Enhancements to container-toolkit Container Images
 
@@ -866,7 +866,7 @@ The following `container-toolkit` containers are included:
 
 ### Fixes and Features
 
-- Fixed a bug which would cause the update of an ldcache in the container to fail for images that do no use ldconfig (e.g. `busybox`).
+- Fixed a bug which would cause the update of an ldcache in the container to fail for images that do no use ldconfig (such as `busybox`).
 - Fixed a bug where a failure to determine the CUDA driver version would cause the container to fail to start if `NVIDIA_DRIVER_CAPABILITIES` included `graphics` or `display` on Debian systems.
 - Fixed CDI specification generation on Debian systems.
 
@@ -1060,7 +1060,7 @@ Note that this release does not include an update to `nvidia-docker2` and is com
 - Add `cdi` mode to NVIDIA Container Runtime
 - Add discovery of GPUDirect Storage (`nvidia-fs*`) devices if the `NVIDIA_GDS` environment variable of the container is set to `enabled`
 - Add discovery of MOFED Infiniband devices if the `NVIDIA_MOFED` environment variable of the container is set to `enabled`
-- Add `nvidia-ctk runtime configure` command to configure the Docker config file (e.g. `/etc/docker/daemon.json`) for use with the NVIDIA Container Runtime.
+- Add `nvidia-ctk runtime configure` command to configure the Docker config file (such as `/etc/docker/daemon.json`) for use with the NVIDIA Container Runtime.
 
 #### specific to libnvidia-container
 
@@ -1145,7 +1145,7 @@ The following packages have also been updated to depend on `nvidia-container-too
 - Bump `libtirpc` to `1.3.2`
 - Fix bug when running host ldconfig using glibc compiled with a non-standard prefix
 - Add `libcudadebugger.so` to list of compute libraries
-- \[WSL2\] Fix segmentation fault on WSL2s system with no adpaters present (e.g. `/dev/dxg` missing)
+- \[WSL2\] Fix segmentation fault on WSL2s system with no adpaters present (such as `/dev/dxg` missing)
 - Ignore pending MIG mode when checking if a device is MIG enabled
 - \[WSL2\] Fix bug where `/dev/dxg` is not mounted when `NVIDIA_DRIVER_CAPABILITIES` does not include "compute"
 
