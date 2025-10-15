@@ -104,7 +104,7 @@ Perform the following steps to build and push a container image that includes th
 
    .. code-block:: console
 
-      $ git clone https://github.com/NVIDIA/gpu-driver-container
+      $ git clone https://github.com/NVIDIA/gpu-driver-container.git
 
    .. code-block:: console
 
