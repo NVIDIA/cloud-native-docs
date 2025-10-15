@@ -534,8 +534,8 @@ Open a terminal and clone the driver container image repository.
 
 .. code-block:: console
 
-   $ git clone https://gitlab.com/nvidia/container-images/driver
-   $ cd driver
+   $ git clone https://github.com/NVIDIA/gpu-driver-container.git
+   $ cd gpu-driver-container
 
 Change to the vgpu-manager directory for your OS. We use Ubuntu 20.04 as an example.
 

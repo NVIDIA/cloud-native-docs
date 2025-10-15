@@ -74,10 +74,10 @@ You provide the following:
 
 * Document and contribute the exact software stack that you self-validated.
   Refer to the
-  `PARTNER-VALIDATED-TEMPLATE.rst file <https://gitlab.com/NVIDIA/cloud-native/cnt-docs/-/tree/master/partner-validated>`__
+  `PARTNER-VALIDATED-TEMPLATE.rst file <https://github.com/NVIDIA/cloud-native-docs/tree/main/partner-validated>`__
   in the ``partner-validated`` directory of the documentation repository as a starting point.
   Open a pull request to the repository with your update.
-  Refer to the `CONTRIBUTING.md file <https://gitlab.com/nvidia/cloud-native/cnt-docs/-/blob/master/CONTRIBUTING.md>`__
+  Refer to the `CONTRIBUTING.md file <https://github.com/NVIDIA/cloud-native-docs/blob/main/CONTRIBUTING.md>`__
   in the root directory of the documentation repository for information about contributing documentation.
 
 * Run the self-validated configuration and then share the outcome with NVIDIA by providing
