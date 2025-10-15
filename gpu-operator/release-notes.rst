@@ -41,7 +41,13 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 New Features
 ------------
 
-* TBD
+* Updated software component versions:
+
+  - NVIDIA Container Toolkit v1.18.0
+  - NVIDIA DCGM v4.4.1
+  - NVIDIA DCGM Exporter v4.4.1-4.5.2
+  - Node Feature Discovery v0.18.1
+  - NVIDIA GDS Driver v2.26.6
 
 Fixed Issues
 ------------
