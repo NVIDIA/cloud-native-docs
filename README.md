@@ -8,7 +8,7 @@ The product documentation portal can be found at: https://docs.nvidia.com/datace
 ## Building the Container
 
 This step is optional if your only goal is to build the documentation.
-As an alternative to building the container, you can run `docker pull ghcr.io/nvidia/cloud-native-docs:4`.
+As an alternative to building the container, you can run `docker pull ghcr.io/nvidia/cloud-native-docs:0.5.1`.
 
 Refer to <https://gitlab.com/nvidia/cloud-native/cnt-docs/container_registry> to find the most recent tag.
 
@@ -55,7 +55,7 @@ The resulting HTML pages are located in the `_build/docs/.../latest/` directory 
 More information about the `repo docs` command is available from
 <http://omniverse-docs.s3-website-us-east-1.amazonaws.com/repo_docs/0.20.3/index.html>.
 
-Also, the Github CI for this project builds the documentation on every merge into the default branch (`main`).
+The GitHub CI for this project builds the documentation on every merge into the default branch (`main`).
 The documentation from the current default branch (`main`) is available at <https://docs.nvidia.com/datacenter/cloud-native/>.
 Documentation in the default branch is under development and unstable.
 
@@ -156,7 +156,7 @@ Only tags are published to docs.nvidia.com.
    The first three fields of the semantic version are used.
    For a "do over," push a tag like `gpu-operator-v23.3.1-1`.
 
-   Always tag the openshift docset and for each new gpu-operator docset release.
+   Always tag the openshift docset for each new gpu-operator docset release.
 
 1. Push the tag to the repository.
 
@@ -178,7 +178,7 @@ If the commit message includes `/not-latest`, then only the documentation in the
 
 1. Update `.github/workflows/docs-build.yaml` and increment the `env.TAG` value.
 
-1. Update `.gitlab-ci.yml` and set the same value--prefixed by `ghcr.io...`--in the `variables.BUILDER_IMAGE` field.
+1. Update `.gitlab-ci.yml` and set the same value (prefixed by `ghcr.io...`) in the `variables.BUILDER_IMAGE` field.
 
 1. Optional: [Build the container and docs](#building-the-container) locally and confirm the update works as intended.
 
@@ -190,7 +190,7 @@ If the commit message includes `/not-latest`, then only the documentation in the
 1. After you merge the pull request, the `docs-build.yaml` action detects that the newly incremented `env.TAG`
    container is not in the registry, builds the container with that tag and pushes it to the GitHub registry.
 
-   When you tag a commit to publish, Github CI pulls image from the `variables.BUILDER_IMAGE` value,
+   When you tag a commit to publish, GitHub CI pulls image from the `variables.BUILDER_IMAGE` value,
    builds the documentation, and that HTML is delivered to docs.nvidia.com.
 
 ## License and Contributing
