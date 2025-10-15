@@ -108,7 +108,7 @@ The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that ca
 
 Version 1.8 and greater of the NVIDIA GPU Operator supports updating the **Strategy** in the ClusterPolicy after deployment.
 
-The `default configmap <https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
+The `default configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
 The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
 The tables below describe these configurations:
 
@@ -301,7 +301,7 @@ Creating and applying a custom MIG configuration
 
 Follow the guidance below to create a new slicing profile.
 
-#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://gitlab.com/nvidia/kubernetes/gpu-operator/-/blob/v1.8.0/assets/state-mig-manager/0400_configmap.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
+#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
 
    .. note:: For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on `supported profiles <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles>`_.
 

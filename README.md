@@ -8,16 +8,19 @@ The product documentation portal can be found at: https://docs.nvidia.com/datace
 ## Building the Container
 
 This step is optional if your only goal is to build the documentation.
-As an alternative to building the container, you can run `docker pull registry.gitlab.com/nvidia/cloud-native/cnt-docs:0.4.0`.
+As an alternative to building the container, you can run `docker pull ghcr.io/nvidia/cloud-native-docs:4`.
 
 Refer to <https://gitlab.com/nvidia/cloud-native/cnt-docs/container_registry> to find the most recent tag.
 
 If you change the `Dockerfile`, update `CONTAINER_RELEASE_IMAGE` in the `gitlab-ci.yml` file to the new tag and build the container.
 Use the `Dockerfile` in the repository (under the `docker` directory) to generate the custom doc build container.
 
+Refer to <https://github.com/NVIDIA/cloud-native-docs/tags> to find the most recent tag.
 1. Build the container:
 
    ```bash
+   git clone https://github.com/NVIDIA/cloud-native-docs.git
+   cd cloud-native-docs
    docker build --pull \
      --tag cnt-doc-builder \
      --file docker/Dockerfile .
@@ -52,8 +55,8 @@ The resulting HTML pages are located in the `_build/docs/.../latest/` directory 
 More information about the `repo docs` command is available from
 <http://omniverse-docs.s3-website-us-east-1.amazonaws.com/repo_docs/0.20.3/index.html>.
 
-Additionally, the Gitlab CI for this project builds the documentation on every merge into the default branch (`master`).
-The documentation from the current default branch (`master`) is available at <https://nvidia.gitlab.io/cloud-native/cnt-docs/review/latest/>.
+Also, the Github CI for this project builds the documentation on every merge into the default branch (`main`).
+The documentation from the current default branch (`main`) is available at <https://docs.nvidia.com/datacenter/cloud-native/>.
 Documentation in the default branch is under development and unstable.
 
 ## Checking for Broken Links
@@ -187,12 +190,12 @@ If the commit message includes `/not-latest`, then only the documentation in the
 1. After you merge the pull request, the `docs-build.yaml` action detects that the newly incremented `env.TAG`
    container is not in the registry, builds the container with that tag and pushes it to the GitHub registry.
 
-   When you tag a commit to publish, GitLab CI pulls image from the `variables.BUILDER_IMAGE` value,
+   When you tag a commit to publish, Github CI pulls image from the `variables.BUILDER_IMAGE` value,
    builds the documentation, and that HTML is delivered to docs.nvidia.com.
 
 ## License and Contributing
 
 This documentation repository is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Contributions are welcome. Refer to the [CONTRIBUTING.md](https://gitlab.com/nvidia/cloud-native/cnt-docs/-/blob/master/CONTRIBUTING.md) document for more
+Contributions are welcome. Refer to the [CONTRIBUTING.md](https://github.com/NVIDIA/cloud-native-docs/blob/main/CONTRIBUTING.md) document for more
 information on guidelines to follow before contributions can be accepted.

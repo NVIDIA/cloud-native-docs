@@ -435,7 +435,7 @@ If you want to use custom driver container images, such as version 465.27, then
 you can build a custom driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
-  reference, the driver container Dockerfiles are available on the Git repository at https://gitlab.com/nvidia/container-images/driver.
+  reference, the driver container Dockerfiles are available on the Git repository at https://github.com/NVIDIA/gpu-driver-container/.
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
