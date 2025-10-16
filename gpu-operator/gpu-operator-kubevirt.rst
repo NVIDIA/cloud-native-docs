@@ -537,43 +537,36 @@ Open a terminal and clone the driver container image repository.
    $ git clone https://github.com/NVIDIA/gpu-driver-container.git
    $ cd gpu-driver-container
 
-Change to the vgpu-manager directory for your OS. We use Ubuntu 20.04 as an example.
+#. Copy the NVIDIA vGPU manager from your extracted ZIP file to the operating system version you want to build the image for:
+   * We use Ubuntu 22.04 as an example.
 
-.. code-block:: console
+   Copy ``<local-driver-download-directory>/\*-vgpu-kvm.run`` to ``vgpu-manager/ubuntu22.04/``.
 
-   $ cd vgpu-manager/ubuntu20.04
+   .. code-block:: console
+
+      $ cp <local-driver-download-directory>/*-vgpu-kvm.run vgpu-manager/ubuntu22.04/
 
 .. note::
 
-   For Red Hat OpenShift, run ``cd vgpu-manager/rhel8`` to use the ``rhel8`` folder instead.
-
-Copy the NVIDIA vGPU Manager from your extracted zip file
-
-.. code-block:: console
-
-   $ cp <local-driver-download-directory>/*-vgpu-kvm.run ./
+   For Red Hat OpenShift, use a directory that includes ``rhel`` in the directory name. For example, ``vgpu-manager/rhel8``.
 
 | Set the following environment variables:
 | ``PRIVATE_REGISTRY`` - name of private registry used to store driver image
-| ``VERSION`` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal
-| ``OS_TAG`` - this must match the Guest OS version. In the following example ``ubuntu20.04`` is used. For Red Hat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
-| ``CUDA_VERSION`` - CUDA base image version to build the driver image with.
+| ``VGPU_HOST_DRIVER_VERSION`` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal
+| ``OS_TAG`` - this must match the Guest OS version. In the following example ``ubuntu22.04`` is used. For Red Hat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
 
 .. code-block:: console
 
-   $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=ubuntu20.04 CUDA_VERSION=11.7.1
+   $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=ubuntu22.04
 
 Build the NVIDIA vGPU Manager image.
 
 .. code-block:: console
 
-   $ docker build \
-       --build-arg DRIVER_VERSION=${VERSION} \
-       --build-arg CUDA_VERSION=${CUDA_VERSION} \
-       -t ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG} .
+   $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make build-vgpuhost-${OS_TAG}
 
 Push NVIDIA vGPU Manager image to your private registry.
 
 .. code-block:: console
 
-   $ docker push ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG}
+   $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make push-vgpuhost-${OS_TAG}
