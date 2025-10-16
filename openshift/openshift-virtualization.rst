@@ -248,28 +248,25 @@ Use the following steps to build the vGPU Manager container and push it to a pri
       $ git clone https://github.com/NVIDIA/gpu-driver-container.git
       $ cd gpu-driver-container
 
-#. Change to the ``vgpu-manager`` directory for your OS:
+#. Copy the NVIDIA vGPU manager from your extracted ZIP file to the operating system version you want to build the image for:
+   * We use RHEL 8 as an example.
+
+   Copy ``<local-driver-download-directory>/\*-vgpu-kvm.run`` to ``vgpu-manager/rhel8/``.
 
    .. code-block:: console
 
-      $ cd vgpu-manager/rhel8
-
-#. Copy the NVIDIA vGPU Manager from your extracted zip file:
-
-   .. code-block:: console
-
-      $ cp <local-driver-download-directory>/*-vgpu-kvm.run ./
+      $ cp <local-driver-download-directory>/*-vgpu-kvm.run vgpu-manager/rhel8/
 
 #. Set the following environment variables.
 
    * ``PRIVATE_REGISTRY`` - Name of the private registry used to store the driver image.
-   * ``VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
+   * ``VGPU_HOST_DRIVER_VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
    * ``OS_TAG`` - This must match the Guest OS version.
      For RedHat OpenShift, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
 
    .. code-block:: console
 
-      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11
+      $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhcos4.18
 
 .. note::
 
@@ -280,15 +277,13 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ docker build \
-          --build-arg DRIVER_VERSION=${VERSION} \
-          -t ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG} .
+      $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make build-vgpuhost-${OS_TAG}
 
 #. Push the NVIDIA vGPU Manager image to your private registry.
 
    .. code-block:: console
 
-      $ docker push ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG}
+      $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make push-vgpuhost-${OS_TAG}
 
 .. _install-the-gpu-operator:
 
