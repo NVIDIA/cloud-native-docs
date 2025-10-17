@@ -117,7 +117,7 @@ Procedure
 Updating NLS Client License Token
 *********************************
 
-In case the NLS client license token needs to be updated, please use the following procedure:
+In case the NLS client license token needs to be updated, use the following procedure:
 
 Create an empty vGPU license configuration file:
 
@@ -125,11 +125,9 @@ Create an empty vGPU license configuration file:
 
   $ sudo touch gridd.conf
 
-Generate and download a new NLS client license token. Please refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+Generate and download a new NLS client license token. Refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
 
 Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
-
-:orphan:
 
 .. warning::
 
