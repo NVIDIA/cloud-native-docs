@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 16, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 17, 2025"/>
 
 
 
@@ -754,7 +754,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </li>
 <li><p>Expand the <strong>NVIDIA vGPU Device Manager config</strong> section and make sure that the <strong>enabled</strong> checkbox is checked.</p></li>
 </ul>
-<p>If you are only using GPU passthrough, you don’t need to fill these sections out.</p>
+<p>If you are only using GPU passthrough, you do not need to fill these sections out.</p>
 <ul class="simple">
 <li><p>Expand the <strong>VFIO Manager config</strong> section and select the <strong>enabled</strong> checkbox.</p></li>
 <li><p>Optionally, in the <strong>Sandbox Workloads config</strong> section, set <strong>defaultWorkload</strong> to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> if you want passthrough to be the default mode.</p></li>
@@ -969,7 +969,7 @@ For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</stro
 <p>Apply a specific vGPU device configuration on a per-node basis by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label. It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.</p>
 <p>Switching vGPU device configuration after one has been successfully applied assumes that no VMs with vGPU are currently running on the node. Any existing VMs will have to be shutdown/migrated first.</p>
 <p>To apply a new configuration after GPU Operator install, simply update the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label.</p>
-<p>Let’s run through an example on a system with two <strong>A10</strong> GPUs.</p>
+<p>The following example shows a system with two <strong>A10</strong> GPUs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
 <span class="go">GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)</span>
 <span class="go">GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)</span>
@@ -982,7 +982,7 @@ For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</stro
 <span class="go">}</span>
 </pre></div>
 </div>
-<p>If instead you want to create <strong>A10-4Q</strong> devices, we can label the node like such:</p>
+<p>If instead you want to create <strong>A10-4Q</strong> devices, label the node as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node &lt;node-name&gt; --overwrite nvidia.com/vgpu.config<span class="o">=</span>A10-4Q
 </pre></div>
 </div>
