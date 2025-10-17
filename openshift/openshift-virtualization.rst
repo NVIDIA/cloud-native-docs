@@ -420,7 +420,7 @@ As a cluster administrator, you can create a ClusterPolicy using the OpenShift C
       * Under *env*, fill in **image** with ``vgpu-manager`` and the **version** with your driver version.
    * Expand the **NVIDIA vGPU Device Manager config** section and make sure that the **enabled** checkbox is checked.
 
-   If you are only using GPU passthrough, you don't need to fill these sections out.
+   If you are only using GPU passthrough, you do not need to fill these sections out.
 
    * Expand the **VFIO Manager config** section and select the **enabled** checkbox.
    * Optionally, in the **Sandbox Workloads config** section, set **defaultWorkload** to ``vm-passthrough`` if you want passthrough to be the default mode.
@@ -682,7 +682,7 @@ Switching vGPU device configuration after one has been successfully applied assu
 
 To apply a new configuration after GPU Operator install, simply update the ``nvidia.com/vgpu.config`` node label.
 
-Let's run through an example on a system with two **A10** GPUs.
+The following example shows a system with two **A10** GPUs.
 
 .. code-block:: console
 
@@ -699,7 +699,7 @@ After installing the GPU Operator as detailed in the previous sections and witho
       "nvidia.com/NVIDIA_A10-12Q": "4"
    }
 
-If instead you want to create **A10-4Q** devices, we can label the node like such:
+If instead you want to create **A10-4Q** devices, label the node as follows:
 
 .. code-block:: console
 
