@@ -206,7 +206,7 @@ The supported constraints are provided below:
       - constraint on the compute architectures of the selected GPUs.
 
     * - ``brand``
-      - constraint on the brand of the selected GPUs (e.g. GeForce, Tesla, GRID).
+      - constraint on the brand of the selected GPUs (such as GeForce, Tesla, GRID).
 ```
 
 Multiple constraints can be expressed in a single environment variable: space-separated constraints are ORed,
