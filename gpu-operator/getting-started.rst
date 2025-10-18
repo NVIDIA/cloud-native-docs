@@ -139,7 +139,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``cdi.enabled``
-     - When set to ``true``, the Operator installs two additional runtime classes,
+     - When set to ``true`` (default), the Operator installs two additional runtime classes,
        nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
        for making GPUs accessible to containers.
        Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
@@ -147,10 +147,12 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
        Pods can specify ``spec.runtimeClassName`` as ``nvidia-cdi`` to use the functionality or
        specify ``nvidia-legacy`` to prevent using CDI to perform device injection.
-     - ``false``
+     - ``true``
 
-   * - ``cdi.default``
-     - When set to ``true``, the container runtime uses CDI to perform device injection by default.
+   * - ``cdi.default``  Deprecated.
+     - This field is deprecated as of v25.10.0 and will be ignored.
+       The ``cdi.enabled`` field is set to ``true`` by default in versions 25.10.0 and later.
+       When set to ``true``, the container runtime uses CDI to perform device injection by default.
      - ``false``
 
    * - ``daemonsets.annotations``
@@ -476,13 +478,11 @@ options are used with the container-toolkit deployed with GPU Operator:
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /etc/containerd/config.toml
+        value: /var/snap/microk8s/current/args/containerd-template.toml
       - name: CONTAINERD_SOCKET
-        value: /run/containerd/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: true
+        value: /var/snap/microk8s/common/run/containerd.sock
+      - name: RUNTIME_CONFIG_SOURCE
+        value: file=/var/snap/microk8s/current/args/containerd.toml
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -494,45 +494,36 @@ If you need to specify custom values, refer to the following sample command for 
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/etc/containerd/config.toml \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
-      --set toolkit.env[1].value=/run/containerd/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
+      --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
+      --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 
 These options are defined as follows:
 
 CONTAINERD_CONFIG
   The path on the host to the ``containerd`` config
   you would like to have updated with support for the ``nvidia-container-runtime``.
-  By default this will point to ``/etc/containerd/config.toml`` (the default
-  location for ``containerd``). It should be customized if your ``containerd``
+  By default this will point to ``/var/snap/microk8s/current/args/containerd-template.toml``
+  (the default location for ``containerd``). It should be customized if your ``containerd``
   installation is not in the default location.
 
 CONTAINERD_SOCKET
   The path on the host to the socket file used to
   communicate with ``containerd``. The operator will use this to send a
   ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
-  default this will point to ``/run/containerd/containerd.sock``
+  default this will point to ``/var/snap/microk8s/common/run/containerd.sock``
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
 
-CONTAINERD_RUNTIME_CLASS
-  The name of the
-  `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_
-  you would like to associate with the ``nvidia-container-runtime``.
-  Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS
-  will always run with the ``nvidia-container-runtime``. The default
-  CONTAINERD_RUNTIME_CLASS is ``nvidia``.
+RUNTIME_CONFIG_SOURCE
+  The path on the host to the runtime config source file used to
+  load the nvidia-container-runtime into the containerd runtime.
+  By default this will point to ``/var/snap/microk8s/current/args/containerd.toml``
+  (the default location for ``containerd``). It should be customized if
+  your ``containerd`` installation is not in the default location.
 
-CONTAINERD_SET_AS_DEFAULT
-  A flag indicating whether you want to set
-  ``nvidia-container-runtime`` as the default runtime used to launch all
-  containers. When set to false, only containers in pods with a ``runtimeClassName``
-  equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
-  The default value is ``true``.
 
 Rancher Kubernetes Engine 2
 ===========================
@@ -553,7 +544,7 @@ For MicroK8s, set the following in the ``ClusterPolicy``.
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/snap/microk8s/current/args/containerd-template.toml
+        value: /var/snap/microk8s/current/args/containerd.toml
       - name: CONTAINERD_SOCKET
         value: /var/snap/microk8s/common/run/containerd.sock
       - name: CONTAINERD_RUNTIME_CLASS
@@ -569,7 +560,7 @@ These options can be passed to GPU Operator during install time as below.
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
       --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
