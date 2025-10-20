@@ -92,15 +92,13 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - v25.10.0
 
    * - NVIDIA GPU Driver |ki|_
-     - | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ (**D**, **R**)
-       | `580.65.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html>`_
+     - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ (**D**, **R**)
+       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
        | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
-       | `570.172.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-172-08/index.html>`_
-       | `570.158.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-158-01/index.html>`_
-       | `570.148.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html>`_
-       | `535.261.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-261-03/index.html>`_
+       | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
        | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
-       | `535.247.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html>`_ 
+       | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html>`_
+
 
    * - NVIDIA Driver Manager for Kubernetes
      - `v0.8.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
@@ -155,7 +153,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
    GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
    This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
-   NVIDIA recommends that you upgrade the driver to version 580.65.06 to resolve this issue.
+   NVIDIA recommends that you upgrade the driver to version 580.65.06 or later to resolve this issue.
    For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
 

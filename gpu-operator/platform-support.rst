@@ -190,7 +190,11 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+
     | NVIDIA HGX B200         | NVIDIA Blackwell       |
     +-------------------------+------------------------+
+    | NVIDIA HGX B300         | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
     | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |
+    +-------------------------+------------------------+
+    | NVIDIA HGX GB300 NVL72  | NVIDIA Blackwell       |
     +-------------------------+------------------------+
 
     .. note::

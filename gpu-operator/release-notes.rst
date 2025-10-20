@@ -49,6 +49,58 @@ New Features
   - Node Feature Discovery v0.18.1
   - NVIDIA GDS Driver v2.26.6
 
+* Added support for these NVIDIA Data Center GPU Driver versions:
+
+  - 580.95.05 (default, recommended)
+  - 570.195.03
+  - 535.274.02
+
+* Container Device Interface (CDI) is now enabled by default when installing the GPU Operator. 
+  The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
+  The ``cdi.default`` field is now deprecated and will be ignored.
+
+*  When using virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
+
+* Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.
+
+* Added support for new MIG profiles with NVIDIA HGX B3000.
+
+  * Supports these profiles:
+
+    * ``1g.34gb``
+    * ``1g.34gb+me``
+    * ``1g.67gb``
+    * ``2g.67gb``
+    * ``3g.135gb``
+    * ``4g.135gb``
+    * ``7g.270gb``
+
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
+
+    * ``1g.34gb`` :math:`\times` 2
+    * ``2g.67gb`` :math:`\times` 1
+    * ``3g.135gb`` :math:`\times` 1
+ 
+
+* Added support for new MIG profiles with HGX GB300 NVL72.
+
+  * Supports these profiles:
+
+    * ``1g.35gb``
+    * ``1g.35gb+me``
+    * ``1g.70gb``
+    * ``2g.70gb``
+    * ``3g.139gb``
+    * ``4g.139gb``
+    * ``7g.278gb``
+
+  * Added an ``all-balanced`` profile that creates the following GPU instances: 
+
+    * ``1g.35gb`` :math:`\times` 2
+    * ``2g.70gb`` :math:`\times` 1
+    * ``3g.139gb`` :math:`\times` 1 
+
 Fixed Issues
 ------------
 
