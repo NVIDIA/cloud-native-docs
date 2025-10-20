@@ -29,7 +29,7 @@ Installing the NVIDIA GPU Operator
 
 .. admonition:: Version
 
-   The current patch release of the NVIDIA GPU Operator is ``${version}``.
+   The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
 *************
 Prerequisites
