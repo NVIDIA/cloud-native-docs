@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 17, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 20, 2025"/>
 
 
 
@@ -444,6 +444,63 @@
 <li><p>NVIDIA DCGM Exporter v4.4.1-4.5.2</p></li>
 <li><p>Node Feature Discovery v0.18.1</p></li>
 <li><p>NVIDIA GDS Driver v2.26.6</p></li>
+</ul>
+</li>
+<li><p>Added support for these NVIDIA Data Center GPU Driver versions:</p>
+<ul>
+<li><p>580.95.05 (default, recommended)</p></li>
+<li><p>570.195.03</p></li>
+<li><p>535.274.02</p></li>
+</ul>
+</li>
+<li><p>Container Device Interface (CDI) is now enabled by default when installing the GPU Operator.
+The <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code> field in the ClusterPolicy is now set to <code class="docutils literal notranslate"><span class="pre">true</span></code> by default.
+The <code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> field is now deprecated and will be ignored.</p></li>
+<li><p>When using virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.</p></li>
+<li><p>Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.</p></li>
+<li><p>Added support for new MIG profiles with NVIDIA HGX B3000.</p>
+<ul>
+<li><p>Supports these profiles:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.34gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.34gb+me</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.67gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.67gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.135gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4g.135gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">7g.270gb</span></code></p></li>
+</ul>
+</li>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile that creates the following GPU instances:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.34gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.67gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.135gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Added support for new MIG profiles with HGX GB300 NVL72.</p>
+<ul>
+<li><p>Supports these profiles:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.35gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.35gb+me</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.70gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.70gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.139gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">4g.139gb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">7g.278gb</span></code></p></li>
+</ul>
+</li>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile that creates the following GPU instances:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">1g.35gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2g.70gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">3g.139gb</span></code> <span class="math notranslate nohighlight">\(\times\)</span> 1</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

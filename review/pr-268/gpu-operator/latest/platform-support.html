@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 17, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 20, 2025"/>
 
 
 
@@ -441,8 +441,8 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id11">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id11" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id8">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id8" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -487,15 +487,12 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <tbody>
 <tr class="row-odd"><td><p>NVIDIA GPU Driver <a class="reference external" href="#known-issue"><sup>1</sup></a></p></td>
 <td><div class="line-block">
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a> (<strong>D</strong>, <strong>R</strong>)</div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html">580.65.06</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html">580.95.05</a> (<strong>D</strong>, <strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html">575.57.08</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-172-08/index.html">570.172.08</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-158-01/index.html">570.158.01</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-148-08/index.html">570.148.08</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-261-03/index.html">535.261.03</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html">570.195.03</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html">550.163.01</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-247-01/index.html">535.247.01</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html">535.274.02</a></div>
 </div>
 </td>
 </tr>
@@ -560,7 +557,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
-NVIDIA recommends that you upgrade the driver to version 580.65.06 to resolve this issue.
+NVIDIA recommends that you upgrade the driver to version 580.65.06 or later to resolve this issue.
 For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
 </div></blockquote>
 <blockquote id="gds-open-kernel">
@@ -582,8 +579,8 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="2d5084ee-c212-4bf0-b735-b73ad5010f47" name="e4662394-0825-4d92-a640-80908e956006" type="radio">
-</input><label class="sd-tab-label" for="2d5084ee-c212-4bf0-b735-b73ad5010f47">
+<input id="bafaa47b-0f98-4e2c-93f3-4ea797f609a9" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
+</input><label class="sd-tab-label" for="bafaa47b-0f98-4e2c-93f3-4ea797f609a9">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -608,8 +605,8 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="a1913003-2621-41fc-abfa-0e0a6bd62179" name="e4662394-0825-4d92-a640-80908e956006" type="radio">
-</input><label class="sd-tab-label" for="a1913003-2621-41fc-abfa-0e0a6bd62179">
+<input checked="checked" id="afb76af5-af5d-40ae-9bf6-f957a55eb6f8" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
+</input><label class="sd-tab-label" for="afb76af5-af5d-40ae-9bf6-f957a55eb6f8">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -715,8 +712,8 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="77b3bf22-9d90-4b4a-9c58-8ced8d0a025d" name="e4662394-0825-4d92-a640-80908e956006" type="radio">
-</input><label class="sd-tab-label" for="77b3bf22-9d90-4b4a-9c58-8ced8d0a025d">
+<input id="8e1dfada-1c87-4991-a4b8-048337cd270f" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
+</input><label class="sd-tab-label" for="8e1dfada-1c87-4991-a4b8-048337cd270f">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -748,8 +745,8 @@ D,T and V-series Products</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="d3303506-bc31-42d5-adb9-3e08d817a082" name="e4662394-0825-4d92-a640-80908e956006" type="radio">
-</input><label class="sd-tab-label" for="d3303506-bc31-42d5-adb9-3e08d817a082">
+<input id="8a6551f2-c6e5-41d1-84c9-8e281b60b6a3" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
+</input><label class="sd-tab-label" for="8a6551f2-c6e5-41d1-84c9-8e281b60b6a3">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -815,8 +812,8 @@ Blackwell Server Edition</p></td>
 </ul>
 </div>
 </div>
-<input id="2010b462-c842-4a9f-93de-ec4916d71944" name="e4662394-0825-4d92-a640-80908e956006" type="radio">
-</input><label class="sd-tab-label" for="2010b462-c842-4a9f-93de-ec4916d71944">
+<input id="a0ad6d96-7209-4dee-894d-bc757b205071" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
+</input><label class="sd-tab-label" for="a0ad6d96-7209-4dee-894d-bc757b205071">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -835,7 +832,13 @@ B-series Products</label><div class="sd-tab-content docutils">
 <tr class="row-odd"><td><p>NVIDIA HGX B200</p></td>
 <td><p>NVIDIA Blackwell</p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA HGX GB200 NVL72</p></td>
+<tr class="row-even"><td><p>NVIDIA HGX B300</p></td>
+<td><p>NVIDIA Blackwell</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA HGX GB200 NVL72</p></td>
+<td><p>NVIDIA Blackwell</p></td>
+</tr>
+<tr class="row-even"><td><p>NVIDIA HGX GB300 NVL72</p></td>
 <td><p>NVIDIA Blackwell</p></td>
 </tr>
 </tbody>
@@ -923,8 +926,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="96032d06-5d40-45be-9841-0ddc3aca019a" name="02850aa3-a2e1-4a1e-be21-61033d7005f5" type="radio">
-</input><label class="sd-tab-label" for="96032d06-5d40-45be-9841-0ddc3aca019a">
+<input checked="checked" id="1b55ea15-e5c9-49db-948d-1af76720e1da" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
+</input><label class="sd-tab-label" for="1b55ea15-e5c9-49db-948d-1af76720e1da">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1068,8 +1071,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="2d3f7772-ab58-4aeb-a904-fd4f7e50ab48" name="02850aa3-a2e1-4a1e-be21-61033d7005f5" type="radio">
-</input><label class="sd-tab-label" for="2d3f7772-ab58-4aeb-a904-fd4f7e50ab48">
+<input id="c53a157d-2a33-4dbb-b972-f022d967dbf3" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
+</input><label class="sd-tab-label" for="c53a157d-2a33-4dbb-b972-f022d967dbf3">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1121,8 +1124,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="fe30978b-d6b5-427e-b2c4-7ccee6dc4f01" name="02850aa3-a2e1-4a1e-be21-61033d7005f5" type="radio">
-</input><label class="sd-tab-label" for="fe30978b-d6b5-427e-b2c4-7ccee6dc4f01">
+<input id="47798e7f-ad8a-4568-bb37-0766a2a80acf" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
+</input><label class="sd-tab-label" for="47798e7f-ad8a-4568-bb37-0766a2a80acf">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1211,7 +1214,7 @@ Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 </div>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id10"></span><h3>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h3>
+<span id="id7"></span><h3>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
