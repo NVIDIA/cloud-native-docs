@@ -579,22 +579,25 @@ for more information.</p></li>
 <span id="supported-nvidia-gpus-and-systems"></span><h3>Supported NVIDIA Data Center GPUs and Systems<a class="headerlink" href="#supported-nvidia-data-center-gpus-and-systems" title="Permalink to this headline">#</a></h3>
 <p>The following NVIDIA data center GPUs are supported on x86 based platforms:</p>
 <div class="sd-tab-set docutils">
-<input id="bafaa47b-0f98-4e2c-93f3-4ea797f609a9" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
-</input><label class="sd-tab-label" for="bafaa47b-0f98-4e2c-93f3-4ea797f609a9">
+<input id="31260f38-4eab-4642-afd6-bf3ddfdc70e6" name="33b335d4-c96c-4be0-879c-226d8510a794" type="radio">
+</input><label class="sd-tab-label" for="31260f38-4eab-4642-afd6-bf3ddfdc70e6">
 GH-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA GH200 <a class="reference external" href="#requires-open-kernel-module"><sup>1</sup></a></p></td>
 <td><p>NVIDIA Grace Hopper</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -605,22 +608,25 @@ You can install the open kernel modules by specifying the <code class="docutils 
 argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
 Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
-<input checked="checked" id="afb76af5-af5d-40ae-9bf6-f957a55eb6f8" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
-</input><label class="sd-tab-label" for="afb76af5-af5d-40ae-9bf6-f957a55eb6f8">
+<input checked="checked" id="3cdb28f2-c3c9-4968-8236-c5c1d1cc922d" name="33b335d4-c96c-4be0-879c-226d8510a794" type="radio">
+</input><label class="sd-tab-label" for="3cdb28f2-c3c9-4968-8236-c5c1d1cc922d">
 A, H and L-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 48%" />
-<col style="width: 52%" />
+<col style="width: 42%" />
+<col style="width: 46%" />
+<col style="width: 12%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA H800</p></td>
 <td><p>NVIDIA Hopper</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA H200,</div>
@@ -628,22 +634,27 @@ A, H and L-series Products</label><div class="sd-tab-content docutils">
 </div>
 </td>
 <td><p>NVIDIA Hopper</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA DGX H100</p></td>
 <td><p>NVIDIA Hopper and
 NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA DGX H200</p></td>
 <td><p>NVIDIA Hopper and
 NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA HGX H100</p></td>
 <td><p>NVIDIA Hopper and
 NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA HGX H200</p></td>
 <td><p>NVIDIA Hopper and
 NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><div class="line-block">
 <div class="line">NVIDIA H100,</div>
@@ -651,12 +662,15 @@ NVSwitch</p></td>
 </div>
 </td>
 <td><p>NVIDIA Hopper</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA H20</p></td>
 <td><p>NVIDIA Hopper</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA L20</p></td>
 <td><p>NVIDIA Ada</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA L40,</div>
@@ -664,42 +678,55 @@ NVSwitch</p></td>
 </div>
 </td>
 <td><p>NVIDIA Ada</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA L4</p></td>
 <td><p>NVIDIA Ada</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA DGX A100</p></td>
 <td><p>A100 and NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA HGX A100</p></td>
 <td><p>A100 and NVSwitch</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A800</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA A100</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A100X</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA A40</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A30</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA A30X</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A16</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA A10</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A2</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -712,92 +739,114 @@ For installation instructions, see <a class="reference internal" href="getting-s
 </ul>
 </div>
 </div>
-<input id="8e1dfada-1c87-4991-a4b8-048337cd270f" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
-</input><label class="sd-tab-label" for="8e1dfada-1c87-4991-a4b8-048337cd270f">
+<input id="dc54bb43-8891-4643-a209-73080f84c9fd" name="33b335d4-c96c-4be0-879c-226d8510a794" type="radio">
+</input><label class="sd-tab-label" for="dc54bb43-8891-4643-a209-73080f84c9fd">
 D,T and V-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 49%" />
-<col style="width: 51%" />
+<col style="width: 43%" />
+<col style="width: 44%" />
+<col style="width: 13%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA T4</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA V100</p></td>
 <td><p>Volta</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA P100</p></td>
 <td><p>Pascal</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA P40</p></td>
 <td><p>Pascal</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA P4</p></td>
 <td><p>Pascal</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<input id="8a6551f2-c6e5-41d1-84c9-8e281b60b6a3" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
-</input><label class="sd-tab-label" for="8a6551f2-c6e5-41d1-84c9-8e281b60b6a3">
+<input id="03d49ecd-3df3-492f-80fe-8c90cdb21dbd" name="33b335d4-c96c-4be0-879c-226d8510a794" type="radio">
+</input><label class="sd-tab-label" for="03d49ecd-3df3-492f-80fe-8c90cdb21dbd">
 RTX / T-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 51%" />
-<col style="width: 49%" />
+<col style="width: 45%" />
+<col style="width: 43%" />
+<col style="width: 13%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA RTX PRO 6000
 Blackwell Server Edition</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA RTX PRO 6000D</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA RTX A6000</p></td>
 <td><p>NVIDIA Ampere /Ada</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA RTX A5000</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA RTX A4500</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA RTX A4000</p></td>
 <td><p>NVIDIA Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Quadro RTX 8000</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Quadro RTX 6000</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Quadro RTX 5000</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Quadro RTX 4000</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA T1000</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA T600</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA T400</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -812,34 +861,41 @@ Blackwell Server Edition</p></td>
 </ul>
 </div>
 </div>
-<input id="a0ad6d96-7209-4dee-894d-bc757b205071" name="649a6ce7-7812-4c1e-b9f6-910fa08bc51b" type="radio">
-</input><label class="sd-tab-label" for="a0ad6d96-7209-4dee-894d-bc757b205071">
+<input id="4a4fe7b1-b1cc-4c6b-bea6-f730debfa8fc" name="33b335d4-c96c-4be0-879c-226d8510a794" type="radio">
+</input><label class="sd-tab-label" for="4a4fe7b1-b1cc-4c6b-bea6-f730debfa8fc">
 B-series Products</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 51%" />
-<col style="width: 49%" />
+<col style="width: 45%" />
+<col style="width: 43%" />
+<col style="width: 13%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA DGX B200</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA HGX B200</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA HGX B300</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA HGX GB200 NVL72</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA HGX GB300 NVL72</p></td>
 <td><p>NVIDIA Blackwell</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -858,26 +914,32 @@ B-series Products</label><div class="sd-tab-content docutils">
 <p>The following NVIDIA data center GPUs are supported:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 48%" />
-<col style="width: 52%" />
+<col style="width: 42%" />
+<col style="width: 46%" />
+<col style="width: 12%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Product</p></th>
 <th class="head"><p>Architecture</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>NVIDIA A100X</p></td>
 <td><p>Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA A30X</p></td>
 <td><p>Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA IGX Orin</p></td>
 <td><p>Ampere</p></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><p>AWS EC2 G5g instances</p></td>
 <td><p>Turing</p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -926,8 +988,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <span id="container-platforms"></span><h3>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated in the following scenarios:</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="1b55ea15-e5c9-49db-948d-1af76720e1da" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
-</input><label class="sd-tab-label" for="1b55ea15-e5c9-49db-948d-1af76720e1da">
+<input checked="checked" id="39273e94-2f76-466c-9272-ec4943d1b62d" name="90bba452-6c26-4095-9122-e39b6f691916" type="radio">
+</input><label class="sd-tab-label" for="39273e94-2f76-466c-9272-ec4943d1b62d">
 Bare Metal / Virtual Machines with GPU Passthrough</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1071,8 +1133,8 @@ They are not available for ARM based systems.</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
 </div>
-<input id="c53a157d-2a33-4dbb-b972-f022d967dbf3" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
-</input><label class="sd-tab-label" for="c53a157d-2a33-4dbb-b972-f022d967dbf3">
+<input id="0a775e09-3d87-40f0-b627-ecd86189095e" name="90bba452-6c26-4095-9122-e39b6f691916" type="radio">
+</input><label class="sd-tab-label" for="0a775e09-3d87-40f0-b627-ecd86189095e">
 Cloud Service Providers</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1124,8 +1186,8 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </table>
 </div>
 </div>
-<input id="47798e7f-ad8a-4568-bb37-0766a2a80acf" name="fe89fe3e-70d3-46ce-8f81-295330e1df76" type="radio">
-</input><label class="sd-tab-label" for="47798e7f-ad8a-4568-bb37-0766a2a80acf">
+<input id="78f98794-3102-4f9f-a01c-e17f1a50c54a" name="90bba452-6c26-4095-9122-e39b6f691916" type="radio">
+</input><label class="sd-tab-label" for="78f98794-3102-4f9f-a01c-e17f1a50c54a">
 Virtual Machines with NVIDIA vGPU</label><div class="sd-tab-content docutils">
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
