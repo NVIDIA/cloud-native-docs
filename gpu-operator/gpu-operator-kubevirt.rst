@@ -562,7 +562,7 @@ Open a terminal and clone the driver container image repository.
 
 .. code-block:: console
 
-   $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=ubuntu22.04
+   $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=${recommended} OS_TAG=ubuntu22.04
 
 Build the NVIDIA vGPU Manager image.
 
