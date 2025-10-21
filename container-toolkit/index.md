@@ -35,5 +35,5 @@ The NVIDIA Container Toolkit is a collection of libraries and utilities enabling
 ## License
 
 The NVIDIA Container Toolkit (and all included components) is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) and
-contributions are accepted with a Developer Certificate of Origin (DCO). See the [contributing](https://github.com/NVIDIA/nvidia-container-toolkit/blob/master/CONTRIBUTING.md) document for
+contributions are accepted with a Developer Certificate of Origin (DCO). Refer to the [contributing](https://github.com/NVIDIA/nvidia-container-toolkit/blob/master/CONTRIBUTING.md) document for
 more information.
