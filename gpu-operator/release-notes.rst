@@ -74,7 +74,7 @@ New Features
     * ``2g.67gb``
     * ``3g.135gb``
     * ``4g.135gb``
-    * ``7g.270gb``
+    * ``7g.269gb``
 
   * Added an ``all-balanced`` profile that creates the following GPU instances:
 
