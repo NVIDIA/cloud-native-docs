@@ -27,7 +27,7 @@ This release of the NVIDIA Container Toolkit `v1.18.0` is feature release with t
   _required_.
 
 ### Packaging Changes
-- This release requires that the version of the `libnvidia-container*` libraries _exactly_ match the
+- The Container Toolkit now requires that the version of the `libnvidia-container*` libraries  _exactly_ match the version of the `nvidia-container-toolkit*` packages.
   version of the `nvidia-container-toolkit*` packages.
 - This release no longer publishes `ppc64le` packages.
 
