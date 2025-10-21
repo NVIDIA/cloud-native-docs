@@ -415,6 +415,13 @@ where <code class="docutils literal notranslate"><span class="pre">systemd</span
 <p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for any Debian-derived distribution.</p>
 </div>
 <ol class="arabic">
+<li><p>Install the prerequisites for the instructions below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> apt-get install -y --no-install-recommends <span class="se">\</span>
+   curl <span class="se">\</span>
+   gnupg2
+</pre></div>
+</div>
+</li>
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg <span class="se">\</span>
   <span class="o">&amp;&amp;</span> curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list <span class="p">|</span> <span class="se">\</span>
@@ -455,6 +462,12 @@ TODO:
 <p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for many RPM-based distributions.</p>
 </div>
 <ol class="arabic">
+<li><p>Install the prerequisites for the instructions below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y <span class="se">\</span>
+   curl
+</pre></div>
+</div>
+</li>
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> <span class="se">\</span>
   sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
@@ -557,8 +570,10 @@ follow these steps:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>containerd
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command modifies the <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> file on the host.
-The file is updated so that containerd can use the NVIDIA Container Runtime.</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command creates a <code class="docutils literal notranslate"><span class="pre">/etc/containerd/conf.d/99-nvidia.toml</span></code>
+drop-in config file and modifies (or creates) the <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> file
+to ensure that the <code class="docutils literal notranslate"><span class="pre">imports</span></code> config option is updated accordingly. The drop-in file
+ensures that containerd can use the NVIDIA Container Runtime.</p>
 </li>
 <li><p>Restart containerd:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart containerd
@@ -581,8 +596,8 @@ You do not need to run the <code class="docutils literal notranslate"><span clas
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>crio
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command modifies the <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> file on the host.
-The file is updated so that CRI-O can use the NVIDIA Container Runtime.</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command creates a <code class="docutils literal notranslate"><span class="pre">/etc/crio/conf.d/99-nvidia.toml</span></code>
+drop-in config file. The drop-in file ensures that CRI-O can use the NVIDIA Container Runtime.</p>
 </li>
 <li><p>Restart the CRI-O daemon:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart crio
