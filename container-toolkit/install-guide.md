@@ -31,6 +31,12 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
    ```{note}
    These instructions [should work](./supported-platforms.md) for any Debian-derived distribution.
    ```
+1. Install the prerequisites for the instructions below:
+   ```console
+   $ sudo apt-get update && apt-get install -y --no-install-recommends \
+      curl \
+      gnupg2
+   ```
 
 1. Configure the production repository:
 
@@ -76,6 +82,12 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
 
    ```{note}
    These instructions [should work](./supported-platforms.md) for many RPM-based distributions.
+   ```
+
+1. Install the prerequisites for the instructions below:
+   ```console
+   $ sudo dnf install -y \
+      curl
    ```
 
 1. Configure the production repository:
