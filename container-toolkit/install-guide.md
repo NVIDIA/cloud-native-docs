@@ -198,8 +198,10 @@ follow these steps:
    $ sudo nvidia-ctk runtime configure --runtime=containerd
    ```
 
-   The `nvidia-ctk` command modifies the `/etc/containerd/config.toml` file on the host.
-   The file is updated so that containerd can use the NVIDIA Container Runtime.
+   By default, the `nvidia-ctk` command creates a `/etc/containerd/conf.d/99-nvidia.toml`
+   drop-in config file and modifies (or creates) the `/etc/containerd/config.toml` file
+   to ensure that the `imports` config option is updated accordingly. The drop-in file
+   ensures that containerd can use the NVIDIA Container Runtime.
 
 1. Restart containerd:
 
@@ -223,8 +225,8 @@ Refer to the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/
    $ sudo nvidia-ctk runtime configure --runtime=crio
    ```
 
-   The `nvidia-ctk` command modifies the `/etc/crio/crio.conf` file on the host.
-   The file is updated so that CRI-O can use the NVIDIA Container Runtime.
+   By default, the `nvidia-ctk` command creates a `/etc/crio/conf.d/99-nvidia.toml`
+   drop-in config file. The drop-in file ensures that CRI-O can use the NVIDIA Container Runtime.
 
 1. Restart the CRI-O daemon:
 
