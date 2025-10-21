@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 15, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 21, 2025"/>
 
 
 
@@ -596,24 +596,21 @@ Refer to the <code class="docutils literal notranslate"><span class="pre">Infras
 </pre></div>
 </div>
 </li>
-<li><p>Change to the <code class="docutils literal notranslate"><span class="pre">vgpu-manager</span></code> directory for your OS:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> vgpu-manager/rhel8
-</pre></div>
-</div>
-</li>
-<li><p>Copy the NVIDIA vGPU Manager from your extracted zip file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-vgpu-kvm.run ./
+<li><p>Copy the NVIDIA vGPU manager from your extracted ZIP file to the operating system version you want to build the image for:
+* We use RHEL 8 as an example.</p>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">&lt;local-driver-download-directory&gt;/\*-vgpu-kvm.run</span></code> to <code class="docutils literal notranslate"><span class="pre">vgpu-manager/rhel8/</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-vgpu-kvm.run vgpu-manager/rhel8/
 </pre></div>
 </div>
 </li>
 <li><p>Set the following environment variables.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">PRIVATE_REGISTRY</span></code> - Name of the private registry used to store the driver image.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VGPU_HOST_DRIVER_VERSION</span></code> - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - This must match the Guest OS version.
 For RedHat OpenShift, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where _x_ is the supported minor OCP version.</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.11
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.82.07 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.18
 </pre></div>
 </div>
 </li>
@@ -625,14 +622,12 @@ For more information about the registry, refer to <a class="reference external" 
 </div>
 <ol class="arabic">
 <li><p>Build the NVIDIA vGPU Manager image.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
-    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
-    -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager make build-vgpuhost-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>Push the NVIDIA vGPU Manager image to your private registry.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager make push-vgpuhost-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </li>
@@ -759,7 +754,7 @@ To learn more about how the vGPU Device Manager and configure which types of vGP
 </li>
 <li><p>Expand the <strong>NVIDIA vGPU Device Manager config</strong> section and make sure that the <strong>enabled</strong> checkbox is checked.</p></li>
 </ul>
-<p>If you are only using GPU passthrough, you don’t need to fill these sections out.</p>
+<p>If you are only using GPU passthrough, you do not need to fill these sections out.</p>
 <ul class="simple">
 <li><p>Expand the <strong>VFIO Manager config</strong> section and select the <strong>enabled</strong> checkbox.</p></li>
 <li><p>Optionally, in the <strong>Sandbox Workloads config</strong> section, set <strong>defaultWorkload</strong> to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> if you want passthrough to be the default mode.</p></li>
@@ -974,7 +969,7 @@ For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</stro
 <p>Apply a specific vGPU device configuration on a per-node basis by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label. It is recommended to set this node label prior to installing the GPU Operator if you do not want the default configuration applied.</p>
 <p>Switching vGPU device configuration after one has been successfully applied assumes that no VMs with vGPU are currently running on the node. Any existing VMs will have to be shutdown/migrated first.</p>
 <p>To apply a new configuration after GPU Operator install, simply update the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label.</p>
-<p>Let’s run through an example on a system with two <strong>A10</strong> GPUs.</p>
+<p>The following example shows a system with two <strong>A10</strong> GPUs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
 <span class="go">GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)</span>
 <span class="go">GPU 1: NVIDIA A10 (UUID: GPU-1795e88b-3395-b27b-dad8-0488474eec0c)</span>
@@ -987,7 +982,7 @@ For example, you can create a <strong>A10-4Q</strong> and a <strong>A10-6Q</stro
 <span class="go">}</span>
 </pre></div>
 </div>
-<p>If instead you want to create <strong>A10-4Q</strong> devices, we can label the node like such:</p>
+<p>If instead you want to create <strong>A10-4Q</strong> devices, label the node as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label node &lt;node-name&gt; --overwrite nvidia.com/vgpu.config<span class="o">=</span>A10-4Q
 </pre></div>
 </div>
