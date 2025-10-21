@@ -78,7 +78,7 @@ This component is included in the `nvidia-container-toolkit` package.
 
 This component includes an executable that implements the interface required by a `runC` `prestart` hook. This script is invoked by `runC`
 after a container has been created, but before it has been started, and is given access to the `config.json` associated with the container
-(e.g. this [config.json](https://github.com/opencontainers/runtime-spec/blob/master/config.md#configuration-schema-example=) ). It then takes
+(such as this [config.json](https://github.com/opencontainers/runtime-spec/blob/master/config.md#configuration-schema-example=) ). It then takes
 information contained in the `config.json` and uses it to invoke the `nvidia-container-cli` CLI with an appropriate set of flags. One of the
 most important flags being which specific GPU devices should be injected into the container.
 
@@ -111,7 +111,7 @@ To use Kubernetes with Docker, you need to configure the Docker `daemon.json` to
 a reference to the NVIDIA Container Runtime and set this runtime as the default. The NVIDIA Container Toolkit contains a utility to update this file
 as highlighted in the `docker`-specific installation instructions.
 
-See the {doc}`install-guide` for more information on installing the NVIDIA Container Toolkit on various Linux distributions.
+Refer to the {doc}`install-guide` for more information on installing the NVIDIA Container Toolkit on various Linux distributions.
 
 ### Package Repository
 
@@ -130,7 +130,7 @@ For the different components:
 
 :::{note}
 As of the release of version `1.6.0` of the NVIDIA Container Toolkit the packages for all components are
-published to the `libnvidia-container` `repository <https://nvidia.github.io/libnvidia-container/>` listed above. For older package versions please see the documentation archives.
+published to the `libnvidia-container` `repository <https://nvidia.github.io/libnvidia-container/>` listed above. For older package versions refer to the documentation archives.
 :::
 
 Releases of the software are also hosted on `experimental` branch of the repository and are graduated to `stable` after test/validation. To get access to the latest
