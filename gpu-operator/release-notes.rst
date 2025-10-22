@@ -59,6 +59,15 @@ New Features
   The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
   The ``cdi.default`` field is now deprecated and will be ignored.
 
+  - When ``cdi.enabled`` is ``true`` the GPU Operator now leverages CDI support in container
+    runtimes, e.g. containerd and cri-o, for injecting GPU support into workload containers.
+    This differs from prior releases where CDI support in container runtimes was not used, and
+    instead, an ``nvidia`` runtime class configured in CDI mode was used.
+  - For OpenShift users upgrading to 25.10.0, we recommend updating the ``cdi.enabled``
+    field in ClusterPolicy to ``true`` post-upgrade. This field will not automatically be
+    updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
+    resources on operator upgrades.
+
 *  When using virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
    To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
 
