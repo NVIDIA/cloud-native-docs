@@ -77,7 +77,7 @@ New Features
 
 * Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.
 
-* Added support for new MIG profiles with NVIDIA HGX B3000.
+* Added support for new MIG profiles with NVIDIA HGX B300.
 
   * Supports these profiles:
 
