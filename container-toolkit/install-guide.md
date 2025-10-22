@@ -33,7 +33,7 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
    ```
 1. Install the prerequisites for the instructions below:
    ```console
-   $ sudo apt-get update && apt-get install -y --no-install-recommends \
+   $ sudo apt-get update && sudo apt-get install -y --no-install-recommends \
       curl \
       gnupg2
    ```
