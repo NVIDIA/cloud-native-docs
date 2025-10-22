@@ -101,16 +101,16 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
 
    * - NVIDIA Driver Manager for Kubernetes
-     - `v0.8.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.9.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
      - `1.18.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.17.4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `4.4.1-4.5.2 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `v4.4.1-4.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
      - `v0.18.1 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
@@ -120,7 +120,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `0.17.4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
-     - `0.12.3 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
+     - `0.13.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
      - `4.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
@@ -132,7 +132,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `v1.4.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
-     - `v0.4.0 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.4.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
      - `2.26.6 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__

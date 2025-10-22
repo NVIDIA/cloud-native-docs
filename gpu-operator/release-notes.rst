@@ -43,11 +43,15 @@ New Features
 
 * Updated software component versions:
 
+  - NVIDIA Driver Manager for Kubernetes v0.9.0
   - NVIDIA Container Toolkit v1.18.0
   - NVIDIA DCGM v4.4.1
-  - NVIDIA DCGM Exporter v4.4.1-4.5.2
-  - Node Feature Discovery v0.18.1
+  - NVIDIA DCGM Exporter v4.4.1-4.6.0
+  - Node Feature Discovery v0.18.2
   - NVIDIA GDS Driver v2.26.6
+  - NVIDIA Kubernetes Device Plugin v0.18.0
+  - NVIDIA MIG Manager for Kubernetes v0.13.0
+  - NVIDIA vGPU Device Manager v0.4.1
 
 * Added support for these NVIDIA Data Center GPU Driver versions:
 
@@ -68,7 +72,7 @@ New Features
     updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
     resources on operator upgrades.
 
-*  When using virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+*  When using NVIDIA vGPU with KubeVirt / OpenShift Virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
    To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
 
 * Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.
@@ -110,6 +114,17 @@ New Features
     * ``2g.70gb`` :math:`\times` 1
     * ``3g.139gb`` :math:`\times` 1 
 
+Improvements
+------------
+
+* The GPU Operator now configures containerd and cri-o using drop-in files by default.  
+   When installing on microk8s, you need to set the value of the RUNTIME_CONFIG_SOURCE parameter in the CLusterPolicy to ``file=/var/snap/microk8s/current/args/containerd.toml``. 
+
+* Hardened the GPU Operator container image by using a distroless as a base image.
+
+* Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
+  It is no longer a separate image.
+
 Fixed Issues
 ------------
 
@@ -118,7 +133,8 @@ Fixed Issues
 Known Issues
 ------------
 
-* TBD
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation or upgrade of GPU Operator. 
+  The pods may be in this state for several minutes, but will recover from this state as soon as the container toolkit pod starts running.
 
 
 .. _v25.3.4:
