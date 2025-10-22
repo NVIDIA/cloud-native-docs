@@ -118,7 +118,10 @@ Improvements
 ------------
 
 * The GPU Operator now configures containerd and cri-o using drop-in files by default.  
-   When installing on microk8s, you need to set the value of the RUNTIME_CONFIG_SOURCE parameter in the CLusterPolicy to ``file=/var/snap/microk8s/current/args/containerd.toml``. 
+  As a consequence of this change, some of the install procedures for Kubernetes distributions
+  that use custom containerd installations have changed.
+
+  - The install procedure for microk8s has changed. Refer to the latest :ref:`MicroK8s` install procedure.
 
 * Hardened the GPU Operator container image by using a distroless as a base image.
 

@@ -479,11 +479,11 @@ options are used with the container-toolkit deployed with GPU Operator:
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/snap/microk8s/current/args/containerd-template.toml
+        value: /etc/containerd/containerd.toml
       - name: CONTAINERD_SOCKET
-        value: /var/snap/microk8s/common/run/containerd.sock
+        value: /run/containerd/containerd.sock
       - name: RUNTIME_CONFIG_SOURCE
-        value: file=/var/snap/microk8s/current/args/containerd.toml
+        value: "command, file"
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -495,18 +495,17 @@ If you need to specify custom values, refer to the following sample command for 
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
+      --set toolkit.env[0].value=/etc/containerd/containerd.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
-      --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
+      --set toolkit.env[1].value=/run/containerd/containerd.sock \
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
-      --set toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
+      --set toolkit.env[2].value="command, file"
 
 These options are defined as follows:
 
 CONTAINERD_CONFIG
-  The path on the host to the ``containerd`` config
-  you would like to have updated with support for the ``nvidia-container-runtime``.
-  By default this will point to ``/var/snap/microk8s/current/args/containerd-template.toml``
+  The path on the host to the top-level ``containerd`` config file.
+  By default this will point to ``/etc/containerd/containerd.toml``
   (the default location for ``containerd``). It should be customized if your ``containerd``
   installation is not in the default location.
 
@@ -514,16 +513,23 @@ CONTAINERD_SOCKET
   The path on the host to the socket file used to
   communicate with ``containerd``. The operator will use this to send a
   ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
-  default this will point to ``/var/snap/microk8s/common/run/containerd.sock``
+  default this will point to ``/etc/containerd/containerd.sock``
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
 
 RUNTIME_CONFIG_SOURCE
-  The path on the host to the runtime config source file used to
-  load the nvidia-container-runtime into the containerd runtime.
-  By default this will point to ``/var/snap/microk8s/current/args/containerd.toml``
-  (the default location for ``containerd``). It should be customized if
-  your ``containerd`` installation is not in the default location.
+  The config source(s) that the container-toolkit uses when fetching
+  the current containerd configuration. A valid value for this setting is any
+  combination of [command | file]. By default this will be configured as
+  "command, file" which means the container-toolkit will attempt to fetch
+  the configuration via the containerd CLI before falling back to reading the
+  config from the top-level ``containerd`` config file (configured via
+  CONTIANERD_CONFIG). When ``file`` is specified, the absolute path to the file
+  to be used as a config source can be specified as ``file=/path/to/source/config.toml``
+
+RUNTIME_DROP_IN_CONFIG
+  The path on the host where the NVIDIA-specific drop-in config file
+  will be created. By default this will point to ``/etc/containerd/conf.d/99-nvidia.toml``.
 
 
 Rancher Kubernetes Engine 2
@@ -535,6 +541,8 @@ in the RKE2 documentation.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
 
+.. _microk8s-install-procedure:
+
 MicroK8s
 ========
 
@@ -545,13 +553,11 @@ For MicroK8s, set the following in the ``ClusterPolicy``.
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /var/snap/microk8s/current/args/containerd.toml
+        value: /var/snap/microk8s/current/args/containerd-template.toml
       - name: CONTAINERD_SOCKET
         value: /var/snap/microk8s/common/run/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: "true"
+      - name: RUNTIME_CONFIG_SOURCE
+        value: "file=/var/snap/microk8s/current/args/containerd.toml"
 
 These options can be passed to GPU Operator during install time as below.
 
@@ -561,13 +567,11 @@ These options can be passed to GPU Operator during install time as below.
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd.toml \
+      --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+      --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
+      --set-string toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 
 .. _running sample gpu applications:
 .. _verify gpu operator install:
