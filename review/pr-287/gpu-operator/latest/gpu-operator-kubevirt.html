@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 20, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 22, 2025"/>
 
 
 
@@ -858,41 +858,38 @@ Refer to the <strong>Infrastructure Support Matrix</strong> section under the <a
 </ul>
 <p>Next, clone the driver container repository and build the driver image with the following steps.</p>
 <p>Open a terminal and clone the driver container image repository.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
-<span class="gp">$ </span><span class="nb">cd</span> driver
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/NVIDIA/gpu-driver-container.git
+<span class="gp">$ </span><span class="nb">cd</span> gpu-driver-container
 </pre></div>
 </div>
-<p>Change to the vgpu-manager directory for your OS. We use Ubuntu 20.04 as an example.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> vgpu-manager/ubuntu20.04
+<ol class="arabic">
+<li><p>Copy the NVIDIA vGPU manager from your extracted ZIP file to the operating system version you want to build the image for:
+* We use Ubuntu 22.04 as an example.</p>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">&lt;local-driver-download-directory&gt;/\*-vgpu-kvm.run</span></code> to <code class="docutils literal notranslate"><span class="pre">vgpu-manager/ubuntu22.04/</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-vgpu-kvm.run vgpu-manager/ubuntu22.04/
 </pre></div>
 </div>
+</li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For Red Hat OpenShift, run <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">vgpu-manager/rhel8</span></code> to use the <code class="docutils literal notranslate"><span class="pre">rhel8</span></code> folder instead.</p>
-</div>
-<p>Copy the NVIDIA vGPU Manager from your extracted zip file</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp &lt;local-driver-download-directory&gt;/*-vgpu-kvm.run ./
-</pre></div>
+<p>For Red Hat OpenShift, use a directory that includes <code class="docutils literal notranslate"><span class="pre">rhel</span></code> in the directory name. For example, <code class="docutils literal notranslate"><span class="pre">vgpu-manager/rhel8</span></code>.</p>
 </div>
 <div class="line-block">
 <div class="line">Set the following environment variables:</div>
 <div class="line"><code class="docutils literal notranslate"><span class="pre">PRIVATE_REGISTRY</span></code> - name of private registry used to store driver image</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">VERSION</span></code> - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - this must match the Guest OS version. In the following example <code class="docutils literal notranslate"><span class="pre">ubuntu20.04</span></code> is used. For Red Hat OpenShift this should be set to <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where x is the supported minor OCP version.</div>
-<div class="line"><code class="docutils literal notranslate"><span class="pre">CUDA_VERSION</span></code> - CUDA base image version to build the driver image with.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">VGPU_HOST_DRIVER_VERSION</span></code> - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OS_TAG</span></code> - this must match the Guest OS version. In the following example <code class="docutils literal notranslate"><span class="pre">ubuntu22.04</span></code> is used. For Red Hat OpenShift this should be set to <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where x is the supported minor OCP version.</div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VERSION</span><span class="o">=</span><span class="m">510</span>.73.06 <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu20.04 <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="m">11</span>.7.1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.82.07 <span class="nv">OS_TAG</span><span class="o">=</span>ubuntu22.04
 </pre></div>
 </div>
 <p>Build the NVIDIA vGPU Manager image.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build <span class="se">\</span>
-    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span> <span class="se">\</span>
-    --build-arg <span class="nv">CUDA_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">CUDA_VERSION</span><span class="si">}</span> <span class="se">\</span>
-    -t <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span> .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager make build-vgpuhost-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 <p>Push NVIDIA vGPU Manager image to your private registry.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push <span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager:<span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span>-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/vgpu-manager make push-vgpuhost-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
 </section>

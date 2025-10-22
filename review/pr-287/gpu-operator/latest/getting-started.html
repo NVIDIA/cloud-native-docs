@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 20, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 22, 2025"/>
 
 
 
@@ -798,7 +798,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 you can build a custom driver container image. Follow these steps:</p>
 <ul>
 <li><p>Rebuild the driver container by specifying the <code class="docutils literal notranslate"><span class="pre">$DRIVER_VERSION</span></code> argument when building the Docker image. For
-reference, the driver container Dockerfiles are available on the Git repository at <a class="gitlab reference external" href="https://gitlab.com/nvidia/container-images/driver">nvidia/container-images/driver</a>.</p></li>
+reference, the driver container Dockerfiles are available on the Git repository at <a class="github reference external" href="https://github.com/NVIDIA/gpu-driver-container/">NVIDIA/gpu-driver-container</a>.</p></li>
 <li><p>Build the container using the appropriate Dockerfile. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build --pull -t <span class="se">\</span>
     --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="m">455</span>.28 <span class="se">\</span>

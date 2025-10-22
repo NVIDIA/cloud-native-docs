@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.8';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 20, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 22, 2025"/>
 
 
 
@@ -491,9 +491,9 @@ Review the SELinux policies on your system.</p>
 </section>
 <section id="containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">
 <h2>Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”<a class="headerlink" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error" title="Permalink to this headline">#</a></h2>
-<p>When using the NVIDIA Container Runtime Hook (i.e. the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
+<p>When using the NVIDIA Container Runtime Hook (that is, the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
 the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
-libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (e.g. <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (such as <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
 The result is that updates to the container may remove access to the requested GPUs.</p>
 <p>When the container loses access to the GPU, you will see the following error message from the console output:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Failed to initialize NVML: Unknown Error</span>
