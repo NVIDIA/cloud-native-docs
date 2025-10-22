@@ -142,14 +142,12 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``cdi.enabled``
-     - When set to ``true`` (default), the Operator installs two additional runtime classes,
-       nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
-       for making GPUs accessible to containers.
+     - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
+       injecting GPUs into workload containers. The Operator will no longer configure the `nvidia`
+       runtime class as the default runtime handler. Instead, native-CDI support in container runtimes
+       like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
        Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
        are exposed to containerized environments.
-
-       Pods can specify ``spec.runtimeClassName`` as ``nvidia-cdi`` to use the functionality or
-       specify ``nvidia-legacy`` to prevent using CDI to perform device injection.
      - ``true``
 
    * - ``cdi.default``  Deprecated.
