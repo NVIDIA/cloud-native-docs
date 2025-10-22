@@ -455,7 +455,18 @@
 </li>
 <li><p>Container Device Interface (CDI) is now enabled by default when installing the GPU Operator.
 The <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code> field in the ClusterPolicy is now set to <code class="docutils literal notranslate"><span class="pre">true</span></code> by default.
-The <code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> field is now deprecated and will be ignored.</p></li>
+The <code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> field is now deprecated and will be ignored.</p>
+<ul>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> the GPU Operator now leverages CDI support in container
+runtimes, e.g. containerd and cri-o, for injecting GPU support into workload containers.
+This differs from prior releases where CDI support in container runtimes was not used, and
+instead, an <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class configured in CDI mode was used.</p></li>
+<li><p>For OpenShift users upgrading to 25.10.0, we recommend updating the <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code>
+field in ClusterPolicy to <code class="docutils literal notranslate"><span class="pre">true</span></code> post-upgrade. This field will not automatically be
+updated to <code class="docutils literal notranslate"><span class="pre">true</span></code> since the Operator Lifecycle Manager (OLM) does not mutate custom
+resources on operator upgrades.</p></li>
+</ul>
+</li>
 <li><p>When using virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
 To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.</p></li>
 <li><p>Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.</p></li>
