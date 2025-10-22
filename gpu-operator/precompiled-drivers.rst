@@ -240,11 +240,11 @@ you can perform the following steps to build and run a container image.
 
    .. code-block:: console
 
-      $ git clone https://gitlab.com/nvidia/container-images/driver
+      $ git clone https://github.com/NVIDIA/gpu-driver-container.git
 
    .. code-block:: console
 
-      $ cd driver
+      $ cd gpu-driver-container
 
 #. Change directory to the operating system name and version under the driver directory:
 

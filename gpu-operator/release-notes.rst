@@ -38,19 +38,7 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 25.3.4
 ======
 
-Fixed Issues
-------------
-
-* Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for ``CONTAINERD_SOCKET`` was provided as input.
-  Specifically, the hostPath volumes were not included in the DaemonSet.
-  Refer to GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1694 for more details.
-
-.. _v25.3.3:
-
-25.3.3
-======
-
-.. _v25.3.3-new-features:
+.. _v25.3.4-new-features:
 
 New Features
 ------------
@@ -76,6 +64,19 @@ Fixed Issues
 
 * Fixed an issue where user-supplied environment variables configured in ClusterPolicy were not getting set in the rendered DaemonSet.
   User-supplied environment variables now take precedence over environment variables set by the ClusterPolicy controller.
+
+
+.. _v25.3.3:
+
+25.3.3
+======
+
+Fixed Issues
+------------
+
+* Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for ``CONTAINERD_SOCKET`` was provided as input.
+  Specifically, the hostPath volumes were not included in the DaemonSet.
+  Refer to GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1694 for more details.
 
 .. _v25.3.2:
 

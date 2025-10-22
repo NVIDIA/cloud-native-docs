@@ -102,8 +102,8 @@ project_build_order = [
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.17.8"
-source_substitutions = {version = "1.17.8"}
+version = "1.18.0"
+source_substitutions = {version = "1.18.0"}
 copyright_start = 2020
 redirects = [
   { path="concepts.html", target="index.html" },
@@ -226,7 +226,7 @@ output_format = "linkcheck"
 docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "25.3.2"
+version = "25.3.4"
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",
