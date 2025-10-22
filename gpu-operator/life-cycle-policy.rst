@@ -113,11 +113,11 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `v4.4.1-4.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
-     - `v0.18.1 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
+     - `v0.18.2 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.17.4 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.13.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
