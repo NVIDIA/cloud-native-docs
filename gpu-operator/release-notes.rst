@@ -64,7 +64,7 @@ New Features
   The ``cdi.default`` field is now deprecated and will be ignored.
 
   - When ``cdi.enabled`` is ``true`` the GPU Operator now leverages CDI support in container
-    runtimes, e.g. containerd and cri-o, for injecting GPU support into workload containers.
+    runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
     This differs from prior releases where CDI support in container runtimes was not used, and
     instead, an ``nvidia`` runtime class configured in CDI mode was used.
   - For OpenShift users upgrading to 25.10.0, we recommend updating the ``cdi.enabled``
@@ -96,7 +96,7 @@ New Features
     * ``3g.135gb`` :math:`\times` 1
  
 
-* Added support for new MIG profiles with HGX GB300 NVL72.
+* Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
 
   * Supports these profiles:
 
@@ -123,15 +123,28 @@ Improvements
 
   - The install procedure for microk8s has changed. Refer to the latest :ref:`MicroK8s` install procedure.
 
-* Hardened the GPU Operator container image by using a distroless as a base image.
+* Hardened the GPU Operator container image by using a distroless image as a base image.
 
 * Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
   It is no longer a separate image.
 
+* The GPU Operator now supports the vgpu licensing token as a secret. 
+  It is recommended that you migrate to using secrets instead of a configMap for improved security.
+
+* Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.
+
+* Added support for specifying hostPID via the GPU Operator Helm charts
+
 Fixed Issues
 ------------
 
-* TBD
+* Fixed an issue where the vGPU Manager pod was terminated before it finished disabling VFs on all GPUs.
+  The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU Manager has enough time to finish its cleanup logic when the pod is terminated.
+  
+* Added GDRCopy validation to validator daemonset. When GDRCopy is enabled, this ensures that the GDRCopy driver is loaded prior to the k8s-device-plugin from starting up.
+
+* Added required permissions when GPU Feature Discovery is configured to use the Node Feature API instead of feature files.
+
 
 Known Issues
 ------------
