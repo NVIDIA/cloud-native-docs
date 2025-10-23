@@ -59,6 +59,10 @@ New Features
   - 570.195.03
   - 535.274.02
 
+* Added support for Kubernetes v1.34.
+
+* Added support for Red Hat Openshift Container Platform 4.20.
+
 * Container Device Interface (CDI) is now enabled by default when installing the GPU Operator. 
   The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
   The ``cdi.default`` field is now deprecated and will be ignored.
@@ -150,7 +154,8 @@ Known Issues
 ------------
 
 * When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation or upgrade of GPU Operator. 
-  The pods may be in this state for several minutes, but will recover from this state as soon as the container toolkit pod starts running.
+  The pods may be in this state for several minutes and restart several times.
+  The pods will recover from this state as soon as the container toolkit pod starts running.
 
 
 .. _v25.3.4:

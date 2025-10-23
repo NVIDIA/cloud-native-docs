@@ -300,28 +300,28 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.29---1.33
+         - 1.30---1.34
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.29---1.33
+         - 1.30---1.34
          -
          - 8.0 U2, 8.0 U3
-         - 1.29---1.33
+         - 1.30---1.34
          -
          - 1.26
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          -
@@ -337,11 +337,11 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 9.2, 9.4, 9.5, 9.6 |fn3|_
-         - 1.29---1.33
+           | Linux 9.2, 9.4, 9.6 |fn3|_
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          -
@@ -350,10 +350,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          - 2.12, 2.13, 2.14, 2.15
@@ -378,7 +378,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _rhel-9:
 
     :sup:`3`
-    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only. 
     They are not available for ARM based systems.
 
     .. note::
@@ -401,19 +401,19 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34  
+         - 1.30---1.34
+         - 1.30---1.34
 
        * - Ubuntu 22.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.30---1.34
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.30---1.34
 
   .. tab-item:: Virtual Machines with NVIDIA vGPU
 
@@ -434,29 +434,29 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29--1.33
+         - 1.30--1.34
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
          - 8.0 U2, 8.0 U3
-         - 1.29--1.33
+         - 1.30--1.34
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
          - 
-         - 1.29--1.33
+         - 1.30--1.34
          - 
 
        * - Red Hat Core OS
          -
-         - 4.12---4.19
+         - 4.12--4.19
          -
          -
          -
@@ -464,11 +464,11 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 8.4,
-           | 8.6---8.10
-         - 1.29---1.33
+           | 8.6--8.10
+         - 1.30--1.34
          -
          -
-         - 1.29---1.33
+         - 1.30--1.34
          -
 
 .. _supported-precompiled-drivers:
@@ -572,7 +572,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 - RHEL 8 with Network Operator 25.1.0.
 - Ubuntu 24.04 LTS with Network Operator 25.1.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
-- Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 with Network Operator 25.1.0.
+- Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.1.0.
 - Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0.
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
