@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 22, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 23, 2025"/>
 
 
 
@@ -523,10 +523,12 @@ To select a MIG-backed vGPU profile, label the node with the name of the MIG-bac
 <section id="improvements">
 <h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><dl class="simple">
-<dt>The GPU Operator now configures containerd and cri-o using drop-in files by default.</dt><dd><p>When installing on microk8s, you need to set the value of the RUNTIME_CONFIG_SOURCE parameter in the CLusterPolicy to <code class="docutils literal notranslate"><span class="pre">file=/var/snap/microk8s/current/args/containerd.toml</span></code>.</p>
-</dd>
-</dl>
+<li><p>The GPU Operator now configures containerd and cri-o using drop-in files by default.
+As a consequence of this change, some of the install procedures for Kubernetes distributions
+that use custom containerd installations have changed.</p>
+<ul>
+<li><p>The install procedure for microk8s has changed. Refer to the latest <a class="reference internal" href="getting-started.html#microk8s"><span class="std std-ref">MicroK8s</span></a> install procedure.</p></li>
+</ul>
 </li>
 <li><p>Hardened the GPU Operator container image by using a distroless as a base image.</p></li>
 <li><p>Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
