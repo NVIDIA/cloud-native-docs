@@ -462,7 +462,7 @@ The <code class="docutils literal notranslate"><span class="pre">cdi.enabled</sp
 The <code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> field is now deprecated and will be ignored.</p>
 <ul>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> the GPU Operator now leverages CDI support in container
-runtimes, e.g. containerd and cri-o, for injecting GPU support into workload containers.
+runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
 This differs from prior releases where CDI support in container runtimes was not used, and
 instead, an <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class configured in CDI mode was used.</p></li>
 <li><p>For OpenShift users upgrading to 25.10.0, we recommend updating the <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code>
@@ -496,7 +496,7 @@ To select a MIG-backed vGPU profile, label the node with the name of the MIG-bac
 </li>
 </ul>
 </li>
-<li><p>Added support for new MIG profiles with HGX GB300 NVL72.</p>
+<li><p>Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.</p>
 <ul>
 <li><p>Supports these profiles:</p>
 <ul>
@@ -530,15 +530,22 @@ that use custom containerd installations have changed.</p>
 <li><p>The install procedure for microk8s has changed. Refer to the latest <a class="reference internal" href="getting-started.html#microk8s"><span class="std std-ref">MicroK8s</span></a> install procedure.</p></li>
 </ul>
 </li>
-<li><p>Hardened the GPU Operator container image by using a distroless as a base image.</p></li>
+<li><p>Hardened the GPU Operator container image by using a distroless image as a base image.</p></li>
 <li><p>Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
 It is no longer a separate image.</p></li>
+<li><p>The GPU Operator now supports the vgpu licensing token as a secret.
+It is recommended that you migrate to using secrets instead of a configMap for improved security.</p></li>
+<li><p>Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.</p></li>
+<li><p>Added support for specifying hostPID via the GPU Operator Helm charts</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>TBD</p></li>
+<li><p>Fixed an issue where the vGPU Manager pod was terminated before it finished disabling VFs on all GPUs.
+The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU Manager has enough time to finish its cleanup logic when the pod is terminated.</p></li>
+<li><p>Added GDRCopy validation to validator daemonset. When GDRCopy is enabled, this ensures that the GDRCopy driver is loaded prior to the k8s-device-plugin from starting up.</p></li>
+<li><p>Added required permissions when GPU Feature Discovery is configured to use the Node Feature API instead of feature files.</p></li>
 </ul>
 </section>
 <section id="known-issues">
