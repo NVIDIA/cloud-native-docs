@@ -59,11 +59,7 @@ New Features
   - 570.195.03
   - 535.274.02
 
-* Added support for Kubernetes v1.34.
-
-* Added support for Red Hat Openshift Container Platform 4.20.
-
-* Container Device Interface (CDI) is now enabled by default when installing the GPU Operator. 
+* Container Device Interface (CDI) is now enabled by default when installing or upgrading (via helm) the GPU Operator to 25.10.0. 
   The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
   The ``cdi.default`` field is now deprecated and will be ignored.
 
@@ -71,13 +67,26 @@ New Features
     runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
     This differs from prior releases where CDI support in container runtimes was not used, and
     instead, an ``nvidia`` runtime class configured in CDI mode was used.
-  - For OpenShift users upgrading to 25.10.0, we recommend updating the ``cdi.enabled``
+  - For OpenShift users upgrading to v25.10.0, we recommend updating the ``cdi.enabled``
     field in ClusterPolicy to ``true`` post-upgrade. This field will not automatically be
     updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
     resources on operator upgrades.
 
 *  When using NVIDIA vGPU with KubeVirt / OpenShift Virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
    To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
+
+* Added support for NVIDIA Network Operator 25.7.0 integration.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added support for Mirantis k0s.
+
+* Added support for Red Hat OpenShift GPU dashboard integration.
+
+* Added support for Red Hat OpenShift Container Platform 4.20.
+
+* Added support for Red Hat OpenShift with HGX GB200 NVL72.
+
+* Added support for Kubernetes v1.34.
 
 * Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.
 
@@ -157,6 +166,22 @@ Known Issues
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
 
+* The Container Toolkit v1.18.0 will overwrite custom drop-in configuration file values with values from the automatically generated drop-in file. 
+
+* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition will fail to configure nodes with the default vgpu-device-manager configuration. 
+  To workaround this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
+  All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute. 
+  Refer to the following example:
+
+  .. code-block:: yaml
+    version: v1
+    vgpu-configs:
+      DC-1-2Q:
+        - devices: all
+          vgpu-devices:
+            DC-1-2QGFX: 48
+
+  Create the ConfigMap, then update the ClusterPolicy with the name of the configMap in the ``vgpuDeviceManager.config.name``, and restart the vgpu-device-manager pod.
 
 .. _v25.3.4:
 
