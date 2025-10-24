@@ -291,9 +291,7 @@ The GPU Operator has been validated in the following scenarios:
            | with Tanzu
          - | Rancher Kubernetes
            | Engine 2
-         - | HPE Ezmeral
-           | Runtime
-           | Enterprise
+         - | Mirantis k0s
          - | Canonical
            | MicroK8s
          - | Nutanix
@@ -304,7 +302,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.30---1.34
-         -
+         - 1.30---1.34
          -
          - 2.12, 2.13, 2.14
 
@@ -313,8 +311,8 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 8.0 U2, 8.0 U3
          - 1.30---1.34
-         -
-         - 1.26
+         - 1.30---1.34
+         - 1.33---1.34
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
@@ -322,16 +320,16 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         -
+         - 1.30---1.34
          -
          -
 
        * - Red Hat Core OS
          -
-         - | 4.12---4.19
+         - | 4.14---4.20
          -
          -
-         -
+         - 1.30---1.34
          -
          -
 
@@ -342,7 +340,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         -
+         - 1.30---1.34
          -
          -
 
@@ -354,7 +352,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         -
+         - 1.30---1.34
          -
          - 2.12, 2.13, 2.14, 2.15
          
@@ -456,7 +454,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - 4.12--4.19
+         - 4.14--4.20
          -
          -
          -
@@ -530,7 +528,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.23---1.33   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.23---1.33   0.36+           0.59.1+
-Red Hat Core OS                                                4.12---4.19      4.13---4.19
+Red Hat Core OS                                                4.14---4.20      4.14---4.20
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -569,11 +567,11 @@ Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- RHEL 8 with Network Operator 25.1.0.
-- Ubuntu 24.04 LTS with Network Operator 25.1.0.
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
-- Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.1.0.
-- Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0.
+- RHEL 8 with Network Operator 25.7.0.
+- Ubuntu 24.04 LTS with Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
+- Red Hat OpenShift 4.14 and higher with Network Operator 25.7.0.
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -583,9 +581,9 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 24.04 LTS Network Operator 25.1.0
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
-- Red Hat OpenShift Container Platform 4.12 and higher
+- Ubuntu 24.04 LTS Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat OpenShift Container Platform 4.14 and higher.
 
 .. note::
 
