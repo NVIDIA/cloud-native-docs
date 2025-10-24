@@ -207,11 +207,11 @@ Configure the Cluster with the vGPU License Information and the Driver Container
 
       $ kubectl create namespace gpu-operator
 
-#. Create a config map that is named ``licensing-config`` using the ``gridd.conf`` and ``client_configuration_token.tok`` files:
+#. Create a secret that is named ``licensing-config`` using the ``gridd.conf`` and ``client_configuration_token.tok`` files:
 
    .. code-block:: console
 
-      $ kubectl create configmap licensing-config \
+      $ kubectl create secret generic licensing-config \
           -n gpu-operator --from-file=gridd.conf --from-file=client_configuration_token.tok
 
 #. Create an image pull secret in the ``gpu-operator`` namespace with the registry secret and private registry.
@@ -249,7 +249,7 @@ Install the Operator
           --set driver.repository=${PRIVATE_REGISTRY} \
           --set driver.version=${VGPU_DRIVER_VERSION} \
           --set driver.imagePullSecrets={$REGISTRY_SECRET_NAME} \
-          --set driver.licensingConfig.configMapName=licensing-config
+          --set driver.licensingConfig.secretName=licensing-config
 
 The preceding command installs the Operator with the default configuration.
 Refer to :ref:`gpu-operator-helm-chart-options` for information about configuration options.
