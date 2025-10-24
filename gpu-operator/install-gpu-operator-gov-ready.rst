@@ -193,27 +193,13 @@ Install NVIDIA GPU Operator Government-Ready Components
 
    .. code-block:: console
 
-      $ helm install gpu-operator nvidia/gpu-operator \
-          --namespace gpu-operator \
-          --set driver.secretEnv=ubuntu-fips-secret \
-          --set driver.repository=nvcr.io/nvidia/driver-stig-fips:580.82.07-stig-fips-ubuntu24.04 \
-          --set driver.imagePullSecrets=ngc-secret
-
-
-The command above uses the following configurations:
-
-.. list-table::
-  :header-rows: 1
-  :widths: 30 70
-
-  * - Parameter
-    - Description
-  * - ``driver.secretEnv``
-    - The name of the secret containing the Ubuntu Pro token.
-  * - ``driver.repository``
-    - The repository containing the NVIDIA GPU driver artifacts on the NVIDIA NGC Catalog.
-  * - ``driver.imagePullSecrets``
-    - The name of the secret containing your NGC API key.
+      $  helm install gpu-operator nvidia/gpu-operator \
+         --namespace gpu-operator \
+         --set driver.secretEnv=ubuntu-fips-secret \
+         --set driver.repository=nvcr.io/nvidia/driver-stig-fips \
+         --set driver.version=580.82.07-stig-fips-ubuntu24.04 \
+         --set driver.image=gpu-driver-stig-fips \
+         --set driver.imagePullSecrets={ngc-secret}
 
 Refer to `Common Chart Customization Options <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`_ for more information about installation options.
 
