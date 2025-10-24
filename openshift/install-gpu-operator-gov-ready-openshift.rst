@@ -27,7 +27,7 @@ The NVIDIA GPU Operator now offers government-ready components for NVIDIA AI Ent
 Government ready is NVIDIA's designation for software that meets applicable security requirements for deployment in your FedRAMP High or equivalent sovereign use case.
 For more information on NVIDIA's government-ready support, refer to the white paper `AI Software for Regulated Environments <https://docs.nvidia.com/ai-enterprise/planning-resource/ai-software-regulated-environments-white-paper/latest/index.html>`_.
 
-Refer to the `support components matrix <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#government-ready-components>`_ for a full list of available GPU Operator government-ready components.
+Refer to the `support components matrix <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/install-gpu-operator-gov-ready.html#supported-gpu-operator-components>`_ for a full list of available GPU Operator government-ready components.
 
 This page outlines how to install the NVIDIA GPU Operator government-ready components on Red Hat OpenShift Container Platform.
 
@@ -37,7 +37,7 @@ Prerequisites
 - An active NVIDIA AI Enterprise subscription and NGC API token to access GPU Operator government-ready containers.
   Refer to `Generating Your NGC API Key <https://docs.nvidia.com/ngc/gpu-cloud/ngc-user-guide/index.html#generating-api-key>`_ in the NVIDIA NGC User Guide for more information on NGC API tokens.
 
-- Red Hat OpenShift 4.19 and later in FIPS mode.
+- Red Hat OpenShift 4.19 in FIPS mode.
 
 - `Node Feature Discovery Operator installed <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-nfd.html>`_.
 
@@ -76,28 +76,20 @@ Create a secret object for storing your NGC API key.
 
 #. Enter the following into each field:
 
-   .. list-table::
-      :widths: 40 60
-
-      * - **Secret name**
-        - ``ngc-api-secret``
-      * - **Authentication type**
-        - Image registry credentials
-      * - **Registry server address**
-        - ``<ngc-gov-ready-registry_address>``
-      * - **Username**
-        - ``$oauthtoken``
-      * - **Password**
-        - ``<NGC-API-KEY>``
+   * **Secret name:** ``ngc-api-secret``
+   * **Authentication type:** Image registry credentials
+   * **Registry server address:** ``nvcr.io``
+   * **Username:** ``$oauthtoken``
+   * **Password:** ``<NGC-API-KEY>``
 
 #. Click **Create**.
 
    A pull secret is created.
 
 
-**************************************
+
 Create the ClusterPolicy Instance
-**************************************
+===================================
 
 When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU Operator, configuring the image names and repository, pod restrictions and credentials, and more. Use the ClusterPolicy to set the NGC image pull secret and government ready repository. 
 
@@ -108,21 +100,13 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 
 #. Expand the **NVIDIA GPU/vGPU Driver config** section and set the following fields:
 
-   .. list-table::
-      :widths: 30 70
-
-      * - **image**
-        - ``gpu-driver-stig-fips:580.82.07-stig-fips-rhel``
-      * - **repository**
-        - ``nvcr.io/nvidia``
+   * **version:** ``580.95.05-stig-fips``
+   * **image:** ``gpu-driver-stig-fips``
+   * **repository:** ``nvcr.io/nvidia``
 
    Expand **Image Pull Secret** in the **Advanced configuration** section and add your NGC image pull secret name.
 
-   .. list-table::
-      :widths: 30 70
-
-      * - **value**
-        - ``ngc-api-secret``
+   * **value:** ``ngc-api-secret``
 
 #. Click **Create**.
 

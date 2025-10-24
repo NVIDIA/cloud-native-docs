@@ -53,7 +53,7 @@ The government-ready NVIDIA GPU Operator includes the following components:
    * - NVIDIA MIG Manager
      - 0.13.0
    * - NVIDIA Driver
-     - 580.82.07 |fn1|_
+     - 580.95.05 |fn1|_
 
 :sup:`1`
 Built using the following base images:
@@ -128,14 +128,12 @@ Install Node Feature Discovery (NFD)
 NFD is an open-source project that is a dependency for the Operator on each node in your cluster.
 It must be deployed before installing the NVIDIA GPU Operator.
 
-Using Helm, deploy NFD with the following command:
-
-.. code-block:: console
-
-   $ helm install nfd --namespace node-feature-discovery --create-namespace oci://registry.k8s.io/nfd/charts/node-feature-discovery --version 0.18.0
-
+GPU Operator does not maintain a government ready version of NFD, it is recommended that you install the upstream NFD version that aligns with the :ref:`operator-component-matrix`.
 The NFD container is built on top of a scratch image, providing a highly secure container environment.
 For information on NFD CVEs and security updates, refer to the `NFD GitHub repository <https://github.com/kubernetes-sigs/node-feature-discovery/security>`_.
+
+Refer to the NFD documentation for `installation instructions <https://kubernetes-sigs.github.io/node-feature-discovery/stable/get-started/index.html>`_.
+
 
 .. _create-ngc-api-pull-secret:
 
@@ -175,7 +173,8 @@ The Ubuntu Pro Token is required for the driver container to download kernel hea
       $ kubectl create secret generic ubuntu-fips-secret \
           --from-env-file=./ubuntu-fips.env --namespace gpu-operator
 
-   Note that the namespace in the above command is ``gpu-operator``. Update this to the namespace you are planning to use for the NVIDIA GPU Operator.
+   Note that the namespace in the above command is ``gpu-operator``. 
+   Update this to the namespace you are planning to use for the NVIDIA GPU Operator.
 
 .. _deploy-nvidia-gpu-operator-gov-ready:
 
@@ -194,12 +193,12 @@ Install NVIDIA GPU Operator Government-Ready Components
    .. code-block:: console
 
       $  helm install gpu-operator nvidia/gpu-operator \
-         --namespace gpu-operator \
-         --set driver.secretEnv=ubuntu-fips-secret \
-         --set driver.repository=nvcr.io/nvidia/driver-stig-fips \
-         --set driver.version=580.82.07-stig-fips-ubuntu24.04 \
-         --set driver.image=gpu-driver-stig-fips \
-         --set driver.imagePullSecrets={ngc-secret}
+           --namespace gpu-operator \
+           --set driver.secretEnv=ubuntu-fips-secret \
+           --set driver.repository=nvcr.io/nvidia/driver-stig-fips \
+           --set driver.version=580.95.05-stig-fips \
+           --set driver.image=gpu-driver-stig-fips \
+           --set driver.imagePullSecrets={ngc-secret}
 
 Refer to `Common Chart Customization Options <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`_ for more information about installation options.
 

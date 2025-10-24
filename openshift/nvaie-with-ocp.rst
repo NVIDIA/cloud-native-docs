@@ -297,3 +297,7 @@ Perform the following steps to verify the successful installation of the **NVIDI
          pod/nvidia-device-plugin-daemonset-nqxmc                              1/1     Running     0          91m
          pod/nvidia-driver-daemonset-49.84.202202081504-0-9df9j                2/2     Running     0          91m
          pod/nvidia-node-status-exporter-7bhdk                                 1/1     Running     0          91m
+
+.. toctree::
+
+   Government Ready <install-gpu-operator-gov-ready-openshift.rst>
