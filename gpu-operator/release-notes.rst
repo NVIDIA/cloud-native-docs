@@ -174,6 +174,7 @@ Known Issues
   Refer to the following example:
 
   .. code-block:: yaml
+    
     version: v1
     vgpu-configs:
       DC-1-2Q:
