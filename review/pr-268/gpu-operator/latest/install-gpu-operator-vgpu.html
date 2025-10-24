@@ -574,8 +574,8 @@ FeatureType=1
 </pre></div>
 </div>
 </li>
-<li><p>Create a config map that is named <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> using the <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> files:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config <span class="se">\</span>
+<li><p>Create a secret that is named <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code> using the <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> and <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret generic licensing-config <span class="se">\</span>
     -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>client_configuration_token.tok
 </pre></div>
 </div>
@@ -610,7 +610,7 @@ FeatureType=1
      --set driver.repository<span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span> <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="se">\</span>
      --set driver.imagePullSecrets<span class="o">={</span><span class="nv">$REGISTRY_SECRET_NAME</span><span class="o">}</span> <span class="se">\</span>
-     --set driver.licensingConfig.configMapName<span class="o">=</span>licensing-config
+     --set driver.licensingConfig.secretName<span class="o">=</span>licensing-config
 </pre></div>
 </div>
 </li>

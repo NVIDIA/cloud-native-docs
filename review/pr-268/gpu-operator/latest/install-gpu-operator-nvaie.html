@@ -511,15 +511,20 @@ Originally, the client configuration token is named to match the pattern: <code 
 </section>
 <section id="updating-nls-client-license-token">
 <h2>Updating NLS Client License Token<a class="headerlink" href="#updating-nls-client-license-token" title="Permalink to this headline">#</a></h2>
-<p>In case the NLS client license token needs to be updated, please use the following procedure:</p>
+<p>In case the NLS client license token needs to be updated, use the following procedure:</p>
 <p>Create an empty vGPU license configuration file:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo touch gridd.conf
 </pre></div>
 </div>
-<p>Generate and download a new NLS client license token. Please refer to Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NLS User Guide</a> for instructions.</p>
+<p>Generate and download a new NLS client license token. Refer to Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NLS User Guide</a> for instructions.</p>
 <p>Rename the NLS client license token that you downloaded to <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.</p>
-<p>Create a new <code class="docutils literal notranslate"><span class="pre">licensing-config-new</span></code> ConfigMap object in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace (make sure the name of the configmap is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this ConfigMap:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap licensing-config-new <span class="se">\</span>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">configMap(configMapName)</span></code> is  <strong>deprecated</strong> and will be removed in a future release.
+Use <code class="docutils literal notranslate"><span class="pre">secrets(secretName)</span></code> instead.</p>
+</div>
+<p>Create a new <code class="docutils literal notranslate"><span class="pre">licensing-config-new</span></code> Secret object in the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret generic licensing-config-new <span class="se">\</span>
     -n gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>&lt;path&gt;/client_configuration_token.tok
 </pre></div>
 </div>
@@ -529,12 +534,12 @@ Originally, the client configuration token is named to match the pattern: <code 
 </div>
 <p>Go to the driver section and replace the following argument:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">licensingConfig:</span>
-<span class="go">    configMapName: licensing-config</span>
+<span class="go">    secretName: licensing-config</span>
 </pre></div>
 </div>
 <p>with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">licensingConfig:</span>
-<span class="go">    configMapName: licensing-config-new</span>
+<span class="go">    secretName: licensing-config-new</span>
 </pre></div>
 </div>
 <p>Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)</p>
