@@ -28,6 +28,7 @@ sphinx_conf_py_extra = """
   ]
   templates_path = ['${root}/templates']
   extensions.extend([
+    "linuxdoc.rstFlatTable",
     "sphinx.ext.autosectionlabel",
     "sphinx_copybutton",
   ])
@@ -166,8 +167,8 @@ output_format = "linkcheck"
 docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
-version = "25.3.4"
-source_substitutions = { version = "v25.3.4", recommended = "580.82.07" }
+version = "25.10"  # Update repo_docs.projects.openshift.version to match latest patch version maj.min.patch
+source_substitutions = { minor_version = "25.10", version = "v25.10.0", recommended = "580.95.05" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -197,6 +198,17 @@ build_by_default = false
 output_format = "linkcheck"
 
 
+[repo_docs.projects.openshift]
+docs_root = "${root}/openshift"
+project = "gpu-operator-openshift"
+name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
+version = "25.10.0"  # Check that this value matches maj.min version of repo_docs.projects.gpu-operator.version
+copyright_start = 2020
+sphinx_exclude_patterns = [
+  "get-entitlement.rst",
+]
+
+
 [repo_docs.projects.gpu-telemetry]
 docs_root = "${root}/gpu-telemetry"
 project = "gpu-telemetry"
@@ -220,16 +232,6 @@ copyright_start = 2020
 build_by_default = false
 output_format = "linkcheck"
 
-
-[repo_docs.projects.openshift]
-docs_root = "${root}/openshift"
-project = "gpu-operator-openshift"
-name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "25.3.4"
-copyright_start = 2020
-sphinx_exclude_patterns = [
-  "get-entitlement.rst",
-]
 
 [repo_docs.projects.openshift.builds.linkcheck]
 build_by_default = false
