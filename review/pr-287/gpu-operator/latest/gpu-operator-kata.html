@@ -67,14 +67,14 @@
     <script>initMermaid();</script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GPU Operator with Confidential Containers and Kata" href="gpu-operator-confidential-containers.html" />
+    <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
     <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 22, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
 
@@ -353,7 +353,6 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -586,116 +585,11 @@ Reboot the host after configuring the bootloader.</p>
 <p>This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster.
 Alternatively, you can set the default sandbox workload to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> to run confidential containers on all worker nodes.</p>
 </li>
-<li><p>Install the Confidential Containers Operator.</p>
-<p>This step installs the Operator and also the Kata Containers runtime that NVIDIA uses for Kata Containers.</p>
-</li>
 <li><p>Install the NVIDIA GPU Operator.</p>
 <p>You install the Operator and specify options to deploy the operands that are required for Kata Containers.</p>
 </li>
 </ol>
 <p>After installation, you can run a sample workload.</p>
-</section>
-<section id="install-the-confidential-containers-operator">
-<h2>Install the Confidential Containers Operator<a class="headerlink" href="#install-the-confidential-containers-operator" title="Permalink to this headline">#</a></h2>
-<p>Perform the following steps to install and verify the Confidential Containers Operator:</p>
-<ol class="arabic">
-<li><p>Label the nodes to run virtual machines in containers.
-Label only the nodes that you want to run with Kata Containers.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
-</pre></div>
-</div>
-</li>
-<li><p>Set the Operator version in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span>v0.7.0
-</pre></div>
-</div>
-</li>
-<li><p>Install the Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -k <span class="s2">&quot;github.com/confidential-containers/operator/config/release?ref=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace/confidential-containers-system created</span>
-<span class="go">customresourcedefinition.apiextensions.k8s.io/ccruntimes.confidentialcontainers.org created</span>
-<span class="go">serviceaccount/cc-operator-controller-manager created</span>
-<span class="go">role.rbac.authorization.k8s.io/cc-operator-leader-election-role created</span>
-<span class="go">clusterrole.rbac.authorization.k8s.io/cc-operator-manager-role created</span>
-<span class="go">clusterrole.rbac.authorization.k8s.io/cc-operator-metrics-reader created</span>
-<span class="go">clusterrole.rbac.authorization.k8s.io/cc-operator-proxy-role created</span>
-<span class="go">rolebinding.rbac.authorization.k8s.io/cc-operator-leader-election-rolebinding created</span>
-<span class="go">clusterrolebinding.rbac.authorization.k8s.io/cc-operator-manager-rolebinding created</span>
-<span class="go">clusterrolebinding.rbac.authorization.k8s.io/cc-operator-proxy-rolebinding created</span>
-<span class="go">configmap/cc-operator-manager-config created</span>
-<span class="go">service/cc-operator-controller-manager-metrics-service created</span>
-<span class="go">deployment.apps/cc-operator-controller-manager create</span>
-</pre></div>
-</div>
-</li>
-<li><p>Optional: View the pods and services in the <code class="docutils literal notranslate"><span class="pre">confidential-containers-system</span></code> namespace:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod,svc -n confidential-containers-system
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                 READY   STATUS    RESTARTS   AGE</span>
-<span class="go">pod/cc-operator-controller-manager-c98c4ff74-ksb4q   2/2     Running   0          2m59s</span>
-
-<span class="go">NAME                                                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE</span>
-<span class="go">service/cc-operator-controller-manager-metrics-service   ClusterIP   10.98.221.141   &lt;none&gt;        8443/TCP   2m59s</span>
-</pre></div>
-</div>
-</li>
-<li><p>Install the sample Confidential Containers runtime by creating the manifests and then editing the node selector so
-that the runtime is installed only on the labelled nodes.</p>
-<ol class="arabic">
-<li><p>Create a local copy of the manifests in a file that is named <code class="docutils literal notranslate"><span class="pre">ccruntime.yaml</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply --dry-run<span class="o">=</span>client -o yaml <span class="se">\</span>
-    -k <span class="s2">&quot;github.com/confidential-containers/operator/config/samples/ccruntime/default?ref=</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span> &gt; ccruntime.yaml
-</pre></div>
-</div>
-</li>
-<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">ccruntime.yaml</span></code> file and set the node selector as follows:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">confidentialcontainers.org/v1beta1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CcRuntime</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">ccNodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">nvidia.com/gpu.workload.config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;vm-passthrough&quot;</span><span class="w"></span>
-<span class="nn">...</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>Apply the modified manifests:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f ccruntime.yaml
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">ccruntime.confidentialcontainers.org/ccruntime-sample created</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<p>Wait a few minutes for the Operator to create the base runtime classes.</p>
-</li>
-<li><p>Optional: View the runtime classes:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME            HANDLER         AGE</span>
-<span class="go">kata            kata            13m</span>
-<span class="go">kata-clh        kata-clh        13m</span>
-<span class="go">kata-clh-tdx    kata-clh-tdx    13m</span>
-<span class="go">kata-qemu       kata-qemu       13m</span>
-<span class="go">kata-qemu-sev   kata-qemu-sev   13m</span>
-<span class="go">kata-qemu-snp   kata-qemu-snp   13m</span>
-<span class="go">kata-qemu-tdx   kata-qemu-tdx   13m</span>
-</pre></div>
-</div>
-</li>
-</ol>
 </section>
 <section id="install-the-nvidia-gpu-operator">
 <h2>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h2>
@@ -930,11 +824,11 @@ is bound to the VFIO PCI driver:</p>
       </div>
     </a>
     <a class="right-next"
-       href="gpu-operator-confidential-containers.html"
+       href="install-gpu-operator-proxy.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GPU Operator with Confidential Containers and Kata</p>
+        <p class="prev-next-title">Install GPU Operator in Proxy Environments</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -969,7 +863,6 @@ is bound to the VFIO PCI driver:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-installation-and-configuration">Overview of Installation and Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-confidential-containers-operator">Install the Confidential Containers Operator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification">Verification</a></li>
