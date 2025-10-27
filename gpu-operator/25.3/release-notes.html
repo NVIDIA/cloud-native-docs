@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 14, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
 
@@ -352,7 +352,6 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -434,19 +433,8 @@
 <hr class="docutils" />
 <section id="v25-3-4">
 <span id="id1"></span><h2>25.3.4<a class="headerlink" href="#v25-3-4" title="Permalink to this headline">#</a></h2>
-<section id="fixed-issues">
-<h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code> was provided as input.
-Specifically, the hostPath volumes were not included in the DaemonSet.
-Refer to GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1694">NVIDIA/gpu-operator#1694</a> for more details.</p></li>
-</ul>
-</section>
-</section>
-<section id="v25-3-3">
-<span id="id2"></span><h2>25.3.3<a class="headerlink" href="#v25-3-3" title="Permalink to this headline">#</a></h2>
 <section id="new-features">
-<span id="v25-3-3-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
+<span id="v25-3-4-new-features"></span><h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Supports these NVIDIA Data Center GPU Driver versions:</p>
 <ul>
@@ -471,11 +459,22 @@ Refer to GitHub issue <a class="github reference external" href="https://github.
 </li>
 </ul>
 </section>
-<section id="id3">
-<h3>Fixed Issues<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<section id="fixed-issues">
+<h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed an issue where user-supplied environment variables configured in ClusterPolicy were not getting set in the rendered DaemonSet.
 User-supplied environment variables now take precedence over environment variables set by the ClusterPolicy controller.</p></li>
+</ul>
+</section>
+</section>
+<section id="v25-3-3">
+<span id="id2"></span><h2>25.3.3<a class="headerlink" href="#v25-3-3" title="Permalink to this headline">#</a></h2>
+<section id="id3">
+<h3>Fixed Issues<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code> was provided as input.
+Specifically, the hostPath volumes were not included in the DaemonSet.
+Refer to GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1694">NVIDIA/gpu-operator#1694</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -1592,7 +1591,7 @@ Refer to <a class="reference internal" href="gpu-operator-kata.html"><span class
 <li><p>Added support for configuring Confidential Containers for GPU workloads as a technology preview feature.
 This feature builds on the work for configuring Kata Containers and
 introduces NVIDIA Confidential Computing Manager for Kubernetes as an operand of GPU Operator.
-Refer to <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">GPU Operator with Confidential Containers and Kata</span></a> for more information.</p></li>
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-confidential-containers.html" title="(in NVIDIA GPU Operator)"><span>GPU Operator with Confidential Containers and Kata</span></a> for more information.</p></li>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 535.86.10.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 on the platform support page.</p></li>
@@ -2869,11 +2868,11 @@ would not be available after reboot.</p></li>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-4">25.3.4</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v25-3-3">25.3.3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Fixed Issues</a></li>
 </ul>
 </li>
