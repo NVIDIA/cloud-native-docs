@@ -72,7 +72,6 @@ Assumptions, constraints, and dependencies
 
 * Users must manually add all passthrough GPU and vGPU resources to the ``permittedDevices`` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the `KubeVirt documentation <https://kubevirt.io/user-guide/compute/host-devices/#listing-permitted-devices>`_ for more information.
 
-* MIG-backed vGPUs are not supported.
 
 Prerequisites
 =============
@@ -452,9 +451,15 @@ It is recommended to set this node label prior to installing the GPU Operator if
 Switching vGPU device configuration after one has been successfully applied assumes that no virtual machines with vGPU are currently running on the node. 
 Any existing virtual machines should be shutdown/migrated before you apply the new configuration.
 
-To apply a new configuration after GPU Operator install, update the ``nvidia.com/vgpu.config`` node label. 
+To apply a new configuration after GPU Operator install, update the ``nvidia.com/vgpu.config`` node label.
+
+.. note::
+
+   On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances. 
+   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
 
 The following example shows how to apply a new configuration on a system with two **A10** GPUs.
+
 
 .. code-block:: console
 

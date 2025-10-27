@@ -121,16 +121,6 @@ Perform the following steps to build a custom driver image for use with Red Hat 
       export DRIVER_VERSION=525.105.17
       export OS_TAG=rhcos4.12
 
-   .. note:: The driver container image tag for OpenShift has changed after the OCP 4.19 release.
-
-      - Before OCP 4.19: The driver image tag is formed with the suffix ``-rhcos4.17`` (such as with OCP 4.17).
-      - Starting OCP 4.19 and later: The driver image tag is formed with the suffix ``-rhel9.6`` (such as with OCP 4.19).
-
-      Refer to `OpenShift Container Platform 4.19 Release Notes section 1.4.5 <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes>`_,
-      `RHEL Versions Utilized by RHEL CoreOS and OCP <https://access.redhat.com/articles/6907891>`_,
-      and `Split RHCOS into layers: /etc/os-release <https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release>`_
-      for more information.
-
 #. Build and push the image:
 
    .. code-block:: console

@@ -27,6 +27,9 @@
 Installing the NVIDIA GPU Operator
 ==================================
 
+.. admonition:: Version
+
+   The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
 *************
 Prerequisites
@@ -139,18 +142,18 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``cdi.enabled``
-     - When set to ``true``, the Operator installs two additional runtime classes,
-       nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
-       for making GPUs accessible to containers.
+     - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
+       injecting GPUs into workload containers. The Operator will no longer configure the `nvidia`
+       runtime class as the default runtime handler. Instead, native-CDI support in container runtimes
+       like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
        Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
        are exposed to containerized environments.
+     - ``true``
 
-       Pods can specify ``spec.runtimeClassName`` as ``nvidia-cdi`` to use the functionality or
-       specify ``nvidia-legacy`` to prevent using CDI to perform device injection.
-     - ``false``
-
-   * - ``cdi.default``
-     - When set to ``true``, the container runtime uses CDI to perform device injection by default.
+   * - ``cdi.default``  Deprecated.
+     - This field is deprecated as of v25.10.0 and will be ignored.
+       The ``cdi.enabled`` field is set to ``true`` by default in versions 25.10.0 and later.
+       When set to ``true``, the container runtime uses CDI to perform device injection by default.
      - ``false``
 
    * - ``daemonsets.annotations``
@@ -479,10 +482,8 @@ options are used with the container-toolkit deployed with GPU Operator:
         value: /etc/containerd/config.toml
       - name: CONTAINERD_SOCKET
         value: /run/containerd/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: true
+      - name: RUNTIME_CONFIG_SOURCE
+        value: "command, file"
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -494,21 +495,18 @@ If you need to specify custom values, refer to the following sample command for 
     nvidia/gpu-operator $HELM_OPTIONS \
       --version=${version} \
       --set toolkit.env[0].name=CONTAINERD_CONFIG \
-      --set toolkit.env[0].value=/etc/containerd/config.toml \
+      --set toolkit.env[0].value=/etc/containerd/containerd.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/run/containerd/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+      --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
+      --set toolkit.env[2].value="command, file"
 
 These options are defined as follows:
 
 CONTAINERD_CONFIG
-  The path on the host to the ``containerd`` config
-  you would like to have updated with support for the ``nvidia-container-runtime``.
-  By default this will point to ``/etc/containerd/config.toml`` (the default
-  location for ``containerd``). It should be customized if your ``containerd``
+  The path on the host to the top-level ``containerd`` config file.
+  By default this will point to ``/etc/containerd/containerd.toml``
+  (the default location for ``containerd``). It should be customized if your ``containerd``
   installation is not in the default location.
 
 CONTAINERD_SOCKET
@@ -519,20 +517,20 @@ CONTAINERD_SOCKET
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
 
-CONTAINERD_RUNTIME_CLASS
-  The name of the
-  `Runtime Class <https://kubernetes.io/docs/concepts/containers/runtime-class>`_
-  you would like to associate with the ``nvidia-container-runtime``.
-  Pods launched with a ``runtimeClassName`` equal to CONTAINERD_RUNTIME_CLASS
-  will always run with the ``nvidia-container-runtime``. The default
-  CONTAINERD_RUNTIME_CLASS is ``nvidia``.
+RUNTIME_CONFIG_SOURCE
+  The config source(s) that the container-toolkit uses when fetching
+  the current containerd configuration. A valid value for this setting is any
+  combination of [command | file]. By default this will be configured as
+  "command, file" which means the container-toolkit will attempt to fetch
+  the configuration via the containerd CLI before falling back to reading the
+  config from the top-level ``containerd`` config file (configured via
+  CONTIANERD_CONFIG). When ``file`` is specified, the absolute path to the file
+  to be used as a config source can be specified as ``file=/path/to/source/config.toml``
 
-CONTAINERD_SET_AS_DEFAULT
-  A flag indicating whether you want to set
-  ``nvidia-container-runtime`` as the default runtime used to launch all
-  containers. When set to false, only containers in pods with a ``runtimeClassName``
-  equal to CONTAINERD_RUNTIME_CLASS will be run with the ``nvidia-container-runtime``.
-  The default value is ``true``.
+RUNTIME_DROP_IN_CONFIG
+  The path on the host where the NVIDIA-specific drop-in config file
+  will be created. By default this will point to ``/etc/containerd/conf.d/99-nvidia.toml``.
+
 
 Rancher Kubernetes Engine 2
 ===========================
@@ -542,6 +540,8 @@ For Rancher Kubernetes Engine 2 (RKE2), refer to
 in the RKE2 documentation.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
+
+.. _microk8s-install-procedure:
 
 MicroK8s
 ========
@@ -556,10 +556,8 @@ For MicroK8s, set the following in the ``ClusterPolicy``.
         value: /var/snap/microk8s/current/args/containerd-template.toml
       - name: CONTAINERD_SOCKET
         value: /var/snap/microk8s/common/run/containerd.sock
-      - name: CONTAINERD_RUNTIME_CLASS
-        value: nvidia
-      - name: CONTAINERD_SET_AS_DEFAULT
-        value: "true"
+      - name: RUNTIME_CONFIG_SOURCE
+        value: "file=/var/snap/microk8s/current/args/containerd.toml"
 
 These options can be passed to GPU Operator during install time as below.
 
@@ -572,10 +570,8 @@ These options can be passed to GPU Operator during install time as below.
       --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/var/snap/microk8s/common/run/containerd.sock \
-      --set toolkit.env[2].name=CONTAINERD_RUNTIME_CLASS \
-      --set toolkit.env[2].value=nvidia \
-      --set toolkit.env[3].name=CONTAINERD_SET_AS_DEFAULT \
-      --set-string toolkit.env[3].value=true
+      --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
+      --set-string toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 
 .. _running sample gpu applications:
 .. _verify gpu operator install:

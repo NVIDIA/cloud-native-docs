@@ -16,85 +16,45 @@
 
 .. headings # #, * *, =, -, ^, "
 
-######################################################
-Container Device Interface Support in the GPU Operator
-######################################################
+############################################################
+Container Device Interface (CDI) Support in the GPU Operator
+############################################################
 
 ************************************
 About the Container Device Interface
 ************************************
 
-The Container Device Interface (CDI) is a specification for container runtimes
-such as cri-o, containerd, and podman that standardizes access to complex
-devices like NVIDIA GPUs by the container runtimes.
-CDI support is provided by the NVIDIA Container Toolkit and the Operator extends
-that support for Kubernetes clusters.
+The `Container Device Interface (CDI) <https://github.com/cncf-tags/container-device-interface/blob/main/SPEC.md>`_
+is an open specification for container runtimes that abstracts what access to a device, such as an NVIDIA GPU, means,
+and standardizes access across container runtimes. Popular container runtimes can read and process the specification to
+ensure that a device is available in a container. CDI simplifies adding support for devices such as NVIDIA GPUs because
+the specification is applicable to all container runtimes that support CDI.
+
+Starting with GPU Operator v25.10.0, CDI is used by default for enabling GPU support in containers running on Kubernetes.
+Specifically, CDI support in container runtimes, e.g. containerd and cri-o, is used to inject GPU(s) into workload
+containers. This differs from prior GPU Operator releases where CDI was used via a CDI-enabled ``nvidia`` runtime class.
 
 Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.
 
-When CDI is enabled, two runtime classes, nvidia-cdi and nvidia-legacy, become available.
-These two runtime classes are in addition to the default runtime class, nvidia.
-
-If you do not set CDI as the default runtime, the runtime resolves to the
-legacy runtime mode that the NVIDIA Container Toolkit provides on x86_64
-machines or any architecture that has NVML libraries installed.
-
-Optionally, you can specify the runtime class for a workload.
-See :ref:`Optional: Specifying the Runtime Class for a Pod` for an example.
-
-
-Support for Multi-Instance GPU
-==============================
-
-Configuring CDI is supported with Multi-Instance GPU (MIG).
-Both the ``single`` and ``mixed`` strategies are supported.
-
-
-Limitations and Restrictions
-============================
-
-* CDI is not supported on Red Hat OpenShift Container Platform.
-  CDI is supported on all other platforms listed in :ref:`Supported Operating Systems and Kubernetes Platforms`.
-
-* Enabling CDI is not supported with Rancher Kubernetes Engine 2 (RKE2).
-
-
 ********************************
 Enabling CDI During Installation
 ********************************
 
+CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.
 
-When you install the Operator with Helm, specify the ``--set cdi.enabled=true`` argument.
-Optionally, also specify the ``--set cdi.default=true`` argument to use the CDI runtime class by default for all pods.
-
+CDI is also enabled by default during a Helm upgrade to GPU Operator v25.10.0 and later.
 
 *******************************
 Enabling CDI After Installation
 *******************************
 
-.. rubric:: Prerequisites
-
-* You installed version 22.3.0 or newer.
-* (Optional) Confirm that the only runtime class is ``nvidia`` by running the following command:
-
-  .. code-block:: console
-
-     $ kubectl get runtimeclasses
-
-  **Example Output**
-
-  .. code-block:: output
-
-     NAME     HANDLER   AGE
-     nvidia   nvidia    47h
-
+CDI is enabled by default in GPU Operator v25.10.0 and later.
+Use the following procedure to enable CDI if you disabled CDI during installation.
 
 .. rubric:: Procedure
-
-To enable CDI support, perform the following steps:
 
 #. Enable CDI by modifying the cluster policy:
 
@@ -109,19 +69,6 @@ To enable CDI support, perform the following steps:
 
     clusterpolicy.nvidia.com/cluster-policy patched
 
-#. (Optional) Set the default container runtime mode to CDI by modifying the cluster policy:
-
-   .. code-block:: console
-
-     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-         -p='[{"op": "replace", "path": "/spec/cdi/default", "value":true}]'
-
-   *Example Output*
-
-   .. code-block:: output
-
-     clusterpolicy.nvidia.com/cluster-policy patched
-
 #. (Optional) Confirm that the container toolkit and device plugin pods restart:
 
    .. code-block:: console
@@ -134,23 +81,13 @@ To enable CDI support, perform the following steps:
       :language: output
       :emphasize-lines: 6,9
 
-#. Verify that the runtime classes include nvidia-cdi and nvidia-legacy:
-
-   .. code-block:: console
-
-     $ kubectl get runtimeclasses
-
-   *Example Output*
-
-   .. literalinclude:: ./manifests/output/cdi-verify-get-runtime-classes.txt
-      :language: output
-
 
 *************
 Disabling CDI
 *************
 
-To disable CDI support, perform the following steps:
+While CDI is the default and recommended mechanism for injecting GPU support into containers, you can
+disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the following procedure:
 
 #. If your nodes use the CRI-O container runtime, then temporarily disable the
    GPU Operator validator:
@@ -188,93 +125,3 @@ To disable CDI support, perform the following steps:
           nvidia.com/gpu.deploy.operator-validator=true \
           nvidia.com/gpu.present=true \
           --overwrite
-
-#. (Optional) Verify that the ``nvidia-cdi`` and ``nvidia-legacy`` runtime classes
-   are no longer available:
-
-   .. code-block:: console
-
-      $ kubectl get runtimeclass
-
-   *Example Output*
-
-   .. code-block:: output
-
-      NAME     HANDLER   AGE
-      nvidia   nvidia    11d
-
-
-************************************************
-Optional: Specifying the Runtime Class for a Pod
-************************************************
-
-If you enabled CDI mode for the default container runtime, then no action is required to use CDI.
-However, you can use the following procedure to specify the legacy mode for a workload if you experience trouble.
-
-If you did not enable CDI mode for the default container runtime, then you can
-use the following procedure to verify that CDI is enabled and as a
-routine practice to use the CDI mode of the container runtime.
-
-#. Create a file, such as ``cuda-vectoradd-cdi.yaml``, with contents like the following example:
-
-   .. literalinclude:: ./manifests/input/cuda-vectoradd-cdi.yaml
-      :language: yaml
-      :emphasize-lines: 7
-
-   As an alternative, specify ``nvidia-legacy`` to use the legacy mode of the container runtime.
-
-#. (Optional) Create a temporary namespace:
-
-   .. code-block:: console
-
-     $ kubectl create ns demo
-
-   *Example Output*
-
-   .. code-block:: output
-
-     namespace/demo created
-
-#. Start the pod:
-
-   .. code-block:: console
-
-    $ kubectl apply -n demo -f cuda-vectoradd-cdi.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-     pod/cuda-vectoradd created
-
-#. View the logs from the pod:
-
-   .. code-block:: console
-
-     $ kubectl logs -n demo cuda-vectoradd
-
-   *Example Output*
-
-   .. literalinclude:: ./manifests/output/common-cuda-vectoradd-logs.txt
-      :language: output
-
-#. Delete the temporary namespace:
-
-  .. code-block:: console
-
-    $ kubectl delete ns demo
-
-  *Example Output*
-
-  .. code-block:: output
-
-    namespace "demo" deleted
-
-
-*******************
-Related Information
-*******************
-
-* For more information about CDI, see the container device interface
-  `repository <https://github.com/container-orchestrated-devices/container-device-interface>`_
-  on GitHub.

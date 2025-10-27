@@ -33,6 +33,158 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v25.10.0:
+
+25.10.0
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Driver Manager for Kubernetes v0.9.0
+  - NVIDIA Container Toolkit v1.18.0
+  - NVIDIA DCGM v4.4.1
+  - NVIDIA DCGM Exporter v4.4.1-4.6.0
+  - Node Feature Discovery v0.18.2
+  - NVIDIA GDS Driver v2.26.6
+  - NVIDIA Kubernetes Device Plugin v0.18.0
+  - NVIDIA MIG Manager for Kubernetes v0.13.0
+  - NVIDIA vGPU Device Manager v0.4.1
+
+* Added support for these NVIDIA Data Center GPU Driver versions:
+
+  - 580.95.05 (default, recommended)
+  - 570.195.03
+  - 535.274.02
+
+* Container Device Interface (CDI) is now enabled by default when installing or upgrading (via helm) the GPU Operator to 25.10.0. 
+  The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
+  The ``cdi.default`` field is now deprecated and will be ignored.
+
+  - When ``cdi.enabled`` is ``true`` the GPU Operator now leverages CDI support in container
+    runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
+    This differs from prior releases where CDI support in container runtimes was not used, and
+    instead, an ``nvidia`` runtime class configured in CDI mode was used.
+  - For OpenShift users upgrading to v25.10.0, we recommend updating the ``cdi.enabled``
+    field in ClusterPolicy to ``true`` post-upgrade. This field will not automatically be
+    updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
+    resources on operator upgrades.
+
+*  When using NVIDIA vGPU with KubeVirt / OpenShift Virtualization, on GPUs that support MIG, you now have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
+
+* Added support for NVIDIA Network Operator 25.7.0 integration.
+  Refer to :ref:`Support for GPUDirect RDMA` and :ref:`Support for GPUDirect Storage`.
+
+* Added support for Mirantis k0s.
+
+* Added support for Red Hat OpenShift GPU dashboard integration.
+
+* Added support for Red Hat OpenShift Container Platform 4.20.
+
+* Added support for Red Hat OpenShift with HGX GB200 NVL72.
+
+* Added support for Kubernetes v1.34.
+
+* Added support for NVIDIA HGX B300 and NVIDIA HGX GB300 NVL72.
+
+* Added support for new MIG profiles with NVIDIA HGX B300.
+
+  * Supports these profiles:
+
+    * ``1g.34gb``
+    * ``1g.34gb+me``
+    * ``1g.67gb``
+    * ``2g.67gb``
+    * ``3g.135gb``
+    * ``4g.135gb``
+    * ``7g.269gb``
+
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
+
+    * ``1g.34gb`` :math:`\times` 2
+    * ``2g.67gb`` :math:`\times` 1
+    * ``3g.135gb`` :math:`\times` 1
+ 
+
+* Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
+
+  * Supports these profiles:
+
+    * ``1g.35gb``
+    * ``1g.35gb+me``
+    * ``1g.70gb``
+    * ``2g.70gb``
+    * ``3g.139gb``
+    * ``4g.139gb``
+    * ``7g.278gb``
+
+  * Added an ``all-balanced`` profile that creates the following GPU instances: 
+
+    * ``1g.35gb`` :math:`\times` 2
+    * ``2g.70gb`` :math:`\times` 1
+    * ``3g.139gb`` :math:`\times` 1 
+
+Improvements
+------------
+
+* The GPU Operator now configures containerd and cri-o to use drop-in files for container runtime config overrides by default.  
+  As a consequence of this change, some of the install procedures for Kubernetes distributions
+  that use custom containerd installations have changed.
+
+  - The install procedure for microk8s has changed. Refer to the latest :ref:`MicroK8s` install procedure.
+
+* Hardened the GPU Operator container image by using a distroless image as a base image.
+
+* Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
+  It is no longer a separate image.
+
+* The GPU Operator now supports passing the vGPU licensing token as a secret. 
+  It is recommended that you migrate to using secrets instead of a configMap for improved security.
+
+* Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.
+
+* Added support for specifying hostPID via the GPU Operator Helm charts
+
+Fixed Issues
+------------
+
+* Fixed an issue where the vGPU Manager pod was terminated before it finished disabling VFs on all GPUs.
+  The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU Manager has enough time to finish its cleanup logic when the pod is terminated.
+  
+* Added GDRCopy validation to validator daemonset. When GDRCopy is enabled, this ensures that the GDRCopy driver is loaded prior to the k8s-device-plugin from starting up.
+
+* Added required permissions when GPU Feature Discovery is configured to use the Node Feature API instead of feature files.
+
+
+Known Issues
+------------
+
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
+  The pods may be in this state for several minutes and restart several times.
+  The pods will recover from this state as soon as the container toolkit pod starts running.
+
+* NVIDIA Container Toolkit 1.18.0 will overwrite the `imports` field in the top-level containerd configuration file, so any previously imported paths will be lost.
+
+
+* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration. 
+  To work around this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
+  All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute. 
+  Refer to the following example:
+
+  .. code-block:: yaml
+    
+    version: v1
+    vgpu-configs:
+      DC-1-2Q:
+        - devices: all
+          vgpu-devices:
+            DC-1-2QGFX: 48
+
+  Create the ConfigMap, then update the ClusterPolicy with the name of the configMap in the ``vgpuDeviceManager.config.name``, and restart the vgpu-device-manager pod.
+
 .. _v25.3.4:
 
 25.3.4

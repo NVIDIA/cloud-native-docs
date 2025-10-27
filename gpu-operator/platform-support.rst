@@ -49,9 +49,11 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
         * - Product
           - Architecture
+          - Notes
 
         * - NVIDIA GH200 |open-kern-module|_
           - NVIDIA Grace Hopper
+          -
 
      .. _requires-open-kernel-module:
 
@@ -64,60 +66,60 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
   .. tab-item:: A, H and L-series Products
      :selected:
 
-     +-------------------------+---------------------------+
-     | Product                 | Architecture              |
-     +=========================+===========================+
-     | NVIDIA H800             | NVIDIA Hopper             |
-     +-------------------------+---------------------------+
-     | | NVIDIA H200,          | NVIDIA Hopper             |
-     | | NVIDIA H200 NVL       |                           |
-     +-------------------------+---------------------------+
-     | NVIDIA DGX H100         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
-     | NVIDIA DGX H200         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
-     | NVIDIA HGX H100         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
-     | NVIDIA HGX H200         | NVIDIA Hopper and         |
-     |                         | NVSwitch                  |
-     +-------------------------+---------------------------+
-     | | NVIDIA H100,          | NVIDIA Hopper             |
-     | | NVIDIA H100 NVL       |                           |
-     +-------------------------+---------------------------+
-     | NVIDIA H20              | NVIDIA Hopper             |
-     +-------------------------+---------------------------+
-     | NVIDIA L20              | NVIDIA Ada                |
-     +-------------------------+---------------------------+
-     | | NVIDIA L40,           | NVIDIA Ada                |
-     | | NVIDIA L40S           |                           |
-     +-------------------------+---------------------------+
-     | NVIDIA L4               | NVIDIA Ada                |
-     +-------------------------+---------------------------+
-     | NVIDIA DGX A100         | A100 and NVSwitch         |
-     +-------------------------+---------------------------+
-     | NVIDIA HGX A100         | A100 and NVSwitch         |
-     +-------------------------+---------------------------+
-     | NVIDIA A800             | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A100             | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A100X            | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A40              | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A30              | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A30X             | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A16              | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A10              | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
-     | NVIDIA A2               | NVIDIA Ampere             |
-     +-------------------------+---------------------------+
+     +-------------------------+---------------------------+-------+
+     | Product                 | Architecture              | Notes |
+     +=========================+===========================+=======+
+     | NVIDIA H800             | NVIDIA Hopper             |       |
+     +-------------------------+---------------------------+-------+
+     | | NVIDIA H200,          | NVIDIA Hopper             |       |
+     | | NVIDIA H200 NVL       |                           |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA DGX H100         | NVIDIA Hopper and         |       |
+     |                         | NVSwitch                  |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA DGX H200         | NVIDIA Hopper and         |       |
+     |                         | NVSwitch                  |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA HGX H100         | NVIDIA Hopper and         |       |
+     |                         | NVSwitch                  |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA HGX H200         | NVIDIA Hopper and         |       |
+     |                         | NVSwitch                  |       |
+     +-------------------------+---------------------------+-------+
+     | | NVIDIA H100,          | NVIDIA Hopper             |       |
+     | | NVIDIA H100 NVL       |                           |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA H20              | NVIDIA Hopper             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA L20              | NVIDIA Ada                |       |
+     +-------------------------+---------------------------+-------+
+     | | NVIDIA L40,           | NVIDIA Ada                |       |
+     | | NVIDIA L40S           |                           |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA L4               | NVIDIA Ada                |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA DGX A100         | A100 and NVSwitch         |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA HGX A100         | A100 and NVSwitch         |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A800             | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A100             | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A100X            | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A40              | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A30              | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A30X             | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A16              | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A10              | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
+     | NVIDIA A2               | NVIDIA Ampere             |       |
+     +-------------------------+---------------------------+-------+
 
      .. note::
 
@@ -126,74 +128,78 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
   .. tab-item:: D,T and V-series Products
 
-    +-----------------------+------------------------+
-    | Product               | Architecture           |
-    +=======================+========================+
-    | NVIDIA T4             | Turing                 |
-    +-----------------------+------------------------+
-    | NVIDIA V100           | Volta                  |
-    +-----------------------+------------------------+
-    | NVIDIA P100           | Pascal                 |
-    +-----------------------+------------------------+
-    | NVIDIA P40            | Pascal                 |
-    +-----------------------+------------------------+
-    | NVIDIA P4             | Pascal                 |
-    +-----------------------+------------------------+
+    +-----------------------+------------------------+-------+
+    | Product               | Architecture           | Notes |
+    +=======================+========================+=======+
+    | NVIDIA T4             | Turing                 |       |
+    +-----------------------+------------------------+-------+
+    | NVIDIA V100           | Volta                  |       |
+    +-----------------------+------------------------+-------+
+    | NVIDIA P100           | Pascal                 |       |
+    +-----------------------+------------------------+-------+
+    | NVIDIA P40            | Pascal                 |       |
+    +-----------------------+------------------------+-------+
+    | NVIDIA P4             | Pascal                 |       |
+    +-----------------------+------------------------+-------+
 
   .. tab-item:: RTX / T-series Products
 
-    +-------------------------+------------------------+
-    | Product                 | Architecture           |
-    +=========================+========================+
-    | NVIDIA RTX PRO 6000     | NVIDIA Blackwell       |
-    | Blackwell Server Edition|                        |
-    +-------------------------+------------------------+
-    | NVIDIA RTX PRO 6000D    | NVIDIA Blackwell       |
-    +-------------------------+------------------------+
-    | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |
-    +-------------------------+------------------------+
-    | NVIDIA RTX A5000        | NVIDIA Ampere          |
-    +-------------------------+------------------------+
-    | NVIDIA RTX A4500        | NVIDIA Ampere          |
-    +-------------------------+------------------------+
-    | NVIDIA RTX A4000        | NVIDIA Ampere          |
-    +-------------------------+------------------------+
-    | NVIDIA Quadro RTX 8000  | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA Quadro RTX 6000  | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA Quadro RTX 5000  | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA Quadro RTX 4000  | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA T1000            | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA T600             | Turing                 |
-    +-------------------------+------------------------+
-    | NVIDIA T400             | Turing                 |
-    +-------------------------+------------------------+
+    +-------------------------+------------------------+-------+
+    | Product                 | Architecture           | Notes |
+    +=========================+========================+=======+
+    | NVIDIA RTX PRO 6000     | NVIDIA Blackwell       |       |
+    | Blackwell Server Edition|                        |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA RTX PRO 6000D    | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA RTX A5000        | NVIDIA Ampere          |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA RTX A4500        | NVIDIA Ampere          |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA RTX A4000        | NVIDIA Ampere          |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA Quadro RTX 8000  | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA Quadro RTX 6000  | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA Quadro RTX 5000  | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA Quadro RTX 4000  | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA T1000            | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA T600             | Turing                 |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA T400             | Turing                 |       |
+    +-------------------------+------------------------+-------+
 
     .. note::
 
       NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
 
-      * Driver versions 575.57.08 or later is required.  
+      * Driver versions 575.57.08 or later is required.
       * MIG is not supported on the 575.57.08 driver release.
       * In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
   .. tab-item:: B-series Products
 
-    +-------------------------+------------------------+
-    | Product                 | Architecture           |
-    +=========================+========================+
-    | NVIDIA DGX B200         | NVIDIA Blackwell       |
-    +-------------------------+------------------------+
-    | NVIDIA DGX Spark        | NVIDIA Blackwell       |
-    +-------------------------+------------------------+
-    | NVIDIA HGX B200         | NVIDIA Blackwell       |
-    +-------------------------+------------------------+
-    | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |
-    +-------------------------+------------------------+
+    +-------------------------+------------------------+-------+
+    | Product                 | Architecture           | Notes |
+    +=========================+========================+=======+
+    | NVIDIA DGX B200         | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA DGX Spark        | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA HGX B200         | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA HGX B300         | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
+    | NVIDIA HGX GB300 NVL72  | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
 
     .. note::
 
@@ -207,17 +213,23 @@ Supported ARM Based Platforms
 
 The following NVIDIA data center GPUs are supported:
 
-+-------------------------+---------------------------+
-| Product                 | Architecture              |
-+=========================+===========================+
-| NVIDIA A100X            | Ampere                    |
-+-------------------------+---------------------------+
-| NVIDIA A30X             | Ampere                    |
-+-------------------------+---------------------------+
-| NVIDIA IGX Orin         | Ampere                    |
-+-------------------------+---------------------------+
-| AWS EC2 G5g instances   | Turing                    |
-+-------------------------+---------------------------+
++-------------------------+---------------------------+-------+
+| Product                 | Architecture              | Notes |
++=========================+===========================+=======+
+| NVIDIA A100X            | Ampere                    |       |
++-------------------------+---------------------------+-------+
+| NVIDIA A30X             | Ampere                    |       |
++-------------------------+---------------------------+-------+
+| NVIDIA IGX Orin         | Ampere                    |       |
++-------------------------+---------------------------+-------+
+| AWS EC2 G5g instances   | Turing                    |       |
++-------------------------+---------------------------+-------+
+| NVIDIA DGX Spark        | Blackwell                 |       |
++-------------------------+---------------------------+-------+
+| NVIDIA HGX GB200 NVL72  | Blackwell                 |       |
++-------------------------+---------------------------+-------+
+| NVIDIA HGX GB300 NVL72  | Blackwell                 |       |
++-------------------------+---------------------------+-------+
 
 In addition to the products specified in the preceding table, any ARM based
 system that meets the following requirements is supported:
@@ -285,44 +297,42 @@ The GPU Operator has been validated in the following scenarios:
            | with Tanzu
          - | Rancher Kubernetes
            | Engine 2
-         - | HPE Ezmeral
-           | Runtime
-           | Enterprise
+         - | Mirantis k0s
          - | Canonical
            | MicroK8s
          - | Nutanix
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.29---1.33
+         - 1.30---1.34
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.29---1.33
+         - 1.30---1.34
          -
          - 8.0 U2, 8.0 U3
-         - 1.29---1.33
-         -
-         - 1.26
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.33---1.34
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
-         -
-         -
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.33---1.34
          -
 
        * - Red Hat Core OS
          -
-         - | 4.12---4.19
+         - | 4.14---4.20
          -
          -
          -
@@ -331,11 +341,11 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 9.2, 9.4, 9.5, 9.6 |fn3|_
-         - 1.29---1.33
+           | Linux 9.2, 9.4, 9.6 |fn3|_
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          -
@@ -344,14 +354,14 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
-         - 1.29---1.33
+         - 1.30---1.34
          -
          -
          - 2.12, 2.13, 2.14, 2.15
-         
+
     .. _kubernetes-version:
 
     :sup:`1`
@@ -372,7 +382,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _rhel-9:
 
     :sup:`3`
-    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only.
     They are not available for ARM based systems.
 
     .. note::
@@ -395,19 +405,19 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.30---1.34
 
        * - Ubuntu 22.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.30---1.34
 
        * - Ubuntu 24.04 LTS
-         - 1.29---1.33
-         - 1.29---1.33
-         - 1.29---1.33
+         - 1.30---1.34
+         - 1.30---1.34
+         - 1.30---1.34
 
   .. tab-item:: Virtual Machines with NVIDIA vGPU
 
@@ -428,29 +438,29 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.29--1.33
+         - 1.30--1.34
          - 2.12, 2.13
 
        * - Ubuntu 22.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
          - 8.0 U2, 8.0 U3
-         - 1.29--1.33
+         - 1.30--1.34
          - 2.12, 2.13
 
        * - Ubuntu 24.04 LTS
-         - 1.29--1.33
+         - 1.30--1.34
          -
-         - 
-         - 1.29--1.33
-         - 
+         -
+         - 1.30--1.34
+         -
 
        * - Red Hat Core OS
          -
-         - 4.12---4.19
+         - 4.14--4.20
          -
          -
          -
@@ -458,11 +468,11 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 8.4,
-           | 8.6---8.10
-         - 1.29---1.33
+           | 8.6--8.10
+         - 1.30--1.34
          -
          -
-         - 1.29---1.33
+         - 1.30--1.34
          -
 
 .. _supported-precompiled-drivers:
@@ -494,7 +504,7 @@ Supported Container Runtimes
 The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.6 - 2.1   | CRI-O          |
+| Operating System           | Containerd 1.7 - 2.1   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -522,9 +532,9 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 20.04 LTS    1.23---1.33   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.23---1.33   0.36+           0.59.1+
-Red Hat Core OS                                                4.12---4.19      4.13---4.19
+Ubuntu 20.04 LTS    1.30---1.34   0.36+           0.59.1+
+Ubuntu 22.04 LTS    1.30---1.34   0.36+           0.59.1+
+Red Hat Core OS                                                4.14---4.20      4.14---4.20
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -542,7 +552,7 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 - H200NVL
 
-- H100 
+- H100
 
 - GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
@@ -555,19 +565,19 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 Note that HGX platforms are not supported.
 
 .. note::
-  
+
   KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
 
-Support for GPUDirect RDMA 
+Support for GPUDirect RDMA
 --------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
-- RHEL 8 with Network Operator 25.1.0.
-- Ubuntu 24.04 LTS with Network Operator 25.1.0.
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0.
-- Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 with Network Operator 25.1.0.
-- Red Hat OpenShift 4.12 and higher with Network Operator 23.10.0.
+- RHEL 8 with Network Operator 25.7.0.
+- Ubuntu 24.04 LTS with Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
+- Red Hat OpenShift 4.14 and higher with Network Operator 25.7.0.
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -577,15 +587,15 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
-- Ubuntu 24.04 LTS Network Operator 25.1.0
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 24.10.0
-- Red Hat OpenShift Container Platform 4.12 and higher
+- Ubuntu 24.04 LTS Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat OpenShift Container Platform 4.14 and higher.
 
 .. note::
 
    Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, ``nvidia-fs``,
    requires the NVIDIA Open GPU Kernel module driver.
-   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later. 
+   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later.
    Or use ``driver.kernelModuleType=open`` if you are using a different driver version or branch.
    argument to the ``helm`` command.
    Refer to :ref:`Common Chart Customization Options` for more information.

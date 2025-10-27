@@ -37,6 +37,8 @@ Refer to <https://github.com/NVIDIA/cloud-native-docs/tags> to find the most rec
 
 1. Build the docs:
 
+   Use the alias `build-docs` or the full command:
+
    ```bash
    ./repo docs
    ```
@@ -51,6 +53,8 @@ Refer to <https://github.com/NVIDIA/cloud-native-docs/tags> to find the most rec
    For the GPU Operator, always build it with the OCP docset as well, as shown in the preceding command.
 
 The resulting HTML pages are located in the `_build/docs/.../latest/` directory of your repository clone.
+
+If you are using WSL on Windows, the URL looks like <file://wsl.localhost/Ubuntu/home/username/path/to/repo/cloud-native-docs/_build/docs/gpu-operator/latest/index.html>.
 
 More information about the `repo docs` command is available from
 <http://omniverse-docs.s3-website-us-east-1.amazonaws.com/repo_docs/0.20.3/index.html>.
@@ -139,6 +143,20 @@ Always update the openshift docset when there is a new gpu-operator docset versi
    The documentation for the older releases is not removed, readers are just
    less likely to browse the older releases.
 
+   GPU Operator has changed to minor-only version branches.
+   Consequently, patch releases are documented within the same branch for that minor version.
+   In the `<component-name>/versions1.json` file, you can use just the first two fields of the semantic version.
+   For example:
+
+   ```bash
+      {
+         "url": "../25.10",
+         "version": "25.10"
+      },
+   ```
+
+   The three most-recent minor are supported.
+
 ### Tagging for Publication
 
 Changes to the default branch are not published on docs.nvidia.com.
@@ -150,11 +168,21 @@ Only tags are published to docs.nvidia.com.
    *Example*
 
    ```text
-   gpu-operator-v23.3.1
+   container-toolkit-v1.17.8
    ```
 
    The first three fields of the semantic version are used.
-   For a "do over," push a tag like `gpu-operator-v23.3.1-1`.
+   For a "do over," push a tag like `container-toolkit-v1.17.8-1`.
+
+   For GPU Operator, use only the first two fields of the semantic version.
+
+   *Example*
+
+   ```text
+   gpu-operator-v25.10
+   ```
+
+   For a "do over," push a tag like `gpu-operator-v25.10-2`.
 
    Always tag the openshift docset for each new gpu-operator docset release.
 
