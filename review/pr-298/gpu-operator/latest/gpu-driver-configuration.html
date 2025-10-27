@@ -1,0 +1,1183 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>NVIDIA GPU Driver Custom Resource Definition &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gpu-driver-configuration';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Container Device Interface Support in the GPU Operator" href="cdi.html" />
+    <link rel="prev" title="Precompiled Driver Containers" href="precompiled-drivers.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Oct 27, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA GPU Driver Custom Resource Definition</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="nvidia-gpu-driver-custom-resource-definition">
+<h1>NVIDIA GPU Driver Custom Resource Definition<a class="headerlink" href="#nvidia-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h1>
+<section id="overview-of-the-gpu-driver-custom-resource-definition">
+<h2>Overview of the GPU Driver Custom Resource Definition<a class="headerlink" href="#overview-of-the-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Technology Preview features are not supported in production environments
+and are not functionally complete.
+Technology Preview features provide early access to upcoming product features,
+enabling customers to test functionality and provide feedback during the development process.
+These releases may not have any documentation, and testing is limited.</p>
+<p>This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
+You must uninstall an existing installation and then install the Operator again.
+Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.</p>
+</div>
+<p>As a technology preview feature, you can create one or more instances of an NVIDIA driver custom resource
+to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
+You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.</p>
+<section id="comparison-managing-the-driver-with-crd-versus-the-cluster-policy">
+<h3>Comparison: Managing the Driver with CRD versus the Cluster Policy<a class="headerlink" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy" title="Permalink to this headline">#</a></h3>
+<p>Before the introduction of the NVIDIA GPU Driver custom resource definition, you manage the driver by modifying
+the driver field and subfields of the cluster policy custom resource definition.</p>
+<p>The key differences between the two approaches are summarized in the following table.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Cluster Policy CRD</p></th>
+<th class="head"><p>NVIDIA Driver CRD</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><ul class="simple">
+<li><p>Supports a single driver type and version on all nodes.</p></li>
+<li><p>Does not support multiple operating system versions.
+This limitation complicates performing an operating system upgrade on your nodes.</p></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li><p>Supports multiple driver types and versions on different nodes.</p></li>
+<li><p>Supports multiple operating system versions on nodes.</p></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="driver-daemon-sets">
+<h3>Driver Daemon Sets<a class="headerlink" href="#driver-daemon-sets" title="Permalink to this headline">#</a></h3>
+<p>The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.</p>
+<p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 535 branch GPU driver and some
+worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
+One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
+All the nodes run the same 535 branch GPU driver.</p>
+<img alt="_images/nvd-basics.svg" src="_images/nvd-basics.svg" /><p>If you choose to use precompiled driver containers, the Operator starts a driver daemon set for each Linux kernel version.</p>
+<p>For example, if some nodes run Ubuntu 22.04 and the 5.15.0-84-generic kernel, and other nodes run the 5.15.0-78-generic kernel,
+then the Operator starts two daemon sets.</p>
+</section>
+<section id="about-the-default-nvidia-driver-custom-resource">
+<h3>About the Default NVIDIA Driver Custom Resource<a class="headerlink" href="#about-the-default-nvidia-driver-custom-resource" title="Permalink to this headline">#</a></h3>
+<p>By default, the helm chart configures a default NVIDIA driver custom resource during installation.
+This custom resource does not include a node selector and as a result, the custom resource applies to every node in your cluster
+that has an NVIDIA GPU.
+The Operator starts a driver daemon set and pods for each operating system version in your cluster.</p>
+<p>If you plan to configure your own driver custom resources to specify driver versions, types, and so on, then
+you might prefer to avoid installing the default custom resource.
+By preventing the installation, you can avoid node selector conflicts due to the default custom resource
+matching all nodes and your custom resources matching some of the same nodes.</p>
+<p>To prevent configuring the default custom resource, specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.nvidiaDriverCRD.deployDefaultCR=false</span></code>
+argument when you install the Operator with Helm.</p>
+</section>
+<section id="feature-compatibility">
+<h3>Feature Compatibility<a class="headerlink" href="#feature-compatibility" title="Permalink to this headline">#</a></h3>
+<dl class="simple">
+<dt>Driver type</dt><dd><p>Each NVIDIA driver custom resource specifies the driver type and is one of <code class="docutils literal notranslate"><span class="pre">gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">vgpu</span></code>, or <code class="docutils literal notranslate"><span class="pre">vgpu-host-manager</span></code>.
+You can run the data-center driver (<code class="docutils literal notranslate"><span class="pre">gpu</span></code>) on some nodes and the vGPU driver on other nodes.</p>
+</dd>
+<dt>GPUDirect RDMA and GPUDirect Storage</dt><dd><p>Each NVIDIA driver custom resource can specify how to configure GPUDirect RDMA and GPUDirect Storage (GDS).
+Refer to <a class="reference internal" href="gpu-operator-rdma.html#gpudirect-rdma-and-gpudirect-storage"><span class="std std-ref">GPUDirect RDMA and GPUDirect Storage</span></a> for the platform support and prerequisites.</p>
+</dd>
+<dt>GDRCopy</dt><dd><p>Each NVIDIA driver custom resource can enable the GDRCopy sidecar container in the driver pod.</p>
+</dd>
+<dt>Precompiled and signed drivers</dt><dd><p>You can run the default driver type that is compiled when the driver pod starts on some nodes
+and precompiled driver containers on other nodes.
+The <a class="reference internal" href="precompiled-drivers.html#precomp-limitations-restrictions"><span class="std std-ref">Limitations and Restrictions</span></a> for precompiled driver containers apply.</p>
+</dd>
+<dt>Preinstalled drivers on nodes</dt><dd><p>If a node has an NVIDIA GPU driver installed in the operating system, then no driver container runs on the node.</p>
+</dd>
+<dt>Support for X86_64 and ARM64</dt><dd><p>Each daemon set can run pods and driver containers for the X86_64 and ARM64 architectures.
+Refer to the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags">NVIDIA GPU Driver tags</a>
+web page to determine which driver version and operating system combinations support both architectures.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="about-the-nvidia-driver-custom-resource">
+<h2>About the NVIDIA Driver Custom Resource<a class="headerlink" href="#about-the-nvidia-driver-custom-resource" title="Permalink to this headline">#</a></h2>
+<p>An instance of the NVIDIA driver custom resource represents a specific NVIDIA GPU driver type and driver version to install and manage
+on nodes.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Sample NVIDIA Driver Manifest</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-gold</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">gdrcopy</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia/cloud-native</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdrdrv</span><span class="w"></span>
+<span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.4.1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">kernelModuleType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auto</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gold&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rdma</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">useHostMofed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">gds</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">startupProbe</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+<span class="w">    </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
+<span class="w">    </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
+<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">535.104.12</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>The following table describes some of the fields in the custom resource.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 60%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">metadata.name</span></code></p></td>
+<td><p>Specifies the name of the NVIDIA driver custom resource.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">annotations</span></code></p></td>
+<td><p>Specifies a map of key and value pairs to add as custom annotations to the driver pod.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driverType</span></code></p></td>
+<td><p>Specifies one of the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code> to use the NVIDIA data-center GPU driver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vgpu</span></code> to use the NVIDIA vGPU guest driver.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vgpu-host-manager</span></code> to use the NVIDIA vGPU Manager.</p></li>
+</ul>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">env</span></code></p></td>
+<td><p>Specifies environment variables to pass to the driver container.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gdrcopy.enabled</span></code></p></td>
+<td><p>Specifies whether to deploy the GDRCopy Driver.
+When set to <code class="docutils literal notranslate"><span class="pre">true</span></code> the GDRCopy Driver image runs as a sidecar container.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gds.enabled</span></code></p></td>
+<td><p>Specifies whether to enable GPUDirect Storage.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">image</span></code></p></td>
+<td><p>Specifies the driver container image name.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">driver</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imagePullPolicy</span></code></p></td>
+<td><p>Specifies the policy for kubelet to download the container image.
+Refer to the Kubernetes documentation for
+<a class="reference external" href="https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy">image pull policy</a>.</p></td>
+<td><p>Refer to the Kubernetes documentation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imagePullSecrets</span></code></p></td>
+<td><p>Specifies the credentials to provide to the registry if the registry is secured.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code></p></td>
+<td><p>Specifies the type of the NVIDIA GPU Kernel modules to use.
+Valid values are <code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">proprietary</span></code>, and <code class="docutils literal notranslate"><span class="pre">open</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Auto</span></code> means that the recommended kernel module type is chosen based on the GPU devices on the host and the driver branch used.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">labels</span></code></p></td>
+<td><p>Specifies a map of key and value pairs to add as custom labels to the driver pod.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code></p></td>
+<td><p>Specifies one or more node labels to match.
+The driver container is scheduled to nodes that match all the labels.</p></td>
+<td><p>None.
+When you do not specify this field, the driver custom resource selects all nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">priorityClassName</span></code></p></td>
+<td><p>Specifies the priority class for the driver pod.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">system-node-critical</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rdma.enabled</span></code></p></td>
+<td><p>Specifies whether to enable GPUDirect RDMA.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">repository</span></code></p></td>
+<td><p>Specifies the container registry that contains the driver container.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> Deprecated.</p></td>
+<td><p>This field is deprecated as of v25.3.0 and will be ignored. Use <code class="docutils literal notranslate"><span class="pre">kernelModuleType</span></code> instead.
+Specifies to use the NVIDIA Open GPU Kernel modules.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tolerations</span></code></p></td>
+<td><p>Specifies a set of tolerations to apply to the driver pod.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">usePrecompiled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys a driver container image
+with a precompiled driver.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p>Specifies the GPU driver version to install.
+For a data-center driver, specify a value like <code class="docutils literal notranslate"><span class="pre">535.104.12</span></code>.
+If you set <code class="docutils literal notranslate"><span class="pre">usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, specify the driver branch, such as <code class="docutils literal notranslate"><span class="pre">535</span></code>.</p></td>
+<td><p>Refer to the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="installing-the-nvidia-gpu-operator">
+<h2>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>Perform the following steps to install the GPU Operator and use the NVIDIA driver custom resources.</p>
+<ol class="arabic">
+<li><p>Optional: If you want to run more than one driver type or version in the cluster,
+label the worker nodes to identify the driver type and version to install on each node:</p>
+<p><em>Example</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="m">525</span>.125.06
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>To use a mix of driver types, such as vGPU, label nodes for the driver type.</p></li>
+<li><p>To use a mix of driver versions, label the nodes for the different versions.</p></li>
+<li><p>To use a mix of conventional drivers and precompiled driver containers, label the nodes for the different types.</p></li>
+</ul>
+</li>
+<li><p>Install the Operator.</p>
+<ul>
+<li><p>Add the NVIDIA Helm repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> helm repo update
+</pre></div>
+</div>
+</li>
+<li><p>Install the Operator and specify at least the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.nvidiaDriverCRD.enabled=true</span></code> argument:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --version<span class="o">=</span>v25.3.4
+<span class="go">    --set driver.nvidiaDriverCRD.enabled=true</span>
+</pre></div>
+</div>
+<p>By default, Helm configures a <code class="docutils literal notranslate"><span class="pre">default</span></code> NVIDIA driver custom resource during installation.
+To prevent configuring the default custom resource, also specify <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.nvidiaDriverCRD.deployDefaultCR=false</span></code>.</p>
+</li>
+</ul>
+</li>
+<li><p>Apply NVIDIA driver custom resources manifests to install the NVIDIA GPU driver version, type, and so on for your nodes.
+Refer to the sample manifests.</p></li>
+</ol>
+</section>
+<section id="sample-nvidia-driver-manifests">
+<h2>Sample NVIDIA Driver Manifests<a class="headerlink" href="#sample-nvidia-driver-manifests" title="Permalink to this headline">#</a></h2>
+<section id="one-driver-type-and-version-on-all-nodes">
+<h3>One Driver Type and Version on All Nodes<a class="headerlink" href="#one-driver-type-and-version-on-all-nodes" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Optional: Remove previously applied node labels.</p></li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">nvd-all.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-all</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rdma</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">    </span><span class="nt">useHostMofed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">gds</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">startupProbe</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
+<span class="w">    </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
+<span class="w">    </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
+<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">535.104.12</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Because the manifest does not include a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> field, the driver custom
+resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
+</div>
+</li>
+<li><p>Apply the manfiest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-all.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the progress:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="multiple-driver-versions">
+<h3>Multiple Driver Versions<a class="headerlink" href="#multiple-driver-versions" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Label the nodes.</p>
+<ul>
+<li><p>On some nodes, apply a label like the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.config<span class="o">=</span><span class="s2">&quot;gold&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>On other nodes, apply a label like the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.config<span class="o">=</span><span class="s2">&quot;silver&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">nvd-driver-multiple.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-gold</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gold&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535.104.12&quot;</span><span class="w"></span>
+<span class="nn">---</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-silver</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;silver&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;470.141.10&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the manfiest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-driver-multiple.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the progress:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="one-precompiled-driver-container-on-all-nodes">
+<h3>One Precompiled Driver Container on All Nodes<a class="headerlink" href="#one-precompiled-driver-container-on-all-nodes" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Optional: Remove previously applied node labels.</p></li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">nvd-precompiled-all.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-precomp-all</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Because the manfiest does not include a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> field, the driver custom
+resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
+</div>
+</li>
+<li><p>Apply the manfiest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-precompiled-all.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the progress:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="precompiled-driver-container-on-some-nodes">
+<h3>Precompiled Driver Container on Some Nodes<a class="headerlink" href="#precompiled-driver-container-on-some-nodes" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Label the nodes like the following sample:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.precompiled<span class="o">=</span><span class="s2">&quot;true&quot;</span>
+<span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="s2">&quot;535&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">nvd-precomiled-some.yaml</span></code>, with contents like the following:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-precomp</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.precompiled</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the manfiest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-precompiled-some.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the progress:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n gpu-operator --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="upgrading-the-nvidia-gpu-driver">
+<span id="nvd-upgrade"></span><h2>Upgrading the NVIDIA GPU Driver<a class="headerlink" href="#upgrading-the-nvidia-gpu-driver" title="Permalink to this headline">#</a></h2>
+<p>You can upgrade the driver version by editing or patching the NVIDIA driver custom resource.</p>
+<p>When you update the custom resource, the Operator performs a rolling update of the pods in the affected daemon set.</p>
+<ol class="arabic">
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> field in the driver custom resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch nvidiadriver/demo-silver --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/version&quot;, &quot;value&quot;: &quot;525.125.06&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the progress:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -l app.kubernetes.io/component<span class="o">=</span>nvidia-driver
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                             READY   STATUS        RESTARTS   AGE</span>
+<span class="go">nvidia-gpu-driver-ubuntu20.04-788484b9bb-6zhd9   1/1     Running       0          5m1s</span>
+<span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-7s68q    1/1     Terminating   0          37m</span>
+<span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-jm74l    1/1     Running       0          37m</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Eventually, the Operator replaces the pods that used the previous driver version with pods that use the updated driver version.</p>
+</section>
+<section id="troubleshooting">
+<span id="nvd-troubleshooting"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
+<p>If the driver daemon sets and pods are not running as you expect, perform the following steps.</p>
+<ol class="arabic">
+<li><p>Display the NVIDIA driver custom resources:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nvidiadrivers
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME           STATUS     AGE</span>
+<span class="go">default        notReady   2023-10-13T14:03:24Z</span>
+<span class="go">demo-precomp   notReady   2023-10-13T14:21:55Z</span>
+</pre></div>
+</div>
+<p>It is normal for the status to report not ready shortly after modifying the resource.</p>
+</li>
+<li><p>If the status is not ready, describe the resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe nvidiadriver demo-precomp
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:         demo-precomp</span>
+<span class="go">...</span>
+<span class="go">  Version:          535.104.05</span>
+<span class="go">Status:</span>
+<span class="go">  Conditions:</span>
+<span class="go">    Last Transition Time:  2023-10-13T14:33:30Z</span>
+<span class="go">    Message:</span>
+<span class="go">    Reason:                Error</span>
+<span class="go">    Status:                False</span>
+<span class="go">    Type:                  Ready</span>
+<span class="go">    Last Transition Time:  2023-10-13T14:33:30Z</span>
+<span class="go">    Message:               Waiting for driver pod to be ready</span>
+<span class="go">    Reason:                DriverNotReady</span>
+<span class="go">    Status:                True</span>
+<span class="go">    Type:                  Error</span>
+<span class="go">  State:                   notReady</span>
+</pre></div>
+</div>
+</li>
+<li><p>Display the node selectors for the driver daemon sets.
+The selectors are set from the NVIDIA driver custom resources:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get -n gpu-operator ds -l app.kubernetes.io/component<span class="o">=</span>nvidia-driver
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                       DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                                                                                                             AGE</span>
+<span class="go">nvidia-gpu-driver-ubuntu20.04-788484b9bb   1         1         1       1            1           driver.config=silver,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=20.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true   10m</span>
+<span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7    2         2         2       2            2           driver.config=gold,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=22.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true     10m</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs from the GPU Operator pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator deployment/gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="mf">1697223780.333307</span><span class="p">,</span><span class="nt">&quot;logger&quot;</span><span class="p">:</span><span class="s2">&quot;controllers.Upgrade&quot;</span><span class="p">,</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Node hosting a driver pod&quot;</span><span class="p">,</span><span class="nt">&quot;node&quot;</span><span class="p">:</span><span class="s2">&quot;worker-2&quot;</span><span class="p">,</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="s2">&quot;upgrade-done&quot;</span><span class="p">}</span><span class="w"></span>
+<span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="mf">1697223780.3376482</span><span class="p">,</span><span class="nt">&quot;logger&quot;</span><span class="p">:</span><span class="s2">&quot;controllers.Upgrade&quot;</span><span class="p">,</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Node hosting a driver pod&quot;</span><span class="p">,</span><span class="nt">&quot;node&quot;</span><span class="p">:</span><span class="s2">&quot;worker-1&quot;</span><span class="p">,</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="s2">&quot;upgrade-done&quot;</span><span class="p">}</span><span class="w"></span>
+<span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="mf">1697223780.345211</span><span class="p">,</span><span class="nt">&quot;logger&quot;</span><span class="p">:</span><span class="s2">&quot;controllers.Upgrade&quot;</span><span class="p">,</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Node hosting a driver pod&quot;</span><span class="p">,</span><span class="nt">&quot;node&quot;</span><span class="p">:</span><span class="s2">&quot;worker-0&quot;</span><span class="p">,</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="s2">&quot;upgrade-done&quot;</span><span class="p">}</span><span class="w"></span>
+<span class="p">{</span><span class="nt">&quot;level&quot;</span><span class="p">:</span><span class="s2">&quot;error&quot;</span><span class="p">,</span><span class="nt">&quot;ts&quot;</span><span class="p">:</span><span class="mf">1697223780.3452845</span><span class="p">,</span><span class="nt">&quot;logger&quot;</span><span class="p">:</span><span class="s2">&quot;controllers.Upgrade&quot;</span><span class="p">,</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;Failed to build node upgrade state for pod&quot;</span><span class="p">,</span><span class="nt">&quot;pod&quot;</span><span class="p">:{</span><span class="nt">&quot;namespace&quot;</span><span class="p">:</span><span class="s2">&quot;gpu-operator&quot;</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;nvidia-gpu-driver-ubuntu22.04-6d4df6b96f-c6hfd&quot;</span><span class="p">},</span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;unable to get node : resource name may not be empty&quot;</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="precompiled-drivers.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Precompiled Driver Containers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cdi.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Container Device Interface Support in the GPU Operator</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-gpu-driver-custom-resource-definition">Overview of the GPU Driver Custom Resource Definition</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy">Comparison: Managing the Driver with CRD versus the Cluster Policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-daemon-sets">Driver Daemon Sets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-nvidia-driver-custom-resource">About the Default NVIDIA Driver Custom Resource</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-compatibility">Feature Compatibility</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-nvidia-driver-custom-resource">About the NVIDIA Driver Custom Resource</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-nvidia-gpu-operator">Installing the NVIDIA GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-nvidia-driver-manifests">Sample NVIDIA Driver Manifests</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-driver-type-and-version-on-all-nodes">One Driver Type and Version on All Nodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-driver-versions">Multiple Driver Versions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-precompiled-driver-container-on-all-nodes">One Precompiled Driver Container on All Nodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precompiled-driver-container-on-some-nodes">Precompiled Driver Container on Some Nodes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrading-the-nvidia-gpu-driver">Upgrading the NVIDIA GPU Driver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
