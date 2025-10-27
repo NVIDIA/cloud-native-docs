@@ -39,7 +39,7 @@ jobs:
           sudo mv _build/docs/review/latest/* _build/docs
           sudo rm -rf _build/docs/review _build/docs/tmp _build/docs/sphinx_warnings.txt
       - name: Upload HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: html-build-artifact
           path: _build/docs
@@ -52,7 +52,7 @@ jobs:
           echo ${{ github.event.pull_request.merged }} > ./pr/merged.txt
           echo ${{ github.event.action }}              > ./pr/action.txt
       - name: Upload PR information
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pr
           path: pr/
