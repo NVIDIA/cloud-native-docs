@@ -224,6 +224,12 @@ The following NVIDIA data center GPUs are supported:
 +-------------------------+---------------------------+-------+
 | AWS EC2 G5g instances   | Turing                    |       |
 +-------------------------+---------------------------+-------+
+| NVIDIA DGX Spark        | Blackwell                 |       |
++-------------------------+---------------------------+-------+
+| NVIDIA HGX GB200 NVL72  | Blackwell                 |       |
++-------------------------+---------------------------+-------+
+| NVIDIA HGX GB300 NVL72  | Blackwell                 |       |
++-------------------------+---------------------------+-------+
 
 In addition to the products specified in the preceding table, any ARM based
 system that meets the following requirements is supported:
@@ -302,8 +308,8 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.30---1.34
-         - 1.30---1.34
          -
+         - 
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
@@ -321,7 +327,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 1.30---1.34
          - 1.30---1.34
-         -
+         - 1.33---1.34
          -
 
        * - Red Hat Core OS
@@ -329,7 +335,7 @@ The GPU Operator has been validated in the following scenarios:
          - | 4.14---4.20
          -
          -
-         - 1.30---1.34
+         - 
          -
          -
 
@@ -340,7 +346,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         - 1.30---1.34
+         - 
          -
          -
 
@@ -352,7 +358,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         - 1.30---1.34
+         - 
          -
          - 2.12, 2.13, 2.14, 2.15
          
@@ -526,8 +532,8 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 20.04 LTS    1.23---1.33   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.23---1.33   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.30---1.34   0.36+           0.59.1+
+Ubuntu 22.04 LTS    1.30---1.34   0.36+           0.59.1+
 Red Hat Core OS                                                4.14---4.20      4.14---4.20
 ================    ===========   =============   =========    =============    ===========
 

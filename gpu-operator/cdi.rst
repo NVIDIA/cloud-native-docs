@@ -45,6 +45,8 @@ Enabling CDI During Installation
 CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.
 
+CDI is also enabled by default during a Helm upgrade to GPU Operator v25.10.0 and later.
+
 *******************************
 Enabling CDI After Installation
 *******************************
