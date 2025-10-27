@@ -53,7 +53,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
         * - NVIDIA GH200 |open-kern-module|_
           - NVIDIA Grace Hopper
-          - 
+          -
 
      .. _requires-open-kernel-module:
 
@@ -179,7 +179,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
       NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
 
-      * Driver versions 575.57.08 or later is required.  
+      * Driver versions 575.57.08 or later is required.
       * MIG is not supported on the 575.57.08 driver release.
       * In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by :ref:`Customizing NVIDIA GPU Driver Parameters during Installation`.
 
@@ -309,7 +309,7 @@ The GPU Operator has been validated in the following scenarios:
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.30---1.34
          -
-         - 
+         -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
@@ -335,7 +335,7 @@ The GPU Operator has been validated in the following scenarios:
          - | 4.14---4.20
          -
          -
-         - 
+         -
          -
          -
 
@@ -346,7 +346,7 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         - 
+         -
          -
          -
 
@@ -358,10 +358,10 @@ The GPU Operator has been validated in the following scenarios:
          -
          -
          - 1.30---1.34
-         - 
+         -
          -
          - 2.12, 2.13, 2.14, 2.15
-         
+
     .. _kubernetes-version:
 
     :sup:`1`
@@ -382,7 +382,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _rhel-9:
 
     :sup:`3`
-    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only. 
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only.
     They are not available for ARM based systems.
 
     .. note::
@@ -405,7 +405,7 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.30---1.34  
+         - 1.30---1.34
          - 1.30---1.34
          - 1.30---1.34
 
@@ -454,9 +454,9 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 24.04 LTS
          - 1.30--1.34
          -
-         - 
+         -
          - 1.30--1.34
-         - 
+         -
 
        * - Red Hat Core OS
          -
@@ -552,7 +552,7 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 - H200NVL
 
-- H100 
+- H100
 
 - GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
 
@@ -565,10 +565,10 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 Note that HGX platforms are not supported.
 
 .. note::
-  
+
   KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
 
-Support for GPUDirect RDMA 
+Support for GPUDirect RDMA
 --------------------------
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
@@ -595,7 +595,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
    Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, ``nvidia-fs``,
    requires the NVIDIA Open GPU Kernel module driver.
-   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later. 
+   You can install the open kernel modules by specifying the ``driver.kernelModuleType=auto`` if you are using driver container version 570.86.15, 570.124.06 or later.
    Or use ``driver.kernelModuleType=open`` if you are using a different driver version or branch.
    argument to the ``helm`` command.
    Refer to :ref:`Common Chart Customization Options` for more information.
