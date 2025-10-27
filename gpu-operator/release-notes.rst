@@ -130,7 +130,7 @@ New Features
 Improvements
 ------------
 
-* The GPU Operator now configures containerd and cri-o using drop-in files by default.  
+* The GPU Operator now configures containerd and cri-o to use drop-in files for container runtime config overrides by default.  
   As a consequence of this change, some of the install procedures for Kubernetes distributions
   that use custom containerd installations have changed.
 
@@ -141,7 +141,7 @@ Improvements
 * Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
   It is no longer a separate image.
 
-* The GPU Operator now supports the vgpu licensing token as a secret. 
+* The GPU Operator now supports passing the vGPU licensing token as a secret. 
   It is recommended that you migrate to using secrets instead of a configMap for improved security.
 
 * Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.
@@ -168,10 +168,9 @@ Known Issues
 
 * NVIDIA Container Toolkit 1.18.0 will overwrite the `imports` field in the top-level containerd configuration file, so any previously imported paths will be lost.
 
-NVIDIA Container Toolkit v1.18.0 will overwrite custom drop-in configuration file values with values from the automatically generated drop-in file. 
 
 * When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration. 
-  To workaround this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
+  To work around this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
   All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute. 
   Refer to the following example:
 
