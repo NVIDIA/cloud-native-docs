@@ -513,7 +513,7 @@ CONTAINERD_SOCKET
   The path on the host to the socket file used to
   communicate with ``containerd``. The operator will use this to send a
   ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
-  default this will point to ``/etc/containerd/containerd.sock``
+  default this will point to ``/run/containerd/containerd.sock``
   (the default location for ``containerd``). It should be customized if
   your ``containerd`` installation is not in the default location.
 
