@@ -479,7 +479,7 @@ options are used with the container-toolkit deployed with GPU Operator:
    toolkit:
       env:
       - name: CONTAINERD_CONFIG
-        value: /etc/containerd/containerd.toml
+        value: /etc/containerd/config.toml
       - name: CONTAINERD_SOCKET
         value: /run/containerd/containerd.sock
       - name: RUNTIME_CONFIG_SOURCE

@@ -162,13 +162,15 @@ Fixed Issues
 Known Issues
 ------------
 
-* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation or upgrade of GPU Operator. 
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
 
-* The Container Toolkit v1.18.0 will overwrite custom drop-in configuration file values with values from the automatically generated drop-in file. 
+* NVIDIA Container Toolkit 1.18.0 will overwrite the `imports` field in the top-level containerd configuration file, so any previously imported paths will be lost.
 
-* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition will fail to configure nodes with the default vgpu-device-manager configuration. 
+NVIDIA Container Toolkit v1.18.0 will overwrite custom drop-in configuration file values with values from the automatically generated drop-in file. 
+
+* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration. 
   To workaround this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
   All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute. 
   Refer to the following example:
