@@ -1,7 +1,10 @@
 {
-    "latest": "25.3",
+    "latest": "25.10",
     "versions":
     [
+        {
+            "version": "25.10"
+        },
         {
             "version": "25.3"
         },

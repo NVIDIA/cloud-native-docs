@@ -21,7 +21,10 @@ RUN --mount=type=bind,source=.,destination=/x,rw /x/tools/packman/python.sh -m p
    -t /tmp/extension \
    sphinx-copybutton \
    nvidia-sphinx-theme \
-   pydata-sphinx-theme
+   pydata-sphinx-theme \
+   linuxdoc
 
 RUN (cd /tmp/extension; tar cf - . ) | (cd /var/tmp/packman/chk/sphinx/4.5.0.2-py3.7-linux-x86_64/; tar xf -)
 RUN rm -rf /tmp/extension
+
+RUN --mount=type=bind,target=/work echo 'alias build-docs="./repo docs"' >> ~/.bashrc
