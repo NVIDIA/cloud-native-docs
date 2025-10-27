@@ -483,7 +483,6 @@ To override the default GPU workload configuration, set the following value in <
 <li><p>Worker nodes running GPU accelerated virtual machines (with GPU passthrough or vGPU) are assumed to be bare metal.</p></li>
 <li><p>The GPU Operator will not automate the installation of NVIDIA drivers inside KubeVirt virtual machines with GPUs/vGPUs attached.</p></li>
 <li><p>Users must manually add all passthrough GPU and vGPU resources to the <code class="docutils literal notranslate"><span class="pre">permittedDevices</span></code> list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the <a class="reference external" href="https://kubevirt.io/user-guide/compute/host-devices/#listing-permitted-devices">KubeVirt documentation</a> for more information.</p></li>
-<li><p>MIG-backed vGPUs are not supported.</p></li>
 </ul>
 </section>
 </section>
@@ -797,6 +796,11 @@ It is recommended to set this node label prior to installing the GPU Operator if
 <p>Switching vGPU device configuration after one has been successfully applied assumes that no virtual machines with vGPU are currently running on the node.
 Any existing virtual machines should be shutdown/migrated before you apply the new configuration.</p>
 <p>To apply a new configuration after GPU Operator install, update the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.</p>
+</div>
 <p>The following example shows how to apply a new configuration on a system with two <strong>A10</strong> GPUs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
 <span class="go">GPU 0: NVIDIA A10 (UUID: GPU-ebd34bdf-1083-eaac-2aff-4b71a022f9bd)</span>
@@ -831,11 +835,6 @@ This resulted in the creation of four <strong>A10-12Q</strong> devices (two per 
 <span class="go">  &quot;nvidia.com/NVIDIA_A10-4Q&quot;: &quot;12&quot;</span>
 <span class="go">}</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
-To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.</p>
 </div>
 </section>
 </section>
