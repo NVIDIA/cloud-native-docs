@@ -245,31 +245,28 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ git clone https://gitlab.com/nvidia/container-images/driver
-      $ cd driver
+      $ git clone https://github.com/NVIDIA/gpu-driver-container.git
+      $ cd gpu-driver-container
 
-#. Change to the ``vgpu-manager`` directory for your OS:
+#. Copy the NVIDIA vGPU manager from your extracted ZIP file to the operating system version you want to build the image for:
+   * We use RHEL 8 as an example.
 
-   .. code-block:: console
-
-      $ cd vgpu-manager/rhel8
-
-#. Copy the NVIDIA vGPU Manager from your extracted zip file:
+   Copy ``<local-driver-download-directory>/\*-vgpu-kvm.run`` to ``vgpu-manager/rhel8/``.
 
    .. code-block:: console
 
-      $ cp <local-driver-download-directory>/*-vgpu-kvm.run ./
+      $ cp <local-driver-download-directory>/*-vgpu-kvm.run vgpu-manager/rhel8/
 
 #. Set the following environment variables.
 
    * ``PRIVATE_REGISTRY`` - Name of the private registry used to store the driver image.
-   * ``VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
+   * ``VGPU_HOST_DRIVER_VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
    * ``OS_TAG`` - This must match the Guest OS version.
      For RedHat OpenShift, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
 
    .. code-block:: console
 
-      $ export PRIVATE_REGISTRY=my/private/registry VERSION=510.73.06 OS_TAG=rhcos4.11
+      $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhcos4.18
 
 .. note::
 
@@ -280,15 +277,13 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
    .. code-block:: console
 
-      $ docker build \
-          --build-arg DRIVER_VERSION=${VERSION} \
-          -t ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG} .
+      $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make build-vgpuhost-${OS_TAG}
 
 #. Push the NVIDIA vGPU Manager image to your private registry.
 
    .. code-block:: console
 
-      $ docker push ${PRIVATE_REGISTRY}/vgpu-manager:${VERSION}-${OS_TAG}
+      $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make push-vgpuhost-${OS_TAG}
 
 .. _install-the-gpu-operator:
 
@@ -425,7 +420,7 @@ As a cluster administrator, you can create a ClusterPolicy using the OpenShift C
       * Under *env*, fill in **image** with ``vgpu-manager`` and the **version** with your driver version.
    * Expand the **NVIDIA vGPU Device Manager config** section and make sure that the **enabled** checkbox is checked.
 
-   If you are only using GPU passthrough, you don't need to fill these sections out.
+   If you are only using GPU passthrough, you do not need to fill these sections out.
 
    * Expand the **VFIO Manager config** section and select the **enabled** checkbox.
    * Optionally, in the **Sandbox Workloads config** section, set **defaultWorkload** to ``vm-passthrough`` if you want passthrough to be the default mode.
@@ -687,7 +682,7 @@ Switching vGPU device configuration after one has been successfully applied assu
 
 To apply a new configuration after GPU Operator install, simply update the ``nvidia.com/vgpu.config`` node label.
 
-Let's run through an example on a system with two **A10** GPUs.
+The following example shows a system with two **A10** GPUs.
 
 .. code-block:: console
 
@@ -704,7 +699,7 @@ After installing the GPU Operator as detailed in the previous sections and witho
       "nvidia.com/NVIDIA_A10-12Q": "4"
    }
 
-If instead you want to create **A10-4Q** devices, we can label the node like such:
+If instead you want to create **A10-4Q** devices, label the node as follows:
 
 .. code-block:: console
 

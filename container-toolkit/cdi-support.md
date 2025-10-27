@@ -1,6 +1,7 @@
 % Date: November 11 2022
 
-% Author: elezar
+% Author: elezar (elezar@nvidia.com)
+% Author: ArangoGutierrez (eduardoa@nvidia.com)
 
 % headings (h1/h2/h3/h4/h5) are # * = -
 
@@ -29,54 +30,134 @@ CDI also improves the compatibility of the NVIDIA container stack with certain f
 
 - You installed an NVIDIA GPU Driver.
 
-### Procedure
+### Automatic CDI Specification Generation
 
-Two common locations for CDI specifications are `/etc/cdi/` and `/var/run/cdi/`.
-The contents of the `/var/run/cdi/` directory are cleared on boot.
+As of NVIDIA Container Toolkit `v1.18.0`, the CDI specification is automatically generated and updated by a systemd service called `nvidia-cdi-refresh`. This service:
 
-However, the path to create and use can depend on the container engine that you use.
+- Automatically generates the CDI specification at `/var/run/cdi/nvidia.yaml` when:
+  - The NVIDIA Container Toolkit is installed or upgraded
+  - The NVIDIA GPU drivers are installed or upgraded
+  - The system is rebooted
 
-1. Generate the CDI specification file:
+This ensures that the CDI specifications are up to date for the current driver
+and device configuration and that CDI Devices defined in these speciciations are
+available when using native CDI support in container engines such as Docker or Podman.
 
-   ```console
-   $ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
-   ```
+Running the following command will give a list of availble CDI Devices:
+```console
+nvidia-ctk cdi list
+```
 
-   The sample command uses `sudo` to ensure that the file at `/etc/cdi/nvidia.yaml` is created.
-   You can omit the `--output` argument to print the generated specification to `STDOUT`.
+#### Known limitations
+The `nvidia-cdi-refresh` service does not currently handle the following situations:
 
-   *Example Output*
+- The removal of NVIDIA GPU drivers
+- The reconfiguration of MIG devices
 
-   ```output
-   INFO[0000] Auto-detected mode as "nvml"
-   INFO[0000] Selecting /dev/nvidia0 as /dev/nvidia0
-   INFO[0000] Selecting /dev/dri/card1 as /dev/dri/card1
-   INFO[0000] Selecting /dev/dri/renderD128 as /dev/dri/renderD128
-   INFO[0000] Using driver version xxx.xxx.xx
-   ...
-   ```
+For these scenarios, the regeneration of CDI specifications must be [manually triggered](#manual-cdi-specification-generation).
 
-1. (Optional) Check the names of the generated devices:
+#### Customizing the Automatic CDI Refresh Service
+The behavior of the `nvidia-cdi-refresh` service can be customized by adding
+environment variables to `/etc/nvidia-container-toolkit/cdi-refresh.env` to
+affect the behavior of the `nvidia-ctk cdi generate` command.
 
-   ```console
-   $ nvidia-ctk cdi list
-   ```
+As an example, to enable debug logging the configuration file should be updated
+as follows:
+```bash
+# /etc/nvidia-container-toolkit/cdi-refresh.env
+NVIDIA_CTK_DEBUG=1
+```
 
-   The following example output is for a machine with a single GPU that does not support MIG.
-
-   ```output
-   INFO[0000] Found 9 CDI devices
-   nvidia.com/gpu=all
-   nvidia.com/gpu=0
-   ```
+For a complete list of available environment variables, run `nvidia-ctk cdi generate --help` to see the command's documentation.
 
 ```{important}
-You must generate a new CDI specification after any of the following changes:
+Modifications to the environment file required a systemd reload and restarting the
+service to take effect
+```
 
-- You change the device or CUDA driver configuration.
-- You use a location such as `/var/run/cdi` that is cleared on boot.
+```console
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart nvidia-cdi-refresh.service
+```
 
-A configuration change can occur when MIG devices are created or removed, or when the driver is upgraded.
+#### Managing the CDI Refresh Service
+
+The `nvidia-cdi-refresh` service consists of two systemd units:
+
+- `nvidia-cdi-refresh.path`: Monitors for changes to the system and triggers the service.
+- `nvidia-cdi-refresh.service`: Generates the CDI specifications for all available devices based on
+  the default configuration and any overrides in the environment file.
+
+These services can be managed using standard systemd commands.
+
+When working as expected, the `nvidia-cdi-refresh.path` service will be enabled and active, and the
+`nvidia-cdi-refresh.service` will be enabled and have run at least once. For example:
+
+```console
+$ sudo systemctl status nvidia-cdi-refresh.path
+● nvidia-cdi-refresh.path - Trigger CDI refresh on NVIDIA driver install / uninstall events
+     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.path; enabled; preset: enabled)
+     Active: active (waiting) since Fri 2025-06-27 06:04:54 EDT; 1h 47min ago
+   Triggers: ● nvidia-cdi-refresh.service
+```
+
+```console
+$ sudo systemctl status nvidia-cdi-refresh.service
+○ nvidia-cdi-refresh.service - Refresh NVIDIA CDI specification file
+     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.service; enabled; preset: enabled)
+     Active: inactive (dead) since Fri 2025-06-27 07:17:26 EDT; 34min ago
+TriggeredBy: ● nvidia-cdi-refresh.path
+    Process: 1317511 ExecStart=/usr/bin/nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml (code=exited, status=0/SUCCESS)
+   Main PID: 1317511 (code=exited, status=0/SUCCESS)
+        CPU: 562ms
+...
+```
+
+If these are not enabled as expected, they can be enabled by running:
+
+```console
+$ sudo systemctl enable --now nvidia-cdi-refresh.path
+$ sudo systemctl enable --now nvidia-cdi-refresh.service
+```
+
+#### Troubleshooting CDI Specification Generation and Resolution
+
+If CDI specifications for available devices are not generated / updated as expected, it is
+recommended that the logs for the `nvidia-cdi-refresh.service` be checked. This can be
+done by running:
+
+```console
+$ sudo journalctl -u nvidia-cdi-refresh.service
+```
+
+In most cases, restarting the service should be sufficient to trigger the (re)generation
+of CDI specifications:
+
+```console
+$ sudo systemctl restart nvidia-cdi-refresh.service
+```
+
+Running:
+
+```console
+$ nvidia-ctk --debug cdi list
+```
+will show a list of available CDI Devices as well as any errors that may have
+occurred when loading CDI Specifications from `/etc/cdi` or `/var/run/cdi`.
+
+### Manual CDI Specification Generation
+
+As of the NVIDIA Container Toolkit `v1.18.0` the recommended mechanism to regenerate CDI specifications is to restart the `nvidia-cdi-refresh.service`:
+
+```console
+$ sudo systemctl restart nvidia-cdi-refresh.service
+```
+
+If this does not work, or more flexibility is required, the `nvidia-ctk cdi generate` command
+can be used directly:
+
+```console
+$ sudo nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml
 ```
 
 ## Running a Workload with CDI

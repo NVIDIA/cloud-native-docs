@@ -63,13 +63,13 @@ Perform the following steps to build a custom driver image for use with Red Hat 
 
    .. code-block:: console
 
-      $ git clone https://gitlab.com/nvidia/container-images/driver
+      $ git clone https://github.com/NVIDIA/gpu-driver-container.git
 
 #. Change to the ``rhel8/precompiled`` directory under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:
 
    .. code-block:: console
 
-      $ cd driver/rhel8/precompiled
+      $ cd gpu-driver-container/rhel8/precompiled
 
 #. Create a Red Hat Customer Portal Activation Key and note your Red Hat Subscription Management (RHSM) organization ID. These are to install packages during a build. Save the values to files such as ``$HOME/rhsm_org`` and ``$HOME/rhsm_activationkey``:
 

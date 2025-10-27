@@ -284,7 +284,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <gpu-operator-kata>`, or :doc:`Confidential Containers <gpu-operator-confidential-containers>`.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, or :doc:`Kata Containers <gpu-operator-kata>`.
      - ``container``
 
    * - ``toolkit.enabled``
@@ -435,7 +435,7 @@ If you want to use custom driver container images, such as version 465.27, then
 you can build a custom driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
-  reference, the driver container Dockerfiles are available on the Git repository at https://gitlab.com/nvidia/container-images/driver.
+  reference, the driver container Dockerfiles are available on the Git repository at https://github.com/NVIDIA/gpu-driver-container/.
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
