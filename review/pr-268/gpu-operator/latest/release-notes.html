@@ -529,7 +529,7 @@ Refer to <a class="reference internal" href="platform-support.html#support-for-g
 <section id="improvements">
 <h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>The GPU Operator now configures containerd and cri-o using drop-in files by default.
+<li><p>The GPU Operator now configures containerd and cri-o to use drop-in files for container runtime config overrides by default.
 As a consequence of this change, some of the install procedures for Kubernetes distributions
 that use custom containerd installations have changed.</p>
 <ul>
@@ -539,7 +539,7 @@ that use custom containerd installations have changed.</p>
 <li><p>Hardened the GPU Operator container image by using a distroless image as a base image.</p></li>
 <li><p>Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
 It is no longer a separate image.</p></li>
-<li><p>The GPU Operator now supports the vgpu licensing token as a secret.
+<li><p>The GPU Operator now supports passing the vGPU licensing token as a secret.
 It is recommended that you migrate to using secrets instead of a configMap for improved security.</p></li>
 <li><p>Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.</p></li>
 <li><p>Added support for specifying hostPID via the GPU Operator Helm charts</p></li>
@@ -556,16 +556,13 @@ The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU M
 </section>
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
+<ul>
 <li><p>When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the <code class="docutils literal notranslate"><span class="pre">RunContainerError</span></code> state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset.
 The pods may be in this state for several minutes and restart several times.
 The pods will recover from this state as soon as the container toolkit pod starts running.</p></li>
 <li><p>NVIDIA Container Toolkit 1.18.0 will overwrite the <cite>imports</cite> field in the top-level containerd configuration file, so any previously imported paths will be lost.</p></li>
-</ul>
-<p>NVIDIA Container Toolkit v1.18.0 will overwrite custom drop-in configuration file values with values from the automatically generated drop-in file.</p>
-<ul>
 <li><p>When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration.
-To workaround this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
+To work around this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
 All of the MIG-backed vGPU profiles are only supported on MIG instances created with the <code class="docutils literal notranslate"><span class="pre">+gfx</span></code> attribute.
 Refer to the following example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
