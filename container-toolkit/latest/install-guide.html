@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -74,9 +74,6 @@
     <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -401,12 +398,6 @@ For information about installing the driver with a package manager, refer to
 the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html"><em>NVIDIA Driver Installation Quickstart Guide</em></a>.
 Alternatively, you can install the driver by <a class="reference external" href="https://www.nvidia.com/en-us/drivers/">downloading</a> a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.</p></li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>There is a <a class="reference internal" href="troubleshooting.html#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error"><span class="std std-doc">known issue</span></a> on systems
-where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup drivers are used that cause containers to lose access to requested GPUs when
-<code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon</span> <span class="pre">reload</span></code> is run. Refer to the troubleshooting documentation for more information.</p>
-</div>
 </section>
 <section id="with-apt-ubuntu-debian">
 <span id="installing-with-apt"></span><h3>With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian<a class="headerlink" href="#with-apt-ubuntu-debian" title="Permalink to this headline">#</a></h3>
@@ -415,13 +406,6 @@ where <code class="docutils literal notranslate"><span class="pre">systemd</span
 <p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for any Debian-derived distribution.</p>
 </div>
 <ol class="arabic">
-<li><p>Install the prerequisites for the instructions below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install -y --no-install-recommends <span class="se">\</span>
-   curl <span class="se">\</span>
-   gnupg2
-</pre></div>
-</div>
-</li>
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg <span class="se">\</span>
   <span class="o">&amp;&amp;</span> curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list <span class="p">|</span> <span class="se">\</span>
@@ -430,7 +414,7 @@ where <code class="docutils literal notranslate"><span class="pre">systemd</span
 </pre></div>
 </div>
 <p>Optionally, configure the repository to use experimental packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo sed -i -e <span class="s1">&#39;/experimental/ s/^#//g&#39;</span> /etc/apt/sources.list.d/nvidia-container-toolkit.list
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sed -i -e <span class="s1">&#39;/experimental/ s/^#//g&#39;</span> /etc/apt/sources.list.d/nvidia-container-toolkit.list
 </pre></div>
 </div>
 </li>
@@ -444,12 +428,7 @@ TODO:
 -->
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.18.0-1
-<span class="go">  sudo apt-get install -y \</span>
-<span class="go">      nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo apt-get install -y nvidia-container-toolkit
 </pre></div>
 </div>
 </li>
@@ -462,12 +441,6 @@ TODO:
 <p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for many RPM-based distributions.</p>
 </div>
 <ol class="arabic">
-<li><p>Install the prerequisites for the instructions below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y <span class="se">\</span>
-   curl
-</pre></div>
-</div>
-</li>
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> <span class="se">\</span>
   sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
@@ -479,12 +452,7 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.18.0-1
-<span class="go">  sudo dnf install -y \</span>
-<span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y nvidia-container-toolkit
 </pre></div>
 </div>
 </li>
@@ -503,12 +471,7 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.18.0-1
-<span class="go">   sudo zypper --gpg-auto-import-keys install -y \</span>
-<span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
-<span class="go">      libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper --gpg-auto-import-keys install -y nvidia-container-toolkit
 </pre></div>
 </div>
 </li>
@@ -570,10 +533,8 @@ follow these steps:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>containerd
 </pre></div>
 </div>
-<p>By default, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command creates a <code class="docutils literal notranslate"><span class="pre">/etc/containerd/conf.d/99-nvidia.toml</span></code>
-drop-in config file and modifies (or creates) the <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> file
-to ensure that the <code class="docutils literal notranslate"><span class="pre">imports</span></code> config option is updated accordingly. The drop-in file
-ensures that containerd can use the NVIDIA Container Runtime.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command modifies the <code class="docutils literal notranslate"><span class="pre">/etc/containerd/config.toml</span></code> file on the host.
+The file is updated so that containerd can use the NVIDIA Container Runtime.</p>
 </li>
 <li><p>Restart containerd:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart containerd
@@ -587,7 +548,7 @@ ensures that containerd can use the NVIDIA Container Runtime.</p>
 <p>No additional configuration is needed.
 You can just run <code class="docutils literal notranslate"><span class="pre">nerdctl</span> <span class="pre">run</span> <span class="pre">--gpus=all</span></code>, with root or without root.
 You do not need to run the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command mentioned above for Kubernetes.</p>
-<p>Refer to the <a class="reference external" href="https://github.com/containerd/nerdctl/blob/main/docs/gpu.md">nerdctl documentation</a> for more information.</p>
+<p>See also the <a class="reference external" href="https://github.com/containerd/nerdctl/blob/main/docs/gpu.md">nerdctl documentation</a>.</p>
 </section>
 <section id="configuring-cri-o">
 <h3>Configuring CRI-O<a class="headerlink" href="#configuring-cri-o" title="Permalink to this headline">#</a></h3>
@@ -596,8 +557,8 @@ You do not need to run the <code class="docutils literal notranslate"><span clas
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>crio
 </pre></div>
 </div>
-<p>By default, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command creates a <code class="docutils literal notranslate"><span class="pre">/etc/crio/conf.d/99-nvidia.toml</span></code>
-drop-in config file. The drop-in file ensures that CRI-O can use the NVIDIA Container Runtime.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command modifies the <code class="docutils literal notranslate"><span class="pre">/etc/crio/crio.conf</span></code> file on the host.
+The file is updated so that CRI-O can use the NVIDIA Container Runtime.</p>
 </li>
 <li><p>Restart the CRI-O daemon:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart crio
@@ -791,9 +752,6 @@ TODO:
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>

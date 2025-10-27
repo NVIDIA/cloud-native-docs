@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 29, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
 
@@ -152,6 +152,32 @@
   </div>
   
   <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
     
     
     <div class="navbar-header-items__end">
@@ -239,6 +265,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -259,6 +314,7 @@
         <div class="sidebar-primary-item">
 
 
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
@@ -267,7 +323,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-guide.html">Installing the Toolkit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
 </ul>
@@ -283,27 +339,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -355,6 +390,12 @@
 <hr class="docutils" />
 <section id="nvidia-container-toolkit-1-17-4">
 <h2>NVIDIA Container Toolkit 1.17.4<a class="headerlink" href="#nvidia-container-toolkit-1-17-4" title="Permalink to this headline">#</a></h2>
+<p>This version includes updates for:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5616">NVIDIA CVE-2025-23359</a></p></li>
+</ul>
+<p>To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <a class="reference external" href="https://www.nvidia.com/en-us/security/">https://www.nvidia.com/en-us/security/</a>.</p>
+<p>For more information regarding NVIDIA security vulnerability remediation policies, refer to <a class="reference external" href="https://www.nvidia.com/en-us/security/psirt-policies/">https://www.nvidia.com/en-us/security/psirt-policies/</a>.</p>
 <p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.4</span></code> is a bugfix release.</p>
 <p>The following packages are included:</p>
 <ul class="simple">
@@ -1758,6 +1799,8 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -2005,6 +2048,7 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -2078,6 +2122,7 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
 </div>
       
         <div class="footer-item">
+
 
 
 

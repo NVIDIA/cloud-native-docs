@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 29, 2025"/>
+    <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
 
@@ -152,6 +152,32 @@
   </div>
   
   <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
     
     
     <div class="navbar-header-items__end">
@@ -239,6 +265,35 @@
   <div class="sidebar-header-items sidebar-primary__section">
     
     
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
     
     
       <div class="sidebar-header-items__end">
@@ -259,6 +314,7 @@
         <div class="sidebar-primary-item">
 
 
+
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
@@ -267,7 +323,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Installing the Toolkit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
@@ -283,27 +339,6 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-
-
-<div class="version-switcher__container dropdown pst-js-only">
-  <button id="pst-version-switcher-button-2"
-    type="button"
-    class="version-switcher__button btn btn-sm dropdown-toggle"
-    data-bs-toggle="dropdown"
-    aria-haspopup="listbox"
-    aria-controls="pst-version-switcher-list-2"
-    aria-label="Version switcher list"
-  >
-    Choose version  <!-- this text may get changed later by javascript -->
-    <span class="caret"></span>
-  </button>
-  <div id="pst-version-switcher-list-2"
-    class="version-switcher__menu dropdown-menu list-group-flush py-0"
-    role="listbox" aria-labelledby="pst-version-switcher-button-2">
-    <!-- dropdown will be populated by javascript on page load -->
-  </div>
-</div></div>
   </div>
 
 
@@ -355,15 +390,21 @@
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <section id="prerequisites">
 <span id="pre-requisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
-<p>Install the NVIDIA GPU driver for your Linux distribution.
-NVIDIA recommends installing the driver by using the package manager for your distribution.</p>
-<p>For information about installing the driver with a package manager, refer to
-the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html"><em>NVIDIA Driver Installation Quickstart Guide</em></a>.</p>
-<p>Alternatively, you can install the driver by downloading a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.
-Refer to the NVIDIA <a class="reference external" href="https://www.nvidia.com/Download/index.aspx?lang=en-us">Official Drivers</a> page.</p>
+<ol class="arabic simple">
+<li><p>Read <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">this section</span></a> about platform support.</p></li>
+<li><p>Install the NVIDIA GPU driver for your Linux distribution.
+NVIDIA recommends installing the driver by using the package manager for your distribution.
+For information about installing the driver with a package manager, refer to
+the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html"><em>NVIDIA Driver Installation Quickstart Guide</em></a>.
+Alternatively, you can install the driver by <a class="reference external" href="https://www.nvidia.com/en-us/drivers/">downloading</a> a <code class="docutils literal notranslate"><span class="pre">.run</span></code> installer.</p></li>
+</ol>
 </section>
-<section id="installing-with-apt">
-<h3>Installing with Apt<a class="headerlink" href="#installing-with-apt" title="Permalink to this headline">#</a></h3>
+<section id="with-apt-ubuntu-debian">
+<span id="installing-with-apt"></span><h3>With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian<a class="headerlink" href="#with-apt-ubuntu-debian" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for any Debian-derived distribution.</p>
+</div>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg <span class="se">\</span>
@@ -393,8 +434,12 @@ TODO:
 </li>
 </ol>
 </section>
-<section id="installing-with-yum-or-dnf">
-<h3>Installing with Yum or Dnf<a class="headerlink" href="#installing-with-yum-or-dnf" title="Permalink to this headline">#</a></h3>
+<section id="with-dnf-rhel-centos-fedora-amazon-linux">
+<span id="installing-with-yum-or-dnf"></span><h3>With <code class="docutils literal notranslate"><span class="pre">dnf</span></code>: RHEL/CentOS, Fedora, Amazon Linux<a class="headerlink" href="#with-dnf-rhel-centos-fedora-amazon-linux" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These instructions <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">should work</span></a> for many RPM-based distributions.</p>
+</div>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> <span class="se">\</span>
@@ -402,19 +447,19 @@ TODO:
 </pre></div>
 </div>
 <p>Optionally, configure the repository to use experimental packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf-config-manager --enable nvidia-container-toolkit-experimental
 </pre></div>
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo yum install -y nvidia-container-toolkit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install -y nvidia-container-toolkit
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
-<section id="installing-with-zypper">
-<h3>Installing with Zypper<a class="headerlink" href="#installing-with-zypper" title="Permalink to this headline">#</a></h3>
+<section id="with-zypper-opensuse-sle">
+<span id="installing-with-zypper"></span><h3>With <code class="docutils literal notranslate"><span class="pre">zypper</span></code>: OpenSUSE, SLE<a class="headerlink" href="#with-zypper-opensuse-sle" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Configure the production repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper ar https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
@@ -424,10 +469,6 @@ TODO:
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper modifyrepo --enable nvidia-container-toolkit-experimental
 </pre></div>
 </div>
-<!--
-TODO:
-- [ ] Experimental repos: zypper modifyrepo --enable nvidia-container-toolkit-experimental
--->
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo zypper --gpg-auto-import-keys install -y nvidia-container-toolkit
@@ -577,6 +618,8 @@ TODO:
             </div>
             
             
+
+
               
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
@@ -592,9 +635,9 @@ TODO:
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-with-apt">Installing with Apt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-with-yum-or-dnf">Installing with Yum or Dnf</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-with-zypper">Installing with Zypper</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-apt-ubuntu-debian">With <code class="docutils literal notranslate"><span class="pre">apt</span></code>: Ubuntu, Debian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-dnf-rhel-centos-fedora-amazon-linux">With <code class="docutils literal notranslate"><span class="pre">dnf</span></code>: RHEL/CentOS, Fedora, Amazon Linux</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-zypper-opensuse-sle">With <code class="docutils literal notranslate"><span class="pre">zypper</span></code>: OpenSUSE, SLE</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a><ul class="nav section-nav flex-column">
@@ -616,6 +659,7 @@ TODO:
 </div></div>
               
             
+
           </div>
           <footer class="bd-footer-content">
             
@@ -689,6 +733,7 @@ TODO:
 </div>
       
         <div class="footer-item">
+
 
 
 

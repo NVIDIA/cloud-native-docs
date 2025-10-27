@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -74,9 +74,6 @@
     <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -399,7 +396,7 @@
 <section id="about-precompiled-driver-containers">
 <h2>About Precompiled Driver Containers<a class="headerlink" href="#about-precompiled-driver-containers" title="Permalink to this headline">#</a></h2>
 <p>By default, NVIDIA GPU drivers are built on the cluster nodes when you deploy the GPU Operator.
-Driver compilation and packaging is done on every Kubernetes node, leading to bursts of compute demand, waste of resources, and long provisioning times.
+Driver compilation and packaging is done on every Kubernetes node, which leads to bursts of compute demand, waste of resources, and long provisioning times.
 In contrast, using container images with precompiled drivers makes the drivers immediately available on all nodes, resulting in faster provisioning and cost savings in public cloud deployments.</p>
 </section>
 <section id="limitations-and-restrictions">
@@ -418,42 +415,42 @@ In contrast, using container images with precompiled drivers makes the drivers i
 </section>
 <section id="building-a-precompiled-driver-image">
 <h2>Building a Precompiled Driver Image<a class="headerlink" href="#building-a-precompiled-driver-image" title="Permalink to this headline">#</a></h2>
-<p>Perform the following steps to build a custom driver image for use with Red Hat OpenShift Container Platform.</p>
+<p>Perform the following steps to build a custom driver image for use with Red Hat OpenShift Contain Platform.</p>
 <p class="rubric">Prerequisites</p>
 <ul>
-<li><p>You have access to a container registry such as NVIDIA NGC Private Registry, Red Hat Quay, or the OpenShift internal container registry and can push container images to the registry.</p></li>
+<li><p>You have access to a container registry, such as NVIDIA NGC Private Registry, Red Hat Quay, or the OpenShift internal container registry, and can push container images to the registry.</p></li>
 <li><p>You have a valid Red Hat subscription with an activation key.</p></li>
 <li><p>You have a Red Hat OpenShift pull secret.</p></li>
 <li><p>Your build machine has access to the internet to download operating system packages.</p></li>
-<li><p>You know a CUDA version such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code> that you want to use.</p>
-<p>One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry at <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags">CUDA | NVIDIA NGC</a> and view the tags. Use the search field to filter the tags such as <code class="docutils literal notranslate"><span class="pre">base-ubi8</span></code> for RHEL 8 and <code class="docutils literal notranslate"><span class="pre">base-ubi9</span></code> for RHEL 9. The filtered results show the CUDA versions such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">12.0.1</span></code>, and <code class="docutils literal notranslate"><span class="pre">12.0.0</span></code>.</p>
+<li><p>You know a CUDA version, such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>, that you want to use.</p>
+<p>One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry at <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags">CUDA | NVIDIA NGC</a> and view the tags. Use the search field to filter the tags, such as <code class="docutils literal notranslate"><span class="pre">base-ubi8</span></code> for RHEL 8   and <code class="docutils literal notranslate"><span class="pre">base-ubi9</span></code> for RHEL 9. The filtered results show the CUDA versions, such as <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">12.0.1</span></code>, <code class="docutils literal notranslate"><span class="pre">12.0.0</span></code>, and so on.</p>
 </li>
-<li><p>You know the GPU driver version such as <code class="docutils literal notranslate"><span class="pre">525.105.17</span></code> that you want to use.</p></li>
+<li><p>You know the GPU driver version, such as <code class="docutils literal notranslate"><span class="pre">525.105.17</span></code>, that you want to use.</p></li>
 </ul>
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Clone the driver container repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/NVIDIA/gpu-driver-container.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://gitlab.com/nvidia/container-images/driver
 </pre></div>
 </div>
 </li>
-<li><p>Change to the <code class="docutils literal notranslate"><span class="pre">rhel8/precompiled</span></code> directory under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> gpu-driver-container/rhel8/precompiled
+<li><p>Change the directory to <code class="docutils literal notranslate"><span class="pre">rhel8/precompiled</span></code> under the cloned repository. You can build precompiled driver images for versions 8 and 9 of RHEL from this directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> driver/rhel8/precompiled
 </pre></div>
 </div>
 </li>
-<li><p>Create a Red Hat Customer Portal Activation Key and note your Red Hat Subscription Management (RHSM) organization ID. These are to install packages during a build. Save the values to files such as <code class="docutils literal notranslate"><span class="pre">$HOME/rhsm_org</span></code> and <code class="docutils literal notranslate"><span class="pre">$HOME/rhsm_activationkey</span></code>:</p>
+<li><p>Create a Red Hat Customer Portal Activation Key and note your Red Hat Subscription Management (RHSM) organization ID. These are to install packages during a build. Save the values to files, for example, <code class="docutils literal notranslate"><span class="pre">$HOME/rhsm_org</span></code> and <code class="docutils literal notranslate"><span class="pre">$HOME/rhsm_activationkey</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export RHSM_ORG_FILE=$HOME/rhsm_org</span>
 <span class="go">export RHSM_ACTIVATIONKEY_FILE=$HOME/rhsm_activationkey</span>
 </pre></div>
 </div>
 </li>
-<li><p>Download your Red Hat OpenShift pull secret and store it in a file such as <code class="docutils literal notranslate"><span class="pre">${HOME}/pull-secret</span></code>:</p>
+<li><p>Download your Red Hat OpenShift pull secret and store it in a file, for example, <code class="docutils literal notranslate"><span class="pre">${HOME}/pull-secret</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export PULL_SECRET_FILE=$HOME/pull-secret.txt</span>
 </pre></div>
 </div>
 </li>
-<li><p>Set the Red Hat OpenShift version and target architecture of your cluster such as <code class="docutils literal notranslate"><span class="pre">x86_64</span></code>:</p>
+<li><p>Set the Red Hat OpenShift version and target architecture of your cluster, for example, <code class="docutils literal notranslate"><span class="pre">x86_64</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export OPENSHIFT_VERSION=&quot;4.12.13&quot;</span>
 <span class="go">export TARGET_ARCH=&quot;x86_64&quot;</span>
 </pre></div>
@@ -483,18 +480,6 @@ In contrast, using container images with precompiled drivers makes the drivers i
 <span class="go">export OS_TAG=rhcos4.12</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The driver container image tag for OpenShift has changed after the OCP 4.19 release.</p>
-<ul class="simple">
-<li><p>Before OCP 4.19: The driver image tag is formed with the suffix <code class="docutils literal notranslate"><span class="pre">-rhcos4.17</span></code> (such as with OCP 4.17).</p></li>
-<li><p>Starting OCP 4.19 and later: The driver image tag is formed with the suffix <code class="docutils literal notranslate"><span class="pre">-rhel9.6</span></code> (such as with OCP 4.19).</p></li>
-</ul>
-<p>Refer to <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes">OpenShift Container Platform 4.19 Release Notes section 1.4.5</a>,
-<a class="reference external" href="https://access.redhat.com/articles/6907891">RHEL Versions Utilized by RHEL CoreOS and OCP</a>,
-and <a class="reference external" href="https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release">Split RHCOS into layers: /etc/os-release</a>
-for more information.</p>
-</div>
 </li>
 <li><p>Build and push the image:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make image image-push</span>
@@ -502,10 +487,10 @@ for more information.</p>
 </div>
 </li>
 </ol>
-<p>Optionally, override the <code class="docutils literal notranslate"><span class="pre">IMAGE_REGISTRY</span></code>, <code class="docutils literal notranslate"><span class="pre">IMAGE_NAME</span></code>, and <code class="docutils literal notranslate"><span class="pre">CONTAINER_TOOL</span></code>. You can also override <code class="docutils literal notranslate"><span class="pre">BUILDER_USER</span></code> and <code class="docutils literal notranslate"><span class="pre">BUILDER_EMAIL</span></code> if you want. Otherwise, your Git username and email are used. Refer to the Makefile for all available variables.</p>
+<p>Optionally, override the <code class="docutils literal notranslate"><span class="pre">IMAGE_REGISTRY</span></code>, <code class="docutils literal notranslate"><span class="pre">IMAGE_NAME</span></code>, and <code class="docutils literal notranslate"><span class="pre">CONTAINER_TOOL</span></code>. You can also override <code class="docutils literal notranslate"><span class="pre">BUILDER_USER</span></code> and <code class="docutils literal notranslate"><span class="pre">BUILDER_EMAIL</span></code> if you want, otherwise your Git username and email are used. See the Makefile for all available variables.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Do not set the <code class="docutils literal notranslate"><span class="pre">DRIVER_TYPE</span></code>. The only supported value is currently <code class="docutils literal notranslate"><span class="pre">passthrough</span></code>, and this is set by default.</p>
+<p>Do not set the <code class="docutils literal notranslate"><span class="pre">DRIVER_TYPE</span></code>. The only supported value is currently <code class="docutils literal notranslate"><span class="pre">passthrough</span></code>, which is set by default.</p>
 </div>
 </section>
 <section id="enabling-precompiled-driver-container-support">
@@ -782,9 +767,6 @@ for more information.</p>
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>

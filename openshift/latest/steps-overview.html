@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -74,9 +74,6 @@
     <meta name="docbuild:last-update" content="Oct 27, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -392,13 +389,6 @@
                   
   <section id="installation-and-upgrade-overview-on-openshift">
 <span id="steps-overview"></span><h1>Installation and Upgrade Overview on OpenShift<a class="headerlink" href="#installation-and-upgrade-overview-on-openshift" title="Permalink to this headline">#</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Do not use or upgrade to OpenShift <cite>4.18.22</cite> or <cite>4.18.23</cite>.
-There was a breaking change to <cite>crun</cite> in those versions that causes a known issue with all versions of the GPU Operator.
-Update your OCP cluster to version <cite>4.18.24</cite> or later, which includes a fix for the issue.
-Refer to <a class="reference external" href="https://access.redhat.com/solutions/7131271">NVIDIA GPU Operator Validator Pod Error</a> in the Red Hat Knowledgebase for more information.</p>
-</div>
 <section id="high-level-steps">
 <h2>High-Level Steps<a class="headerlink" href="#high-level-steps" title="Permalink to this headline">#</a></h2>
 <p>Follow these high-level steps to install an entitlement-free supported version of the NVIDIA GPU Operator:</p>
@@ -483,13 +473,12 @@ A fix for this issue has been merged in the following releases:</p>
 </section>
 <section id="about-the-broken-driver-toolkit">
 <span id="broken-dtk"></span><h2>About the Broken Driver Toolkit<a class="headerlink" href="#about-the-broken-driver-toolkit" title="Permalink to this headline">#</a></h2>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p><strong>Entitled NVIDIA driver builds are deprecated and not supported.</strong></p>
-</div>
-<p>OpenShift 4.8.19, 4.8.21, 4.9.8 are known to have a broken Driver Toolkit image. However, on newer OpenShift versions the driver builds rely on Driver Toolkit (DTK). With these versions, entitled builds are not supported and might not work.</p>
-<p>When the DTK image is broken, the following messages are recorded in the driver pod containers. Follow the guidance in <a class="reference internal" href="appendix-ocp.html#broken-dtk-troubleshooting"><span class="std std-ref">Troubleshooting Broken Driver Toolkit Errors</span></a> to troubleshoot the underlying issue.</p>
-<p>If you need to force entitled builds, disable the use of Driver Toolkit image by editing the cluster policy instance and setting <code class="docutils literal notranslate"><span class="pre">operator.use_ocp_driver_toolkit</span></code> option to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p>OpenShift 4.8.19, 4.8.21, 4.9.8 are known to have a broken Driver Toolkit image.
+The following messages are recorded in the driver pod containers.
+Follow the guidance in <a class="reference internal" href="appendix-ocp.html#cluster-entitlement"><span class="std std-ref">enabling a Cluster-wide entitlement</span></a>.
+Afterward, the <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset</span></code> automatically uses an entitlement-based fallback.</p>
+<p>To disable the use of Driver Toolkit image altogether, edit the cluster policy instance and set <code class="docutils literal notranslate"><span class="pre">operator.use_ocp_driver_toolkit</span></code> option to <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+Also, we recommend maintaining entitlements for OpenShift versions &lt; 4.9.9.</p>
 <ol class="arabic">
 <li><p>View the logs from the OpenShift Driver Toolkit container:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc logs nvidia-driver-daemonset-49.84.202111111343-0-6mpw4 -c openshift-driver-toolkit-ctr
@@ -690,9 +679,6 @@ A fix for this issue has been merged in the following releases:</p>
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>
