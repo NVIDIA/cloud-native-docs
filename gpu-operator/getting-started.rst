@@ -138,7 +138,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``ccManager.enabled``
      - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-       Refer to :doc:`gpu-operator-confidential-containers` for more information.
      - ``false``
 
    * - ``cdi.enabled``
@@ -163,9 +162,9 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
    * - ``daemonsets.labels``
      - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
-  
+
    * - ``dcgmExporter.enabled``
-     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
+     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_.
        Set this value to ``false`` to disable it.
        Available values are ``true`` (default) or ``false``.
      - ``true``
@@ -189,10 +188,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.kernelModuleType``
      - Specifies the type of the NVIDIA GPU Kernel modules to use.
-       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
-       
+       Valid values are ``auto`` (default), ``proprietary``, and ``open``.
+
        ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers.
        550 and 535 branch drivers do not yet support this mode.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.

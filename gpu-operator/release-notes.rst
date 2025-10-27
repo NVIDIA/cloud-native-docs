@@ -59,7 +59,7 @@ New Features
   - 570.195.03
   - 535.274.02
 
-* Container Device Interface (CDI) is now enabled by default when installing or upgrading (via helm) the GPU Operator to 25.10.0. 
+* Container Device Interface (CDI) is now enabled by default when installing or upgrading (via helm) the GPU Operator to 25.10.0.
   The ``cdi.enabled`` field in the ClusterPolicy is now set to ``true`` by default.
   The ``cdi.default`` field is now deprecated and will be ignored.
 
@@ -107,7 +107,7 @@ New Features
     * ``1g.34gb`` :math:`\times` 2
     * ``2g.67gb`` :math:`\times` 1
     * ``3g.135gb`` :math:`\times` 1
- 
+
 
 * Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
 
@@ -121,16 +121,16 @@ New Features
     * ``4g.139gb``
     * ``7g.278gb``
 
-  * Added an ``all-balanced`` profile that creates the following GPU instances: 
+  * Added an ``all-balanced`` profile that creates the following GPU instances:
 
     * ``1g.35gb`` :math:`\times` 2
     * ``2g.70gb`` :math:`\times` 1
-    * ``3g.139gb`` :math:`\times` 1 
+    * ``3g.139gb`` :math:`\times` 1
 
 Improvements
 ------------
 
-* The GPU Operator now configures containerd and cri-o to use drop-in files for container runtime config overrides by default.  
+* The GPU Operator now configures containerd and cri-o to use drop-in files for container runtime config overrides by default.
   As a consequence of this change, some of the install procedures for Kubernetes distributions
   that use custom containerd installations have changed.
 
@@ -141,7 +141,7 @@ Improvements
 * Validator for NVIDIA GPU Operator is now included as part of the GPU Operator container image.
   It is no longer a separate image.
 
-* The GPU Operator now supports passing the vGPU licensing token as a secret. 
+* The GPU Operator now supports passing the vGPU licensing token as a secret.
   It is recommended that you migrate to using secrets instead of a configMap for improved security.
 
 * Enhanced the driver pod to allow resource requests and limits to be configurable for all containers in the driver pod.
@@ -153,7 +153,7 @@ Fixed Issues
 
 * Fixed an issue where the vGPU Manager pod was terminated before it finished disabling VFs on all GPUs.
   The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU Manager has enough time to finish its cleanup logic when the pod is terminated.
-  
+
 * Added GDRCopy validation to validator daemonset. When GDRCopy is enabled, this ensures that the GDRCopy driver is loaded prior to the k8s-device-plugin from starting up.
 
 * Added required permissions when GPU Feature Discovery is configured to use the Node Feature API instead of feature files.
@@ -162,20 +162,20 @@ Fixed Issues
 Known Issues
 ------------
 
-* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset.
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
 
 * NVIDIA Container Toolkit 1.18.0 will overwrite the `imports` field in the top-level containerd configuration file, so any previously imported paths will be lost.
 
 
-* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration. 
+* When using MIG-backed vGPU on the RTX Pro 6000 Blackwell Server Edition, the vgpu-device-manager will fail to configure nodes with the default vgpu-device-manager configuration.
   To work around this, create a custom ConfigMap that adds the GFX suffix to the vGPU profile name.
-  All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute. 
+  All of the MIG-backed vGPU profiles are only supported on MIG instances created with the ``+gfx`` attribute.
   Refer to the following example:
 
   .. code-block:: yaml
-    
+
     version: v1
     vgpu-configs:
       DC-1-2Q:
@@ -207,7 +207,7 @@ New Features
     - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
     - KubeVirt and OpenShift Virtualization: VM with time-slice vGPU (Ubuntu 22.04 only)
 
-  - RTX Pro 6000D 
+  - RTX Pro 6000D
 
     - KubeVirt and OpenShift Virtualization: VM with GPU passthrough (Ubuntu 22.04 only)
 
@@ -249,7 +249,7 @@ New Features
 
   - 580.65.06 (recommended)
   - 570.172.08 (default)
-  - 535.261.03 
+  - 535.261.03
 
 .. _v25.3.2-known-issues:
 
@@ -258,20 +258,20 @@ Known Issues
 
 * Starting with version **580.65.06**, the driver container has **Coherent Driver Memory Management (CDMM)** enabled by default to support **GB200** on Kubernetes.
   For more information about CDMM, refer to the `release notes <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support>`__.
-  
+
   .. note::
 
     Currently, CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
     CDMM is also not compatible with **GPU Direct Storage**.
     CDMM support for these features is planned for future driver updates.
     However, these limitations will remain in place until a future driver update removes them.
-  
+
   CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
   NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
-  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
-  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state.
   NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
@@ -287,7 +287,7 @@ Fixed Issues
 ------------
 
 * Fixed security vulnerabilities in NVIDIA Container Toolkit and related components.
-  This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) that could allow 
+  This release addresses CVE-2025-23266 (Critical) and CVE-2025-23267 (High) that could allow
   arbitrary code execution and link following attacks in container environments.
   For complete details, refer to the `NVIDIA Security Bulletin <https://nvidia.custhelp.com/app/answers/detail/a_id/5659>`__.
 
@@ -321,13 +321,13 @@ New Features
   - 535.247.01
 
 * Added support for Red Hat Enterprise Linux 9.
-  Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only. 
+  Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.5, and 9.6 versions are available for x86 based platforms only.
   They are not available for ARM based systems.
 
 * Added support for Kubernetes v1.33.
 
 * Added support for setting the internalTrafficPolicy for the DCGM Exporter service.
-  You can configure this in the Helm chart value by setting ``dcgmexporter.service.internalTrafficPolicy`` to ``Local`` or ``Cluster`` (default). 
+  You can configure this in the Helm chart value by setting ``dcgmexporter.service.internalTrafficPolicy`` to ``Local`` or ``Cluster`` (default).
   Choose Local if you want to route internal traffic within the node only.
 
 .. _v25.3.1-known-issues:
@@ -336,8 +336,8 @@ Known Issues
 ------------
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
-  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
-  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+  GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+  This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state.
   NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
   For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
@@ -348,7 +348,7 @@ Known Issues
 Fixed Issues
 ------------
 
-* Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet. 
+* Fixed an issue where the NVIDIADriver controller may enter an endless loop of creating and deleting a DaemonSet.
   This could occur when the NVIDIADriver DaemonSet does not tolerate a taint present on all nodes matching its configured nodeSelector, or when none of the DaemonSet pods have been scheduled yet.
   Refer to GitHub `pull request #1416 <https://github.com/NVIDIA/gpu-operator/pull/1416>`__ for more details.
 
@@ -379,32 +379,32 @@ New Features
 
 * Added support for the NVIDIA GPU DRA Driver v25.3.0 component (coming soon) which enables Multi-Node NVLink through Kubernetes Dynamic Resource Allocation (DRA) and IMEX support.
 
-  This component can be installed alongside the GPU Operator. 
-  It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator. 
+  This component can be installed alongside the GPU Operator.
+  It is supported on Kubernetes v1.32 clusters, running on NVIDIA HGX GB200 NVL, and with CDI enabled on your GPU Operator.
 
-* Transitioned to installing the open kernel modules by default starting with R570 driver containers. 
+* Transitioned to installing the open kernel modules by default starting with R570 driver containers.
 
 * Added a new parameter, ``kernelModuleType``, to the ClusterPolicy and NVIDIADriver APIs which specifies how the GPU Operator and driver containers will choose kernel modules to use.
- 
+
   Valid values include:
 
   * ``auto``: Default and recommended option. ``auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-  * ``open``: Use the NVIDIA Open GPU kernel module driver. 
+  * ``open``: Use the NVIDIA Open GPU kernel module driver.
   * ``proprietary``: Use the NVIDIA Proprietary GPU kernel module driver.
 
-  Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+  Currently, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers.
   550 and 535 branch drivers do not yet support this mode.
 
-  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU kernel module driver. 
+  In previous versions, the ``useOpenKernelModules`` field specified the driver containers to install the NVIDIA Open GPU kernel module driver.
   This field is now deprecated and will be removed in a future release.
-  If you were using the ``useOpenKernelModules`` field, NVIDIA recommends that you update your configuration to use the ``kernelModuleType`` field instead.   
+  If you were using the ``useOpenKernelModules`` field, NVIDIA recommends that you update your configuration to use the ``kernelModuleType`` field instead.
 
 * Added support for Ubuntu 24.04 LTS.
 
 * Added support for NVIDIA HGX GB200 NVL and NVIDIA HGX B200.
   Note that HGX B200 requires a driver container version of 570.133.20 or later.
 
-* Added support for the NVIDIA Data Center GPU Driver version 570.124.06. 
+* Added support for the NVIDIA Data Center GPU Driver version 570.124.06.
 
 * Added support for KubeVirt and OpenShift Virtualization with vGPU v18 on H200NVL.
 
@@ -454,7 +454,7 @@ New Features
     * ``2g.47gb`` :math:`\times` 1
     * ``3g.95gb`` :math:`\times` 1
 
-Improvements 
+Improvements
 ------------
 
 * Improved security by removing unnecessary permissions in the GPU Operator ClusterRole.
@@ -468,7 +468,7 @@ Improvements
 Fixed Issues
 ------------
 
-* Removed default liveness probe from the ``nvidia-fs-ctr`` and ``nvidia-gdrcopy-ctr`` containers of the GPU driver daemonset. 
+* Removed default liveness probe from the ``nvidia-fs-ctr`` and ``nvidia-gdrcopy-ctr`` containers of the GPU driver daemonset.
   Long response times of the `lsmod` commands were causing timeout errors in the probe and unnecessary restarts of the container, resulting in the DaemonSet being in a bad state.
 
 * Fixed an issue where the GPU Operator failed to create a valid DaemonSet name on OpenShift Container Platform when using 64 kernel page size.
@@ -486,7 +486,7 @@ Fixed Issues
 New Features
 ------------
 
-* Added support for the NVIDIA Data Center GPU Driver version 570.86.15. 
+* Added support for the NVIDIA Data Center GPU Driver version 570.86.15.
 * The default driver in this version is now 550.144.03.
   Refer to the :ref:`GPU Operator Component Matrix`
   on the platform support page for more details on supported drivers.
@@ -1448,7 +1448,6 @@ New Features
 * Added support for configuring Confidential Containers for GPU workloads as a technology preview feature.
   This feature builds on the work for configuring Kata Containers and
   introduces NVIDIA Confidential Computing Manager for Kubernetes as an operand of GPU Operator.
-  Refer to :doc:`gpu-operator-confidential-containers` for more information.
 
 * Added support for the NVIDIA Data Center GPU Driver version 535.86.10.
   Refer to the :ref:`GPU Operator Component Matrix`
