@@ -110,7 +110,7 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 

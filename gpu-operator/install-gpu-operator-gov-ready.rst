@@ -157,11 +157,13 @@ This secret will be used in the install command in the next step.
 
 The Ubuntu Pro Token is required for the driver container to download kernel headers and other necessary packages from the Canonical repository when using the FIPS-enabled kernel on Ubuntu 24.04.
 
-1. Get Ubuntu Pro token:
+1. Get the Ubuntu Pro token:
 
    .. code-block:: console
 
-      $ echo UBUNTU_PRO_TOKEN=${UBUNTU_PRO_TOKEN} > ubuntu-fips.env
+      $ echo UBUNTU_PRO_TOKEN=<your Ubuntu Pro token> > ubuntu-fips.env
+
+   Replace ``<your Ubuntu Pro token>`` with your actual Ubuntu Pro token.
 
 2. Create Ubuntu Pro token Secret:
 
@@ -178,14 +180,20 @@ The Ubuntu Pro Token is required for the driver container to download kernel hea
 Install NVIDIA GPU Operator Government-Ready Components
 --------------------------------------------------------
 
-1. Add the NVIDIA Helm repository:
+#. Label your ``gpu-operator`` namespace for the Operator to set the enforcement policy to privilege.
+
+   .. code-block:: console
+
+      $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
+
+#. Add the NVIDIA Helm repository:
 
    .. code-block:: console
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
           && helm repo update
 
-2. Install the NVIDIA GPU Operator.
+#. Install the NVIDIA GPU Operator.
 
    .. code-block:: console
 
