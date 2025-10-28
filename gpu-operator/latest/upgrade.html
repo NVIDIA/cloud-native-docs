@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,6 +77,9 @@
     <meta name="docbuild:last-update" content="Oct 28, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -333,6 +336,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -349,7 +353,6 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -362,6 +365,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -451,19 +460,19 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
    B[&quot;Upgrade by
      using Helm&quot;]
         </div></div></div></blockquote>
-<p>With this procedure, all existing GPU operator resources are updated inline and the cluster policy resource is patched with updates from <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
+<p>With this procedure, all existing GPU Operator resources are updated inline and the cluster policy resource is patched with updates from <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v23.9.0
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v25.3.4
 </pre></div>
 </div>
 </li>
 <li><p>Apply the custom resource definitions for the cluster policy and NVIDIA driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies_crd.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
 <span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -474,7 +483,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 </li>
 <li><p>Apply the custom resource definition for Node Feature Discovery:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
-    https://gitlab.com/nvidia/kubernetes/gpu-operator/-/raw/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/charts/node-feature-discovery/crds/nfd-api-crds.yaml
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -500,7 +509,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 </li>
 <li><p>Update the values file as needed.</p></li>
 <li><p>Upgrade the Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-<span class="nv">$RELEASE_TAG</span>.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator -f values-<span class="nv">$RELEASE_TAG</span>.yaml --version <span class="nv">$RELEASE_TAG</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -522,7 +531,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <p>Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v23.9.0
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v25.3.4
 </pre></div>
 </div>
 </li>
@@ -545,7 +554,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <li><p>Update the values file as needed.</p></li>
 <li><p>Upgrade the Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
-    --disable-openapi-validation -f values-<span class="nv">$RELEASE_TAG</span>.yaml
+    --disable-openapi-validation -f values-<span class="nv">$RELEASE_TAG</span>.yaml --version <span class="nv">$RELEASE_TAG</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -738,6 +747,9 @@ Refer to <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

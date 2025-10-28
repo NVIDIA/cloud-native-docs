@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -74,6 +74,9 @@
     <meta name="docbuild:last-update" content="Oct 28, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -486,6 +489,56 @@ However, using this option disables SELinux separation in the container and the 
 in an unconfined type.
 Review the SELinux policies on your system.</p>
 </section>
+<section id="containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">
+<h2>Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”<a class="headerlink" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error" title="Permalink to this headline">#</a></h2>
+<p>When using the NVIDIA Container Runtime Hook (that is, the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag or
+the NVIDIA Container Runtime in <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode) to inject requested GPUs and driver
+libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (such as <code class="docutils literal notranslate"><span class="pre">runc</span></code>) being aware of these changes.
+The result is that updates to the container may remove access to the requested GPUs.</p>
+<p>When the container loses access to the GPU, you will see the following error message from the console output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Failed to initialize NVML: Unknown Error</span>
+</pre></div>
+</div>
+<p>The message may differ depending on the type of application that is running in
+the container.</p>
+<p>The container needs to be deleted once the issue occurs.
+When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.</p>
+<section id="affected-environments">
+<h3>Affected environments<a class="headerlink" href="#affected-environments" title="Permalink to this headline">#</a></h3>
+<p>On certain systems this behavior is not limited to <em>explicit</em> container updates
+such as adjusting CPU and Memory limits for a container.
+On systems where <code class="docutils literal notranslate"><span class="pre">systemd</span></code> is used to manage the cgroups of the container, reloading the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> unit files (<code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code>) is sufficient to trigger container updates and cause a loss of GPU access.</p>
+</section>
+<section id="mitigations-and-workarounds">
+<h3>Mitigations and  Workarounds<a class="headerlink" href="#mitigations-and-workarounds" title="Permalink to this headline">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Certain <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions show similar behavior with the <code class="docutils literal notranslate"><span class="pre">systemd</span></code> cgroup driver when <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for the required devices are missing on the system.
+Refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133">GitHub disccusion #1133</a> for more details around this issue.
+It should be noted that the behavior persisted even if device nodes were requested on the command line.
+Newer <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected <code class="docutils literal notranslate"><span class="pre">runc</span></code> versions.</p>
+</div>
+<p>Use the following workarounds to prevent containers from losing access to requested GPUs when a <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> command is run:</p>
+<ul>
+<li><p>For Docker, use cgroupfs as the cgroup driver for containers. To do this, update the <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code> to include:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;exec-opts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;native.cgroupdriver=cgroupfs&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>and restart docker by running <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">docker</span></code>.
+This will ensure that the container will not lose access to devices when <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code> is run.
+This approach does not change the behavior for explicit container updates and a container will still lose access to devices in this case.</p>
+</li>
+<li><p>Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container.
+For the Docker CLI, this is done by adding the relevant <code class="docutils literal notranslate"><span class="pre">--device</span></code> flags.
+In the case of the NVIDIA Kubernetes Device Plugin the <code class="docutils literal notranslate"><span class="pre">compatWithCPUManager=</span> <span class="pre">true</span></code> <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values">Helm option</a> will ensure the same thing.</p></li>
+<li><p>Use the Container Device Interface (CDI) to inject devices into a container.
+When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config.
+This means that even if the container is updated it will still have access to the required devices.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -546,6 +599,11 @@ Review the SELinux policies on your system.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conflicting-values-set-for-option-signed-by-error-when-running-apt-update">Conflicting values set for option Signed-By error when running apt update</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#permission-denied-error-when-running-the-nvidia-docker-wrapper-under-selinux">Permission denied error when running the nvidia-docker wrapper under SELinux</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvml-insufficient-permissions-and-selinux">NVML: Insufficient Permissions and SELinux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#containers-losing-access-to-gpus-with-error-failed-to-initialize-nvml-unknown-error">Containers losing access to GPUs with error: “Failed to initialize NVML: Unknown Error”</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#affected-environments">Affected environments</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mitigations-and-workarounds">Mitigations and  Workarounds</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -645,6 +703,9 @@ Review the SELinux policies on your system.</p>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

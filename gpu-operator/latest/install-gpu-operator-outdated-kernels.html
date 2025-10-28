@@ -56,7 +56,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -74,6 +74,9 @@
     <meta name="docbuild:last-update" content="Oct 28, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -330,6 +333,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
@@ -346,7 +350,6 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -359,6 +362,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -418,7 +427,7 @@ On GPU nodes where the running kernel is not the latest, the <code class="docuti
 (e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the <code class="docutils literal notranslate"><span class="pre">driver</span></code> container logs, you will most likely
 see the following error message: <code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">resolve</span> <span class="pre">Linux</span> <span class="pre">kernel</span> <span class="pre">version</span></code>.</p>
 <p>In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
-workaround to successfully deploy the GPU operator when GPU nodes in your cluster may not be running the latest kernel.</p>
+workaround to successfully deploy the GPU Operator when GPU nodes in your cluster may not be running the latest kernel.</p>
 <section id="add-archived-package-repositories">
 <h2>Add Archived Package Repositories<a class="headerlink" href="#add-archived-package-repositories" title="Permalink to this headline">#</a></h2>
 <p>The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package
@@ -475,7 +484,7 @@ within the <code class="docutils literal notranslate"><span class="pre">driver</
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>
@@ -635,6 +644,9 @@ within the <code class="docutils literal notranslate"><span class="pre">driver</
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>
