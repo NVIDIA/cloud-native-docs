@@ -91,8 +91,6 @@ Assumptions, constraints, and dependencies
 
 * Worker nodes running GPU accelerated VMs (with pGPU or vGPU) are assumed to be bare metal.
 
-* MIG-backed vGPUs are not supported.
-
 * The GPU Operator will not automate the installation of the vGPU guest driver inside KubeVirt VMs with vGPUs attached.
 
 * There are two separate device plugins – the NVIDIA k8s-device-plugin and the NVIDIA kubevirt-gpu-device-plugin.
@@ -682,6 +680,13 @@ Switching vGPU device configuration after one has been successfully applied assu
 
 To apply a new configuration after GPU Operator install, simply update the ``nvidia.com/vgpu.config`` node label.
 
+
+.. note::
+
+   On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances. 
+   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
+
+
 The following example shows a system with two **A10** GPUs.
 
 .. code-block:: console
@@ -725,8 +730,3 @@ You should now see 12 **A10-4Q** devices on the node, as 6 **A10-4Q** devices ca
    {
       "nvidia.com/NVIDIA_A10-4Q": "12"
    }
-
-.. note::
-   
-   On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
-   To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.

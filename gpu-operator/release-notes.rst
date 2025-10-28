@@ -41,6 +41,9 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 New Features
 ------------
 
+* The NVIDIA GPU Operator now supports government-ready components for NVIDIA AI Enterprise customers.
+  Refer to :ref:`install-gpu-operator-gov-ready` for more information.
+
 * Updated software component versions:
 
   - NVIDIA Driver Manager for Kubernetes v0.9.0
