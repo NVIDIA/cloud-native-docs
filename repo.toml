@@ -202,7 +202,7 @@ output_format = "linkcheck"
 docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
-version = "25.10.0"  # Check that this value matches maj.min version of repo_docs.projects.gpu-operator.version
+version = "25.10"  # Check that this value matches maj.min version of repo_docs.projects.gpu-operator.version
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",
