@@ -56,10 +56,7 @@ The government-ready NVIDIA GPU Operator includes the following components:
      - 580.95.05 |fn1|_
 
 :sup:`1`
-Built using the following base images:
-
-- STIG Ubuntu 24.04 base image for FIPS Canonical K8s.
-- `UBI-STIG base image <https://catalog.redhat.com/en/software/containers/ubi9/ubi-stig/68e7aca8a3801e04bcb7873b#overview>`_ for FIPS OpenShift
+Hardened for STIG/FIPS compliance
 
 Artifacts for these components are available from the `NVIDIA NGC Catalog <https://registry.ngc.nvidia.com/orgs/nvstaging/teams/cloud-native/containers/gpu-driver-stig-fips>`_.
 
@@ -198,7 +195,8 @@ Install NVIDIA GPU Operator Government-Ready Components
            --set driver.repository=nvcr.io/nvidia \
            --set driver.version=580.95.05-stig-fips \
            --set driver.image=gpu-driver-stig-fips \
-           --set driver.imagePullSecrets={ngc-secret}
+           --set driver.imagePullSecrets={ngc-secret} \
+           --set nfd.enabled=false
 
 Refer to `Common Chart Customization Options <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options>`_ for more information about installation options.
 
