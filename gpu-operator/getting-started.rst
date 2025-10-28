@@ -135,7 +135,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``ccManager.enabled``
      - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-       Refer to :doc:`gpu-operator-confidential-containers` for more information.
      - ``false``
 
    * - ``cdi.enabled``
