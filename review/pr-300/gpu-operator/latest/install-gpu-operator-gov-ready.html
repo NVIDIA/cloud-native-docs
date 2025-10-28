@@ -580,7 +580,7 @@ Update this to the namespace you are planning to use for the NVIDIA GPU Operator
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
      --namespace gpu-operator <span class="se">\</span>
      --set driver.secretEnv<span class="o">=</span>ubuntu-fips-secret <span class="se">\</span>
-     --set driver.repository<span class="o">=</span>nvcr.io/nvidia/driver-stig-fips <span class="se">\</span>
+     --set driver.repository<span class="o">=</span>nvcr.io/nvidia <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="m">580</span>.95.05-stig-fips <span class="se">\</span>
      --set driver.image<span class="o">=</span>gpu-driver-stig-fips <span class="se">\</span>
      --set driver.imagePullSecrets<span class="o">={</span>ngc-secret<span class="o">}</span>
