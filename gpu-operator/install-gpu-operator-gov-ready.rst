@@ -195,7 +195,7 @@ Install NVIDIA GPU Operator Government-Ready Components
       $  helm install gpu-operator nvidia/gpu-operator \
            --namespace gpu-operator \
            --set driver.secretEnv=ubuntu-fips-secret \
-           --set driver.repository=nvcr.io/nvidia/driver-stig-fips \
+           --set driver.repository=nvcr.io/nvidia \
            --set driver.version=580.95.05-stig-fips \
            --set driver.image=gpu-driver-stig-fips \
            --set driver.imagePullSecrets={ngc-secret}
