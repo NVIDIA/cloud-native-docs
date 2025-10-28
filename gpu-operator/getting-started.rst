@@ -138,7 +138,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``ccManager.enabled``
      - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-       Refer to :doc:`gpu-operator-confidential-containers` for more information.
      - ``false``
 
    * - ``cdi.enabled``
@@ -187,6 +186,14 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
      - ``true``
 
+   * - ``driver.image``
+     - Name of the NVIDIA Driver Container image to use.
+     - ``driver``
+
+   * - ``driver.imagePullSecrets``
+     - List of the image pull secret used for pulling the driver container image from the registry.
+     - None
+
    * - ``driver.kernelModuleType``
      - Specifies the type of the NVIDIA GPU Kernel modules to use.
        Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
@@ -214,6 +221,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
    * - ``driver.rdma.useHostMofed``
      - Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.
      - ``false``
+
+   * - ``driver.secretEnv``
+     - The name of the secret to the driver container. 
+       A common use case is to use this field to pass your Ubuntu Pro token secret if you are deploying the GPU Operator with government-ready components. Refer to :doc:`install-gpu-operator-gov-ready` for more information.
+     - None
 
    * - ``driver.startupProbe``
      - By default, the driver container has an initial delay of ``60s`` before starting liveness probes.

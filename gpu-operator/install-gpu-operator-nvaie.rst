@@ -202,4 +202,8 @@ Specify the ``--version=<supported-version>`` argument to install a supported ve
 Related Information
 *******************
 
+.. toctree::
+
+   Government Ready <install-gpu-operator-gov-ready.rst>
+
 -  `NVIDIA AI Enterprise <https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/>`_ web page.
