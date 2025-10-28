@@ -41,8 +41,8 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 New Features
 ------------
 
-* The NVIDIA GPU Operator now supports government-ready components for NVIDIA AI Enterprise customers.
-  Refer to :ref:`install-gpu-operator-gov-ready` for more information.
+* The NVIDIA GPU Operator now supports government ready components for NVIDIA AI Enterprise customers.
+  Government ready is NVIDIA's designation for software that meets applicable security requirements for deployment in your FedRAMP High or equivalent sovereign use case. For more information on NVIDIA's government ready support, refer to the :ref:`install-gpu-operator-gov-ready` deployment guide or the `AI Software for Regulated Environments White Paper <https://docs.nvidia.com/ai-enterprise/planning-resource/ai-software-regulated-environments-white-paper/latest/index.html>`_.
 
 * Updated software component versions:
 
