@@ -548,10 +548,11 @@ Update <code class="docutils literal notranslate"><span class="pre">ngc-api-key<
 This secret will be used in the install command in the next step.</p>
 <p>The Ubuntu Pro Token is required for the driver container to download kernel headers and other necessary packages from the Canonical repository when using the FIPS-enabled kernel on Ubuntu 24.04.</p>
 <ol class="arabic">
-<li><p>Get Ubuntu Pro token:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> <span class="nv">UBUNTU_PRO_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="nv">UBUNTU_PRO_TOKEN</span><span class="si">}</span> &gt; ubuntu-fips.env
+<li><p>Get the Ubuntu Pro token:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> <span class="nv">UBUNTU_PRO_TOKEN</span><span class="o">=</span>&lt;your Ubuntu Pro token&gt; &gt; ubuntu-fips.env
 </pre></div>
 </div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;your</span> <span class="pre">Ubuntu</span> <span class="pre">Pro</span> <span class="pre">token&gt;</span></code> with your actual Ubuntu Pro token.</p>
 </li>
 <li><p>Create Ubuntu Pro token Secret:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create secret generic ubuntu-fips-secret <span class="se">\</span>
@@ -566,6 +567,11 @@ Update this to the namespace you are planning to use for the NVIDIA GPU Operator
 <section id="install-nvidia-gpu-operator-government-ready-components">
 <span id="deploy-nvidia-gpu-operator-gov-ready"></span><h3>Install NVIDIA GPU Operator Government-Ready Components<a class="headerlink" href="#install-nvidia-gpu-operator-government-ready-components" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
+<li><p>Label your <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace for the Operator to set the enforcement policy to privilege.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
+</pre></div>
+</div>
+</li>
 <li><p>Add the NVIDIA Helm repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
     <span class="o">&amp;&amp;</span> helm repo update
