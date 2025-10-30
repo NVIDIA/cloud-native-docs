@@ -14,7 +14,6 @@ Installing the NVIDIA GPU Operator by using the web console
 #. In the OpenShift Container Platform web console, from the side menu, navigate to **Operators** > **OperatorHub** and select **All Projects**.
 
 #. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
-#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the following screen, click **Install**.
 
@@ -263,7 +262,32 @@ Create the ClusterPolicy instance with NVIDIA vGPU
 Prerequisites
 --------------
 
-* Refer to the :ref:`install-gpu-operator-vgpu` section for prerequisite steps for using NVIDIA vGPU on Red Hat OpenShift.
+Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
+
+* Refer to the :ref:`install-gpu-operator-vgpu` section for detailed prerequisite steps, including building the vGPU driver container image and obtaining licensing files.
+
+* Create a licensing secret in the ``nvidia-gpu-operator`` namespace:
+
+  .. code-block:: console
+
+     $ oc create secret generic licensing-config \
+         -n nvidia-gpu-operator --from-file=gridd.conf --from-file=client_configuration_token.tok
+
+  .. note::
+
+     Using a Kubernetes Secret to store licensing information is the recommended approach.
+     The ``configMap`` option is deprecated and will be removed in a future release.
+
+* If your private registry requires authentication, create an image pull secret:
+
+  .. code-block:: console
+
+     $ oc create secret docker-registry registry-secret \
+         --docker-server=<private-registry-url> \
+         --docker-username=<username> \
+         --docker-password=<password> \
+         --docker-email=<email-id> \
+         -n nvidia-gpu-operator
 
 Create the cluster policy using the web console
 -----------------------------------------------
@@ -272,7 +296,11 @@ Create the cluster policy using the web console
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-#. Provide the name of the licensing ``ConfigMap`` under the **Driver** section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.
+#. Provide the name of the licensing ``Secret`` under the **Driver** section. This should be created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``). Refer to the following screenshots for examples and modify values accordingly.
+
+   .. note::
+
+      The ``ConfigMap`` option is deprecated. Use a Kubernetes ``Secret`` to store licensing information instead.
 
    .. image:: graphics/cluster_policy_vgpu_1.png
 
@@ -305,13 +333,18 @@ Create the cluster policy using the CLI
          "driver": {
               "repository": "<repository-path>",
               "image": "driver",
-              "imagePullSecrets": [],
+              "imagePullSecrets": ["registry-secret"],
               "licensingConfig": {
-                "configMapName": "licensing-config",
+                "secretName": "licensing-config",
                 "nlsEnabled": true
               },
-              "version": "470.82.01"
+              "version": "580.95.05"
          }
+
+   .. note::
+
+      Using ``secretName`` to reference a Kubernetes Secret is the recommended approach.
+      The ``configMapName`` option is deprecated and will be removed in a future release.
 
    .. code-block:: console
 
