@@ -22,8 +22,17 @@ Troubleshooting the NVIDIA GPU Operator
 
 This page outlines common issues and troubleshooting steps for the NVIDIA GPU Operator. 
 
-If you are facing an issue that is not covered by this page, please file an issue in the 
-`NVIDIA GPU Operator GitHub repository <https://github.com/NVIDIA/gpu-operator/issues>`_.
+If you are facing a gpu-operator and/or operand(s) issue that is not documented in this guide, its recommended that you  run the ``must-gather`` utility, prepare a bug report, then file an issue in the `NVIDIA GPU Operator GitHub repository <https://github.com/NVIDIA/gpu-operator/issues>`_.
+
+.. code-block:: console
+
+   curl -o must-gather.sh -L https://raw.githubusercontent.com/NVIDIA/gpu-operator/main/hack/must-gather.sh
+   chmod +x must-gather.sh
+   ./must-gather.sh
+
+This utility is used to collect relevant information from your cluster that is needed for diagnosing and debugging issues.
+The final output is an archive file which contains the manifests and logs of all the components managed by gpu-operator.
+
 
 
 **************************************************
@@ -649,16 +658,21 @@ EFI Secure Boot is currently not supported with the GPU Operator
 
 Disable EFI Secure Boot on the server.
 
-File an issue
-=================
+**************************************************************
+GPU Operator pods stuck in ``Init:CreateContainerError`` state
+**************************************************************
 
-If you are facing a gpu-operator and/or operand(s) issue that is not documented in this guide, you can run the ``must-gather`` utility to prepare a bug report.
+.. rubric:: Issue
+   :class: h4  
 
-.. code-block:: console
+If you are installing, upgrading, or upgrading the GPU driver daemonset to v25.10 or later with CRI-O as the container runtime, you may notice several of the GPU Operator pods are stuck in the ``Init:CreateContainerError`` state.
 
-   curl -o must-gather.sh -L https://raw.githubusercontent.com/NVIDIA/gpu-operator/main/hack/must-gather.sh
-   chmod +x must-gather.sh
-   ./must-gather.sh
+.. rubric:: Root Cause
+   :class: h4
 
-This utility is used to collect relevant information from your cluster that is needed for diagnosing and debugging issues.
-The final output is an archive file which contains the manifests and logs of all the components managed by gpu-operator.
+Refer to this `GitHub issue <https://github.com/cri-o/cri-o/issues/9521>`_ for details on the root cause and proposed solution to this known CRI-O limitation. 
+
+.. rubric:: Action
+   :class: h4
+
+The errors will eventually resolve on their own after the driver daemonset is installed or the upgrade is complete.
