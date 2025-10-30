@@ -165,7 +165,7 @@ Fixed Issues
 Known Issues
 ------------
 
-* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``Init:CreateContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``Init:RunContainerError`` or ``Init:CreateContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
 

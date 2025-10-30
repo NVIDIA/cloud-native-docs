@@ -659,13 +659,13 @@ EFI Secure Boot is currently not supported with the GPU Operator
 Disable EFI Secure Boot on the server.
 
 **************************************************************
-GPU Operator pods stuck in ``Init:CreateContainerError`` state
+GPU Operator pods stuck in ``Init:RunContainerError`` or ``Init:CreateContainerError`` state
 **************************************************************
 
 .. rubric:: Issue
    :class: h4  
 
-If you are installing, upgrading, or upgrading the GPU driver daemonset to v25.10 or later with CRI-O as the container runtime, you may notice several of the GPU Operator pods are stuck in the ``Init:CreateContainerError`` state.
+If you are installing, upgrading, or upgrading the GPU driver daemonset to v25.10 or later with CRI-O as the container runtime, you may notice several of the GPU Operator pods are stuck in the ``Init:RunContainerError`` or ``Init:CreateContainerError`` state.
 
 .. rubric:: Root Cause
    :class: h4
