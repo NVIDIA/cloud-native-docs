@@ -71,7 +71,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 30, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 04, 2025"/>
 
 
 
@@ -933,10 +933,10 @@ The return values for the <code class="docutils literal notranslate"><span class
 <p>Disable EFI Secure Boot on the server.</p>
 </section>
 </section>
-<section id="gpu-operator-pods-stuck-in-init-createcontainererror-state">
-<h2>GPU Operator pods stuck in <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state<a class="headerlink" href="#gpu-operator-pods-stuck-in-init-createcontainererror-state" title="Permalink to this headline">#</a></h2>
+<section id="gpu-operator-pods-in-init-runcontainererror-or-init-createcontainererror-state">
+<h2>GPU Operator pods in <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state<a class="headerlink" href="#gpu-operator-pods-in-init-runcontainererror-or-init-createcontainererror-state" title="Permalink to this headline">#</a></h2>
 <p class="h4 rubric">Issue</p>
-<p>If you are installing, upgrading, or upgrading the GPU driver daemonset to v25.10 or later with CRI-O as the container runtime, you may notice several of the GPU Operator pods are stuck in the <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state.</p>
+<p>If you are installing, upgrading, or upgrading the GPU driver daemonset to v25.10 or later with CRI-O as the container runtime, you may notice several of the GPU Operator pods are stuck in the <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state.</p>
 <p class="h4 rubric">Root Cause</p>
 <p>Refer to this <a class="reference external" href="https://github.com/cri-o/cri-o/issues/9521">GitHub issue</a> for details on the root cause and proposed solution to this known CRI-O limitation.</p>
 <p class="h4 rubric">Action</p>
@@ -1009,7 +1009,7 @@ The return values for the <code class="docutils literal notranslate"><span class
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efi-secure-boot">EFI + Secure Boot</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-stuck-in-init-createcontainererror-state">GPU Operator pods stuck in <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-in-init-runcontainererror-or-init-createcontainererror-state">GPU Operator pods in <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state</a></li>
 </ul>
   </nav></div>
 

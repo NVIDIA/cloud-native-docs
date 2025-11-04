@@ -73,7 +73,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 30, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 04, 2025"/>
 
 
 
@@ -562,7 +562,7 @@ The terminationGracePeriodSeconds is now set to 120 seconds to ensure the vGPU M
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset.
+<li><p>When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset.
 The pods may be in this state for several minutes and restart several times.
 The pods will recover from this state as soon as the container toolkit pod starts running.</p></li>
 <li><p>NVIDIA Container Toolkit 1.18.0 will overwrite the <cite>imports</cite> field in the top-level containerd configuration file, so any previously imported paths will be lost.</p></li>
