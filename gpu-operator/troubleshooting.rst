@@ -658,9 +658,9 @@ EFI Secure Boot is currently not supported with the GPU Operator
 
 Disable EFI Secure Boot on the server.
 
-**************************************************************
+********************************************************************************************
 GPU Operator pods stuck in ``Init:RunContainerError`` or ``Init:CreateContainerError`` state
-**************************************************************
+********************************************************************************************
 
 .. rubric:: Issue
    :class: h4  
