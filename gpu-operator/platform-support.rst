@@ -319,7 +319,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.34
          - 1.30---1.34
          - 1.33---1.34
-         - 2.12, 2.13, 2.14, 2.15
+         - 2.12, 2.13, 2.14, 2.15, 2.16
 
        * - Ubuntu 24.04 LTS
          - 1.30---1.34
@@ -360,7 +360,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.34
          -
          -
-         - 2.12, 2.13, 2.14, 2.15
+         - 2.12, 2.13, 2.14, 2.15, 2.16
 
     .. _kubernetes-version:
 
@@ -442,14 +442,14 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.30--1.34
-         - 2.12, 2.13
+         - 
 
        * - Ubuntu 22.04 LTS
          - 1.30--1.34
          -
          - 8.0 U2, 8.0 U3
          - 1.30--1.34
-         - 2.12, 2.13
+         - 2.16
 
        * - Ubuntu 24.04 LTS
          - 1.30--1.34
@@ -468,13 +468,22 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 8.4,
-           | 8.6--8.10
+           | 8.6--8.9
          - 1.30--1.34
          -
          -
          - 1.30--1.34
-         -
+         - 
 
+       * - | Red Hat
+           | Enterprise
+           | Linux 8.10
+         - 1.30--1.34
+         -
+         -
+         - 1.30--1.34
+         - 2.16
+  
 .. _supported-precompiled-drivers:
 
 Supported Precompiled Drivers
