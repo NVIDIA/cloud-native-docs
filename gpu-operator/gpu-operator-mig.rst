@@ -441,6 +441,7 @@ Disabling MIG
 *************
 
 You can disable MIG on a node by setting the ``nvidia.con/mig.config`` label to ``all-disabled``:
+
 .. code-block:: console
 
    $ kubectl label nodes <node-name> nvidia.com/mig.config=all-disabled --overwrite
