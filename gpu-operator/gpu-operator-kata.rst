@@ -235,10 +235,6 @@ After installation, you can run a sample workload.
 
 .. |project-name| replace:: Kata Containers
 
-.. include:: gpu-operator-confidential-containers.rst
-   :start-after: start-install-coco-operator
-   :end-before: end-install-coco-operator
-
 
 *******************************
 Install the NVIDIA GPU Operator
