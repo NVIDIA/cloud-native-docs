@@ -583,11 +583,11 @@ If you plan to use GPU Passthrough only, skip this section.</p>
 <p>Use the following steps to build the vGPU Manager container and push it to a private registry.</p>
 <ol class="arabic">
 <li><p>Download the vGPU Software from the <a class="reference external" href="https://nvid.nvidia.com/dashboard/#/dashboard">NVIDIA Licensing Portal</a>.</p>
-<p><strong>For NVIDIA AI Enterprise customers:</strong></p>
+<p><strong>For NVIDIA AI Enterprise customers, download:</strong></p>
 <ul class="simple">
 <li><p>Login to the NVIDIA Licensing Portal and navigate to the <strong>Software Downloads</strong> section.</p></li>
-<li><p>Navigate to <strong>Product Family &gt; NVAIE</strong> then <strong>Platform &gt; Linux KVM</strong>.</p></li>
-<li><p>NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image. Download the <strong>NVAIE (Product Family) Linux KVM driver</strong>, and rename it to <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>. Refer to the <code class="docutils literal notranslate"><span class="pre">Infrastructure</span> <span class="pre">Support</span> <span class="pre">Matrix</span></code> under section under the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a> for details on supported version number to use.</p></li>
+<li><p>Navigate to <strong>[GPU Name] &gt; NVAIE</strong> then <strong>Platform &gt; Linux KVM</strong>.</p></li>
+<li><p>Download the <strong>NVAIE [GPU Name] Linux KVM driver</strong>. NVIDIA AI Enterprise customers must use the <code class="docutils literal notranslate"><span class="pre">aie</span></code> .run file for building the NVIDIA vGPU Manager image. After downloading, and rename the file to <code class="docutils literal notranslate"><span class="pre">NVIDIA-Linux-x86_64-&lt;version&gt;-vgpu-kvm.run</span></code>. Refer to the <code class="docutils literal notranslate"><span class="pre">Infrastructure</span> <span class="pre">Support</span> <span class="pre">Matrix</span></code> under section under the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a> for details on supported version number to use.</p></li>
 </ul>
 <p><strong>For non-NVIDIA AI Enterprise customers:</strong></p>
 <ul>
