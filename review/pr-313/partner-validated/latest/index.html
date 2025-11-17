@@ -1,0 +1,636 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>About Partner-Validated Configurations &#8212; Partner Validated Configurations with NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mirantis k0rdent with the NVIDIA GPU Operator" href="k0rdent.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Nov 17, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Partner Validated Configurations with NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Partner Validated Configurations with NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">Partner Validated Configurations with NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="Partner Validated Configurations with NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="Partner Validated Configurations with NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">Partner Validated Configurations with NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Partner-Validated Configurations</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">About Partner-Validated Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="k0rdent.html">Mirantis k0rdent with the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirantis-mke.html">Mirantis Kubernetes Engine with the NVIDIA GPU Operator</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="#">Partner Validated Configurations with NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">About Partner-Validated Configurations</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="about-partner-validated-configurations">
+<h1>About Partner-Validated Configurations<a class="headerlink" href="#about-partner-validated-configurations" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Partner-validated configurations help end users who want to use
+NVIDIA GPUs with a Kubernetes-based software stack that is not supported by NVIDIA.</p>
+<p>Vendors of Kubernetes-based software stacks can self-validate
+the NVIDIA GPU Operator with their software so that they can meet the needs of
+their end users.</p>
+<p>When a partner self-validates their software with the GPU Operator,
+the partner develops the documentation that end users need.
+Then the partner and NVIDIA add the information to this document.
+End users can read the details about the software versions that are validated,
+how to use the GPU Operator with the software stack, and how to report issues.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Partner-validated configurations rely on community support and do not constitute
+enterprise support from NVIDIA AI Enterprise.
+While a partner-validated stack is a necessary first step, it does not guarantee
+an automatic elevation to enterprise support from NVIDIA AI Enterprise at some
+point in the future.</p>
+</div>
+<section id="how-partners-contribute-a-validated-configuration">
+<h2>How Partners Contribute a Validated Configuration<a class="headerlink" href="#how-partners-contribute-a-validated-configuration" title="Permalink to this headline">#</a></h2>
+<p>You can contact the NVIDIA team by sending an email.
+NVIDIA will reach out to set up a meeting to discuss the software stack and any
+questions.</p>
+</section>
+<section id="what-partners-have-to-do">
+<h2>What Partners Have to Do<a class="headerlink" href="#what-partners-have-to-do" title="Permalink to this headline">#</a></h2>
+<p>You provide the following:</p>
+<ul class="simple">
+<li><p>Indicate whether you are a CNCF member and whether your software stack is a
+part of the
+<a class="reference external" href="https://www.cncf.io/certification/software-conformance/">certified Kubernetes software conformance program</a>
+from the CNCF.</p></li>
+<li><p>Document and contribute the exact software stack that you self-validated.
+Refer to the
+<a class="reference external" href="https://github.com/NVIDIA/cloud-native-docs/tree/main/partner-validated">PARTNER-VALIDATED-TEMPLATE.rst file</a>
+in the <code class="docutils literal notranslate"><span class="pre">partner-validated</span></code> directory of the documentation repository as a starting point.
+Open a pull request to the repository with your update.
+Refer to the <a class="reference external" href="https://github.com/NVIDIA/cloud-native-docs/blob/main/CONTRIBUTING.md">CONTRIBUTING.md file</a>
+in the root directory of the documentation repository for information about contributing documentation.</p></li>
+<li><p>Run the self-validated configuration and then share the outcome with NVIDIA by providing
+the output from <code class="docutils literal notranslate"><span class="pre">must-gather</span></code>.</p></li>
+<li><p>Upon request, provide NVIDIA remote access so that the NVIDIA team can perform
+further verification.</p></li>
+<li><p>Specify a GitHub user name that NVIDIA can refer to when end users open GitHub issues
+specific to the partner self-validated stack.</p></li>
+</ul>
+<p>Performing the preceding steps is not a guarantee that NVIDIA will include your
+self-validated configuration in the GPU Operator documentation.</p>
+</section>
+<section id="how-end-users-receive-support">
+<h2>How End Users Receive Support<a class="headerlink" href="#how-end-users-receive-support" title="Permalink to this headline">#</a></h2>
+<p>End users receive support from the partner and not from NVIDIA.</p>
+<p>If an end user experiences an issue with a partner-validated configuration and the
+NVIDIA GPU Operator, the end user works with their partner support contact.</p>
+<p>Partners include a Getting Support heading in the documentation they contribute
+that includes contact information.</p>
+</section>
+<section id="how-partners-receive-support-from-nvidia">
+<h2>How Partners Receive Support from NVIDIA<a class="headerlink" href="#how-partners-receive-support-from-nvidia" title="Permalink to this headline">#</a></h2>
+<p>When the partner is not able to resolve an end user issue without the help from NVIDIA,
+the partner is responsible to replicate the issue on one of the software stacks that
+NVIDIA supports.</p>
+<p>The NVIDIA records the
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#container-platforms" title="(in NVIDIA GPU Operator)"><span>Supported Operating Systems and Kubernetes Platforms</span></a>
+in the NVIDIA GPU Operator product documentation.</p>
+<p>After the partner records the steps to reproduce the issue on an NVIDIA supported software stack,
+the partner can report the issue about the supported software stack in the NVIDIA GPU Operator GitHub repository.</p>
+<p>NVIDIA investigates fixing the issue on the supported software stack on a best-effort basis.
+After NVIDIA develops and releases the fix for the NVIDIA supported software stack,
+the partner validates, and, if necessary, ports the fix to the partner software stack.</p>
+<p>In cases where the partner provides software, such as GPU driver images, the partner
+provides maintenance and support of the software.
+This maintenance and support includes security and bug fixes.</p>
+</section>
+<section id="frequently-asked-questions">
+<h2>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this headline">#</a></h2>
+<dl class="simple">
+<dt>Will NVIDIA add the partner’s software stack to the NVIDIA GPU Operator QA process?</dt><dd><p>No, but we advise the customer to include the GPU Operator into the partner’s QA process.</p>
+</dd>
+<dt>Will the partner have to run through the certification for all versions of the partner’s software stack?</dt><dd><p>Yes, if the partner wants the documentation to include a list of the versions.
+No, if the partner wants to only validate a specific version of the partner’s software.</p>
+</dd>
+<dt>Will there be any legal agreement/MOU associated with these partner-validated configurations?</dt><dd><p>No. The partner provides support, and possibly the community, so the main objective
+is having a mutually beneficial partner collaboration.</p>
+</dd>
+<dt>What happens if the partner wants to remove their contributed documentation?</dt><dd><p>The partner will be removed from this documentation as a supported configuration for future releases.
+For previously supported configurations, it is up to the partner to communicate a graceful exit strategy with their end customers.</p>
+</dd>
+<dt>What happens if the partner requires changes to the NVIDIA GPU Operator that are specific to the partner’s software stack?</dt><dd><p>The GPU Operator is open source and open to review incoming pull requests.</p>
+</dd>
+<dt>How are CVE fixes managed for partner software that is used by the NVIDIA GPU Operator?</dt><dd><p>The partner is responsible for managing security issues and is advised to proactively notify users of issues and fixes.
+When the partner provides users with software, such as a containerized GPU driver, the partner is responsible for notifying and resolving issues with the container image.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="k0rdent.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Mirantis k0rdent with the NVIDIA GPU Operator</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-partners-contribute-a-validated-configuration">How Partners Contribute a Validated Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-partners-have-to-do">What Partners Have to Do</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-end-users-receive-support">How End Users Receive Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-partners-receive-support-from-nvidia">How Partners Receive Support from NVIDIA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequently-asked-questions">Frequently Asked Questions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2023-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
