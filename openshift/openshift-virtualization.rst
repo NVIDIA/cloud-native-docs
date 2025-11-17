@@ -224,11 +224,11 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
 #. Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
-   **For NVIDIA AI Enterprise customers:**
+   **For NVIDIA AI Enterprise customers, download:**
 
    * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
-   * Navigate to **Product Family > NVAIE** then **Platform > Linux KVM**.
-   * NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image. Download the **NVAIE (Product Family) Linux KVM driver**, and rename it to ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``. Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
+   * Navigate to **[GPU Name] > NVAIE** then **Platform > Linux KVM**.
+   * Download the **NVAIE [GPU Name] Linux KVM driver**. NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image. After downloading, and rename the file to ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``. Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
 
 
    **For non-NVIDIA AI Enterprise customers:**
