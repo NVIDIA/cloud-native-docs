@@ -188,7 +188,7 @@ Known Issues
 
   Create the ConfigMap, then update the ClusterPolicy with the name of the configMap in the ``vgpuDeviceManager.config.name``, and restart the vgpu-device-manager pod.
 
-- When using GKE, there is a known issue in the NVIDIA Container Toolkit v1.18.0 that will miss configure the config.toml file and prevent GPU Operator containers from starting up correctly. 
+- When using GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd `config.toml` file and prevent GPU Operator containers from starting up correctly. 
   To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container to resolve this issue. 
   You can set this environment variable by setting the below in the ClusterPolicy CR:
 
