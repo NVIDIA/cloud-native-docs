@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 14, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 17, 2025"/>
 
 
 
@@ -590,7 +590,7 @@ Refer to the following example:</p>
 </li>
 </ul>
 <ul>
-<li><p>When using GKE, there is a known issue in the NVIDIA Container Toolkit v1.18.0 that will miss configure the config.toml file and prevent GPU Operator containers from starting up correctly.
+<li><p>When using GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd <cite>config.toml</cite> file and prevent GPU Operator containers from starting up correctly.
 To resolve this issue, set the <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE=file</span></code> environment variable in the toolkit container to resolve this issue.
 You can set this environment variable by setting the below in the ClusterPolicy CR:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>

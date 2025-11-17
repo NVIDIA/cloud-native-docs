@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 14, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 17, 2025"/>
 
 
 
@@ -506,7 +506,7 @@ in the Google Cloud documentation.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When installing NVIDIA GPU Operator v25.10.0 on GKE, there is a known issue in the NVIDIA Container Toolkit v1.18.0, the default toolkit version, that will misconfigure the config.toml file and prevent GPU Operator containers from starting up correctly.</p>
+<p>When installing NVIDIA GPU Operator on GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd <cite>config.toml</cite> file and prevent GPU Operator containers from starting up correctly.</p>
 <p>To resolve this issue, set the <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE=file</span></code> environment variable in the toolkit container to resolve this issue.
 You can set this environment variable by setting the below in the ClusterPolicy CR:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
