@@ -80,6 +80,20 @@ Prerequisites
   Refer to `GPU platforms <https://cloud.google.com/compute/docs/gpus>`_
   in the Google Cloud documentation.
 
+.. note::
+
+   When installing NVIDIA GPU Operator on GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd `config.toml` file and prevent GPU Operator containers from starting up correctly.
+
+   To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container to resolve this issue. 
+   You can set this environment variable by setting the below in the ClusterPolicy CR:
+
+   .. code-block:: yaml
+
+      toolkit:
+        env:
+        - name: RUNTIME_CONFIG_SOURCE
+          value: "file"
+
 
 *********************************
 Using the Google Driver Installer
