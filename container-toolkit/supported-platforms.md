@@ -17,6 +17,7 @@ Recent NVIDIA Container Toolkit releases are tested and expected to work on thes
 | CentOS 8                 | X              | X       | X                        |
 | RHEL 8.x                 | X              | X       | X                        |
 | RHEL 9.x                 | X              | X       | X                        |
+| RHEL 10.x                | X              | X       | X                        |
 | Ubuntu 20.04             | X              | X       | X                        |
 | Ubuntu 22.04             | X              | X       | X                        |
 | Ubuntu 24.04             | X              |         | X                        |
