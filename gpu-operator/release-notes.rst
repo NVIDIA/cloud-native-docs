@@ -58,7 +58,7 @@ New Features
 
 * Added support for these NVIDIA Data Center GPU Driver versions:
 
-  - 580.95.05 (default, recommended)
+  - 580.95.05 (default)
   - 570.195.03
   - 535.274.02
 
