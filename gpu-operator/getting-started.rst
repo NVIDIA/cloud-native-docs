@@ -137,11 +137,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Description
      - Default
 
-   * - ``ccManager.enabled``
-     - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-       Refer to :doc:`gpu-operator-confidential-containers` for more information.
-     - ``false``
-
    * - ``cdi.enabled``
      - When set to ``true``, the Operator installs two additional runtime classes,
        nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
@@ -227,11 +222,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
      - ``false``
 
-   * - ``kataManager.enabled``
-     - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
-       Refer to :doc:`gpu-operator-kata` for more information.
-     - ``false``
-
    * - ``mig.strategy``
      - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
        are either ``mixed`` or ``single``.
@@ -265,7 +255,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <gpu-operator-kata>`, or :doc:`Confidential Containers <gpu-operator-confidential-containers>`.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`.
      - ``container``
 
    * - ``toolkit.enabled``
