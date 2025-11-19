@@ -44,6 +44,8 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
+
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -65,16 +67,19 @@
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
     <script>initMermaid();</script>
+
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Time-Slicing GPUs in Kubernetes" href="gpu-sharing.html" />
     <link rel="prev" title="Security Considerations" href="security.html" />
 
 
+
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 04, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 19, 2025"/>
 
 
 
@@ -83,6 +88,7 @@
 
 
   </head>
+
   
   
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
@@ -90,6 +96,8 @@
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
@@ -770,8 +778,8 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
 <span class="w">    </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
-<span class="w">      </span><span class="no">config.yaml: |-</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">config.yaml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
 <span class="w">        </span><span class="no">version: v1</span><span class="w"></span>
 <span class="w">        </span><span class="no">mig-configs:</span><span class="w"></span>
 <span class="w">          </span><span class="no">all-disabled:</span><span class="w"></span>
@@ -1021,11 +1029,10 @@ We will reuse the same <code class="docutils literal notranslate"><span class="p
 </section>
 <section id="disabling-mig">
 <h2>Disabling MIG<a class="headerlink" href="#disabling-mig" title="Permalink to this headline">#</a></h2>
-<p>You can disable MIG on a node by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.con/mig.config</span></code> label to <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>:
-.. code-block:: console</p>
-<blockquote>
-<div><p>$ kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config=all-disabled –overwrite</p>
-</div></blockquote>
+<p>You can disable MIG on a node by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.con/mig.config</span></code> label to <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-disabled --overwrite
+</pre></div>
+</div>
 </section>
 <section id="mig-manager-with-preinstalled-drivers">
 <span id="mig-with-preinstalled-drivers"></span><h2>MIG Manager with Preinstalled Drivers<a class="headerlink" href="#mig-manager-with-preinstalled-drivers" title="Permalink to this headline">#</a></h2>
@@ -1254,9 +1261,11 @@ G -- on failure --&gt; I
     </div>
   </div>
   
+
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
 <script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
 
 
   <footer class="bd-footer">
@@ -1280,12 +1289,7 @@ G -- on failure --&gt; I
   
   
   
-  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
-   | 
-  
-  
-  
-  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
    | 
   
   

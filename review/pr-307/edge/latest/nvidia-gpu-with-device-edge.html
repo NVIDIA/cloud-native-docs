@@ -44,6 +44,8 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
+
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -62,16 +64,19 @@
         </script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
+
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NVIDIA GPUs with Google Anthos" href="anthos-guide.html" />
     <link rel="prev" title="NVIDIA Cloud Native Reference Architectures" href="index.html" />
 
 
+
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 04, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 19, 2025"/>
 
 
 
@@ -80,6 +85,7 @@
 
 
   </head>
+
   
   
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
@@ -87,6 +93,8 @@
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
@@ -481,12 +489,17 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 <p>The NVIDIA container toolkit supports the distributions listed in the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#installation-guide/">NVIDIA Container Toolkit repository</a>.</p>
 <ol class="arabic">
 <li><p>Add the <code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/rhel8.7/libnvidia-container.repo <span class="p">|</span> sudo tee /etc/yum.repos.d/libnvidia-container.repo
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo <span class="p">|</span> sudo tee /etc/yum.repos.d/libnvidia-container.repo
 </pre></div>
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit for RHEL:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf install nvidia-container-toolkit -y
+</pre></div>
+</div>
+</li>
+<li><p>Set the NVIDIA Container Toolkit to use the CDI mode:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode<span class="o">=</span>cdi
 </pre></div>
 </div>
 </li>
@@ -528,18 +541,15 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 </pre></div>
 </div>
 </li>
-</ol>
-</li>
+<li><p>Apply the policy:</p></li>
 </ol>
 <blockquote>
-<div><ol class="upperalpha" start="6">
-<li><p>Apply the policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo semodule -i nvidia-container-microshift.pp
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo semodule -i nvidia-container-microshift.pp
 </pre></div>
 </div>
+</div></blockquote>
 </li>
 </ol>
-</div></blockquote>
 </section>
 <section id="installing-the-nvidia-device-plugin">
 <h2>Installing the NVIDIA Device Plugin<a class="headerlink" href="#installing-the-nvidia-device-plugin" title="Permalink to this headline">#</a></h2>
@@ -552,17 +562,17 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
 <p>The deployment consists of adding manifests and a <code class="docutils literal notranslate"><span class="pre">kustomize</span></code> configuration to the <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests</span></code> folder where MicroShift checks for manifests to create at start time. This is explained in the <a class="reference external" href="https://access.redhat.com/documentation/en-us/red_hat_build_of_microshift/4.12/html/configuring/index">Configuring section of the MicroShift documentation</a>.</p>
 <ol class="arabic">
 <li><p>Create the <code class="docutils literal notranslate"><span class="pre">manifests</span></code> folder:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo mkdir -p /etc/microshift/manifests
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo mkdir -p /etc/microshift/manifests.d/nvidia-device-plugin
 </pre></div>
 </div>
 </li>
-<li><p>The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code>. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests/nvidia-device-plugin.yml</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://gitlab.com/nvidia/kubernetes/device-plugin/-/raw/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml <span class="p">|</span> sudo tee /etc/microshift/manifests/nvidia-device-plugin.yml
+<li><p>The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code>. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at <code class="docutils literal notranslate"><span class="pre">/etc/microshift/manifests.d/nvidia-device-plugin</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -s -L https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/refs/heads/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml <span class="p">|</span> sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/nvidia-device-plugin.yml
 </pre></div>
 </div>
 </li>
 <li><p>The resources are not created automatically even though the files exist. You need to add them to the <code class="docutils literal notranslate"><span class="pre">kustomize</span></code> configuration. Do this by adding a single <code class="docutils literal notranslate"><span class="pre">kustomization.yaml</span></code> file in the <code class="docutils literal notranslate"><span class="pre">manifests</span></code> folder that references all the resources you want to create.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> sudo tee /etc/microshift/manifests/kustomization.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/kustomization.yaml
 <span class="go">---</span>
 <span class="go">apiVersion: kustomize.config.k8s.io/v1beta1</span>
 <span class="go">kind: Kustomization</span>
@@ -761,9 +771,11 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
     </div>
   </div>
   
+
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
 <script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
 
 
   <footer class="bd-footer">
@@ -787,12 +799,7 @@ to leverage NVIDIA GPUs. You have to install it to enable the container runtime 
   
   
   
-  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
-   | 
-  
-  
-  
-  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
    | 
   
   
