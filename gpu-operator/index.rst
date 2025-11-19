@@ -55,7 +55,6 @@
    :hidden:
 
    KubeVirt <gpu-operator-kubevirt.rst>
-   Kata Containers <gpu-operator-kata.rst>
    
 .. toctree::
    :caption: Specialized Networks

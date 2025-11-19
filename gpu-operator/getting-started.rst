@@ -261,10 +261,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
      - ``false``
 
-   * - ``kataManager.enabled``
-     - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
-       Refer to :doc:`gpu-operator-kata` for more information.
-     - ``false``
 
    * - ``mig.strategy``
      - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
@@ -299,7 +295,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, or :doc:`Kata Containers <gpu-operator-kata>`.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`.
      - ``container``
 
    * - ``toolkit.enabled``

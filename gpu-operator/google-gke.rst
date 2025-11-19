@@ -84,7 +84,7 @@ Prerequisites
 
    When installing NVIDIA GPU Operator on GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd `config.toml` file and prevent GPU Operator containers from starting up correctly.
 
-   To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container to resolve this issue. 
+   To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container. 
    You can set this environment variable by setting the below in the ClusterPolicy CR:
 
    .. code-block:: yaml
