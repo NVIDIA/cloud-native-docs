@@ -1020,7 +1020,6 @@ New Features
 
 * Added support for configuring Kata Containers for GPU workloads as a technology preview feature.
   This feature introduces NVIDIA Kata Manager for Kubernetes as an operand of GPU Operator.
-  Refer to :doc:`gpu-operator-kata` for more information.
 
 * Added support for configuring Confidential Containers for GPU workloads as a technology preview feature.
   This feature builds on the work for configuring Kata Containers and
