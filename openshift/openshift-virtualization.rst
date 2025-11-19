@@ -224,18 +224,21 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
 #. Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
+   **For NVIDIA AI Enterprise customers, download:**
+
+   * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
+   * Navigate to **[GPU Name] > NVAIE** then **Platform > Linux KVM**.
+   * Download the **NVAIE [GPU Name] Linux KVM driver**. NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image. After downloading, and rename the file to ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``. Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
+
+
+   **For non-NVIDIA AI Enterprise customers:**
+
    * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
    * The NVIDIA vGPU Software is located on the **Driver downloads** tab of the **Software Downloads** page.
    * Click the **Download** link for the Linux KVM complete vGPU package.
+   
      Confirm that the **Product Version** column shows the vGPU version to install.
      Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
-
-     .. note::
-
-         NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
-         Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
-         ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
-         Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
 
    Use the following steps to clone the driver container repository and build the driver image.
 
