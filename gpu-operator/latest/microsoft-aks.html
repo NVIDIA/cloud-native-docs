@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -76,12 +76,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 19, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -341,7 +338,6 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -357,7 +353,6 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -370,12 +365,6 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -452,8 +441,8 @@ that the NVIDIA GPU Operator provides for managing your cluster.</p>
 <p>When you follow this approach, you can install the Operator without any special
 considerations or arguments.
 Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html#install-nvidia-gpu-operator" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Install NVIDIA GPU Operator</span></a>.</p>
-<p>For more information about this feature, see
-<a class="reference external" href="https://learn.microsoft.com/en-us/azure/aks/use-nvidia-gpu?source=recommendations&amp;tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation">Skip GPU driver installation</a>
+<p>For more information about this preview feature, see
+<a class="reference external" href="https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?source=recommendations&amp;tabs=add-ubuntu-gpu-node-pool#skip-gpu-driver-installation-preview">Skip GPU driver installation (preview)</a>
 in the Azure Kubernetes Service documentation.</p>
 </section>
 <section id="default-aks-configuration-without-the-gpu-operator">
@@ -497,7 +486,7 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.</p>
 <li><p>Install the Operator without the driver containers and toolkit:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
-    --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
+    --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
     --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
     --set operator.runtimeClass<span class="o">=</span>nvidia-container-runtime
@@ -689,9 +678,6 @@ for an example of running workloads on NVIDIA GPUs.</p></li>
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>

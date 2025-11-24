@@ -44,6 +44,8 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
+
+
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -62,21 +64,25 @@
         </script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
+
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Upgrading the NVIDIA GPU Operator" href="upgrade.html" />
     <link rel="prev" title="About the NVIDIA GPU Operator" href="overview.html" />
 
 
+
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 28, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
 
 
   </head>
+
   
   
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
@@ -84,6 +90,8 @@
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
@@ -345,8 +353,6 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-confidential-containers.html">Confidential Containers and Kata</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -510,12 +516,7 @@ To view all the options, run <code class="docutils literal notranslate"><span cl
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ccManager.enabled</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-Refer to <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">GPU Operator with Confidential Containers and Kata</span></a> for more information.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator installs two additional runtime classes,
 nvidia-cdi and nvidia-legacy, and enables the use of the Container Device Interface (CDI)
 for making GPUs accessible to containers.
@@ -526,36 +527,36 @@ specify <code class="docutils literal notranslate"><span class="pre">nvidia-lega
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.default</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.default</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the container runtime uses CDI to perform device injection by default.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.annotations</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.annotations</span></code></p></td>
 <td><p>Map of custom annotations to add to all GPU Operator managed pods.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.labels</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.labels</span></code></p></td>
 <td><p>Map of custom labels to add to all GPU Operator managed pods.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
 <td><p>Specifies the configuration for the NVIDIA Device Plugin as a config map.</p>
 <p>In most cases, this field is configured after installing the Operator, such as
 to configure <a class="reference internal" href="gpu-sharing.html"><span class="doc">Time-Slicing GPUs in Kubernetes</span></a>.</p>
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.enabled</span></code></p></td>
 <td><p>By default, the Operator deploys NVIDIA drivers as a container on the system.
 Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using the Operator on systems with pre-installed drivers.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.repository</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.repository</span></code></p></td>
 <td><p>The images are downloaded from NGC. Specify another image repository when using
 custom driver images.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled</span></code></p></td>
 <td><p>Controls whether the driver daemon set builds and loads the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
 <p>You might be able to use GPUDirect RDMA without enabling this option.
 Refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a> for information about whether you can use DMA-BUF or
@@ -563,28 +564,28 @@ you need to use legacy <code class="docutils literal notranslate"><span class="p
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.useHostMofed</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.useHostMofed</span></code></p></td>
 <td><p>Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.startupProbe</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.startupProbe</span></code></p></td>
 <td><p>By default, the driver container has an initial delay of <code class="docutils literal notranslate"><span class="pre">60s</span></code> before starting liveness probes.
 The probe runs the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command with a timeout duration of <code class="docutils literal notranslate"><span class="pre">60s</span></code>.
 You can increase the <code class="docutils literal notranslate"><span class="pre">timeoutSeconds</span></code> duration if the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command
 runs slowly in your cluster.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">60s</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the driver containers install the NVIDIA Open GPU Kernel module driver.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator attempts to deploy driver containers that have
 precompiled kernel drivers.
 Refer to the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">precompiled driver containers</span></a> page for the supported operating systems.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.version</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.version</span></code></p></td>
 <td><p>Version of the NVIDIA datacenter driver supported by the Operator.</p>
 <p>If you set <code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, then set this field to
 a driver branch, such as <code class="docutils literal notranslate"><span class="pre">525</span></code>.</p>
@@ -592,17 +593,12 @@ a driver branch, such as <code class="docutils literal notranslate"><span class=
 <td><p>Depends on the version of the Operator. See the Component Matrix
 for more information on supported drivers.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gdrcopy.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gdrcopy.enabled</span></code></p></td>
 <td><p>Enables support for GDRCopy.
 When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
 For information about GDRCopy, refer to the <a class="reference external" href="https://developer.nvidia.com/gdrcopy">gdrcopy</a> page.</p>
 <p>You can enable GDRCopy if you use the <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a>.</p>
 </td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataManager.enabled</span></code></p></td>
-<td><p>The GPU Operator deploys NVIDIA Kata Manager when this field is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
-Refer to <a class="reference internal" href="gpu-operator-kata.html"><span class="doc">GPU Operator with Kata Containers</span></a> for more information.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mig.strategy</span></code></p></td>
@@ -637,7 +633,7 @@ Set this variable to <code class="docutils literal notranslate"><span class="pre
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
 <td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.
-Refer to <a class="reference internal" href="gpu-operator-kubevirt.html"><span class="doc">KubeVirt</span></a>, <a class="reference internal" href="gpu-operator-kata.html"><span class="doc">Kata Containers</span></a>, or <a class="reference internal" href="gpu-operator-confidential-containers.html"><span class="doc">Confidential Containers</span></a>.</p>
+Refer to <a class="reference internal" href="gpu-operator-kubevirt.html"><span class="doc">KubeVirt</span></a>.</p>
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
 </tr>
@@ -1161,9 +1157,11 @@ in the RKE2 documentation.</p>
     </div>
   </div>
   
+
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
 <script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
 
 
   <footer class="bd-footer">
@@ -1187,12 +1185,7 @@ in the RKE2 documentation.</p>
   
   
   
-  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
-   | 
-  
-  
-  
-  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
    | 
   
   

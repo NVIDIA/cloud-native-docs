@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -76,12 +76,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 19, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -421,17 +418,14 @@ provides generic guidance on using Operator Lifecycle Manager on restricted netw
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p>A working OpenShift cluster up and running with a GPU worker node.
-Refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">OpenShift Container Platform installation</a> guide for guidance on installing OpenShift Container Platform.</p>
+<li><p>A working OpenShift cluster up and running with a GPU worker node. See <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">OpenShift Container Platform installation</a> for guidance on installing OpenShift Container Platform.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version &lt;<code class="docutils literal notranslate"><span class="pre">4.9.9</span></code> you need to carry out the steps highlighted as <strong>Optional</strong> below.
-For more information see <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a>.</p>
+<p>If installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version &lt;<code class="docutils literal notranslate"><span class="pre">4.9.9</span></code> you need to carry out the steps highlighted as <strong>Optional</strong> below. For more information see <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a>.</p>
 </div>
 </li>
 <li><p>Access to the cluster as a user with the <code class="docutils literal notranslate"><span class="pre">cluster-admin</span></code> role.</p></li>
-<li><p>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>.
-A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
+<li><p>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.redhat.com/en/technologies/cloud-computing/quay">Red Hat Quay</a></p></li>
 <li><p><a class="reference external" href="https://jfrog.com/artifactory/">JFrog Artifactory</a></p></li>
@@ -445,18 +439,20 @@ or by using the <a class="reference external" href="https://access.redhat.com/do
 If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
 For more information, refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">About disconnected install mirroring</a>
 in the Red Hat OpenShift Container Platform documentation.</p>
-<div class="admonition note">
+<blockquote>
+<div><div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended <code class="docutils literal notranslate"><span class="pre">-addext</span> <span class="pre">&quot;subjectAltName=DNS:${JUMP_HOST}&quot;</span></code> to your <code class="docutils literal notranslate"><span class="pre">openssl</span></code> command, otherwise OpenShift Container Platform cannot pull images from the private registry.</p>
 <p>If you do not set a Subject Alternative Name, before running the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands in the subsequent sections export the environment variable <code class="docutils literal notranslate"><span class="pre">GODEBUG=x509ignoreCN=0</span></code>. If you do not set this variable, the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands will fail with the following error:</p>
+</div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>x509: certificate relies on legacy Common Name field, use SANs or temporarily <span class="nb">enable</span> Common Name matching with <span class="sb">``</span><span class="nv">GODEBUG</span><span class="o">=</span><span class="nv">x509ignoreCN</span><span class="o">=</span><span class="m">0</span><span class="sb">``</span>.
 </pre></div>
-</div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you use HTTP, in Openshift Container Platform add <code class="docutils literal notranslate"><span class="pre">insecureRegistries</span></code> to <code class="docutils literal notranslate"><span class="pre">image.config.openshift.io/cluster</span></code>. Guidance on that configuration is provided <a class="reference external" href="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html">here</a>.</p>
 </div>
+</div></blockquote>
 </li>
 </ul>
 <p><strong>On the jump host:</strong></p>
@@ -588,14 +584,16 @@ update the system firewall rules allowing inbound packets on HTTP and HTTPS.</p>
 </div>
 </li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">reposync</span></code> to synchronize the AppStream repos to the locally created directory:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-appstream-rpms <span class="se">\</span>
-  --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
-  --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
-  --downloadcomps <span class="se">\</span>
-  --download-metadata <span class="se">\</span>
-  --nodocs
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-appstream-rpms <span class="se">\</span>
+ --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
+ --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
+ --downloadcomps <span class="se">\</span>
+ --download-metadata <span class="se">\</span>
+ --nodocs
 </pre></div>
 </div>
+</div></blockquote>
 </li>
 <li><p>Create a directory to host and serve the AppStream RPM packages:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir -p /var/www/html/content/dist/rhel8/8/x86_64/appstream/</span>
@@ -668,7 +666,8 @@ Refer to the Red Hat OpenShift Container Platform documentation that describes h
 <p>OpenSSL version 1.1.1 or higher is required.</p>
 </div>
 <p>At the prompts, provide the required values for the certificate:</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<blockquote>
+<div><div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 35%" />
 <col style="width: 65%" />
@@ -705,6 +704,7 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 </tbody>
 </table>
 </div>
+</div></blockquote>
 </li>
 <li><p>Generate a <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">password</span></code> for your registry that uses the <code class="docutils literal notranslate"><span class="pre">bcrpt</span></code> format:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>htpasswd -bBc /opt/registry/auth/htpasswd &lt;user_name&gt; &lt;password&gt;
@@ -844,7 +844,8 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <section id="configuring-credentials-that-allow-images-to-be-mirrored">
 <h2>Configuring credentials that allow images to be mirrored<a class="headerlink" href="#configuring-credentials-that-allow-images-to-be-mirrored" title="Permalink to this headline">#</a></h2>
 <p>Create a container image registry credentials file that allows mirroring images from Red Hat to your mirror registry.</p>
-<div class="admonition warning">
+<blockquote>
+<div><div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.</p>
 </div>
@@ -852,6 +853,7 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <p class="admonition-title">Warning</p>
 <p>This process requires that you have write access to a container image registry on the mirror registry and adds the credentials to a registry pull secret.</p>
 </div>
+</div></blockquote>
 <ol class="arabic">
 <li><p>Download your pull secret from the <a class="reference external" href="https://console.redhat.com/openshift/install/pull-secret">Pull Secret</a> page on the Red Hat OpenShift Cluster Manager site.</p></li>
 <li><p>Generate the base64-encoded user name and password or token for your mirror registry:</p>
@@ -976,10 +978,12 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <p>Operator catalogs that source content provided by Red Hat and community projects are configured for OperatorHub by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator. You can then configure OperatorHub to use local catalog sources.</p>
 <ul>
 <li><p>Disable the sources for the default catalogs by adding <code class="docutils literal notranslate"><span class="pre">disableAllDefaultSources:</span> <span class="pre">true</span></code> to the OperatorHub object:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch OperatorHub cluster --type json <span class="se">\</span>
-   -p <span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/disableAllDefaultSources&quot;, &quot;value&quot;: true}]&#39;</span>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch OperatorHub cluster --type json <span class="se">\</span>
+    -p <span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/disableAllDefaultSources&quot;, &quot;value&quot;: true}]&#39;</span>
 </pre></div>
 </div>
+</div></blockquote>
 </li>
 </ul>
 </section>
@@ -1211,10 +1215,11 @@ Create the <code class="docutils literal notranslate"><span class="pre">pull-sec
 <li><p>Edit the <code class="docutils literal notranslate"><span class="pre">imageset-config-gpu.yaml</span></code> file to mirror the Operator images that you want to mirror.</p>
 <ul>
 <li><p>To mirror all versions of the Operator, perform the following edits:</p>
-<ul>
+<ul class="simple">
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">skipTLS</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">catalog</span></code> to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-operator-index:v4.12</span></code>.</p></li>
-<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">gpu-operator-certified</span></code>.</p>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">gpu-operator-certified</span></code>.</p></li>
+</ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v1alpha2</span><span class="w"></span>
 <span class="nt">storageConfig</span><span class="p">:</span><span class="w"></span>
@@ -1235,8 +1240,6 @@ Create the <code class="docutils literal notranslate"><span class="pre">pull-sec
 <span class="nt">helm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 </pre></div>
 </div>
-</li>
-</ul>
 </li>
 <li><p>To mirror only v22.9.0, make the same edits as the preceding example and also specify the <code class="docutils literal notranslate"><span class="pre">minversion</span></code> value:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
@@ -1565,9 +1568,6 @@ If only trusted operators are installed in this namespace, you can manually enab
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>

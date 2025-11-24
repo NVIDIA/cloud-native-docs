@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -76,12 +76,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 19, 2025"/>
+    <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
-
-  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
-  
 
 
   </head>
@@ -341,7 +338,6 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
@@ -357,7 +353,6 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -370,12 +365,6 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -442,11 +431,10 @@ This direct path increases system bandwidth and decreases the latency and utiliz
 <p>To support GPUDirect RDMA, userspace CUDA APIs are required.
 The kernel mode support is provided by one of two approaches: DMA-BUF from the Linux kernel or the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.
 NVIDIA recommends using the DMA-BUF rather than using the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module from the GPU Driver.</p>
-<p>The Operator uses GDS driver version 2.17.5 or newer.
+<p>Starting with v23.9.1 of the Operator, the Operator uses GDS driver version 2.17.5 or newer.
 This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-In GPU Operator v25.3.0 and later, the <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code> default is <code class="docutils literal notranslate"><span class="pre">auto</span></code>, for the supported driver versions.
-This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available.
-Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> command-line argument in your helm Operator install command.</p>
+The sample commands for installing the Operator include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">useOpenKernelModules=true</span></code>
+command-line argument for Helm.</p>
 <p>In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
@@ -513,7 +501,7 @@ in the networking documentation for information about the MLNX_OFED, DOCA-OFED, 
 <li><p><code class="docutils literal notranslate"><span class="pre">pciPassthru.64bitMMIOSizeGB</span> <span class="pre">=</span> <span class="pre">128</span></code></p></li>
 </ul>
 <p>For information about configuring the settings, refer to the
-<a class="reference external" href="https://www.vmware.com/docs/deploy-an-ai-ready-enterprise-platform-on-vsphere-7-update-2#vm-settings-A">Deploy an AI-Ready Enterprise Platform on vSphere 7</a>
+<a class="reference external" href="https://core.vmware.com/resource/deploy-ai-ready-vsphere-7#vm-settings-A">Deploy an AI-Ready Enterprise Platform on vSphere 7</a>
 document from VMWare.</p>
 </li>
 </ul>
@@ -539,19 +527,21 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
+     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
+     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>To use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module instead of DMA-BUF, add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to either of the preceding commands.
-Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
+The <code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules=true</span></code> argument is optional for using the legacy kernel driver.</p>
 </section>
 <section id="verifying-the-installation-of-gpudirect-with-rdma">
 <h3>Verifying the Installation of GPUDirect with RDMA<a class="headerlink" href="#verifying-the-installation-of-gpudirect-with-rdma" title="Permalink to this headline">#</a></h3>
@@ -661,8 +651,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="0ac1160d-6e98-4119-8d4f-804c2cc75472" name="999e8d8c-1e17-4e02-b6d1-d427047ccf30" type="radio">
-</input><label class="sd-tab-label" for="0ac1160d-6e98-4119-8d4f-804c2cc75472">
+<input checked="checked" id="2cbcf0ff-151c-404e-935f-859308cc2a59" name="9d13befb-f55b-4ffd-a4c5-8f423b1f6a14" type="radio">
+</input><label class="sd-tab-label" for="2cbcf0ff-151c-404e-935f-859308cc2a59">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -707,8 +697,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="a3aab62d-c5ca-49bc-ab26-f5774e90a34c" name="999e8d8c-1e17-4e02-b6d1-d427047ccf30" type="radio">
-</input><label class="sd-tab-label" for="a3aab62d-c5ca-49bc-ab26-f5774e90a34c">
+<input id="d2051014-2ec7-449e-a8f6-140019b481be" name="9d13befb-f55b-4ffd-a4c5-8f423b1f6a14" type="radio">
+</input><label class="sd-tab-label" for="d2051014-2ec7-449e-a8f6-140019b481be">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -865,12 +855,12 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.3.4 <span class="se">\</span>
+     --version<span class="o">=</span>v24.9.2 <span class="se">\</span>
+     --set driver.useOpenKernelModules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to the command to use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
 </section>
 <section id="verification">
 <h3>Verification<a class="headerlink" href="#verification" title="Permalink to this headline">#</a></h3>
@@ -1115,9 +1105,6 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 </div>
 
   </footer>
-
-  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
-  
 
 
   </body>
