@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -525,7 +528,7 @@ custom resource, GFD is enabled. In case, you disabled it, you can re-enable it 
 </li>
 <li><p>Verify that GFD labels have been added to indicate time-sharing.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get node --selector<span class="o">=</span>nvidia.com/gpu.product<span class="o">=</span>Tesla-T4-SHARED -o json <span class="se">\</span>
- <span class="p">|</span> jq <span class="s1">&#39;.items[0].metadata.labels&#39;</span> <span class="p">|</span> grep nvidia
+  <span class="p">|</span> jq <span class="s1">&#39;.items[0].metadata.labels&#39;</span> <span class="p">|</span> grep nvidia
 </pre></div>
 </div>
 <p><strong>Example Output</strong></p>
@@ -572,13 +575,11 @@ This provides a pool of replicas for workloads that don’t require a full T4 GP
 <a class="reference external" href="https://docs.openshift.com/container-platform/4.10/machine_management/applying-autoscaling.html#machine-autoscaler-about_applying-autoscaling">Machine Autoscaler</a> configured.
 You want to ensure the new nodes will have time slicing enabled automatically, that is, you want to apply the
 label to every new node. This can be done by setting the label in the MachineSet template.</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch machineset worker-gpu-nvidia-t4-us-east-1a <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch machineset worker-gpu-nvidia-t4-us-east-1a <span class="se">\</span>
     -n openshift-machine-api --type merge <span class="se">\</span>
     --patch <span class="s1">&#39;{&quot;spec&quot;: {&quot;template&quot;: {&quot;spec&quot;: {&quot;metadata&quot;: {&quot;labels&quot;: {&quot;nvidia.com/device-plugin.config&quot;: &quot;Tesla-T4&quot;}}}}}}&#39;</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>Now, any new machine created by the Machine Autoscaler for this MachineSet will have the label, and time-slicing enabled.</p>
 </section>
 <section id="sample-configmap-values">
@@ -790,6 +791,9 @@ compatibility.</p></td>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

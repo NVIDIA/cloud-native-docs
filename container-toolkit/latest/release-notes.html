@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -394,8 +397,260 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="release-notes">
 <span id="toolkit-release-notes"></span><h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">#</a></h1>
-<p>This document describes the new features, improvements, fixed and known issues for the NVIDIA Container Toolkit.</p>
-<hr class="docutils" />
+<p>This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.</p>
+<section id="nvidia-container-toolkit-1-18-0">
+<h2>NVIDIA Container Toolkit 1.18.0<a class="headerlink" href="#nvidia-container-toolkit-1-18-0" title="Permalink to this headline">#</a></h2>
+<p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.18.0</span></code> is feature release with the following high-level changes:</p>
+<ul class="simple">
+<li><p>The default mode of the NVIDIA Container Runtime has been updated to make use
+of a just-in-time-generated CDI specification instead of defaulting to the <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode.</p></li>
+<li><p>Added a systemd unit to generate CDI specifications for available devices automatically. This allows
+native CDI support in container engines such as Docker and Podman to be used without additional steps.</p></li>
+</ul>
+<section id="deprecation-notices">
+<h3>Deprecation Notices<a class="headerlink" href="#deprecation-notices" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The OCI <code class="docutils literal notranslate"><span class="pre">hook</span></code>-based config mode for cri-o is now deprecated. Updating the cri-o config through a
+drop-in config file is now the recommended mechanism to configure this container engine.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">chmod</span></code> CDI hook is deprecated. It was implemented as a workaround for <code class="docutils literal notranslate"><span class="pre">crun</span></code> issue that has
+been resolved for some time now. The inclusion of this hook can still be
+triggered when explicitly generating CDI specifications.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode of the NVIDIA Container Runtime is deprecated. It is no longer the <em>default</em> mode
+when using the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> is used. It is still supported for use cases where it is
+<em>required</em>.</p></li>
+</ul>
+</section>
+<section id="packaging-changes">
+<h3>Packaging Changes<a class="headerlink" href="#packaging-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>The Container Toolkit now requires that the version of the <code class="docutils literal notranslate"><span class="pre">libnvidia-container*</span></code> libraries  <em>exactly</em> match the version of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit*</span></code> packages.
+version of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit*</span></code> packages.</p></li>
+<li><p>This release no longer publishes <code class="docutils literal notranslate"><span class="pre">ppc64le</span></code> packages.</p></li>
+</ul>
+</section>
+<section id="fixes-and-features">
+<h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added automatic generation of CDI specifications for available devices.</p></li>
+<li><p>Update the behaviour of the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to ALWAYS create an ldcache in the container
+even if ldconfig is not present in the container being run.</p></li>
+<li><p>Disable the injection of the <code class="docutils literal notranslate"><span class="pre">chmod</span></code> CDI hook by default. The inclusion of this hook can still be
+triggered when explicitly generating CDI specifications.</p></li>
+<li><p>The generated CDI specification will include <code class="docutils literal notranslate"><span class="pre">.so</span></code> (development) symlinks for ALL driver libraries
+if these exist on the host.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command loads select settings from the <code class="docutils literal notranslate"><span class="pre">config.toml</span></code> file when generating
+CDI specifications.</p></li>
+<li><p>Allow CDI hooks to be explicitly disabled or enabled when using the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command
+or the <code class="docutils literal notranslate"><span class="pre">nvcdi</span></code> API.</p></li>
+</ul>
+<section id="enhancements-to-libnvidia-container">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#enhancements-to-libnvidia-container" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Add clock_gettime to the set of allowed syscalls under seccomp. This allows ldconfig from distributions
+such as Arch Linux to be run in the container.</p></li>
+</ul>
+</section>
+<section id="enhancements-to-container-toolkit-container-images">
+<h4>Enhancements to container-toolkit Container Images<a class="headerlink" href="#enhancements-to-container-toolkit-container-images" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Switched to a single image (based on a distroless base image) for all target plaforms.</p></li>
+<li><p>Default to use drop-in config files to add <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime definitions to containerd and cri-o.</p></li>
+</ul>
+</section>
+</section>
+<section id="included-packages">
+<h3>Included Packages<a class="headerlink" href="#included-packages" title="Permalink to this headline">#</a></h3>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.18.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.18.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.18.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.18.0</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> containers are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.18.0</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.18.0-packaging</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="nvidia-container-toolkit-1-17-8">
+<h2>NVIDIA Container Toolkit 1.17.8<a class="headerlink" href="#nvidia-container-toolkit-1-17-8" title="Permalink to this headline">#</a></h2>
+<p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.8</span></code> is a bugfix release.</p>
+<section id="id1">
+<h3>Fixes and Features<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Updated the ordering of Mounts in CDI to have a deterministic output. This makes testing more consistent.</p></li>
+<li><p>Added NVIDIA_CTK_DEBUG environment variable to hooks.</p></li>
+</ul>
+<section id="id2">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Fixed a bug in setting the default for the <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode</span></code> flag. This caused failures in use cases invoking the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> directly or when an older <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> version was used with a newer <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code>.</p></li>
+<li><p>Added additional logging to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code>.</p></li>
+<li><p>Fixed variable initialisation when updating the ldcache. This caused failures on Arch linux or other platforms where the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> was built from source.</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h3>Included Packages<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.8</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> containers are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.8-ubi8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.8-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.8</span></code>)</p></li>
+</ul>
+</section>
+</section>
+<section id="nvidia-container-toolkit-1-17-7">
+<h2>NVIDIA Container Toolkit 1.17.7<a class="headerlink" href="#nvidia-container-toolkit-1-17-7" title="Permalink to this headline">#</a></h2>
+<p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.7</span></code> is a bugfix and minor feature release.</p>
+<section id="id4">
+<h3>Fixes and Features<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fixed mode detection on Thor-based systems. With this change, the runtime mode correctly resolves to <code class="docutils literal notranslate"><span class="pre">csv</span></code>.</p></li>
+<li><p>Fixed the resolution of libraries in the LDCache on ARM. This fixes CDI spec generation on ARM-based systems using NVML.</p></li>
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-modes.legacy.cuda-compat-mode</span></code> option to provide finer control of how CUDA Forward Compatibility is handled. The default value (<code class="docutils literal notranslate"><span class="pre">ldconfig</span></code>) fixes CUDA Compatibility Support in cases where only the NVIDIA Container Runtime Hook is used (such as the Docker <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> command line flag).</p></li>
+<li><p>Improved the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to run in isolated namespaces. This improves hook security.</p></li>
+</ul>
+<section id="id5">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Added a <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode</span></code> flag to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command. The <code class="docutils literal notranslate"><span class="pre">--no-cntlibs</span></code> argument is deprecated and is replaced by the <code class="docutils literal notranslate"><span class="pre">--cuda-compat-mode=disabled</span></code> option.
+Refer to the <a class="reference internal" href="#known-issues"><span class="std std-doc">known issue</span></a> section for details on a known issue when using this flag.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Updated the CUDA base image version to 12.9.0.</p></li>
+</ul>
+</section>
+</section>
+<section id="id7">
+<h3>Included Packages<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.7</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.7</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubi8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.7</span></code>)</p></li>
+</ul>
+</section>
+<section id="known-issues">
+<h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<p>There is a <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1093">known issue</a> in this release that causes unexpected failures when using the default value of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag in the following scenarios:</p>
+<ul class="simple">
+<li><p>When invoking <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> directly. For example if you are using Enroot containers with Slurm.</p></li>
+<li><p>When older versions of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> packages are used with the latest <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> packages.
+For example if you are only pinning the <code class="docutils literal notranslate"><span class="pre">nvidia-contianer-toolkit</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package versions.</p></li>
+</ul>
+<p>This issue is caused by container flags being discarded when handling the default values of the <code class="docutils literal notranslate"><span class="pre">cuda-compat-mode</span></code> flag.
+This flag was added to the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span> <span class="pre">configure</span></code> command in the this release.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you are impacted by this issue, its recommended that you continue to use Container Toolkit v1.17.6 and pin all dependencies to v1.17.6 until this issue is resolved in the next patch release.</p>
+</div>
+<section id="pin-dependencies-to-container-toolkit-1-17-6">
+<h4>Pin dependencies to Container Toolkit 1.17.6<a class="headerlink" href="#pin-dependencies-to-container-toolkit-1-17-6" title="Permalink to this headline">#</a></h4>
+<p><strong>Using <code class="docutils literal notranslate"><span class="pre">apt</span></code> (Ubuntu, Debian):</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1</span>
+<span class="go">sudo apt-get install -y --allow-downgrades \</span>
+<span class="go">        nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
+</pre></div>
+</div>
+<p><strong>Using <code class="docutils literal notranslate"><span class="pre">dnf</span></code> (RHEL/CentOS, Fedora, Amazon Linux):</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.6-1</span>
+<span class="go">sudo dnf install -y \</span>
+<span class="go">        nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        libnvidia-container-tools-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
+<span class="go">        libnvidia-container1-${NVIDIA_CONTAINER_TOOLKIT_VERSION}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="nvidia-container-toolkit-1-17-6">
+<h2>NVIDIA Container Toolkit 1.17.6<a class="headerlink" href="#nvidia-container-toolkit-1-17-6" title="Permalink to this headline">#</a></h2>
+<p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.6</span></code> is a bugfix and minor feature release.</p>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.6</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.6</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.6</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.6</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubi8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.6-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.6</span></code>)</p></li>
+</ul>
+<section id="id8">
+<h3>Fixes and Features<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h3>
+<section id="id9">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Added logic to skip files when user has insufficient permissions to read them. This prevents errors discovering IPC sockets when the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> is run as a non-root user.</p></li>
+</ul>
+</section>
+<section id="id10">
+<h4>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Added functionality to allow the container runtime executable path to be specified when configuring containerd. The allows the Toolkit Container to be used in environments where multiple containerd executables are available.</p></li>
+<li><p>Updated the CUDA base image version to 12.8.1.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="nvidia-container-toolkit-1-17-5">
+<h2>NVIDIA Container Toolkit 1.17.5<a class="headerlink" href="#nvidia-container-toolkit-1-17-5" title="Permalink to this headline">#</a></h2>
+<p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.17.5</span></code> is a bugfix and minor feature release.</p>
+<p>The following packages are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span> <span class="pre">1.17.5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span> <span class="pre">1.17.5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.5</span></code></p></li>
+</ul>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubi8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.5-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.5</span></code>)</p></li>
+</ul>
+<section id="id11">
+<h3>Fixes and Features<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Re-added support for CUDA Forward Compatibility (removed by default in v1.17.4) using a dedicated <code class="docutils literal notranslate"><span class="pre">enable-cuda-compat</span></code> hook. This can be disabled using a <code class="docutils literal notranslate"><span class="pre">disable-cuda-compat-lib-hook</span></code> feature flag and can be skipped from CDI specification generation when using the <code class="docutils literal notranslate"><span class="pre">nvcdi</span></code> API to allow compatibility with older NVIDIA Container Toolkit installations.</p></li>
+<li><p>Added the IMEX binaries to a generated CDI specification if present on the host. This change ensures that the IMEX Daemon and IMEX Control executables are present in containers.</p></li>
+<li><p>Fixed a bug that may overwrite docker feature flags when configuring CDI Docker from the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span></code> command.</p></li>
+<li><p>Added an <code class="docutils literal notranslate"><span class="pre">ignore-imex-channel-requests</span></code> feature flag. When enabled, this feature flag ensures that the NVIDIA Container Runtime ignores IMEX channel requests to allow their injection to be managed solely by another component.</p></li>
+<li><p>Updated the <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook to run the host <code class="docutils literal notranslate"><span class="pre">ldconfig</span></code> from a MEMFD.</p></li>
+<li><p>Fixed a bug where <code class="docutils literal notranslate"><span class="pre">cdi</span></code> mode would not work with the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> flag even if the NVIDIA Container Runtime was used.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added functionality to enable CDI in the selected container engine (Containerd, Cri-o, Docker) if <code class="docutils literal notranslate"><span class="pre">CDI_ENABLED</span></code> is set.</p></li>
+<li><p>Updated the CUDA base image version to 12.8.0.</p></li>
+</ul>
+</section>
+</section>
 <section id="nvidia-container-toolkit-1-17-4">
 <h2>NVIDIA Container Toolkit 1.17.4<a class="headerlink" href="#nvidia-container-toolkit-1-17-4" title="Permalink to this headline">#</a></h2>
 <p>This version includes updates for:</p>
@@ -417,8 +672,8 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.4-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.4-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.4</span></code>)</p></li>
 </ul>
-<section id="fixes-and-features">
-<h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
+<section id="id13">
+<h3>Fixes and Features<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Disable the mounting of CUDA compat libraries from the container by default. The libraries are still available in their
 orignal location. If the previous behaviour is required, the <code class="docutils literal notranslate"><span class="pre">allow-cuda-compat-libs-from-container</span></code> feature flag can be enabled.</p></li>
@@ -428,15 +683,15 @@ This prevents conflicting ICD files causing errors when starting a container.</p
 to be located even if they are in non-standard locations.</p></li>
 <li><p>Add support for Containerd version 3 config files.</p></li>
 </ul>
-<section id="enhancements-to-libnvidia-container">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#enhancements-to-libnvidia-container" title="Permalink to this headline">#</a></h4>
+<section id="id14">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Add a <code class="docutils literal notranslate"><span class="pre">--no-cntlibs</span></code> CLI option to <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code>.</p></li>
 </ul>
 </section>
 </section>
-<section id="enhancements-to-container-toolkit-container-images">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#enhancements-to-container-toolkit-container-images" title="Permalink to this headline">#</a></h3>
+<section id="id15">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.6.3.</p></li>
 </ul>
@@ -466,13 +721,13 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.3-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.3-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.3</span></code>)</p></li>
 </ul>
-<section id="id1">
-<h3>Fixes and Features<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<section id="id16">
+<h3>Fixes and Features<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Only allow host-relative LDConfig paths by default. The previous behaviour of allowing container-relative LDConfig paths can explicitly enable.</p></li>
 </ul>
-<section id="id2">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h4>
+<section id="id17">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Create virtual copy of host ldconfig binary before calling fexecve() to update the container’s ldcache.</p></li>
 </ul>
@@ -489,13 +744,13 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span> <span class="pre">1.17.2</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span> <span class="pre">1.17.2</span></code></p></li>
 </ul>
-<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> conatiners are included:</p>
+<p>The following <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> containers are included:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.2-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.2</span></code>)</p></li>
 </ul>
-<section id="id3">
-<h3>Fixes and Features<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<section id="id18">
+<h3>Fixes and Features<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug where legacy images would set imex channels as <code class="docutils literal notranslate"><span class="pre">all</span></code>.container to fail to start.</p></li>
 </ul>
@@ -516,16 +771,16 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.1-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.1-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.1</span></code>)</p></li>
 </ul>
-<section id="id4">
-<h3>Fixes and Features<a class="headerlink" href="#id4" title="Permalink to this headline">#</a></h3>
+<section id="id19">
+<h3>Fixes and Features<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug where specific symlinks existing in a container image could cause a container to fail to start.</p></li>
 <li><p>Fixed a bug on Tegra-based systems where a container would fail to start.</p></li>
 <li><p>Fixed a bug where the default container runtime config path was not properly set.</p></li>
 </ul>
 </section>
-<section id="id5">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id5" title="Permalink to this headline">#</a></h3>
+<section id="id20">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added a fallback to using a config file if the current runtime config can not be determined from the command line. This fixes deployments on environments such as microk8s.</p></li>
 </ul>
@@ -553,8 +808,8 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.0-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.17.0</span></code>)</p></li>
 </ul>
-<section id="id6">
-<h3>Fixes and Features<a class="headerlink" href="#id6" title="Permalink to this headline">#</a></h3>
+<section id="id21">
+<h3>Fixes and Features<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug where symlinks created as a container starts could escape the container root. This fix addresses CVE-2024-0134.</p></li>
 <li><p>Fixed a bug with locating <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code> in the ldcache while generating CDI specifications. This fix enables the toolkit to locate driver libraries on systems that use a custom path for the driver installation.</p></li>
@@ -563,17 +818,17 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p>Added support for requesting IMEX channels as volume mounts.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">disable-imex-channel-creation</span></code> feature flag to disable the creation of IMEX channel device nodes when creating a container.</p></li>
 <li><p>Added IMEX channel device nodes to the CDI specifications in <code class="docutils literal notranslate"><span class="pre">management</span></code> mode.</p></li>
-<li><p>Added the creation of select driver symlinks (e.g. <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code>) in CDI specification generation to match the behavior in the <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode.</p></li>
+<li><p>Added the creation of select driver symlinks (such as <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code>) in CDI specification generation to match the behavior in the <code class="docutils literal notranslate"><span class="pre">legacy</span></code> mode.</p></li>
 </ul>
 </section>
-<section id="id7">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id7" title="Permalink to this headline">#</a></h3>
+<section id="id22">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added support for querying current container runtime configurations from the command line instead of config files. This ensures that the effective config is used when configuring the NVIDIA Container Runtimes.</p></li>
 <li><p>Updated the CUDA base image version to 12.6.2.</p></li>
 </ul>
-<section id="id8">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id8" title="Permalink to this headline">#</a></h4>
+<section id="id23">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id23" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--no-create-imex-channels</span></code> command line option.</p></li>
 </ul>
@@ -603,20 +858,20 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.2-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.2-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.1</span></code>)</p></li>
 </ul>
-<section id="id9">
-<h3>Fixes and Features<a class="headerlink" href="#id9" title="Permalink to this headline">#</a></h3>
+<section id="id24">
+<h3>Fixes and Features<a class="headerlink" href="#id24" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Excluded <code class="docutils literal notranslate"><span class="pre">libnvidia-allocator</span></code> from graphics mounts. This fixes a bug that leaks mounts when a container is started with bi-directional mount propagation.</p></li>
-<li><p>Used empty string for default <code class="docutils literal notranslate"><span class="pre">runtime-config-override</span></code>. This removes a redundant warning for runtimes (e.g. Docker) where this is not applicable.</p></li>
+<li><p>Used empty string for default <code class="docutils literal notranslate"><span class="pre">runtime-config-override</span></code>. This removes a redundant warning for runtimes (such as Docker) where this is not applicable.</p></li>
 </ul>
 </section>
-<section id="id10">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id10" title="Permalink to this headline">#</a></h3>
+<section id="id25">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id25" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.6.0.</p></li>
 </ul>
-<section id="id11">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id11" title="Permalink to this headline">#</a></h4>
+<section id="id26">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--no-gsp-firmware</span></code> command line option.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--no-fabricmanager</span></code> command line option.</p></li>
@@ -640,8 +895,8 @@ to be located even if they are in non-standard locations.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.1-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.1-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.1</span></code>)</p></li>
 </ul>
-<section id="id12">
-<h3>Fixes and Features<a class="headerlink" href="#id12" title="Permalink to this headline">#</a></h3>
+<section id="id27">
+<h3>Fixes and Features<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed bug with processing errors during CDI spec generation for MIG devices.</p></li>
 </ul>
@@ -669,8 +924,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.0-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.0-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.16.0</span></code>)</p></li>
 </ul>
-<section id="id13">
-<h3>Fixes and Features<a class="headerlink" href="#id13" title="Permalink to this headline">#</a></h3>
+<section id="id28">
+<h3>Fixes and Features<a class="headerlink" href="#id28" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added the injection of additional graphics libraries for improved X11 functionality.</p></li>
 <li><p>Added support for extracting runtime options from the default runtime instead of assuming <code class="docutils literal notranslate"><span class="pre">runc</span></code>.</p></li>
@@ -686,8 +941,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p>Switched to using <code class="docutils literal notranslate"><span class="pre">:</span></code> as list separator in the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">config</span> <span class="pre">--set</span></code> command. This fixes a bug when trying to set config options that are lists.</p></li>
 </ul>
 </section>
-<section id="id14">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id14" title="Permalink to this headline">#</a></h3>
+<section id="id29">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id29" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.5.1.</p></li>
 <li><p>Added support for custom driver installation paths.</p></li>
@@ -716,8 +971,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.15.0-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.15.0-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.15.0</span></code>)</p></li>
 </ul>
-<section id="packaging-changes">
-<h3>Packaging Changes<a class="headerlink" href="#packaging-changes" title="Permalink to this headline">#</a></h3>
+<section id="id30">
+<h3>Packaging Changes<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Removed the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> packages.</p></li>
 <li><p>Removed the <code class="docutils literal notranslate"><span class="pre">libseccomp</span></code> dependency from the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package.</p></li>
@@ -725,8 +980,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p>Removed the <code class="docutils literal notranslate"><span class="pre">libnvidia-container0</span></code> jetpack dependency included for legacy Tegra-based systems.</p></li>
 </ul>
 </section>
-<section id="id15">
-<h3>Fixes and Features<a class="headerlink" href="#id15" title="Permalink to this headline">#</a></h3>
+<section id="id31">
+<h3>Fixes and Features<a class="headerlink" href="#id31" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Included <code class="docutils literal notranslate"><span class="pre">nvidia/nvoptix.bin</span></code> and <code class="docutils literal notranslate"><span class="pre">vulkan/icd.d/nvidia_layers.json</span></code> in list of graphics mounts.</p></li>
 <li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">config</span></code> command when using <code class="docutils literal notranslate"><span class="pre">--set</span></code>. The types of applied config options are now applied correctly.</p></li>
@@ -737,8 +992,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--cdi.enabled</span></code> option to <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span></code> command to enable CDI in containerd and Docker. For CDI support, Docker 25 or later is required.</p></li>
 </ul>
 </section>
-<section id="id16">
-<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id16" title="Permalink to this headline">#</a></h3>
+<section id="id32">
+<h3>Enhancements to container-toolkit Container Images<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.4.1.</p></li>
 <li><p>Removed the centos7 image. The ubi8 image can be used on all RPM-based platforms.</p></li>
@@ -760,8 +1015,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.6-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.6-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.6</span></code>)</p></li>
 </ul>
-<section id="id17">
-<h3>Fixes and Features<a class="headerlink" href="#id17" title="Permalink to this headline">#</a></h3>
+<section id="id33">
+<h3>Fixes and Features<a class="headerlink" href="#id33" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add support for extracting device major number from <code class="docutils literal notranslate"><span class="pre">/proc/devices</span></code> if <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> is used as a device name over <code class="docutils literal notranslate"><span class="pre">nvidia-frontend</span></code>. This fixes the creation of <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks for <code class="docutils literal notranslate"><span class="pre">550.x</span></code> drivers.</p></li>
 <li><p>Add support for selecting IMEX channels using the <code class="docutils literal notranslate"><span class="pre">NVIDIA_IMEX_CHANNELS</span></code> environement variable.</p></li>
@@ -783,8 +1038,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.5-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.5-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.5</span></code>)</p></li>
 </ul>
-<section id="id18">
-<h3>Fixes and Features<a class="headerlink" href="#id18" title="Permalink to this headline">#</a></h3>
+<section id="id34">
+<h3>Fixes and Features<a class="headerlink" href="#id34" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span> <span class="pre">--cdi.enabled</span></code> command for Docker.
 This was incorrectly setting <code class="docutils literal notranslate"><span class="pre">experimental</span> <span class="pre">=</span> <span class="pre">true</span></code> instead of setting
@@ -807,14 +1062,14 @@ This was incorrectly setting <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.4-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.4-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.4</span></code>)</p></li>
 </ul>
-<section id="id19">
-<h3>Packaging Changes<a class="headerlink" href="#id19" title="Permalink to this headline">#</a></h3>
+<section id="id35">
+<h3>Packaging Changes<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Removed the <code class="docutils literal notranslate"><span class="pre">libseccomp</span></code> dependency from the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package.</p></li>
 </ul>
 </section>
-<section id="id20">
-<h3>Fixes and Features<a class="headerlink" href="#id20" title="Permalink to this headline">#</a></h3>
+<section id="id36">
+<h3>Fixes and Features<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Included <code class="docutils literal notranslate"><span class="pre">nvidia/nvoptix.bin</span></code> and <code class="docutils literal notranslate"><span class="pre">vulkan/icd.d/nvidia_layers.json</span></code> in list of graphics mounts.</p></li>
 <li><p>Fixed a bug in <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">config</span></code> command when using <code class="docutils literal notranslate"><span class="pre">--set</span></code>. The types of applied config options are now applied correctly.</p></li>
@@ -824,14 +1079,14 @@ This was incorrectly setting <code class="docutils literal notranslate"><span cl
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">crun</span></code> to the list of configured low-level runtimes. This enhancement improves CRI-O support.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--cdi.enabled</span></code> option to <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span></code> command to enable CDI in containerd and Docker. For CDI support, Docker 25 or later is required.</p></li>
 </ul>
-<section id="id21">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id21" title="Permalink to this headline">#</a></h4>
+<section id="id37">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added detection of <code class="docutils literal notranslate"><span class="pre">libnvdxgdmal.so.1</span></code> on WSL2 systems. This library is required for newer driver versions.</p></li>
 </ul>
 </section>
-<section id="id22">
-<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id22" title="Permalink to this headline">#</a></h4>
+<section id="id38">
+<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id38" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.3.1.</p></li>
 </ul>
@@ -853,10 +1108,10 @@ This was incorrectly setting <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.3-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.3-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.3</span></code>)</p></li>
 </ul>
-<section id="id23">
-<h3>Fixes and Features<a class="headerlink" href="#id23" title="Permalink to this headline">#</a></h3>
-<section id="id24">
-<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id24" title="Permalink to this headline">#</a></h4>
+<section id="id39">
+<h3>Fixes and Features<a class="headerlink" href="#id39" title="Permalink to this headline">#</a></h3>
+<section id="id40">
+<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id40" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.2.2.</p></li>
 </ul>
@@ -878,8 +1133,8 @@ This was incorrectly setting <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.2-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.2-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.2</span></code>)</p></li>
 </ul>
-<section id="id25">
-<h3>Fixes and Features<a class="headerlink" href="#id25" title="Permalink to this headline">#</a></h3>
+<section id="id41">
+<h3>Fixes and Features<a class="headerlink" href="#id41" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug on Tegra-based systems where expected symlinks were not created in a container. This could cause certain applications to fail to start.</p></li>
 </ul>
@@ -900,14 +1155,14 @@ This was incorrectly setting <code class="docutils literal notranslate"><span cl
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.1-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.1-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.1</span></code>)</p></li>
 </ul>
-<section id="id26">
-<h3>Fixes and Features<a class="headerlink" href="#id26" title="Permalink to this headline">#</a></h3>
+<section id="id42">
+<h3>Fixes and Features<a class="headerlink" href="#id42" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug where the contents of <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-runtime/config.toml</span></code> are ignored by the NVIDIA Container Runtime Hook.
 This fix means that settings such as <code class="docutils literal notranslate"><span class="pre">no-cgroups</span></code> or a logfile path are now respected.</p></li>
 </ul>
-<section id="id27">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id27" title="Permalink to this headline">#</a></h4>
+<section id="id43">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id43" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Switched to using <code class="docutils literal notranslate"><span class="pre">libelf.so</span></code> from <code class="docutils literal notranslate"><span class="pre">elfutils-libelf-devel</span></code> on RPM-based systems.
 This change is a build-only change.</p></li>
@@ -939,8 +1194,8 @@ This toolkit package includes a utility to configure the Docker daemon to use th
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.0-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.14.0-ubuntu20.04</span></code></p></li>
 </ul>
-<section id="id28">
-<h3>Fixes and Features<a class="headerlink" href="#id28" title="Permalink to this headline">#</a></h3>
+<section id="id44">
+<h3>Fixes and Features<a class="headerlink" href="#id44" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Improved support for the Container Device Interface (CDI) on Tegra-based systems.</p></li>
 <li><p>Simplified the packaging and distribution of the toolkit.</p>
@@ -949,16 +1204,16 @@ These packages are compatible with all supported distributions.
 This enhancement simplifies the installation process instead of releasing distributions-specific packages.</p>
 </li>
 </ul>
-<section id="id29">
-<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id29" title="Permalink to this headline">#</a></h4>
+<section id="id45">
+<h4>Enhancements to libnvidia-container<a class="headerlink" href="#id45" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added logic to generate the <code class="docutils literal notranslate"><span class="pre">nvc.h</span></code> header file automatically so that the version does not need to be updated explicitly.</p></li>
 <li><p>Added the Shared Compiler Library, <code class="docutils literal notranslate"><span class="pre">libnvidia-gpucomp.so</span></code>, to the list of included compute libraries.</p></li>
 <li><p>Added OpenSSL 3 support to the Encrypt / Decrypt library.</p></li>
 </ul>
 </section>
-<section id="id30">
-<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id30" title="Permalink to this headline">#</a></h4>
+<section id="id46">
+<h4>Enhancements to container-toolkit container images<a class="headerlink" href="#id46" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Updated the CUDA base image version to 12.2.0.</p></li>
 <li><p>Standardized the environment variable names that are used to configure container engines.</p></li>
@@ -984,8 +1239,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.5-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.5-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.5</span></code>)</p></li>
 </ul>
-<section id="id31">
-<h3>Fixes and Features<a class="headerlink" href="#id31" title="Permalink to this headline">#</a></h3>
+<section id="id47">
+<h3>Fixes and Features<a class="headerlink" href="#id47" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Removed the dependency on <code class="docutils literal notranslate"><span class="pre">coreutils</span></code> when installing the NVIDIA Container Toolkit on RPM-based systems. Now the packages can be installed on clean systems using, for example, Anaconda.</p></li>
 <li><p>Added support for detecting GSP firmware at custom paths when generating CDI specifications.</p></li>
@@ -1013,8 +1268,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.4-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.4</span></code>)</p></li>
 </ul>
-<section id="id32">
-<h3>Fixes and Features<a class="headerlink" href="#id32" title="Permalink to this headline">#</a></h3>
+<section id="id48">
+<h3>Fixes and Features<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h3>
 <section id="specific-to-container-toolkit-container-images">
 <h4>specific to container-toolkit container images<a class="headerlink" href="#specific-to-container-toolkit-container-images" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
@@ -1038,8 +1293,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.3-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.3-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.3</span></code>)</p></li>
 </ul>
-<section id="id33">
-<h3>Fixes and Features<a class="headerlink" href="#id33" title="Permalink to this headline">#</a></h3>
+<section id="id49">
+<h3>Fixes and Features<a class="headerlink" href="#id49" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed permissions in generated CDI specification files. Specifications files are now generated with <code class="docutils literal notranslate"><span class="pre">644</span></code> permissions to allow non-root users to read these. This means that rootless applications such as Podman can also read the specifications to inject CDI devices.</p></li>
 <li><p>Fixed a bug that created an incorrect symlink to <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> on WSL2 systems with multiple driver stores. The bug was triggered sometimes when a system had an integrated GPU and a discrete NVIDIA GPU, for example.</p></li>
@@ -1047,8 +1302,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p>Fixed a bug where additional modifications – such as the injection of graphics libraries and devices – were applied in CDI mode.</p></li>
 <li><p>Fixed loading of kernel modules and creation of device nodes in containerized use cases when using the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">system</span> <span class="pre">create-dev-char-symlinks</span></code> command.</p></li>
 </ul>
-<section id="id34">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id34" title="Permalink to this headline">#</a></h4>
+<section id="id50">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added support for specifying options using the same environment variable across supported container runtimes. This simplifies integration with the GPU Operator.</p></li>
 </ul>
@@ -1070,8 +1325,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.2-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.2-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.2</span></code>)</p></li>
 </ul>
-<section id="id35">
-<h3>Fixes and Features<a class="headerlink" href="#id35" title="Permalink to this headline">#</a></h3>
+<section id="id51">
+<h3>Fixes and Features<a class="headerlink" href="#id51" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook.path</span></code> config option to specify NVIDIA Container Runtime Hook path explicitly.</p></li>
 <li><p>Fixed a bug in creation of <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks by failing operation if kernel modules are not loaded.</p></li>
@@ -1079,14 +1334,14 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p>Added option to create device nodes when creating <code class="docutils literal notranslate"><span class="pre">/dev/char</span></code> symlinks</p></li>
 <li><p>Fixed a bug where failures to open debug log files were considered fatal errors. This could cause failures in rootless environments when the user had insufficient permissions to open the log file.</p></li>
 </ul>
-<section id="id36">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id36" title="Permalink to this headline">#</a></h4>
+<section id="id52">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id52" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added OpenSSL 3 support to the Encrypt / Decrypt library.</p></li>
 </ul>
 </section>
-<section id="id37">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id37" title="Permalink to this headline">#</a></h4>
+<section id="id53">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id53" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Bumped CUDA base image version to 12.1.1.</p></li>
 </ul>
@@ -1108,10 +1363,10 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.1-ubi8</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.1-ubuntu20.04</span></code> (also as <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.13.1</span></code>)</p></li>
 </ul>
-<section id="id38">
-<h3>Fixes and Features<a class="headerlink" href="#id38" title="Permalink to this headline">#</a></h3>
+<section id="id54">
+<h3>Fixes and Features<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed a bug which would cause the update of an ldcache in the container to fail for images that do no use ldconfig (e.g. <code class="docutils literal notranslate"><span class="pre">busybox</span></code>).</p></li>
+<li><p>Fixed a bug which would cause the update of an ldcache in the container to fail for images that do no use ldconfig (such as <code class="docutils literal notranslate"><span class="pre">busybox</span></code>).</p></li>
 <li><p>Fixed a bug where a failure to determine the CUDA driver version would cause the container to fail to start if <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> included <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> on Debian systems.</p></li>
 <li><p>Fixed CDI specification generation on Debian systems.</p></li>
 </ul>
@@ -1145,23 +1400,23 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <p class="admonition-title">Note</p>
 <p>This will be the last release that updates the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> packages. All required functionality is now included in the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package. This includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.</p>
 </div>
-<section id="id39">
-<h3>Packaging Changes<a class="headerlink" href="#id39" title="Permalink to this headline">#</a></h3>
+<section id="id55">
+<h3>Packaging Changes<a class="headerlink" href="#id55" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug in the uninstall scriplet on RPM-based systems that would issue an error due to a missing <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook</span></code> symlink. This did not prevent the uninstallation of the package.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">fedora35</span></code> as a packaging target. Use the <code class="docutils literal notranslate"><span class="pre">centos8</span></code> packages instead.</p></li>
 </ul>
 </section>
-<section id="id40">
-<h3>Fixes and Features<a class="headerlink" href="#id40" title="Permalink to this headline">#</a></h3>
+<section id="id56">
+<h3>Fixes and Features<a class="headerlink" href="#id56" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug when running containers using a generated CDI specification or when <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> includes <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> or is set to <code class="docutils literal notranslate"><span class="pre">all</span></code>. Now, containers no longer fail with an error message indicating a missing <code class="docutils literal notranslate"><span class="pre">/dev/dri</span></code> or <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps</span></code> path.</p></li>
 <li><p>Added support for detecting and injecting multiple GSP firmware files as required by the <code class="docutils literal notranslate"><span class="pre">525.x</span></code> versions of the NVIDIA GPU drivers.</p></li>
 <li><p>Fixed an issue that caused the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> path to be blank in generated CDI specifications.</p></li>
 <li><p>Fixed missing NVML symbols for <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> on some platforms.  For more information, see <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/49">issue #49</a>.</p></li>
 </ul>
-<section id="id41">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id41" title="Permalink to this headline">#</a></h4>
+<section id="id57">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id57" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added support for detecting and injecting multiple GSP firmware files as required by the <code class="docutils literal notranslate"><span class="pre">525.x</span></code> versions of the NVIDIA GPU drivers.</p></li>
 <li><p>Fixed a segmentation fault when RPC initialization fails.</p></li>
@@ -1169,8 +1424,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">fedora35</span></code> as a packaging target. Use the <code class="docutils literal notranslate"><span class="pre">centos8</span></code> packages instead.</p></li>
 </ul>
 </section>
-<section id="id42">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id42" title="Permalink to this headline">#</a></h4>
+<section id="id58">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id58" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">--cdi-enabled</span></code> flag to toolkit config. When this is set, a CDI specification for use in management containers will be generated.</p></li>
 <li><p>Fixed bug where <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> was not installed onto the host when installing the rest of the toolkit components.</p></li>
@@ -1184,36 +1439,36 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 </ul>
 </section>
 </section>
-<section id="known-issues">
-<h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<section id="id59">
+<h3>Known Issues<a class="headerlink" href="#id59" title="Permalink to this headline">#</a></h3>
 </section>
 </section>
 <section id="nvidia-container-toolkit-1-12-1">
 <h2>NVIDIA Container Toolkit 1.12.1<a class="headerlink" href="#nvidia-container-toolkit-1-12-1" title="Permalink to this headline">#</a></h2>
 <p>This release of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.12.1</span></code> is primarily a bugfix release.</p>
-<section id="id43">
-<h3>Packaging Changes<a class="headerlink" href="#id43" title="Permalink to this headline">#</a></h3>
+<section id="id60">
+<h3>Packaging Changes<a class="headerlink" href="#id60" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug in the uninstall scriplet on RPM-based systems that would issue an error due to a missing <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook</span></code> symlink. This did not prevent the uninstallation of the package.</p></li>
 <li><p>Removed <code class="docutils literal notranslate"><span class="pre">fedora35</span></code> as a packaging target. Use the <code class="docutils literal notranslate"><span class="pre">centos8</span></code> packages instead.</p></li>
 </ul>
 </section>
-<section id="id44">
-<h3>Fixes and Features<a class="headerlink" href="#id44" title="Permalink to this headline">#</a></h3>
+<section id="id61">
+<h3>Fixes and Features<a class="headerlink" href="#id61" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fixed a bug when running containers using a generated CDI specification or when <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> includes <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> or is set to <code class="docutils literal notranslate"><span class="pre">all</span></code>. Now, containers no longer fail with an error message indicating a missing <code class="docutils literal notranslate"><span class="pre">/dev/dri</span></code> or <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps</span></code> path.</p></li>
 <li><p>Added support for detecting and injecting multiple GSP firmware files as required by the <code class="docutils literal notranslate"><span class="pre">525.x</span></code> versions of the NVIDIA GPU drivers.</p></li>
 <li><p>Fixed an issue that caused the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> path to be blank in generated CDI specifications.</p></li>
 <li><p>Fixed missing NVML symbols for <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> on some platforms.  For more information, see <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/49">issue #49</a>.</p></li>
 </ul>
-<section id="id45">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id45" title="Permalink to this headline">#</a></h4>
+<section id="id62">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id62" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Added support for detecting and injecting multiple GSP firmware files as required by the <code class="docutils literal notranslate"><span class="pre">525.x</span></code> versions of the NVIDIA GPU drivers.</p></li>
 </ul>
 </section>
-<section id="id46">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id46" title="Permalink to this headline">#</a></h4>
+<section id="id63">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id63" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Updated CUDA base images to <code class="docutils literal notranslate"><span class="pre">12.1.0</span></code>.</p></li>
 </ul>
@@ -1249,38 +1504,38 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <p class="admonition-title">Note</p>
 <p>This will be the last release that updates the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> packages. All required functionality is now included in the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package. This includes a utility to configure the Docker daemon to use the NVIDIA Container Runtime.</p>
 </div>
-<section id="id47">
-<h3>Packaging Changes<a class="headerlink" href="#id47" title="Permalink to this headline">#</a></h3>
+<section id="id64">
+<h3>Packaging Changes<a class="headerlink" href="#id64" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> packages was updated to allow upgrades from pre-<code class="docutils literal notranslate"><span class="pre">v1.11.0</span></code> versions of the package without removing the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook</span></code> executable.</p></li>
 <li><p>On certain distributions, full mirrors have been removed. The links to the <code class="docutils literal notranslate"><span class="pre">.list</span></code> and <code class="docutils literal notranslate"><span class="pre">.repo</span></code> files for Debian and RPM-based distributions respectively have been maintained to ensure that the official installation instructions continue to function. This change serves to further optimize the size of our package repository.</p></li>
 </ul>
 </section>
-<section id="id48">
-<h3>Fixes and Features<a class="headerlink" href="#id48" title="Permalink to this headline">#</a></h3>
+<section id="id65">
+<h3>Fixes and Features<a class="headerlink" href="#id65" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command to generate CDI specifications for available NVIDIA devices. The generated CDI specification can be used to provide access to NVIDIA devices in CDI-enabled container engines such as <code class="docutils literal notranslate"><span class="pre">podman</span></code> – especially in the rootless case.</p></li>
 <li><p>Add full support for headless Vulkan applications in containerized environments when <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> includes
 <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code>. This includes the injection of Vulkan ICD loaders as well as direct rendering devices.</p></li>
 <li><p>Improve the logging of errors in the NVIDIA Container Runtime.</p></li>
 </ul>
-<section id="id49">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id49" title="Permalink to this headline">#</a></h4>
+<section id="id66">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id66" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Include the NVVM compiler library in the set of injected compute libraries</p></li>
 <li><p>Skip the creation of files that are already mounted to allow paths such as <code class="docutils literal notranslate"><span class="pre">/var/run</span></code> to be mounted into containers.</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">nvcubins.bin</span></code> to DriverStore components under WSL2</p></li>
 </ul>
 </section>
-<section id="id50">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id50" title="Permalink to this headline">#</a></h4>
+<section id="id67">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Update CUDA base images to <code class="docutils literal notranslate"><span class="pre">12.0.1</span></code></p></li>
 </ul>
 </section>
 </section>
-<section id="id51">
-<h3>Known Issues<a class="headerlink" href="#id51" title="Permalink to this headline">#</a></h3>
+<section id="id68">
+<h3>Known Issues<a class="headerlink" href="#id68" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>When running a container using CDI or if <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> includes <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code>, and error may be raised citing missing
 <code class="docutils literal notranslate"><span class="pre">/dev/dri</span></code> and / or <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps</span></code> paths in container if the selected device does not have such nodes associated with it.</p></li>
@@ -1314,8 +1569,8 @@ This runtime is superceded by the NVIDIA Container Runtime in CDI mode.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.11.0</span></code></p></li>
 </ul>
 <p>Note that this release does not include an update to <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> and is compatible with <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.11.0</span></code>.</p>
-<section id="id52">
-<h3>Packaging Changes<a class="headerlink" href="#id52" title="Permalink to this headline">#</a></h3>
+<section id="id69">
+<h3>Packaging Changes<a class="headerlink" href="#id69" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>An <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package has been introduced that allows for the higher-level components to be
 installed in cases where the NVIDIA Container Runtime Hook, NVIDIA Container CLI, and NVIDIA Container Library are not required.
@@ -1325,8 +1580,8 @@ This includes Tegra-based systems where the CSV mode of the NVIDIA Container Run
 <li><p>Mirrors for older distributions have been removed to limit the size of the package repository.</p></li>
 </ul>
 </section>
-<section id="id53">
-<h3>Fixes and Features<a class="headerlink" href="#id53" title="Permalink to this headline">#</a></h3>
+<section id="id70">
+<h3>Fixes and Features<a class="headerlink" href="#id70" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Fix bug in CSV mode where libraries listed as <code class="docutils literal notranslate"><span class="pre">sym</span></code> entries in mount specification are not added to the LDCache.</p></li>
 <li><p>Rename the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> executable to <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook</span></code> to better indicate intent.
@@ -1335,25 +1590,25 @@ A symlink named <code class="docutils literal notranslate"><span class="pre">nvi
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">cdi</span></code> mode to NVIDIA Container Runtime</p></li>
 <li><p>Add discovery of GPUDirect Storage (<code class="docutils literal notranslate"><span class="pre">nvidia-fs*</span></code>) devices if the <code class="docutils literal notranslate"><span class="pre">NVIDIA_GDS</span></code> environment variable of the container is set to <code class="docutils literal notranslate"><span class="pre">enabled</span></code></p></li>
 <li><p>Add discovery of MOFED Infiniband devices if the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MOFED</span></code> environment variable of the container is set to <code class="docutils literal notranslate"><span class="pre">enabled</span></code></p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span></code> command to configure the Docker config file (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code>) for use with the NVIDIA Container Runtime.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">runtime</span> <span class="pre">configure</span></code> command to configure the Docker config file (such as <code class="docutils literal notranslate"><span class="pre">/etc/docker/daemon.json</span></code>) for use with the NVIDIA Container Runtime.</p></li>
 </ul>
-<section id="id54">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id54" title="Permalink to this headline">#</a></h4>
+<section id="id71">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id71" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Fix bug where LDCache was not updated when the <code class="docutils literal notranslate"><span class="pre">--no-pivot-root</span></code> option was specified</p></li>
 <li><p>Preload <code class="docutils literal notranslate"><span class="pre">libgcc_s.so.1</span></code> on arm64 systems</p></li>
 </ul>
 </section>
-<section id="id55">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id55" title="Permalink to this headline">#</a></h4>
+<section id="id72">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Update CUDA base images to <code class="docutils literal notranslate"><span class="pre">11.7.1</span></code></p></li>
 <li><p>Allow <code class="docutils literal notranslate"><span class="pre">accept-nvidia-visible-devices-*</span></code> config options to be set by toolkit container</p></li>
 </ul>
 </section>
 </section>
-<section id="id56">
-<h3>Known Issues<a class="headerlink" href="#id56" title="Permalink to this headline">#</a></h3>
+<section id="id73">
+<h3>Known Issues<a class="headerlink" href="#id73" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>When upgrading from an earlier version of the NVIDIA Container Toolkit on RPM-based systems, a package manager such as <code class="docutils literal notranslate"><span class="pre">yum</span></code> may remove
 the installed <code class="docutils literal notranslate"><span class="pre">/usr/bin/nvidia-container-runtime-hook</span></code> executable due to the post-uninstall hooks defined in the older package version. To avoid this
@@ -1409,8 +1664,8 @@ specification directly instead of relying on the NVIDIA Container CLI.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.10.0</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.11.0</span></code></p></li>
 </ul>
-<section id="id57">
-<h3>Packaging Changes<a class="headerlink" href="#id57" title="Permalink to this headline">#</a></h3>
+<section id="id74">
+<h3>Packaging Changes<a class="headerlink" href="#id74" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The package repository includes support for Ubuntu 22.04. This redirects to the Ubuntu 18.04 packages.</p></li>
 <li><p>The package repository includes support for RHEL 9.0. This redirects to the Centos 8 packages.</p></li>
@@ -1418,8 +1673,8 @@ specification directly instead of relying on the NVIDIA Container CLI.</p>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> Debian packages were updated to allow installation with <code class="docutils literal notranslate"><span class="pre">moby-engine</span></code> instead of requiring <code class="docutils literal notranslate"><span class="pre">docker-ce</span></code>, <code class="docutils literal notranslate"><span class="pre">docker-ee</span></code>, or <code class="docutils literal notranslate"><span class="pre">docker.io</span></code>.</p></li>
 </ul>
 </section>
-<section id="id58">
-<h3>Fixes and Features<a class="headerlink" href="#id58" title="Permalink to this headline">#</a></h3>
+<section id="id75">
+<h3>Fixes and Features<a class="headerlink" href="#id75" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> CLI to provide utilities for interacting with the NVIDIA Container Toolkit</p></li>
 <li><p>Add a new mode to the NVIDIA Container Runtime targeted at Tegra-based systems using CSV-file based mount specifications.</p></li>
@@ -1427,22 +1682,22 @@ specification directly instead of relying on the NVIDIA Container CLI.</p>
 <li><p>Switch to debug logging to reduce log verbosity</p></li>
 <li><p>Support logging to logs requested in command line</p></li>
 <li><p>Allow low-level runtime path to be set explicitly as <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.runtimes</span></code> option</p></li>
-<li><p>Fix failure to locate low-level runtime if PATH envvar is unset</p></li>
+<li><p>Fix failure to locate low-level runtime if PATH environment variables is unset</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">--version</span></code> flag to all CLIs</p></li>
 </ul>
-<section id="id59">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id59" title="Permalink to this headline">#</a></h4>
+<section id="id76">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id76" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Bump <code class="docutils literal notranslate"><span class="pre">libtirpc</span></code> to <code class="docutils literal notranslate"><span class="pre">1.3.2</span></code></p></li>
 <li><p>Fix bug when running host ldconfig using glibc compiled with a non-standard prefix</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">libcudadebugger.so</span></code> to list of compute libraries</p></li>
-<li><p>[WSL2] Fix segmentation fault on WSL2s system with no adpaters present (e.g. <code class="docutils literal notranslate"><span class="pre">/dev/dxg</span></code> missing)</p></li>
+<li><p>[WSL2] Fix segmentation fault on WSL2s system with no adpaters present (such as <code class="docutils literal notranslate"><span class="pre">/dev/dxg</span></code> missing)</p></li>
 <li><p>Ignore pending MIG mode when checking if a device is MIG enabled</p></li>
 <li><p>[WSL2] Fix bug where <code class="docutils literal notranslate"><span class="pre">/dev/dxg</span></code> is not mounted when <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> does not include “compute”</p></li>
 </ul>
 </section>
-<section id="id60">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id60" title="Permalink to this headline">#</a></h4>
+<section id="id77">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id77" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Fix a bug in applying runtime configuratin to containerd when version 1 config files are used</p></li>
 <li><p>Update base images to CUDA 11.7.0</p></li>
@@ -1452,8 +1707,8 @@ specification directly instead of relying on the NVIDIA Container CLI.</p>
 </ul>
 </section>
 </section>
-<section id="id61">
-<h3>Known Issues<a class="headerlink" href="#id61" title="Permalink to this headline">#</a></h3>
+<section id="id78">
+<h3>Known Issues<a class="headerlink" href="#id78" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">container-toolkit:v1.10.0</span></code> images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:</p>
 <ul>
@@ -1495,10 +1750,10 @@ It also includes enhancements for use on Tegra-systems and some notable bugfixes
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.9.0</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.10.0</span></code></p></li>
 </ul>
-<section id="id62">
-<h3>Fixes and Features<a class="headerlink" href="#id62" title="Permalink to this headline">#</a></h3>
-<section id="id63">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id63" title="Permalink to this headline">#</a></h4>
+<section id="id79">
+<h3>Fixes and Features<a class="headerlink" href="#id79" title="Permalink to this headline">#</a></h3>
+<section id="id80">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id80" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Add additional check for Tegra in <code class="docutils literal notranslate"><span class="pre">/sys/.../family</span></code> file in CLI</p></li>
 <li><p>Update jetpack-specific CLI option to only load Base CSV files by default</p></li>
@@ -1509,8 +1764,8 @@ It also includes enhancements for use on Tegra-systems and some notable bugfixes
 <li><p>Fix long-standing issue with running ldconfig on Debian systems</p></li>
 </ul>
 </section>
-<section id="id64">
-<h4>specific to container-toolkit container images<a class="headerlink" href="#id64" title="Permalink to this headline">#</a></h4>
+<section id="id81">
+<h4>specific to container-toolkit container images<a class="headerlink" href="#id81" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Publish an <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/k8s/container-toolkit:v1.9.0-ubuntu20.04</span></code> image based on <code class="docutils literal notranslate"><span class="pre">nvidia/cuda:11.6.0-base-ubuntu20.04</span></code></p></li>
 <li><p>The following images are available as multi-arch images including support for <code class="docutils literal notranslate"><span class="pre">linux/amd64</span></code> and <code class="docutils literal notranslate"><span class="pre">linux/arm64</span></code> platforms:</p>
@@ -1524,8 +1779,8 @@ It also includes enhancements for use on Tegra-systems and some notable bugfixes
 </ul>
 </section>
 </section>
-<section id="id65">
-<h3>Known Issues<a class="headerlink" href="#id65" title="Permalink to this headline">#</a></h3>
+<section id="id82">
+<h3>Known Issues<a class="headerlink" href="#id82" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">container-toolkit:v1.9.0</span></code> images have been released with the following known HIGH Vulnerability CVEs. These are from the base images and are not in libraries used by the components included in the container image as part of the NVIDIA Container Toolkit:</p>
 <ul>
@@ -1577,10 +1832,10 @@ NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class=
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.8.1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.9.1</span></code></p></li>
 </ul>
-<section id="id66">
-<h3>Fixes and Features<a class="headerlink" href="#id66" title="Permalink to this headline">#</a></h3>
-<section id="id67">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id67" title="Permalink to this headline">#</a></h4>
+<section id="id83">
+<h3>Fixes and Features<a class="headerlink" href="#id83" title="Permalink to this headline">#</a></h3>
+<section id="id84">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id84" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Fix bug in determining cgroup root when running in nested containers</p></li>
 <li><p>Fix permission issue when determining cgroup version under certain conditions</p></li>
@@ -1609,17 +1864,17 @@ NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class=
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.8.0</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.9.0</span></code></p></li>
 </ul>
-<section id="id68">
-<h3>Packaging Changes<a class="headerlink" href="#id68" title="Permalink to this headline">#</a></h3>
+<section id="id85">
+<h3>Packaging Changes<a class="headerlink" href="#id85" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Packages for Amazon Linux 1 are no longer built or published</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> container is built and released from the same repository as the NVIDIA Container Toolkit packages.</p></li>
 </ul>
 </section>
-<section id="id69">
-<h3>Fixes and Features<a class="headerlink" href="#id69" title="Permalink to this headline">#</a></h3>
-<section id="id70">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id70" title="Permalink to this headline">#</a></h4>
+<section id="id86">
+<h3>Fixes and Features<a class="headerlink" href="#id86" title="Permalink to this headline">#</a></h3>
+<section id="id87">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id87" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">cgroupv2</span></code> support</p></li>
 <li><p>Fix a bug where the GSP firmware path was mounted with write permissions instead of read-only</p></li>
@@ -1643,20 +1898,20 @@ The following packages are included:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span> <span class="pre">3.7.0</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span> <span class="pre">2.8.0</span></code></p></li>
 </ul>
-<section id="id71">
-<h3>Packaging Changes<a class="headerlink" href="#id71" title="Permalink to this headline">#</a></h3>
+<section id="id88">
+<h3>Packaging Changes<a class="headerlink" href="#id88" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>On Ubuntu <code class="docutils literal notranslate"><span class="pre">arm64</span></code> distributions the <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> package depends on both <code class="docutils literal notranslate"><span class="pre">libnvidia-container0</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> to support Jetson devices</p></li>
 </ul>
 </section>
-<section id="id72">
-<h3>Fixes and Features<a class="headerlink" href="#id72" title="Permalink to this headline">#</a></h3>
+<section id="id89">
+<h3>Fixes and Features<a class="headerlink" href="#id89" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Add a <code class="docutils literal notranslate"><span class="pre">supported-driver-capabilities</span></code> config option to allow for a subset of all driver capabilities to be specified</p></li>
 <li><p>Makes the fixes from <code class="docutils literal notranslate"><span class="pre">v1.6.0</span></code> to addresses an incompatibility with recent docker.io and containerd.io updates on Ubuntu installations (see <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-runtime/issues/157">NVIDIA/nvidia-container-runtime#157</a>) available on Jetson devices.</p></li>
 </ul>
-<section id="id73">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id73" title="Permalink to this headline">#</a></h4>
+<section id="id90">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id90" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Filter command line options based on <code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> library version</p></li>
 <li><p>Include <code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> version in CLI version output</p></li>
@@ -1688,8 +1943,8 @@ The following packages are included:</p>
 <p>As of version <code class="docutils literal notranslate"><span class="pre">2.7.0</span></code> the <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> package depends directly on <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code>.
 This means that the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> package is no longer required and may be uninstalled as part of the upgrade process.</p>
 </div>
-<section id="id74">
-<h3>Packaging Changes<a class="headerlink" href="#id74" title="Permalink to this headline">#</a></h3>
+<section id="id91">
+<h3>Packaging Changes<a class="headerlink" href="#id91" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package now provides the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> executable</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> package now depends directly on the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> directly</p></li>
@@ -1697,23 +1952,23 @@ This means that the <code class="docutils literal notranslate"><span class="pre"
 <li><p>Added packages for Amazon Linux 2 on AARC64 platforms for all components</p></li>
 </ul>
 </section>
-<section id="id75">
-<h3>Fixes and Features<a class="headerlink" href="#id75" title="Permalink to this headline">#</a></h3>
+<section id="id92">
+<h3>Fixes and Features<a class="headerlink" href="#id92" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Move OCI and command line checks for the NVIDIA Container Runtime to an internal go package (<code class="docutils literal notranslate"><span class="pre">oci</span></code>)</p></li>
 <li><p>Update OCI runtime specification dependency to <a class="reference external" href="https://github.com/opencontainers/runtime-spec/commit/a3c33d663ebc/">opencontainers/runtime-spec&#64;a3c33d6</a> to fix compatibility with docker when overriding clone3 syscall return value [fixes <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-runtime/issues/157">NVIDIA/nvidia-container-runtime#157</a>]</p></li>
 <li><p>Use relative path to OCI specification file (<code class="docutils literal notranslate"><span class="pre">config.json</span></code>) if bundle path is not specified as an argument to the nvidia-container-runtime</p></li>
 </ul>
-<section id="id76">
-<h4>specific to libnvidia-container<a class="headerlink" href="#id76" title="Permalink to this headline">#</a></h4>
+<section id="id93">
+<h4>specific to libnvidia-container<a class="headerlink" href="#id93" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Bump <code class="docutils literal notranslate"><span class="pre">nvidia-modprobe</span></code> dependency to <code class="docutils literal notranslate"><span class="pre">495.44</span></code> in the NVIDIA Container Library to allow for non-root monitoring of MIG devices</p></li>
 <li><p>Fix bug that lead to unexpected mount error when <code class="docutils literal notranslate"><span class="pre">/proc/driver/nvidia</span></code> does not exist on the host</p></li>
 </ul>
 </section>
 </section>
-<section id="id77">
-<h3>Known Issues<a class="headerlink" href="#id77" title="Permalink to this headline">#</a></h3>
+<section id="id94">
+<h3>Known Issues<a class="headerlink" href="#id94" title="Permalink to this headline">#</a></h3>
 <section id="dependency-errors-when-installing-older-versions-of-nvidia-container-runtime-on-debian-based-systems">
 <h4>Dependency errors when installing older versions of <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> on Debian-based systems<a class="headerlink" href="#dependency-errors-when-installing-older-versions-of-nvidia-container-runtime-on-debian-based-systems" title="Permalink to this headline">#</a></h4>
 <p>With the release of the <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> and <code class="docutils literal notranslate"><span class="pre">3.6.0</span></code> versions of the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and
@@ -1764,8 +2019,8 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
 </section>
 <section id="toolkit-container-1-7-0">
 <h2>Toolkit Container 1.7.0<a class="headerlink" href="#toolkit-container-1-7-0" title="Permalink to this headline">#</a></h2>
-<section id="id78">
-<h3>Known issues<a class="headerlink" href="#id78" title="Permalink to this headline">#</a></h3>
+<section id="id95">
+<h3>Known issues<a class="headerlink" href="#id95" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">container-toolkit:1.7.0-ubuntu18.04</span></code> image contains the <a class="reference external" href="http://people.ubuntu.com/~ubuntu-security/cve/CVE-2021-3711">CVE-2021-3711</a>. This CVE affects <code class="docutils literal notranslate"><span class="pre">libssl1.1</span></code> and <code class="docutils literal notranslate"><span class="pre">openssl</span></code> included in the ubuntu-based CUDA <code class="docutils literal notranslate"><span class="pre">11.4.1</span></code> base image. The components of the NVIDIA Container Toolkit included in the container do not use <code class="docutils literal notranslate"><span class="pre">libssl1.1</span></code> or <code class="docutils literal notranslate"><span class="pre">openssl</span></code> and as such this is considered low risk if the container is used as intended; that is to install and configure the NVIDIA Container Toolkit in the context of the NVIDIA GPU Operator.</p></li>
 </ul>
@@ -1822,232 +2077,277 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-4">NVIDIA Container Toolkit 1.17.4</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-18-0">NVIDIA Container Toolkit 1.18.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecation-notices">Deprecation Notices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packaging-changes">Packaging Changes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixes-and-features">Fixes and Features</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements-to-libnvidia-container">Enhancements to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements-to-container-toolkit-container-images">Enhancements to container-toolkit Container Images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancements-to-container-toolkit-container-images">Enhancements to container-toolkit Container Images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#included-packages">Included Packages</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-8">NVIDIA Container Toolkit 1.17.8</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Enhancements to libnvidia-container</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Included Packages</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-7">NVIDIA Container Toolkit 1.17.7</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Enhancements to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Enhancements to container-toolkit Container Images</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Included Packages</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pin-dependencies-to-container-toolkit-1-17-6">Pin dependencies to Container Toolkit 1.17.6</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-6">NVIDIA Container Toolkit 1.17.6</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Enhancements to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Enhancements to container-toolkit Container Images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-5">NVIDIA Container Toolkit 1.17.5</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Enhancements to container-toolkit Container Images</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-4">NVIDIA Container Toolkit 1.17.4</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Enhancements to libnvidia-container</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Enhancements to container-toolkit Container Images</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-3">NVIDIA Container Toolkit 1.17.3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Enhancements to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Enhancements to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-2">NVIDIA Container Toolkit 1.17.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-1">NVIDIA Container Toolkit 1.17.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Fixes and Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Enhancements to container-toolkit Container Images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Enhancements to container-toolkit Container Images</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-17-0">NVIDIA Container Toolkit 1.17.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Fixes and Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Enhancements to container-toolkit Container Images</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Enhancements to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Enhancements to container-toolkit Container Images</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Enhancements to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-16-2">NVIDIA Container Toolkit 1.16.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Fixes and Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Enhancements to container-toolkit Container Images</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Enhancements to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Enhancements to container-toolkit Container Images</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Enhancements to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-16-1">NVIDIA Container Toolkit 1.16.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-16-0">NVIDIA Container Toolkit 1.16.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Fixes and Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Enhancements to container-toolkit Container Images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">Enhancements to container-toolkit Container Images</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-15-0">NVIDIA Container Toolkit 1.15.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packaging-changes">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">Fixes and Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Enhancements to container-toolkit Container Images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">Enhancements to container-toolkit Container Images</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-6">NVIDIA Container Toolkit 1.14.6</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-5">NVIDIA Container Toolkit 1.14.5</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-4">NVIDIA Container Toolkit 1.14.4</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Enhancements to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">Enhancements to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">Enhancements to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">Enhancements to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-3">NVIDIA Container Toolkit 1.14.3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Enhancements to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">Enhancements to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-2">NVIDIA Container Toolkit 1.14.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-1">NVIDIA Container Toolkit 1.14.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">Enhancements to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">Enhancements to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-14-0">NVIDIA Container Toolkit 1.14.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">Enhancements to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">Enhancements to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">Enhancements to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">Enhancements to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-5">NVIDIA Container Toolkit 1.13.5</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">Fixes and Features</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-to-libnvidia-container">specific to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-4">NVIDIA Container Toolkit 1.13.4</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">Fixes and Features</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-to-container-toolkit-container-images">specific to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-3">NVIDIA Container Toolkit 1.13.3</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">specific to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-2">NVIDIA Container Toolkit 1.13.2</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">specific to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-1">NVIDIA Container Toolkit 1.13.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">Fixes and Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">Fixes and Features</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-13-0">NVIDIA Container Toolkit 1.13.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">specific to container-toolkit container images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">Known Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-12-1">NVIDIA Container Toolkit 1.12.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">specific to container-toolkit container images</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-12-0">NVIDIA Container Toolkit 1.12.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id67">specific to container-toolkit container images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id68">Known Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-11-0">NVIDIA Container Toolkit 1.11.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id69">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id70">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id71">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id72">specific to container-toolkit container images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id73">Known Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-10-0">NVIDIA Container Toolkit 1.10.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id74">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id75">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id76">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id77">specific to container-toolkit container images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id78">Known Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-9-0">NVIDIA Container Toolkit 1.9.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">specific to libnvidia-container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id64">specific to container-toolkit container images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id79">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id80">specific to libnvidia-container</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id81">specific to container-toolkit container images</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id65">Known Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id82">Known Issues</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-8-1">NVIDIA Container Toolkit 1.8.1</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id66">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id67">specific to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id83">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id84">specific to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-8-0">NVIDIA Container Toolkit 1.8.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id68">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id69">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id70">specific to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id85">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id86">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id87">specific to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-7-0">NVIDIA Container Toolkit 1.7.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id71">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id72">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id73">specific to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id88">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id89">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id90">specific to libnvidia-container</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-container-toolkit-1-6-0">NVIDIA Container Toolkit 1.6.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id74">Packaging Changes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id75">Fixes and Features</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id76">specific to libnvidia-container</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id91">Packaging Changes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id92">Fixes and Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id93">specific to libnvidia-container</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id77">Known Issues</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id94">Known Issues</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dependency-errors-when-installing-older-versions-of-nvidia-container-runtime-on-debian-based-systems">Dependency errors when installing older versions of <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> on Debian-based systems</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toolkit-container-1-7-0">Toolkit Container 1.7.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id78">Known issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id95">Known issues</a></li>
 </ul>
 </li>
 </ul>
@@ -2146,6 +2446,9 @@ pinning to versions of the <code class="docutils literal notranslate"><span clas
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

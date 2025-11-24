@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -338,6 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -365,6 +369,12 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -482,10 +492,9 @@ without any limitations, you perform the following high-level actions:</p>
 the instance type to meet your needs:</p>
 <ul class="simple">
 <li><p>Table of accelerated computing
-<a class="reference external" href="https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing">instance types</a>
+<a class="reference external" href="https://aws.amazon.com/ec2/instance-types/accelerated-computing/">instance types</a>
 for information about GPU model and count, RAM, and storage.</p></li>
-<li><p>Table of
-<a class="reference external" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html#enis-acceleratedcomputing">maximum network interfaces</a>
+<li><p><a class="reference external" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html">Maximum IP addresses per network interface</a>
 for accelerated computing instance types.
 Make sure the instance type supports enough IP addresses for your workload.
 For example, the <code class="docutils literal notranslate"><span class="pre">g4dn.xlarge</span></code> instance type supports <code class="docutils literal notranslate"><span class="pre">29</span></code> IP addresses for pods on the node.</p></li>
@@ -509,7 +518,7 @@ Refer to
 and <a class="reference external" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">Configuring the AWS CLI</a>
 in the AWS CLI documentation.</p></li>
 <li><p>You installed the <code class="docutils literal notranslate"><span class="pre">eksctl</span></code> CLI if you prefer it as your client application.
-The CLI is available from <a class="reference external" href="https://eksctl.io/introduction/#installation">https://eksctl.io/introduction/#installation</a>.</p></li>
+The CLI is available from <a class="reference external" href="https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update">https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update</a>.</p></li>
 <li><p>You have the AMI value from <a class="reference external" href="https://cloud-images.ubuntu.com/aws-eks/">https://cloud-images.ubuntu.com/aws-eks/</a>.</p></li>
 <li><p>You have the EC2 instance type to use for your nodes.</p></li>
 </ul>
@@ -768,6 +777,9 @@ This documentation includes steps for using the AWS Management Console.</p></li>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

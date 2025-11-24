@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -399,22 +402,22 @@
 <span id="install-nvidiagpu"></span><h1>Installing the NVIDIA GPU Operator on OpenShift<a class="headerlink" href="#installing-the-nvidia-gpu-operator-on-openshift" title="Permalink to this headline">#</a></h1>
 <section id="installing-the-nvidia-gpu-operator-by-using-the-web-console">
 <h2>Installing the NVIDIA GPU Operator by using the web console<a class="headerlink" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console" title="Permalink to this headline">#</a></h2>
-<ol class="arabic simple">
-<li><p>In the OpenShift Container Platform web console from the side menu, navigate to  <strong>Operators</strong> &gt; <strong>OperatorHub</strong> and select <strong>All Projects</strong>.</p></li>
-<li><p>In <strong>Operators</strong> &gt; <strong>OperatorHub</strong>, search for the <strong>NVIDIA GPU Operator</strong>. For additional information see the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
-<li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the subsequent screen click <strong>Install</strong>.</p></li>
-</ol>
-<blockquote>
-<div><div class="admonition note">
+<ol class="arabic">
+<li><p>In the OpenShift Container Platform web console, from the side menu, navigate to <strong>Operators</strong> &gt; <strong>OperatorHub</strong> and select <strong>All Projects</strong>.</p></li>
+<li><p>In <strong>Operators</strong> &gt; <strong>OperatorHub</strong>, search for the <strong>NVIDIA GPU Operator</strong>. For additional information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
+<li><p>In <strong>Operators</strong> &gt; <strong>OperatorHub</strong>, search for the <strong>NVIDIA GPU Operator</strong>. For additional information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
+<li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the following screen, click <strong>Install</strong>.</p>
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace under <strong>Select a Namespace</strong>.</p>
-<p>If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator will <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts will <strong>not</strong> be collected by Prometheus.
+<p>If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator does <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts are <strong>not</strong> collected by Prometheus.
 If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 </div>
-</div></blockquote>
+</li>
+</ol>
 <p>Proceed to <a class="reference internal" href="#create-cluster-policy"><span class="std std-ref">Create the cluster policy for the NVIDIA GPU Operator</span></a>.</p>
 </section>
 <section id="installing-the-nvidia-gpu-operator-using-the-cli">
@@ -423,7 +426,7 @@ If only trusted operators are installed in this namespace, you can manually enab
 <ol class="arabic">
 <li><p>Create a namespace for the <strong>NVIDIA GPU Operator</strong>.</p>
 <ol class="arabic">
-<li><p>Create the following <code class="docutils literal notranslate"><span class="pre">Namespace</span></code> custom resource (CR) that defines the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace, and then save the YAML in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator.yaml</span></code> file:</p>
+<li><p>Create the following <code class="docutils literal notranslate"><span class="pre">Namespace</span></code> custom resource (CR) that defines the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace and then save the YAML in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator.yaml</span></code> file:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
@@ -432,14 +435,12 @@ If only trusted operators are installed in this namespace, you can manually enab
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace name.
+<p>The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace.
 If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator will <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts will <strong>not</strong> be collected by Prometheus.</p>
 <p>If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
-</div></blockquote>
 </div>
 </li>
 <li><p>Create the namespace by running the following command:</p>
@@ -461,8 +462,8 @@ If you install in any other namespace other than <code class="docutils literal n
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator-group</span><span class="w"></span>
 <span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w"> </span><span class="nt">targetNamespaces</span><span class="p">:</span><span class="w"></span>
-<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+<span class="w">  </span><span class="nt">targetNamespaces</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -476,23 +477,23 @@ If you install in any other namespace other than <code class="docutils literal n
 </li>
 </ol>
 </li>
-<li><p>Run the following command to get the <code class="docutils literal notranslate"><span class="pre">channel</span></code> value required for step number 5.</p>
+<li><p>Run the following command to get the <code class="docutils literal notranslate"><span class="pre">channel</span></code> value required for step 5.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.defaultChannel}&#39;</span>
 </pre></div>
 </div>
-<p><strong>Example output</strong></p>
+<p><em>Example Output</em></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">v22.9</span>
 </pre></div>
 </div>
 </li>
-<li><p>Run the following commands to get the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> value required for step number 5.</p>
+<li><p>Run the following commands to get the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> value required for step 5.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CHANNEL</span><span class="o">=</span>v22.9
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson <span class="p">|</span> jq -r <span class="s1">&#39;.status.channels[] | select(.name == &quot;&#39;</span><span class="nv">$CHANNEL</span><span class="s1">&#39;&quot;) | .currentCSV&#39;</span>
 </pre></div>
 </div>
-<p><strong>Example output</strong></p>
+<p><em>Example Output</em></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">gpu-operator-certified.v22.9.0</span>
 </pre></div>
 </div>
@@ -514,7 +515,7 @@ If you install in any other namespace other than <code class="docutils literal n
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Update the <code class="docutils literal notranslate"><span class="pre">channel</span></code> and <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> fields with the information returned in step 3 and 4.</p>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">channel</span></code> and <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> fields with the information returned in steps 3 and 4.</p>
 </div>
 </li>
 <li><p>Create the subscription object by running the following command:</p>
@@ -525,14 +526,14 @@ If you install in any other namespace other than <code class="docutils literal n
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Log in to web console and navigate to the <strong>Operators</strong> &gt; <strong>Installed Operators</strong> page. In the <code class="docutils literal notranslate"><span class="pre">Project:</span> <span class="pre">nvidia-gpu-operator</span></code> the following is displayed:</p>
+<li><p>Optional: Log in to the web console and navigate to the <strong>Operators</strong> &gt; <strong>Installed Operators</strong> page. In the <code class="docutils literal notranslate"><span class="pre">Project:</span> <span class="pre">nvidia-gpu-operator</span></code> the following is displayed:</p>
 <img alt="_images/gpu-operator-certified-cli-install.png" src="_images/gpu-operator-certified-cli-install.png" />
 </li>
 <li><p>Verify an install plan has been created:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get installplan -n nvidia-gpu-operator
 </pre></div>
 </div>
-<p><strong>Example output</strong></p>
+<p><em>Example Output</em></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME            CSV                              APPROVAL   APPROVED</span>
 <span class="go">install-wwhfj   gpu-operator-certified.v22.9.0   Manual     false</span>
 </pre></div>
@@ -545,7 +546,7 @@ If you install in any other namespace other than <code class="docutils literal n
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch <span class="nv">$INSTALL_PLAN</span> -n nvidia-gpu-operator --type merge --patch <span class="s1">&#39;{&quot;spec&quot;:{&quot;approved&quot;:true }}&#39;</span>
 </pre></div>
 </div>
-<p><strong>Example output</strong></p>
+<p><em>Example Output</em></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">installplan.operators.coreos.com/install-wwhfj patched</span>
 </pre></div>
 </div>
@@ -560,13 +561,13 @@ If you install in any other namespace other than <code class="docutils literal n
 </section>
 <section id="create-the-clusterpolicy-instance">
 <span id="create-cluster-policy"></span><h2>Create the ClusterPolicy instance<a class="headerlink" href="#create-the-clusterpolicy-instance" title="Permalink to this headline">#</a></h2>
-<p>When you install the <strong>NVIDIA GPU Operator</strong> in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions/credentials and so on.</p>
+<p>When you install the <strong>NVIDIA GPU Operator</strong> in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions and credentials, and more.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you create a ClusterPolicy that contains an empty specification, such as <code class="docutils literal notranslate"><span class="pre">spec{}</span></code>, the ClusterPolicy fails to deploy.</p>
+<p>If you create a ClusterPolicy that contains an empty specification such as <code class="docutils literal notranslate"><span class="pre">spec{}</span></code>, the ClusterPolicy fails to deploy.</p>
 </div>
 <p>As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
-when using <strong>NVIDIA vGPU</strong>. Please refer to appropriate sections below.</p>
+when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below.</p>
 <section id="create-the-cluster-policy-using-the-web-console">
 <span id="create-cluster-policy-web-console"></span><h3>Create the cluster policy using the web console<a class="headerlink" href="#create-the-cluster-policy-using-the-web-console" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
@@ -575,24 +576,43 @@ when using <strong>NVIDIA vGPU</strong>. Please refer to appropriate sections be
 <blockquote>
 <div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>You can use this screen to customize the ClusterPolicy however the default are sufficient to get the GPU configured and running.</p>
+<p>You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.</p>
 </div>
 </div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the <strong>Driver</strong> section and set the following fields:</p>
+<ul class="simple">
+<li><p><strong>version</strong>: 570.172.08 (or another supported version)</p></li>
+<li><p><strong>image</strong>: driver (or another supported image)</p></li>
+<li><p><strong>repository</strong>: nvcr.io/nvidia (or another supported repository)</p></li>
+</ul>
+</div>
 </li>
 <li><p>Click <strong>Create</strong>.</p>
-<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.</p>
+<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
 </li>
-<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p></li>
+<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
+<img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
+</li>
 </ol>
-<blockquote>
-<div><img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
-</div></blockquote>
 </section>
 <section id="create-the-cluster-policy-using-the-cli">
 <span id="verify-gpu-operator-install-ocp"></span><h3>Create the cluster policy using the CLI<a class="headerlink" href="#create-the-cluster-policy-using-the-cli" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> (optional). The following snippet is shown as an example. Change values accordingly. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/release-notes.html#operator-release-notes" title="(in NVIDIA GPU Operator)"><span>Release Notes</span></a> for recommended driver versions.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;570.172.08&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
@@ -607,54 +627,47 @@ when using <strong>NVIDIA vGPU</strong>. Please refer to appropriate sections be
 </section>
 <section id="create-the-clusterpolicy-instance-with-nvidia-vgpu">
 <h2>Create the ClusterPolicy instance with NVIDIA vGPU<a class="headerlink" href="#create-the-clusterpolicy-instance-with-nvidia-vgpu" title="Permalink to this headline">#</a></h2>
-<section id="pre-requisites">
-<h3>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">#</a></h3>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Please refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/install-gpu-operator-vgpu.html#install-gpu-operator-vgpu" title="(in NVIDIA GPU Operator)"><span>Using NVIDIA vGPU</span></a> section for pre-requisite steps for using NVIDIA vGPU on RedHat OpenShift.</p></li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/install-gpu-operator-vgpu.html#install-gpu-operator-vgpu" title="(in NVIDIA GPU Operator)"><span>Using NVIDIA vGPU</span></a> section for prerequisite steps for using NVIDIA vGPU on Red Hat OpenShift.</p></li>
 </ul>
 </section>
-<section id="id1">
-<h3>Create the cluster policy using the web console<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
-<ol class="arabic simple">
+<section id="id2">
+<h3>Create the cluster policy using the web console<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
 <li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Operators</strong> &gt; <strong>Installed Operators</strong>, and click <strong>NVIDIA GPU Operator</strong>.</p></li>
 <li><p>Select the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p></li>
-<li><p>Provide name of the licensing <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> under <strong>Driver</strong> section, this should be created during pre-requsite steps above for NVIDIA vGPU. Refer to below screenshots for example and modify values accordingly.</p></li>
-</ol>
-<blockquote>
-<div><img alt="_images/cluster_policy_vgpu_1.png" src="_images/cluster_policy_vgpu_1.png" />
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>Specify <code class="docutils literal notranslate"><span class="pre">repository</span></code> path, <code class="docutils literal notranslate"><span class="pre">image</span></code> name and NVIDIA vGPU driver <code class="docutils literal notranslate"><span class="pre">version</span></code> bundled under <strong>Driver</strong> section. If the registry is not public, please specify the <code class="docutils literal notranslate"><span class="pre">imagePullSecret</span></code> created during pre-requisite step under <strong>Driver</strong> advanced configurations section.</p></li>
-</ol>
-<blockquote>
-<div><img alt="_images/cluster_policy_vgpu_2.png" src="_images/cluster_policy_vgpu_2.png" />
-</div></blockquote>
-<ol class="arabic">
-<li><p>Click <strong>Create</strong>.</p>
-<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.</p>
+<li><p>Provide the name of the licensing <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> under the <strong>Driver</strong> section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.</p>
+<img alt="_images/cluster_policy_vgpu_1.png" src="_images/cluster_policy_vgpu_1.png" />
 </li>
-<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p></li>
+<li><p>Specify the <code class="docutils literal notranslate"><span class="pre">repository</span></code> path, <code class="docutils literal notranslate"><span class="pre">image</span></code> name, and NVIDIA vGPU driver <code class="docutils literal notranslate"><span class="pre">version</span></code> bundled under the <strong>Driver</strong> section. If the registry is not public, specify the <code class="docutils literal notranslate"><span class="pre">imagePullSecret</span></code> created during the prerequisite step under the <strong>Driver</strong> advanced configurations section.</p>
+<img alt="_images/cluster_policy_vgpu_2.png" src="_images/cluster_policy_vgpu_2.png" />
+</li>
+<li><p>Click <strong>Create</strong>.</p>
+<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
+</li>
+<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
+<img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
+</li>
 </ol>
-<blockquote>
-<div><img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
-</div></blockquote>
 </section>
-<section id="id2">
-<h3>Create the cluster policy using the CLI<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<section id="id3">
+<h3>Create the cluster policy using the CLI<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
 </pre></div>
 </div>
-<p>Modify clusterpolicy.json file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> created during pre-requiste steps. Below snippet is shown as an example, please change values accordingly.</p>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;&lt;repository-path&gt;&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;repository-path&gt;&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;imagePullSecrets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;licensingConfig&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">       </span><span class="nt">&quot;configMapName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;licensing-config&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">       </span><span class="nt">&quot;nlsEnabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
-<span class="w">     </span><span class="p">}</span><span class="w"></span>
+<span class="w">     </span><span class="p">},</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;470.82.01&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
@@ -716,22 +729,18 @@ The pods of the <code class="docutils literal notranslate"><span class="pre">Dae
 <p>The GPU Operator generates GPU performance metrics (DCGM-export), status metrics (node-status-exporter) and node-status alerts. For OpenShift Prometheus to collect these metrics, the namespace hosting the GPU Operator must have the label <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=true</span></code>.</p>
 <p>When the GPU Operator is installed in the suggested <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace, the GPU Operator automatically enables monitoring if the <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring</span></code> label is not defined.
 If the label is defined, the GPU Operator will not change its value.</p>
-<p>Disable cluster monitoring in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace by setting <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=false</span></code> as shown:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">false</span>
+<p>Disable cluster monitoring in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace by setting <code class="docutils literal notranslate"><span class="pre">openshift.io/cluster-monitoring=false</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/nvidia-gpu-operator openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>If the GPU Operator is not installed in the suggested namespace, the GPU Operator will not automatically enable monitoring. Set the label manually as shown:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Only do this if trusted operators are installed in this namespace.</p>
 </div>
-</div></blockquote>
 </section>
 <section id="logging">
 <h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">#</a></h2>
@@ -759,7 +768,7 @@ If the label is defined, the GPU Operator will not change its value.</p>
 </section>
 <section id="running-a-sample-gpu-application">
 <span id="running-sample-app"></span><h2>Running a sample GPU Application<a class="headerlink" href="#running-a-sample-gpu-application" title="Permalink to this headline">#</a></h2>
-<p>Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure the GPUs have bootstrapped correctly.</p>
+<p>Run a simple CUDA VectorAdd sample that adds two vectors together to ensure the GPUs have bootstrapped correctly.</p>
 <ol class="arabic">
 <li><p>Run the following:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt; EOF <span class="p">|</span> oc create -f -
@@ -769,13 +778,13 @@ If the label is defined, the GPU Operator will not change its value.</p>
 <span class="go">metadata:</span>
 <span class="go">  name: cuda-vectoradd</span>
 <span class="go">spec:</span>
-<span class="go"> restartPolicy: OnFailure</span>
-<span class="go"> containers:</span>
-<span class="go"> - name: cuda-vectoradd</span>
-<span class="go">   image: &quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubi8&quot;</span>
-<span class="go">   resources:</span>
-<span class="go">     limits:</span>
-<span class="go">       nvidia.com/gpu: 1</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: cuda-vectoradd</span>
+<span class="go">    image: &quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubi8&quot;</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">        nvidia.com/gpu: 1</span>
 <span class="go">EOF</span>
 </pre></div>
 </div>
@@ -800,7 +809,7 @@ If the label is defined, the GPU Operator will not change its value.</p>
 </section>
 <section id="getting-information-about-the-gpu">
 <h2>Getting information about the GPU<a class="headerlink" href="#getting-information-about-the-gpu" title="Permalink to this headline">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> shows memory usage, GPU utilization, and the temperature of the GPU. Test the GPU access by running the popular <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command within the pod.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command shows memory usage, GPU utilization, and the temperature of the GPU. Test the GPU access by running the popular <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command within the pod.</p>
 <p>To view GPU utilization, run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> from a pod in the GPU Operator daemonset.</p>
 <ol class="arabic">
 <li><p>Change to the nvidia-gpu-operator project:</p>
@@ -818,7 +827,7 @@ If the label is defined, the GPU Operator will not change its value.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>With the Pod and node name, run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> on the correct node.</p>
+<p>With the pod and node name, run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command on the correct node.</p>
 </div>
 </li>
 <li><p>Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command within the pod:</p>
@@ -848,8 +857,8 @@ If the label is defined, the GPU Operator will not change its value.</p>
 <span class="go">+-----------------------------------------------------------------------------+</span>
 </pre></div>
 </div>
-<p>Two tables are generated. The first table reflects the information about all available GPUs (the example shows one GPU). The second table provides details on the processes using the GPUs.</p>
-<p>For more information describing the contents of the tables see the man page for <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>.</p>
+<p>Two tables are generated. The first table reflects the information about all available GPUs (the example shows one GPU). The second table provides details about the processes using the GPUs.</p>
+<p>For more information describing the contents of the tables, refer to the man page for <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>.</p>
 </li>
 </ol>
 </section>
@@ -912,9 +921,9 @@ If the label is defined, the GPU Operator will not change its value.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-clusterpolicy-instance-with-nvidia-vgpu">Create the ClusterPolicy instance with NVIDIA vGPU</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-requisites">Pre-requisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Create the cluster policy using the web console</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Create the cluster policy using the CLI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Create the cluster policy using the web console</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Create the cluster policy using the CLI</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-successful-installation-of-the-nvidia-gpu-operator">Verify the successful installation of the NVIDIA GPU Operator</a></li>
@@ -1018,6 +1027,9 @@ If the label is defined, the GPU Operator will not change its value.</p>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -338,6 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -365,6 +369,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -427,7 +437,7 @@ configuration of multiple software components such as drivers, container runtime
 and prone to errors. The NVIDIA GPU Operator uses the <a class="reference external" href="https://coreos.com/blog/introducing-operator-framework">operator framework</a>
 within Kubernetes to automate the management of all NVIDIA software components needed to provision GPU. These components include the NVIDIA drivers (to enable CUDA),
 Kubernetes device plugin for GPUs, the <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit">NVIDIA Container Toolkit</a>,
-automatic node labelling using <a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery">GFD</a>, <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> based monitoring and others.</p>
+automatic node labeling using <a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery">GFD</a>, <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> based monitoring and others.</p>
 <div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
@@ -452,24 +462,6 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <h3>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline">#</a></h3>
 <p>The <a class="reference internal" href="platform-support.html#operator-platform-support"><span class="std std-ref">Platform Support</span></a> describes the supported platform configurations.</p>
 </section>
-</section>
-<section id="pod-security-context-of-the-operator-and-operands">
-<h2>Pod Security Context of the Operator and Operands<a class="headerlink" href="#pod-security-context-of-the-operator-and-operands" title="Permalink to this headline">#</a></h2>
-<p>Several of the NVIDIA GPU Operator operands, such as the driver containers and container toolkit,
-require the following elevated privileges:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">privileged:</span> <span class="pre">true</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hostPID:</span> <span class="pre">true</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hostIPC:</span> <span class="pre">true</span></code></p></li>
-</ul>
-<p>The elevated privileges are required for the following reasons:</p>
-<ul class="simple">
-<li><p>Access to the host file system and hardware devices, such as NVIDIA GPUs.</p></li>
-<li><p>Restart system services such as containerd.</p></li>
-<li><p>Permit users to list all GPU clients using the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> utility.</p></li>
-</ul>
-<p>Only the Kubernetes cluster administrator needs to access or manage the Operator namespace.
-As a best practice, establish proper security policies and prevent any other users from accessing the Operator namespace.</p>
 </section>
 <section id="licenses-and-contributing">
 <h2>Licenses and Contributing<a class="headerlink" href="#licenses-and-contributing" title="Permalink to this headline">#</a></h2>
@@ -562,6 +554,10 @@ Manager for Kubernetes</p></td>
 <td><p>Image</p></td>
 <td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
 </tr>
+<tr class="row-even"><td><p>NVIDIA GDRCopy Driver</p></td>
+<td><p>Image</p></td>
+<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -623,7 +619,6 @@ Manager for Kubernetes</p></td>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-support">Platform Support</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-security-context-of-the-operator-and-operands">Pod Security Context of the Operator and Operands</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses-and-contributing">Licenses and Contributing</a></li>
 </ul>
   </nav></div>
@@ -721,6 +716,9 @@ Manager for Kubernetes</p></td>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

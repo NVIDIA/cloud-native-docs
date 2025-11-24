@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -68,7 +68,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GPU Operator with MIG" href="gpu-operator-mig.html" />
+    <link rel="next" title="Security Considerations" href="security.html" />
     <link rel="prev" title="Using NVIDIA vGPU" href="install-gpu-operator-vgpu.html" />
 
 
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -338,6 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -365,6 +369,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -476,7 +486,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/license-sys
 in the <em>NVIDIA License System User Guide</em> for more information.</p></li>
 <li><p>An NGC CLI API key that is used to create an image pull secret.
 The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
-Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/gpu-cloud/ngc-private-registry-user-guide/index.html#generating-api-key">Generating Your NGC API Key</a>
+Refer to <a class="reference external" href="https://docs.nvidia.com/ngc/latest/ngc-private-registry-user-guide.html#prug-generating-personal-api-key">Generating Your NGC API Key</a>
 in the <em>NVIDIA NGC Private Registry User Guide</em> for more information.</p></li>
 </ul>
 </section>
@@ -549,7 +559,7 @@ The following list summarizes the driver branches for each release.</p>
 </ul>
 <p>For newer releases, you can confirm the the supported driver branch by performing the following steps:</p>
 <ol class="arabic">
-<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#release-documentation">release documentation</a>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a>
 for NVIDIA AI Enterprise and access the documentation for your release.</p></li>
 <li><p>In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.</p>
 <p>For example, the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software">Supported Hardware and Software</a> for the 5.1 release
@@ -588,11 +598,11 @@ Specify the <code class="docutils literal notranslate"><span class="pre">--versi
       </div>
     </a>
     <a class="right-next"
-       href="gpu-operator-mig.html"
+       href="security.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">GPU Operator with MIG</p>
+        <p class="prev-next-title">Security Considerations</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -722,6 +732,9 @@ Specify the <code class="docutils literal notranslate"><span class="pre">--versi
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

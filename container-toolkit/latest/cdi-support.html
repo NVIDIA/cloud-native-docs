@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.17.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -414,48 +417,122 @@ The hook and dependencies are not needed on machines that use CDI exclusively.</
 <li><p>You installed an NVIDIA GPU Driver.</p></li>
 </ul>
 </section>
-<section id="procedure">
-<h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h3>
-<p>Two common locations for CDI specifications are <code class="docutils literal notranslate"><span class="pre">/etc/cdi/</span></code> and <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code>.
-The contents of the <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/</span></code> directory are cleared on boot.</p>
-<p>However, the path to create and use can depend on the container engine that you use.</p>
-<ol class="arabic">
-<li><p>Generate the CDI specification file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate --output<span class="o">=</span>/etc/cdi/nvidia.yaml
+<section id="automatic-cdi-specification-generation">
+<h3>Automatic CDI Specification Generation<a class="headerlink" href="#automatic-cdi-specification-generation" title="Permalink to this headline">#</a></h3>
+<p>As of NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.18.0</span></code>, the CDI specification is automatically generated and updated by a systemd service called <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code>. This service:</p>
+<ul class="simple">
+<li><p>Automatically generates the CDI specification at <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/nvidia.yaml</span></code> when:</p>
+<ul>
+<li><p>The NVIDIA Container Toolkit is installed or upgraded</p></li>
+<li><p>The NVIDIA GPU drivers are installed or upgraded</p></li>
+<li><p>The system is rebooted</p></li>
+</ul>
+</li>
+</ul>
+<p>This ensures that the CDI specifications are up to date for the current driver
+and device configuration and that CDI Devices defined in these speciciations are
+available when using native CDI support in container engines such as Docker or Podman.</p>
+<p>Running the following command will give a list of availble CDI Devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia-ctk cdi list</span>
 </pre></div>
 </div>
-<p>The sample command uses <code class="docutils literal notranslate"><span class="pre">sudo</span></code> to ensure that the file at <code class="docutils literal notranslate"><span class="pre">/etc/cdi/nvidia.yaml</span></code> is created.
-You can omit the <code class="docutils literal notranslate"><span class="pre">--output</span></code> argument to print the generated specification to <code class="docutils literal notranslate"><span class="pre">STDOUT</span></code>.</p>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">INFO[0000] Auto-detected mode as &quot;nvml&quot;</span>
-<span class="go">INFO[0000] Selecting /dev/nvidia0 as /dev/nvidia0</span>
-<span class="go">INFO[0000] Selecting /dev/dri/card1 as /dev/dri/card1</span>
-<span class="go">INFO[0000] Selecting /dev/dri/renderD128 as /dev/dri/renderD128</span>
-<span class="go">INFO[0000] Using driver version xxx.xxx.xx</span>
+<section id="known-limitations">
+<h4>Known limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service does not currently handle the following situations:</p>
+<ul class="simple">
+<li><p>The removal of NVIDIA GPU drivers</p></li>
+<li><p>The reconfiguration of MIG devices</p></li>
+</ul>
+<p>For these scenarios, the regeneration of CDI specifications must be <a class="reference internal" href="#manual-cdi-specification-generation"><span class="std std-doc">manually triggered</span></a>.</p>
+</section>
+<section id="customizing-the-automatic-cdi-refresh-service">
+<h4>Customizing the Automatic CDI Refresh Service<a class="headerlink" href="#customizing-the-automatic-cdi-refresh-service" title="Permalink to this headline">#</a></h4>
+<p>The behavior of the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service can be customized by adding
+environment variables to <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-toolkit/cdi-refresh.env</span></code> to
+affect the behavior of the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command.</p>
+<p>As an example, to enable debug logging the configuration file should be updated
+as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/nvidia-container-toolkit/cdi-refresh.env</span>
+<span class="nv">NVIDIA_CTK_DEBUG</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>For a complete list of available environment variables, run <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span> <span class="pre">--help</span></code> to see the command’s documentation.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Modifications to the environment file required a systemd reload and restarting the
+service to take effect</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl daemon-reload
+<span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+</section>
+<section id="managing-the-cdi-refresh-service">
+<h4>Managing the CDI Refresh Service<a class="headerlink" href="#managing-the-cdi-refresh-service" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service consists of two systemd units:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.path</span></code>: Monitors for changes to the system and triggers the service.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code>: Generates the CDI specifications for all available devices based on
+the default configuration and any overrides in the environment file.</p></li>
+</ul>
+<p>These services can be managed using standard systemd commands.</p>
+<p>When working as expected, the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.path</span></code> service will be enabled and active, and the
+<code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code> will be enabled and have run at least once. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl status nvidia-cdi-refresh.path
+<span class="go">● nvidia-cdi-refresh.path - Trigger CDI refresh on NVIDIA driver install / uninstall events</span>
+<span class="go">     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.path; enabled; preset: enabled)</span>
+<span class="go">     Active: active (waiting) since Fri 2025-06-27 06:04:54 EDT; 1h 47min ago</span>
+<span class="go">   Triggers: ● nvidia-cdi-refresh.service</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl status nvidia-cdi-refresh.service
+<span class="go">○ nvidia-cdi-refresh.service - Refresh NVIDIA CDI specification file</span>
+<span class="go">     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.service; enabled; preset: enabled)</span>
+<span class="go">     Active: inactive (dead) since Fri 2025-06-27 07:17:26 EDT; 34min ago</span>
+<span class="go">TriggeredBy: ● nvidia-cdi-refresh.path</span>
+<span class="go">    Process: 1317511 ExecStart=/usr/bin/nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml (code=exited, status=0/SUCCESS)</span>
+<span class="go">   Main PID: 1317511 (code=exited, status=0/SUCCESS)</span>
+<span class="go">        CPU: 562ms</span>
 <span class="go">...</span>
 </pre></div>
 </div>
-</li>
-<li><p>(Optional) Check the names of the generated devices:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-ctk cdi list
+<p>If these are not enabled as expected, they can be enabled by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> --now nvidia-cdi-refresh.path
+<span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> --now nvidia-cdi-refresh.service
 </pre></div>
 </div>
-<p>The following example output is for a machine with a single GPU that does not support MIG.</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">INFO[0000] Found 9 CDI devices</span>
-<span class="go">nvidia.com/gpu=all</span>
-<span class="go">nvidia.com/gpu=0</span>
+</section>
+<section id="troubleshooting-cdi-specification-generation-and-resolution">
+<h4>Troubleshooting CDI Specification Generation and Resolution<a class="headerlink" href="#troubleshooting-cdi-specification-generation-and-resolution" title="Permalink to this headline">#</a></h4>
+<p>If CDI specifications for available devices are not generated / updated as expected, it is
+recommended that the logs for the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code> be checked. This can be
+done by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo journalctl -u nvidia-cdi-refresh.service
 </pre></div>
 </div>
-</li>
-</ol>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>You must generate a new CDI specification after any of the following changes:</p>
-<ul class="simple">
-<li><p>You change the device or CUDA driver configuration.</p></li>
-<li><p>You use a location such as <code class="docutils literal notranslate"><span class="pre">/var/run/cdi</span></code> that is cleared on boot.</p></li>
-</ul>
-<p>A configuration change can occur when MIG devices are created or removed, or when the driver is upgraded.</p>
+<p>In most cases, restarting the service should be sufficient to trigger the (re)generation
+of CDI specifications:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+<p>Running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-ctk --debug cdi list
+</pre></div>
+</div>
+<p>will show a list of available CDI Devices as well as any errors that may have
+occurred when loading CDI Specifications from <code class="docutils literal notranslate"><span class="pre">/etc/cdi</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/run/cdi</span></code>.</p>
+</section>
+</section>
+<section id="manual-cdi-specification-generation">
+<h3>Manual CDI Specification Generation<a class="headerlink" href="#manual-cdi-specification-generation" title="Permalink to this headline">#</a></h3>
+<p>As of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.18.0</span></code> the recommended mechanism to regenerate CDI specifications is to restart the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+<p>If this does not work, or more flexibility is required, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command
+can be used directly:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate --output<span class="o">=</span>/var/run/cdi/nvidia.yaml
+</pre></div>
 </div>
 </section>
 </section>
@@ -578,7 +655,14 @@ The NVIDIA Container Toolkit performs the configuration for you.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-container-device-interface">About the Container Device Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-a-cdi-specification">Generating a CDI specification</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cdi-specification-generation">Automatic CDI Specification Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known limitations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customizing-the-automatic-cdi-refresh-service">Customizing the Automatic CDI Refresh Service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-cdi-refresh-service">Managing the CDI Refresh Service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-cdi-specification-generation-and-resolution">Troubleshooting CDI Specification Generation and Resolution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-cdi-specification-generation">Manual CDI Specification Generation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-workload-with-cdi">Running a Workload with CDI</a></li>
@@ -683,6 +767,9 @@ The NVIDIA Container Toolkit performs the configuration for you.</p></li>
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

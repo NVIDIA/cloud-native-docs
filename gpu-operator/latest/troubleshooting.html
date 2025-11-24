@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -338,6 +341,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -365,6 +369,12 @@
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
 </ul>
 </div>
 </nav></div>
@@ -419,6 +429,326 @@
                   
   <section id="troubleshooting-the-nvidia-gpu-operator">
 <h1>Troubleshooting the NVIDIA GPU Operator<a class="headerlink" href="#troubleshooting-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
+<p>This page outlines common issues and troubleshooting steps for the NVIDIA GPU Operator.</p>
+<p>If you are facing an issue that is not covered by this page, please file an issue in the
+<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues">NVIDIA GPU Operator GitHub repository</a>.</p>
+<section id="the-nouveau-driver-fails-to-initialize-the-gpu">
+<h2>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver fails to initialize the GPU<a class="headerlink" href="#the-nouveau-driver-fails-to-initialize-the-gpu" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Observation</p>
+<ul class="simple">
+<li><p>The GPU driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.</p></li>
+<li><p>All GPU Operator pods become stuck in the <code class="docutils literal notranslate"><span class="pre">init</span></code> state.</p></li>
+</ul>
+<p class="h4 rubric">Root Cause</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> Linux kernel module is loaded.</p></li>
+</ul>
+<p class="h4 rubric">Action</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be denylisted when using NVIDIA vGPU.</p>
+<p>Follow the instructions in the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/deployment/vmware/latest/nouveau.html#disable-nouveau">NVIDIA AI Enterprise: VMware Deployment Guide</a>
+to disable <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> on your OS/distro to resolve this issue.</p>
+</section>
+<section id="gpu-operator-pods-are-stuck-in-init">
+<h2>GPU Operator pods are stuck in Init<a class="headerlink" href="#gpu-operator-pods-are-stuck-in-init" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Observation</p>
+<p>The output from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>, shows something like:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">gpu-feature-discovery-tmblp                        0/1   Init:0/1  0         11m</span>
+<span class="go">nvidia-container-toolkit-daemonset-mqzwq           0/1   Init:0/1  0         2m</span>
+<span class="go">nvidia-dcgm-exporter-qpxxl                         0/1   Init:0/1  0         8m32s</span>
+<span class="go">nvidia-device-plugin-daemonset-tl9k7               0/1   Init:0/1  0         11m</span>
+<span class="go">nvidia-operator-validator-th4w7                    0/1   Init:0/4  0         10m</span>
+<span class="go">nvidia-driver-daemonset-4rtiu                      0/2   Running   3         12m</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Root Cause</p>
+<p>This most likely refers to an issue with the nvidia-driver-daemonset.
+Note that the operand pods will only come up when the driver daemonset and toolkit pods come up successfully.</p>
+<ol class="arabic">
+<li><p><strong>Check the driver daemonset pod logs:</strong></p>
+<ul>
+<li><p>To retrieve the main driver container logs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl logs -n gpu-operator nvidia-driver-daemonset-p97x5 -c nvidia-driver-ctr</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you see <code class="docutils literal notranslate"><span class="pre">Init:Error</span></code> in the kubectl output, then retrieve the k8s-driver-manager logs</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl logs -n gpu-operator nvidia-driver-daemonset-p97x5 -c k8s-driver-manager</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Check the dmesg logs</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dmesg</span></code> displays the messages generated by the Linux Kernel. <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> helps us detect any issues loading the GPU driver modules especially when the driver daemonset logs don’t provide a lot of information</p></li>
+<li><p>You can retrieve <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> using either: kubectl exec or execute <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> in your host terminal.</p></li>
+</ul>
+<p>kubectl exec</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl exec -n gpu-operator -it nvidia-driver-daemonset-p97x5 -c nvidia-driver-ctr -- dmesg</span>
+</pre></div>
+</div>
+<p>Execute <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> in your host terminal</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo dmesg</span>
+</pre></div>
+</div>
+<p><strong>TIP</strong>: You can also grep for NVRM or Xid to view logs emitted by the driver’s kernel module.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo dmesg | grep -i NVRM</span>
+</pre></div>
+</div>
+<p>OR</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo dmesg | grep -i Xid</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Ensure that your driver daemonset has internet access to download deb/rpm packages during runtime:</strong></p>
+<ul class="simple">
+<li><p>Check your Kubernetes cluster’s VPC, Security groups and DNS settings</p></li>
+<li><p>Consider executing into a container shell and testing internet connectivity with a simple <code class="docutils literal notranslate"><span class="pre">ping</span></code> command</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="no-runtime-for-nvidia-is-configured">
+<h2>No runtime for “nvidia” is configured<a class="headerlink" href="#no-runtime-for-nvidia-is-configured" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Observation</p>
+<p>When running <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span></code> for one of the gpu-operator pods, and you see an error like:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Warning  FailedCreatePodSandBox  2m37s (x94 over 22m)  kubelet            Failed to create pod sandbox: rpc error: code = Unknown desc = failed to get sandbox runtime: no runtime for &quot;nvidia&quot; is configured</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Root Cause</p>
+<p>This means that the <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> is unable to find the runtime handler named “nvidia” in your container runtime’s configuration.
+The runtime handler is added by the nvidia-container-toolkit, so this error message is likely related to startup issues with nvidia-container-toolkit</p>
+<p class="h4 rubric">Action</p>
+<ol class="arabic">
+<li><p><strong>Check the nvidia-container-toolkit logs</strong></p>
+<ul>
+<li><p>To retrieve the toolkit pod logs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl logs -n gpu-operator nvidia-container-toolkit-daemonset-2rhwg -c nvidia-container-toolkit-ctr</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Check the driver daemonset logs</strong></p>
+<ul class="simple">
+<li><p>Ensure the driver daemonset is up and running. Refer to <a class="reference internal" href="#gpu-operator-pods-are-stuck-in-init"><span class="std std-ref">GPU Operator pods are stuck in Init</span></a>.</p></li>
+</ul>
+</li>
+<li><p><strong>Review the container runtime configuration TOML</strong></p>
+<ul class="simple">
+<li><p>CRI-O and Containerd are the two main container runtimes supported by the toolkit. You can view the runtime configuration file and verify that the “nvidia” container runtime handler actually exists</p></li>
+<li><p>Here are some ways to retrieve the container runtime config:</p>
+<ul>
+<li><p>If using “containerd”, run the <code class="docutils literal notranslate"><span class="pre">containerd</span> <span class="pre">config</span></code> command to retrieve the active containerd configuration</p></li>
+<li><p>If using “cri-o”, run the <code class="docutils literal notranslate"><span class="pre">crio</span> <span class="pre">status</span> <span class="pre">config</span></code> command to retrieve the active cri-o configuration</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="operator-validator-pods-crashing-with-error-code-system-not-yet-initialized">
+<h2>Operator validator pods crashing with “error code system not yet initialized”<a class="headerlink" href="#operator-validator-pods-crashing-with-error-code-system-not-yet-initialized" title="Permalink to this headline">#</a></h2>
+<p>When the operator validator pods are crashing with this error, this most likely points to a GPU node that is NVSwitch-based and requires the nvidia-fabricmanager to be installed.
+NVSwitch-based systems, like NVIDIA DGX and NVIDIA HGX server systems, require the memory fabric to be set up after the GPU driver is installed.
+Learn more about the Fabric Manager from the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/fabric-manager-user-guide/index.html">Fabric Manager user guide</a></p>
+<p class="h4 rubric">Action</p>
+<ol class="arabic">
+<li><p><strong>nvidia-smi -q</strong></p>
+<ul>
+<li><p>Execute into the driver container and run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">-q</span></code> if you are using gpu driver daemonset.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl exec -n gpu-operator -it nvidia-driver-daemonset-p97x5 -c nvidia-driver-ctr -- nvidia-smi -q</span>
+</pre></div>
+</div>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">-q</span></code> displays a verbose output with all the attributes of a GPU</p></li>
+<li><p>If you see the following in the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">-q</span></code> command output, then the nvidia-fabricmanager needs to be installed</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Fabric</span>
+<span class="go">     State                             : In Progress</span>
+<span class="go">     Status                            : N/A</span>
+<span class="go">     CliqueId                          : N/A</span>
+<span class="go">     ClusterUUID                       : N/A</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Note: If your driver is pre-installed on your host system, run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">-q</span></code> in your host’s shell terminal</p>
+</li>
+<li><p><strong>Refer to the nvidia-driver-daemonset logs</strong></p>
+<ul class="simple">
+<li><p>The driver daemonset has the logic to detect NVSwitches and install the <code class="docutils literal notranslate"><span class="pre">nvidia-fabricmanager</span></code> if they are found</p></li>
+<li><p>Check the driver daemonset logs to confirm if the NVSwitch devices were detected and/or if the <code class="docutils literal notranslate"><span class="pre">nvidia-fabricmanager</span></code> was installed successfully</p></li>
+</ul>
+</li>
+<li><p><strong>Check the Fabric Manager logs</strong></p>
+<ul>
+<li><p>If the operator validator pods are still crashing despite fabric manager being installed, you may need to look up the fabric manager logs</p></li>
+<li><p>Execute into the driver container and run <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/var/log/fabricmanager.log</span></code> if the gpu driver daemonset is deployed</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl exec -n gpu-operator -it nvidia-driver-daemonset-p97x5 -c nvidia-driver-ctr -- cat /var/log/fabricmanager.log</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you are using a host-installed driver, SSH into the host and run <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/var/log/fabricmanager.log</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="gpu-feature-discovery-crashing-with-createcontainererror-crashloopbackoff">
+<h2>GPU Feature Discovery crashing with CreateContainerError/CrashLoopBackoff<a class="headerlink" href="#gpu-feature-discovery-crashing-with-createcontainererror-crashloopbackoff" title="Permalink to this headline">#</a></h2>
+<p>When the GPU Feature Discovery pods start crashing and you see the error below in the <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span></code> output, the root cause is likely a driver/hardware issue.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">....</span>
+<span class="go">....</span>
+<span class="go"> Containers:</span>
+<span class="go">   gpu-feature-discovery:</span>
+<span class="go">    Container ID:   containerd://947879d0f2a3e3a11187c3435c2e13f1d8962540b8853cebb409eaa47f661c34                                                                                                                    Image:          nvcr.io/nvidia/gpu-feature-discovery:v0.8.0-ubi8</span>
+<span class="go">    Image ID:       nvcr.io/nvidia/gpu-feature-discovery@sha256:84ce86490d0d313ed6517f2ac3a271e1179d7478d86c772da3846727d7feddc3                                                                                     Port:           &lt;none&gt;</span>
+<span class="go">    Host Port:      &lt;none&gt;                                                                                                                                                                                           State:          Waiting</span>
+<span class="go">    Reason:       CrashLoopBackOff                                                                                                                                                                                 Last State:     Terminated</span>
+<span class="go">    Reason:       StartError                                                                                                                                                                                         Message:      failed to create containerd task: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running</span>
+<span class="go"> hook #0: error running hook: exit status 1, stdout: , stderr: nvidia-container-cli.real: initialization error: driver rpc error: timed out: unknown</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Action</p>
+<ol class="arabic">
+<li><p><strong>Check dmesg logs</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dmesg</span></code> can be used to retrieve any issues stemming from gpu driver/hardware.</p></li>
+<li><p>You can fine tune your search by grepping for <code class="docutils literal notranslate"><span class="pre">NVRM</span></code> or <code class="docutils literal notranslate"><span class="pre">Xid</span></code> in your dmesg command output</p></li>
+<li><p>Your command would look like - <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">dmesg</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">NVRM</span></code> or <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">dmesg</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">-i</span> <span class="pre">Xid</span></code></p></li>
+<li><p>If the output from the previous command has something like the snippet below, then it is likely a GPU driver/hardware issue.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>dmesg <span class="p">|</span>grep -i xid
+<span class="go">NVRM: Xid (PCI:0000:ca:00): 79, pid=&#39;&lt;unknown&gt;&#39;, name=&lt;unknown&gt;, GPU has fallen off the bus.</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This error message indicates an Xid error with the code 79. For more information on Xid errors and its various error codes, refer to this <a class="reference external" href="https://docs.nvidia.com/deploy/xid-errors">page</a>.</p>
+</li>
+<li><p><strong>Check nvidia-device-plugin-daemonset logs</strong></p>
+<ul>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin</span></code> has a health checker module which periodically monitors the NVML event stream for any Xid errors and marks a GPU as unhealthy if an Xid error is reported against it</p></li>
+<li><p>Retrieve the <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pod logs</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl logs -n gpu-operator nvidia-device-plugin-daemonset-9bmvc -c nvidia-device-plugin</span>
+</pre></div>
+</div>
+</li>
+<li><p>If there are Xid errors, the device plugin logs should look something like</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">XidCriticalError: Xid=48 on Device=GPU-e3dbf294-2783-f38b-4274-5bc836df5be1; marking device as unhealthy.</span>
+
+<span class="go">&#39;nvidia.com/gpu&#39; device marked unhealthy: GPU-e3dbf294-2783-f38b-4274-5bc836df5be1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="gpu-node-does-not-have-the-expected-number-of-gpus">
+<h2>GPU Node does not have the expected number of GPUs<a class="headerlink" href="#gpu-node-does-not-have-the-expected-number-of-gpus" title="Permalink to this headline">#</a></h2>
+<p>When inspecting your GPU node, you may not see the expected number of “Allocatable” GPUs advertised in the node.</p>
+<p>For e.g., Given a GPU node with 8 GPUs, its kubectl describe output may look something like the snippet below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Name:               gpu-node-1</span>
+<span class="go">Roles:              worker</span>
+<span class="go">......</span>
+<span class="go">......</span>
+<span class="go">Addresses:</span>
+<span class="go">  InternalIP:  10.158.144.58</span>
+<span class="go">  Hostname:    gpu-node-1</span>
+<span class="go">Capacity:</span>
+<span class="go">  cpu:                     96</span>
+<span class="go">  ephemeral-storage:       106935552Ki</span>
+<span class="go">  hugepages-1Gi:           0</span>
+<span class="go">  hugepages-2Mi:           0</span>
+<span class="go">  memory:                  527422416Ki</span>
+<span class="go">  nvidia.com/gpu:          7</span>
+<span class="go">  pods:                    110</span>
+<span class="go">Allocatable:</span>
+<span class="go">  cpu:                     96</span>
+<span class="go">  ephemeral-storage:       98551804561</span>
+<span class="go">  hugepages-1Gi:           0</span>
+<span class="go">  hugepages-2Mi:           0</span>
+<span class="go">  memory:                  527320016Ki</span>
+<span class="go">  nvidia.com/gpu:          7</span>
+<span class="go">  pods:                    110</span>
+<span class="go">....</span>
+<span class="go">....</span>
+</pre></div>
+</div>
+<p>The above node only advertises 7 GPU devices as allocatable when we expect it to display 8 instead</p>
+<p class="h4 rubric">Action</p>
+<ol class="arabic">
+<li><p>Check for any Xid errors in the <code class="docutils literal notranslate"><span class="pre">nvidia-device-plugin-daemonset</span></code> pod logs. If an Xid error is raised for a GPU,
+the device plugin will automatically mark the GPU as unhealthy and take it off the list of “Allocatable” GPUs.
+Here are some example device-plugin logs in the event of an Xid error:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">I0624 22:58:05.486593       1 health.go:159] Processing event {Device:{Handle:0x7f7597647848} EventType:8 EventData:109 GpuInstanceId:4294967295 ComputeInstanceId:4294967295}</span>
+<span class="go">I0624 22:58:05.486697       1 health.go:185] XidCriticalError: Xid=79 on Device=GPU-adb24b25-1db1-436e-d958-ddee5da83d07; marking device as unhealthy.</span>
+<span class="go">I0624 22:58:05.486727       1 server.go:276] &#39;nvidia.com/gpu&#39; device marked unhealthy: GPU-adb24b25-1db1-436e-d958-ddee5da83d07</span>
+</pre></div>
+</div>
+</li>
+<li><p>You can also check for Xid errors in GPU node’s <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> logs.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo dmesg | grep -i xid</span>
+</pre></div>
+</div>
+</li>
+<li><p>For more information on Xid error codes and how to resolve them, you can refer to <a class="reference external" href="https://docs.nvidia.com/deploy/xid-errors/index.html">Xid Errors</a> page.</p></li>
+</ol>
+</section>
+<section id="dcgm-exporter-pods-go-into-crashloopbackoff">
+<h2>DCGM Exporter pods go into CrashLoopBackoff<a class="headerlink" href="#dcgm-exporter-pods-go-into-crashloopbackoff" title="Permalink to this headline">#</a></h2>
+<p>By default, the GPU Operator only deploys the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> while disabling the standalone <code class="docutils literal notranslate"><span class="pre">dcgm</span></code>. In this setup, the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> spawns a dcgm process locally. If, however, <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> is enabled and deployed as a separate pod/container, then the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> will attempt to connect to the <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> pod through a Kubernetes service. If the cluster networking settings aren’t applied correctly, you would likely see error messages as mentioned below in the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> logs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">time=&quot;2025-06-25T20:09:25Z&quot; level=info msg=&quot;Attempting to connect to remote hostengine at nvidia-dcgm:5555&quot;</span>
+<span class="go">time=&quot;2025-06-25T20:09:30Z&quot; level=error msg=&quot;Encountered a failure.&quot; stacktrace=&quot;goroutine 1 [running]:\nruntime/debug.Stack()</span>
+<span class="go">/usr/local/go/src/runtime/debug/stack.go:24 +0x5e\ngithub.com/NVIDIA/dcgm-exporter/pkg/cmd.action.func1.1()</span>
+<span class="go">/go/src/github.com/NVIDIA/dcgm-exporter/pkg/cmd/app.go:283 +0x3d\npanic({0x18b42c0?, 0x2a8d3e0?})</span>
+<span class="go">/usr/local/go/src/runtime/panic.go:770</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Action</p>
+<ol class="arabic simple">
+<li><p>If you have <code class="docutils literal notranslate"><span class="pre">NetworkPolicies</span></code> set up, ensure that they are configured to allow the dcgm-exporter pod to communicate with the dcgm pod</p></li>
+<li><p>Ensure that you don’t have security groups or network firewall settings preventing pod-pod traffic whether intranode or internode.</p></li>
+</ol>
+</section>
+<section id="gpu-driver-upgrades-are-not-progressing">
+<h2>GPU driver upgrades are not progressing<a class="headerlink" href="#gpu-driver-upgrades-are-not-progressing" title="Permalink to this headline">#</a></h2>
+<p>Despite initiating a cluster-wide driver upgrade, not every driver daemonset gets updated to the desired version and this state may persist for a long period of time.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get daemonsets -n gpu-operator nvidia-driver-daemonset
+<span class="go">NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                       AGE</span>
+<span class="go">nvidia-driver-daemonset   4         4         4       3            4           nvidia.com/gpu.deploy.driver=true   14d</span>
+</pre></div>
+</div>
+<p class="h4 rubric">Action</p>
+<ol class="arabic">
+<li><p>Check for any nodes that have the <code class="docutils literal notranslate"><span class="pre">upgrade-failed</span></code> label.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get nodes -l nvidia.com/gpu-driver-upgrade-state=upgrade-failed</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the driver daemonset pod logs in these nodes</p></li>
+<li><p>If the driver daemonset pod logs aren’t informative, check the node’s <code class="docutils literal notranslate"><span class="pre">dmesg</span></code></p></li>
+<li><p>Once the issue is resolved, you can re-label the node with the command below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl label node &lt;node-name&gt; &quot;nvidia.com/gpu-driver-upgrade-state=upgrade-required&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>If the driver upgrade is still stuck, delete the driver pod on the node.</p></li>
+</ol>
+</section>
+<section id="pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments">
+<h2>Pods stuck in Pending state in mixed MIG + full GPU environments<a class="headerlink" href="#pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments" title="Permalink to this headline">#</a></h2>
+<p class="h4 rubric">Issue</p>
+<p>For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
+<p class="h4 rubric">Observation</p>
+<p>When a GPU pod is created on a node that has a mix of MIG slices and full GPUs,
+the GPU pod gets stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.</p>
+<p class="h4 rubric">Root Cause</p>
+<p>This is due to a regression in NVML introduced in the R570 drivers starting from 570.124.06.</p>
+<p class="h4 rubric">Action</p>
+<p>NVIDIA recommends that you downgrade to driver version 570.86.15 to work around this issue.</p>
+</section>
 <section id="gpu-operator-validator-failed-to-create-pod-sandbox">
 <h2>GPU Operator Validator: Failed to Create Pod Sandbox<a class="headerlink" href="#gpu-operator-validator-failed-to-create-pod-sandbox" title="Permalink to this headline">#</a></h2>
 <p class="h4 rubric">Issue</p>
@@ -513,7 +843,7 @@ can get stuck in a crash loop.</p>
 <p class="h4 rubric">Action</p>
 <p>Increase the memory request and limit for the GPU Operator pod:</p>
 <ul class="simple">
-<li><p>Set the memory request to a value that matches the average memory consumption over an large time window.</p></li>
+<li><p>Set the memory request to a value that matches the average memory consumption over a large time window.</p></li>
 <li><p>Set the memory limit to match the spikes in memory consumption that occur occasionally.</p></li>
 </ul>
 <ol class="arabic">
@@ -532,9 +862,8 @@ can get stuck in a crash loop.</p>
 </ol>
 <p>Monitor the GPU Operator pod.
 Increase the memory request and limit again if the pod remains stuck in a crash loop.</p>
-</section>
 <section id="inforom-is-corrupted-nvidia-smi-return-code-14">
-<h2>infoROM is corrupted (nvidia-smi return code 14)<a class="headerlink" href="#inforom-is-corrupted-nvidia-smi-return-code-14" title="Permalink to this headline">#</a></h2>
+<h3>infoROM is corrupted (nvidia-smi return code 14)<a class="headerlink" href="#inforom-is-corrupted-nvidia-smi-return-code-14" title="Permalink to this headline">#</a></h3>
 <p class="h4 rubric">Issue</p>
 <p>The nvidia-operator-validator pod fails and nvidia-driver-daemonsets fails as well.</p>
 <p class="h4 rubric">Observation</p>
@@ -572,35 +901,46 @@ The return values for the <code class="docutils literal notranslate"><span class
 <span class="go">Return code reflects whether the operation succeeded or failed and what</span>
 <span class="go">was the reason of failure.</span>
 
-<span class="go">Â·      Return code 0 - Success</span>
-
-<span class="go">Â·      Return code 2 - A supplied argument or flag is invalid</span>
-<span class="go">Â·      Return code 3 - The requested operation is not available on target device</span>
-<span class="go">Â·      Return code 4 - The current user does  not  have permission  to access this device or perform this operation</span>
-<span class="go">Â·      Return code 6 - A query to find an object was unsuccessful</span>
-<span class="go">Â·      Return code 8 - A device&#39;s external power cables are not properly attached</span>
-<span class="go">Â·      Return code 9 - NVIDIA driver is not loaded</span>
-<span class="go">Â·      Return code 10 - NVIDIA Kernel detected an interrupt issue  with a GPU</span>
-<span class="go">Â·      Return code 12 - NVML Shared Library couldn&#39;t be found or loaded</span>
-<span class="go">Â·      Return code 13 - Local version of NVML  doesn&#39;t  implement  this function</span>
-<span class="go">Â·      Return code 14 - infoROM is corrupted</span>
-<span class="go">Â·      Return code 15 - The GPU has fallen off the bus or has otherwise become inaccessible</span>
-<span class="go">Â·      Return code 255 - Other error or internal driver error occurred</span>
+<span class="go">·      Return code 0 - Success</span>
+<span class="go">·      Return code 2 - A supplied argument or flag is invalid</span>
+<span class="go">·      Return code 3 - The requested operation is not available on target device</span>
+<span class="go">·      Return code 4 - The current user does not have permission to access this device or perform this operation</span>
+<span class="go">·      Return code 6 - A query to find an object was unsuccessful</span>
+<span class="go">·      Return code 8 - A device&#39;s external power cables are not properly attached</span>
+<span class="go">·      Return code 9 - NVIDIA driver is not loaded</span>
+<span class="go">·      Return code 10 - NVIDIA Kernel detected an interrupt issue with a GPU</span>
+<span class="go">·      Return code 12 - NVML Shared Library couldn&#39;t be found or loaded</span>
+<span class="go">·      Return code 13 - Local version of NVML doesn&#39;t implement this function</span>
+<span class="go">·      Return code 14 - infoROM is corrupted</span>
+<span class="go">·      Return code 15 - The GPU has fallen off the bus or has otherwise become inaccessible</span>
+<span class="go">·      Return code 255 - Other error or internal driver error occurred</span>
 </pre></div>
 </div>
 <p class="h4 rubric">Root Cause</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">nvidi-smi</span></code> command should return a success code (return code 0) for the driver-validator container to pass and GPU operator to successfully deploy driver pod on the node.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command should return a success code (return code 0) for the driver-validator container to pass and GPU Operator to successfully deploy driver pod on the node.</p>
 <p class="h4 rubric">Action</p>
 <p>Replace the faulty GPU.</p>
 </section>
 <section id="efi-secure-boot">
-<h2>EFI + Secure Boot<a class="headerlink" href="#efi-secure-boot" title="Permalink to this headline">#</a></h2>
+<h3>EFI + Secure Boot<a class="headerlink" href="#efi-secure-boot" title="Permalink to this headline">#</a></h3>
 <p class="h4 rubric">Issue</p>
 <p>GPU Driver pod fails to deploy.</p>
 <p class="h4 rubric">Root Cause</p>
-<p>EFI Secure Boot is currently not supported with GPU Operator</p>
+<p>EFI Secure Boot is currently not supported with the GPU Operator</p>
 <p class="h4 rubric">Action</p>
 <p>Disable EFI Secure Boot on the server.</p>
+</section>
+<section id="file-an-issue">
+<h3>File an issue<a class="headerlink" href="#file-an-issue" title="Permalink to this headline">#</a></h3>
+<p>If you are facing a gpu-operator and/or operand(s) issue that is not documented in this guide, you can run the <code class="docutils literal notranslate"><span class="pre">must-gather</span></code> utility to prepare a bug report.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -o must-gather.sh -L https://raw.githubusercontent.com/NVIDIA/gpu-operator/main/hack/must-gather.sh</span>
+<span class="go">chmod +x must-gather.sh</span>
+<span class="go">./must-gather.sh</span>
+</pre></div>
+</div>
+<p>This utility is used to collect relevant information from your cluster that is needed for diagnosing and debugging issues.
+The final output is an archive file which contains the manifests and logs of all the components managed by gpu-operator.</p>
+</section>
 </section>
 </section>
 
@@ -653,11 +993,23 @@ The return values for the <code class="docutils literal notranslate"><span class
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nouveau-driver-fails-to-initialize-the-gpu">The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver fails to initialize the GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-are-stuck-in-init">GPU Operator pods are stuck in Init</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-runtime-for-nvidia-is-configured">No runtime for “nvidia” is configured</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-validator-pods-crashing-with-error-code-system-not-yet-initialized">Operator validator pods crashing with “error code system not yet initialized”</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-feature-discovery-crashing-with-createcontainererror-crashloopbackoff">GPU Feature Discovery crashing with CreateContainerError/CrashLoopBackoff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-node-does-not-have-the-expected-number-of-gpus">GPU Node does not have the expected number of GPUs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dcgm-exporter-pods-go-into-crashloopbackoff">DCGM Exporter pods go into CrashLoopBackoff</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-driver-upgrades-are-not-progressing">GPU driver upgrades are not progressing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pods-stuck-in-pending-state-in-mixed-mig-full-gpu-environments">Pods stuck in Pending state in mixed MIG + full GPU environments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-validator-failed-to-create-pod-sandbox">GPU Operator Validator: Failed to Create Pod Sandbox</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-gpu-driver-or-operand-pods-running">No GPU Driver or Operand Pods Running</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-stuck-in-crash-loop">GPU Operator Pods Stuck in Crash Loop</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inforom-is-corrupted-nvidia-smi-return-code-14">infoROM is corrupted (nvidia-smi return code 14)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efi-secure-boot">EFI + Secure Boot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-stuck-in-crash-loop">GPU Operator Pods Stuck in Crash Loop</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inforom-is-corrupted-nvidia-smi-return-code-14">infoROM is corrupted (nvidia-smi return code 14)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efi-secure-boot">EFI + Secure Boot</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-an-issue">File an issue</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -754,6 +1106,9 @@ The return values for the <code class="docutils literal notranslate"><span class
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>

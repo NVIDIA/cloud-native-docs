@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '24.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -79,6 +79,9 @@
     <meta name="docbuild:last-update" content="Nov 24, 2025"/>
 
 
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
 
 
   </head>
@@ -437,16 +440,13 @@ installed on the guest VM. Guest VMs use the NVIDIA vGPUs in the same manner as 
 <section id="red-hat-openshift-on-vmware-vsphere">
 <h3>Red Hat OpenShift on VMware vSphere<a class="headerlink" href="#red-hat-openshift-on-vmware-vsphere" title="Permalink to this headline">#</a></h3>
 <p>Follow the steps outlined in the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/preparing-to-install-on-vsphere.html">Installing vSphere section</a> of the RedHat OpenShift documentation installing OpenShift on vSphere.</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When using virtualized GPUs you must change the boot method of each VM that is deployed as a worker and the VM template to be EFI.
 This requires powering down running worker VMs. The template must be converted to a VM, then change the boot method to EFI, then convert back
 to a template.</p>
 <p>Secure boot also needs to be disabled as shown:</p>
-<blockquote>
-<div><img alt="_images/vmx_secure_boot.png" src="_images/vmx_secure_boot.png" />
-</div></blockquote>
+<img alt="_images/vmx_secure_boot.png" src="_images/vmx_secure_boot.png" />
 <p>When using the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/installing_vsphere/installing-vsphere.html#installation-vsphere-machines_installing-vsphere">UPI install method</a>, after <strong>Step 8</strong> of the “Installing RHCOS and starting the OpenShift
 Container Platform bootstrap process” change the boot method to EFI before <strong>continuing to Step 9</strong>.</p>
 <p>When using the IPI method, each VM’s boot method can be changed to EFI after VM deployment.</p>
@@ -454,15 +454,12 @@ Container Platform bootstrap process” change the boot method to EFI before <st
 <p><strong>VM Settings</strong> &gt; <strong>VM options</strong> &gt; <strong>Advanced</strong> &gt; <strong>Configuration Parameters</strong> &gt; <strong>Edit Configuration</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.use64bitMMIO</span> <span class="pre">TRUE</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.64bitMMIOSizeGB</span> <span class="pre">512</span></code></p>
-<blockquote>
-<div><img alt="_images/pci_passthrough.png" src="_images/pci_passthrough.png" />
-</div></blockquote>
+<img alt="_images/pci_passthrough.png" src="_images/pci_passthrough.png" />
 <p>To support GPUDirect RDMA ensure that the VM has the following configuration parameters set:</p>
 <p><strong>VM Settings</strong> &gt; <strong>VM options</strong> &gt; <strong>Advanced</strong> &gt; <strong>Configuration Parameters</strong> &gt; <strong>Edit Configuration</strong></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.allowP2P</span> <span class="pre">=</span> <span class="pre">true</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">pciPassthru.RelaxACSforP2P</span> <span class="pre">=</span> <span class="pre">true</span></code></p>
 </div>
-</div></blockquote>
 <p>It is also recommended that you reference <a class="reference external" href="https://core.vmware.com/resource/running-red-hat-openshift-container-platform-vmware-cloud-foundation#executive-summary">Running Red Hat OpenShift Container Platform on VMware Cloud Foundation</a> documentation for deployment best practices, system configuration, and reference architecture.</p>
 </section>
 <section id="install-node-feature-discovery-operator">
@@ -495,8 +492,7 @@ in <em>NVIDIA NGC Private Registry Guide</em> for more information.</p>
 <img alt="_images/secrets.png" src="_images/secrets.png" />
 </li>
 <li><p>Enter the following into each field:</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p><strong>Secret name</strong>: ngc-secret</p></li>
 <li><p><strong>Authentication type</strong>: Image registry credentials</p></li>
 <li><p><strong>Registry server address</strong>: <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/vgpu</span></code></p></li>
@@ -504,7 +500,6 @@ in <em>NVIDIA NGC Private Registry Guide</em> for more information.</p>
 <li><p><strong>Password</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;NGC-API-KEY&gt;</span></code></p></li>
 <li><p><strong>Email</strong>: <code class="docutils literal notranslate"><span class="pre">&lt;YOUR-EMAIL&gt;</span></code></p></li>
 </ul>
-</div></blockquote>
 <img alt="_images/secrets_2.png" src="_images/secrets_2.png" />
 </li>
 <li><p>Click <strong>Create</strong>.</p>
@@ -592,8 +587,7 @@ Specify the vGPU driver version and image for the appropriate OpenShift Containe
 <p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
 <img alt="_images/cluster_policy_suceed.png" src="_images/cluster_policy_suceed.png" />
 <p>Verify the ClusterPolicy installation by running the following command that displays the node names and GPU counts:</p>
-<blockquote>
-<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nodes -o<span class="o">=</span>custom-columns<span class="o">=</span><span class="s1">&#39;Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nodes -o<span class="o">=</span>custom-columns<span class="o">=</span><span class="s1">&#39;Node:metadata.name,GPUs:status.capacity.nvidia\.com/gpu&#39;</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -614,7 +608,6 @@ Specify the vGPU driver version and image for the appropriate OpenShift Containe
 <span class="go">nvaie-ocp-7rfr8-worker-zkggt &lt;none&gt;</span>
 </pre></div>
 </div>
-</div></blockquote>
 </section>
 <section id="verify-the-successful-installation-of-the-nvidia-gpu-operator">
 <h3>Verify the successful installation of the NVIDIA GPU Operator<a class="headerlink" href="#verify-the-successful-installation-of-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h3>
@@ -805,6 +798,9 @@ Specify the vGPU driver version and image for the appropriate OpenShift Containe
 </div>
 
   </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
 
 
   </body>
