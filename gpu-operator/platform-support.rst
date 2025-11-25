@@ -282,7 +282,7 @@ The GPU Operator has been validated in the following scenarios:
 
 .. tab-set::
 
-  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough
+  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
 
     .. list-table::
        :header-rows: 1
@@ -419,61 +419,6 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.34
          - 1.30---1.34
 
-  .. tab-item:: Virtual Machines with NVIDIA vGPU
-
-    .. list-table::
-       :header-rows: 1
-       :stub-columns: 1
-
-       * - | Operating
-           | System
-         - Kubernetes
-         - | Red Hat
-           | OpenShift
-         - | VMware vSphere
-           | with Tanzu
-         - | Rancher Kubernetes
-           | Engine 2
-         - | Nutanix
-           | NKP
-
-       * - Ubuntu 20.04 LTS
-         - 1.30--1.34
-         -
-         - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.30--1.34
-         - 2.12, 2.13
-
-       * - Ubuntu 22.04 LTS
-         - 1.30--1.34
-         -
-         - 8.0 U2, 8.0 U3
-         - 1.30--1.34
-         - 2.12, 2.13
-
-       * - Ubuntu 24.04 LTS
-         - 1.30--1.34
-         -
-         -
-         - 1.30--1.34
-         -
-
-       * - Red Hat Core OS
-         -
-         - 4.14--4.20
-         -
-         -
-         -
-
-       * - | Red Hat
-           | Enterprise
-           | Linux 8.4,
-           | 8.6--8.10
-         - 1.30--1.34
-         -
-         -
-         - 1.30--1.34
-         -
 
 .. _supported-precompiled-drivers:
 
