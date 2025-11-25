@@ -58,7 +58,7 @@ New Features
 
 * Added support for these NVIDIA Data Center GPU Driver versions:
 
-  - 580.95.05 (default, recommended)
+  - 580.95.05 (default)
   - 570.195.03
   - 535.274.02
 
@@ -165,7 +165,7 @@ Fixed Issues
 Known Issues
 ------------
 
-* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``RunContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
+* When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``Init:RunContainerError`` or ``Init:CreateContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset. 
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
 
@@ -189,7 +189,7 @@ Known Issues
   Create the ConfigMap, then update the ClusterPolicy with the name of the configMap in the ``vgpuDeviceManager.config.name``, and restart the vgpu-device-manager pod.
 
 - When using GKE 1.33+, there is a known issue where NVIDIA Container Toolkit will misconfigure the containerd `config.toml` file and prevent GPU Operator containers from starting up correctly. 
-  To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container to resolve this issue. 
+  To resolve this issue, set the ``RUNTIME_CONFIG_SOURCE=file`` environment variable in the toolkit container. 
   You can set this environment variable by setting the below in the ClusterPolicy CR:
 
   .. code-block:: yaml
@@ -211,7 +211,7 @@ New Features
 
 * Supports these NVIDIA Data Center GPU Driver versions:
 
-  - 580.82.07 (default, recommended)
+  - 580.82.07 (default)
 
 * Added support for additional features:
 
@@ -1457,7 +1457,7 @@ New Features
 
 * Added support for configuring Kata Containers for GPU workloads as a technology preview feature.
   This feature introduces NVIDIA Kata Manager for Kubernetes as an operand of GPU Operator.
-  Refer to :doc:`gpu-operator-kata` for more information.
+
 
 * Added support for configuring Confidential Containers for GPU workloads as a technology preview feature.
   This feature builds on the work for configuring Kata Containers and
