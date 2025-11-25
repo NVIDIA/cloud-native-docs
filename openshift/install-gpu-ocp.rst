@@ -28,6 +28,8 @@ Installing the NVIDIA GPU Operator by using the web console
 
 Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator <create-cluster-policy>`.
 
+.. _install-gpu-ocp:
+
 *************************************************
 Installing the NVIDIA GPU Operator using the CLI
 *************************************************
@@ -89,52 +91,36 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
          operatorgroup.operators.coreos.com/nvidia-gpu-operator-group created
 
-#. Run the following command to get the ``channel`` value required for step 5.
+#. Get the value of ``channel``, and store it in a variable:
 
    .. code-block:: console
 
-      $ oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}'
+      $ CHANNEL=$(oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}')
 
-   *Example Output*
-
-   .. code-block:: console
-
-      v22.9
-
-#. Run the following commands to get the ``startingCSV`` value required for step 5.
+#. Get the ``startingCSV`` value and store it in a variable:
 
    .. code-block:: console
 
-      $ CHANNEL=v22.9
+      $ STARTING_CSV=$(oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV')
+
+#. Create the ``Subscription`` CR using the variables and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
 
    .. code-block:: console
 
-      $ oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV'
-
-   *Example Output*
-
-   .. code-block:: console
-
-      gpu-operator-certified.v22.9.0
-
-#. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
-
-   .. code-block:: yaml
-
+      $ cat <<EOF > nvidia-gpu-sub.yaml
       apiVersion: operators.coreos.com/v1alpha1
       kind: Subscription
       metadata:
         name: gpu-operator-certified
         namespace: nvidia-gpu-operator
       spec:
-        channel: "v22.9"
+        channel: $CHANNEL
         installPlanApproval: Manual
         name: gpu-operator-certified
         source: certified-operators
         sourceNamespace: openshift-marketplace
-        startingCSV: "gpu-operator-certified.v22.9.0"
-
-   .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in steps 3 and 4.
+        startingCSV: $STARTING_CSV
+      EOF
 
 #. Create the subscription object by running the following command:
 
@@ -230,12 +216,14 @@ Create the cluster policy using the web console
 Create the cluster policy using the CLI
 ---------------------------------------
 
+
 #. Create the ClusterPolicy:
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -ojsonpath={.metadata.annotations.alm-examples} | jq '.[0]' > clusterpolicy.json
 
+   .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
    .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` (optional). The following snippet is shown as an example. Change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
 
@@ -324,9 +312,11 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -ojsonpath={.metadata.annotations.alm-examples} | jq '.[0]' > clusterpolicy.json
 
-   Modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
+   .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
+
+#. Modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
 
    .. code-block:: json
 
@@ -345,6 +335,8 @@ Create the cluster policy using the CLI
 
       Using ``secretName`` to reference a Kubernetes Secret is the recommended approach.
       The ``configMapName`` option is deprecated and will be removed in a future release.
+
+#. Apply the ClusterPolicy:
 
    .. code-block:: console
 
