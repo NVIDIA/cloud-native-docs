@@ -1,0 +1,1349 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GPU Operator with MIG &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU=" src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gpu-operator-mig';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+    <script>initMermaid();</script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Time-Slicing GPUs in Kubernetes" href="gpu-sharing.html" />
+    <link rel="prev" title="Security Considerations" href="security.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">GPU Operator with MIG</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="gpu-operator-with-mig">
+<span id="install-gpu-operator-mig"></span><h1>GPU Operator with MIG<a class="headerlink" href="#gpu-operator-with-mig" title="Permalink to this headline">#</a></h1>
+<section id="about-multi-instance-gpu">
+<h2>About Multi-Instance GPU<a class="headerlink" href="#about-multi-instance-gpu" title="Permalink to this headline">#</a></h2>
+<p>Multi-Instance GPU (MIG) enables GPUs based on the NVIDIA Ampere and later architectures, such as NVIDIA A100, to be partitioned into separate and secure GPU instances for CUDA applications.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">MIG User Guide</a> for more information about MIG.</p>
+<p>GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.</p>
+</section>
+<section id="enabling-mig-during-installation">
+<h2>Enabling MIG During Installation<a class="headerlink" href="#enabling-mig-during-installation" title="Permalink to this headline">#</a></h2>
+<p>The following steps use the <code class="docutils literal notranslate"><span class="pre">single</span></code> MIG strategy.
+Alternatively, you can specify the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy.</p>
+<p>Perform the following steps to install the Operator and configure MIG:</p>
+<ol class="arabic">
+<li><p>Install the Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --set mig.strategy<span class="o">=</span>single
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">mig.strategy</span></code> to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> when MIG mode is not enabled on all GPUs on a node.</p>
+<p>In a CSP environment such as Google Cloud, also specify
+<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">migManager.env[0].name=WITH_REBOOT</span> <span class="pre">--set-string</span> <span class="pre">migManager.env[0].value=true</span></code>
+to ensure that the node reboots and can apply the MIG configuration.</p>
+<p>MIG Manager supports preinstalled drivers.
+If drivers are preinstalled, also specify <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.enabled=false</span></code>.
+Refer to <a class="reference internal" href="#mig-with-preinstalled-drivers"><span class="std std-ref">MIG Manager with Preinstalled Drivers</span></a> for more details.</p>
+<p>After several minutes, all the pods, including the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> are deployed on nodes that have MIG capable GPUs.</p>
+</li>
+<li><p>Optional: Display the pods in the Operator namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS      RESTARTS   AGE</span>
+<span class="go">gpu-feature-discovery-qmwb2                                   1/1     Running     0          14m</span>
+<span class="go">gpu-operator-7bbf8bb6b7-xz664                                 1/1     Running     0          14m</span>
+<span class="go">gpu-operator-node-feature-discovery-gc-79d6d968bb-sg4t6       1/1     Running     0          14m</span>
+<span class="go">gpu-operator-node-feature-discovery-master-6d9f8d497c-7cwrp   1/1     Running     0          14m</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-x5z62              1/1     Running     0          14m</span>
+<span class="go">nvidia-container-toolkit-daemonset-pkcpr                      1/1     Running     0          14m</span>
+<span class="go">nvidia-cuda-validator-wt6bc                                   0/1     Completed   0          12m</span>
+<span class="go">nvidia-dcgm-exporter-zsskv                                    1/1     Running     0          14m</span>
+<span class="go">nvidia-device-plugin-daemonset-924x6                          1/1     Running     0          14m</span>
+<span class="go">nvidia-driver-daemonset-klj5s                                 1/1     Running     0          14m</span>
+<span class="hll"><span class="go">nvidia-mig-manager-8d6wz                                      1/1     Running     0          12m</span>
+</span><span class="go">nvidia-operator-validator-fnsmk                               1/1     Running     0          14m</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Display the labels applied to the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -o json <span class="p">|</span> jq <span class="s1">&#39;.items[].metadata.labels&#39;</span>
+</pre></div>
+</div>
+<p><em>Partial Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.present&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all-disabled&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;single&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mps.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>MIG Manager requires that no user workloads are running on the GPUs being configured.
+In some cases, the node may need to be rebooted, such as a CSP, so the node might need to be cordoned
+before changing the MIG mode or the MIG geometry on the GPUs.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
+GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="configuring-mig-profiles">
+<h2>Configuring MIG Profiles<a class="headerlink" href="#configuring-mig-profiles" title="Permalink to this headline">#</a></h2>
+<p>By default, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> and you must specify the MIG configuration to apply.</p>
+<p>MIG Manager uses the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map in the GPU Operator namespace to identify supported MIG profiles.
+Refer to the config map when you label the node or customize the config map.</p>
+<section id="example-single-mig-strategy">
+<h3>Example: Single MIG Strategy<a class="headerlink" href="#example-single-mig-strategy" title="Permalink to this headline">#</a></h3>
+<p>The following steps show how to use the single MIG strategy and configure the <code class="docutils literal notranslate"><span class="pre">1g.10gb</span></code> profile on one node.</p>
+<ol class="arabic">
+<li><p>Configure the MIG strategy to <code class="docutils literal notranslate"><span class="pre">single</span></code> if you are unsure of the current strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;single&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-1g.10gb --overwrite
+</pre></div>
+</div>
+<p>MIG Manager proceeds to apply a <code class="docutils literal notranslate"><span class="pre">mig.config.state</span></code> label to the node and terminates all
+the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry.</p>
+</li>
+<li><p>Optional: Display the node labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
+</pre></div>
+</div>
+<p><em>Partial Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all-1g.10gb&quot;</span><span class="p">,</span><span class="w"></span>
+</span><span class="hll"><span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="p">,</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;single&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>As described above, if the <code class="docutils literal notranslate"><span class="pre">WITH_REBOOT</span></code> option is set then MIG Manager sets the label to <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">rebooting</span></code>.</p>
+</li>
+<li><p>Confirm that MIG Manager completed the configuration by checking the node labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
+</pre></div>
+</div>
+<p>Check for the following labels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count:</span> <span class="pre">7</span></code>, this value differs according to the GPU model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.ci:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.gi:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">success</span></code></p></li>
+</ul>
+<p><em>Partial Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;nvidia.com/gpu.count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/gpu.present&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/gpu.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3-MIG-1g.10gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/gpu.slices.ci&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/gpu.slices.gi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/mig.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/mig.config&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all-1g.10gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/mig.config.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;single&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the MIG configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: NVIDIA H100 80GB HBM3 (UUID: GPU-b4895dbf-9350-2524-a89b-98161ddd9fe4)</span>
+<span class="go">  MIG 1g.10gb     Device  0: (UUID: MIG-3f6f389f-b0cc-5e5c-8e32-eaa8fd067902)</span>
+<span class="go">  MIG 1g.10gb     Device  1: (UUID: MIG-35f93699-4b53-5a19-8289-80b8418eec60)</span>
+<span class="go">  MIG 1g.10gb     Device  2: (UUID: MIG-9d14fb21-4ae1-546f-a636-011582899c39)</span>
+<span class="go">  MIG 1g.10gb     Device  3: (UUID: MIG-0f709664-740c-52b0-ae79-3e4c9ede6d3b)</span>
+<span class="go">  MIG 1g.10gb     Device  4: (UUID: MIG-5d23f73a-d378-50ac-a6f5-3bf5184773bb)</span>
+<span class="go">  MIG 1g.10gb     Device  5: (UUID: MIG-6cea15c7-8a56-578c-b965-0e73cb6dfc10)</span>
+<span class="go">  MIG 1g.10gb     Device  6: (UUID: MIG-981c86e9-3607-57d7-9426-295347e4b925)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-mixed-mig-strategy">
+<h3>Example: Mixed MIG Strategy<a class="headerlink" href="#example-mixed-mig-strategy" title="Permalink to this headline">#</a></h3>
+<p>The following steps show how to use the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> MIG strategy and configure the <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> profile on one node.</p>
+<ol class="arabic">
+<li><p>Configure the MIG strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> if you are unsure of the current strategy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-balanced --overwrite
+</pre></div>
+</div>
+<p>MIG Manager proceeds to apply a <code class="docutils literal notranslate"><span class="pre">mig.config.state</span></code> label to the node and terminates all
+the GPU pods in preparation to enable MIG mode and configure the GPU into the desired MIG geometry.</p>
+</li>
+<li><p>Confirm that MIG Manager completed the configuration by checking the node labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
+</pre></div>
+</div>
+<p>Check for labels like the following.
+The profiles and GPU counts differ according to the GPU model.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-1g.10gb.count:</span> <span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-2g.20gb.count:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-3g.40gb.count:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">success</span></code></p></li>
+</ul>
+<p><em>Partial Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.present&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.engines.copy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.engines.decoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.engines.encoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.engines.jpeg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.engines.ofa&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9984&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.multiprocessors&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;16&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3-MIG-1g.10gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.slices.ci&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-1g.10gb.slices.gi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.engines.copy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.engines.decoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.engines.encoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.engines.jpeg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.engines.ofa&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;20096&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.multiprocessors&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3-MIG-2g.20gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.slices.ci&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-2g.20gb.slices.gi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.engines.copy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.engines.decoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.engines.encoder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.engines.jpeg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.engines.ofa&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.memory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;40320&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.multiprocessors&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;60&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3-MIG-3g.40gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.slices.ci&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig-3g.40gb.slices.gi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all-balanced&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mps.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the GPU has been configured:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: NVIDIA H100 80GB HBM3 (UUID: GPU-b4895dbf-9350-2524-a89b-98161ddd9fe4)</span>
+<span class="go">  MIG 3g.40gb     Device  0: (UUID: MIG-7089d0f3-293f-58c9-8f8c-5ea666eedbde)</span>
+<span class="go">  MIG 2g.20gb     Device  1: (UUID: MIG-56c30729-347f-5dd6-8da0-c3cc59e969e0)</span>
+<span class="go">  MIG 1g.10gb     Device  2: (UUID: MIG-9d14fb21-4ae1-546f-a636-011582899c39)</span>
+<span class="go">  MIG 1g.10gb     Device  3: (UUID: MIG-0f709664-740c-52b0-ae79-3e4c9ede6d3b)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-reconfiguring-mig-profiles">
+<h3>Example: Reconfiguring MIG Profiles<a class="headerlink" href="#example-reconfiguring-mig-profiles" title="Permalink to this headline">#</a></h3>
+<p>MIG Manager supports dynamic reconfiguration of the MIG geometry.
+The following steps show how to update a GPU on a node to the <code class="docutils literal notranslate"><span class="pre">3g.40gb</span></code> profile with the single MIG strategy.</p>
+<ol class="arabic">
+<li><p>Label the node with the profile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-3g.40gb --overwrite
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the MIG Manager logs to confirm the new MIG geometry is applied:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-mig-manager -c nvidia-mig-manager
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Applying the selected MIG config to the node</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Parsing config file...&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Selecting specific MIG config...&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Running apply-start hook&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Checking current MIG mode...&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    Asserting MIG mode: Enabled&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    MIG capable: true\n&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    Current MIG mode: Enabled&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Checking current MIG device configuration...&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    Asserting MIG config: map[3g.40gb:2]&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Running pre-apply-config hook&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Applying MIG device configuration...&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    MIG capable: true\n&quot;</span>
+<span class="go">time=&quot;2024-05-14T18:31:26Z&quot; level=debug msg=&quot;    Updating MIG config: map[3g.40gb:2]&quot;</span>
+<span class="go">MIG configuration applied successfully</span>
+<span class="go">time=&quot;2024-05-14T18:31:27Z&quot; level=debug msg=&quot;Running apply-exit hook&quot;</span>
+<span class="go">Restarting validator pod to re-run all validations</span>
+<span class="go">pod &quot;nvidia-operator-validator-kmncw&quot; deleted</span>
+<span class="go">Restarting all GPU clients previously shutdown in Kubernetes by reenabling their component-specific nodeSelector labels</span>
+<span class="go">node/node-name labeled</span>
+<span class="go">Changing the &#39;nvidia.com/mig.config.state&#39; node label to &#39;success&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Display the node labels to confirm the GPU count (<code class="docutils literal notranslate"><span class="pre">2</span></code>), slices (<code class="docutils literal notranslate"><span class="pre">3</span></code>), and profile are set:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
+</pre></div>
+</div>
+<p><em>Partial Output</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.count&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.present&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.product&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIA-H100-80GB-HBM3-MIG-3g.40gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.replicas&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.sharing-strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.slices.ci&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/gpu.slices.gi&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all-3g.40gb&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.config.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mig.strategy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;single&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;nvidia.com/mps.capable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-custom-mig-configuration-during-installation">
+<h3>Example: Custom MIG Configuration During Installation<a class="headerlink" href="#example-custom-mig-configuration-during-installation" title="Permalink to this headline">#</a></h3>
+<p>By default, the Operator creates the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map and MIG Manager is configured to read profiles from that config map.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file when you install or upgrade the Operator to create a config map with a custom configuration.</p>
+<ol class="arabic">
+<li><p>In your <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file, add the data for the config map, like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">migManager</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
+<span class="w">    </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">config.yaml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">        </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">        </span><span class="no">mig-configs:</span><span class="w"></span>
+<span class="w">          </span><span class="no">all-disabled:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: all</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">          </span><span class="no">custom-mig:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [0]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;1g.10gb&quot;: 2</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;2g.20gb&quot;: 2</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-custom-mig-configuration">
+<h3>Example: Custom MIG Configuration<a class="headerlink" href="#example-custom-mig-configuration" title="Permalink to this headline">#</a></h3>
+<p>By default, the Operator creates the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map and MIG Manager is configured to read profiles from that config map.</p>
+<p>You can create a config map with a custom configuration if the default profiles do not meet your business needs.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">custom-mig-config.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">config.yaml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">mig-configs:</span><span class="w"></span>
+<span class="w">      </span><span class="no">all-disabled:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">    </span><span class="no">  </span><span class="w"></span>
+<span class="w">      </span><span class="no">five-1g-one-2g:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- devices: all </span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">            </span><span class="no">&quot;1g.10gb&quot;: 5</span><span class="w"></span>
+<span class="w">            </span><span class="no">&quot;2g.20gb&quot;: 1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Apply the manifest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f custom-mig-config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Patch the cluster policy so MIG Manager uses the custom config map:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/migManager/config/name&quot;, &quot;value&quot;:&quot;custom-mig-config&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-one-2g --overwrite
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Monitor the MIG Manager logs to confirm the new MIG geometry is applied:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-mig-manager -c nvidia-mig-manager
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Applying the selected MIG config to the node</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Parsing config file...&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Selecting specific MIG config...&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Running apply-start hook&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Checking current MIG mode...&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    Asserting MIG mode: Enabled&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    MIG capable: true\n&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    Current MIG mode: Enabled&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Checking current MIG device configuration...&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    Asserting MIG config: map[1g.10gb:5 2g.20gb:1]&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Running pre-apply-config hook&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Applying MIG device configuration...&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;Walking MigConfig for (devices=all)&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;  GPU 0: 0x233010DE&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    MIG capable: true\n&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    Updating MIG config: map[1g.10gb:5 2g.20gb:1]&quot;</span>
+<span class="go">time=&quot;2024-05-15T13:40:09Z&quot; level=debug msg=&quot;Running apply-exit hook&quot;</span>
+<span class="go">MIG configuration applied successfully</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="verification-running-sample-cuda-workloads">
+<h2>Verification: Running Sample CUDA Workloads<a class="headerlink" href="#verification-running-sample-cuda-workloads" title="Permalink to this headline">#</a></h2>
+<section id="cuda-vectoradd">
+<h3>CUDA VectorAdd<a class="headerlink" href="#cuda-vectoradd" title="Permalink to this headline">#</a></h3>
+<p>Let’s run a simple CUDA sample, in this case <code class="docutils literal notranslate"><span class="pre">vectorAdd</span></code> by requesting a GPU resource as you would
+normally do in Kubernetes. In this case, Kubernetes will schedule the pod on a single MIG device and
+we use a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> to direct the pod to be scheduled on the node with the MIG devices.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt; EOF <span class="p">|</span> kubectl create -f -
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  name: cuda-vectoradd</span>
+<span class="go">spec:</span>
+<span class="go">  restartPolicy: OnFailure</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: vectoradd</span>
+<span class="go">    image: nvidia/samples:vectoradd-cuda11.2.1</span>
+<span class="go">    resources:</span>
+<span class="go">      limits:</span>
+<span class="go">        nvidia.com/gpu: 1</span>
+<span class="go">  nodeSelector:</span>
+<span class="go">    nvidia.com/gpu.product: A100-SXM4-40GB-MIG-1g.5gb</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</section>
+<section id="concurrent-job-launch">
+<h3>Concurrent Job Launch<a class="headerlink" href="#concurrent-job-launch" title="Permalink to this headline">#</a></h3>
+<p>Now, let’s try a more complex example. In this example, we will use Argo Workflows to launch concurrent
+jobs on MIG devices. In this example, the A100 has been configured into 2 MIG devices using the: <code class="docutils literal notranslate"><span class="pre">3g.20gb</span></code> profile.</p>
+<p>First, <a class="reference external" href="https://argo-workflows.readthedocs.io/en/latest/quick-start/#install-argo-workflows">install</a> the Argo Workflows
+components into your Kubernetes cluster.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns argo <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> kubectl apply -n argo <span class="se">\</span>
+    -f https://raw.githubusercontent.com/argoproj/argo-workflows/stable/manifests/quick-start-postgres.yaml
+</pre></div>
+</div>
+<p>Next, download the latest Argo CLI from the <a class="reference external" href="https://github.com/argoproj/argo-workflows/releases">releases page</a> and
+follow the instructions to install the binary.</p>
+<p>Now, we will craft an Argo example that launches multiple CUDA containers onto the MIG devices on the GPU.
+We will reuse the same <code class="docutils literal notranslate"><span class="pre">vectorAdd</span></code> example from before. Here is the job description, saved as <code class="docutils literal notranslate"><span class="pre">vector-add.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">$ cat &lt;&lt; EOF &gt; vector-add.yaml</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argoproj.io/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Workflow</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="nt">generateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig-example-</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig-result-example</span><span class="w"></span>
+<span class="nt">templates</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig-result-example</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">steps</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate</span><span class="w"></span>
+<span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen-mig-device-list</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Iterate over the list of numbers generated by the generate step above</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig</span><span class="w"></span>
+<span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig</span><span class="w"></span>
+<span class="w">        </span><span class="nt">arguments</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig</span><span class="w"></span>
+<span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;{{item}}&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">withParam</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{steps.generate.outputs.result}}&quot;</span><span class="w"></span>
+
+<span class="c1"># Generate a list of numbers in JSON format</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gen-mig-device-list</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">script</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:alpine3.6</span><span class="w"></span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">python</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">        </span><span class="no">import json</span><span class="w"></span>
+<span class="w">        </span><span class="no">import sys</span><span class="w"></span>
+<span class="w">        </span><span class="no">json.dump([i for i in range(0, 2)], sys.stdout)</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig</span><span class="w"></span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">retryStrategy</span><span class="p p-Indicator">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
+<span class="w">    </span><span class="nt">retryPolicy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Always&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">inputs</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argo-mig</span><span class="w"></span>
+<span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia/samples:vectoradd-cuda11.2.1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nvidia.com/gpu.product</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A100-SXM4-40GB-MIG-3g.20gb</span><span class="w"></span>
+<span class="l l-Scalar l-Scalar-Plain">EOF</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Launch the workflow:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>argo submit -n argo --watch vector-add.yaml
+</pre></div>
+</div>
+<p>Argo will print out the pods that have been launched:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Name:                argo-mig-example-z6mqd</span>
+<span class="go">Namespace:           argo</span>
+<span class="go">ServiceAccount:      default</span>
+<span class="go">Status:              Succeeded</span>
+<span class="go">Conditions:</span>
+<span class="go">Completed           True</span>
+<span class="go">Created:             Wed Mar 24 14:44:51 -0700 (20 seconds ago)</span>
+<span class="go">Started:             Wed Mar 24 14:44:51 -0700 (20 seconds ago)</span>
+<span class="go">Finished:            Wed Mar 24 14:45:11 -0700 (now)</span>
+<span class="go">Duration:            20 seconds</span>
+<span class="go">Progress:            3/3</span>
+<span class="go">ResourcesDuration:   9s*(1 cpu),9s*(100Mi memory),1s*(1 nvidia.com/gpu)</span>
+
+<span class="go">STEP                       TEMPLATE                 PODNAME                           DURATION  MESSAGE</span>
+<span class="go">✔ argo-mig-example-z6mqd  argo-mig-result-example</span>
+<span class="go">├───✔ generate            gen-mig-device-list      argo-mig-example-z6mqd-562792713  8s</span>
+<span class="go">└─┬─✔ argo-mig(0:0)(0)    argo-mig                 argo-mig-example-z6mqd-845918106  2s</span>
+<span class="go">└─✔ argo-mig(1:1)(0)    argo-mig                 argo-mig-example-z6mqd-870679174  2s</span>
+</pre></div>
+</div>
+<p>If you observe the logs, you can see that the <code class="docutils literal notranslate"><span class="pre">vector-add</span></code> sample has completed on both devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>argo logs -n argo @latest
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">argo-mig-example-z6mqd-562792713: [0, 1]</span>
+<span class="go">argo-mig-example-z6mqd-870679174: [Vector addition of 50000 elements]</span>
+<span class="go">argo-mig-example-z6mqd-870679174: Copy input data from the host memory to the CUDA device</span>
+<span class="go">argo-mig-example-z6mqd-870679174: CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">argo-mig-example-z6mqd-870679174: Copy output data from the CUDA device to the host memory</span>
+<span class="go">argo-mig-example-z6mqd-870679174: Test PASSED</span>
+<span class="go">argo-mig-example-z6mqd-870679174: Done</span>
+<span class="go">argo-mig-example-z6mqd-845918106: [Vector addition of 50000 elements]</span>
+<span class="go">argo-mig-example-z6mqd-845918106: Copy input data from the host memory to the CUDA device</span>
+<span class="go">argo-mig-example-z6mqd-845918106: CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">argo-mig-example-z6mqd-845918106: Copy output data from the CUDA device to the host memory</span>
+<span class="go">argo-mig-example-z6mqd-845918106: Test PASSED</span>
+<span class="go">argo-mig-example-z6mqd-845918106: Done</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="disabling-mig">
+<h2>Disabling MIG<a class="headerlink" href="#disabling-mig" title="Permalink to this headline">#</a></h2>
+<p>You can disable MIG on a node by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.con/mig.config</span></code> label to <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-disabled --overwrite
+</pre></div>
+</div>
+</section>
+<section id="mig-manager-with-preinstalled-drivers">
+<span id="mig-with-preinstalled-drivers"></span><h2>MIG Manager with Preinstalled Drivers<a class="headerlink" href="#mig-manager-with-preinstalled-drivers" title="Permalink to this headline">#</a></h2>
+<p>MIG Manager supports preinstalled drivers.
+Information in the preceding sections still applies, however there are a few additional details to consider.</p>
+<section id="id1">
+<h3>Install<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<p>During GPU Operator installation, <code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code> must be set. The following options
+can be used to install the GPU Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --set driver.enabled<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</section>
+<section id="managing-host-gpu-clients">
+<h3>Managing Host GPU Clients<a class="headerlink" href="#managing-host-gpu-clients" title="Permalink to this headline">#</a></h3>
+<p>MIG Manager stops all operator-managed pods that have access to GPUs when applying a MIG reconfiguration.
+When drivers are preinstalled, there may be GPU clients on the host that also need to be stopped.</p>
+<p>When drivers are preinstalled, MIG Manager attempts to stop and restart a list of systemd services on the host across a MIG reconfiguration.
+The list of services are specified in the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> config map.</p>
+<p>The following sample GPU clients file, <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code>, is used to create the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> config map:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">systemd-services</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm-mqtt.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm-core.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm-api-gateway.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm-notifier.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nv_peer_mem.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-dcgm.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcgm.service</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcgm-exporter.service</span><span class="w"></span>
+</pre></div>
+</div>
+<p>You can modify the list by editing the config map after installation.
+Alternatively, you can create a custom config map for use by MIG Manager by performing the following steps:</p>
+<ol class="arabic">
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
+</pre></div>
+</div>
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> containing the custom <cite>clients.yaml</cite> file with a list of GPU clients:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap -n gpu-operator gpu-clients --from-file<span class="o">=</span>clients.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Install the GPU Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator <span class="se">\</span>
+    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --set migManager.gpuClientsConfig.name<span class="o">=</span>gpu-clients
+<span class="go">    --set driver.enabled=false</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h2>
+<p>MIG Manager is designed as a controller within Kubernetes. It watches for changes to the
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config</span></code> label on the node and then applies the user-requested MIG configuration
+When the label changes, MIG Manager first stops all GPU pods, including device plugin, GPU feature discovery,
+and DCGM exporter.
+MIG Manager then stops all host GPU clients listed in the <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code> config map if drivers are preinstalled.
+Finally, it applies the MIG reconfiguration and restarts the GPU pods and possibly, host GPU clients.
+The MIG reconfiguration can also involve rebooting a node if a reboot is required to enable MIG mode.</p>
+<p>The default MIG profiles are specified in the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map.
+You can specify one of these profiles to apply to the <code class="docutils literal notranslate"><span class="pre">mig.config</span></code> label to trigger a reconfiguration of the MIG geometry.</p>
+<p>MIG Manager uses the <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a> tool to apply the configuration
+changes to the GPU, including enabling MIG mode, with a node reboot as required by some scenarios.</p>
+<div data-mermaid="flowchart
+
+subgraph mig[MIG Manager]
+  direction TB
+  A[Controller] &lt;--&gt; B[MIG-Parted]
+end
+
+A -- on change --&gt; C
+
+subgraph recon[Reconfiguration]
+  C[&quot;Config is Pending
+     or Rebooting&quot;]
+  --&gt;
+  D[&quot;Stop Operator Pods&quot;]
+  --&gt;
+  E[&quot;Enable MIG Mode and
+     Reboot if Required&quot;]
+  --&gt;
+  F[&quot;Use mig-parted to
+     Configure MIG Geometry&quot;]
+  --&gt;
+  G[&quot;Restart Operator Pods&quot;]
+end
+
+H[&quot;Set mig.config label
+   to Success&quot;]
+I[&quot;Set mig.config label
+   to Failed&quot;]
+
+G --&gt; H
+G -- on failure --&gt; I"><div class="mermaid">
+            flowchart
+
+subgraph mig[MIG Manager]
+  direction TB
+  A[Controller] &lt;--&gt; B[MIG-Parted]
+end
+
+A -- on change --&gt; C
+
+subgraph recon[Reconfiguration]
+  C[&quot;Config is Pending
+     or Rebooting&quot;]
+  --&gt;
+  D[&quot;Stop Operator Pods&quot;]
+  --&gt;
+  E[&quot;Enable MIG Mode and
+     Reboot if Required&quot;]
+  --&gt;
+  F[&quot;Use mig-parted to
+     Configure MIG Geometry&quot;]
+  --&gt;
+  G[&quot;Restart Operator Pods&quot;]
+end
+
+H[&quot;Set mig.config label
+   to Success&quot;]
+I[&quot;Set mig.config label
+   to Failed&quot;]
+
+G --&gt; H
+G -- on failure --&gt; I
+        </div></div></section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="security.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Security Considerations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gpu-sharing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Time-Slicing GPUs in Kubernetes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-multi-instance-gpu">About Multi-Instance GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-mig-during-installation">Enabling MIG During Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-mig-profiles">Configuring MIG Profiles</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-single-mig-strategy">Example: Single MIG Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-mixed-mig-strategy">Example: Mixed MIG Strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-reconfiguring-mig-profiles">Example: Reconfiguring MIG Profiles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-custom-mig-configuration-during-installation">Example: Custom MIG Configuration During Installation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-custom-mig-configuration">Example: Custom MIG Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-running-sample-cuda-workloads">Verification: Running Sample CUDA Workloads</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-vectoradd">CUDA VectorAdd</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concurrent-job-launch">Concurrent Job Launch</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-mig">Disabling MIG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-manager-with-preinstalled-drivers">MIG Manager with Preinstalled Drivers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Install</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-host-gpu-clients">Managing Host GPU Clients</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
