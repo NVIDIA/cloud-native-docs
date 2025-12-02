@@ -8,6 +8,51 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.18.1
+
+This release of the NVIDIA Container Toolkit `v1.18.1` is a bugfix release.
+
+### Packaging Changes
+- The the RPM packages for the NVIDIA Container Toolkit are now generated with
+  SHA256 digests.
+
+### Fixes and Features
+- Fix a bug where the ldcache in a container may not be correctly generated if the
+  host and container have different system search paths.
+- Fix a bug where CUDA forward compatability would not be configured in containers
+  where no ldcache exists.
+- Fix a bug where a container's ldcache is not updated if where the container image does not have an ld.so.conf file.
+- Fix a bug where updating the container's ldcache could cause the priority of user-installed libraries
+  to be changed.
+- Fix a bug where duplicate CDI specs (and CDI hooks) where generated for the default `jit-cdi` mode.
+- Allow `nvcdi` feature flags to be configured in `jit-cdi` mode.
+- Ensure that the CDI refresh service also triggers on systems where the `nvidia-current` kernel module is used.
+- Change the default containerd drop-in config root to `/etc/containerd/conf.d` to align with the value in
+  newer containerd versions.
+- Ensure that log messages in the `nvidia` runtime wrapper script (used by the GPU Operator) are output
+  to STDERR. This fixes a crash on certain systems when containers are run without the `nvidia` kernel modules loaded.
+- Fix a bug where existing imports in containerd were overridden when using a drop-in config file.
+- Fix a bug where the `nvidia-container-runtime.mode` setting in the config file was defining the mode used for CDI
+  spec generation.
+- Fix a bug in the `create-dev-char-symlinks` command when all symlinks were being created.
+
+#### Enhancements to container-toolkit Container Images
+- Bump the NVIDIA distroless base image to v3.2.1-dev.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.18.1`
+- `nvidia-container-toolkit-base 1.18.1`
+- `libnvidia-container-tools 1.18.1`
+- `libnvidia-container1 1.18.1`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.1`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.1-packaging`
+
 ## NVIDIA Container Toolkit 1.18.0
 
 This release of the NVIDIA Container Toolkit `v1.18.0` is feature release with the following high-level changes:
