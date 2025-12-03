@@ -221,7 +221,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -ojsonpath={.metadata.annotations.alm-examples} | jq '.[0]' > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json 
 
    .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
@@ -312,7 +312,7 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -ojsonpath={.metadata.annotations.alm-examples} | jq '.[0]' > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json 
 
    .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
