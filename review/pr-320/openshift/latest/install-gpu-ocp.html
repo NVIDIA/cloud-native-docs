@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 25, 2025"/>
+    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
 
 
 
@@ -590,7 +590,7 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below
 <span id="verify-gpu-operator-install-ocp"></span><h3>Create the cluster policy using the CLI<a class="headerlink" href="#create-the-cluster-policy-using-the-cli" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq <span class="s1">&#39;.[0]&#39;</span> &gt; clusterpolicy.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span><span class="o">)</span> &gt; clusterpolicy.json
 </pre></div>
 </div>
 <div class="admonition note">
@@ -675,7 +675,7 @@ The <code class="docutils literal notranslate"><span class="pre">configMap</span
 <h3>Create the cluster policy using the CLI<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq <span class="s1">&#39;.[0]&#39;</span> &gt; clusterpolicy.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span><span class="o">)</span> &gt; clusterpolicy.json
 </pre></div>
 </div>
 <div class="admonition note">
