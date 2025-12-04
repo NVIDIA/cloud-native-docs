@@ -87,12 +87,20 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    :header-rows: 2
 
    * - :rspan:`1` Component
-     - GPU Operator Version
+     - :cspan:`2` GPU Operator Version
 
    * - v25.10.0
+     - v25.10.1
 
    * - NVIDIA GPU Driver |ki|_
      - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ (**D**, **R**)
+       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
+       | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
+       | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
+       | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
+       | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html>`_
+     - | `580.105.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html>`_ (**D**, **R**)
+       | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ 
        | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
        | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
        | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
@@ -102,28 +110,33 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA Driver Manager for Kubernetes
      - `v0.9.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.9.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
      - `1.18.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
      - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
      - `v4.4.1-4.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `v4.4.2-4.7.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
      - `v0.18.2 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.13.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
+     - `0.13.1 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
      - `4.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.4.2-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
      - v25.10.0
@@ -170,3 +183,4 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    - The GPU Operator is supported on all active NVIDIA data center production drivers.
      Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions>`_
      for more information.
+

@@ -33,6 +33,56 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+
+
+.. _v25.10.1:
+
+25.10.1
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Container Toolkit v1.18.1
+  - NVIDIA DCGM v4.4.2-1
+  - NVIDIA DCGM Exporter v4.4.2-4.7.0 
+  - NVIDIA Kubernetes Device Plugin v0.18.1
+  - NVIDIA GPU Feature Discovery v0.18.1
+  - NVIDIA MIG Manager for Kubernetes 0.13.1
+  - NVIDIA Driver Manager for Kubernetes v0.9.1
+
+* Added support for this NVIDIA Data Center GPU Driver version:
+
+  - 580.105.08 (default)
+
+* Add HPC job mapping support to DCGM Exporter to collect metrics for HPC jobs running on the cluster.
+
+  Configure the HPC job mapping by setting the ``dcgmExporter.hpcJobMapping.enabled`` field to ``true`` in the ClusterPolicy custom resource.
+  Set ``dcgmExporter.hpcJobMapping.directory`` with the directory path where HPC job mapping files are created by the workload manager. 
+  The default directory is ``/var/lib/dcgm-exporter/job-mapping``.
+
+* Improved the cluster policy reconciler to be more resilient to race conditions during node updates.
+
+Fixed Issues
+------------
+
+* Fixed the following known issue introduced in GPU Operator v25.10.0:
+
+  * When using cri-o as the container runtime, several GPU Operator pods can be stuck in the ``Init:RunContainerError`` or ``Init:CreateContainerError`` state during GPU Operator installation or upgrade, or during GPU driver daemonset upgrade.
+  * NVIDIA Container Toolkit 1.18.0 overwrites the imports field in the top-level containerd configuration file, so any previously imported paths are lost.
+    This was fixed in NVIDIA Container Toolkit v1.18.1.
+
+* Fixed a race condition where user-supplied NVIDIA kernel module parameters were sometimes not being applied by the driver daemonset. 
+  For more information, refer to `PR #1939 <https://github.com/NVIDIA/gpu-operator/pull/1939>`__.
+
+* Fixed a bug where driver images were being incorrectly assigned in multi-nodepool clusters. 
+  For more information, refer to `Issue #1622 <https://github.com/NVIDIA/gpu-operator/issues/1622>`__.
+* Fixed a bug where the GPU Operator Helm chart template was not assigning the correct namespace to resources it created.
+* Fixed a bug where the k8s-driver-manager would wait indefinitely when MOFED is enabled and ``USE_HOST_MOFED`` is set to true despite the MOFED being pre-installed on the host. 
+
+
 .. _v25.10.0:
 
 25.10.0
