@@ -445,9 +445,9 @@
 <span id="id1"></span><h2>25.10.1<a class="headerlink" href="#v25-10-1" title="Permalink to this headline">#</a></h2>
 <section id="new-features">
 <h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Updated software component versions:</p>
 <ul>
+<li><p>Updated software component versions:</p>
+<ul class="simple">
 <li><p>NVIDIA Container Toolkit v1.18.1</p></li>
 <li><p>NVIDIA DCGM v4.4.2-1</p></li>
 <li><p>NVIDIA DCGM Exporter v4.4.2-4.7.0</p></li>
@@ -458,19 +458,34 @@
 </ul>
 </li>
 <li><p>Added support for this NVIDIA Data Center GPU Driver version:</p>
-<ul>
+<ul class="simple">
 <li><p>580.105.08 (default)</p></li>
 </ul>
 </li>
+<li><p>Add HPC job mapping support to DCGM Exporter to collect metrics for HPC jobs running on the cluster.</p>
+<p>Configure the HPC job mapping by setting the <code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.enabled</span></code> field to <code class="docutils literal notranslate"><span class="pre">true</span></code> in the ClusterPolicy custom resource.
+Set <code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.directory</span></code> with the directory path where HPC job mapping files are created by the workload manager.
+The default directory is <code class="docutils literal notranslate"><span class="pre">/var/lib/dcgm-exporter/job-mapping</span></code>.</p>
+</li>
+<li><p>Improved the cluster policy reconciler to be more resilient to race conditions during node updates.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed a bug where driver images were being incorrectly assigned in multi-nodepool clusters.</p></li>
+<li><p>Fixed the following known issue introduced in GPU Operator v25.10.0:</p>
+<ul>
+<li><p>When using cri-o as the container runtime, several GPU Operator pods can be stuck in the <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state during GPU Operator installation or upgrade, or during GPU driver daemonset upgrade.</p></li>
+<li><p>NVIDIA Container Toolkit 1.18.0 overwrites the imports field in the top-level containerd configuration file, so any previously imported paths are lost.
+This was fixed in NVIDIA Container Toolkit v1.18.1.</p></li>
+</ul>
+</li>
+<li><p>Fixed a race condition where user-supplied NVIDIA kernel module parameters were sometimes not being applied by the driver daemonset.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1939">PR #1939</a>.</p></li>
+<li><p>Fixed a bug where driver images were being incorrectly assigned in multi-nodepool clusters.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1622">Issue #1622</a>.</p></li>
 <li><p>Fixed a bug where the GPU Operator Helm chart template was not assigning the correct namespace to resources it created.</p></li>
-<li><p>Fixed a bug where the ClusterPolicy reconciler would fail when it attempted to update node labels on a cluster.</p></li>
-<li><p>Fixed a bug where the k8s-driver-manager would wait indefinitely when MOFED is enabled despite the MOFED being pre-installed on the host.</p></li>
+<li><p>Fixed a bug where the k8s-driver-manager would wait indefinitely when MOFED is enabled and <code class="docutils literal notranslate"><span class="pre">USE_HOST_MOFED</span></code> is set to true despite the MOFED being pre-installed on the host.</p></li>
 </ul>
 </section>
 </section>
