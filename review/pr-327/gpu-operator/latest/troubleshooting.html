@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 05, 2025"/>
+    <meta name="docbuild:last-update" content="Dec 09, 2025"/>
 
 
 
@@ -950,88 +950,6 @@ The return values for the <code class="docutils literal notranslate"><span class
 <p>The errors will eventually resolve on their own after the driver daemonset is installed or the upgrade is complete.</p>
 <p>This issue was fixed in GPU Operator v25.10.1 and later.</p>
 </section>
-<section id="cuda-validator-fails-with-failed-to-allocate-device-vector-error-kaslr">
-<h2>CUDA validator fails with “Failed to allocate device vector” error (KASLR)<a class="headerlink" href="#cuda-validator-fails-with-failed-to-allocate-device-vector-error-kaslr" title="Permalink to this headline">#</a></h2>
-<p class="h4 rubric">Issue</p>
-<p>CUDA validator fails with the following error message:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements] Failed to allocate device vector A (error code initialization error)!</span>
-</pre></div>
-</div>
-<p>This issue has been observed with multiple types of GPUs:</p>
-<ul class="simple">
-<li><p>L40</p></li>
-<li><p>L40S</p></li>
-<li><p>H200</p></li>
-<li><p>RTX Pro 6000BSE</p></li>
-</ul>
-<p class="h4 rubric">Root Cause</p>
-<p>This is a known issue with Kernel Address Space Layout Randomization (KASLR) affecting GPU initialization.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#id3">CUDA Toolkit Release Notes</a> for details.</p>
-<p class="h4 rubric">Action</p>
-<p>To ensure stable GPU discovery and driver loading, disable KASLR on all GPU nodes by adding the kernel parameter <code class="docutils literal notranslate"><span class="pre">nokaslr</span></code> to the bootloader configuration.</p>
-<p><strong>Disable KASLR on Kubernetes clusters running with Ubuntu or RHEL</strong></p>
-<ol class="arabic">
-<li><p>Edit <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> and add <code class="docutils literal notranslate"><span class="pre">nokaslr</span></code> to <code class="docutils literal notranslate"><span class="pre">GRUB_CMDLINE_LINUX_DEFAULT</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&quot;quiet splash nokaslr&quot;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Update GRUB and reboot:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-grub
-<span class="gp">$ </span>sudo reboot
-</pre></div>
-</div>
-</li>
-</ol>
-<p><strong>Disable KASLR on OpenShift clusters</strong></p>
-<ol class="arabic">
-<li><p>Create a MachineConfig targeting a specific node group:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">machineconfiguration.openshift.io/v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MachineConfig</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">machineconfiguration.openshift.io/role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worker</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disable-worker-kaslr</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">ignition</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.2.0</span><span class="w"></span>
-<span class="w">  </span><span class="nt">kernelArguments</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nokaslr</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Refer to the <a class="reference external" href="https://docs.okd.io/latest/machine_configuration/machine-configs-configure.html#nodes-nodes-kernel-arguments_machine-configs-configure">OpenShift documentation</a> for more details.</p>
-</li>
-<li><p>Apply the MachineConfig:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f nokaslr.yaml
-<span class="go">machineconfig.machineconfiguration.openshift.io/disable-worker-kaslr created</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<p><strong>Verify that KASLR is disabled</strong></p>
-<ol class="arabic">
-<li><p>Confirm that KASLR is disabled by checking the kernel command line</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat /proc/cmdline
-</pre></div>
-</div>
-</li>
-<li><p>Ensure the output includes the <code class="docutils literal notranslate"><span class="pre">nokaslr</span></code> flag. For example:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[core@host1 ~]$ cat /proc/cmdline</span>
-<span class="go">BOOT_IMAGE=(hd5,gpt3)/boot/ostree/rhcos-169d36e079c1193bc7ab64f25220a2cf4335bd8daac20961e66e88d5451686af/vmlinuz-5.14.0-427.68.1.el9_4.x86_64 ignition.platform.id=metal ip=6c-fe-54-90-af-c0:dhcp ostree=/ostree/boot.0/rhcos/169d36e079c1193bc7ab64f25220a2cf4335bd8daac20961e66e88d5451686af/0 root=UUID=1f3af9d2-c485-482c-ad6e-29f2029dfdee rw rootflags=prjquota boot=UUID=078e4760-1950-eab4-ba54-a59dfca0b5c9 nokaslr systemd.unified_cgroup_hierarchy=1 cgroup_no_v1=all psi=0</span>
-<span class="go">[core@host1 ~]$</span>
-</pre></div>
-</div>
-<p>If <code class="docutils literal notranslate"><span class="pre">nokaslr</span></code> is present, KASLR has been successfully disabled.</p>
-</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>On OpenShift clusters, the update may not be applied automatically. If KASLR remains enabled after the MachineConfig change, manually drain the node to force the MachineConfig Operator to reboot and apply the update.</p>
-</div>
-<p class="h4 rubric">Result</p>
-<p>The CUDA validator will run successfully after KASLR is disabled.</p>
-</section>
 </section>
 
 
@@ -1100,7 +1018,6 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/cuda/cu
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-pods-in-init-runcontainererror-or-init-createcontainererror-state">GPU Operator pods in <code class="docutils literal notranslate"><span class="pre">Init:RunContainerError</span></code> or <code class="docutils literal notranslate"><span class="pre">Init:CreateContainerError</span></code> state</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cuda-validator-fails-with-failed-to-allocate-device-vector-error-kaslr">CUDA validator fails with “Failed to allocate device vector” error (KASLR)</a></li>
 </ul>
   </nav></div>
 
