@@ -31,6 +31,7 @@ sphinx_conf_py_extra = """
     "linuxdoc.rstFlatTable",
     "sphinx.ext.autosectionlabel",
     "sphinx_copybutton",
+    "sphinx_design",
   ])
   suppress_warnings = [ 'autosectionlabel.*' ]
   pygments_style = 'sphinx'
@@ -168,7 +169,7 @@ docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "25.10"  # Update repo_docs.projects.openshift.version to match latest patch version maj.min.patch
-source_substitutions = { minor_version = "25.10", version = "v25.10.1", recommended = "580.105.08" }
+source_substitutions = { minor_version = "25.10", version = "v25.10.1", recommended = "580.105.08", dra_version = "25.12.0" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -191,6 +192,8 @@ redirects = [
   { path="openshift/appendix-ocp.html", project="openshift", target="appendix-ocp.html" },
   { path="openshift/clean-up.html", project="openshift", target="clean-up.html" },
   { path="openshift/install-gpu-ocp.html", project="openshift", target="install-gpu-ocp.html" },
+  { path="dra-crds.html", target="dra-intro-install.html" },
+  { path="dra-gpus.html", target="dra-intro-install.html" },
 ]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
