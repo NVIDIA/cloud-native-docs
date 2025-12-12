@@ -51,7 +51,7 @@ Prerequisites
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-#. Nodes must be configured with a container engine such CRI-O or containerd.
+#. Nodes must be configured with a container engine such as CRI-O or containerd.
 
 #. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
    label the namespace for the Operator to set the enforcement policy to privileged:
@@ -65,7 +65,7 @@ Prerequisites
    By default, NFD master and worker are automatically deployed by the Operator.
    If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.
 
-   One way to determine if NFD is already running in the cluster is to check for a NFD label on your nodes:
+   One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes:
 
    .. code-block:: console
 
@@ -164,7 +164,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``{}``
   
    * - ``dcgmExporter.enabled``
-     - By default, the Operator gathers GPU telemetry in Kubernetes via `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
+     - By default, the Operator gathers GPU telemetry in Kubernetes using `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
        Set this value to ``false`` to disable it.
        Available values are ``true`` (default) or ``false``.
      - ``true``
@@ -199,7 +199,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
        
        ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-       Note, ``auto`` is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
+       The ``auto`` option is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
        550 and 535 branch drivers do not yet support this mode.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.
@@ -250,7 +250,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
        If you set ``driver.usePrecompiled`` to ``true``, then set this field to
        a driver branch, such as ``525``.
-     - Depends on the version of the Operator. See the Component Matrix
+     - Depends on the version of the Operator. Refer to the :ref:`GPU Operator Component Matrix`
        for more information on supported drivers.
 
    * - ``gdrcopy.enabled``
@@ -269,7 +269,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``migManager.enabled``
      - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
-       default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).
+       default, the MIG manager only runs on nodes with GPUs that support MIG (such as the A100).
      - ``true``
 
    * - ``nfd.enabled``
@@ -370,7 +370,7 @@ Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
 
 When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
 Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
-Note, network restricted environments are not supported.
+Network restricted environments are not supported.
 
 
 Pre-Installed NVIDIA GPU Drivers
@@ -491,7 +491,7 @@ options are used with the container-toolkit deployed with GPU Operator:
       - name: CONTAINERD_SOCKET
         value: /run/containerd/containerd.sock
       - name: RUNTIME_CONFIG_SOURCE
-        value: "command, file"
+        value: "command,file"
 
 
 If you need to specify custom values, refer to the following sample command for the syntax:
@@ -507,7 +507,7 @@ If you need to specify custom values, refer to the following sample command for 
       --set toolkit.env[1].name=CONTAINERD_SOCKET \
       --set toolkit.env[1].value=/run/containerd/containerd.sock \
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
-      --set toolkit.env[2].value="command, file"
+      --set toolkit.env[2].value="command,file"
 
 These options are defined as follows:
 
@@ -529,10 +529,10 @@ RUNTIME_CONFIG_SOURCE
   The config source(s) that the container-toolkit uses when fetching
   the current containerd configuration. A valid value for this setting is any
   combination of [command | file]. By default this will be configured as
-  "command, file" which means the container-toolkit will attempt to fetch
-  the configuration via the containerd CLI before falling back to reading the
-  config from the top-level ``containerd`` config file (configured via
-  CONTIANERD_CONFIG). When ``file`` is specified, the absolute path to the file
+  "command,file" which means the container-toolkit will attempt to fetch
+  the configuration using the containerd CLI before falling back to reading the
+  config from the top-level ``containerd`` config file (configured using
+  CONTAINERD_CONFIG). When ``file`` is specified, the absolute path to the file
   to be used as a config source can be specified as ``file=/path/to/source/config.toml``
 
 RUNTIME_DROP_IN_CONFIG
@@ -636,7 +636,7 @@ In the first example, let's run a simple CUDA sample, which adds two vectors tog
       Test PASSED
       Done
 
-#. Removed the stopped pod:
+#. Remove the stopped pod:
 
    .. code-block:: console
 
