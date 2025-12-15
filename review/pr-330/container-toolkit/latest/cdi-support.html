@@ -1,0 +1,776 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Support for Container Device Interface &#8212; NVIDIA Container Toolkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cdi-support';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Specialized Configurations with Docker" href="docker-specialized.html" />
+    <link rel="prev" title="Architecture Overview" href="arch-overview.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Dec 15, 2025"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Container Toolkit</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-guide.html">Installing the Toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="arch-overview.html">Architecture Overview</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Container Device Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker-specialized.html">Specialized Configurations with Docker</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Container Toolkit</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Support for Container Device Interface</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="support-for-container-device-interface">
+<span id="cdi-support"></span><h1>Support for Container Device Interface<a class="headerlink" href="#support-for-container-device-interface" title="Permalink to this headline">#</a></h1>
+<section id="about-the-container-device-interface">
+<h2>About the Container Device Interface<a class="headerlink" href="#about-the-container-device-interface" title="Permalink to this headline">#</a></h2>
+<p>As of the <code class="docutils literal notranslate"><span class="pre">v1.12.0</span></code> release the NVIDIA Container Toolkit includes support for generating Container Device Interface (CDI) specifications.</p>
+<p>CDI is an open specification for container runtimes that abstracts what <em>access</em> to a device, such as an NVIDIA GPU, means, and standardizes access across container runtimes.
+Popular container runtimes can read and process the specification to ensure that a device is available in a container.
+CDI simplifies adding support for devices such as NVIDIA GPUs because the specification is applicable to all container runtimes that support CDI.</p>
+<p>CDI also improves the compatibility of the NVIDIA container stack with certain features such as rootless containers.</p>
+</section>
+<section id="generating-a-cdi-specification">
+<h2>Generating a CDI specification<a class="headerlink" href="#generating-a-cdi-specification" title="Permalink to this headline">#</a></h2>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>You installed either the NVIDIA Container Toolkit or you installed the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package.
+The base package includes the container runtime and the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command-line interface, but avoids
+installing the container runtime hook and transitive dependencies.
+The hook and dependencies are not needed on machines that use CDI exclusively.</p></li>
+<li><p>You installed an NVIDIA GPU Driver.</p></li>
+</ul>
+</section>
+<section id="automatic-cdi-specification-generation">
+<h3>Automatic CDI Specification Generation<a class="headerlink" href="#automatic-cdi-specification-generation" title="Permalink to this headline">#</a></h3>
+<p>As of NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.18.0</span></code>, the CDI specification is automatically generated and updated by a systemd service called <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code>. This service:</p>
+<ul class="simple">
+<li><p>Automatically generates the CDI specification at <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/nvidia.yaml</span></code> when:</p>
+<ul>
+<li><p>The NVIDIA Container Toolkit is installed or upgraded</p></li>
+<li><p>The NVIDIA GPU drivers are installed or upgraded</p></li>
+<li><p>The system is rebooted</p></li>
+</ul>
+</li>
+</ul>
+<p>This ensures that the CDI specifications are up to date for the current driver
+and device configuration and that CDI Devices defined in these speciciations are
+available when using native CDI support in container engines such as Docker or Podman.</p>
+<p>Running the following command will give a list of availble CDI Devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia-ctk cdi list</span>
+</pre></div>
+</div>
+<section id="known-limitations">
+<h4>Known limitations<a class="headerlink" href="#known-limitations" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service does not currently handle the following situations:</p>
+<ul class="simple">
+<li><p>The removal of NVIDIA GPU drivers</p></li>
+<li><p>The reconfiguration of MIG devices</p></li>
+</ul>
+<p>For these scenarios, the regeneration of CDI specifications must be <a class="reference internal" href="#manual-cdi-specification-generation"><span class="std std-doc">manually triggered</span></a>.</p>
+</section>
+<section id="customizing-the-automatic-cdi-refresh-service">
+<h4>Customizing the Automatic CDI Refresh Service<a class="headerlink" href="#customizing-the-automatic-cdi-refresh-service" title="Permalink to this headline">#</a></h4>
+<p>The behavior of the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service can be customized by adding
+environment variables to <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-toolkit/cdi-refresh.env</span></code> to
+affect the behavior of the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command.</p>
+<p>As an example, to enable debug logging the configuration file should be updated
+as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/nvidia-container-toolkit/cdi-refresh.env</span>
+<span class="nv">NVIDIA_CTK_DEBUG</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>For a complete list of available environment variables, run <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span> <span class="pre">--help</span></code> to see the command’s documentation.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Modifications to the environment file required a systemd reload and restarting the
+service to take effect</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl daemon-reload
+<span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+</section>
+<section id="managing-the-cdi-refresh-service">
+<h4>Managing the CDI Refresh Service<a class="headerlink" href="#managing-the-cdi-refresh-service" title="Permalink to this headline">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> service consists of two systemd units:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.path</span></code>: Monitors for changes to the system and triggers the service.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code>: Generates the CDI specifications for all available devices based on
+the default configuration and any overrides in the environment file.</p></li>
+</ul>
+<p>These services can be managed using standard systemd commands.</p>
+<p>When working as expected, the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.path</span></code> service will be enabled and active, and the
+<code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code> will be enabled and have run at least once. For example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl status nvidia-cdi-refresh.path
+<span class="go">● nvidia-cdi-refresh.path - Trigger CDI refresh on NVIDIA driver install / uninstall events</span>
+<span class="go">     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.path; enabled; preset: enabled)</span>
+<span class="go">     Active: active (waiting) since Fri 2025-06-27 06:04:54 EDT; 1h 47min ago</span>
+<span class="go">   Triggers: ● nvidia-cdi-refresh.service</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl status nvidia-cdi-refresh.service
+<span class="go">○ nvidia-cdi-refresh.service - Refresh NVIDIA CDI specification file</span>
+<span class="go">     Loaded: loaded (/etc/systemd/system/nvidia-cdi-refresh.service; enabled; preset: enabled)</span>
+<span class="go">     Active: inactive (dead) since Fri 2025-06-27 07:17:26 EDT; 34min ago</span>
+<span class="go">TriggeredBy: ● nvidia-cdi-refresh.path</span>
+<span class="go">    Process: 1317511 ExecStart=/usr/bin/nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml (code=exited, status=0/SUCCESS)</span>
+<span class="go">   Main PID: 1317511 (code=exited, status=0/SUCCESS)</span>
+<span class="go">        CPU: 562ms</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>If these are not enabled as expected, they can be enabled by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> --now nvidia-cdi-refresh.path
+<span class="gp">$ </span>sudo systemctl <span class="nb">enable</span> --now nvidia-cdi-refresh.service
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting-cdi-specification-generation-and-resolution">
+<h4>Troubleshooting CDI Specification Generation and Resolution<a class="headerlink" href="#troubleshooting-cdi-specification-generation-and-resolution" title="Permalink to this headline">#</a></h4>
+<p>If CDI specifications for available devices are not generated / updated as expected, it is
+recommended that the logs for the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code> be checked. This can be
+done by running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo journalctl -u nvidia-cdi-refresh.service
+</pre></div>
+</div>
+<p>In most cases, restarting the service should be sufficient to trigger the (re)generation
+of CDI specifications:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+<p>Running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-ctk --debug cdi list
+</pre></div>
+</div>
+<p>will show a list of available CDI Devices as well as any errors that may have
+occurred when loading CDI Specifications from <code class="docutils literal notranslate"><span class="pre">/etc/cdi</span></code> or <code class="docutils literal notranslate"><span class="pre">/var/run/cdi</span></code>.</p>
+</section>
+</section>
+<section id="manual-cdi-specification-generation">
+<h3>Manual CDI Specification Generation<a class="headerlink" href="#manual-cdi-specification-generation" title="Permalink to this headline">#</a></h3>
+<p>As of the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">v1.18.0</span></code> the recommended mechanism to regenerate CDI specifications is to restart the <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh.service</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart nvidia-cdi-refresh.service
+</pre></div>
+</div>
+<p>If this does not work, or more flexibility is required, the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">cdi</span> <span class="pre">generate</span></code> command
+can be used directly:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate --output<span class="o">=</span>/var/run/cdi/nvidia.yaml
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-a-workload-with-cdi">
+<h2>Running a Workload with CDI<a class="headerlink" href="#running-a-workload-with-cdi" title="Permalink to this headline">#</a></h2>
+<p>Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container Runtime hook.
+This means that if a <code class="docutils literal notranslate"><span class="pre">/usr/share/containers/oci/hooks.d/oci-nvidia-hook.json</span></code> file exists, delete it
+or ensure that you do not run containers with the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable set.</p>
+<p>The use of the CDI specification is dependent on the CDI-enabled container engine or CLI that you use.
+In the case of <code class="docutils literal notranslate"><span class="pre">podman</span></code>, for example, releases as of <code class="docutils literal notranslate"><span class="pre">v4.1.0</span></code> include support for specifying CDI devices in the <code class="docutils literal notranslate"><span class="pre">--device</span></code> argument.
+Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs would require the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>podman run --rm --device nvidia.com/gpu<span class="o">=</span>all --security-opt<span class="o">=</span><span class="nv">label</span><span class="o">=</span>disable ubuntu nvidia-smi -L
+</pre></div>
+</div>
+<p>The preceding sample command should show the same output as running <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">-L</span></code> on the host.</p>
+<p>The CDI specification also contains references to individual GPUs or MIG devices.
+You can request these by specifying their names when launching a container, such as the following example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>podman run --rm <span class="se">\</span>
+    --device nvidia.com/gpu<span class="o">=</span><span class="m">0</span> <span class="se">\</span>
+    --device nvidia.com/gpu<span class="o">=</span><span class="m">1</span>:0 <span class="se">\</span>
+    --security-opt<span class="o">=</span><span class="nv">label</span><span class="o">=</span>disable <span class="se">\</span>
+    ubuntu nvidia-smi -L
+</pre></div>
+</div>
+<p>The preceding sample command requests the full GPU with index 0 and the first MIG device on GPU 1.
+The output should show only the UUIDs of the requested devices.</p>
+</section>
+<section id="using-cdi-with-non-cdi-enabled-runtimes">
+<h2>Using CDI with Non-CDI-Enabled Runtimes<a class="headerlink" href="#using-cdi-with-non-cdi-enabled-runtimes" title="Permalink to this headline">#</a></h2>
+<p>To support runtimes that do not natively support CDI, you can configure the NVIDIA Container Runtime in a <code class="docutils literal notranslate"><span class="pre">cdi</span></code> mode.
+In this mode, the NVIDIA Container Runtime does not inject the NVIDIA Container Runtime Hook into the incoming OCI runtime specification.
+Instead, the runtime performs the injection of the requested CDI devices.</p>
+<p>The NVIDIA Container Runtime automatically uses <code class="docutils literal notranslate"><span class="pre">cdi</span></code> mode if you request devices by their CDI device names.</p>
+<p>Using Docker as an example of a non-CDI-enabled runtime, the following command uses CDI to inject the requested devices into the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -ti --runtime<span class="o">=</span>nvidia <span class="se">\</span>
+    -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>nvidia.com/gpu<span class="o">=</span>all <span class="se">\</span>
+      ubuntu nvidia-smi -L
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable indicates which devices to inject into the container and is explicitly set to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu=all</span></code>.</p>
+<section id="setting-the-cdi-mode-explicitly">
+<h3>Setting the CDI Mode Explicitly<a class="headerlink" href="#setting-the-cdi-mode-explicitly" title="Permalink to this headline">#</a></h3>
+<p>You can force CDI mode by explicitly setting the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.mode</span></code> option in the NVIDIA Container Runtime config to <code class="docutils literal notranslate"><span class="pre">cdi</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode<span class="o">=</span>cdi
+</pre></div>
+</div>
+<p>In this case, the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable is still used to select the
+devices to inject into the container, but the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.modes.cdi.default-kind</span></code>
+(with a default value of <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>) is used to construct a fully-qualified CDI device name
+only when you specify a device index such as <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code>, or <code class="docutils literal notranslate"><span class="pre">1</span></code>, and so on.</p>
+<p>This means that if CDI mode is explicitly enabled, the following sample command has the same effect as
+specifying <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES=nvidia.com/gpu=all</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm -ti --runtime<span class="o">=</span>nvidia <span class="se">\</span>
+    -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
+      ubuntu nvidia-smi -L
+</pre></div>
+</div>
+</section>
+</section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface">Container Device Interface</a> (CDI) specification from the Container Device Interface repository on GitHub.</p></li>
+<li><p><a class="reference external" href="https://github.com/cncf-tags/container-device-interface#how-to-configure-cdi">How to configure CDI</a> from the GitHub repository provides an overview
+of manual configuration for CRI-O, containerd, and Podman.
+The NVIDIA Container Toolkit performs the configuration for you.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="arch-overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Architecture Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="docker-specialized.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Specialized Configurations with Docker</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-container-device-interface">About the Container Device Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-a-cdi-specification">Generating a CDI specification</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-cdi-specification-generation">Automatic CDI Specification Generation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known limitations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customizing-the-automatic-cdi-refresh-service">Customizing the Automatic CDI Refresh Service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-cdi-refresh-service">Managing the CDI Refresh Service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-cdi-specification-generation-and-resolution">Troubleshooting CDI Specification Generation and Resolution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-cdi-specification-generation">Manual CDI Specification Generation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-workload-with-cdi">Running a Workload with CDI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cdi-with-non-cdi-enabled-runtimes">Using CDI with Non-CDI-Enabled Runtimes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-cdi-mode-explicitly">Setting the CDI Mode Explicitly</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-information">Related Information</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2025, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
