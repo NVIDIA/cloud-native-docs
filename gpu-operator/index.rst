@@ -55,6 +55,7 @@
    :hidden:
 
    KubeVirt <gpu-operator-kubevirt.rst>
+   Confidential Containers <confidential-containers.rst>
    
 .. toctree::
    :caption: Specialized Networks
