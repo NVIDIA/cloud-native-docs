@@ -44,7 +44,7 @@ The steps involved are:
 
 -  Step 3: Create the NGC secret
 
--  Step 4: Create the ConfigMap
+-  Step 4: Create the licensing Secret
 
 -  Step 5: Create the Cluster Policy
 
@@ -151,36 +151,52 @@ NGC container registry).
 
    .. image:: graphics/created_pull-secret.png
 
-Create the ConfigMap for NLS Token
-==================================
+Create the licensing Secret for NLS Token
+==========================================
 
 Prerequisites
 -------------
 
-Generate and download a NLS client license token. See Section 4.6 of the `NVIDIA License System User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+#. Generate and download a NLS client license token. See Section 4.6 of the `NVIDIA License System User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+   Save the token to a file named ``client_configuration_token.tok``.
+
+#. Create an empty ``gridd.conf`` file.
 
 Procedure
 ---------
+
+Create a licensing secret in the ``nvidia-gpu-operator`` namespace via CLI:
+
+.. code-block:: console
+
+   $ oc create secret generic licensing-config \
+       -n nvidia-gpu-operator --from-file=gridd.conf --from-file=client_configuration_token.tok
+
+Alternatively, you can create the secret using the OpenShift web console:
 
 #. Navigate to **Home** > **Projects** and ensure the ``nvidia-gpu-operator`` is selected.
 
 #. Select the **Workloads** Drop Down menu.
 
-#. Select **ConfigMaps** and then click **Create ConfigMap**.
+#. Select **Secrets** and then click **Create**/ > **Key/value secret**.
 
-#. On the **Create ConfigMap** window, click **YAML view**.
-
-#. Enter the details for your config map.
+#. Enter the details for your secret.
 
    #. The ``name`` must be ``licensing-config``.
 
-   #. Copy and paste the information for your NLS client token into the ``client_configuration_token.tok`` parameter.
+   #. Upload the two files as keys:
 
-   .. image:: graphics/create_config_map1.png
-      :alt: Create ConfigMap window of the OpenShift Console.
+      * ``client_configuration_token.tok``
+      * ``gridd.conf``
+
+   .. image:: graphics/create_licensing_secret.png
 
 #. Click **Create**.
 
+.. note::
+
+   Using a Kubernetes Secret to store licensing information is the recommended approach.
+   The ``configMap`` option is deprecated and will be removed in a future release.
 
 Create the Cluster Policy Instance
 ==================================
@@ -194,13 +210,17 @@ Now create the cluster policy, which is responsible for maintaining policy resou
    The console assigns the default name ``gpu-cluster-policy``.
 
 #. Expand the drop down for **NVIDIA GPU/vGPU Driver config** and then **licensingConfig**.
-   In the **configMapName** field, enter the name of the licensing config map that you created previously, ``licensing-config``.
+   In the **secretName** field, enter the name of the licensing Secret that you created previously, ``licensing-config``.
    Select the **nlsEnabled** checkbox.
    Refer the screenshots for parameter examples and modify values accordingly.
 
-   .. image:: graphics/cluster_policy_1.png
+   .. note::
 
-   * **configMapName**: licensing-config
+      The ``ConfigMap`` option (``configMapName``) is deprecated. Use a Kubernetes ``Secret`` (``secretName``) to store licensing information instead.
+
+   .. image:: graphics/cluster_policy_vgpu_1.png
+
+   * **secretName**: licensing-config
    * **nlsEnabled**: nlsEnabled
    * **enabled**: enabled
 
