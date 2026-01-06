@@ -320,7 +320,7 @@ Verifying a Mode Change
 To verify that changing the mode was successful, a cluster-wide or node-level change, view the nvidia.com/cc.mode and nvidia.com/cc.mode.state node labels::
 
    $ kubectl get node <node-name> -o json | \
-       jq '.items[0].metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc.mode")))'
+       jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc.mode")))'
 
 Example output when CC mode is disabled:
 
