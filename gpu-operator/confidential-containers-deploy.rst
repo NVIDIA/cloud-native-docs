@@ -160,6 +160,12 @@ Perform the following steps to install the Operator for use with confidential co
       REVISION: 1
       TEST SUITE: None
 
+   Note that, for heterogeneous clusters with different GPU types, you can omit
+   the ``P_GPU_ALIAS`` environment variable lines (the two ``sandboxDevicePlugin.env``
+   options). This causes the sandbox device plugin to create GPU model-specific
+   resource types (such as ``nvidia.com/GH100_H100L_94GB``) instead of the generic
+   ``nvidia.com/pgpu``. For simplicity, this guide uses the generic alias.
+
 3. Verify that all GPU Operator pods, especially the Kata Manager, Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running::
 
       $ kubectl get pods -n gpu-operator
@@ -370,4 +376,3 @@ Additional Resources
 * NVIDIA Confidential Computing documentation is available at https://docs.nvidia.com/confidential-computing.
 * Trustee Upstream Documentation: https://confidentialcontainers.org/docs/attestation/
 * Trustee NVIDIA Verifier Documentation: https://github.com/confidential-containers/trustee/blob/main/deps/verifier/src/nvidia/README.md
-
