@@ -447,9 +447,9 @@ For an overview of Confidential Containers, refer to <a class="reference interna
 </div>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference internal" href="confidential-containers.html#supported-platforms"><span class="std std-ref">Supported Platforms</span></a>. In particular:</p>
 <ul>
+<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference internal" href="confidential-containers.html#supported-platforms"><span class="std std-ref">Supported Platforms</span></a>. In particular:</p>
+<ul class="simple">
 <li><p>You selected and configured your hardware and BIOS to support confidential computing.</p></li>
 <li><p>You installed and configured Ubuntu 25.10 as host OS with its default kernel to support confidential computing.</p></li>
 <li><p>You validated that the Linux kernel is SNP-aware.</p></li>
@@ -459,6 +459,14 @@ For an overview of Confidential Containers, refer to <a class="reference interna
 <li><p>Your hosts are configured to support IOMMU.</p>
 <ul>
 <li><p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/sys/kernel/iommu_groups</span></code> includes 0, 1, and so on, then your host is configured for IOMMU.</p></li>
+<li><p>If the host is not configured or you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument. For most Linux distributions, you add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p></li>
 </ul>
 </li>
 <li><p>You have a Kubernetes cluster and you have cluster administrator privileges. For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).</p></li>
