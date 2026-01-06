@@ -26,13 +26,6 @@ Prerequisites
 * Your hosts are configured to support IOMMU.
 
   * If the output from running ``ls /sys/kernel/iommu_groups`` includes 0, 1, and so on, then your host is configured for IOMMU.
-  * If the host is not configured or you are unsure, add the ``intel_iommu=on`` Linux kernel command-line argument. For most Linux distributions, you add the argument to the ``/etc/default/grub`` file, for instance::
-
-       ...
-       GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on modprobe.blacklist=nouveau"
-       ...
-
-  * Run ``sudo update-grub`` after making the change to configure the bootloader. Reboot the host after configuring the bootloader.
 
 * You have a Kubernetes cluster and you have cluster administrator privileges. For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a ``runtimeRequestTimeout`` of more than 5 minutes in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).
 

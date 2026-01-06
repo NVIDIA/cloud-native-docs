@@ -19,7 +19,7 @@ Overview
 
 NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability. As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. 
 
-While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as Intel TDX or AMD SEV—to create protected enclaves in both CPU and GPU.
+While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as AMD SEV—to create protected enclaves in both CPU and GPU.
 
 The TEE provides embedded encryption keys and an attestation mechanism through cryptographic verification to ensure that keys are only accessible by authorized application code.
 
@@ -77,7 +77,7 @@ GPU Operator deploys the VFIO manager, nvidia-vfio-manager, to bind discovered N
 
 When you install NVIDIA GPU Operator for confidential computing, you must specify the ``nfd.nodefeaturerules=true`` option. This option directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware. You can confirm the rules are installed by running ``kubectl get nodefeaturerules nvidia-nfd-nodefeaturerules``.
 
-On nodes that have NVIDIA Hopper family GPU and either Intel TDX or AMD SEV-SNP, NFD adds labels to the node such as ``"feature.node.kubernetes.io/cpu-security.sev.snp.enabled": "true"`` and ``"nvidia.com/cc.capable": "true"``. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the ``"nvidia.com/cc.capable": "true"`` label.
+On nodes that have NVIDIA Hopper family GPU and AMD SEV-SNP, NFD adds labels to the node such as ``"feature.node.kubernetes.io/cpu-security.sev.snp.enabled": "true"`` and ``"nvidia.com/cc.capable": "true"``. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the ``"nvidia.com/cc.capable": "true"`` label.
 
 Cluster Topology Considerations
 ---------------------------------
