@@ -1,0 +1,677 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Architecture Overview &#8212; NVIDIA Container Toolkit</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'arch-overview';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.18.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Support for Container Device Interface" href="cdi-support.html" />
+    <link rel="prev" title="Release Notes" href="release-notes.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jan 06, 2026"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Container Toolkit - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Container Toolkit - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Container Toolkit</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Container Toolkit</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-guide.html">Installing the Toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Configuration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi-support.html">Container Device Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker-specialized.html">Specialized Configurations with Docker</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Container Toolkit</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Architecture Overview</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="architecture-overview">
+<span id="arch-overview"></span><h1>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h1>
+<p>The NVIDIA container stack is architected so that it can be targeted to support any container runtime in the ecosystem.
+The components of the stack include:</p>
+<ul class="simple">
+<li><p>The NVIDIA Container Runtime (<code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>)</p></li>
+<li><p>The NVIDIA Container Runtime Hook (<code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> / <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime-hook</span></code>)</p></li>
+<li><p>The NVIDIA Container Library and CLI (<code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code>)</p></li>
+</ul>
+<p>The components of the NVIDIA container stack are packaged as the NVIDIA Container Toolkit.</p>
+<p>How these components are used depends on the container runtime being used. For <code class="docutils literal notranslate"><span class="pre">docker</span></code> or <code class="docutils literal notranslate"><span class="pre">containerd</span></code>, the NVIDIA Container Runtime (<code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code>) is
+configured as an OCI-compliant runtime, with the flow through the various components is shown in the following diagram:</p>
+<a class="reference internal image-reference" href="_images/runtime-architecture.png"><img alt="_images/runtime-architecture.png" src="_images/runtime-architecture.png" style="width: 800px;" /></a>
+<p>The flow through components for <code class="docutils literal notranslate"><span class="pre">cri-o</span></code> and <code class="docutils literal notranslate"><span class="pre">lxc</span></code> are shown in the following diagram. It should be noted that in this
+case the NVIDIA Container Runtime component is not required.</p>
+<a class="reference internal image-reference" href="_images/nvidia-crio-lxc-arch.png"><img alt="_images/nvidia-crio-lxc-arch.png" src="_images/nvidia-crio-lxc-arch.png" style="width: 800px;" /></a>
+<p>Let’s take a brief look at each of the components in the NVIDIA container stack, starting
+with the lowest level component and working up</p>
+<section id="components-and-packages">
+<h2>Components and Packages<a class="headerlink" href="#components-and-packages" title="Permalink to this headline">#</a></h2>
+<p>The main packages of the NVIDIA Container Toolkit are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code></p></li>
+</ul>
+<p>With the dependencies between these packages shown below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├─ nvidia-container-toolkit <span class="o">(</span>version<span class="o">)</span>
+│    ├─ libnvidia-container-tools <span class="o">(</span>&gt;<span class="o">=</span> version<span class="o">)</span>
+│    └─ nvidia-container-toolkit-base <span class="o">(</span>version<span class="o">)</span>
+│
+├─ libnvidia-container-tools <span class="o">(</span>version<span class="o">)</span>
+│    └─ libnvidia-container1 <span class="o">(</span>&gt;<span class="o">=</span> version<span class="o">)</span>
+└─ libnvidia-container1 <span class="o">(</span>version<span class="o">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">version</span></code> is used to represent the NVIDIA Container Toolkit version.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the past the <code class="docutils literal notranslate"><span class="pre">nvidia-docker2</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> packages were also discussed as part of the NVIDIA container stack.
+These <strong>packages</strong> should be considered deprecated as their functionality has been merged with the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package.
+The packages may still be available to introduce dependencies on <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> and ensure that older workflows continue to function.
+For more information on these packages, see the documentation archive for version older than <code class="docutils literal notranslate"><span class="pre">v1.12.0</span></code>.</p>
+</div>
+<section id="the-nvidia-container-library-and-cli">
+<h3>The NVIDIA Container Library and CLI<a class="headerlink" href="#the-nvidia-container-library-and-cli" title="Permalink to this headline">#</a></h3>
+<p>These components are packaged as the <code class="docutils literal notranslate"><span class="pre">libnvidia-container-tools</span></code> and <code class="docutils literal notranslate"><span class="pre">libnvidia-container1</span></code> packages, respectively.</p>
+<p>These components provide a library and a simple CLI utility to automatically configure GNU/Linux containers leveraging NVIDIA GPUs.
+The implementation relies on kernel primitives and is designed to be agnostic of the container runtime.</p>
+<p><code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> provides a well-defined API and a wrapper CLI (called <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code>) that different runtimes can invoke to
+inject NVIDIA GPU support into their containers.</p>
+</section>
+<section id="the-nvidia-container-runtime-hook">
+<h3>The NVIDIA Container Runtime Hook<a class="headerlink" href="#the-nvidia-container-runtime-hook" title="Permalink to this headline">#</a></h3>
+<p>This component is included in the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package.</p>
+<p>This component includes an executable that implements the interface required by a <code class="docutils literal notranslate"><span class="pre">runC</span></code> <code class="docutils literal notranslate"><span class="pre">prestart</span></code> hook. This script is invoked by <code class="docutils literal notranslate"><span class="pre">runC</span></code>
+after a container has been created, but before it has been started, and is given access to the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> associated with the container
+(such as this <a class="reference external" href="https://github.com/opencontainers/runtime-spec/blob/master/config.md#configuration-schema-example=">config.json</a> ). It then takes
+information contained in the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> and uses it to invoke the <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> CLI with an appropriate set of flags. One of the
+most important flags being which specific GPU devices should be injected into the container.</p>
+</section>
+<section id="the-nvidia-container-runtime">
+<h3>The NVIDIA Container Runtime<a class="headerlink" href="#the-nvidia-container-runtime" title="Permalink to this headline">#</a></h3>
+<p>This component is included in the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package.</p>
+<p>This component used to be a complete fork of <code class="docutils literal notranslate"><span class="pre">runC</span></code> with NVIDIA-specific code injected into it. Since 2019, it is a thin wrapper around the native
+<code class="docutils literal notranslate"><span class="pre">runC</span></code> installed on the host system. <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> takes a <code class="docutils literal notranslate"><span class="pre">runC</span></code> spec as input, injects the NVIDIA Container Runtime Hook as
+a <code class="docutils literal notranslate"><span class="pre">prestart</span></code> hook into it, and then calls out to the native <code class="docutils literal notranslate"><span class="pre">runC</span></code>, passing it the modified <code class="docutils literal notranslate"><span class="pre">runC</span></code> spec with that hook set.
+For versions of the NVIDIA Container Runtime from <code class="docutils literal notranslate"><span class="pre">v1.12.0</span></code>, this runtime also performs additional modifications to the OCI runtime spec to inject
+specific devices and mounts not handled by the NVIDIA Container CLI.</p>
+<p>It is important to note that this component is not necessarily specific to docker (but it is specific to <code class="docutils literal notranslate"><span class="pre">runC</span></code>).</p>
+</section>
+<section id="the-nvidia-container-toolkit-cli">
+<h3>The NVIDIA Container Toolkit CLI<a class="headerlink" href="#the-nvidia-container-toolkit-cli" title="Permalink to this headline">#</a></h3>
+<p>This component is included in the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit-base</span></code> package.</p>
+<p>This component is a CLI that includes a number of utilities for interacting with the NVIDIA Container Toolkit. This functionality includes configuring
+runtimes such as <code class="docutils literal notranslate"><span class="pre">docker</span></code> for use with the NVIDIA Container Toolkit or generating <a class="reference external" href="https://github.com/container-orchestrated-devices/container-device-interface">Container Device Interface (CDI)</a> specifications.</p>
+</section>
+</section>
+<section id="which-package-should-i-use-then">
+<h2>Which package should I use then?<a class="headerlink" href="#which-package-should-i-use-then" title="Permalink to this headline">#</a></h2>
+<p>Installing the <code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code> package is sufficient for all use cases. This
+package is continuously being enhanced with additional functionality and tools that simplify working with containers and
+NVIDIA devices.</p>
+<p>To use Kubernetes with Docker, you need to configure the Docker <code class="docutils literal notranslate"><span class="pre">daemon.json</span></code> to include
+a reference to the NVIDIA Container Runtime and set this runtime as the default. The NVIDIA Container Toolkit contains a utility to update this file
+as highlighted in the <code class="docutils literal notranslate"><span class="pre">docker</span></code>-specific installation instructions.</p>
+<p>Refer to the <a class="reference internal" href="install-guide.html"><span class="doc">Installing the NVIDIA Container Toolkit</span></a> for more information on installing the NVIDIA Container Toolkit on various Linux distributions.</p>
+<section id="package-repository">
+<h3>Package Repository<a class="headerlink" href="#package-repository" title="Permalink to this headline">#</a></h3>
+<p>The packages for the various components listed above are available in the <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch of the GitHub repos of these projects. This is particularly
+useful for air-gapped deployments that may want to get access to the actual packages (<code class="docutils literal notranslate"><span class="pre">.deb</span></code> and <code class="docutils literal notranslate"><span class="pre">.rpm</span></code>) to support offline installs.</p>
+<p>For the different components:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-toolkit</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">https://github.com/NVIDIA/libnvidia-container/tree/gh-pages/</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">https://github.com/NVIDIA/libnvidia-container/tree/gh-pages/</span></code></p></li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As of the release of version <code class="docutils literal notranslate"><span class="pre">1.6.0</span></code> of the NVIDIA Container Toolkit the packages for all components are
+published to the <code class="docutils literal notranslate"><span class="pre">libnvidia-container</span></code> <code class="docutils literal notranslate"><span class="pre">repository</span> <span class="pre">&lt;https://nvidia.github.io/libnvidia-container/&gt;</span></code> listed above. For older package versions refer to the documentation archives.</p>
+</div>
+<p>Releases of the software are also hosted on <code class="docutils literal notranslate"><span class="pre">experimental</span></code> branch of the repository and are graduated to <code class="docutils literal notranslate"><span class="pre">stable</span></code> after test/validation. To get access to the latest
+<code class="docutils literal notranslate"><span class="pre">experimental</span></code> features of the NVIDIA Container Toolkit, you may need to add the <code class="docutils literal notranslate"><span class="pre">experimental</span></code> branch to the <code class="docutils literal notranslate"><span class="pre">apt</span></code> or <code class="docutils literal notranslate"><span class="pre">yum</span></code> repository listing. The installation instructions
+include information on how to add these repository listings for the package manager.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="release-notes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Release Notes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="cdi-support.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Support for Container Device Interface</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-and-packages">Components and Packages</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nvidia-container-library-and-cli">The NVIDIA Container Library and CLI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nvidia-container-runtime-hook">The NVIDIA Container Runtime Hook</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nvidia-container-runtime">The NVIDIA Container Runtime</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-nvidia-container-toolkit-cli">The NVIDIA Container Toolkit CLI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-package-should-i-use-then">Which package should I use then?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-repository">Package Repository</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
