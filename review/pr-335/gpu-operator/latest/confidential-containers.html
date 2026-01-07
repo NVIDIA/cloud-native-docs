@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 06, 2026"/>
+    <meta name="docbuild:last-update" content="Jan 07, 2026"/>
 
 
 
@@ -438,7 +438,13 @@
 <span id="early-access-gpu-operator-confidential-containers-kata"></span><h1>Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata<a class="headerlink" href="#early-access-nvidia-gpu-operator-with-confidential-containers-based-on-kata" title="Permalink to this headline">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
+<p><strong>Early Access Support</strong></p>
+<p>Early Access (EA) features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This EA release only supports the AMD platform using SEV-SNP.
+Intel TDX support is planned for a future release.</p>
 </div>
 <section id="overview">
 <span id="confidential-containers-nvidia-gpu-early-access"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
@@ -565,11 +571,11 @@
 <section id="limitations-and-restrictions">
 <span id="id2"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
+<li><p>Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.</p></li>
 <li><p>GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.</p></li>
 <li><p>Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.</p></li>
 <li><p>Support for confidential computing environments is limited to the implementation described on this page.</p></li>
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.</p></li>
 <li><p>OpenShift is not supported in the Early Access release.</p></li>
 <li><p>NFD doesn’t label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.</p></li>
 </ul>
