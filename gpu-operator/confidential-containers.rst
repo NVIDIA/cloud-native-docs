@@ -6,8 +6,14 @@ Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata
 
 .. note::
 
-   Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+   **Early Access Support**
 
+   Early Access (EA) features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+
+.. note::
+
+   This EA release only supports the AMD platform using SEV-SNP. 
+   Intel TDX support is planned for a future release.
 
 .. _confidential-containers-nvidia-gpu-early-access:
 
@@ -143,11 +149,11 @@ For scope of this EA, the following is the validated support matrix. Any other c
 Limitations and Restrictions
 =============================
 
+* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access. 
 * GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.  
 * Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.  
 * Support for confidential computing environments is limited to the implementation described on this page.  
-* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.  
-* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.  
+* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.   
 * OpenShift is not supported in the Early Access release.
 * NFD doesn't label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.
 
