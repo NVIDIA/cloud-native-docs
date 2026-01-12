@@ -6,8 +6,14 @@ Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata
 
 .. note::
 
-   Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+   **Early Access Support**
 
+   Early Access (EA) features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+
+.. note::
+
+   This EA release only supports the AMD platform using SEV-SNP. 
+   Intel TDX support is planned for a future release.
 
 .. _confidential-containers-nvidia-gpu-early-access:
 
@@ -19,7 +25,7 @@ Overview
 
 NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability. As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. 
 
-While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as Intel TDX or AMD SEV—to create protected enclaves in both CPU and GPU.
+While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as AMD SEV—to create protected enclaves in both CPU and GPU.
 
 The TEE provides embedded encryption keys and an attestation mechanism through cryptographic verification to ensure that keys are only accessible by authorized application code.
 
@@ -77,7 +83,7 @@ GPU Operator deploys the VFIO manager, nvidia-vfio-manager, to bind discovered N
 
 When you install NVIDIA GPU Operator for confidential computing, you must specify the ``nfd.nodefeaturerules=true`` option. This option directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware. You can confirm the rules are installed by running ``kubectl get nodefeaturerules nvidia-nfd-nodefeaturerules``.
 
-On nodes that have NVIDIA Hopper family GPU and either Intel TDX or AMD SEV-SNP, NFD adds labels to the node such as ``"feature.node.kubernetes.io/cpu-security.sev.snp.enabled": "true"`` and ``"nvidia.com/cc.capable": "true"``. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the ``"nvidia.com/cc.capable": "true"`` label.
+On nodes that have NVIDIA Hopper family GPU and AMD SEV-SNP, NFD adds labels to the node such as ``"feature.node.kubernetes.io/cpu-security.sev.snp.enabled": "true"`` and ``"nvidia.com/cc.capable": "true"``. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the ``"nvidia.com/cc.capable": "true"`` label.
 
 Cluster Topology Considerations
 ---------------------------------
@@ -143,11 +149,11 @@ For scope of this EA, the following is the validated support matrix. Any other c
 Limitations and Restrictions
 =============================
 
+* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access. 
 * GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.  
 * Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.  
 * Support for confidential computing environments is limited to the implementation described on this page.  
-* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.  
-* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.  
+* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.   
 * OpenShift is not supported in the Early Access release.
 * NFD doesn't label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.
 

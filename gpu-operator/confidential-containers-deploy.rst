@@ -26,10 +26,10 @@ Prerequisites
 * Your hosts are configured to support IOMMU.
 
   * If the output from running ``ls /sys/kernel/iommu_groups`` includes 0, 1, and so on, then your host is configured for IOMMU.
-  * If the host is not configured or you are unsure, add the ``intel_iommu=on`` Linux kernel command-line argument. For most Linux distributions, you add the argument to the ``/etc/default/grub`` file, for instance::
+  * If the host is not configured or you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument. For most Linux distributions, you add the argument to the ``/etc/default/grub`` file, for instance::
 
        ...
-       GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on modprobe.blacklist=nouveau"
+       GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
        ...
 
   * Run ``sudo update-grub`` after making the change to configure the bootloader. Reboot the host after configuring the bootloader.
