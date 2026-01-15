@@ -401,7 +401,7 @@ Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Plat
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.
 
-#. Navigate to **Operators** > **Installed Operators** and find your installed NVIDIA GPU Operator.
+#. Navigate to **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**) and find your installed NVIDIA GPU Operator.
 
 #. Under *Provided APIs*, click **ClusterPolicy**.
 

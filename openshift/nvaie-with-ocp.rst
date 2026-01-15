@@ -203,7 +203,7 @@ Create the Cluster Policy Instance
 
 Now create the cluster policy, which is responsible for maintaining policy resources to create pods in a cluster.
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), and click **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**.
 

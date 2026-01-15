@@ -194,7 +194,7 @@ For example to set the advertisement strategy to ``mixed`` and the MIG partition
 
    .. note:: This may take a while so be patient and wait at least 10-20 minutes before digging deeper into any form of troubleshooting.
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, then click the **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), then click the **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab. The status of the newly deployed ClusterPolicy **gpu-cluster-policy** for the **NVIDIA GPU Operator** displays ``State:ready`` once the installation succeeded.
 
