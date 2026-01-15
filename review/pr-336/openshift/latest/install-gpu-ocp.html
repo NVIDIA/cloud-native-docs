@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 14, 2026"/>
+    <meta name="docbuild:last-update" content="Jan 15, 2026"/>
 
 
 
@@ -406,7 +406,8 @@
 <section id="installing-the-nvidia-gpu-operator-by-using-the-web-console">
 <h2>Installing the NVIDIA GPU Operator by using the web console<a class="headerlink" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console" title="Permalink to this headline">#</a></h2>
 <ol class="arabic">
-<li><p>In the OpenShift Container Platform web console, from the side menu, navigate to <strong>Ecosystem</strong> &gt; <strong>System Catalog</strong> (in versions before 4.20, look for <strong>Operators</strong> &gt; <strong>OperatorHub</strong>) and select <strong>All Projects</strong> from the drop down menu.</p></li>
+<li><p>In the OpenShift Container Platform web console, from the side menu, navigate to <strong>Ecosystem</strong> &gt; <strong>System Catalog</strong> and select <strong>All Projects</strong> from the drop down menu.
+In versions before 4.20, navigate to <strong>Operators</strong> &gt; <strong>OperatorHub</strong> and select <strong>All Projects</strong>.</p></li>
 <li><p>Search for the <strong>NVIDIA GPU Operator</strong>. For additional information, refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
 <li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the following screen, click <strong>Install</strong>.</p>
 <div class="admonition note">
@@ -515,7 +516,11 @@ If you install in any other namespace other than <code class="docutils literal n
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Log in to the web console and navigate to the <strong>Ecosystem</strong> &gt; <strong>Installed Operators</strong> (for versions before 4.20, look for <strong>Operators</strong> &gt; <strong>Installed Operators</strong>) page. In the <code class="docutils literal notranslate"><span class="pre">Project:</span> <span class="pre">nvidia-gpu-operator</span></code> the following is displayed:</p>
+<li><dl>
+<dt>Optional: Log in to the web console and navigate to the <strong>Ecosystem</strong> &gt; <strong>Installed Operators</strong> and select <strong>NVIDIA GPU Operator</strong>.</dt><dd><p>In versions before 4.20, navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> and select <strong>NVIDIA GPU Operator</strong>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">Project:</span> <span class="pre">nvidia-gpu-operator</span></code> the following is displayed:</p>
+</dd>
+</dl>
 <img alt="_images/gpu-operator-certified-cli-install.png" src="_images/gpu-operator-certified-cli-install.png" />
 </li>
 <li><p>Verify an install plan has been created:</p>
@@ -649,7 +654,8 @@ The <code class="docutils literal notranslate"><span class="pre">configMap</span
 <section id="id1">
 <h3>Create the cluster policy using the web console<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
-<li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Ecosystem</strong> &gt; <strong>Installed Operators</strong> (for versions before 4.20, look for <strong>Operators</strong> &gt; <strong>Installed Operators</strong>), and click <strong>NVIDIA GPU Operator</strong>.</p></li>
+<li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Ecosystem</strong> &gt; <strong>Installed Operators</strong> and select <strong>NVIDIA GPU Operator</strong>.
+In versions before 4.20, navigate to <strong>Operators</strong> &gt; <strong>Installed Operators</strong> and select <strong>NVIDIA GPU Operator</strong>.</p></li>
 <li><p>Select the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p></li>
 <li><p>Under the  <strong>NVIDIA GPU/vGPU Driver config</strong> section fill in the following information</p>
 <ul class="simple">
