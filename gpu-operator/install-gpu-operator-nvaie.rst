@@ -177,6 +177,8 @@ This installation method is available for bare metal clusters or any cluster tha
 You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
 The following list summarizes the driver branches for each release.
 
+* v7.x: 580 branch
+* v6.x: 570 branch
 * v5.x: 550 branch
 * v4.x: 535 branch
 * v3.x: 525 branch
