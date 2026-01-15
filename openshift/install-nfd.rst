@@ -28,8 +28,8 @@ The Node Feature Discovery (NFD) Operator is a prerequisite for the **NVIDIA GPU
 
 #. When the Node Feature Discovery is installed, create an instance of Node Feature Discovery using the **NodeFeatureDiscovery** tab:
 
-   #. Click **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**) from the side menu.
-
+   #. Click **Ecosystem** > **Installed Operators** from the side menu.
+       In versions before 4.20, click **Operators** > **Installed Operators**. 
    #. Find the **Node Feature Discovery** entry.
 
    #. Click **NodeFeatureDiscovery** under the **Provided APIs** field.

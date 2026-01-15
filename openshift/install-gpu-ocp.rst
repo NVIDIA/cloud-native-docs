@@ -11,7 +11,8 @@ Installing the NVIDIA GPU Operator on OpenShift
 Installing the NVIDIA GPU Operator by using the web console
 ***********************************************************
 
-#. In the OpenShift Container Platform web console, from the side menu, navigate to **Ecosystem** > **System Catalog** (in versions before 4.20, look for **Operators** > **OperatorHub**) and select **All Projects** from the drop down menu.
+#. In the OpenShift Container Platform web console, from the side menu, navigate to **Ecosystem** > **System Catalog** and select **All Projects** from the drop down menu.
+   In versions before 4.20, navigate to **Operators** > **OperatorHub** and select **All Projects**.
 
 #. Search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
@@ -132,7 +133,10 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
       subscription.operators.coreos.com/gpu-operator-certified created
 
-#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**) page. In the ``Project: nvidia-gpu-operator`` the following is displayed:
+#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**. 
+    In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
+
+    In the ``Project: nvidia-gpu-operator`` the following is displayed:
 
    .. image:: graphics/gpu-operator-certified-cli-install.png
 
@@ -280,7 +284,8 @@ Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
 Create the cluster policy using the web console
 -----------------------------------------------
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**.
+   In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
