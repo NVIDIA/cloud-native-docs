@@ -11,9 +11,10 @@ Installing the NVIDIA GPU Operator on OpenShift
 Installing the NVIDIA GPU Operator by using the web console
 ***********************************************************
 
-#. In the OpenShift Container Platform web console, from the side menu, navigate to **Operators** > **OperatorHub** and select **All Projects**.
+#. In the OpenShift Container Platform web console, from the side menu, navigate to **Ecosystem** > **System Catalog** and select **All Projects** from the drop down menu.
+   In versions before 4.20, navigate to **Operators** > **OperatorHub** and select **All Projects**.
 
-#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. Search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the following screen, click **Install**.
 
@@ -132,7 +133,10 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
       subscription.operators.coreos.com/gpu-operator-certified created
 
-#. Optional: Log in to the web console and navigate to the **Operators** > **Installed Operators** page. In the ``Project: nvidia-gpu-operator`` the following is displayed:
+#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**. 
+    In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
+
+    In the ``Project: nvidia-gpu-operator`` the following is displayed:
 
    .. image:: graphics/gpu-operator-certified-cli-install.png
 
@@ -191,11 +195,11 @@ when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 Create the cluster policy using the web console
 -----------------------------------------------
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), and click **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-      .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
+   .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
 
    .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
 
@@ -280,21 +284,23 @@ Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
 Create the cluster policy using the web console
 -----------------------------------------------
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**.
+   In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-#. Provide the name of the licensing ``Secret`` under the **Driver** section. This should be created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``). Refer to the following screenshots for examples and modify values accordingly.
+#. Under the  **NVIDIA GPU/vGPU Driver config** section fill in the following information
+   
+   * Specify the ``secretName`` as the name of the licensing ``Secret`` created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``). 
 
    .. note::
 
       The ``ConfigMap`` option is deprecated. Use a Kubernetes ``Secret`` to store licensing information instead.
 
-   .. image:: graphics/cluster_policy_vgpu_1.png
 
-#. Specify the ``repository`` path, ``image`` name, and NVIDIA vGPU driver ``version`` bundled under the **Driver** section. If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under the **Driver** advanced configurations section.
+   * Specify the ``repository`` path, ``image`` name, and NVIDIA vGPU driver ``version``.
+     If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under the **Driver** advanced configurations section.
 
-   .. image:: graphics/cluster_policy_vgpu_2.png
 
 #. Click **Create**.
 
@@ -303,6 +309,7 @@ Create the cluster policy using the web console
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
    .. image:: graphics/cluster-policy-state-ready.png
+
 
 
 Create the cluster policy using the CLI
