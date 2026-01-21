@@ -68,7 +68,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
+    <link rel="next" title="Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata" href="confidential-containers.html" />
     <link rel="prev" title="Container Device Interface (CDI) Support in the GPU Operator" href="cdi.html" />
 
 
@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -360,6 +360,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -569,7 +573,7 @@ We use the term <code class="docutils literal notranslate"><span class="pre">san
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+      --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -596,7 +600,7 @@ Follow the steps provided in <a class="reference internal" href="#build-vgpu-man
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
       -n gpu-operator --create-namespace <span class="se">\</span>
       nvidia/gpu-operator <span class="se">\</span>
-      --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+      --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
       --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
       --set vgpuManager.repository<span class="o">=</span>&lt;path to private repository&gt; <span class="se">\</span>
@@ -928,11 +932,11 @@ Refer to the <strong>Infrastructure Support Matrix</strong> section under the <a
       </div>
     </a>
     <a class="right-next"
-       href="install-gpu-operator-proxy.html"
+       href="confidential-containers.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Install GPU Operator in Proxy Environments</p>
+        <p class="prev-next-title">Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1066,7 +1070,7 @@ Refer to the <strong>Infrastructure Support Matrix</strong> section under the <a
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

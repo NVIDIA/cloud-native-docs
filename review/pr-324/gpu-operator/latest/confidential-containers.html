@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>About the NVIDIA GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'confidential-containers';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -68,7 +68,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="About the NVIDIA GPU Operator" href="overview.html" />
+    <link rel="next" title="Deploy Confidential Containers with NVIDIA GPU Operator" href="confidential-containers-deploy.html" />
+    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
 
 
 
@@ -140,7 +141,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -251,7 +252,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -357,11 +358,11 @@
 <li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Confidential Containers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</ul><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
 </details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
@@ -415,9 +416,9 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="#">NVIDIA GPU Operator</a>
+      <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">About the NVIDIA GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata</li>
   </ul>
 </nav></div>
       
@@ -433,151 +434,166 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="toctree-wrapper compound">
+  <section id="early-access-nvidia-gpu-operator-with-confidential-containers-based-on-kata">
+<span id="early-access-gpu-operator-confidential-containers-kata"></span><h1>Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata<a class="headerlink" href="#early-access-nvidia-gpu-operator-with-confidential-containers-based-on-kata" title="Permalink to this headline">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Early Access Support</strong></p>
+<p>Early Access (EA) features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
 </div>
-<div class="toctree-wrapper compound">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This EA release only supports the AMD platform using SEV-SNP.
+Intel TDX support is planned for a future release.</p>
 </div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<section id="about-the-nvidia-gpu-operator">
-<h1>About the NVIDIA GPU Operator<a class="headerlink" href="#about-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<a class="reference internal image-reference" href="_images/nvidia-gpu-operator-image.jpg"><img alt="_images/nvidia-gpu-operator-image.jpg" src="_images/nvidia-gpu-operator-image.jpg" style="width: 600px;" /></a>
-<p>Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices
-through the <a class="reference external" href="https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/">device plugin framework</a>.
-However, configuring and managing nodes with these hardware resources requires
-configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult
-and prone to errors. The NVIDIA GPU Operator uses the <a class="reference external" href="https://coreos.com/blog/introducing-operator-framework">operator framework</a>
-within Kubernetes to automate the management of all NVIDIA software components needed to provision GPU. These components include the NVIDIA drivers (to enable CUDA),
-Kubernetes device plugin for GPUs, the <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit">NVIDIA Container Toolkit</a>,
-automatic node labeling using <a class="reference external" href="https://github.com/NVIDIA/gpu-feature-discovery">GFD</a>, <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> based monitoring and others.</p>
-<div class="sd-card sd-sphinx-override sd-mb-3 sd-shadow-sm docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Red Hat OpenShift Container Platform</div>
-<p class="sd-card-text">For information about installing, managing, and upgrading the Operator,
-refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>NVIDIA GPU Operator on Red Hat OpenShift Container Platform</span></a>.</p>
-<p class="sd-card-text">Information about supported versions is available in <a class="reference internal" href="platform-support.html#supported-operating-systems-and-kubernetes-platforms"><span class="std std-ref">Supported Operating Systems and Kubernetes Platforms</span></a>.</p>
-</div>
-</div>
-<section id="about-this-documentation">
-<h2>About This Documentation<a class="headerlink" href="#about-this-documentation" title="Permalink to this headline">#</a></h2>
-<p>Browse through the following documents for getting started, platform support and release notes.</p>
-<section id="getting-started">
-<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h3>
-<p>The <a class="reference internal" href="getting-started.html#operator-install-guide"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> guide includes information on installing the GPU Operator in a Kubernetes cluster.</p>
-</section>
-<section id="release-notes">
-<h3>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">#</a></h3>
-<p>Refer to <a class="reference internal" href="release-notes.html#operator-release-notes"><span class="std std-ref">Release Notes</span></a> for information about releases.</p>
-</section>
-<section id="platform-support">
-<h3>Platform Support<a class="headerlink" href="#platform-support" title="Permalink to this headline">#</a></h3>
-<p>The <a class="reference internal" href="platform-support.html#operator-platform-support"><span class="std std-ref">Platform Support</span></a> describes the supported platform configurations.</p>
+<section id="overview">
+<span id="confidential-containers-nvidia-gpu-early-access"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
+<p>NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability. As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential.</p>
+<p>While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as AMD SEV—to create protected enclaves in both CPU and GPU.</p>
+<p>The TEE provides embedded encryption keys and an attestation mechanism through cryptographic verification to ensure that keys are only accessible by authorized application code.</p>
+<p><a class="reference external" href="https://github.com/confidential-containers">Confidential Containers</a> (CoCo) is the cloud-native approach of CC in Kubernetes. <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> is an open source project that provides lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation. Along with the CoCo project, Kata enables the orchestration of secure, GPU-accelerated workloads in Kubernetes.</p>
+<p>This page describes NVIDIA’s Early Access implementation for orchestrating CoCo with Kata using the NVIDIA GPU Operator.</p>
+<section id="architecture-overview">
+<h3>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h3>
+<p>The following high-level flow and diagram show some fundamental concepts for CoCo. The NVIDIA GPU operator is a central component to enable this workflow. In the following section, we describe the most important components and the deployment scenario.</p>
+<img alt="High-Level Logical Diagram of Software Components and Communication Paths" src="_images/CoCo-Architecture.png" />
+<p><em>High-Level Logical Diagram of Software Components and Communication Paths</em></p>
+<ol class="arabic simple">
+<li><p>The GPU Operator sets up the nodes to be Confidential Computing ready.</p>
+<ul class="simple">
+<li><p>During installation, the GPU Operator deploys the components needed to run Confidential Containers to nodes that meet Confidential Container requirements.</p></li>
+</ul>
+</li>
+<li><p>Application Owner deploys container with Kata-Confidential Containers runtime class.</p>
+<ul class="simple">
+<li><p>The user deploys a confidential container GPU workload, which is placed onto a specific node by the Kubernetes control plane. On this node, the local Kubelet instructs its container runtime to create this pod.</p></li>
+<li><p>Containerd is configured to run a Kata runtime to start the Kata CVM.</p></li>
+<li><p>The Kata runtime starts the Kata CVM using the upstream Kata Containers kernel and NVIDIA initial RAM disk containing the VM’s root filesystem.</p></li>
+<li><p>In the Kata CVM’s early boot phase, the <a class="reference external" href="https://github.com/NVIDIA/nvrc/tree/main">NVRC</a> prepares the passthrough GPU for container access.</p></li>
+<li><p>Kata agent starts containers in the Kata CVM.</p></li>
+<li><p>The confidential containers attestation agent exercises remote attestation based on the Remote ATtestation ProcedureS (RATS) model in concert with the Confidential Containers’ Trustee solution. As part of this, the attestation agent transitions the GPU into the Ready state. Refer to the attestation section for more details.</p></li>
+</ul>
+</li>
+</ol>
 </section>
 </section>
-<section id="licenses-and-contributing">
-<h2>Licenses and Contributing<a class="headerlink" href="#licenses-and-contributing" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA GPU Operator source code is licensed under <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a> and
-contributions are accepted with a DCO. Refer to the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/master/CONTRIBUTING.md">contributing</a> document for
-more information on how to contribute and the release artifacts.</p>
-<p>The base images used by the software might include software that is licensed under open-source licenses such as GPL.
-The source code for these components is archived on the CUDA opensource <a class="reference external" href="https://developer.download.nvidia.com/compute/cuda/opensource/">index</a>.</p>
-<p>The following table identifieis the licenses for the Operator and software components.
-By installing and using the GPU Operator, you accept the terms and conditions of these licenses.</p>
+<section id="key-software-components-of-the-nvidia-gpu-operator">
+<span id="key-software-components-gpu-operator"></span><h2>Key Software Components of the NVIDIA GPU Operator<a class="headerlink" href="#key-software-components-of-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>NVIDIA GPU Operator brings together the following software components to simplify managing the software required for confidential computing and deploying confidential container workloads:</p>
+<p><strong>NVIDIA Kata Manager for Kubernetes</strong></p>
+<p>GPU Operator deploys the NVIDIA Kata Manager for Kubernetes, k8s-kata-manager. The manager is responsible for creating host-side CDI specifications for GPU passthrough.</p>
+<p><strong>NVIDIA Confidential Computing Manager for Kubernetes</strong></p>
+<p>GPU Operator deploys the manager, k8s-cc-manager, to set the confidential computing (CC) mode on the NVIDIA GPUs.</p>
+<p><strong>NVIDIA Sandbox Device Plugin</strong></p>
+<p>GPU Operator deploys the sandbox device plugin, nvidia-sandbox-device-plugin-daemonset, to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.</p>
+<p><strong>NVIDIA VFIO Manager</strong></p>
+<p>GPU Operator deploys the VFIO manager, nvidia-vfio-manager, to bind discovered NVIDIA GPUs to the vfio-pci driver for VFIO passthrough.</p>
+<p><strong>Node Feature Discovery (NFD)</strong></p>
+<p>When you install NVIDIA GPU Operator for confidential computing, you must specify the <code class="docutils literal notranslate"><span class="pre">nfd.nodefeaturerules=true</span></code> option. This option directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware. You can confirm the rules are installed by running <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">nodefeaturerules</span> <span class="pre">nvidia-nfd-nodefeaturerules</span></code>.</p>
+<p>On nodes that have NVIDIA Hopper family GPU and AMD SEV-SNP, NFD adds labels to the node such as <code class="docutils literal notranslate"><span class="pre">&quot;feature.node.kubernetes.io/cpu-security.sev.snp.enabled&quot;:</span> <span class="pre">&quot;true&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;nvidia.com/cc.capable&quot;:</span> <span class="pre">&quot;true&quot;</span></code>. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the <code class="docutils literal notranslate"><span class="pre">&quot;nvidia.com/cc.capable&quot;:</span> <span class="pre">&quot;true&quot;</span></code> label.</p>
+<section id="cluster-topology-considerations">
+<h3>Cluster Topology Considerations<a class="headerlink" href="#cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
+<p>You can configure all the worker nodes in your cluster for running GPU workloads with confidential containers or you configure some nodes for confidential containers and the others for traditional containers. Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
-<col style="width: 30%" />
-<col style="width: 10%" />
-<col style="width: 60%" />
+<col style="width: 50%" />
+<col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Component</p></th>
-<th class="head"><p>Artifact Type</p></th>
-<th class="head"><p>Artifact Licenses</p></th>
+<tr class="row-odd"><th class="head"><p>Node A - Traditional Containers receives the following software components</p></th>
+<th class="head"><p>Node B - Kata CoCo receives the following software components</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>NVIDIA GPU Operator</p></td>
-<td><p>Helm Chart</p></td>
-<td><p><a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA GPU Operator</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA GPU Feature Discovery</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA GPU Driver</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us">License for Customer Use of NVIDIA Software</a></p>
-<p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p>
+<tr class="row-even"><td><ul class="simple">
+<li><p>NVIDIA Driver Manager for Kubernetes</p></li>
+<li><p>NVIDIA Container Toolkit</p></li>
+<li><p>NVIDIA Device Plugin for Kubernetes</p></li>
+<li><p>NVIDIA DCGM and DCGM Exporter</p></li>
+<li><p>NVIDIA MIG Manager for Kubernetes</p></li>
+<li><p>Node Feature Discovery</p></li>
+<li><p>NVIDIA GPU Feature Discovery</p></li>
+</ul>
 </td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA Container Toolkit</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA Kubernetes Device Plugin</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Validator for NVIDIA GPU Operator</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA DCGM</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA DCGM Exporter</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA Driver Manager for Kubernetes</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA vGPU Device Manager</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA GDS Driver</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us">License for Customer Use of NVIDIA Software</a></p>
-<p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p>
+<td><ul class="simple">
+<li><p>NVIDIA Kata Manager for Kubernetes</p></li>
+<li><p>NVIDIA Confidential Computing Manager for Kubernetes</p></li>
+<li><p>NVIDIA Sandbox Device Plugin</p></li>
+<li><p>NVIDIA VFIO Manager</p></li>
+<li><p>Node Feature Discovery</p></li>
+</ul>
 </td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA Confidential Computing
-Manager for Kubernetes</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA Kata Manager for Kubernetes</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA GDRCopy Driver</p></td>
-<td><p>Image</p></td>
-<td><p><a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/">Product-Specific Terms for NVIDIA AI Products</a></p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<p>This configuration can be controlled through node labelling as described in <a class="reference internal" href="confidential-containers-deploy.html#confidential-containers-deploy"><span class="std std-ref">Deploy Confidential Containers with NVIDIA GPU Operator</span></a>.</p>
+</section>
+</section>
+<section id="supported-platforms">
+<span id="id1"></span><h2>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h2>
+<p>Refer to the <em>Confidential Computing Deployment Guide</em> at the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">https://docs.nvidia.com/confidential-computing</a> website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100, and specifically to <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-snp.pdf">https://docs.nvidia.com/cc-deployment-guide-snp.pdf</a> for setup specific to AMD SEV-SNP machines.</p>
+<p>The following topics in the deployment guide apply to a cloud-native environment:</p>
+<ul class="simple">
+<li><p>Hardware selection and initial hardware configuration, such as BIOS settings.</p></li>
+<li><p>Host operating system selection, initial configuration, and validation.</p></li>
+</ul>
+<p>When following the cloud-native sections in above linked deployment guide, use Ubuntu 25.10 as host OS with its default kernel version and configuration.</p>
+<p>The remaining configuration topics in the deployment guide do not apply to a cloud-native environment. NVIDIA GPU Operator performs the actions that are described in these topics.</p>
+<p>For scope of this EA, the following is the validated support matrix. Any other combination has not been evaluated:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Release</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPU Platform</p></td>
+<td><p>Hopper 100/200</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPU Driver</p></td>
+<td><p>R580 TRD 3</p></td>
+</tr>
+<tr class="row-even"><td><p>kata-containers/kata-containers</p></td>
+<td><p>3.24.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA/gpu-operator</p></td>
+<td><p>v25.10.0 and higher</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="limitations-and-restrictions">
+<span id="id2"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.</p></li>
+<li><p>GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.</p></li>
+<li><p>Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.</p></li>
+<li><p>Support for confidential computing environments is limited to the implementation described on this page.</p></li>
+<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
+<li><p>OpenShift is not supported in the Early Access release.</p></li>
+<li><p>NFD doesn’t label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.</p></li>
+</ul>
+</section>
+<section id="deployment-and-configuration">
+<h2>Deployment and Configuration<a class="headerlink" href="#deployment-and-configuration" title="Permalink to this headline">#</a></h2>
+<p>For detailed instructions on deploying and configuring confidential containers with the NVIDIA GPU Operator, refer to the following guide:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html#managing-the-confidential-computing-mode">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html#attestation">Attestation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 </section>
@@ -592,12 +608,21 @@ Manager for Kubernetes</p></td>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="gpu-operator-kubevirt.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="overview.html"
+       href="confidential-containers-deploy.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">About the NVIDIA GPU Operator</p>
+        <p class="prev-next-title">Deploy Confidential Containers with NVIDIA GPU Operator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -622,13 +647,17 @@ Manager for Kubernetes</p></td>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-documentation">About This Documentation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release Notes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-support">Platform Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses-and-contributing">Licenses and Contributing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-software-components-of-the-nvidia-gpu-operator">Key Software Components of the NVIDIA GPU Operator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-platforms">Supported Platforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-and-configuration">Deployment and Configuration</a></li>
 </ul>
   </nav></div>
 

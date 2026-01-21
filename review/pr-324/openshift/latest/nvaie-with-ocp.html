@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -427,7 +427,7 @@
 <li><p>Step 1: Install Node Feature Discovery (NFD) Operator</p></li>
 <li><p>Step 2: Install NVIDIA GPU Operator</p></li>
 <li><p>Step 3: Create the NGC secret</p></li>
-<li><p>Step 4: Create the ConfigMap</p></li>
+<li><p>Step 4: Create the licensing Secret</p></li>
 <li><p>Step 5: Create the Cluster Policy</p></li>
 </ul>
 </section>
@@ -511,28 +511,47 @@ in <em>NVIDIA NGC Private Registry Guide</em> for more information.</p>
 </li>
 </ol>
 </section>
-<section id="create-the-configmap-for-nls-token">
-<h3>Create the ConfigMap for NLS Token<a class="headerlink" href="#create-the-configmap-for-nls-token" title="Permalink to this headline">#</a></h3>
+<section id="create-the-licensing-secret-for-nls-token">
+<h3>Create the licensing Secret for NLS Token<a class="headerlink" href="#create-the-licensing-secret-for-nls-token" title="Permalink to this headline">#</a></h3>
 <section id="prerequisites">
 <h4>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h4>
-<p>Generate and download a NLS client license token. See Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NVIDIA License System User Guide</a> for instructions.</p>
+<ol class="arabic simple">
+<li><p>Generate and download a NLS client license token. See Section 4.6 of the <a class="reference external" href="https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf">NVIDIA License System User Guide</a> for instructions.
+Save the token to a file named <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code>.</p></li>
+<li><p>Create an empty <code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code> file.</p></li>
+</ol>
 </section>
 <section id="procedure">
 <h4>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h4>
+<p>Create a licensing secret in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace via CLI:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create secret generic licensing-config <span class="se">\</span>
+    -n nvidia-gpu-operator --from-file<span class="o">=</span>gridd.conf --from-file<span class="o">=</span>client_configuration_token.tok
+</pre></div>
+</div>
+<p>Alternatively, you can create the secret using the OpenShift web console:</p>
 <ol class="arabic">
 <li><p>Navigate to <strong>Home</strong> &gt; <strong>Projects</strong> and ensure the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> is selected.</p></li>
 <li><p>Select the <strong>Workloads</strong> Drop Down menu.</p></li>
-<li><p>Select <strong>ConfigMaps</strong> and then click <strong>Create ConfigMap</strong>.</p></li>
-<li><p>On the <strong>Create ConfigMap</strong> window, click <strong>YAML view</strong>.</p></li>
-<li><p>Enter the details for your config map.</p>
+<li><p>Select <strong>Secrets</strong> and then click <strong>Create</strong>/ &gt; <strong>Key/value secret</strong>.</p></li>
+<li><p>Enter the details for your secret.</p>
 <ol class="arabic simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> must be <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code>.</p></li>
-<li><p>Copy and paste the information for your NLS client token into the <code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code> parameter.</p></li>
+<li><p>Upload the two files as keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">client_configuration_token.tok</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gridd.conf</span></code></p></li>
+</ul>
+</li>
 </ol>
-<img alt="Create ConfigMap window of the OpenShift Console." src="_images/create_config_map1.png" />
+<img alt="_images/create_licensing_secret.png" src="_images/create_licensing_secret.png" />
 </li>
 <li><p>Click <strong>Create</strong>.</p></li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using a Kubernetes Secret to store licensing information is the recommended approach.
+The <code class="docutils literal notranslate"><span class="pre">configMap</span></code> option is deprecated and will be removed in a future release.</p>
+</div>
 </section>
 </section>
 <section id="create-the-cluster-policy-instance">
@@ -544,12 +563,16 @@ in <em>NVIDIA NGC Private Registry Guide</em> for more information.</p>
 <p>The console assigns the default name <code class="docutils literal notranslate"><span class="pre">gpu-cluster-policy</span></code>.</p>
 </li>
 <li><p>Expand the drop down for <strong>NVIDIA GPU/vGPU Driver config</strong> and then <strong>licensingConfig</strong>.
-In the <strong>configMapName</strong> field, enter the name of the licensing config map that you created previously, <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code>.
+In the <strong>secretName</strong> field, enter the name of the licensing Secret that you created previously, <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code>.
 Select the <strong>nlsEnabled</strong> checkbox.
 Refer the screenshots for parameter examples and modify values accordingly.</p>
-<img alt="_images/cluster_policy_1.png" src="_images/cluster_policy_1.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> option (<code class="docutils literal notranslate"><span class="pre">configMapName</span></code>) is deprecated. Use a Kubernetes <code class="docutils literal notranslate"><span class="pre">Secret</span></code> (<code class="docutils literal notranslate"><span class="pre">secretName</span></code>) to store licensing information instead.</p>
+</div>
+<img alt="_images/cluster_policy_vgpu_1.png" src="_images/cluster_policy_vgpu_1.png" />
 <ul class="simple">
-<li><p><strong>configMapName</strong>: licensing-config</p></li>
+<li><p><strong>secretName</strong>: licensing-config</p></li>
 <li><p><strong>nlsEnabled</strong>: nlsEnabled</p></li>
 <li><p><strong>enabled</strong>: enabled</p></li>
 </ul>
@@ -707,7 +730,7 @@ Specify the vGPU driver version and image for the appropriate OpenShift Containe
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-node-feature-discovery-operator">Install Node Feature Discovery Operator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-nvidia-gpu-operator">Install NVIDIA GPU Operator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-ngc-secret">Create the NGC secret</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-configmap-for-nls-token">Create the ConfigMap for NLS Token</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-licensing-secret-for-nls-token">Create the licensing Secret for NLS Token</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
 </ul>
@@ -799,7 +822,7 @@ Specify the vGPU driver version and image for the appropriate OpenShift Containe
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

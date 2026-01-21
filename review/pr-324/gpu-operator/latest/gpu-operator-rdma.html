@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -360,6 +360,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -541,14 +545,14 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -663,8 +667,8 @@ from the preceding step.</p>
 </li>
 <li><p>Start two pods that run the <code class="docutils literal notranslate"><span class="pre">mellanox/cuda-perftest</span></code> container on two different nodes in the cluster.</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="f24394bb-3205-43be-841a-9ca67e3b177f" name="fa0b31d7-547f-4301-9471-ff47919e600a" type="radio">
-</input><label class="sd-tab-label" for="f24394bb-3205-43be-841a-9ca67e3b177f">
+<input checked="checked" id="5a4cee19-10a4-498e-97c2-d1fd638c6e25" name="e7a9052f-3e56-4a5f-8dd1-95b4ebcc7a52" type="radio">
+</input><label class="sd-tab-label" for="5a4cee19-10a4-498e-97c2-d1fd638c6e25">
 demo-pod-1</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-1.yaml</span></code>, for the first pod with contents like the following:</p>
@@ -709,8 +713,8 @@ demo-pod-1</label><div class="sd-tab-content docutils">
 </li>
 </ul>
 </div>
-<input id="5d8302a6-a7b3-4ee2-b165-1c2798866315" name="fa0b31d7-547f-4301-9471-ff47919e600a" type="radio">
-</input><label class="sd-tab-label" for="5d8302a6-a7b3-4ee2-b165-1c2798866315">
+<input id="0fa7e72c-7a75-451c-93ce-a1b925a57bbd" name="e7a9052f-3e56-4a5f-8dd1-95b4ebcc7a52" type="radio">
+</input><label class="sd-tab-label" for="0fa7e72c-7a75-451c-93ce-a1b925a57bbd">
 demo-pod-2</label><div class="sd-tab-content docutils">
 <ul>
 <li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">demo-pod-2.yaml</span></code>, for the second pod with contents like the following:</p>
@@ -867,7 +871,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -1104,7 +1108,7 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

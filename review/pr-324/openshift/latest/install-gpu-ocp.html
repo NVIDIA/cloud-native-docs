@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -423,7 +423,7 @@ If only trusted operators are installed in this namespace, you can manually enab
 <p>Proceed to <a class="reference internal" href="#create-cluster-policy"><span class="std std-ref">Create the cluster policy for the NVIDIA GPU Operator</span></a>.</p>
 </section>
 <section id="installing-the-nvidia-gpu-operator-using-the-cli">
-<h2>Installing the NVIDIA GPU Operator using the CLI<a class="headerlink" href="#installing-the-nvidia-gpu-operator-using-the-cli" title="Permalink to this headline">#</a></h2>
+<span id="install-gpu-ocp"></span><h2>Installing the NVIDIA GPU Operator using the CLI<a class="headerlink" href="#installing-the-nvidia-gpu-operator-using-the-cli" title="Permalink to this headline">#</a></h2>
 <p>As a cluster administrator, you can install the <strong>NVIDIA GPU Operator</strong> using the OpenShift CLI (<code class="docutils literal notranslate"><span class="pre">oc</span></code>).</p>
 <ol class="arabic">
 <li><p>Create a namespace for the <strong>NVIDIA GPU Operator</strong>.</p>
@@ -479,45 +479,32 @@ If you install in any other namespace other than <code class="docutils literal n
 </li>
 </ol>
 </li>
-<li><p>Run the following command to get the <code class="docutils literal notranslate"><span class="pre">channel</span></code> value required for step 5.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.defaultChannel}&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">v22.9</span>
+<li><p>Get the value of <code class="docutils literal notranslate"><span class="pre">channel</span></code>, and store it in a variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CHANNEL</span><span class="o">=</span><span class="k">$(</span>oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.defaultChannel}&#39;</span><span class="k">)</span>
 </pre></div>
 </div>
 </li>
-<li><p>Run the following commands to get the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> value required for step 5.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CHANNEL</span><span class="o">=</span>v22.9
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson <span class="p">|</span> jq -r <span class="s1">&#39;.status.channels[] | select(.name == &quot;&#39;</span><span class="nv">$CHANNEL</span><span class="s1">&#39;&quot;) | .currentCSV&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">gpu-operator-certified.v22.9.0</span>
+<li><p>Get the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> value and store it in a variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">STARTING_CSV</span><span class="o">=</span><span class="k">$(</span>oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson <span class="p">|</span> jq -r <span class="s1">&#39;.status.channels[] | select(.name == &quot;&#39;</span><span class="nv">$CHANNEL</span><span class="s1">&#39;&quot;) | .currentCSV&#39;</span><span class="k">)</span>
 </pre></div>
 </div>
 </li>
-<li><p>Create the following <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR and save the YAML in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-sub.yaml</span></code> file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operators.coreos.com/v1alpha1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Subscription</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-certified</span><span class="w"></span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">channel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v22.9&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">installPlanApproval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Manual</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-certified</span><span class="w"></span>
-<span class="w">  </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">certified-operators</span><span class="w"></span>
-<span class="w">  </span><span class="nt">sourceNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift-marketplace</span><span class="w"></span>
-<span class="w">  </span><span class="nt">startingCSV</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gpu-operator-certified.v22.9.0&quot;</span><span class="w"></span>
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR using the variables and save the YAML in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-sub.yaml</span></code> file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF &gt; nvidia-gpu-sub.yaml
+<span class="go">apiVersion: operators.coreos.com/v1alpha1</span>
+<span class="go">kind: Subscription</span>
+<span class="go">metadata:</span>
+<span class="go">  name: gpu-operator-certified</span>
+<span class="go">  namespace: nvidia-gpu-operator</span>
+<span class="go">spec:</span>
+<span class="go">  channel: $CHANNEL</span>
+<span class="go">  installPlanApproval: Manual</span>
+<span class="go">  name: gpu-operator-certified</span>
+<span class="go">  source: certified-operators</span>
+<span class="go">  sourceNamespace: openshift-marketplace</span>
+<span class="go">  startingCSV: $STARTING_CSV</span>
+<span class="go">EOF</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Update the <code class="docutils literal notranslate"><span class="pre">channel</span></code> and <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> fields with the information returned in steps 3 and 4.</p>
 </div>
 </li>
 <li><p>Create the subscription object by running the following command:</p>
@@ -603,8 +590,12 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below
 <span id="verify-gpu-operator-install-ocp"></span><h3>Create the cluster policy using the CLI<a class="headerlink" href="#create-the-cluster-policy-using-the-cli" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span><span class="o">)</span> &gt; clusterpolicy.json
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>$STARTING_CSV is the value of the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> field in the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR sample created in the <a class="reference internal" href="#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> section.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -684,10 +675,15 @@ The <code class="docutils literal notranslate"><span class="pre">configMap</span
 <h3>Create the cluster policy using the CLI<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span><span class="o">)</span> &gt; clusterpolicy.json
 </pre></div>
 </div>
-<p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>$STARTING_CSV is the value of the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> field in the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR sample created in the <a class="reference internal" href="#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> section.</p>
+</div>
+</li>
+<li><p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;repository-path&gt;&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
@@ -705,6 +701,8 @@ The <code class="docutils literal notranslate"><span class="pre">configMap</span
 <p>Using <code class="docutils literal notranslate"><span class="pre">secretName</span></code> to reference a Kubernetes Secret is the recommended approach.
 The <code class="docutils literal notranslate"><span class="pre">configMapName</span></code> option is deprecated and will be removed in a future release.</p>
 </div>
+</li>
+<li><p>Apply the ClusterPolicy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
 </pre></div>
 </div>
@@ -1047,7 +1045,7 @@ If the label is defined, the GPU Operator will not change its value.</p>
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

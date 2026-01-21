@@ -69,14 +69,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Install NVIDIA GPU Operator in Air-Gapped Environments" href="install-gpu-operator-air-gapped.html" />
-    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
+    <link rel="prev" title="Deploy Confidential Containers with NVIDIA GPU Operator" href="confidential-containers-deploy.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -360,6 +360,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="current nav bd-sidenav">
@@ -471,7 +475,7 @@ based on information present in the cluster-wide Proxy object.</p>
 <section id="http-proxy-configuration">
 <h2>HTTP Proxy Configuration<a class="headerlink" href="#http-proxy-configuration" title="Permalink to this headline">#</a></h2>
 <p>First, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.10.0/deployments/gpu-operator/values.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v25.10.1/deployments/gpu-operator/values.yaml
 </pre></div>
 </div>
 <p>Specify <code class="docutils literal notranslate"><span class="pre">driver.env</span></code> in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
@@ -504,13 +508,13 @@ based on information present in the cluster-wide Proxy object.</p>
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.10.0.tgz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v25.10.1.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v25.10.0.tgz <span class="se">\</span>
+     gpu-operator-v25.10.1.tgz <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>
@@ -532,12 +536,12 @@ based on information present in the cluster-wide Proxy object.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="gpu-operator-kubevirt.html"
+       href="confidential-containers-deploy.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GPU Operator with KubeVirt</p>
+        <p class="prev-next-title">Deploy Confidential Containers with NVIDIA GPU Operator</p>
       </div>
     </a>
     <a class="right-next"
@@ -658,7 +662,7 @@ based on information present in the cluster-wide Proxy object.</p>
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

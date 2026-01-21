@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -360,6 +360,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -557,28 +561,17 @@ Use <code class="docutils literal notranslate"><span class="pre">secrets(secretN
 <section id="installing-gpu-operator-using-the-data-center-driver">
 <h2>Installing GPU Operator Using the Data Center Driver<a class="headerlink" href="#installing-gpu-operator-using-the-data-center-driver" title="Permalink to this headline">#</a></h2>
 <p>This installation method is available for bare metal clusters or any cluster that does not use virtualization.</p>
-<p>You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
-The following list summarizes the driver branches for each release.</p>
-<ul class="simple">
-<li><p>v7.x: 580 branch</p></li>
-<li><p>v6.x: 570 branch</p></li>
-<li><p>v5.x: 550 branch</p></li>
-<li><p>v4.x: 535 branch</p></li>
-<li><p>v3.x: 525 branch</p></li>
-<li><p>v1.x: 470 branch</p></li>
-</ul>
-<p>For newer releases, you can confirm the the supported driver branch by performing the following steps:</p>
+<p>You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.</p>
+<p>To identify the correct driver branch:</p>
 <ol class="arabic">
-<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/#infrastructure-software">NVIDIA AI Enterprise Infra Release Branches</a>
-for NVIDIA AI Enterprise and access the documentation for your release.</p></li>
-<li><p>In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.</p>
-<p>For example, the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software">Supported Hardware and Software</a> for the 5.1 release
-indicates that the release uses the 550.90.07 version of the Linux driver.</p>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/index.html#nvidiatab-infrastructure-software---infra-release-branches">NVIDIA AI Enterprise Infra Release Branches</a>
+table to determine the driver branch for your release.</p>
+<p>For example, NVIDIA AI Enterprise Infra 7.x uses the R580 driver branch.</p>
 </li>
-<li><p>Refer to <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> to identify the recommended driver version that uses the same driver branch, 550, in this case.</p></li>
+<li><p>Refer to <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> to identify the recommended GPU Operator version and driver version that uses the same driver branch.</p></li>
 </ol>
-<p>After identifying the correct driver version, refer to <a class="reference internal" href="getting-started.html#install-gpu-operator"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> to install the Operator by using Helm.
-Specify the <code class="docutils literal notranslate"><span class="pre">--version=&lt;supported-version&gt;</span></code> argument to install a supported version of the Operator for your NVIDIA AI Enterprise release.</p>
+<p>After identifying the correct driver version, refer to <a class="reference internal" href="getting-started.html#install-gpu-operator"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> for installation instructions.
+Use the <code class="docutils literal notranslate"><span class="pre">--version=&lt;supported-version&gt;</span></code> argument when installing with Helm.</p>
 </section>
 <section id="related-information">
 <h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
@@ -747,7 +740,7 @@ Specify the <code class="docutils literal notranslate"><span class="pre">--versi
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>

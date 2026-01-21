@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Dec 03, 2025"/>
+    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
 
 
 
@@ -360,6 +360,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -434,7 +438,7 @@
 <span id="operator-install-guide"></span><span id="install-gpu-operator"></span><h1>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
 <div class="admonition-version admonition">
 <p class="admonition-title">Version</p>
-<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v25.10.0</span></code>.</p>
+<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v25.10.1</span></code>.</p>
 </div>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
@@ -491,7 +495,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.0
+    --version<span class="o">=</span>v25.10.1
 </pre></div>
 </div>
 </li>
@@ -499,7 +503,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
     --set &lt;option-name&gt;<span class="o">=</span>&lt;option-value&gt;
 </pre></div>
 </div>
@@ -712,7 +716,7 @@ For example, to install the GPU Operator in the <code class="docutils literal no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n nvidia-gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
 </pre></div>
 </div>
 <p>If you do not specify a namespace during installation, all GPU Operator components are installed in the <code class="docutils literal notranslate"><span class="pre">default</span></code> namespace.</p>
@@ -741,7 +745,7 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set toolkit.version<span class="o">=</span>v1.16.1-ubi8
 </pre></div>
 </div>
@@ -758,7 +762,7 @@ Note, network restricted environments are not supported.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -780,7 +784,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
@@ -801,7 +805,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+    --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -829,7 +833,7 @@ the Helm install command. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v25.10.0 <span class="se">\</span>
+     --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
      --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="s2">&quot;465.27&quot;</span>
 </pre></div>
@@ -858,7 +862,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v25.10.0 \</span>
+<span class="go">    --version=v25.10.1 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/etc/containerd/containerd.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -897,7 +901,7 @@ will be created. By default this will point to <code class="docutils literal not
 <section id="rancher-kubernetes-engine-2">
 <h3>Rancher Kubernetes Engine 2<a class="headerlink" href="#rancher-kubernetes-engine-2" title="Permalink to this headline">#</a></h3>
 <p>For Rancher Kubernetes Engine 2 (RKE2), refer to
-<a class="reference external" href="https://docs.rke2.io/advanced#deploy-nvidia-operator">Deploy NVIDIA Operator</a>
+<a class="reference external" href="https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator">Deploy NVIDIA Operator</a>
 in the RKE2 documentation.</p>
 <p>Refer to the <a class="reference internal" href="release-notes.html#v24-9-0-known-limitations"><span class="std std-ref">Known Limitations</span></a>.</p>
 </section>
@@ -917,7 +921,7 @@ in the RKE2 documentation.</p>
 <p>These options can be passed to GPU Operator during install time as below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v25.10.0 \</span>
+<span class="go">    --version=v25.10.1 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -1268,7 +1272,7 @@ in the RKE2 documentation.</p>
 
   <p class="copyright">
     
-      Copyright © 2020-2025, NVIDIA Corporation.
+      Copyright © 2020-2026, NVIDIA Corporation.
       <br/>
     
   </p>
