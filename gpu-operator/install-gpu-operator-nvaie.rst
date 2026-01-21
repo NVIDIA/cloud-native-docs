@@ -175,27 +175,18 @@ Installing GPU Operator Using the Data Center Driver
 This installation method is available for bare metal clusters or any cluster that does not use virtualization.
 
 You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
-The following list summarizes the driver branches for each release.
 
-* v5.x: 550 branch
-* v4.x: 535 branch
-* v3.x: 525 branch
-* v1.x: 470 branch
+To identify the correct driver branch:
 
-For newer releases, you can confirm the the supported driver branch by performing the following steps:
+#. Refer to the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#nvidiatab-infrastructure-software---infra-release-branches>`__
+   table to determine the driver branch for your release.
 
-#. Refer to the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/#infrastructure-software>`__
-   for NVIDIA AI Enterprise and access the documentation for your release.
+   For example, NVIDIA AI Enterprise Infra 7.x uses the R580 driver branch.
 
-#. In the release notes, identify the supported NVIDIA Data Center GPU Driver branch.
+#. Refer to :ref:`operator-component-matrix` to identify the recommended GPU Operator version and driver version that uses the same driver branch.
 
-   For example, the `Supported Hardware and Software <https://docs.nvidia.com/ai-enterprise/5.1/release-notes/index.html#supported-hardware-software>`__ for the 5.1 release
-   indicates that the release uses the 550.90.07 version of the Linux driver.
-
-#. Refer to :ref:`operator-component-matrix` to identify the recommended driver version that uses the same driver branch, 550, in this case.
-
-After identifying the correct driver version, refer to :ref:`install-gpu-operator` to install the Operator by using Helm.
-Specify the ``--version=<supported-version>`` argument to install a supported version of the Operator for your NVIDIA AI Enterprise release.
+After identifying the correct driver version, refer to :ref:`install-gpu-operator` for installation instructions.
+Use the ``--version=<supported-version>`` argument when installing with Helm.
 
 
 *******************
