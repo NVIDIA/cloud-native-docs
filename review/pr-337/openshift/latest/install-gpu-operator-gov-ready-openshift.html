@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 20, 2026"/>
+    <meta name="docbuild:last-update" content="Jan 22, 2026"/>
 
 
 
@@ -465,7 +465,7 @@ Create a secret object for storing your NGC API key.</p>
 <h2>Create the ClusterPolicy Instance<a class="headerlink" href="#create-the-clusterpolicy-instance" title="Permalink to this headline">#</a></h2>
 <p>When you install the <strong>NVIDIA GPU Operator</strong> in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU Operator, configuring the image names and repository, pod restrictions and credentials, and more. Use the ClusterPolicy to set the NGC image pull secret and government ready repository.</p>
 <ol class="arabic">
-<li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Operators</strong> &gt; <strong>Installed Operators</strong>, and click <strong>NVIDIA GPU Operator</strong>.</p></li>
+<li><p>In the OpenShift Container Platform web console, from the side menu, select <strong>Ecosystem</strong> &gt; <strong>Installed Operators</strong> (for versions before 4.20, look for <strong>Operators</strong> &gt; <strong>Installed Operators</strong>), and click <strong>NVIDIA GPU Operator</strong>.</p></li>
 <li><p>Select the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p></li>
 <li><p>Expand the <strong>NVIDIA GPU/vGPU Driver config</strong> section and set the following fields:</p>
 <ul class="simple">

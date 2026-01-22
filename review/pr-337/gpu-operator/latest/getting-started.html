@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 20, 2026"/>
+    <meta name="docbuild:last-update" content="Jan 22, 2026"/>
 
 
 
@@ -456,7 +456,7 @@ Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you c
 <p>For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
 the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.</p>
 </li>
-<li><p>Nodes must be configured with a container engine such CRI-O or containerd.</p></li>
+<li><p>Nodes must be configured with a container engine such as CRI-O or containerd.</p></li>
 <li><p>If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
 label the namespace for the Operator to set the enforcement policy to privileged:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns gpu-operator
@@ -467,7 +467,7 @@ label the namespace for the Operator to set the enforcement policy to privileged
 <li><p>Node Feature Discovery (NFD) is a dependency for the Operator on each node.
 By default, NFD master and worker are automatically deployed by the Operator.
 If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.</p>
-<p>One way to determine if NFD is already running in the cluster is to check for a NFD label on your nodes:</p>
+<p>One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -o json <span class="p">|</span> jq <span class="s1">&#39;.items[].metadata.labels | keys | any(startswith(&quot;feature.node.kubernetes.io&quot;))&#39;</span>
 </pre></div>
 </div>
@@ -561,7 +561,7 @@ When set to <code class="docutils literal notranslate"><span class="pre">true</s
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enabled</span></code></p></td>
-<td><p>By default, the Operator gathers GPU telemetry in Kubernetes via <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html">DCGM Exporter</a>.
+<td><p>By default, the Operator gathers GPU telemetry in Kubernetes using <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html">DCGM Exporter</a>.
 Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable it.
 Available values are <code class="docutils literal notranslate"><span class="pre">true</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
@@ -595,7 +595,7 @@ Set this value to <code class="docutils literal notranslate"><span class="pre">f
 <td><p>Specifies the type of the NVIDIA GPU Kernel modules to use.
 Valid values are <code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">proprietary</span></code>, and <code class="docutils literal notranslate"><span class="pre">open</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Auto</span></code> means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-Note, <code class="docutils literal notranslate"><span class="pre">auto</span></code> is only supported with the 570.86.15 and 570.124.06 or later driver containers.
+The <code class="docutils literal notranslate"><span class="pre">auto</span></code> option is only supported with the 570.86.15 and 570.124.06 or later driver containers.
 550 and 535 branch drivers do not yet support this mode.
 <code class="docutils literal notranslate"><span class="pre">Open</span></code> means the open kernel module is used.
 <code class="docutils literal notranslate"><span class="pre">Proprietary</span></code> means the proprietary module is used.</p>
@@ -647,7 +647,7 @@ Refer to the <a class="reference internal" href="precompiled-drivers.html"><span
 <p>If you set <code class="docutils literal notranslate"><span class="pre">driver.usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, then set this field to
 a driver branch, such as <code class="docutils literal notranslate"><span class="pre">525</span></code>.</p>
 </td>
-<td><p>Depends on the version of the Operator. See the Component Matrix
+<td><p>Depends on the version of the Operator. Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
 for more information on supported drivers.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gdrcopy.enabled</span></code></p></td>
@@ -665,7 +665,7 @@ are either <code class="docutils literal notranslate"><span class="pre">mixed</s
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">migManager.enabled</span></code></p></td>
 <td><p>The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
-default, the MIG manager only runs on nodes with GPUs that support MIG (for e.g. A100).</p></td>
+default, the MIG manager only runs on nodes with GPUs that support MIG (such as the A100).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nfd.enabled</span></code></p></td>
@@ -754,7 +754,7 @@ with the NVIDIA GPU Operator.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> on the platform support page.</p>
 <p>When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
 Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code> configuration option.
-Note, network restricted environments are not supported.</p>
+Network restricted environments are not supported.</p>
 </section>
 <section id="pre-installed-nvidia-gpu-drivers">
 <h3>Pre-Installed NVIDIA GPU Drivers<a class="headerlink" href="#pre-installed-nvidia-gpu-drivers" title="Permalink to this headline">#</a></h3>
@@ -856,7 +856,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONTAINERD_SOCKET</span><span class="w"></span>
 <span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/run/containerd/containerd.sock</span><span class="w"></span>
 <span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RUNTIME_CONFIG_SOURCE</span><span class="w"></span>
-<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;command,</span><span class="nv"> </span><span class="s">file&quot;</span><span class="w"></span>
+<span class="w">     </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;command,file&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
@@ -868,7 +868,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
 <span class="go">    --set toolkit.env[1].value=/run/containerd/containerd.sock \</span>
 <span class="go">    --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \</span>
-<span class="go">    --set toolkit.env[2].value=&quot;command, file&quot;</span>
+<span class="go">    --set toolkit.env[2].value=&quot;command,file&quot;</span>
 </pre></div>
 </div>
 <p>These options are defined as follows:</p>
@@ -888,10 +888,10 @@ your <code class="docutils literal notranslate"><span class="pre">containerd</sp
 <dt>RUNTIME_CONFIG_SOURCE</dt><dd><p>The config source(s) that the container-toolkit uses when fetching
 the current containerd configuration. A valid value for this setting is any
 combination of [command | file]. By default this will be configured as
-“command, file” which means the container-toolkit will attempt to fetch
-the configuration via the containerd CLI before falling back to reading the
-config from the top-level <code class="docutils literal notranslate"><span class="pre">containerd</span></code> config file (configured via
-CONTIANERD_CONFIG). When <code class="docutils literal notranslate"><span class="pre">file</span></code> is specified, the absolute path to the file
+“command,file” which means the container-toolkit will attempt to fetch
+the configuration using the containerd CLI before falling back to reading the
+config from the top-level <code class="docutils literal notranslate"><span class="pre">containerd</span></code> config file (configured using
+CONTAINERD_CONFIG). When <code class="docutils literal notranslate"><span class="pre">file</span></code> is specified, the absolute path to the file
 to be used as a config source can be specified as <code class="docutils literal notranslate"><span class="pre">file=/path/to/source/config.toml</span></code></p>
 </dd>
 <dt>RUNTIME_DROP_IN_CONFIG</dt><dd><p>The path on the host where the NVIDIA-specific drop-in config file
@@ -974,7 +974,7 @@ in the RKE2 documentation.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Removed the stopped pod:</p>
+<li><p>Remove the stopped pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd.yaml
 </pre></div>
 </div>
