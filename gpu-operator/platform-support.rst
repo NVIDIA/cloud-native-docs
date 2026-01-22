@@ -277,6 +277,8 @@ Supported Operating Systems and Kubernetes Platforms
 .. |fn2| replace:: :sup:`2`
 .. _fn3: #rhel-9
 .. |fn3| replace:: :sup:`3`
+.. _fn4: #k8s-version
+.. |fn4| replace:: :sup:`4`
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -290,44 +292,44 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Operating
            | System
-         - Kubernetes |fn1|_
+         - Kubernetes |fn1|_, |fn4|_
          - | Red Hat
            | OpenShift
          - | VMware vSphere
            | with Tanzu
          - | Rancher Kubernetes
-           | Engine 2
-         - | Mirantis k0s
+           | Engine 2 |fn4|_
+         - | Mirantis k0s |fn4|_
          - | Canonical
-           | MicroK8s
+           | MicroK8s |fn4|_
          - | Nutanix
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.30---1.34
+         - 1.30---1.35
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.30---1.34
+         - 1.30---1.35 
          -
          - 8.0 U2, 8.0 U3
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.33---1.34
+         - 1.30---1.35 
+         - 1.30---1.35 
+         - 1.33---1.35
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.33---1.34
+         - 1.30---1.35
+         - 1.30---1.35
+         - 1.33---1.35
          -
 
        * - Red Hat Core OS
@@ -342,10 +344,10 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 9.2, 9.4, 9.6 |fn3|_
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
          -
@@ -354,10 +356,10 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
-         - 1.30---1.34
+         - 1.30---1.35
          -
          -
          - 2.12, 2.13, 2.14, 2.15
@@ -385,6 +387,11 @@ The GPU Operator has been validated in the following scenarios:
     Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only.
     They are not available for ARM based systems.
 
+    .. _k8s-version:
+
+    :sup:`4`
+    Kubernetes v1.35 support was added in v25.10.1 and later.
+
     .. note::
 
       |ocp_csp_support|
@@ -398,26 +405,29 @@ The GPU Operator has been validated in the following scenarios:
        * - | Operating
            | System
          - | Amazon EKS
-           | Kubernetes
+           | Kubernetes 
          - | Google GKE
            | Kubernetes
          - | Microsoft Azure
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
+         - 1.30---1.35
+         - 1.30---1.35
+         - 1.30---1.35
 
        * - Ubuntu 22.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
+         - 1.30---1.35
+         - 1.30---1.35
+         - 1.30---1.35
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
+         - 1.30---1.35
+         - 1.30---1.35
+         - 1.30---1.35
+
+    
+    Kubernetes v1.35 support was added in v25.10.1 and later.
 
 
 .. _supported-precompiled-drivers:
@@ -477,10 +487,12 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 20.04 LTS    1.30---1.34   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.30---1.34   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.30---1.35   0.36+           0.59.1+
+Ubuntu 22.04 LTS    1.30---1.35   0.36+           0.59.1+
 Red Hat Core OS                                                4.14---4.20      4.14---4.20
 ================    ===========   =============   =========    =============    ===========
+
+Kubernetes v1.35 support was added in v25.10.1 and later.
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
 a software version that meets both requirements.
