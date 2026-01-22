@@ -306,7 +306,7 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.30---1.35 |fn4|_
+         - 1.30---1.35
          -
          - 7.0 U3c, 8.0 U2, 8.0 U3
          - 1.30---1.35
@@ -390,7 +390,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _k8s-version:
 
     :sup:`4`
-    Kubernetes v1.35 support was added in 25.10.1 and later.
+    Kubernetes v1.35 support was added in v25.10.1 and later.
 
     .. note::
 
@@ -427,7 +427,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.35
 
     
-    Kubernetes v1.35 support was added in 25.10.1 and later.
+    Kubernetes v1.35 support was added in v25.10.1 and later.
 
 
 .. _supported-precompiled-drivers:
@@ -492,7 +492,7 @@ Ubuntu 22.04 LTS    1.30---1.35   0.36+           0.59.1+
 Red Hat Core OS                                                4.14---4.20      4.14---4.20
 ================    ===========   =============   =========    =============    ===========
 
-Kubernetes v1.35 support was added in 25.10.1 and later.
+Kubernetes v1.35 support was added in v25.10.1 and later.
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
 a software version that meets both requirements.
