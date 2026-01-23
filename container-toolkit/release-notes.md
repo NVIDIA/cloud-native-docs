@@ -8,6 +8,36 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.18.2
+
+This release of the NVIDIA Container Toolkit `v1.18.2` is a bugfix release.
+
+### Fixes and Features
+- Fix the trigger of the CDI refresh service to handle compressed kernels.
+- Return an error when JIT CDI spec generation failure. This makes it clearer as to why a container fails to start instead of reporting an unresolvable CDI device.
+- Allow driver libraries to be properly located in `musl`-based containers.
+- Properly construct the arguments of the hook used to create DRM device symlinks. This fixes a bug where a container would not start in `legacy` mode when `NVIDIA_DRIVER_CAPABILITIES` includes `graphics`.
+- Fix a bug where all GPUs were made available to a container when `NVIDIA_VISIBLE_DEVICES=none` was specified.
+- Add restart logic to the CDI refresh service to allow for the case where the driver may not be ready at boot.
+- Do not mount IPC sockets are read-only when using CDI. This fixes crashes in certain nested scenarios such as Slurm on K8s.
+
+#### Enhancements to container-toolkit Container Images
+- Bump the NVIDIA distroless base image to v3.2.2-dev.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.18.2`
+- `nvidia-container-toolkit-base 1.18.2`
+- `libnvidia-container-tools 1.18.2`
+- `libnvidia-container1 1.18.2`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.2`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.18.2-packaging`
+
 ## NVIDIA Container Toolkit 1.18.1
 
 This release of the NVIDIA Container Toolkit `v1.18.1` is a bugfix release.
