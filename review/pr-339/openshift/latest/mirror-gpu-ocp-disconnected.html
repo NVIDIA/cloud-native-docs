@@ -1,0 +1,1574 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Deploy GPU Operators in a disconnected or airgapped environment &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'mirror-gpu-ocp-disconnected';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
+    <link rel="prev" title="Cleanup" href="clean-up.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jan 28, 2026"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Deploy GPU Operators in a disconnected or airgapped environment</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="deploy-gpu-operators-in-a-disconnected-or-airgapped-environment">
+<span id="mirror-gpu-ocp-disconnected"></span><h1>Deploy GPU Operators in a disconnected or airgapped environment<a class="headerlink" href="#deploy-gpu-operators-in-a-disconnected-or-airgapped-environment" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>This page describes how to successfully deploy the NVIDIA GPU Operator on a Openshift Container Platform cluster in a disconnected or airgapped environment.</p>
+<p>For OpenShift Container Platform clusters that are installed on restricted networks, also known as disconnected clusters, Operator Lifecycle Manager (OLM), by default, cannot access the Red Hat-provided OperatorHub sources hosted on remote registries because those remote sources require full Internet connectivity.</p>
+<p>However, as a cluster administrator you can still enable your cluster to use OLM in a restricted network if you have a workstation that has full Internet access. The workstation, which requires full Internet access to pull the remote OperatorHub content, is used to prepare local mirrors of the remote sources, and push the content to a mirror registry.</p>
+<p>The mirror registry can be located on a bastion host, which requires connectivity to both your workstation and the disconnected cluster, or a completely disconnected, or <em>airgapped</em>, host, which requires removable media to physically move the mirrored content to the disconnected environment.</p>
+<p>The following figure shows a typical topology of a disconnected cluster.</p>
+<a class="reference internal image-reference" href="_images/disconnected_cluster.png"><img alt="_images/disconnected_cluster.png" src="_images/disconnected_cluster.png" style="width: 600px;" /></a>
+<p>This guide describes the process required to enable OLM in restricted networks:</p>
+<ul class="simple">
+<li><p>Disable the default remote OperatorHub sources for OLM.</p></li>
+<li><p>Use a workstation with full Internet access to create and push local mirrors of the OperatorHub content to a mirror registry.</p></li>
+<li><p>Configure OLM to install and manage Operators from local sources on the mirror registry instead of the default remote sources.</p></li>
+<li><p>(Optional) Mirror yum repository required by the GPU operator.</p></li>
+</ul>
+<p>The <a class="reference external" href="https://docs.openshift.com/container-platform/4.12/operators/admin/olm-restricted-networks.html">OpenShift Container Platform</a> documentation
+provides generic guidance on using Operator Lifecycle Manager on restricted networks.</p>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>A working OpenShift cluster up and running with a GPU worker node.
+Refer to the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">OpenShift Container Platform installation</a> guide for guidance on installing OpenShift Container Platform.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version &lt;<code class="docutils literal notranslate"><span class="pre">4.9.9</span></code> you need to carry out the steps highlighted as <strong>Optional</strong> below.
+For more information see <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">broken driver toolkit</span></a>.</p>
+</div>
+</li>
+<li><p>Access to the cluster as a user with the <code class="docutils literal notranslate"><span class="pre">cluster-admin</span></code> role.</p></li>
+<li><p>Access to a registry that supports <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>.
+A private registry <strong>must</strong> be configured on the bastion host. This can be one of the following registries:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.redhat.com/en/technologies/cloud-computing/quay">Red Hat Quay</a></p></li>
+<li><p><a class="reference external" href="https://jfrog.com/artifactory/">JFrog Artifactory</a></p></li>
+<li><p><a class="reference external" href="https://www.sonatype.com/products/repository-oss?topnav=true">Sonatype Nexus Repository</a></p></li>
+<li><p><a class="reference external" href="https://goharbor.io/">Harbor</a></p></li>
+</ul>
+<p>Create a private registry using <code class="docutils literal notranslate"><span class="pre">podman</span></code> and guidance on this can be found <a class="reference external" href="https://www.redhat.com/sysadmin/simple-container-registry">here</a> and in the section <a class="reference internal" href="#creating-a-private-registry"><span class="std std-ref">Creating a private registry</span></a>.</p>
+<p>If you have an entitlement to Red Hat Quay, see the documentation on deploying Red Hat Quay for
+<a class="reference external" href="https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_for_proof-of-concept_non-production_purposes/">proof-of-concept purposes</a>
+or by using the <a class="reference external" href="https://access.redhat.com/documentation/en-us/red_hat_quay/3.5/html/deploy_red_hat_quay_on_openshift_with_the_quay_operator/">Quay Operator</a>.
+If you need additional assistance selecting and installing a registry, contact your sales representative or Red Hat support.
+For more information, refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/index.html">About disconnected install mirroring</a>
+in the Red Hat OpenShift Container Platform documentation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When creating a self-signed certificate and if you enable HTTPS for the local registry, ensure you have appended <code class="docutils literal notranslate"><span class="pre">-addext</span> <span class="pre">&quot;subjectAltName=DNS:${JUMP_HOST}&quot;</span></code> to your <code class="docutils literal notranslate"><span class="pre">openssl</span></code> command, otherwise OpenShift Container Platform cannot pull images from the private registry.</p>
+<p>If you do not set a Subject Alternative Name, before running the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands in the subsequent sections export the environment variable <code class="docutils literal notranslate"><span class="pre">GODEBUG=x509ignoreCN=0</span></code>. If you do not set this variable, the <code class="docutils literal notranslate"><span class="pre">oc</span></code> commands will fail with the following error:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>x509: certificate relies on legacy Common Name field, use SANs or temporarily <span class="nb">enable</span> Common Name matching with <span class="sb">``</span><span class="nv">GODEBUG</span><span class="o">=</span><span class="nv">x509ignoreCN</span><span class="o">=</span><span class="m">0</span><span class="sb">``</span>.
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you use HTTP, in Openshift Container Platform add <code class="docutils literal notranslate"><span class="pre">insecureRegistries</span></code> to <code class="docutils literal notranslate"><span class="pre">image.config.openshift.io/cluster</span></code>. Guidance on that configuration is provided <a class="reference external" href="https://docs.openshift.com/container-platform/latest/openshift_images/image-configuration.html">here</a>.</p>
+</div>
+</li>
+</ul>
+<p><strong>On the jump host:</strong></p>
+<ul class="simple">
+<li><p><strong>Optional</strong>: Install <code class="docutils literal notranslate"><span class="pre">yum-utils</span></code>. This provides the <code class="docutils literal notranslate"><span class="pre">reposync</span></code> script and is <strong>only</strong> required if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">yum-utils</span></code> is required for the package mirror while the remaining prerequisites (listed below) are required for the image mirroring.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">podman</span></code> version 1.9.3+</p></li>
+<li><p><a class="reference external" href="https://github.com/fullstorydev/grpcurl">grpcurl</a></p></li>
+<li><p>Install the OpenShift CLI (<code class="docutils literal notranslate"><span class="pre">oc</span></code>).</p></li>
+<li><p>Red Hat Enterprise Linux (RHEL) on your jump host. The jump host when configured becomes the private registry host.</p></li>
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">opm</span></code> CLI (opm version 1.12.3+) used to prune the default catalog.
+Refer to <a class="reference external" href="https://docs.openshift.com/container-platform/latest/cli_reference/opm/cli-opm-ref.html">opm CLI reference</a>
+in the Red Hat OpenShift Container Platform documentation for information about using the CLI.</p></li>
+</ul>
+</section>
+<section id="set-up-a-basic-http-server">
+<h2>Set up a basic HTTP Server<a class="headerlink" href="#set-up-a-basic-http-server" title="Permalink to this headline">#</a></h2>
+<p>Image mirroring require a simple HTTP server, follow the guidance below to setup a basic web server:</p>
+<ol class="arabic">
+<li><p>Install Apache <code class="docutils literal notranslate"><span class="pre">httpd</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>yum install httpd -y
+</pre></div>
+</div>
+</li>
+<li><p>Start the Apache web server for the first time:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl restart httpd
+</pre></div>
+</div>
+</li>
+<li><p>Enable the Apache web server to start automatically at system boot:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl <span class="nb">enable</span> httpd
+</pre></div>
+</div>
+</li>
+<li><p>Open port 80 and 443 to allow web traffic to the Apache web server service and
+update the system firewall rules allowing inbound packets on HTTP and HTTPS.</p>
+<ol class="upperalpha">
+<li><p>Update the system firewall rules for HTTP:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --zone<span class="o">=</span>public --permanent --add-service<span class="o">=</span>http
+</pre></div>
+</div>
+</li>
+<li><p>Update the system firewall rules for HTTPS:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --zone<span class="o">=</span>public --permanent --add-service<span class="o">=</span>https
+</pre></div>
+</div>
+</li>
+<li><p>Reload the firewall:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --reload
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="optional-check-the-version-of-rhel-being-used-in-the-cluster">
+<h2>Optional: Check the version of RHEL being used in the cluster<a class="headerlink" href="#optional-check-the-version-of-rhel-being-used-in-the-cluster" title="Permalink to this headline">#</a></h2>
+<p>These steps only need to be carried out if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p>
+<p>Before mirroring the RPM packages check the version of RHEL being used in the cluster.</p>
+<ul>
+<li><p>To determine the RHEL version running on the cluster use the OpenShift CLI and run the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc debug  <span class="k">$(</span>oc get nodes -oname -lnode-role.kubernetes.io/worker <span class="p">|</span> head -1<span class="k">)</span> -- cat /host/etc/os-release <span class="p">|</span> grep RHEL
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Starting pod/openshift-worker-0openshiftpool2practiceredhatcom-debug ...</span>
+<span class="go">To use host binaries, run `chroot /host`</span>
+<span class="go">RHEL_VERSION=&quot;8.4&quot;</span>
+
+<span class="go">Removing debug pod ...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This gives you the <code class="docutils literal notranslate"><span class="pre">releasever</span></code> to supply as a command line argument to <code class="docutils literal notranslate"><span class="pre">reposync</span></code>.</p>
+<p>For guidance on logging in to the OpenShift CLI see, <a class="reference external" href="https://docs.openshift.com/container-platform/latest/cli_reference/openshift_cli/getting-started-cli.html">Getting started with the OpenShift CLI</a>.</p>
+</section>
+<section id="optional-mirror-the-rpm-packages">
+<h2>Optional: Mirror the RPM packages<a class="headerlink" href="#optional-mirror-the-rpm-packages" title="Permalink to this headline">#</a></h2>
+<p>These steps only need to be carried out if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p>
+<p>Follow the guidance below to sync the required <code class="docutils literal notranslate"><span class="pre">yum</span></code> repositories:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The size of the whole yum repository is huge, make sure there is enough space on your jump host. At least 50GB is required.</p>
+</div>
+<ol class="arabic">
+<li><p>If you have access to the GPG public key, use the following command to manually import a key:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+</pre></div>
+</div>
+</li>
+<li><p>Create a directory to store the downloaded repos:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p /opt/mirror-repos/
+</pre></div>
+</div>
+</li>
+<li><p>List all available repositories enabled for the system:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>subscription-manager repos --list-enabled
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">+----------------------------------------------------------+</span>
+<span class="go">      Available Repositories in /etc/yum.repos.d/redhat.repo</span>
+<span class="go">+----------------------------------------------------------+</span>
+<span class="go">Repo ID:   rhel-8-for-x86_64-appstream-rpms</span>
+<span class="go">Repo Name: Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)</span>
+<span class="go">Repo URL:  https://cdn.redhat.com/content/dist/rhel8/$releasever/x86_64/appstream/os</span>
+<span class="go">Enabled:   1</span>
+
+<span class="go">Repo ID:   rhel-8-for-x86_64-baseos-rpms</span>
+<span class="go">Repo Name: Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)</span>
+<span class="go">Repo URL:  https://cdn.redhat.com/content/dist/rhel8/$releasever/x86_64/baseos/os</span>
+<span class="go">Enabled:   1</span>
+</pre></div>
+</div>
+<p>This supplies you with the <code class="docutils literal notranslate"><span class="pre">repoid</span></code> you need in steps 4 and 5.</p>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">reposync</span></code> to synchronize the BaseOS repos to the locally created directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-baseos-rpms <span class="se">\</span>
+  --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
+  --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
+  --downloadcomps <span class="se">\</span>
+  --download-metadata <span class="se">\</span>
+  --nodocs
+</pre></div>
+</div>
+</li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">reposync</span></code> to synchronize the AppStream repos to the locally created directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>reposync --gpgcheck --repoid<span class="o">=</span>rhel-8-for-x86_64-appstream-rpms <span class="se">\</span>
+  --releasever<span class="o">=</span><span class="m">8</span>.4 <span class="se">\</span>
+  --download-path<span class="o">=</span>/opt/mirror-repos/ <span class="se">\</span>
+  --downloadcomps <span class="se">\</span>
+  --download-metadata <span class="se">\</span>
+  --nodocs
+</pre></div>
+</div>
+</li>
+<li><p>Create a directory to host and serve the AppStream RPM packages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir -p /var/www/html/content/dist/rhel8/8/x86_64/appstream/</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a directory to host and serve the BaseOS RPM packages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p /var/www/html/content/dist/rhel8/8/x86_64/baseos/
+</pre></div>
+</div>
+</li>
+<li><p>Create symbolic links between the downloaded repositories and the document root directory on the jump host used to serve the RPMs.</p>
+<ol class="upperalpha">
+<li><p>Create a symbolic link between the downloaded BaseOS repository and the document root directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ln -s /opt/mirror-repos/rhel-8-for-x86_64-baseos-rpms/ /var/www/html/content/dist/rhel8/8/x86_64/baseos/os
+</pre></div>
+</div>
+</li>
+<li><p>Create a symbolic link between the downloaded AppStream repository and the document root directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ln -s /opt/mirror-repos/rhel-8-for-x86_64-appstream-rpms /var/www/html/content/dist/rhel8/8/x86_64/appstream/os
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="creating-a-private-registry">
+<h2>Creating a private registry<a class="headerlink" href="#creating-a-private-registry" title="Permalink to this headline">#</a></h2>
+<p>Create a private registry to host the mirrored content that you require for mirroring the Operator Catalog. The target registry must support <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. For a cluster on a restricted network, this registry can be one that the cluster has network access to.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deploying a disconnected registry host based on the <code class="docutils literal notranslate"><span class="pre">docker.io/library/registry:2</span></code> API is not supported by Red Hat.
+You can create a mirror host based on the <code class="docutils literal notranslate"><span class="pre">docker.io/library/registry:2</span></code> API with the following unsupported procedure.</p>
+<p>The following procedure creates a simple registry that stores data in the <code class="docutils literal notranslate"><span class="pre">/opt/registry</span></code> folder and runs in a <code class="docutils literal notranslate"><span class="pre">podman</span></code> container.
+You can use a different registry solution, such as Red Hat Quay.
+Refer to the Red Hat OpenShift Container Platform documentation that describes how to
+<a class="reference external" href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-installation-images.html">mirror images for a disconnected installation</a>.</p>
+</div>
+<p>Configure a private registry on the the jump host, using the following steps:</p>
+<ol class="arabic">
+<li><p>Install the required packages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>yum -y install podman httpd httpd-tools
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">podman</span></code> package provides the container package that you run the registry in. The <code class="docutils literal notranslate"><span class="pre">httpd-tools</span></code> package provides the <code class="docutils literal notranslate"><span class="pre">htpasswd</span></code> utility, which you use to create users.</p>
+</li>
+<li><p>Create folders for the registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir -p /opt/registry/<span class="o">{</span>auth,certs,data<span class="o">}</span>
+</pre></div>
+</div>
+<p>These folders are mounted inside the registry container.</p>
+</li>
+<li><p>Set the following environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">JUMP_HOST</span><span class="o">=</span>&lt;Your_jump_hostname&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Access the <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/opt/registry/certs</span></code> directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> /opt/registry/certs
+</pre></div>
+</div>
+</li>
+<li><p>Provide a certificate for the registry. If you do not have an existing, trusted certificate authority, you can generate a self-signed certificate:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>openssl req -addext <span class="s2">&quot;subjectAltName=DNS:</span><span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span><span class="s2">&quot;</span> -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days <span class="m">365</span> -out domain.crt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenSSL version 1.1.1 or higher is required.</p>
+</div>
+<p>At the prompts, provide the required values for the certificate:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Country Name (2 letter code)</p></td>
+<td><p>Specify the two-letter ISO country code for your location.
+See the <a class="reference external" href="https://www.iso.org/iso-3166-country-codes.html">ISO 3166 country codes standard</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>State or Province Name (full name)</p></td>
+<td><p>Enter the full name of your state or province.</p></td>
+</tr>
+<tr class="row-even"><td><p>Locality Name (eg, city)</p></td>
+<td><p>Enter the name of your city.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Organization Name (eg, company)</p></td>
+<td><p>Enter your company name.</p></td>
+</tr>
+<tr class="row-even"><td><p>Organizational Unit Name (eg, section)</p></td>
+<td><p>Enter your department name.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Common Name (eg, your name or your server’s hostname)</p></td>
+<td><p>Enter the hostname for the registry host.
+Ensure that your hostname is in DNS and that it resolves to the expected IP address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Email Address</p></td>
+<td><p>For more information, see the <a class="reference external" href="https://www.openssl.org/docs/man1.1.1/man1/req.html">req</a> description in the OpenSSL documentation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p>Generate a <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">password</span></code> for your registry that uses the <code class="docutils literal notranslate"><span class="pre">bcrpt</span></code> format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>htpasswd -bBc /opt/registry/auth/htpasswd &lt;user_name&gt; &lt;password&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;user_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;password&gt;</span></code> with a user name and a password.</p>
+</li>
+<li><p>Create the <cite>mirror-registry</cite> container to host your registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>podman run --name mirror-registry -p <span class="nv">$JUMP_HOST_PORT</span>:5000 <span class="se">\</span>
+          -v /opt/registry/data:/var/lib/registry:z <span class="se">\</span>
+          -v /opt/registry/auth:/auth:z <span class="se">\</span>
+          -e <span class="s2">&quot;REGISTRY_AUTH=htpasswd&quot;</span> <span class="se">\</span>
+          -e <span class="s2">&quot;REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm&quot;</span> <span class="se">\</span>
+          -e <span class="nv">REGISTRY_AUTH_HTPASSWD_PATH</span><span class="o">=</span>/auth/htpasswd <span class="se">\</span>
+          -v /opt/registry/certs:/certs:z <span class="se">\</span>
+          -e <span class="nv">REGISTRY_HTTP_TLS_CERTIFICATE</span><span class="o">=</span>/certs/domain.crt <span class="se">\</span>
+          -e <span class="nv">REGISTRY_HTTP_TLS_KEY</span><span class="o">=</span>/certs/domain.key <span class="se">\</span>
+          -e <span class="nv">REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+          -d docker.io/library/registry:2
+</pre></div>
+</div>
+<p>The details of the options are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--name</span></code> mirror-registry gives the container the name <code class="docutils literal notranslate"><span class="pre">mirror-registry</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">$JUMP_HOST_PORT:5000</span></code> for example <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">5000:5000</span></code> exposes port <code class="docutils literal notranslate"><span class="pre">5000</span></code> in the container as port <code class="docutils literal notranslate"><span class="pre">5000</span></code> on the host.</p></li>
+<li><p>-v <code class="docutils literal notranslate"><span class="pre">/opt/registry/data:/var/lib/registry:z</span></code> mounts <code class="docutils literal notranslate"><span class="pre">/opt/registry/data</span></code> on the host as <code class="docutils literal notranslate"><span class="pre">/var/lib/registry</span></code> in the container with the correct SELinux context</p></li>
+<li><p>-v <code class="docutils literal notranslate"><span class="pre">/opt/registry/auth:/auth:z</span></code> mounts <code class="docutils literal notranslate"><span class="pre">/opt/registry/auth</span></code> on the host as <code class="docutils literal notranslate"><span class="pre">`/auth</span></code> in the container with the correct SELinux context.</p></li>
+<li><p>-v <code class="docutils literal notranslate"><span class="pre">/opt/registry/certs:/certs:z</span></code> mounts <code class="docutils literal notranslate"><span class="pre">/opt/registry/certs</span></code> on the hosts as <code class="docutils literal notranslate"><span class="pre">/certs</span></code> in the container with the correct SELinux context.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_AUTH=htpasswd</span></code> uses an <code class="docutils literal notranslate"><span class="pre">bcrypt</span></code> encrypted <code class="docutils literal notranslate"><span class="pre">htpasswd</span></code> file for authentication. File location set by container’s <code class="docutils literal notranslate"><span class="pre">REGISTRY_AUTH_HTPASSWD_PATH</span></code> environment variable.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_AUTH_HTPASSWD_REALM=Registry</span> <span class="pre">Realm</span></code> specifies the realm to use for <code class="docutils literal notranslate"><span class="pre">htpasswd</span></code>.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd</span></code> uses the bcrypt-encrypted <code class="docutils literal notranslate"><span class="pre">/auth/htpasswd</span></code> file in the container.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt</span></code> sets path to certificate file.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_HTTP_TLS_KEY=/certs/domain.key</span></code> sets path to private key.</p></li>
+<li><p>-e <code class="docutils literal notranslate"><span class="pre">REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED=true</span></code> provides backward compatibility for schema1 manifests.</p></li>
+<li><p>-d means <code class="docutils literal notranslate"><span class="pre">--detach</span></code> which runs the pod in the background. <code class="docutils literal notranslate"><span class="pre">docker.io/library/registry:latest</span></code> is a registry application that allows for the storage and distribution of images.</p></li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>podman run --name mirror-registry -p <span class="m">5000</span>:5000 <span class="se">\</span>
+   -v /opt/registry/data:/var/lib/registry:z <span class="se">\</span>
+   -v /opt/registry/auth:/auth:z <span class="se">\</span>
+   -e <span class="s2">&quot;REGISTRY_AUTH=htpasswd&quot;</span> <span class="se">\</span>
+   -e <span class="s2">&quot;REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm&quot;</span> <span class="se">\</span>
+   -e <span class="nv">REGISTRY_AUTH_HTPASSWD_PATH</span><span class="o">=</span>/auth/htpasswd <span class="se">\</span>
+   -v /opt/registry/certs:/certs:z <span class="se">\</span>
+   -e <span class="nv">REGISTRY_HTTP_TLS_CERTIFICATE</span><span class="o">=</span>/certs/domain.crt <span class="se">\</span>
+   -e <span class="nv">REGISTRY_HTTP_TLS_KEY</span><span class="o">=</span>/certs/domain.key <span class="se">\</span>
+   -e <span class="nv">REGISTRY_COMPATIBILITY_SCHEMA1_ENABLED</span><span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+   -d docker.io/library/registry:2
+</pre></div>
+</div>
+</li>
+<li><p>Open the required ports for your registry:</p>
+<ol class="upperalpha">
+<li><p>Open the internal port:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --add-port<span class="o">=</span><span class="nv">$JUMP_HOST_PORT</span>/tcp --zone<span class="o">=</span>internal --permanent
+</pre></div>
+</div>
+</li>
+<li><p>Open the public port:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --add-port<span class="o">=</span><span class="nv">$JUMP_HOST_PORT</span>/tcp --zone<span class="o">=</span>public --permanent
+</pre></div>
+</div>
+</li>
+<li><p>Reload the firewall:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --reload
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">$JUMP_HOST_PORT</span></code>, specify the port that your mirror registry uses to serve content shown in the examples below as 5000.</p>
+</div>
+<p><strong>Example</strong>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --add-port<span class="o">=</span><span class="m">5000</span>/tcp --zone<span class="o">=</span>internal --permanent
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --add-port<span class="o">=</span><span class="m">5000</span>/tcp --zone<span class="o">=</span>public --permanent
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>firewall-cmd --reload
+</pre></div>
+</div>
+</li>
+<li><p>Add the self-signed certificate to your list of trusted certificates:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp /opt/registry/certs/domain.crt /etc/pki/ca-trust/source/anchors/
+</pre></div>
+</div>
+</li>
+<li><p>Trust your certificate to log in to your registry during the mirror process:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>update-ca-trust
+</pre></div>
+</div>
+</li>
+<li><p>Verify the certificate.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>openssl verify /etc/pki/ca-trust/source/anchors/domain.crt
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that the registry is available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -u &lt;user_name&gt;:&lt;password&gt; -k https://<span class="nv">$JUMP_HOST</span>:JUMP_HOST_PORT/v2/_catalog
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">&lt;user_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;password&gt;</span></code>, specify the user name and password for your registry. The <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">JUMP_HOST=&lt;Your_jump_hostname&gt;</span></code> ensures the correct <code class="docutils literal notranslate"><span class="pre">$JUMP_HOST</span></code> is set. For <code class="docutils literal notranslate"><span class="pre">JUMP_HOST_PORT</span></code>, specify the port that your mirror registry uses to serve content.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the command output displays an empty repository, your registry is available.</p>
+</div>
+</li>
+</ol>
+</section>
+<section id="authenticate-the-mirror-registry">
+<h2>Authenticate the mirror registry<a class="headerlink" href="#authenticate-the-mirror-registry" title="Permalink to this headline">#</a></h2>
+<p>For authenticating your mirror registry, you need to configure additional trust stores for image registry access in your Openshift Container Platform cluster. You can create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> in the <code class="docutils literal notranslate"><span class="pre">openshift-config</span></code> namespace and use its name in <code class="docutils literal notranslate"><span class="pre">AdditionalTrustedCA</span></code> in the <code class="docutils literal notranslate"><span class="pre">image.config.openshift.io</span></code> resource. This provides additional CAs that should be trusted when contacting external registries.</p>
+<ol class="arabic">
+<li><p>Set the following environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">JUMP_HOST</span><span class="o">=</span>&lt;Your_jump_hostname&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Create a ConfigMap in the <code class="docutils literal notranslate"><span class="pre">openshift-config</span></code> namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create configmap registry-config <span class="se">\</span>
+   --from-file<span class="o">=</span><span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span>..5000<span class="o">=</span>/etc/pki/ca-trust/source/anchors/domain.crt  <span class="se">\</span>
+   -n openshift-config
+</pre></div>
+</div>
+</li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">AdditionalTrustedCA</span></code> in the <code class="docutils literal notranslate"><span class="pre">image.config.openshift.io</span></code> resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch image.config.openshift.io/cluster <span class="se">\</span>
+--patch <span class="s1">&#39;{&quot;spec&quot;:{&quot;additionalTrustedCA&quot;:{&quot;name&quot;:&quot;registry-config&quot;}}}&#39;</span> --type<span class="o">=</span>merge <span class="se">\</span>
+--type<span class="o">=</span>merge
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configuring-credentials-that-allow-images-to-be-mirrored">
+<h2>Configuring credentials that allow images to be mirrored<a class="headerlink" href="#configuring-credentials-that-allow-images-to-be-mirrored" title="Permalink to this headline">#</a></h2>
+<p>Create a container image registry credentials file that allows mirroring images from Red Hat to your mirror registry.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not use this image registry credentials file as the pull secret when you install a cluster. If you provide this file when you install cluster, all of the machines in the cluster will have write access to your mirror registry.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This process requires that you have write access to a container image registry on the mirror registry and adds the credentials to a registry pull secret.</p>
+</div>
+<ol class="arabic">
+<li><p>Download your pull secret from the <a class="reference external" href="https://console.redhat.com/openshift/install/pull-secret">Pull Secret</a> page on the Red Hat OpenShift Cluster Manager site.</p></li>
+<li><p>Generate the base64-encoded user name and password or token for your mirror registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">echo</span> -n <span class="s1">&#39;&lt;user_name&gt;:&lt;password&gt;&#39;</span> <span class="p">|</span> base64 -w0
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">BGVtbYk3ZHAtqXs=</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">&lt;user_name&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;password&gt;</span></code>, specify the user name and password that you configured for your registry.</p>
+</div>
+</li>
+<li><p>Make a copy of your pull secret in JSON format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;path_to_pull_secret&gt;/pull-secret.text <span class="p">|</span> jq .  &gt; &lt;path&gt;/&lt;pull-secret-file&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Specify the path to the folder to store the pull secret in and a name for the JSON file that you create.</p>
+</div>
+<p><strong>Example Output</strong></p>
+<p>The contents of the file resemble the following example:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">   &quot;auths&quot;: {</span>
+<span class="go">     &quot;cloud.openshift.com&quot;: {</span>
+<span class="go">       &quot;auth&quot;: &quot;b3BlbnNo...&quot;,</span>
+<span class="go">       &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;quay.io&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;b3BlbnNo...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;registry.connect.redhat.com&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;NTE3Njg5Nj...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;registry.redhat.io&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;NTE3Njg5Nj...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    }</span>
+<span class="go">   }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Edit the new file and add a section that describes your registry to it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;auths&quot;: {</span>
+<span class="go">  &quot;&lt;mirror_registry&gt;:5000&quot;: {</span>
+<span class="go">    &quot;auth&quot;: &quot;&lt;credentials&gt;&quot;,</span>
+<span class="go">    &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For &lt;mirror_registry&gt;, specify the registry domain name, and optionally the port, that your mirror registry uses to serve content. Following the logic of this example with the registry being setup on the hump host this is <code class="docutils literal notranslate"><span class="pre">jump_hostname</span></code> or <code class="docutils literal notranslate"><span class="pre">jump_hostname:5000</span></code>. For &lt;credentials&gt;, specify the base64-encoded user name and password for the mirror registry.</p>
+</div>
+<p><strong>Example Output</strong></p>
+<p>The file resembles the following example:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">  &quot;auths&quot;: {</span>
+<span class="go">    &quot;jump_hostname:5000&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;BGVtbYk3ZHAtqXs=&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;cloud.openshift.com&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;b3BlbnNo...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;quay.io&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;b3BlbnNo...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;registry.connect.redhat.com&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;NTE3Njg5Nj...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    },</span>
+<span class="go">    &quot;registry.redhat.io&quot;: {</span>
+<span class="go">      &quot;auth&quot;: &quot;NTE3Njg5Nj...&quot;,</span>
+<span class="go">      &quot;email&quot;: &quot;you@example.com&quot;</span>
+<span class="go">    }</span>
+<span class="go">  }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Update the global pull secret for your cluster by either replacing the current pull secret or appending a new pull secret. For more information and generic instructions see, <a class="reference external" href="https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets">here</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Cluster resources must adjust to the new pull secret, which can temporarily limit the usability of the cluster.</p>
+</div>
+<p>Append a new pull secret to the existing pull secret by completing the following steps:</p>
+<ol class="arabic">
+<li><p>Enter the following command to download the pull secret:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get secret/pull-secret -n openshift-config --template<span class="o">=</span><span class="s1">&#39;{{index .data &quot;.dockerconfigjson&quot; | base64decode}}&#39;</span> &gt;/tmp/pull-secret.json
+</pre></div>
+</div>
+</li>
+<li><p>Enter the following command to add the new pull secret:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc registry login --registry<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span><span class="s2">:5000&quot;</span> --auth-basic<span class="o">=</span><span class="s2">&quot;&lt;username&gt;:&lt;password&gt;&quot;</span> --to<span class="o">=</span>/tmp/pull-secret.json
+</pre></div>
+</div>
+</li>
+<li><p>Enter the following command to update the global pull secret for your cluster:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc <span class="nb">set</span> data secret/pull-secret -n openshift-config --from-file<span class="o">=</span>.dockerconfigjson<span class="o">=</span>/tmp/pull-secret.json
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="mirror-the-operator-catalogs-on-a-disconnected-cluster">
+<h2>Mirror the Operator catalogs on a disconnected cluster<a class="headerlink" href="#mirror-the-operator-catalogs-on-a-disconnected-cluster" title="Permalink to this headline">#</a></h2>
+<p>You can mirror all operators of a certain index image into your disconnected cluster, but the image may be huge, so you can prune an index image to keep only a few of the operators you want to use.</p>
+<p>This guide demonstrates how to mirror specific Operators namely the <strong>Node Feature Discovery</strong> and the <strong>NVIDIA GPU Operator</strong>. For more general information, see <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-restricted-networks.html">Using Operator Lifecycle Manager on restricted networks</a>.</p>
+</section>
+<section id="disabling-the-default-operatorhub-sources">
+<h2>Disabling the default OperatorHub sources<a class="headerlink" href="#disabling-the-default-operatorhub-sources" title="Permalink to this headline">#</a></h2>
+<p>Operator catalogs that source content provided by Red Hat and community projects are configured for OperatorHub by default during an OpenShift Container Platform installation. In a restricted network environment, you must disable the default catalogs as a cluster administrator. You can then configure OperatorHub to use local catalog sources.</p>
+<ul>
+<li><p>Disable the sources for the default catalogs by adding <code class="docutils literal notranslate"><span class="pre">disableAllDefaultSources:</span> <span class="pre">true</span></code> to the OperatorHub object:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch OperatorHub cluster --type json <span class="se">\</span>
+   -p <span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/disableAllDefaultSources&quot;, &quot;value&quot;: true}]&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="mirror-node-feature-discovery-nfd-and-the-nvidia-gpu-operator-catalog">
+<h2>Mirror Node Feature Discovery (NFD) and the NVIDIA GPU Operator Catalog<a class="headerlink" href="#mirror-node-feature-discovery-nfd-and-the-nvidia-gpu-operator-catalog" title="Permalink to this headline">#</a></h2>
+<p>You can mirror the Operator content of a Red Hat-provided catalog, or a custom catalog, into a
+container image registry using the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> commands.
+The target registry must support <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> commands also automatically mirrors the index
+image specified during the mirroring process, whether it be a Red Hat-provided index image or
+your own custom-built index image, to the target registry.
+You can then use the mirrored index image to create a catalog source that allows
+Operator Lifecycle Manager (OLM) to load the mirrored catalog onto your
+OpenShift Container Platform cluster.</p>
+<section id="id3">
+<h3>Prerequisites<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>Download oc-mirror tools:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>wget https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/oc-mirror.tar.gz
+</pre></div>
+</div>
+<p>Copy the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> binary to a directory that is in your PATH environment variable, such as <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code>. Run <code class="docutils literal notranslate"><span class="pre">oc</span> <span class="pre">mirror</span> <span class="pre">help</span></code> to confirm the plugin is installed.</p>
+</li>
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">pull-secret.json</span></code> file:
+Create the <code class="docutils literal notranslate"><span class="pre">pull-secret.json</span></code> file, then copy the file to  <code class="docutils literal notranslate"><span class="pre">~/.docker/config.json</span> <span class="pre">cp</span> <span class="pre">~/pull-secret.json</span> <span class="pre">~/.docker/config.json</span></code>.</p></li>
+</ul>
+</section>
+<section id="procedure">
+<h3>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Set the following environment variable:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">REGISTRY_AUTH_FILE</span><span class="o">=</span>&lt;path_to_pull_secret&gt;/pull-secret.json
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">JUMP_HOST</span><span class="o">=</span>&lt;Your_jump_hostname&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Specify the fully qualified domain name (FQDN) for <strong>&lt;Your_jump_hostname&gt;</strong>.</p>
+</div>
+</li>
+<li><p>Export <code class="docutils literal notranslate"><span class="pre">JUMP_HOST=ec2-3-16-218-255.us-east-2.compute.amazonaws.com</span></code>. If you don’t know the catalog image index, use the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror list operators --catalogs --version<span class="o">=</span><span class="m">4</span>.12
+</pre></div>
+</div>
+<p>The available OpenShift OperatorHub catalogs include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-operator-index:v4.12</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/certified-operator-index:v4.12</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/community-operator-index:v4.12</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-marketplace-index:v4.12</span></code></p></li>
+</ul>
+</li>
+<li><p>Use the following command to check for the correct operator name in the image index:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror list operators --catalog<span class="o">=</span>registry.redhat.io/redhat/redhat-operator-index:v4.11 --version<span class="o">=</span><span class="m">4</span>.11
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="mirror-the-node-feature-discovery-nfd-catalogsource">
+<h2>Mirror the Node Feature Discovery (NFD) CatalogSource<a class="headerlink" href="#mirror-the-node-feature-discovery-nfd-catalogsource" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Export <code class="docutils literal notranslate"><span class="pre">JUMP_HOST=ec2-3-16-218-255.us-east-2.compute.amazonaws.com</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc mirror init --registry <span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span>:5000/oc-mirror-nfd-metadata &gt; imageset-config-nfd.yaml
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to mirror other operators, you need to create different <code class="docutils literal notranslate"><span class="pre">imageset-config.yaml</span></code> files, using different metadata names. For example, NFD can use oc-mirror-nfd-metadata and GPU can use oc-mirror-gpu-metadata. Otherwise, the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> tool overwrites the previous mirrored images.</p>
+</div>
+</li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">imageset-config-nfd.yaml</span></code> file as shown below:</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">skipTLS</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">catalog</span></code> to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-operator-index:v4.12</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">nfd</span></code>.</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v1alpha2</span><span class="w"></span>
+<span class="nt">storageConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">registry</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imageURL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-nfd-metadata</span><span class="w"></span>
+<span class="w">    </span><span class="nt">skipTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">mirror</span><span class="p">:</span><span class="w"></span>
+<span class="nt">operators</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/redhat/redhat-operator-index:v4.11</span><span class="w"></span>
+<span class="nt">packages</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfd</span><span class="w"></span>
+<span class="nt">additionalImages</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/ubi8/ubi:latest</span><span class="w"></span>
+<span class="nt">helm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Mirror the image set to the private mirror registry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror --dest-skip-tls<span class="o">=</span><span class="nb">true</span> --config<span class="o">=</span>./imageset-config-nfd.yaml docker://<span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span>:5000
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Rendering catalog image</span>
+<span class="go">&quot;ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/redhat/redhat-operator-index:v4.11&quot;</span>
+<span class="go">with file-based catalog</span>
+
+<span class="go">Writing image mapping to oc-mirror-workspace/results-1670391296/mapping.txt</span>
+<span class="go">Writing CatalogSource manifests to oc-mirror-workspace/results-1670391296</span>
+<span class="go">Writing ICSP manifests to oc-mirror-workspace/results-1670391296</span>
+</pre></div>
+</div>
+<p>One of the files that the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> command creates is <code class="docutils literal notranslate"><span class="pre">mapping.txt</span></code>. The <code class="docutils literal notranslate"><span class="pre">mapping.txt</span></code> file contains the mapping of publicly available external image name to the private mirror registry name.</p>
+</li>
+<li><p>Mirror the workspace images from public registries to the local private registry using the mapping in that file by using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f ./oc-mirror-workspace/results-1670391296/
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: resource catalogsources/redhat-operator-index is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by oc apply. oc apply should only be used on resources created declaratively by either oc create --save-config or oc apply. The missing annotation will be patched automatically.</span>
+<span class="go">catalogsource.operators.coreos.com/redhat-operator-index configured</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/generic-0 created</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/operator-0 created</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/release-0 created</span>
+</pre></div>
+</div>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mapping.txt</span></code> file contains the mapping of publicly available external image name to the internal private registry name.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc image mirror -f mapping.txt -a <span class="si">${</span><span class="nv">REGISTRY_AUTH_FILE</span><span class="si">}</span> --insecure
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release manifests:</span>
+<span class="go">sha256:01296142b77456d1a513ce92b6d1d0964cfb3e4565659da33979f4755f20e607 -&gt; 4.10.45-x86_64-telemeter</span>
+<span class="go">sha256:035b1f48ff64b6c899a861e62b6f1641363caa3b0f4b8ce9ba413cb98c005b8d -&gt; 4.10.45-x86_64-cli</span>
+<span class="go">sha256:03dd364864aa85a01e316db55f0fb23d95a8d276e521ba34ab359b9a01436786 -&gt; 4.10.45-x86_64-gcp-machine-controllers</span>
+<span class="go">sha256:04a087af6c1a10d54e32ea1ed875970dc90e9934970f1d38c11d90fdc9126a22 -&gt; 4.10.45-x86_64-machine-api-operator</span>
+<span class="go">sha256:066a32be9820c8191935c7351ad013eae7966a3248c3b3b4f7b9c16a54de2288 -&gt;</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">sha256:fce9d5a42056d5db78343d7a3d643de941c8906e5c67d83da6717d91727010b4 -&gt; 4.10.45-x86_64-libvirt-machine-controllers</span>
+<span class="go">sha256:fd375538a5d564710e073df41d1eedc4c6b44dc07d5ad9b60d275dce8751d1bd -&gt; 4.10.45-x86_64-kube-proxy</span>
+<span class="go">sha256:fef1efe256b360a71c08ff853f98c5f0adc9d2d4dacb7e4da4e649bef9311f7d -&gt; 4.10.45-x86_64-cluster-policy-controller</span>
+<span class="go">openshift/release-images manifests:</span>
+<span class="go">sha256:5f9ac79c9c257c28b8b51e79a0382de285d6e4c4e4537710b7c117601d320293 -&gt; 4.10.45-x86_64</span>
+<span class="go">openshift4/ose-cluster-nfd-operator manifests:</span>
+<span class="go">sha256:18b25b256d3e8d0faa0d7b3adde3523530c0c3835ceafddf1644e8789245f99a -&gt; 261da60b</span>
+<span class="go">openshift4/ose-cluster-nfd-operator-bundle manifests:</span>
+<span class="go">sha256:ef887a73afba03421fb8e521ab9b04b68e501345864f7c538e36c963d18a3a30 -&gt; 1d4bfde1</span>
+<span class="go">openshift4/ose-kube-rbac-proxy manifests:</span>
+<span class="go">sha256:9958a0bf32e9d936366cd8d68306ef951e9a0da8b9a426454bd2dcd026b26260 -&gt; eec3eee9</span>
+<span class="go">openshift4/ose-node-feature-discovery manifests:</span>
+<span class="go">sha256:f1e137e47da161d4f9e0d08fc9dc8e9fcfac83802136af4572906aa5a585513c -&gt; 27356c40</span>
+<span class="go">redhat/redhat-operator-index blobs:</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:f0e75f0712cb54427ddf23f001cb109d505557b677f932717bbd1e6219bcecb3 1.469KiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:76f350503d543ff41e7ce886825e5d294695df71693d7a187ff434b74bb178ef 23.98KiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:b3df9fea55ab39308e944627140218620ee2236bce74d76857856f90025d1e6d 7.484MiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:558efb586a99ff292b3bbbef6e0f8cf6ac35d526457dbc62e05af7cb7d3ee644 11.05MiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:26be6f36c89f3628abb68fef7b0f471945c70459cee10d3903ba2d59f8f6431d 36.6MiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:9df9aa2998cab73cb8c78646332865ce19dd4dc59f2d0d246b82d52befa48d22 81.72MiB</span>
+<span class="go">registry.redhat.io/redhat/redhat-operator-index sha256:9f58a5c0884cff9baed5059eae0dde7fa69fdef5d3aa3efd7a87891166d63d94 133MiB</span>
+<span class="go">manifests:</span>
+<span class="go">sha256:7f7318ee33093c95e0c641881c16b0fc683e028c7e8fdf4ce0bbb4e3cde77b1d -&gt; v4.10</span>
+<span class="go">ubi8/ubi</span>
+<span class="go">manifests:</span>
+<span class="go">sha256:7772c4e458ad8e38d2b37916d0bb3d4d403e025b9148668152eb71c062a2c78d -&gt; latest</span>
+<span class="go">stats: shared=0 unique=7 size=269.9MiB ratio=1.00</span>
+<span class="go">phase 0:</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-cluster-nfd-operator        blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-node-feature-discovery      blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 ubi8/ubi                                   blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-kube-rbac-proxy             blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift/release-images                   blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 redhat/redhat-operator-index               blobs=7 mounts=0 manifests=1   shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift/release                          blobs=0 mounts=0 manifests=161 shared=0</span>
+<span class="go">ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000 openshift4/ose-cluster-nfd-operator-bundle blobs=0 mounts=0 manifests=1   shared=0</span>
+<span class="go">info: Planning completed in 31.83s</span>
+<span class="go">sha256:7772c4e458ad8e38d2b37916d0bb3d4d403e025b9148668152eb71c062a2c78d ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/ubi8/ubi:latest</span>
+<span class="go">sha256:f1e137e47da161d4f9e0d08fc9dc8e9fcfac83802136af4572906aa5a585513c ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift4/ose-node-feature-discovery:27356c40</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">.</span>
+<span class="go">sha256:b497c394e241ae617b201019685e600c5c20fd7a47a39ff3db048a6fff48cc8e ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-ovirt-machine-controllers</span>
+<span class="go">sha256:3985503d42e64383dc1bae41a6746bad3d5130b354e4c579658491374eef0f5c ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-cluster-image-registry-operator</span>
+<span class="go">sha256:c5ef6f0e2424116f05316e25c4c86edee5e46a8151bbeaf2a041efb539416f15 ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/openshift/release:4.10.45-x86_64-vsphere-csi-driver-operator</span>
+<span class="go">sha256:7f7318ee33093c95e0c641881c16b0fc683e028c7e8fdf4ce0bbb4e3cde77b1d ec2-3-138-34-203.us-east-2.compute.amazonaws.com:5000/redhat/redhat-operator-index:v4.10</span>
+<span class="go">info: Mirroring completed in 1.24s (19.68kB/s)`</span>
+</pre></div>
+</div>
+</li>
+<li><p>Show the catalogsource pods in the namespace <code class="docutils literal notranslate"><span class="pre">openshift-marketplace</span></code> using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n openshift-marketplace
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                    READY   STATUS    RESTARTS   AGE</span>
+<span class="go">marketplace-operator-845d9d7557-hfzqp   1/1     Running   0          6d19h</span>
+<span class="go">qe-app-registry-lbdlp                   1/1     Running   0          4h40m</span>
+<span class="go">redhat-operator-index-gqvwn             1/1     Running   0          85s</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="mirror-the-gpu-catalogsource">
+<h2>Mirror the GPU CatalogSource<a class="headerlink" href="#mirror-the-gpu-catalogsource" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Check for the correct package name for the GPU Operator using the following commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror list operators --catalog<span class="o">=</span>registry.redhat.io/redhat/certified-operator-index:v4.12 --version<span class="o">=</span><span class="m">4</span>.12
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror list operators --catalog<span class="o">=</span>registry.redhat.io/redhat/certified-operator-index:v4.12 --package<span class="o">=</span>gpu-operator-certified
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                    DISPLAY NAME         DEFAULT CHANNEL  PACKAGE   CHANNEL HEAD</span>
+<span class="go">gpu-operator-certified  NVIDIA   GPU Operator  v22.9</span>
+<span class="go">gpu-operator-certified  stable   gpu-operator-certified.v22.9.0</span>
+<span class="go">gpu-operator-certified  v1.10    gpu-operator-certified.v1.10.1</span>
+<span class="go">gpu-operator-certified  v1.11    gpu-operator-certified.v1.11.1</span>
+<span class="go">gpu-operator-certified  v22.9    gpu-operator-certified.v22.9.0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">imageset-config-gpu.yaml</span></code> file using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">oc-mirror init --registry ${JUMP_HOST}:5000/oc-mirror-gpu-metadata &gt; imageset-config-gpu.yaml</span>
+</pre></div>
+</div>
+</li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">imageset-config-gpu.yaml</span></code> file to mirror the Operator images that you want to mirror.</p>
+<ul>
+<li><p>To mirror all versions of the Operator, perform the following edits:</p>
+<ul>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">skipTLS</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">catalog</span></code> to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/redhat/redhat-operator-index:v4.12</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">packages</span></code> <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">gpu-operator-certified</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v1alpha2</span><span class="w"></span>
+<span class="nt">storageConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">registry</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imageURL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-gpu-metadata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">skipTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">mirror</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">platform</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable-4.12</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ocp</span><span class="w"></span>
+<span class="nt">operators</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/redhat/certified-operator-index:v4.12</span><span class="w"></span>
+<span class="w">  </span><span class="nt">packages</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-certified</span><span class="w"></span>
+<span class="nt">additionalImages</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/ubi8/ubi:latest</span><span class="w"></span>
+<span class="nt">helm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>To mirror only v22.9.0, make the same edits as the preceding example and also specify the <code class="docutils literal notranslate"><span class="pre">minversion</span></code> value:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v1alpha2</span><span class="w"></span>
+<span class="nt">storageConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">registry</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imageURL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ec2-3-16-218-255.us-east-2.compute.amazonaws.com:5000/oc-mirror-gpu-metadata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">skipTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">mirror</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">platform</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">channels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stable-4.12</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ocp</span><span class="w"></span>
+<span class="nt">operators</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/redhat/certified-operator-index:v4.12</span><span class="w"></span>
+<span class="w">  </span><span class="nt">packages</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-certified</span><span class="w"></span>
+<span class="hll"><span class="w">    </span><span class="nt">minversion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;22.9.0&quot;</span><span class="w"></span>
+</span><span class="nt">additionalImages</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/ubi8/ubi:latest</span><span class="w"></span>
+<span class="nt">helm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Mirror the GPU Operator CatalogSource using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc-mirror --dest-skip-tls<span class="o">=</span><span class="nb">true</span> --skip-missing --continue-on-error --config<span class="o">=</span>./imageset-config-gpu.yaml docker://<span class="si">${</span><span class="nv">JUMP_HOST</span><span class="si">}</span>:5000
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> tool generates a folder similar to <code class="docutils literal notranslate"><span class="pre">oc-mirror-workspace/results-1670395763</span></code>.</p>
+</li>
+<li><p>Create the catalog source for the GPU Operator using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f oc-mirror-workspace/results-1670395763
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">catalogsource.operators.coreos.com/certified-operator-index created</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/generic-0 unchanged</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/operator-0 configured</span>
+<span class="go">imagecontentsourcepolicy.operator.openshift.io/release-0 unchanged</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="verify-the-mirrored-catalog-source">
+<h2>Verify the mirrored catalog source<a class="headerlink" href="#verify-the-mirrored-catalog-source" title="Permalink to this headline">#</a></h2>
+<p>Verify the following resources are successfully created.</p>
+<ol class="arabic">
+<li><p>Check the pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n openshift-marketplace
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                   READY   STATUS             RESTARTS      AGE</span>
+<span class="go">certified-operator-index-bq7bt         0/1     Running            0             17h</span>
+<span class="go">marketplace-operator-d65d479cc-7zblj   1/1     Running            1 (23d ago)   23d</span>
+<span class="go">redhat-operator-index-725tv            0/1     Running            0             17h</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the package manifest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get packagemanifest -n openshift-marketplace
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                       DISPLAY                       TYPE   PUBLISHER        AGE</span>
+<span class="go">certified-operator-index   Openshift Telco Docs          grpc   Openshift Docs   20h</span>
+<span class="go">redhat-operator-index      Openshift Telco Docs          grpc   Openshift Docs   20h</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the catalogsource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get catalogsource -n openshift-marketplace
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n openshift-marketplace
+</pre></div>
+</div>
+</li>
+<li><p>Log in to the OpenShift Container Platform web console and click <strong>Operators</strong> → <strong>OperatorHub</strong>.</p>
+<p>You can find the mirrored operator after you login to the OpenShift Container Platform console. You can get started deploying operators in your disconnected cluster now!</p>
+</li>
+</ol>
+</section>
+<section id="install-the-node-feature-discovery-operator">
+<h2>Install the Node Feature Discovery Operator<a class="headerlink" href="#install-the-node-feature-discovery-operator" title="Permalink to this headline">#</a></h2>
+<p>Follow the guidance <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Installing the Node Feature Discovery Operator on OpenShift</span></a> to install the <strong>Node Feature Discovery (NFD) Operator</strong>. If you are installing on any Openshift Container Platform version other than <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code> proceed to <a class="reference internal" href="#install-gpu-noworkaround"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
+<section id="optional-configure-repoconfig-using-local-yum-repository">
+<h3>Optional: Configure repoConfig using Local Yum Repository<a class="headerlink" href="#optional-configure-repoconfig-using-local-yum-repository" title="Permalink to this headline">#</a></h3>
+<p>These steps only need to be carried out if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p>
+<p>Carry on the following steps on the jump host when it is connected to the cluster.</p>
+<ul>
+<li><p>Create a Local-Base.repo as below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">JUMP_HOST</span><span class="o">=</span>&lt;Your_jump_hostname&gt;
+</pre></div>
+</div>
+<p><strong>Example Output</strong></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">$ cat &lt;&lt;EOF &gt;Local-Base.repo</span>
+<span class="go">[rhel-8-for-x86_64-baseos-rpms]</span>
+<span class="go">name=Red Hat Enterprise Linux 8 for  - BaseOS from RHUI (RPMs)</span>
+<span class="go">baseurl= http://${JUMP_HOST}:8080/content/dist/rhel8/8/x86_64/baseos/os</span>
+<span class="go">gpgcheck=1</span>
+<span class="go">gpgkey=file:/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span>
+<span class="go">protect=1</span>
+<span class="go">priority=1</span>
+<span class="go">enabled=1</span>
+
+<span class="go">[rhel-8-for-x86_64-appstream-rpms]</span>
+<span class="go">name=Red Hat Enterprise Linux 8 for  - AppStream from RHUI (RPMs)</span>
+<span class="go">baseurl= http://${JUMP_HOST}:8080/content/dist/rhel8/8/x86_64/appstream/os</span>
+<span class="go">enabled=1</span>
+<span class="go">gpgcheck=0</span>
+<span class="go">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release</span>
+<span class="go">protect=1</span>
+<span class="go">priority=1</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="optional-installing-the-nvidia-gpu-operator-on-openshift-version-4-8-19-4-8-21-4-9-8">
+<h2>Optional: Installing the NVIDIA GPU Operator on OpenShift version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code>, <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code><a class="headerlink" href="#optional-installing-the-nvidia-gpu-operator-on-openshift-version-4-8-19-4-8-21-4-9-8" title="Permalink to this headline">#</a></h2>
+<p>These steps only need to be carried out if installing the <strong>NVIDIA GPU Operator</strong> on OpenShift Container Platform version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code> or <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code>.</p>
+<p>With the <strong>Node Feature Discovery Operator</strong> installed you can continue with the final step and install the <strong>NVIDIA GPU Operator</strong>.</p>
+<ol class="arabic">
+<li><p>In the OpenShift Container Platform web console from the side menu, select <strong>Operators</strong> &gt; <strong>OperatorHub</strong>, then search for the <strong>NVIDIA GPU Operator</strong>. For additional information see the <a class="reference external" href="https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html">Red Hat OpenShift Container Platform documentation</a>.</p></li>
+<li><p>Select the <strong>NVIDIA GPU Operator</strong>, click <strong>Install</strong>. In the subsequent screen click <strong>Install</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>. You can choose any existing namespace or create a new namespace under <strong>Select a Namespace</strong>.</p>
+<p>If you install in any other namespace other than <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code>, the GPU Operator will <strong>not</strong> automatically enable namespace monitoring, and metrics and alerts will <strong>not</strong> be collected by Prometheus.
+If only trusted operators are installed in this namespace, you can manually enable namespace monitoring with this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc label ns/<span class="nv">$NAMESPACE_NAME</span> openshift.io/cluster-monitoring<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>Back in the <strong>Installed Operators</strong> menu option select the <strong>NVIDIA GPU Operator</strong> and the <strong>ClusterPolicy</strong> tab, then click <strong>Create ClusterPolicy</strong>. The platform assigns the default name <em>gpu-cluster-policy</em>.</p></li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">Config</span> <span class="pre">Map</span> <span class="pre">Name</span></code> field entering the value <code class="docutils literal notranslate"><span class="pre">yum-repos-d</span></code>.</p></li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">Destination</span> <span class="pre">Dir</span></code> field entering the value <code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d</span></code>.</p></li>
+<li><p>Click <strong>Create</strong>.</p>
+<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. This may take a while so be patient and wait at least 10-20 minutes before digging deeper into any form of troubleshooting.</p>
+</li>
+<li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the <strong>NVIDIA GPU Operator</strong> changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> once the installation succeeded.</p>
+<img alt="_images/cluster_policy_suceed.png" src="_images/cluster_policy_suceed.png" />
+</li>
+</ol>
+<p>You can now proceed to <a class="reference internal" href="install-gpu-ocp.html#install-nvidiagpu"><span class="std std-ref">install and verify the NVIDIA GPU Operator</span></a>.</p>
+</section>
+<section id="install-the-nvidia-gpu-operator">
+<span id="install-gpu-noworkaround"></span><h2>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>You can now proceed to <a class="reference internal" href="install-gpu-ocp.html#install-nvidiagpu"><span class="std std-ref">install and verify the NVIDIA GPU Operator</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="clean-up.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Cleanup</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="enable-gpu-monitoring-dashboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Enabling the GPU Monitoring Dashboard</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-a-basic-http-server">Set up a basic HTTP Server</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-check-the-version-of-rhel-being-used-in-the-cluster">Optional: Check the version of RHEL being used in the cluster</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-mirror-the-rpm-packages">Optional: Mirror the RPM packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-private-registry">Creating a private registry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authenticate-the-mirror-registry">Authenticate the mirror registry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-credentials-that-allow-images-to-be-mirrored">Configuring credentials that allow images to be mirrored</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror-the-operator-catalogs-on-a-disconnected-cluster">Mirror the Operator catalogs on a disconnected cluster</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-the-default-operatorhub-sources">Disabling the default OperatorHub sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror-node-feature-discovery-nfd-and-the-nvidia-gpu-operator-catalog">Mirror Node Feature Discovery (NFD) and the NVIDIA GPU Operator Catalog</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror-the-node-feature-discovery-nfd-catalogsource">Mirror the Node Feature Discovery (NFD) CatalogSource</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror-the-gpu-catalogsource">Mirror the GPU CatalogSource</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-mirrored-catalog-source">Verify the mirrored catalog source</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-node-feature-discovery-operator">Install the Node Feature Discovery Operator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-configure-repoconfig-using-local-yum-repository">Optional: Configure repoConfig using Local Yum Repository</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-installing-the-nvidia-gpu-operator-on-openshift-version-4-8-19-4-8-21-4-9-8">Optional: Installing the NVIDIA GPU Operator on OpenShift version <code class="docutils literal notranslate"><span class="pre">4.8.19</span></code>, <code class="docutils literal notranslate"><span class="pre">4.8.21</span></code>, <code class="docutils literal notranslate"><span class="pre">4.9.8</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
