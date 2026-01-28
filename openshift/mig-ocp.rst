@@ -14,7 +14,7 @@ MIG Support in OpenShift Container Platform
 Introduction
 ************
 
-NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
+NVIDIA Multi-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
 The new NVIDIA Ampere architecture's MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.
 
@@ -54,7 +54,7 @@ Here is an example, again for the A100-40GB, with heterogeneous (or “mixed”)
 
 * 2x 1g.5gb
 * 1x 2g.10gb
-* 1x 3g.10gb
+* 1x 3g.20gb
 
 Prerequisites
 *************
@@ -383,7 +383,7 @@ With this strategy and label, each H100 GPU enables these MIG profiles:
 
 * 2 x 1g.10gb
 * 1 x 2g.20gb
-* 1 x 3g.40g
+* 1 x 3g.40gb
 
 For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in the following GPU capacity on the cluster:
 
