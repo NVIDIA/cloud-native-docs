@@ -549,6 +549,13 @@ in the RKE2 documentation.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
 
+k0s
+===========================
+
+For k0s, refer to
+`Using nvidia-container-runtime <https://docs.k0sproject.io/stable/runtime/#using-nvidia-container-runtime>`__
+in the k0s documentation.
+
 .. _microk8s-install-procedure:
 
 MicroK8s
