@@ -463,13 +463,13 @@ The controller automates the upgrade process and generates metrics and events so
 <li><p>Upgrade the driver by changing the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in the cluster policy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;}]&#39;</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;}]&#39;</span>
 </pre></div>
 </div>
 <p>If you are using Openshift, you must update the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.image</span></code> values in the cluster policy.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
 </pre></div>
 </div>
 </li>
@@ -665,16 +665,8 @@ In addition, no new features will be added to the <code class="docutils literal 
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Upgrade the driver by changing <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
-    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;510.85.02&quot;}, \</span>
-<span class="s1">        {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;}, \</span>
-<span class="s1">        {&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;}]&#39;</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are using OpenShift, you must include the <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.image</span></code> fields as shown in the command above.</p>
 </div>
 </li>
 <li><p>(Optional) To monitor the status of the upgrade, watch the deployment of the new driver pod on GPU worker nodes:</p>
