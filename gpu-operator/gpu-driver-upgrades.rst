@@ -71,9 +71,7 @@ The controller automates the upgrade process and generates metrics and events so
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"},
-              {"op": "replace", "path": "/spec/driver/repository", "value":"nvcr.io/nvidia"},
-              {"op": "replace", "path": "/spec/driver/image", "value":"driver"}]'
+          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"},{"op": "replace", "path": "/spec/driver/repository", "value":"nvcr.io/nvidia"},{"op": "replace", "path": "/spec/driver/image", "value":"driver"}]'
 
 2. (Optional) For each node, monitor the upgrade status:
 
