@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jan 21, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 04, 2026"/>
 
 
 
@@ -405,7 +405,7 @@
 <span id="mig-ocp"></span><h1>MIG Support in OpenShift Container Platform<a class="headerlink" href="#mig-support-in-openshift-container-platform" title="Permalink to this headline">#</a></h1>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
+<p>NVIDIA Multi-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
 The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.</p>
 <p>The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
@@ -467,7 +467,7 @@ of homogeneous instances</p></th>
 <ul class="simple">
 <li><p>2x 1g.5gb</p></li>
 <li><p>1x 2g.10gb</p></li>
-<li><p>1x 3g.10gb</p></li>
+<li><p>1x 3g.20gb</p></li>
 </ul>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
@@ -833,7 +833,7 @@ The DGX H100 host runs a single node installation of OpenShift.</p>
 <ul class="simple">
 <li><p>2 x 1g.10gb</p></li>
 <li><p>1 x 2g.20gb</p></li>
-<li><p>1 x 3g.40g</p></li>
+<li><p>1 x 3g.40gb</p></li>
 </ul>
 <p>For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in the following GPU capacity on the cluster:</p>
 <ul class="simple">
