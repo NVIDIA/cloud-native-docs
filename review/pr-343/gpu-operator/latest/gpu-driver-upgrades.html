@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 03, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 04, 2026"/>
 
 
 
@@ -665,7 +665,7 @@ In addition, no new features will be added to the <code class="docutils literal 
 <p class="rubric">Procedure</p>
 <ol class="arabic">
 <li><p>Upgrade the driver by changing <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;}]&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
 </pre></div>
 </div>
 </li>
