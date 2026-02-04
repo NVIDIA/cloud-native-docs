@@ -62,7 +62,16 @@ The controller automates the upgrade process and generates metrics and events so
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
+          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"}]'
+
+
+   If you are using Openshift, you must update the ``driver.version``, ``driver.repository`` and ``driver.image`` values in the cluster policy.
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"},{"op": "replace", "path": "/spec/driver/repository", "value":"nvcr.io/nvidia"},{"op": "replace", "path": "/spec/driver/image", "value":"driver"}]'
 
 2. (Optional) For each node, monitor the upgrade status:
 
@@ -287,7 +296,7 @@ In addition, no new features will be added to the ``k8s-driver-manager`` moving 
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"510.85.02"}]'
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"},{"op": "replace", "path": "/spec/driver/repository", "value":"nvcr.io/nvidia"},{"op": "replace", "path": "/spec/driver/image", "value":"driver"}]'
 
 2. (Optional) To monitor the status of the upgrade, watch the deployment of the new driver pod on GPU worker nodes:
 
