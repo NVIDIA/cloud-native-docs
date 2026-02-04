@@ -245,11 +245,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
      - ``false``
 
-   * - ``kataManager.enabled``
-     - The GPU Operator deploys NVIDIA Kata Manager when this field is ``true``.
-       Refer to :doc:`gpu-operator-kata` for more information.
-     - ``false``
-
    * - ``mig.strategy``
      - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
        are either ``mixed`` or ``single``.
