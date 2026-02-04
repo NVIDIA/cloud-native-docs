@@ -296,7 +296,7 @@ In addition, no new features will be added to the ``k8s-driver-manager`` moving 
 
    .. code-block:: console
 
-      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"}]'
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' -p='[{"op": "replace", "path": "/spec/driver/version", "value":"580.95.05"},{"op": "replace", "path": "/spec/driver/repository", "value":"nvcr.io/nvidia"},{"op": "replace", "path": "/spec/driver/image", "value":"driver"}]'
 
 2. (Optional) To monitor the status of the upgrade, watch the deployment of the new driver pod on GPU worker nodes:
 
