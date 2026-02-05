@@ -334,7 +334,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.14---4.20
+         - | 4.14---4.21
          -
          -
          -
@@ -489,7 +489,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 20.04 LTS    1.30---1.35   0.36+           0.59.1+
 Ubuntu 22.04 LTS    1.30---1.35   0.36+           0.59.1+
-Red Hat Core OS                                                4.14---4.20      4.14---4.20
+Red Hat Core OS                                                4.14---4.21      4.14---4.21
 ================    ===========   =============   =========    =============    ===========
 
 Kubernetes v1.35 support was added in v25.10.1 and later.
