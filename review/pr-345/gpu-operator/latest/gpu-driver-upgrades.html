@@ -1,0 +1,882 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GPU Driver Upgrades &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gpu-driver-upgrades';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using NVIDIA vGPU" href="install-gpu-operator-vgpu.html" />
+    <link rel="prev" title="Troubleshooting the NVIDIA GPU Operator" href="troubleshooting.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Feb 10, 2026"/>
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA DRA Driver for GPUs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">Introduction &amp; Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpus.html">GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-cds.html">ComputeDomains</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">GPU Driver Upgrades</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="gpu-driver-upgrades">
+<span id="id1"></span><h1>GPU Driver Upgrades<a class="headerlink" href="#gpu-driver-upgrades" title="Permalink to this headline">#</a></h1>
+<section id="about-upgrading-the-gpu-driver">
+<h2>About Upgrading the GPU Driver<a class="headerlink" href="#about-upgrading-the-gpu-driver" title="Permalink to this headline">#</a></h2>
+<p>The NVIDIA driver daemon set requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.
+Consequently, the following steps must occur across a driver upgrade:</p>
+<ol class="arabic simple">
+<li><p>Disable all clients to the GPU driver.</p></li>
+<li><p>Unload the current GPU driver kernel modules.</p></li>
+<li><p>Start the updated GPU driver pod.</p></li>
+<li><p>Install the updated GPU driver and load the updated kernel modules.</p></li>
+<li><p>Enable the clients of the GPU driver.</p></li>
+</ol>
+<p>The GPU Operator supports several methods for managing and automating this driver upgrade process.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The GPU Operator only manages the lifecycle of containerized drivers.
+Drivers which are pre-installed on the host are not managed by the GPU Operator.</p>
+</div>
+</section>
+<section id="upgrades-with-the-upgrade-controller">
+<h2>Upgrades with the Upgrade Controller<a class="headerlink" href="#upgrades-with-the-upgrade-controller" title="Permalink to this headline">#</a></h2>
+<p>NVIDIA recommends upgrading by using the upgrade controller and the controller is enabled by default in the GPU Operator.
+The controller automates the upgrade process and generates metrics and events so that you can monitor the upgrade process.</p>
+<p class="rubric">Procedure</p>
+<ol class="arabic">
+<li><p>Upgrade the driver by changing the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;}]&#39;</span>
+</pre></div>
+</div>
+<p>If you are using Openshift, you must update the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code> and <code class="docutils literal notranslate"><span class="pre">driver.image</span></code> values in the cluster policy.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) For each node, monitor the upgrade status:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -l nvidia.com/gpu.present <span class="se">\</span>
+   -ojsonpath<span class="o">=</span><span class="s1">&#39;{range .items[*]}{.metadata.name}{&quot;\t&quot;}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{&quot;\n&quot;}{end}&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">k8s-node-1 upgrade-required</span>
+<span class="go">k8s-node-2 upgrade-required</span>
+<span class="go">k8s-node-3 upgrade-required</span>
+</pre></div>
+</div>
+<p>You can periodically poll the upgrade status by running the preceding command.
+The GPU driver upgrade is complete when the output shows <code class="docutils literal notranslate"><span class="pre">upgrade-done</span></code>:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">k8s-node-1 upgrade-done</span>
+<span class="go">k8s-node-2 upgrade-done</span>
+<span class="go">k8s-node-3 upgrade-done</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="configuration-options">
+<h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">#</a></h3>
+<p>You can set the following fields in the cluster policy to configure the upgrade controller:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">  </span><span class="nt">upgradePolicy</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># autoUpgrade (default=true): Switch which enables / disables the driver upgrade controller.</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># If set to false all other options are ignored.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">autoUpgrade</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># maxParallelUpgrades (default=1): Number of nodes that can be upgraded in parallel. 0 means infinite.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxParallelUpgrades</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># maximum number of nodes with the driver installed, that can be unavailable during</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the upgrade. Value can be an absolute number (ex: 5) or</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># a percentage of total nodes at the start of upgrade (ex:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># 10%). Absolute number is calculated from percentage by rounding</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># up. By default, a fixed value of 25% is used.&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25%</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># waitForCompletion: Options for the &#39;wait-for-completion&#39; state, which will wait for a user-defined group of pods</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># to complete before upgrading the driver on a node.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">waitForCompletion</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># timeoutSeconds (default=0): The length of time to wait before giving up. 0 means infinite.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># podSelector (default=&quot;&quot;): The label selector defining the group of pods to wait for completion of. &quot;&quot; means to wait on none.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1"># gpuPodDeletion: Options for the &#39;pod-deletion&#39; state, which will evict all pods on the node allocated a GPU.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">gpuPodDeletion</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># Job, DaemonSet or StatefulSet).</span><span class="w"></span>
+<span class="w">      </span><span class="nt">force</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># the GPU  pod(s) will be forcefully deleted.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).</span><span class="w"></span>
+<span class="w">      </span><span class="nt">deleteEmptyDir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1"># drain: Options for the &#39;drain&#39; state, which will drain the node (i.e. &#39;kubectl drain&#39;). This is only performed if</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># enabled and the &#39;pod-deletion&#39; state cannot successfully remove all pods using GPU.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">drain</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># enable (default=false): Switch for allowing node drain during the upgrade process</span><span class="w"></span>
+<span class="w">      </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># Job, DaemonSet or StatefulSet).</span><span class="w"></span>
+<span class="w">      </span><span class="nt">force</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># podSelector (default=&quot;&quot;): The label selector to filter pods on the node. &quot;&quot; will drain all pods.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># the GPU  pod(s) will be forcefully deleted.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w"></span>
+<span class="w">      </span><span class="c1"># deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).</span><span class="w"></span>
+<span class="w">      </span><span class="nt">deleteEmptyDir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you specify a value for <code class="docutils literal notranslate"><span class="pre">maxUnavailable</span></code> and also specify <code class="docutils literal notranslate"><span class="pre">maxParallelUpgrades</span></code>,
+the <code class="docutils literal notranslate"><span class="pre">maxUnavailable</span></code> value applies an additional constraint on the value of
+<code class="docutils literal notranslate"><span class="pre">maxParallelUpgrades</span></code> to ensure that the number of parallel upgrades does not
+cause more than the intended number of nodes to become unavailable during the upgrade.
+For example, if you specify <code class="docutils literal notranslate"><span class="pre">maxUnavailable=100%</span></code> and <code class="docutils literal notranslate"><span class="pre">maxParallelUpgrades=1</span></code>,
+one node is upgraded at a time .</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">maxUnavailable</span></code> value also applies to the currently unavailable nodes in the cluster.
+If you cordoned nodes in the cluster and the <code class="docutils literal notranslate"><span class="pre">maxUnavailable</span></code> value is already met by the number of cordoned nodes,
+then the upgrade does not progress.</p>
+</section>
+<section id="upgrade-state-machine">
+<h3>Upgrade State Machine<a class="headerlink" href="#upgrade-state-machine" title="Permalink to this headline">#</a></h3>
+<p>The upgrade controller manages driver upgrades through a well-defined state machine.
+The node label, <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu-driver-upgrade-state</span></code>, indicates the state a node is currently in.
+The set of possible states are:</p>
+<ul class="simple">
+<li><p>Unknown (empty): The upgrade controller is disabled or the node has not been processed yet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upgrade-required</span></code>: NVIDIA driver pod is not up-to-date and requires an upgrade. No actions are performed at this stage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cordon-required</span></code>: Node will be marked Unschedulable in preparation for the driver upgrade.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wait-for-jobs-required</span></code>: Node will wait on the completion of a group of pods/jobs before proceeding.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pod-deletion-required</span></code>: Pods allocated with GPUs are deleted from the node. If pod deletion fails, the node state is set to <code class="docutils literal notranslate"><span class="pre">drain-required</span></code>
+if drain is enabled in ClusterPolicy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">drain-required</span></code>: Node will be drained. This state is skipped if all GPU pods are successfully deleted from the node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pod-restart-required</span></code>: The NVIDIA driver pod running on the node will be restarted and upgraded to the new version.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validation-required</span></code>: Validation of the new driver deployed on the node is required before proceeding. The GPU Operator
+performs validations in the pod named <code class="docutils literal notranslate"><span class="pre">operator-validator</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uncordon-required</span></code>: Node will be marked Schedulable to complete the upgrade process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upgrade-done</span></code>: NVIDIA driver pod is up-to-date and running on the node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upgrade-failed</span></code>: A failure occurred during the driver upgrade.</p></li>
+</ul>
+<p>The complete state machine is depicted in the diagram below.</p>
+<a class="reference internal image-reference" href="_images/upgrade-controller-state-machine.png"><img alt="_images/upgrade-controller-state-machine.png" src="_images/upgrade-controller-state-machine.png" style="width: 600px;" /></a>
+</section>
+<section id="pausing-driver-upgrades">
+<h3>Pausing Driver Upgrades<a class="headerlink" href="#pausing-driver-upgrades" title="Permalink to this headline">#</a></h3>
+<p>To pause the automatic driver upgrade process in the cluster, toggle <code class="docutils literal notranslate"><span class="pre">driver.upgradePolicy.autoUpgrade</span></code> flag
+in the cluster policy.
+The entire state machine pauses and effectively disables any pending nodes from being upgraded.
+You can toggle the flag to <code class="docutils literal notranslate"><span class="pre">true</span></code> again to re-enable the upgrade controller and resume any pending upgrades.</p>
+</section>
+<section id="skipping-driver-upgrades">
+<h3>Skipping Driver Upgrades<a class="headerlink" href="#skipping-driver-upgrades" title="Permalink to this headline">#</a></h3>
+<p>To skip driver upgrades on a certain node, label the node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu-driver-upgrade.skip=true</span></code>.</p>
+</section>
+<section id="metrics-and-events">
+<h3>Metrics and Events<a class="headerlink" href="#metrics-and-events" title="Permalink to this headline">#</a></h3>
+<p>The GPU Operator generates the following metrics during the upgrade process which can be scraped by Prometheus.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_auto_upgrade_enabled</span></code>: 1 if driver auto upgrade is enabled; 0 if not.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_nodes_upgrades_in_progress</span></code>: Total number of nodes in which a driver pod is being upgraded on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_nodes_upgrades_done</span></code>: Total number of nodes in which a driver pod has been successfully upgraded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_nodes_upgrades_failed</span></code>: Total number of nodes in which a driver pod upgrade has failed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_nodes_upgrades_available</span></code>: Total number of nodes in which a driver pod upgrade can start on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpu_operator_nodes_upgrades_pending</span></code>: Total number of nodes in which driver pod upgrades are pending.</p></li>
+</ul>
+<p>The GPU Operator generates events during the upgrade process.
+The most common events are for state transitions or failures at a particular state.
+Below are an example set of events generated for the upgrade of one node.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n default --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span> <span class="p">|</span> grep GPUDriverUpgrade
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [upgrade-required]</span>
+<span class="go">10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [cordon-required]</span>
+<span class="go">10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [wait-for-jobs-required]</span>
+<span class="go">10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [pod-deletion-required]</span>
+<span class="go">10m         Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [pod-restart-required]</span>
+<span class="go">7m          Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [validation-required]</span>
+<span class="go">6m          Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [uncordon-required]</span>
+<span class="go">6m          Normal   GPUDriverUpgrade     node/localhost.localdomain   Successfully updated node state label to [upgrade-done]</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h3>
+<p>If the upgrade fails for a particular node, the node is labelled with the <code class="docutils literal notranslate"><span class="pre">upgrade-failed</span></code> state.</p>
+<ol class="arabic">
+<li><p>View the upgrade state labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node -l nvidia.com/gpu.present <span class="se">\</span>
+    -ojsonpath<span class="o">=</span><span class="s1">&#39;{range .items[*]}{.metadata.name}{&quot;\t&quot;}{.metadata.labels.nvidia\.com/gpu-driver-upgrade-state}{&quot;\n&quot;}{end}&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">k8s-node-1 upgrade-done</span>
+<span class="go">k8s-node-2 upgrade-done</span>
+<span class="hll"><span class="go">k8s-node-3 upgrade-failed</span>
+</span></pre></div>
+</div>
+</li>
+<li><p>Check the events to determine the stage that the upgrade failed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get events -n default --sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span> <span class="p">|</span> grep GPUDriverUpgrade
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) Check the logs from the upgrade controller in the gpu-operator container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator gpu-operator-xxxxx <span class="p">|</span> grep controllers.Upgrade
+</pre></div>
+</div>
+</li>
+<li><p>After resolving the upgrade failures for a particular node, you can restart the upgrade process on the node by placing it in the <code class="docutils literal notranslate"><span class="pre">upgrade-required</span></code> state:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt;  nvidia.com/gpu-driver-upgrade-state<span class="o">=</span>upgrade-required --overwrite
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="upgrades-without-the-upgrade-controller">
+<h2>Upgrades without the Upgrade Controller<a class="headerlink" href="#upgrades-without-the-upgrade-controller" title="Permalink to this headline">#</a></h2>
+<p>If the upgrade controller is disabled or not supported for your GPU Operator version, a component called <code class="docutils literal notranslate"><span class="pre">k8s-driver-manager</span></code> is responsible
+for executing the driver upgrade process.
+The <code class="docutils literal notranslate"><span class="pre">k8s-driver-manager</span></code> is an <cite>initContainer</cite> within the driver Daemonset, which ensures all existing GPU driver clients are disabled before
+unloading the current driver modules and continuing with the new driver installation.
+This method still automates the core driver upgrade process, but lacks the observability that the upgrade controller provides as well as additional
+controls such as pausing/skipping upgrades.
+In addition, no new features will be added to the <code class="docutils literal notranslate"><span class="pre">k8s-driver-manager</span></code> moving forward in favor of the upgrade controller.</p>
+<p class="rubric">Procedure</p>
+<ol class="arabic">
+<li><p>Upgrade the driver by changing <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value in ClusterPolicy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/version&quot;, &quot;value&quot;:&quot;580.95.05&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/repository&quot;, &quot;value&quot;:&quot;nvcr.io/nvidia&quot;},{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/driver/image&quot;, &quot;value&quot;:&quot;driver&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>(Optional) To monitor the status of the upgrade, watch the deployment of the new driver pod on GPU worker nodes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -lapp<span class="o">=</span>nvidia-driver-daemonset -w
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="id2">
+<h3>Configuration Options<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
+<p>The following configuration options are available for <code class="docutils literal notranslate"><span class="pre">k8s-driver-manager</span></code>. The options allow users to control the
+GPU pod eviction and node drain behavior.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENABLE_GPU_POD_EVICTION</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ENABLE_AUTO_DRAIN</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRAIN_USE_FORCE</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRAIN_POD_SELECTOR_LABEL</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRAIN_TIMEOUT_SECONDS</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0s&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRAIN_DELETE_EMPTYDIR_DATA</span><span class="w"></span>
+<span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ENABLE_GPU_POD_EVICTION</span></code> environment variable enables <code class="docutils literal notranslate"><span class="pre">k8s-driver-manager</span></code> to attempt evicting only GPU pods from the node before attempting a node drain. Only if this fails and
+<code class="docutils literal notranslate"><span class="pre">ENABLE_AUTO_DRAIN</span></code> is enabled will the node ever be drained.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">DRAIN_USE_FORCE</span></code> environment variable must be enabled to evict GPU pods that are not managed by any of the replication controllers such as deployment, daemon set, stateful set, and replica set.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">DRAIN_DELETE_EMPTYDIR_DATA</span></code> environment variable must be enabled to delete GPU pods that use the <code class="docutils literal notranslate"><span class="pre">emptyDir</span></code> type volume.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since GPU pods get evicted whenever the NVIDIA Driver daemon set specification is updated, it might not always be desirable to allow this to happen automatically.
+To prevent this <code class="docutils literal notranslate"><span class="pre">daemonsets.updateStrategy</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> can be set to <a class="reference external" href="https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy">OnDelete</a> .
+With <code class="docutils literal notranslate"><span class="pre">OnDelete</span></code> update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted.
+Thus, admins can control when to rollout spec updates to driver pods on any given node.
+For more information on DaemonSet update strategies, refer to the <a class="reference external" href="https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy">Kubernetes documentation</a>.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="troubleshooting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Troubleshooting the NVIDIA GPU Operator</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="install-gpu-operator-vgpu.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Using NVIDIA vGPU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-upgrading-the-gpu-driver">About Upgrading the GPU Driver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrades-with-the-upgrade-controller">Upgrades with the Upgrade Controller</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-options">Configuration Options</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrade-state-machine">Upgrade State Machine</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pausing-driver-upgrades">Pausing Driver Upgrades</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skipping-driver-upgrades">Skipping Driver Upgrades</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-and-events">Metrics and Events</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrades-without-the-upgrade-controller">Upgrades without the Upgrade Controller</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Configuration Options</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
