@@ -301,7 +301,7 @@ Creating and applying a custom MIG configuration
 
 Follow the guidance below to create a new slicing profile.
 
-#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
+#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://github.com/NVIDIA/gpu-operator/blob/release-25.10/assets/state-mig-manager/0400_configmap.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
 
    .. note:: For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on `supported profiles <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles>`_.
 
