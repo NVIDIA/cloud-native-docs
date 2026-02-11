@@ -513,16 +513,12 @@ GPU Allocation</label><div class="sd-tab-content docutils">
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic">
 <li><p>Add the Helm repo:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \</span>
 <span class="go">&amp;&amp; helm repo update</span>
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic">
 <li><p>Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
 <span class="go">  --version=v25.10.1 \</span>
@@ -547,7 +543,7 @@ ComputeDomain</label><div class="sd-tab-content docutils">
 <span class="go">&amp;&amp; helm repo update</span>
 </pre></div>
 </div>
-<ol class="arabic simple">
+<ol class="arabic simple" start="2">
 <li><p>Install the GPU Operator with the device plugin disabled:</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
@@ -574,11 +570,11 @@ GPU allocation</label><div class="sd-tab-content docutils">
 Default values.yaml file</label><div class="sd-tab-content docutils">
 <p>Specifies the node selector label for nodes that will support GPU allocation through the DRA Driver.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 <span class="nt">image</span><span class="p">:</span><span class="w"></span>
-<span class="nt">pullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">pullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
 <span class="nt">kubeletPlugin</span><span class="p">:</span><span class="w"></span>
-<span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 </pre></div>
 </div>
@@ -592,19 +588,19 @@ GKE values.yaml file</label><div class="sd-tab-content docutils">
 <span class="nt">nvidiaDriverRoot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/home/kubernetes/bin/nvidia&quot;</span><span class="w"></span>
 
 <span class="nt">controller</span><span class="p">:</span><span class="w"></span>
-<span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
-<span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"></span>
+<span class="w">  </span><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"></span>
 <span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 <span class="nt">image</span><span class="p">:</span><span class="w"></span>
-<span class="nt">pullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">pullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
 <span class="nt">kubeletPlugin</span><span class="p">:</span><span class="w"></span>
-<span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
-<span class="nt">tolerations</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">priorityClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span><span class="w"></span>
-<span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu</span><span class="w"></span>
-<span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
-<span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/gpu</span><span class="w"></span>
+<span class="w">      </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">nvidia.com/dra-kubelet-plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 </pre></div>
 </div>
@@ -699,7 +695,8 @@ If you are using <a class="reference external" href="https://docs.nvidia.com/dat
 </section>
 <section id="validate-installation">
 <h2>Validate Installation<a class="headerlink" href="#validate-installation" title="Permalink to this headline">#</a></h2>
-<p>Confirm that the DRA driver components are running:</p>
+<ol class="arabic">
+<li><p>Confirm that the DRA driver components are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get pods -n nvidia-dra-driver-gpu</span>
 </pre></div>
 </div>
@@ -709,16 +706,24 @@ If you are using <a class="reference external" href="https://docs.nvidia.com/dat
 <span class="go">nvidia-dra-driver-gpu-kubelet-plugin-h5xsn          1/1     Running   0          7m27s</span>
 </pre></div>
 </div>
-<p>Verify that GPU DeviceClasses are available:</p>
+</li>
+<li><p>Verify that GPU DeviceClasses are available:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get deviceclass</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME              AGE</span>
-<span class="go">gpu.nvidia.com    7m30s</span>
-<span class="go">mig.nvidia.com    7m30s</span>
+<span class="go">compute-domain-daemon.nvidia.com            55s</span>
+<span class="go">compute-domain-default-channel.nvidia.com   55s</span>
+<span class="go">gpu.nvidia.com                              55s</span>
+<span class="go">mig.nvidia.com                              55s</span>
+<span class="go">vfio.gpu.nvidia.com                         55s</span>
 </pre></div>
 </div>
+</li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">compute-domain-daemon.nvidia.com</span></code> and <code class="docutils literal notranslate"><span class="pre">compute-domain-default-channel.nvidia.com</span></code> DeviceClasses are installed when ComputeDomain support is enabled.
+The <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code>, <code class="docutils literal notranslate"><span class="pre">mig.nvidia.com</span></code>, and <code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> DeviceClasses are installed when GPU allocation support is enabled.</p>
 <p>Additional validations steps are available in the DRA Driver repository documentation:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation">Validate setup for ComputeDomain allocation</a></p></li>
