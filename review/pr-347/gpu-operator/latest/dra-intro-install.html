@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 11, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 12, 2026"/>
 
 
 
@@ -465,16 +465,16 @@ GPU allocation</label><div class="sd-tab-content docutils">
 <li><p>Kubernetes v1.34.2 or newer.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you plan to use extended resources with the DRA Driver you must also have the required feature gates installed.</p>
+<p>If you plan to use traditional extended resource requests such as <cite>nvidia.com/gpu</cite> with the DRA driver, you must enable the [DRAExtendedResource](<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource">https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource</a>) feature gate. This feature allows the scheduler to automatically translate extended resource requests into ResourceClaims, which are then allocated by the DRA driver.</p>
 </div>
 </li>
 <li><p>GPU Operator v25.10.0 or later with the NVIDIA Kubernetes Device Plugin disabled.
 The DRA Driver requires CDI be enabled in the underlying container runtime (such as containerd or CRI-O) and NVIDIA Driver version 580 or later.
 These are both default in GPU Operator v25.10.0 and later.</p></li>
-<li><p>Label nodes you plan to use for GPU allocation.
-There is a known issue where the Kubernetes Driver Manager is not aware of the GPU Operator kubelet plugin, and will not correctly evict it on pod restarts.
+<li><p>Label nodes you plan to use for GPU allocation and use them as nodeSelectors in the DRA driver helm chart.
+There is a known issue where the NVIDIA Driver Manager is not aware of the GPU Operator kubelet plugin, and will not correctly evict it on pod restarts.
 You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm install command in the <code class="docutils literal notranslate"><span class="pre">driver.manager.env</span></code> flag.
-This enables the GPU Operator to evict the Kubernetes Driver Manager correctly.</p></li>
+This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.</p></li>
 </ul>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
@@ -563,7 +563,7 @@ ComputeDomain</label><div class="sd-tab-content docutils">
 <label class="sd-tab-label" data-sync-group="dra" data-sync-id="gpu-allocation" for="sd-tab-item-4">
 GPU allocation</label><div class="sd-tab-content docutils">
 <ol class="arabic">
-<li><p>Create a <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file to pass information to the GPU Operator.</p>
+<li><p>Create a custom <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file for installing the DRA driver helm chart.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-6" name="sd-tab-set-3" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-6">
