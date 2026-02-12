@@ -191,11 +191,11 @@ Install DRA Driver for GPUs
    .. tab-item:: GPU Allocation
       :sync: gpu-allocation
 
-      1. Create a custom ``dra-values.yaml`` file for installing the DRA driver helm chart.
+      1. Create a custom ``values.yaml`` file for installing the DRA driver helm chart.
 
          .. tab-set::
 
-            .. tab-item:: dra-values.yaml file
+            .. tab-item:: values.yaml file
 
              Specifies the node selector label for nodes that will support GPU allocation through the DRA Driver.
 
@@ -207,7 +207,7 @@ Install DRA Driver for GPUs
                   nodeSelector:
                     nvidia.com/dra-kubelet-plugin: "true"
 
-            .. tab-item:: GKE dravalues.yaml file
+            .. tab-item:: GKE values.yaml file
 
              Google Kubernetes Engine requires some specific values to be set in the ``values.yaml`` file, including the driver root on the host in ``nvidiaDriverRoot`` as well as the node selector label for nodes that will support GPU allocation through the DRA Driver.
 
@@ -252,7 +252,7 @@ Install DRA Driver for GPUs
                     --create-namespace \
                     --set nvidiaDriverRoot=/run/nvidia/driver \
                     --set gpuResourcesEnabledOverride=true \
-                    -f dra-values.yaml
+                    -f values.yaml
 
             .. tab-item:: GKE install command
 
@@ -263,7 +263,7 @@ Install DRA Driver for GPUs
                     --namespace nvidia-dra-driver-gpu \
                     --create-namespace \
                     --set gpuResourcesEnabledOverride=true \
-                    -f dra-values.yaml
+                    -f values.yaml
 
    .. tab-item:: ComputeDomain
       :sync: computedomain
@@ -354,7 +354,7 @@ This is currently an alpha feature and is disabled by default.
 To enable GPU health monitoring, deploy the DRA driver with the NVMLDeviceHealthCheck feature gate:
 
 .. code-block:: console
-  
+
    helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
    helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
      --namespace nvidia-dra-driver-gpu \
