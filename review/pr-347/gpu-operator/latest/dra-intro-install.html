@@ -474,7 +474,7 @@ These are both default in GPU Operator v25.10.0 and later.</p>
 </li>
 <li><p>Label nodes you plan to use for GPU allocation with something like <code class="docutils literal notranslate"><span class="pre">nvidia.com/dra-kubelet-plugin=true</span></code> and use them as nodeSelectors in the DRA driver helm chart.
 Steps for labeling nodes are provided in the next section.</p>
-<p>There is a known issue where the NVIDIA Driver Manager is not aware of the GPU Operator kubelet plugin, and will not correctly evict it on pod restarts.
+<p>There is a known issue where the NVIDIA Driver Manager is not aware of the DRA driver kubelet plugin, and will not correctly evict it on pod restarts.
 You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm command in the <code class="docutils literal notranslate"><span class="pre">driver.manager.env</span></code> flag.
 This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.</p>
 </li>
