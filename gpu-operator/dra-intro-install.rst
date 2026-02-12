@@ -40,6 +40,17 @@ With NVIDIA's DRA Driver for GPUs, your Kubernetes workload can allocate and con
 
 You can use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator to deploy and manage your GPUs and ComputeDomains.
 
+.. _known-issues:
+
+Known Issues
+************
+
+* There is a known issue where the NVIDIA Driver Manager is not aware of the DRA driver kubelet plugin, and will not correctly evict it on pod restarts.
+  You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm command in the ``driver.manager.env`` flag.
+  This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.
+* For A100 GPUs, the MIG manager does not automatically evict the DRA kubelet plugin during MIG configuration changes.
+  If the DRA kubelet plugin is deployed before a MIG change, then you must manually restart the DRA kubelet plugin. 
+
 *************
 Prerequisites
 *************
@@ -60,7 +71,7 @@ Prerequisites
       * Kubernetes v1.34.2 or newer.
 
         .. note::
-           If you plan to use traditional extended resource requests such as `nvidia.com/gpu` with the DRA driver, you must enable the [DRAExtendedResource](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource) feature gate. This feature allows the scheduler to automatically translate extended resource requests into ResourceClaims, which are then allocated by the DRA driver.
+           If you plan to use traditional extended resource requests such as `nvidia.com/gpu` with the DRA driver, you must enable the `DRAExtendedResource <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>`_ feature gate. This feature allows the scheduler to automatically translate extended resource requests into ResourceClaims, which are then allocated by the DRA driver.
 
       * GPU Operator v25.10.0 or later with the NVIDIA Kubernetes Device Plugin disabled to avoid conflicts with the DRA Driver for GPUs.
 
@@ -68,11 +79,9 @@ Prerequisites
         These are both default in GPU Operator v25.10.0 and later.
 
       * Label nodes you plan to use for GPU allocation with something like ``nvidia.com/dra-kubelet-plugin=true`` and use them as nodeSelectors in the DRA driver helm chart.
-        Steps for labeling nodes are provided in the next section.
-
-        There is a known issue where the NVIDIA Driver Manager is not aware of the DRA driver kubelet plugin, and will not correctly evict it on pod restarts.
-        You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm command in the ``driver.manager.env`` flag.
-        This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.
+        This is required to avoid the :ref:`known issue <known-issues>` when using the GPU Operator with the DRA Driver for GPUs.
+        Steps for labeling nodes are provided in the next section. 
+        This label is then passed in the GPU Operator Helm command in the ``driver.manager.env`` flag.
 
    .. tab-item:: ComputeDomain
       :sync: computedomain
@@ -154,6 +163,8 @@ Install the NVIDIA GPU Operator
 
 Refer to the `GPU Operator installation guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-install.html>`_ for additional configuration options when installing the GPU Operator.
 
+If you are planning to use MIG devices, refer to the `NVIDIA GPU Operator MIG documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html>`_ to configure your cluster for MIG support.
+
 ***************************
 Install DRA Driver for GPUs
 ***************************
@@ -184,7 +195,7 @@ Install DRA Driver for GPUs
 
          .. tab-set::
 
-            .. tab-item:: values.yaml file
+            .. tab-item:: dra-values.yaml file
 
              Specifies the node selector label for nodes that will support GPU allocation through the DRA Driver.
 
@@ -196,7 +207,7 @@ Install DRA Driver for GPUs
                   nodeSelector:
                     nvidia.com/dra-kubelet-plugin: "true"
 
-            .. tab-item:: GKE values.yaml file
+            .. tab-item:: GKE dravalues.yaml file
 
              Google Kubernetes Engine requires some specific values to be set in the ``values.yaml`` file, including the driver root on the host in ``nvidiaDriverRoot`` as well as the node selector label for nodes that will support GPU allocation through the DRA Driver.
 
@@ -320,14 +331,44 @@ Validate Installation
       compute-domain-default-channel.nvidia.com   55s
       gpu.nvidia.com                              55s
       mig.nvidia.com                              55s
-      vfio.gpu.nvidia.com                         55s
 
 The ``compute-domain-daemon.nvidia.com`` and ``compute-domain-default-channel.nvidia.com`` DeviceClasses are installed when ComputeDomain support is enabled.
-The ``gpu.nvidia.com``, ``mig.nvidia.com``, and ``vfio.gpu.nvidia.com`` DeviceClasses are installed when GPU allocation support is enabled.
+The ``gpu.nvidia.com`` and ``mig.nvidia.com`` DeviceClasses are installed when GPU allocation support is enabled.
 
 Additional validation steps are available in the DRA Driver repository documentation:
 
 * `Validate setup for ComputeDomain allocation <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
 * `Validate setup for GPU allocation <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation>`_
 
+*********************
+Enable Health Checks
+*********************
 
+The NVIDIA DRA driver supports GPU health monitoring using the `NVIDIA Management Library (NVML) <https://developer.nvidia.com/management-library-nvml>`_.
+This feature uses NVML to check for `GPU XID errors <https://docs.nvidia.com/deploy/xid-errors/introduction.html>`_ and determines if a GPU or MIG device is functioning properly.
+
+Health checking is managed by the NVMLDeviceHealthCheck feature gate. 
+This is currently an alpha feature and is disabled by default.
+
+
+To enable GPU health monitoring, deploy the DRA driver with the NVMLDeviceHealthCheck feature gate:
+
+.. code-block:: console
+  
+   helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
+   helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
+     --namespace nvidia-dra-driver-gpu \
+     --set gpuResourcesEnabledOverride=true \
+     --set featureGates.NVMLDeviceHealthCheck=true
+
+Refer to the `Device Health Checks <https://github.com/NVIDIA/k8s-dra-driver-gpu/docs/device-healthchecks.md>`_ guide for full details on enabling and viewing device health status.
+
+*************************
+Additional Documentation
+*************************
+
+Refer to the `DRA Driver for GPUs repository <https://github.com/NVIDIA/k8s-dra-driver-gpu>`_ for additional documentation:
+
+* `Upgrade Guide <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Installation#upgrading>`_
+* `Troubleshooting Guide <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Troubleshooting>`_
+* `Device Health Checks <https://github.com/NVIDIA/k8s-dra-driver-gpu/docs/device-healthchecks.md>`_ guide
