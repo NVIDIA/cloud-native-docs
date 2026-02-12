@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 10, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 12, 2026"/>
 
 
 
@@ -766,7 +766,7 @@ The tables below describe these configurations:</p>
 <h2>Creating and applying a custom MIG configuration<a class="headerlink" href="#creating-and-applying-a-custom-mig-configuration" title="Permalink to this headline">#</a></h2>
 <p>Follow the guidance below to create a new slicing profile.</p>
 <ol class="arabic">
-<li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/release-25.10/assets/state-mig-manager/0400_configmap.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
+<li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/examples/config.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles">supported profiles</a>.</p>
