@@ -24,3 +24,10 @@ html[data-theme=light] .highlight .go {
     min-width: var(--pst-sidebar-secondary);
   }
   
+html[data-theme=light] .bd-toc-nav .nav-link-expand {
+    display: none !important;
+}
+
+.bd-sidebar-primary li.has-children>details>summary .toctree-toggle {
+    display: none !important;
+}
