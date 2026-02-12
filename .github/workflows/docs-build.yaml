@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: 0.5.1
+  TAG: 0.6.0
   GH_TOKEN: ${{ github.token }}
 
 concurrency:

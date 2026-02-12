@@ -40,6 +40,7 @@
    :titlesonly:
    :hidden:
 
+   NVIDIA DRA Driver for GPUs <dra-intro-install.rst>
    Multi-Instance GPU <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
    gpu-operator-rdma.rst
@@ -75,13 +76,5 @@
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
 
-.. toctree::
-   :caption: NVIDIA DRA Driver for GPUs
-   :titlesonly:
-   :hidden:
-
-   Introduction & Installation <dra-intro-install.rst>
-   GPUs <dra-gpus.rst>
-   ComputeDomains <dra-cds.rst>
 
 .. include:: overview.rst
