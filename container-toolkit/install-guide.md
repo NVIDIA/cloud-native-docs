@@ -34,6 +34,7 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
 1. Install the prerequisites for the instructions below:
    ```console
    $ sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+      ca-certificates \
       curl \
       gnupg2
    ```
