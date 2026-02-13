@@ -140,7 +140,7 @@ jobs:
           git config user.name docs-build
           git config user.email do-not-send@github.com
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: html-build-artifact
       - name: Copy HTML directories
