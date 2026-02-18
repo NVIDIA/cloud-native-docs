@@ -565,3 +565,8 @@ Additional Supported Container Management Tools
 
 * Helm v3
 * Red Hat Operator Lifecycle Manager (OLM)
+
+Run:ai
+------
+
+The GPU Operator is a prerequisite for `Run:ai <https://run-ai-docs.nvidia.com/>`_ and integrates seamlessly using the default installation settings.
