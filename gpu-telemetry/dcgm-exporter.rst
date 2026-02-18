@@ -28,7 +28,7 @@ Introduction
 ************
 
 `DCGM-Exporter <https://github.com/NVIDIA/dcgm-exporter>`__ is a tool based on the
-Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`__ that allows users to gather
+Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`__ that allows you to gather
 GPU metrics and understand workload behavior or monitor GPUs in clusters. DCGM Exporter is
 written in Go and exposes GPU metrics at an HTTP endpoint (``/metrics``) for monitoring solutions
 such as Prometheus.
@@ -91,31 +91,28 @@ DCGM-Exporter Customization
 
 DCGM-Exporter has various options for adjusting its default behavior. Each option supports both a command-line flag and environment variable.
 
-===================================  ====================  =============================================
-Environment Variable                 Command-Line Flag     Value
-===================================  ====================  =============================================
-``$DCGM_EXPORTER_COLLECTORS``        ``-f``                File Path
-Path to file containing DCGM fields to collect. Default: "/etc/dcgm-exporter/default-counters.csv"
---------------------------------------------------------------------------------------------------------
-``$DCGM_EXPORTER_LISTEN``            ``-a``                Address
-Address of listening http server. Default: ":9400"
---------------------------------------------------------------------------------------------------------
-``$DCGM_EXPORTER_INTERVAL``          ``-c``                Interval
-Interval of time at which point metrics are collected. Unit is milliseconds. Default:30000
---------------------------------------------------------------------------------------------------------
-``$DCGM_EXPORTER_KUBERNETES``        ``-k``                Boolean
-Enable kubernetes mapping metrics to kubernetes pods. Default: false
---------------------------------------------------------------------------------------------------------
-``$DCGM_EXPORTER_CONFIGMAP_DATA``    ``-m``                Namespace:Name
-ConfigMap namespace and name containing DCGM fields to collect. Default: "none"
---------------------------------------------------------------------------------------------------------
-``$DCGM_REMOTE_HOSTENGINE_INFO``     ``-r``                Host:Port
-Connect to remote hostengine at Host:Port. Default: NA (dcgm-exporter will started  in embedded mode)
---------------------------------------------------------------------------------------------------------
-``$DCGM_EXPORTER_DEVICES_STR``       ``-d``                Device String (see following note)
-Specify which devices to monitor. Default: all GPU instances in MIG mode, all GPUs if MIG disabled.
---------------------------------------------------------------------------------------------------------
-===================================  ====================  =============================================
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| Environment Variable             | Description                                                          | Command-Line Flag   | Value                            |
++==================================+======================================================================+=====================+==================================+
+| ``$DCGM_EXPORTER_COLLECTORS``    | Path to file containing DCGM fields to collect. Default:             | ``-f``              | File Path                        |
+|                                  | "/etc/dcgm-exporter/default-counters.csv"                            |                     |                                  |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_LISTEN``        | Address of listening http server. Default: ":9400"                   | ``-a``              | Address                          |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_INTERVAL``      | Interval of time at which point metrics are collected. Unit is       | ``-c``              | Interval                         |
+|                                  | milliseconds. Default: 30000                                         |                     |                                  |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_KUBERNETES``    | Enable kubernetes mapping metrics to kubernetes pods. Default: false | ``-k``              | Boolean                          |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_CONFIGMAP_DATA``| ConfigMap namespace and name containing DCGM fields to collect.      | ``-m``              | Namespace:Name                   |
+|                                  | Default: "none"                                                      |                     |                                  |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_REMOTE_HOSTENGINE_INFO`` | Connect to remote hostengine at Host:Port. Default: NA               | ``-r``              | Host:Port                        |
+|                                  | (dcgm-exporter will start in embedded mode)                          |                     |                                  |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_DEVICES_STR``   | Specify which devices to monitor. Default: all GPU instances in      | ``-d``              | Device String                    |
+|                                  | MIG mode, all GPUs if MIG disabled.                                  |                     | (see following note)             |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
 
 .. note::
    Device String Syntax: ``[f] | [g[:id1[,-id2]]] | [i[:id1[,-id2]]]``
