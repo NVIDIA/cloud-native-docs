@@ -758,6 +758,29 @@ This is currently an alpha feature and is disabled by default.</p>
 <p class="admonition-title">Note</p>
 <p>Unhealthy GPUs will not appear in the ResourceSlice list. After the device recovers and is marked healthy again, you must restart the DRA Driver for the device to be added back into the available resources pool.</p>
 </div>
+<p>After enabling health checks, you can monitor health status in the kubelet logs.</p>
+<ol class="arabic">
+<li><p>Check kubelet plugin logs.
+Health status changes are logged in the kubelet plugin container. Run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">nvidia-dra-driver-gpu</span></code> and find the <code class="docutils literal notranslate"><span class="pre">nvidia-dra-driver-gpu-kubelet-plugin-&lt;pod&gt;</span></code> pod name. Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod&gt;</span></code> with your actual pod name.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl logs nvidia-dra-driver-gpu-kubelet-plugin-&lt;pod&gt; \</span>
+<span class="go">  -n nvidia-dra-driver-gpu \</span>
+<span class="go">  -c gpus</span>
+</pre></div>
+</div>
+</li>
+<li><p>List all ResourceSlices.
+View all ResourceSlices in the cluster to see which devices are available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get resourceslice</span>
+</pre></div>
+</div>
+</li>
+<li><p>Inspect a specific ResourceSlice.
+View detailed information about a specific resource slice. Healthy devices are listed in the resource slice, while unhealthy devices are not listed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">kubectl get resourceslice &lt;resourceslice-name&gt; -o yaml</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="additional-documentation">
 <h2>Additional Documentation<a class="headerlink" href="#additional-documentation" title="Permalink to this headline">#</a></h2>
