@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 12, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 19, 2026"/>
 
 
 
@@ -741,8 +741,11 @@ The <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com<
 <h2>Enable Health Checks<a class="headerlink" href="#enable-health-checks" title="Permalink to this headline">#</a></h2>
 <p>The NVIDIA DRA driver supports GPU health monitoring using the <a class="reference external" href="https://developer.nvidia.com/management-library-nvml">NVIDIA Management Library (NVML)</a>.
 This feature uses NVML to check for <a class="reference external" href="https://docs.nvidia.com/deploy/xid-errors/introduction.html">GPU XID errors</a> and determines if a GPU or MIG device is functioning properly.</p>
-<p>Health checking is managed by the NVMLDeviceHealthCheck feature gate.
+<p>Health checking is managed by the <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> feature gate.
 This is currently an alpha feature and is disabled by default.</p>
+<p>When enabled, the DRA Driver for GPUs continuously monitors GPUs for XID errors and assigns health statuses:
+* Healthy - GPU is functioning normally. The GPU may have a non-critical XID error but is still available for workloads.
+* Unhealthy - GPU has a critical XID error and is not suitable for workloads.</p>
 <p>To enable GPU health monitoring, deploy the DRA driver with the NVMLDeviceHealthCheck feature gate:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm repo add nvidia https://helm.ngc.nvidia.com/nvidia &amp;&amp; helm repo update</span>
 <span class="go">helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \</span>
@@ -751,15 +754,17 @@ This is currently an alpha feature and is disabled by default.</p>
 <span class="go">  --set featureGates.NVMLDeviceHealthCheck=true</span>
 </pre></div>
 </div>
-<p>Refer to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/docs/device-healthchecks.md">Device Health Checks</a> guide for full details on enabling and viewing device health status.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unhealthy GPUs will not appear in the ResourceSlice list. After the device recovers and is marked healthy again, you must restart the DRA Driver for the device to be added back into the available resources pool.</p>
+</div>
 </section>
 <section id="additional-documentation">
 <h2>Additional Documentation<a class="headerlink" href="#additional-documentation" title="Permalink to this headline">#</a></h2>
-<p>Refer to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu">DRA Driver for GPUs repository</a> for additional documentation:</p>
+<p>Refer to the <a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki">DRA Driver for GPUs repository</a> for additional documentation, including</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Installation#upgrading">Upgrade Guide</a></p></li>
 <li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Troubleshooting">Troubleshooting Guide</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NVIDIA/k8s-dra-driver-gpu/docs/device-healthchecks.md">Device Health Checks</a> guide</p></li>
 </ul>
 </section>
 </section>
