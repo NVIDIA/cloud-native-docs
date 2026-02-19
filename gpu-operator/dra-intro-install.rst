@@ -371,28 +371,27 @@ To enable GPU health monitoring, deploy the DRA driver with the NVMLDeviceHealth
 After enabling health checks, you can monitor health status in the kubelet logs.
 
 1. Check kubelet plugin logs.
-   Health status changes are logged in the kubelet plugin container, run `kubectl get pods -n nvidia-dra-driver-gpu` and find the `nvidia-dra-driver-gpu-kubelet-plugin-` pod name. 
-   Replace <pod> with your actual pod name:
+   Health status changes are logged in the kubelet plugin container. Run ``kubectl get pods -n nvidia-dra-driver-gpu`` and find the ``nvidia-dra-driver-gpu-kubelet-plugin-<pod>`` pod name. Replace ``<pod>`` with your actual pod name.
 
-    ```
-    kubectl logs nvidia-dra-driver-gpu-kubelet-plugin-<pod> \
-    -n nvidia-dra-driver-gpu \
-      -c gpus
-    ```
+   .. code-block:: console
+
+      kubectl logs nvidia-dra-driver-gpu-kubelet-plugin-<pod> \
+        -n nvidia-dra-driver-gpu \
+        -c gpus
 
 2. List all ResourceSlices.
-    View all ResourceSlices in the cluster to see which devices are available:
+   View all ResourceSlices in the cluster to see which devices are available:
 
-    ```
-    kubectl get resourceslice
-    ```
+   .. code-block:: console
+
+      kubectl get resourceslice
 
 3. Inspect a specific ResourceSlice.
    View detailed information about a specific resource slice. Healthy devices are listed in the resource slice, while unhealthy devices are not listed:
 
-    ```
-    kubectl get resourceslice <resourceslice-name> -o yaml
-    ```
+   .. code-block:: console
+
+      kubectl get resourceslice <resourceslice-name> -o yaml
 
 *************************
 Additional Documentation
