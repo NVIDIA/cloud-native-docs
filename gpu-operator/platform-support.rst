@@ -560,13 +560,18 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
    Not supported with secure boot.
    Supported storage types are local NVMe and remote NFS.
 
-Additional Supported Container Management Tools
------------------------------------------------
+Additional Supported Tools and Integrations
+--------------------------------------------
 
-* Helm v3
-* Red Hat Operator Lifecycle Manager (OLM)
+Container management tools:
 
-Run:ai
-------
+* `Helm v3 <https://helm.sh/>`_
+* `Red Hat Operator Lifecycle Manager (OLM) <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm>`_
 
-The GPU Operator is a prerequisite for `Run:ai <https://run-ai-docs.nvidia.com/>`_ and integrates seamlessly using the default installation settings.
+Orchestration & resource scheduling:
+
+* `Run:ai <https://run-ai-docs.nvidia.com/>`_
+
+.. note::
+
+   Using the GPU Operator with CDI enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 or later, or 2.23.35 or later.
