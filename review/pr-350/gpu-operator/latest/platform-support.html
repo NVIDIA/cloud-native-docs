@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 18, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 23, 2026"/>
 
 
 
@@ -449,8 +449,8 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id21">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id21" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id20">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id20" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -1438,16 +1438,21 @@ Refer to <a class="reference internal" href="getting-started.html#common-chart-c
 Supported storage types are local NVMe and remote NFS.</p>
 </div>
 </section>
-<section id="additional-supported-container-management-tools">
-<h3>Additional Supported Container Management Tools<a class="headerlink" href="#additional-supported-container-management-tools" title="Permalink to this headline">#</a></h3>
+<section id="additional-supported-tools-and-integrations">
+<h3>Additional Supported Tools and Integrations<a class="headerlink" href="#additional-supported-tools-and-integrations" title="Permalink to this headline">#</a></h3>
+<p>Container management tools:</p>
 <ul class="simple">
-<li><p>Helm v3</p></li>
-<li><p>Red Hat Operator Lifecycle Manager (OLM)</p></li>
+<li><p><a class="reference external" href="https://helm.sh/">Helm v3</a></p></li>
+<li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm">Red Hat Operator Lifecycle Manager (OLM)</a></p></li>
 </ul>
-</section>
-<section id="run-ai">
-<h3>Run:ai<a class="headerlink" href="#run-ai" title="Permalink to this headline">#</a></h3>
-<p>The GPU Operator is a prerequisite for <a class="reference external" href="https://run-ai-docs.nvidia.com/">Run:ai</a> and integrates seamlessly using the default installation settings.</p>
+<p>Orchestration &amp; resource scheduling:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://run-ai-docs.nvidia.com/">Run:ai</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the GPU Operator with CDI enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 or later, or 2.23.35 or later.</p>
+</div>
 </section>
 </section>
 </section>
@@ -1513,8 +1518,7 @@ Supported storage types are local NVMe and remote NFS.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-rdma">Support for GPUDirect RDMA</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-storage">Support for GPUDirect Storage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-container-management-tools">Additional Supported Container Management Tools</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-ai">Run:ai</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-tools-and-integrations">Additional Supported Tools and Integrations</a></li>
 </ul>
 </li>
 </ul>
