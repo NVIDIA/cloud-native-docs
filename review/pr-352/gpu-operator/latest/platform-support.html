@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 20, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 23, 2026"/>
 
 
 
@@ -1438,12 +1438,22 @@ Refer to <a class="reference internal" href="getting-started.html#common-chart-c
 Supported storage types are local NVMe and remote NFS.</p>
 </div>
 </section>
-<section id="additional-supported-container-management-tools">
-<h3>Additional Supported Container Management Tools<a class="headerlink" href="#additional-supported-container-management-tools" title="Permalink to this headline">#</a></h3>
+<section id="additional-supported-tools-and-integrations">
+<h3>Additional Supported Tools and Integrations<a class="headerlink" href="#additional-supported-tools-and-integrations" title="Permalink to this headline">#</a></h3>
+<p>Container management tools:</p>
 <ul class="simple">
-<li><p>Helm v3</p></li>
-<li><p>Red Hat Operator Lifecycle Manager (OLM)</p></li>
+<li><p><a class="reference external" href="https://helm.sh/">Helm v3</a></p></li>
+<li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm">Red Hat Operator Lifecycle Manager (OLM)</a></p></li>
 </ul>
+<p>Orchestration &amp; resource scheduling:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://run-ai-docs.nvidia.com/">NVIDIA Run:ai</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
+Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai <a class="reference external" href="https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator">cluster requirements documentation</a> for more information.</p>
+</div>
 </section>
 </section>
 </section>
@@ -1509,7 +1519,7 @@ Supported storage types are local NVMe and remote NFS.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-rdma">Support for GPUDirect RDMA</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-storage">Support for GPUDirect Storage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-container-management-tools">Additional Supported Container Management Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-tools-and-integrations">Additional Supported Tools and Integrations</a></li>
 </ul>
 </li>
 </ul>
