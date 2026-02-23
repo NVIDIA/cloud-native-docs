@@ -574,4 +574,5 @@ Orchestration & resource scheduling:
 
 .. note::
 
-   Using the GPU Operator with CDI enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 or later, or 2.23.35 or later.
+   Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings. 
+   Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai `cluster requirements documentation <https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator>`_ for more information.
