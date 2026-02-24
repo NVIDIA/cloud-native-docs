@@ -4,19 +4,22 @@
 Deploy Confidential Containers with NVIDIA GPU Operator
 *******************************************************
 
-This page describes how to deploy Confidential Containers using the NVIDIA GPU Operator.
-For an overview of Confidential Containers, refer to :ref:`early-access-gpu-operator-confidential-containers-kata`.
-
 .. note::
 
    Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+
+
+The page describes deploying COnfidentail Containers with the NVIDIA GPU Operator.
+The implementation replies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.
+
+Refer to the `Confidential Containers overview <https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html>`_ for details on the reference architecture and supported platforms.
 
 .. _coco-prerequisites:
 
 Prerequisites
 =============
 
-* You are using a supported platform for confidential containers. For more information, refer to :ref:`supported-platforms`. In particular:
+* You are using a supported platform for confidential containers. For more information, refer to `Confidential Containers supported platforms <https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html>`_. In particular:
 
   * You selected and configured your hardware and BIOS to support confidential computing.
   * You installed and configured Ubuntu 25.10 as host OS with its default kernel to support confidential computing.
@@ -34,7 +37,9 @@ Prerequisites
 
   * Run ``sudo update-grub`` after making the change to configure the bootloader. Reboot the host after configuring the bootloader.
 
-* You have a Kubernetes cluster and you have cluster administrator privileges. For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a ``runtimeRequestTimeout`` of more than 5 minutes in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).
+* You have a Kubernetes cluster and you have cluster administrator privileges.
+  * For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a ``runtimeRequestTimeout`` of more than 5 minutes in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).
+  * Make sure ``KubeletPodResourcesGet`` is enabled on your cluster. The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubele`’s Pod Resources API to discover allocated GPU devices during sandbox creation. For Kubernetes versions older than 1.34, you must explicitly enable the ``KubeletPodResourcesGet`` feature gate in your Kubelet configuration. For Kubernetes 1.34 and later, this feature is enabled by default.
 
 .. _installation-and-configuration:
 
