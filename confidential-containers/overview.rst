@@ -1,26 +1,25 @@
-.. _early-access-gpu-operator-confidential-containers-kata:
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
 
-****************************************************************************
-Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata
-****************************************************************************
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-.. note::
+  http://www.apache.org/licenses/LICENSE-2.0
 
-   **Early Access Support**
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
-   Early Access (EA) features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.
+.. headings # #, * *, =, -, ^, "
 
-.. note::
+Overview of NVIDIA Confidential Containers
+==========================================
 
-   This EA release only supports the AMD platform using SEV-SNP. 
-   Intel TDX support is planned for a future release.
-
-.. _confidential-containers-nvidia-gpu-early-access:
-
-
-
-Overview
-========
+.. _confidential-containers-overview:
 
 
 NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability. As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. 
@@ -109,60 +108,4 @@ You can configure all the worker nodes in your cluster for running GPU workloads
        * NVIDIA VFIO Manager
        * Node Feature Discovery
 
-This configuration can be controlled through node labelling as described in :ref:`confidential-containers-deploy`.
-
-.. _supported-platforms:
-
-Supported Platforms
-===================
-
-Refer to the *Confidential Computing Deployment Guide* at the https://docs.nvidia.com/confidential-computing website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100, and specifically to https://docs.nvidia.com/cc-deployment-guide-snp.pdf for setup specific to AMD SEV-SNP machines.
-
-The following topics in the deployment guide apply to a cloud-native environment:
-
-* Hardware selection and initial hardware configuration, such as BIOS settings.  
-* Host operating system selection, initial configuration, and validation. 
-
-When following the cloud-native sections in above linked deployment guide, use Ubuntu 25.10 as host OS with its default kernel version and configuration.
-
-The remaining configuration topics in the deployment guide do not apply to a cloud-native environment. NVIDIA GPU Operator performs the actions that are described in these topics.
-
-For scope of this EA, the following is the validated support matrix. Any other combination has not been evaluated:
-
-.. list-table::
-   :widths: 50 50
-   :header-rows: 1
-
-   * - Component
-     - Release
-   * - GPU Platform
-     - Hopper 100/200
-   * - GPU Driver
-     - R580 TRD 3
-   * - kata-containers/kata-containers
-     - 3.24.0
-   * - NVIDIA/gpu-operator
-     - v25.10.0 and higher
-
-.. _limitations-and-restrictions:
-
-Limitations and Restrictions
-=============================
-
-* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access. 
-* GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.  
-* Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.  
-* Support for confidential computing environments is limited to the implementation described on this page.  
-* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.   
-* OpenShift is not supported in the Early Access release.
-* NFD doesn't label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.
-
-Deployment and Configuration
-=============================
-
-For detailed instructions on deploying and configuring confidential containers with the NVIDIA GPU Operator, refer to the following guide:
-
-.. toctree::
-   :maxdepth: 2
-
-   confidential-containers-deploy
+This configuration can be controlled through node labelling as described in :ref:`Deploy Confidential Containers with NVIDIA GPU Operator <confidential-containers-deploy>`.
