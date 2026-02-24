@@ -570,7 +570,7 @@ Container management tools:
 
 Orchestration & resource scheduling:
 
-* `Run:ai <https://run-ai-docs.nvidia.com/>`_
+* `NVIDIA Run:ai <https://run-ai-docs.nvidia.com/>`_
 
 .. note::
 
