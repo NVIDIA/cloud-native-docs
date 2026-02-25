@@ -50,11 +50,13 @@ Prerequisites
           && chmod 700 get_helm.sh \
           && ./get_helm.sh
 
-#. All worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+#. If you are planning to use ClusterPolicy for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
    Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
 
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
+
+   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -147,12 +149,18 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``cdi.enabled``
      - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
-       injecting GPUs into workload containers. The Operator will no longer configure the `nvidia`
-       runtime class as the default runtime handler. Instead, native-CDI support in container runtimes
-       like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
-       Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
-       are exposed to containerized environments.
+       injecting GPUs into workload containers. 
+       The Operator will no longer configure the ``nvidia`` runtime class as the default runtime handler. 
+       Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
+       Refer to the :doc:`cdi` page for more information.
      - ``true``
+
+   * - ``cdi.nriPluginEnabled``
+     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. 
+       In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
+       This feature requires containerd v1.7.30, v2.1.x, or v2.2.x.
+       Refer to the :doc:`cdi` page for more information.
+     - ``false``
 
    * - ``cdi.default``  Deprecated.
      - This field is deprecated as of v25.10.0 and will be ignored.
@@ -178,6 +186,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies>`_ for the DCGM Exporter service.
        Available values are ``Cluster`` (default) or ``Local``.
      - ``Cluster``
+
+   * - ``dcgmExporter.hostNetwork``
+     - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
+     - ``false``
 
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
@@ -209,6 +221,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.
      - ``auto``
+
+   * - ``driver.nvidiaDriverCRD.enabled``
+     - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
+       Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
+     - ``false``
 
    * - ``driver.repository``
      - The images are downloaded from NGC. Specify another image repository when using
@@ -300,9 +317,13 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`.
      - ``container``
-
+  
+   * - ``sandboxWorkloads.mode``
+     - Specifies the sandbox mode to use when deploying sandbox workloads.
+       Accepted values are ``kubevirt`` (default) and ``kata``.
+       Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` page for more information on using KubeVirt based workloads.
+     - ``kubevirt``
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
        as a container on the system. Set this value to ``false`` when using the Operator on systems
@@ -484,6 +505,12 @@ support for such custom configurations.
 Specifying Configuration Options for containerd
 ***********************************************
 
+.. note::
+
+ It's recommended that you enable the NRI Plugin to configure the container runtime by setting ``cdi.nriPluginEnabled=true``. 
+ When enabled, you do not need to specify the ``toolkit.env`` options and injecting GPUs into workload containers is handled by the NRI Plugin.
+ Refer to the :ref:`NRI Plugin <nri-plugin>` documentation, for more information.
+
 When you use containerd as the container runtime, the following configuration
 options are used with the container-toolkit deployed with GPU Operator:
 
@@ -552,12 +579,16 @@ For Rancher Kubernetes Engine 2 (RKE2), refer to
 `Deploy NVIDIA Operator <https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator>`__
 in the RKE2 documentation.
 
+It's recommended that you enable CDI (default) and the NRI Plugin on RKE. 
+With both features enabled, you do not need to set ``runtimeClassName: nvidia`` in your pod spec.
+
 Refer to the :ref:`v24.9.0-known-limitations`.
 
 .. _microk8s-install-procedure:
 
 MicroK8s
 ========
+
 
 For MicroK8s, set the following in the ``ClusterPolicy``.
 

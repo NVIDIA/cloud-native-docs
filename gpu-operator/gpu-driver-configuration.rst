@@ -26,21 +26,19 @@ NVIDIA GPU Driver Custom Resource Definition
 Overview of the GPU Driver Custom Resource Definition
 *****************************************************
 
-.. note::
-
-   Technology Preview features are not supported in production environments
-   and are not functionally complete.
-   Technology Preview features provide early access to upcoming product features,
-   enabling customers to test functionality and provide feedback during the development process.
-   These releases may not have any documentation, and testing is limited.
-
-   This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
-   You must uninstall an existing installation and then install the Operator again.
-   Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.
-
-As a technology preview feature, you can create one or more instances of an NVIDIA driver custom resource
+You can create one or more instances of an NVIDIA driver (``NVIDIADriver``) custom resource
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.
+
+
+Limitations
+===========
+
+* This feature is recommended for new cluster installations only. 
+  Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported. 
+  Switching from ClusterPolicy to NVIDIA driver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.
+* Users are required to either use the default NVIDIA driver custom resource rendered by helm chart or create and manage their own custom NVIDIA driver.
+* You can't use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.
 
 Comparison: Managing the Driver with CRD versus the Cluster Policy
 ==================================================================
@@ -72,10 +70,10 @@ Driver Daemon Sets
 
 The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.
 
-For example, if your cluster has one NVIDIA driver custom resource that specifies a 535 branch GPU driver and some
+For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
 worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
 One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
-All the nodes run the same 535 branch GPU driver.
+All the nodes run the same 580 branch GPU driver.
 
 .. image:: graphics/nvd-basics.svg
 
@@ -129,7 +127,9 @@ Support for X86_64 and ARM64
   Refer to the `NVIDIA GPU Driver tags <https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags>`__
   web page to determine which driver version and operating system combinations support both architectures.
 
-
+Custom Driver Parameters
+  Each NVIDIA driver custom resource can specify custom kernel module parameters via configmap.
+  For more information, refer to :doc:`Customizing NVIDIA GPU Driver Parameters during Installation <custom-driver-params>`.
 
 ***************************************
 About the NVIDIA Driver Custom Resource
@@ -240,8 +240,8 @@ The following table describes some of the fields in the custom resource.
 
    * - ``version``
      - Specifies the GPU driver version to install.
-       For a data-center driver, specify a value like ``535.104.12``.
-       If you set ``usePrecompiled`` to ``true``, specify the driver branch, such as ``535``.
+       For a data-center driver, specify a value like ``580.126.20``.
+       If you set ``usePrecompiled`` to ``true``, specify the driver branch, such as ``580``.
      - Refer to the :ref:`operator-component-matrix`.
 
 
@@ -258,7 +258,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 
    .. code-block:: console
 
-      $ kubectl label node <node-name> --overwrite driver.version=525.125.06
+      $ kubectl label node <node-name> --overwrite driver.version=580.126.20
 
    - To use a mix of driver types, such as vGPU, label nodes for the driver type.
    - To use a mix of driver versions, label the nodes for the different versions.
@@ -280,7 +280,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
         $ helm install --wait --generate-name \
             -n gpu-operator --create-namespace \
             nvidia/gpu-operator \
-            --version=${version}
+            --version=${version} \
             --set driver.nvidiaDriverCRD.enabled=true
 
      By default, Helm configures a ``default`` NVIDIA driver custom resource during installation.
@@ -303,11 +303,6 @@ One Driver Type and Version on All Nodes
 
    .. literalinclude:: ./manifests/input/nvd-all.yaml
       :language: yaml
-
-   .. tip::
-
-      Because the manifest does not include a ``nodeSelector`` field, the driver custom
-      resource selects all nodes in the cluster that have an NVIDIA GPU.
 
 #. Apply the manfiest:
 
@@ -393,7 +388,7 @@ Precompiled Driver Container on Some Nodes
    .. code-block:: console
 
       $ kubectl label node <node-name> --overwrite driver.precompiled="true"
-      $ kubectl label node <node-name> --overwrite driver.version="535"
+      $ kubectl label node <node-name> --overwrite driver.version="580"
 
 #. Create a file, such as ``nvd-precomiled-some.yaml``, with contents like the following:
 
@@ -484,7 +479,7 @@ If the driver daemon sets and pods are not running as you expect, perform the fo
 
       Name:         demo-precomp
       ...
-        Version:          535.104.05
+        Version:          580.126.20
       Status:
         Conditions:
           Last Transition Time:  2023-10-13T14:33:30Z

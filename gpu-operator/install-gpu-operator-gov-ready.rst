@@ -30,40 +30,15 @@ For more information on NVIDIA's government-ready support, refer to the white pa
 
 Supported GPU Operator Components
 ==================================
-The government-ready NVIDIA GPU Operator includes the following components:
 
-.. _fn1: #base-image
-.. |fn1| replace:: :sup:`1`
-
-.. list-table::
-   :header-rows: 1
-
-   * - Component
-     - Version
-   * - NVIDIA GPU Operator
-     - v25.10.0
-   * - NVIDIA GPU Feature Discovery
-     - 0.18.0
-   * - NVIDIA Container Toolkit
-     - 1.18.0
-   * - NVIDIA Device Plugin
-     - 0.18.0
-   * - NVIDIA DCGM-exporter
-     - 4.4.1-4.6.0
-   * - NVIDIA MIG Manager
-     - 0.13.0
-   * - NVIDIA Driver
-     - 580.95.05 |fn1|_
-
-:sup:`1`
-Hardened for STIG/FIPS compliance
+Refer to the :ref:`operator-component-matrix` for a full list of supported government-ready GPU Operator components.
 
 Artifacts for these components are available from the `NVIDIA NGC Catalog <https://registry.ngc.nvidia.com/orgs/nvstaging/teams/cloud-native/containers/gpu-driver-stig-fips>`_.
 
 .. note::
 
-    Not all GPU Operator components and features are available as government-ready containers in the v25.10.0 release.
-    For example, GPUDirect Storage and KubeVirt are not yet supported.
+    Not all GPU Operator components and features are available as government-ready containers in this release.
+    For example, NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver are not yet supported.
 
 
 Validated Kubernetes Distributions
@@ -73,6 +48,8 @@ The government-ready NVIDIA GPU Operator has been validated on the following Kub
 
 - Canonical Kubernetes 1.34 with Ubuntu Pro 24.04 and FIPS-compliant kernel
 - Red Hat OpenShift 4.19 in FIPS mode
+- Rancher Kubernetes Engine 2 with Ubuntu 24.04
+- VMware VKS with Ubuntu 24.04
 
 Install Government-Ready NVIDIA GPU Operator
 =============================================

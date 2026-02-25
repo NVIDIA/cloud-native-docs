@@ -660,6 +660,7 @@ If the node is not labeled, then the ``default`` configuration will be used.
 For more information on this component and how it is configured, refer to the project `README <https://github.com/NVIDIA/vgpu-device-manager>`_.
 
 By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all `vGPU types <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu>`_ supported by NVIDIA vGPU.
+The GPU Operator only adds Q and C profiles in the default ConfigMap
 Users can select a specific configuration for a worker node by applying the ``nvidia.com/vgpu.config`` node label.
 
 For example, labeling a node with ``nvidia.com/vgpu.config=A10-8Q`` would create 3 vGPU devices of type **A10-8Q** on all **A10** GPUs on the node (note: 3 is the maximum number of **A10-8Q** devices that can be created per GPU).

@@ -11,8 +11,8 @@ spec:
   manager: {}
   nodeSelector:
     driver.precompiled: "true"
-    driver.version: "535"
+    driver.version: "580"
   repository: nvcr.io/nvidia
   resources: {}
   usePrecompiled: true
-  version: "535"
+  version: "580"

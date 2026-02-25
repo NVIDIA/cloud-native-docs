@@ -33,6 +33,132 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.0:
+
+26.3.0
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Driver Manager for Kubernetes v0.10.0
+  - NVIDIA Container Toolkit v1.19.0
+  - NVIDIA DCGM v4.5.2-1
+  - NVIDIA DCGM Exporter v4.5.1-4.8.0
+  - NVIDIA GDS Driver v2.27.3
+  - NVIDIA Kubernetes Device Plugin v0.19.0
+  - NVIDIA MIG Manager for Kubernetes v0.14.0
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.19.0
+  - NVIDIA vGPU Device Manager v0.4.2
+  - NVIDIA KubeVirt GPU Device Plugin v1.5.0
+  - NVIDIA Kata Sandbox Device Plugin v0.0.2
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.3.0
+
+* Added support for these NVIDIA Data Center GPU Driver versions:
+
+  - 580.126.20 (default)
+
+* Added support for Node Resource Interface (NRI) Plugin. 
+  The NRI Plugin offers a new way of injecting GPUs into GPU management containers, without needing the ``nvidia`` runtime class.
+  Enable by setting the ``cdi.nriPluginEnabled`` field to true in the ClusterPolicy custom resource or by setting the ``cdi.nriPluginEnabled`` flag in the Helm chart.
+
+  When the NRI Plugin is enabled, no ``nvidia`` runtime class gets created and no modifications are made to the container runtime configuration, e.g. no modifications are made to containerd’s config.toml file.
+  This is particularly advantageous for platforms like k3s, k0s, and Rancher Kubernetes Engine 2 that configure containerd in a non-standard way.
+  On such platforms, when the NRI plugin is enabled users no longer need to configure environment variables like ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE``.
+
+  This feature requires containerd v1.7.30+, v2.1.x, or v2.2.x.
+
+  To learn more, refer to :doc:`Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support <cdi>`.
+
+  .. note::
+     Enabling the NRI plugin is not supported with cri-o.
+
+* Added support for dynamic MIG config generation.
+  By default, the MIG Manager will automatically generate a per-node ConfigMap with the default MIG profiles for the available GPUs on the node. 
+  This replaces the previous static ConfigMap.
+  You are still able to use a custom MIG configuration if you have specific requirements.
+  Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information.
+
+* Added support for the NVIDIA Driver Custom Resource Definition (CRD).
+  Use this feature on new cluster installations to configure multiple driver types and versions on different nodes or multiple operating system versions on nodes.
+  Refer to the :doc:`NVIDIA Driver Custom Resource Definition documentation <gpu-driver-configuration>` for more information.
+
+  .. note::
+    This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator or switching from ClusterPolicy to the NVIDIA Driver CRD.
+    It is recommended that you only use this feature from new installations.
+
+* Added support for KubeVirt with GPU passthrough on Ubuntu 24.04 LTS 
+
+* Added support for K3s.
+
+* Added support for containerd 2.2.
+
+* Added support for new operating systems:
+
+  - Rocky Linux 9.7
+  - Red Hat Enterprise Linux 10.0, 10.1
+  - Red Hat Enterprise Linux 9.7
+
+* Added support for NVIDIA GB200 NVL4
+
+* Added support for NVIDIA RTX Pro 4500 Blackwell Server Edition.
+
+* Added support for NVIDIA Network Operator v26.1.0.
+
+* Added support for including extra manifests with the Helm chart in the ``extraObjects`` field.
+
+* Added support for the DCGM Exporter to expose a metric port on the host network namespace.
+  Enabled by setting ``hostNetwork: true`` in the ClusterPolicy custom resource, or passing ``--set dcgmExporter.hostNetwork=true`` to the Helm chart. (`PR #1962 <https://github.com/NVIDIA/gpu-operator/pull/1962>`_)
+
+* Added PodSecurityContext support for DaemonSets (`PR #2120 <https://github.com/NVIDIA/gpu-operator/pull/2120>`_).
+  In ClusterPolicy, set ``spec.daemonsets.podSecurityContext``; in NVIDIADriver, set ``spec.podSecurityContext``.
+
+* Validated Operator government-ready component support with Rancher Kubernetes Engine 2 using Ubuntu 24.04.
+
+* The following components are now available as government ready components: NVIDIA sandbox device plugin, Kubevirt Device Plugin, and vGPU Device Manager.
+
+
+Improvements
+------------
+
+* Improved NVIDIA Driver resiliency when the driver container is removed.
+  In previous versions, the NVIDIA Driver would unload the kernel modules and perform the driver compilation process, which could take several minutes to complete, delaying the driver container from restarting. 
+  In v26.3.0, if there is no change to the CUDA driver version (or other driver configuration) in the ClusterPolicy, the NVIDIA Driver will reuse the kernel modules that are available on the node. 
+  This reduces the time to recover from the driver container removal from minutes to seconds.
+
+* Reduced unnecessary API calls and decreased reconciliation time on large GPU clusters by improving node label logic (`PR #2113 <https://github.com/NVIDIA/gpu-operator/pull/2113>`_).
+
+* Improved the GPU Operator to now use operating system version labels from GPU worker nodes (added by NFD) when determining OS-specific paths for repository configuration files. (`PR #562 <https://github.com/NVIDIA/gpu-operator/issues/562>`_, `PR #2138 <https://github.com/NVIDIA/gpu-operator/pull/2138>`_)
+
+* Driver validation now waits for all enabled additional drivers (such as GDS and GDRCopy) to be installed before proceeding, and each node records a node-local view of enabled features when using multiple NVIDIADriver CRs or optional components. (`PR #2014 <https://github.com/NVIDIA/gpu-operator/pull/2014>`_)
+
+
+Fixed Issues
+------------
+
+* Fixed an issue where driver installations can fail because cached packages were incorrectly referenced. (`PR #592 <https://github.com/NVIDIA/gpu-driver-container/pull/592>`_)
+
+* Fixed a shared state issue that caused incorrect driver images in multi-node-pool clusters. (`PR #1952 <https://github.com/NVIDIA/gpu-operator/issues/1952>`_)
+
+* Fixed an issue where the GPU Operator was applying driver upgrade annotations when the driver is disabled. (`PR #1968 <https://github.com/NVIDIA/gpu-operator/pull/1981>`_)
+
+* Fixed an issue where an empty value in the Helm chart for ``device.plugin`` was incorrectly causing an error. (`PR #1999 <https://github.com/NVIDIA/gpu-operator/pull/1999>`_)
+
+* Fixed an issue on OpenShift clusters where the ``dcgm-exporter`` pod gets bound to another Security Context Constraint (SCC) object instead of the ``nvidia-dcgm-exporter`` SCC that the GPU Operator creates. (`PR #2122 <https://github.com/NVIDIA/gpu-operator/pull/2122>`_)
+
+* Fixed an issue where the GPU Operator was not correctly cleaning up DaemonSets (`PR #2081 <https://github.com/NVIDIA/gpu-operator/pull/2081>`_).
+
+* Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (`PR #2039 <https://github.com/NVIDIA/gpu-operator/pull/2039>`_)
+
+
+Removals and Deprecations
+-------------------------
+
+* Marked unused field ``defaultRuntime`` as optional in the ClusterPolicy. (`PR #2000 <https://github.com/NVIDIA/gpu-operator/pull/2000>`_)
+
+
 
 
 .. _v25.10.1:
@@ -137,7 +263,7 @@ New Features
     This differs from prior releases where CDI support in container runtimes was not used, and
     instead, an ``nvidia`` runtime class configured in CDI mode was used.
   - When CDI is enabled, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin. Setting ``runtimeClassName`` is not required for standard workloads. For workloads that already have ``runtimeClassName: nvidia`` set in their pod spec YAML, no change is necessary.
-  - GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification. It's recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by GPU Management Containers. A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes. Examples include monitoring agents and device plugins.
+  - GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set ``runtimeClassName: nvidia`` in the pod specification. It's recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by GPU Management Containers. A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes. Examples include monitoring agents and device plugins.
   - For OpenShift users upgrading to v25.10.0, we recommend updating the ``cdi.enabled``
     field in ClusterPolicy to ``true`` post-upgrade. This field will not automatically be
     updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
