@@ -733,7 +733,7 @@ Installation on Commercially Supported Kubernetes Platforms
        | using RHCOS worker nodes
      - :external+ocp:doc:`index`
 
-   * - | VMware vSphere with Tanzu
+   * - | VMware  vSphere Kubernetes Service
        | and NVIDIA AI Enterprise
      - |nvaie-tanzu|_
 

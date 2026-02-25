@@ -295,8 +295,8 @@ The GPU Operator has been validated in the following scenarios:
          - Kubernetes |fn1|_, |fn4|_
          - | Red Hat
            | OpenShift
-         - | VMware vSphere
-           | with Tanzu
+         - | VMware vSphere 
+           | Kubernetes Service (VKS)
          - | Rancher Kubernetes
            | Engine 2 |fn4|_
          - | Mirantis k0s |fn4|_
@@ -308,7 +308,7 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 20.04 LTS |fn2|_
          - 1.30---1.35
          -
-         - 7.0 U3c, 8.0 U2, 8.0 U3
+         - 1.30---1.35
          - 1.30---1.35
          -
          -
@@ -317,7 +317,7 @@ The GPU Operator has been validated in the following scenarios:
        * - Ubuntu 22.04 LTS |fn2|_
          - 1.30---1.35 
          -
-         - 8.0 U2, 8.0 U3
+         - 1.30---1.35
          - 1.30---1.35 
          - 1.30---1.35 
          - 1.33---1.35
