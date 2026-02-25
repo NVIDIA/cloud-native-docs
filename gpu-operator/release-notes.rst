@@ -33,6 +33,127 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.0:
+
+26.3.0
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Driver Manager for Kubernetes v0.9.1
+  - NVIDIA Container Toolkit v1.19.0
+  - NVIDIA DCGM v4.5.2-1
+  - NVIDIA DCGM Exporter v4.5.1-4.8.0
+  - NVIDIA GDS Driver v2.27.3
+  - NVIDIA Kubernetes Device Plugin v0.18.2
+  - NVIDIA MIG Manager for Kubernetes v0.13.1
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.18.2
+
+* Added support for these NVIDIA Data Center GPU Driver versions:
+
+  - 580.126.20 (default)
+
+* Added support for Node Resource Interface (NRI) Plugin. 
+  This is a new way of injecting GPU management CDI devices into operands, replacing the ``nvidia`` runtime class. 
+  Enable by setting the ``cdi.nriPluginEnabled`` field to ``true`` in the ClusterPolicy custom resource or by setting the ``cdi.nriPluginEnabled`` flag in the Helm chart.
+
+  When enabled, the Container Toolkit no longer modifies the container runtime configuration, such as the ``containerd.toml`` file, to inject GPUs into workload containers. Instead, the NRI Plugin injects GPUs into workload containers.
+  Additionally, the GPU Operator no longer requires setting values like ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` for the Container Toolkit on platforms such as K3s, k0s, and RKE.
+
+  This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
+  If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
+
+* GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
+  OpenShift clusters do not support the Node Feature API yet.
+
+* Added support for dynamic MIG config generation.
+  By default, the MIG Manager will automatically generate a per-node ConfigMap with the default MIG profiles for the available GPUs on the node. 
+  This replaces the previous static ConfigMap.
+  You are still able to use a custom MIG configuration if you have specific requirements.
+  Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information.
+
+* Added full support for the NVIDIA Driver Custom Resource Definition (CRD).
+  Previously available in Technology Preview, the NVIDIA Driver CRD is now generally available.
+  Use this feature to configure multiple driver types and versions on different nodes or multiple operating system versions on nodes.
+  Refer to the :doc:`NVIDIA Driver Custom Resource Definition documentation <gpu-driver-configuration>` for more information.
+
+* Added support for KubeVirt GPU passthrough with Ubuntu 24.04 LTS and the VFIO framework.
+
+* Added support for vGPU precompiled driver container for Azure Linux.
+
+* Added support for K3s.
+
+* Added support for containerd 2.2.
+
+* Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
+
+* Added support for new operating systems:
+
+  - Rocky Linux 9.7
+  - Red Hat Enterprise Linux 10.0, 10.1
+  - Red Hat Enterprise Linux 9.7
+  
+* Added support for including extra manifests with the Helm chart in the ``extraObjects`` field.
+
+* Added the ``sandboxWorkloads.mode`` field to help manage sandbox workloads, with ``kubevirt`` and ``kata`` as valid values.
+
+* Added support for the DCGM Exporter to expose a metric port on the host network namespace.
+  Enabled by setting ``hostNetwork: true`` in the ClusterPolicy custom resource, or passing ``--set dcgmExporter.hostNetwork=true`` to the Helm chart. (`PR #1962 <https://github.com/NVIDIA/gpu-operator/pull/1962>`_)
+
+* Added PodSecurityContext support for DaemonSets (`PR #2120 <https://github.com/NVIDIA/gpu-operator/pull/2120>`_).
+  In ClusterPolicy, set ``spec.daemonsets.podSecurityContext``; in NVIDIADriver, set ``spec.podSecurityContext``.
+
+* See `PR #2014 <https://github.com/NVIDIA/gpu-operator/pull/2014>`_ for related changes.
+
+Improvements
+------------
+
+* Made improvements to GPU Operator performance and resilience, including
+
+  * Improved the GPU driver container to avoid unnecessary driver reinstalls when GPU workloads are running. 
+    This reduces downtime from minutes to seconds. 
+  * Improved the NVIDIA Kubernetes Device Plugin to avoid unnecessary GPU unbind/rebind operations during rolling updates of the vfio-manager DaemonSet.
+    This improves the stability of GPU passthrough workloads (KubeVirt, Kata Containers).
+  * Improved the Upgrade Controller to decrease unnecessary reconciliation in environments with Node Feature Discovery (NFD) enabled. 
+  * Improved performance (`PR #2113 <https://github.com/NVIDIA/gpu-operator/pull/2113>`_).
+
+* The GPU Operator now uses the OS version labels from GPU worker nodes (added by NFD) when determining OS-specific paths for repository configuration files. (`PR #562 <https://github.com/NVIDIA/gpu-operator/issues/562>`_, `PR #2138 <https://github.com/NVIDIA/gpu-operator/pull/2138>`_)
+
+
+Fixed Issues
+------------
+
+* Fixed an issue where driver installations can fail because cached packages were incorrectly referenced. (`PR #592 <https://github.com/NVIDIA/gpu-driver-container/pull/592>`_)
+
+* Fixed a shared state issue that caused incorrect driver images in multi-node-pool clusters. (`PR #1952 <https://github.com/NVIDIA/gpu-operator/issues/1952>`_)
+
+* Fixed an issue where the GPU Operator was applying driver upgrade annotations when the driver is disabled. (`PR #1968 <https://github.com/NVIDIA/gpu-operator/pull/1968>`_)
+
+* Fixed an issue where an empty value in the Helm chart for ``device.plugin`` was incorrectly causing an error. (`PR #1999 <https://github.com/NVIDIA/gpu-operator/pull/1999>`_)
+
+* Fixed an issue on OpenShift clusters where the ``dcgm-exporter`` pod gets bound to another Security Context Constraint (SCC) object instead of the ``nvidia-dcgm-exporter`` SCC that the GPU Operator creates. (`PR #2122 <https://github.com/NVIDIA/gpu-operator/pull/2122>`_)
+
+* Fixed an issue where the GPU Operator was not correctly cleaning up DaemonSets (`PR #2081 <https://github.com/NVIDIA/gpu-operator/pull/2081>`_).
+
+* Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (`PR #2039 <https://github.com/NVIDIA/gpu-operator/pull/2039>`_)
+
+
+Removals and Deprecations
+-------------------------
+
+* Marked unused field ``defaultRuntime`` as optional in the ClusterPolicy. (`PR #2000 <https://github.com/NVIDIA/gpu-operator/pull/2000>`_)
+* The NVIDIA Kata Manager for Kubernetes is now deprecated.
+  To enable Kata Containers for GPUs, install the upstream kata-deploy Helm chart, which deploys all Kata runtime classes, including the NVIDIA-specific runtime classes.
+
+Known Issues
+------------
+
+- 
+
+
 
 
 .. _v25.10.1:
