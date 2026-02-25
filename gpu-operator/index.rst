@@ -48,7 +48,7 @@
    Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
    GPU Driver CRD <gpu-driver-configuration.rst>
-   Container Device Interface (CDI) Support <cdi.rst>
+   CDI and NRI Support <cdi.rst>
 
 .. toctree::
    :caption:  Sandboxed Workloads
