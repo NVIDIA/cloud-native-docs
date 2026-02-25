@@ -395,6 +395,16 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 2.12, 2.13, 2.14, 2.15
 
+       * - | Rocky Linux 9.7
+         - 1.30---1.35
+         -
+         -
+         -
+         -
+         -
+         -
+         -
+
     .. _kubernetes-version:
 
     :sup:`1`
