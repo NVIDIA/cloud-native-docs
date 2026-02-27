@@ -35,7 +35,6 @@ Patch releases typically include critical bug and CVE fixes, but can include min
 
 .. _operator_life_cycle_policy:
 
-******************************
 NVIDIA GPU Operator Life Cycle
 ******************************
 
@@ -55,13 +54,13 @@ The product life cycle and versioning are subject to change in the future.
    * - GPU Operator Version
      - Status
 
-   * - 25.10.x
+   * - 26.3.x
      - Generally Available
 
-   * - 25.3.x
+   * - 25.10.x
      - Maintenance
 
-   * - 24.9.x and lower
+   * - 25.3.x and lower
      - EOL
 
 
@@ -87,64 +86,44 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    :header-rows: 2
 
    * - :rspan:`1` Component
-     - :cspan:`2` GPU Operator Version
+     - GPU Operator Version
 
-   * - v25.10.0
-     - v25.10.1
+   * - v26.3
 
    * - NVIDIA GPU Driver |ki|_
-     - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ (**D**, **R**)
-       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
-       | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
-       | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
-       | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
-       | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html>`_
      - | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
-       | `580.126.16 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-16/index.html>`_ (**R**)
-       | `580.126.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-09/index.html>`_ 
-       | `580.105.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html>`_ (**D**)
-       | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ 
-       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
-       | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
-       | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
-       | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
+       | `580.126.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-16/index.html>`_ (**D**, **R**)
+       | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_ 
        | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
        | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
-       | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html>`_
-
 
    * - NVIDIA Driver Manager for Kubernetes
-     - `v0.9.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
      - `v0.9.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
-     - `1.18.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
+     - `1.19 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
-     - `0.18.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `v4.4.1-4.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
-     - `v4.4.2-4.7.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `v4.5.1-4.8.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
      - `v0.18.2 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.18.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.18.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
-     - `0.13.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
      - `0.13.1 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
-     - `4.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
-     - `4.4.2-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.5.2-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
-     - v25.10.0
+     - v26.3
 
    * - NVIDIA KubeVirt GPU Device Plugin
      - `v1.4.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
@@ -153,7 +132,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - `v0.4.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
-     - `2.26.6 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
+     - `2.27.3 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
 
    * - NVIDIA Kata Manager for Kubernetes
      - `v0.2.3 <https://github.com/NVIDIA/k8s-kata-manager>`__

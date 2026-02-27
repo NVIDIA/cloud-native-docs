@@ -33,6 +33,110 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.0:
+
+26.3.0
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Driver Manager for Kubernetes v0.9.1
+  - NVIDIA Container Toolkit v1.19.0
+  - NVIDIA DCGM v4.5.2-1
+  - NVIDIA DCGM Exporter v4.5.1-4.8.0
+  - NVIDIA GDS Driver v2.27.3
+  - NVIDIA Kubernetes Device Plugin v0.18.2
+  - NVIDIA MIG Manager for Kubernetes v0.13.1
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.18.2
+
+* Added support for these NVIDIA Data Center GPU Driver versions:
+
+  - 580.126.20 (default)
+
+* Added support for Node Resource Interface (NRI) Plugin. 
+  This is a new way of injecting GPU management CDI devices into operands, replacing the ``nvidia`` runtime class. 
+  Enable by setting the ``cdi.nriPluginEnabled`` field to ``true`` in the ClusterPolicy custom resource or by setting the ``cdi.nriPluginEnabled`` flag in the Helm chart.
+  When enabled the NRI Plugin is enabled, the GPU Operator no longer requires setting of values like ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` on platforms such as K3s, k0s, and RKE.
+  This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
+  If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
+
+* GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
+  Note, OpenShift clusters do not support the NodeFeature API yet.
+
+* Add support for dynamic MIG config generation.
+
+* Added support for KubeVirt vGPU with Ubuntu 24.04 LTS and the VFIO framework.
+
+* Added support for vGPU precompiled driver container for Azure Linux.
+
+* Added support for K3s.
+
+* Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
+
+* Added support for new operating systems:
+
+  - Rocky Linux 9.7
+  - Red Hat Enterprise Linux 10.0, 10.1
+  - Red Hat Enterprise Linux 9.7
+  
+* Added support for including extra manifests with the Helm chart.
+
+* Added support for the DCGM Exportor to expose a metric port on the host's network namespace.
+  Enabled by setting ``hostNetwork: true`` in the ClusterPolicy custom resource, or passing ``--set dcgmExporter.hostNetwork=true`` to the Helm chart. (`PR #1962 <https://github.com/NVIDIA/gpu-operator/pull/1962>`_)
+
+* Added PodSecurityContext support for DaemonSets (`PR #2120 <https://github.com/NVIDIA/gpu-operator/pull/2120>`_)
+
+* https://github.com/NVIDIA/gpu-operator/pull/2014 
+
+Improvements
+------------
+
+* Improved the GPU driver container to use fast-path optimization that avoids unnecessary driver reinstalls when GPU workloads are running. This reduces downtime from minutes to ~10 seconds.
+
+* Improvements to GPU Operator resilience.
+
+* Improved the NVIDIA Kubernetes Device Plugin to avoid unnecessary GPU unbind/rebind operations during rolling updates of the vfio-manager DaemonSet. 
+  This improves the stability of GPU passthrough workloads using GPU passthrough (KubeVirt, Kata Containers).
+
+* Improved the Upgrade Controller to decrease unnecessary reconciliation in environments with Node Feature Discovery (NFD) enabled. 
+
+* Improved the GPU Operator to deploy on heterogenous clusters with different operating systems on GPU nodes.
+
+  * Fixed issues where the GPU Operator was not using getting the correct operating system on heterogenous clusters. Now the GPU Operator uses the OS version labels from GPU worker nodes, added by NFD, when determining what OS-specific paths to use for repository configuration files. (`PR #562 <https://github.com/NVIDIA/gpu-operator/issues/562>`_, `PR #2138 <https://github.com/NVIDIA/gpu-operator/pull/2138>`_)
+  
+* Improved performance by https://github.com/NVIDIA/gpu-operator/pull/2113
+
+
+Fixed Issues
+------------
+
+* Fixed an issue where driver installations may fail because cached packages were incorectly being referenced. (`PR #592 <https://github.com/NVIDIA/gpu-driver-container/pull/592>`_)
+
+* Fix shared state issue causing incorrect driver images in multi-node-pool clusters. (`PR #1952 <https://github.com/NVIDIA/gpu-operator/issues/1952>`_)
+
+* Fixed an issue where the GPU Operator was applying driver upgrade annotations when driver is disabled. (`PR #1968 <https://github.com/NVIDIA/gpu-operator/pull/1968>`_)
+
+* Fixed an issue where Helm chart device.plugin values were not be validated correctly. (`PR #1999 <https://github.com/NVIDIA/gpu-operator/pull/1999>`_)
+
+* Fixed an issue on Openshift clusters where the ``dcgm-exporter`` pod gets bound to another  Security Context Constraint (SCC) object, not the one named 'nvidia-dcgm-exporter' which the GPU Operator creates. (`PR #2122 <https://github.com/NVIDIA/gpu-operator/pull/2122>`_)
+
+* Fixed an issue where the GPU Operator was not correctly cleaning up deamonsets https://github.com/NVIDIA/gpu-operator/pull/2081
+
+* Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (`PR #2039 <https://github.com/NVIDIA/gpu-operator/pull/2039>`_)
+
+
+Removals and Deprecations
+-------------------------
+
+* Marked unused field ``defaultRuntime`` as optional in the ClusterPolicy. (`PR #2000 <https://github.com/NVIDIA/gpu-operator/pull/2000>`_)
+
+Known Issues
+------------
+
+- Were any known issues fixed?
 
 
 .. _v25.10.1:

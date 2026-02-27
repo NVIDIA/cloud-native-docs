@@ -142,12 +142,18 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``cdi.enabled``
      - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
-       injecting GPUs into workload containers. The Operator will no longer configure the `nvidia`
-       runtime class as the default runtime handler. Instead, native-CDI support in container runtimes
-       like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
-       Using CDI aligns the Operator with the recent efforts to standardize how complex devices like GPUs
-       are exposed to containerized environments.
+       injecting GPUs into workload containers. 
+       The Operator will no longer configure the ``nvidia`` runtime class as the default runtime handler. 
+       Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
+       Refer to the :doc:`cdi` page for more information.
      - ``true``
+
+   * - ``cdi.nriPluginEnabled``
+     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. 
+       In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
+       This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
+       Refer to the :doc:`cdi` page for more information.
+     - ``false``
 
    * - ``cdi.default``  Deprecated.
      - This field is deprecated as of v25.10.0 and will be ignored.
@@ -173,6 +179,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies>`_ for the DCGM Exporter service.
        Available values are ``Cluster`` (default) or ``Local``.
      - ``Cluster``
+
+   * - ``dcgmExporter.hostNetwork``
+     - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
+     - ``false``
 
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
@@ -508,6 +518,11 @@ If you need to specify custom values, refer to the following sample command for 
       --set toolkit.env[1].value=/run/containerd/containerd.sock \
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
       --set toolkit.env[2].value="command,file"
+
+.. note::
+
+ If you are using the NRI Plugin with CDI, you do not need to specify the ``toolkit.env`` options. This will be done automatically by the NRI Plugin.
+ Refer to the :ref:`NRI Plugin <nri-plugin>` documentation, for more information on the feature
 
 These options are defined as follows:
 
