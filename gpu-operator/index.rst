@@ -41,7 +41,7 @@
    :hidden:
 
    NVIDIA DRA Driver for GPUs <dra-intro-install.rst>
-   Multi-Instance GPU <gpu-operator-mig.rst>
+   Multi-Instance GPU (MIG) <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
    gpu-operator-rdma.rst
    Outdated Kernels <install-gpu-operator-outdated-kernels.rst>

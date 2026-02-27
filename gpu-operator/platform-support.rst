@@ -154,6 +154,7 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     | NVIDIA RTX PRO 6000D    | NVIDIA Blackwell       |       |
     +-------------------------+------------------------+-------+
     | NVIDIA RTX PRO 4500     | NVIDIA Blackwell       |       |
+    | Blackwell Server Edition|                        |       |
     +-------------------------+------------------------+-------+
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |       |
     +-------------------------+------------------------+-------+
@@ -319,38 +320,38 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.30---1.35
+         - 1.32---1.35
          -
-         - 1.30---1.35
-         - 1.30---1.35
+         - 1.32---1.35
+         - 1.32---1.35
          -
          -
          -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.30---1.35 
+         - 1.32---1.35 
          -
-         - 1.30---1.35
-         - 1.30---1.35 
-         - 1.30---1.35
-         - 1.30---1.35 
+         - 1.32---1.35
+         - 1.32---1.35 
+         - 1.32---1.35
+         - 1.32---1.35 
          - 1.33---1.35
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
-         - 1.30---1.35
-         - 1.30---1.35
-         - 1.30---1.35
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.32---1.35
          - 1.33---1.35
          -
 
        * - Red Hat Core OS
          -
-         - | 4.14---4.21
+         - | 4.17---4.21
          -
          -
          -
@@ -361,10 +362,10 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 10.0, 10.1 
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
          -
@@ -372,11 +373,11 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 9.2, 9.4, 9.6, 9.7, 9.8 |fn3|_
-         - 1.30---1.35
+           | Linux 9.2, 9.4, 9.6, 9.7 |fn3|_
+         - 1.32---1.35
          -
          -
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
          -
@@ -386,17 +387,17 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
-         - 1.30---1.35
+         - 1.32---1.35
          -
          -
          -
          - 2.12, 2.13, 2.14, 2.15
 
-       * - | Rocky Linux 9.7
-         - 1.30---1.35
+       * - Rocky Linux 9.7
+         - 1.32---1.35
          -
          -
          -
@@ -448,24 +449,24 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.30---1.35
-         - 1.30---1.35
-         - 1.30---1.35
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.32---1.35
 
        * - Ubuntu 22.04 LTS
-         - 1.30---1.35
-         - 1.30---1.35
-         - 1.30---1.35
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.32---1.35
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.35
-         - 1.30---1.35
-         - 1.30---1.35
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.32---1.35
 
        * - Azure Linux 3 (Local Program) |fn5|_
          -
          -
-         - 1.30---1.35
+         - 1.32---1.35
 
     .. _azure-linux-3:
 
@@ -537,10 +538,10 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 24.04 LTS    1.30---1.35   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.30---1.35   0.36+           0.59.1+
-Ubuntu 20.04 LTS    1.30---1.35   0.36+           0.59.1+
-Red Hat Core OS                                                4.14---4.21      4.14---4.21
+Ubuntu 24.04 LTS    1.32---1.35   0.36+           0.59.1+
+Ubuntu 22.04 LTS    1.32---1.35   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.32---1.35   0.36+           0.59.1+
+Red Hat Core OS                                                4.17---4.21      4.17---4.21
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -584,7 +585,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 - Ubuntu 24.04 LTS with Network Operator 25.7.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
 - Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
-- Red Hat OpenShift 4.14 and higher with Network Operator 25.7.0.
+- Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
@@ -596,7 +597,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
 - Ubuntu 24.04 LTS Network Operator 25.7.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
-- Red Hat OpenShift Container Platform 4.14 and higher.
+- Red Hat OpenShift Container Platform 4.17 and higher.
 
 .. note::
 

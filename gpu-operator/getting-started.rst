@@ -180,6 +180,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Available values are ``Cluster`` (default) or ``Local``.
      - ``Cluster``
 
+   * - ``dcgmExporter.hostNetwork``
+     - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
+     - ``false``
+
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
 
