@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 25, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 27, 2026"/>
 
 
 
@@ -351,7 +351,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
@@ -468,22 +468,59 @@ Enable by setting the <code class="docutils literal notranslate"><span class="pr
 When enabled the NRI Plugin is enabled, the GPU Operator no longer requires setting of values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> on platforms such as K3s, k0s, and RKE.
 This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
 If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p></li>
+<li><p>GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
+Note, OpenShift clusters do not support the NodeFeature API yet.</p></li>
+<li><p>Add support for dynamic MIG config generation.</p></li>
 <li><p>Added support for KubeVirt vGPU with Ubuntu 24.04 LTS and the VFIO framework.</p></li>
 <li><p>Added support for vGPU precompiled driver container for Azure Linux.</p></li>
 <li><p>Added support for K3s.</p></li>
 <li><p>Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.</p></li>
+<li><p>Added support for new operating systems:</p>
+<ul>
+<li><p>Rocky Linux 9.7</p></li>
+<li><p>Red Hat Enterprise Linux 10.0, 10.1</p></li>
+<li><p>Red Hat Enterprise Linux 9.7</p></li>
+</ul>
+</li>
+<li><p>Added support for including extra manifests with the Helm chart.</p></li>
+<li><p>Added support for the DCGM Exportor to expose a metric port on the host’s network namespace.
+Enabled by setting <code class="docutils literal notranslate"><span class="pre">hostNetwork:</span> <span class="pre">true</span></code> in the ClusterPolicy custom resource, or passing <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">dcgmExporter.hostNetwork=true</span></code> to the Helm chart. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1962">PR #1962</a>)</p></li>
+<li><p>Added PodSecurityContext support for DaemonSets (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2120">PR #2120</a>)</p></li>
+<li><p><a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2014">NVIDIA/gpu-operator#2014</a></p></li>
 </ul>
 </section>
 <section id="improvements">
 <h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Improved the GPU driver container to use fast-path optimization that avoids unnecessary driver reinstalls when GPU workloads are running. This reduces downtime from minutes to ~10 seconds.</p></li>
+<li><p>Improvements to GPU Operator resilience.</p></li>
+<li><p>Improved the NVIDIA Kubernetes Device Plugin to avoid unnecessary GPU unbind/rebind operations during rolling updates of the vfio-manager DaemonSet.
+This improves the stability of GPU passthrough workloads using GPU passthrough (KubeVirt, Kata Containers).</p></li>
+<li><p>Improved the Upgrade Controller to decrease unnecessary reconciliation in environments with Node Feature Discovery (NFD) enabled.</p></li>
+<li><p>Improved the GPU Operator to deploy on heterogenous clusters with different operating systems on GPU nodes.</p>
+<ul>
+<li><p>Fixed issues where the GPU Operator was not using getting the correct operating system on heterogenous clusters. Now the GPU Operator uses the OS version labels from GPU worker nodes, added by NFD, when determining what OS-specific paths to use for repository configuration files. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/562">PR #562</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2138">PR #2138</a>)</p></li>
+</ul>
+</li>
+<li><p>Improved performance by <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2113">NVIDIA/gpu-operator#2113</a></p></li>
 </ul>
 </section>
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li></li>
+<li><p>Fixed an issue where driver installations may fail because cached packages were incorectly being referenced. (<a class="reference external" href="https://github.com/NVIDIA/gpu-driver-container/pull/592">PR #592</a>)</p></li>
+<li><p>Fix shared state issue causing incorrect driver images in multi-node-pool clusters. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1952">PR #1952</a>)</p></li>
+<li><p>Fixed an issue where the GPU Operator was applying driver upgrade annotations when driver is disabled. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1968">PR #1968</a>)</p></li>
+<li><p>Fixed an issue where Helm chart device.plugin values were not be validated correctly. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1999">PR #1999</a>)</p></li>
+<li><p>Fixed an issue on Openshift clusters where the <code class="docutils literal notranslate"><span class="pre">dcgm-exporter</span></code> pod gets bound to another  Security Context Constraint (SCC) object, not the one named ‘nvidia-dcgm-exporter’ which the GPU Operator creates. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2122">PR #2122</a>)</p></li>
+<li><p>Fixed an issue where the GPU Operator was not correctly cleaning up deamonsets <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2081">NVIDIA/gpu-operator#2081</a></p></li>
+<li><p>Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2039">PR #2039</a>)</p></li>
+</ul>
+</section>
+<section id="removals-and-deprecations">
+<h3>Removals and Deprecations<a class="headerlink" href="#removals-and-deprecations" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Marked unused field <code class="docutils literal notranslate"><span class="pre">defaultRuntime</span></code> as optional in the ClusterPolicy. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2000">PR #2000</a>)</p></li>
 </ul>
 </section>
 <section id="known-issues">
@@ -3141,6 +3178,7 @@ would not be available after reboot.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improvements">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#removals-and-deprecations">Removals and Deprecations</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
 </li>

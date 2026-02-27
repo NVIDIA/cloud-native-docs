@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 25, 2026"/>
+    <meta name="docbuild:last-update" content="Feb 27, 2026"/>
 
 
 
@@ -349,7 +349,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
@@ -812,7 +812,8 @@ Blackwell Server Edition</p></td>
 <td><p>NVIDIA Blackwell</p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA RTX PRO 4500</p></td>
+<tr class="row-even"><td><p>NVIDIA RTX PRO 4500
+Blackwell Server Edition</p></td>
 <td><p>NVIDIA Blackwell</p></td>
 <td></td>
 </tr>
@@ -1057,7 +1058,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 </th>
 <th class="head"><div class="line-block">
 <div class="line">VMware vSphere</div>
-<div class="line">with Tanzu</div>
+<div class="line">Kubernetes Service (VKS)</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
@@ -1087,39 +1088,39 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
-<td><p>7.0 U3c, 8.0 U2, 8.0 U3</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
 <td></td>
 <td><p>2.12, 2.13, 2.14</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
-<td><p>8.0 U2, 8.0 U3</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td><p>1.33—1.35</p></td>
 <td><p>2.12, 2.13, 2.14, 2.15</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td><p>1.33—1.35</p></td>
 <td></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Red Hat Core OS</p></th>
 <td></td>
 <td><div class="line-block">
-<div class="line">4.14—4.21</div>
+<div class="line">4.17—4.21</div>
 </div>
 </td>
 <td></td>
@@ -1135,10 +1136,10 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <div class="line">Linux 10.0, 10.1</div>
 </div>
 </th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1147,13 +1148,13 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-odd"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
-<div class="line">Linux 9.2, 9.4, 9.6, 9.7, 9.8 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
+<div class="line">Linux 9.2, 9.4, 9.6, 9.7 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
 </div>
 </th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1166,14 +1167,24 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <div class="line">8.10</div>
 </div>
 </th>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td></td>
 <td></td>
 <td></td>
 <td><p>2.12, 2.13, 2.14, 2.15</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Rocky Linux 9.7</p></th>
+<td><p>1.32—1.35</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -1232,24 +1243,24 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS</p></th>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Azure Linux 3 (Local Program) <a class="reference external" href="#azure-linux-3"><sup>5</sup></a></p></th>
 <td></td>
 <td></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 </tr>
 </tbody>
 </table>
@@ -1385,21 +1396,21 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 </thead>
 <tbody>
 <tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
 <tr class="row-odd"><td><p>Ubuntu 20.04 LTS</p></td>
-<td><p>1.30—1.35</p></td>
+<td><p>1.32—1.35</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
@@ -1409,8 +1420,8 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 <td></td>
 <td></td>
 <td></td>
-<td><p>4.14—4.21</p></td>
-<td><p>4.14—4.21</p></td>
+<td><p>4.17—4.21</p></td>
+<td><p>4.17—4.21</p></td>
 </tr>
 </tbody>
 </table>
@@ -1448,7 +1459,7 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 <li><p>Ubuntu 24.04 LTS with Network Operator 25.7.0.</p></li>
 <li><p>Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.</p></li>
 <li><p>Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.</p></li>
-<li><p>Red Hat OpenShift 4.14 and higher with Network Operator 25.7.0.</p></li>
+<li><p>Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.</p></li>
 </ul>
 <p>For information about configuring GPUDirect RDMA, refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a>.</p>
 </section>
@@ -1458,7 +1469,7 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 <ul class="simple">
 <li><p>Ubuntu 24.04 LTS Network Operator 25.7.0.</p></li>
 <li><p>Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.</p></li>
-<li><p>Red Hat OpenShift Container Platform 4.14 and higher.</p></li>
+<li><p>Red Hat OpenShift Container Platform 4.17 and higher.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
