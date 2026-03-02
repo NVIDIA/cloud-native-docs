@@ -51,7 +51,7 @@ Prerequisites
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :ref:`NVIDIA GPU Driver Custom Resource Definition <nvidia-gpu-driver-custom-resource-definition>` page for more information.
+   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -219,7 +219,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.nvidiaDriverCRD.enabled``
      - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
-       Refer to the :ref:`NVIDIA GPU Driver Custom Resource Definition <nvidia-gpu-driver-custom-resource-definition>` page for more information.
+       Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
      - ``false``
 
    * - ``driver.repository``

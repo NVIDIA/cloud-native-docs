@@ -66,13 +66,17 @@ New Features
 * GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
   Note, OpenShift clusters do not support the NodeFeature API yet.
 
-* Add support for dynamic MIG config generation.
+* Added support for dynamic MIG config generation.
+  At start-up, the MIG Manager will now automatically generate a config map with the default MIG profiles for the available GPUs on the node. 
+  Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information.
 
 * Added support for KubeVirt vGPU with Ubuntu 24.04 LTS and the VFIO framework.
 
 * Added support for vGPU precompiled driver container for Azure Linux.
 
 * Added support for K3s.
+
+* Added support for containerd 2.2.
 
 * Added support for new MIG profiles with NVIDIA HGX GB300 NVL72.
 
@@ -83,6 +87,8 @@ New Features
   - Red Hat Enterprise Linux 9.7
   
 * Added support for including extra manifests with the Helm chart.
+
+* Added a the ``sandboxWorkloads.mode`` field to help manage sandboxWorkloads.  with ["kubevirt", "kata"] as valid values.
 
 * Added support for the DCGM Exportor to expose a metric port on the host's network namespace.
   Enabled by setting ``hostNetwork: true`` in the ClusterPolicy custom resource, or passing ``--set dcgmExporter.hostNetwork=true`` to the Helm chart. (`PR #1962 <https://github.com/NVIDIA/gpu-operator/pull/1962>`_)
