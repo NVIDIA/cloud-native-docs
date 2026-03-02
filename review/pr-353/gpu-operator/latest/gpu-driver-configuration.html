@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 27, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 02, 2026"/>
 
 
 
@@ -433,20 +433,17 @@
 <h1>NVIDIA GPU Driver Custom Resource Definition<a class="headerlink" href="#nvidia-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h1>
 <section id="overview-of-the-gpu-driver-custom-resource-definition">
 <h2>Overview of the GPU Driver Custom Resource Definition<a class="headerlink" href="#overview-of-the-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Technology Preview features are not supported in production environments
-and are not functionally complete.
-Technology Preview features provide early access to upcoming product features,
-enabling customers to test functionality and provide feedback during the development process.
-These releases may not have any documentation, and testing is limited.</p>
-<p>This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
-You must uninstall an existing installation and then install the Operator again.
-Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.</p>
-</div>
-<p>As a technology preview feature, you can create one or more instances of an NVIDIA driver custom resource
+<p>You can create one or more instances of an NVIDIA driver custom resource
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.</p>
+<section id="known-issues">
+<h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
+You must uninstall an existing installation and then install the Operator again.
+Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.</p></li>
+</ul>
+</section>
 <section id="comparison-managing-the-driver-with-crd-versus-the-cluster-policy">
 <h3>Comparison: Managing the Driver with CRD versus the Cluster Policy<a class="headerlink" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy" title="Permalink to this headline">#</a></h3>
 <p>Before the introduction of the NVIDIA GPU Driver custom resource definition, you manage the driver by modifying
@@ -482,10 +479,10 @@ This limitation complicates performing an operating system upgrade on your nodes
 <section id="driver-daemon-sets">
 <h3>Driver Daemon Sets<a class="headerlink" href="#driver-daemon-sets" title="Permalink to this headline">#</a></h3>
 <p>The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.</p>
-<p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 535 branch GPU driver and some
+<p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
 worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
 One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
-All the nodes run the same 535 branch GPU driver.</p>
+All the nodes run the same 580 branch GPU driver.</p>
 <img alt="_images/nvd-basics.svg" src="_images/nvd-basics.svg" /><p>If you choose to use precompiled driver containers, the Operator starts a driver daemon set for each Linux kernel version.</p>
 <p>For example, if some nodes run Ubuntu 22.04 and the 5.15.0-84-generic kernel, and other nodes run the 5.15.0-78-generic kernel,
 then the Operator starts two daemon sets.</p>
@@ -690,7 +687,7 @@ If you set <code class="docutils literal notranslate"><span class="pre">usePreco
 <li><p>Optional: If you want to run more than one driver type or version in the cluster,
 label the worker nodes to identify the driver type and version to install on each node:</p>
 <p><em>Example</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="m">525</span>.125.06
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="m">580</span>.126.20
 </pre></div>
 </div>
 <ul class="simple">
@@ -1067,6 +1064,7 @@ The selectors are set from the NVIDIA driver custom resources:</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-gpu-driver-custom-resource-definition">Overview of the GPU Driver Custom Resource Definition</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy">Comparison: Managing the Driver with CRD versus the Cluster Policy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-daemon-sets">Driver Daemon Sets</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-nvidia-driver-custom-resource">About the Default NVIDIA Driver Custom Resource</a></li>
