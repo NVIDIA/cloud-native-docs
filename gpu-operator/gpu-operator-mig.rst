@@ -34,7 +34,7 @@ Multi-Instance GPU (MIG) enables GPUs based on the NVIDIA Ampere and later archi
 Refer to the `MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`__ for more information about MIG.
 
 GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.
-You must enable MIG during installation by chosing a MIG strategy before you can configure MIG.
+You must enable MIG during installation by choosing a MIG strategy before you can configure MIG.
 
 Also see the :ref:`architecture section <mig-architecture>` for more information about how MIG is supported in the GPU Operator.
 
@@ -113,20 +113,20 @@ Configuring MIG Profiles
 
 By default, nodes are labeled with ``nvidia.com/mig.config: all-disabled``.
 To use a profile on a node, you add a label with the desired profile, for example, ``nvidia.com/mig.config=all-1g.10gb``.
-MIG Manager uses a auto-generated ``default-mig-parted-config`` config map in the GPU Operator namespace to identify supported MIG profiles. Refer to the config map when you label the node or customize the config map.
+MIG Manager uses an auto-generated ``default-mig-parted-config`` config map in the GPU Operator namespace to identify supported MIG profiles. Refer to the config map when you label the node or customize the config map.
 
 Introduced in GPU Operator v26.3.0, MIG Manager dynamically generates the MIG configuration for a node at runtime from the available hardware.
-The configuration is genearted on startup, discovering MIG profiles for each GPU on a node using NVML, then writing it to a per-node ConfigMap. 
+The configuration is generated on startup, discovering MIG profiles for each GPU on a node using NVML, then writing it to a per-node ConfigMap. 
 Each ConfigMap contains a complete mig-parted config, including ``all-disabled``, ``all-enabled``, per-profile configs such as ``all-1g.10gb``, and ``all-balanced`` with device-filter support for mixed GPU types.
 
 When a new MIG-capable GPU is added to a node, the new GPU is automatically supported.
 
-While its recommended that you use the auto-generated MIG configuration file, you are able to provide your own ConfigMap if you need custom profiles. 
+While it's recommended that you use the auto-generated MIG configuration file, you are able to provide your own ConfigMap if you need custom profiles. 
 When a custom config is supplied, MIG Manager uses it instead of generating one.
 You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
 
 .. note::
-   Dynamic MIG configuration may not be available on older drivers, such as R535, as they don't support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use the static config file for MIG profiles.
+   Dynamic MIG configuration may not be available on older drivers, such as 535 branch GPU drivers, as they don't support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use the static config file for MIG profiles.
 
 Example: Single MIG Strategy
 ============================
@@ -342,14 +342,6 @@ The following steps show how to update a GPU on a node to the ``3g.40gb`` profil
 
 .. _dynamically-creating-the-mig-configuration-configmap:
 
-Dynamically Creating the MIG Configuration ConfigMap
-====================================================
-
-You can have the Helm chart create the MIG configuration ConfigMap at install or upgrade time from values, so you do not need to apply a separate ConfigMap manifest. The chart creates the ConfigMap when both of the following are set:
-
-* ``migManager.config.create``: ``true``
-* ``migManager.config.data``: non-empty (for example, a ``config.yaml`` key with mig-parted content)
-
 
 Example: Custom MIG Configuration During Installation
 =====================================================
@@ -490,7 +482,7 @@ Verification: Running Sample CUDA Workloads
 Disabling MIG
 *************
 
-You can disable MIG on a node by setting the ``nvidia.con/mig.config`` label to ``all-disabled``:
+You can disable MIG on a node by setting the ``nvidia.com/mig.config`` label to ``all-disabled``:
 
 .. code-block:: console
 
@@ -570,7 +562,7 @@ Alternatively, you can create a custom config map for use by MIG Manager by perf
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
          --version=${version} \
-         --set migManager.gpuClientsConfig.name=gpu-clients
+         --set migManager.gpuClientsConfig.name=gpu-clients \
          --set driver.enabled=false
 
 .. _mig-architecture:
@@ -580,7 +572,7 @@ Architecture
 *****************
 
 MIG Manager is designed as a controller within Kubernetes. It watches for changes to the
-``nvidia.com/mig.config`` label on the node and then applies the user-requested MIG configuration
+``nvidia.com/mig.config`` label on the node and then applies the user-requested MIG configuration.
 When the label changes, MIG Manager first stops all GPU pods, including device plugin, GPU feature discovery,
 and DCGM exporter.
 MIG Manager then stops all host GPU clients listed in the ``clients.yaml`` config map if drivers are preinstalled.

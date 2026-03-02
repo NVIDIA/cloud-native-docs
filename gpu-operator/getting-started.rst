@@ -45,11 +45,13 @@ Prerequisites
           && chmod 700 get_helm.sh \
           && ./get_helm.sh
 
-#. All worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+#. If you are planning to use ClusterPolicy for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
    Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
 
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
+
+   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :ref:`NVIDIA GPU Driver Custom Resource Definition <nvidia-gpu-driver-custom-resource-definition>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -214,6 +216,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.
      - ``auto``
+
+   * - ``driver.nvidiaDriverCRD.enabled``
+     - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
+       Refer to the :ref:`NVIDIA GPU Driver Custom Resource Definition <nvidia-gpu-driver-custom-resource-definition>` page for more information.
+     - ``false``
 
    * - ``driver.repository``
      - The images are downloaded from NGC. Specify another image repository when using
