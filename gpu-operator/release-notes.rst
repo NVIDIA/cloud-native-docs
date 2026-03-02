@@ -83,6 +83,23 @@ Fixed Issues
 * Fixed a bug where the k8s-driver-manager would wait indefinitely when MOFED is enabled and ``USE_HOST_MOFED`` is set to true despite the MOFED being pre-installed on the host. 
 
 
+Known Issues
+------------
+
+* When using RKE2 on RHEL 9.6 with SELinux enforcing mode enabled, the MIG Manager will not install correctly. 
+  This happens because the GPU Operator doesn't have the correct permissions to read from the feature file directly on nodes in the cluster. 
+  This prevents the GPU Operator from correctly evaluating if a node has MIG-capable GPUs on it and whether the GPU Operator should deploy the MIG Manager.
+  Workaround this issue by enabling NVIDIA GPU Feature Discovery to use the Node Feature API by default in ClusterPolicy:
+
+  .. code-block:: yaml
+
+    gfd:
+      env:
+      - name: USE_NODE_FEATURE_API
+        value: "true"
+
+
+
 .. _v25.10.0:
 
 25.10.0

@@ -56,13 +56,13 @@ The product life cycle and versioning are subject to change in the future.
      - Status
 
    * - 25.10.x
-     - Generally Available
+     - Supported
 
    * - 25.3.x
-     - Maintenance
+     - Deprecated
 
    * - 24.9.x and lower
-     - EOL
+     - End of Support
 
 
 .. _operator-component-matrix:
