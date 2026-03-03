@@ -68,20 +68,20 @@
    Service Mesh <install-gpu-operator-service-mesh.rst>
 
 .. toctree::
-   :caption: OpenShift Container Platform
    :titlesonly:
    :hidden:
 
-   NVIDIA GPU Operator on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
+
 
 .. toctree::
-   :caption: CSP configurations
+   :caption: Cloud and Managed Kubernetes Platforms
    :titlesonly:
    :hidden:
 
    Amazon EKS <amazon-eks.rst>
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
+   NVIDIA GPU Operator on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
 
 
 .. include:: overview.rst
