@@ -86,10 +86,9 @@ Fixed Issues
 Known Issues
 ------------
 
-* When using RKE2 on RHEL 9.6 with SELinux enforcing mode enabled, the MIG Manager will not install correctly. 
-  This happens because the GPU Operator doesn't have the correct permissions to read from the feature file directly on nodes in the cluster. 
-  This prevents the GPU Operator from correctly evaluating if a node has MIG-capable GPUs on it and whether the GPU Operator should deploy the MIG Manager.
-  Workaround this issue by enabling NVIDIA GPU Feature Discovery to use the Node Feature API by default in ClusterPolicy:
+* When deploying the GPU Operator on systems with SELinux in enforcing mode, the MIG Manager does not get scheduled on GPU nodes.
+  This happens because the GPU Feature Discovery pod has insufficient permissions on Node Feature Discovery's feature-file drop-in directory, so it cannot add the label that indicates a MIG-capable GPU is present.
+  To work around this issue, configure NVIDIA GPU Feature Discovery to use the Node Feature API instead of feature files in ClusterPolicy:
 
   .. code-block:: yaml
 
