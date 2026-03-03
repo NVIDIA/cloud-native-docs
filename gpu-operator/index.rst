@@ -74,7 +74,7 @@
 
 
 .. toctree::
-   :caption: Cloud and Managed Kubernetes Platforms
+   :caption: Platform-Specific Configurations
    :titlesonly:
    :hidden:
 
