@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 02, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 03, 2026"/>
 
 
 
@@ -490,10 +490,9 @@ For more information, refer to <a class="reference external" href="https://githu
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>When using RKE2 on RHEL 9.6 with SELinux enforcing mode enabled, the MIG Manager will not install correctly.
-This happens because the GPU Operator doesn’t have the correct permissions to read from the feature file directly on nodes in the cluster.
-This prevents the GPU Operator from correctly evaluating if a node has MIG-capable GPUs on it and whether the GPU Operator should deploy the MIG Manager.
-Workaround this issue by enabling NVIDIA GPU Feature Discovery to use the Node Feature API by default in ClusterPolicy:</p>
+<li><p>When deploying the GPU Operator on systems with SELinux in enforcing mode, the MIG Manager does not get scheduled on GPU nodes.
+This happens because the GPU Feature Discovery pod has insufficient permissions on Node Feature Discovery’s feature-file drop-in directory, so it cannot add the label that indicates a MIG-capable GPU is present.
+To work around this issue, configure NVIDIA GPU Feature Discovery to use the Node Feature API instead of feature files in ClusterPolicy:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">gfd</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">USE_NODE_FEATURE_API</span><span class="w"></span>
