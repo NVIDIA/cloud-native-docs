@@ -17,7 +17,7 @@
 .. headings # #, * *, =, -, ^, "
 
 .. toctree::
-   :caption: NVIDIA Confidential Containers
+   :caption: NVIDIA Confidential Computing
    :titlesonly:
    :hidden:
 
@@ -26,3 +26,4 @@
    Deploy Confidential Containers with NVIDIA GPU Operator <confidential-containers-deploy.rst>
 
 
+.. include:: overview.rst
