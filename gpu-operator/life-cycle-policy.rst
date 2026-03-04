@@ -39,9 +39,8 @@ Patch releases typically include critical bug and CVE fixes, but can include min
 NVIDIA GPU Operator Life Cycle
 ******************************
 
-When a major version of NVIDIA GPU Operator is released, the previous major version enters maintenance support
-and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end-of-life (EOL) and are no longer supported and do not receive patch release updates.
+When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
+All prior major versions enter end of support and are no longer supported and do not receive patch release updates.
 
 The product life cycle and versioning are subject to change in the future.
 
@@ -56,13 +55,13 @@ The product life cycle and versioning are subject to change in the future.
      - Status
 
    * - 25.10.x
-     - Generally Available
+     - Supported
 
    * - 25.3.x
-     - Maintenance
+     - Deprecated
 
    * - 24.9.x and lower
-     - EOL
+     - End of Support
 
 
 .. _operator-component-matrix:

@@ -83,6 +83,22 @@ Fixed Issues
 * Fixed a bug where the k8s-driver-manager would wait indefinitely when MOFED is enabled and ``USE_HOST_MOFED`` is set to true despite the MOFED being pre-installed on the host. 
 
 
+Known Issues
+------------
+
+* When deploying the GPU Operator on systems with SELinux in enforcing mode, the MIG Manager does not get scheduled on GPU nodes.
+  This happens because the GPU Feature Discovery pod has insufficient permissions on Node Feature Discovery's feature-file drop-in directory, so it cannot add the label that indicates a MIG-capable GPU is present.
+  To work around this issue, configure NVIDIA GPU Feature Discovery to use the Node Feature API instead of feature files in ClusterPolicy:
+
+  .. code-block:: yaml
+
+    gfd:
+      env:
+      - name: USE_NODE_FEATURE_API
+        value: "true"
+
+
+
 .. _v25.10.0:
 
 25.10.0

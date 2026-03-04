@@ -31,6 +31,11 @@ Installing the NVIDIA GPU Operator
 
    The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
+.. admonition:: Red Hat OpenShift Container Platform Install
+   :class: tip
+
+   For installation on Red Hat OpenShift Container Platform, refer to :external+ocp:doc:`steps-overview`.
+
 *************
 Prerequisites
 *************
