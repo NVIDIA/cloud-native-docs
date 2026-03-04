@@ -101,7 +101,7 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
    Optionally, configure the repository to use experimental packages:
 
    ```console
-   $ sudo dnf-config-manager --enable nvidia-container-toolkit-experimental
+   $ sudo dnf config-manager --enable nvidia-container-toolkit-experimental
    ```
 
 1. Install the NVIDIA Container Toolkit packages:
