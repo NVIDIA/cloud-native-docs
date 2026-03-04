@@ -56,7 +56,7 @@
    :hidden:
 
    KubeVirt <gpu-operator-kubevirt.rst>
-   Confidential Containers <confidential-containers.rst>
+   Confidential Containers <https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/index.html>
    
 .. toctree::
    :caption: Specialized Networks

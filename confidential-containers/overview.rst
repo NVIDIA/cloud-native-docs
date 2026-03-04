@@ -55,7 +55,6 @@ The following high-level flow and diagram show some fundamental concepts for CoC
    * Kata agent starts containers in the Kata CVM.  
    * The confidential containers attestation agent exercises remote attestation based on the Remote ATtestation ProcedureS (RATS) model in concert with the Confidential Containers' Trustee solution. As part of this, the attestation agent transitions the GPU into the Ready state. Refer to the attestation section for more details.
 
-.. _key-software-components-gpu-operator:
 
 Key Software Components of the NVIDIA GPU Operator
 ===================================================
