@@ -82,6 +82,7 @@ project_build_order = [
   "gpu-telemetry",
   "openshift",
   "gpu-operator",
+  "confidential-containers",
   "edge",
   "kubernetes",
   "partner-validated",
@@ -197,6 +198,18 @@ redirects = [
 ]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
+build_by_default = false
+output_format = "linkcheck"
+
+
+[repo_docs.projects.confidential-containers]
+docs_root = "${root}/confidential-containers"
+project = "confidential-containers"
+name = "NVIDIA GPU Operator - Confidential Containers"
+version = "25.10"
+copyright_start = 2020
+
+[repo_docs.projects.confidential-containers.builds.linkcheck]
 build_by_default = false
 output_format = "linkcheck"
 

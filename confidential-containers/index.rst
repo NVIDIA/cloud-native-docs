@@ -16,16 +16,14 @@
 
 .. headings # #, * *, =, -, ^, "
 
-################
-Technical Review
-################
+.. toctree::
+   :caption: NVIDIA Confidential Computing
+   :titlesonly:
+   :hidden:
 
-Refer to the following URLs for the review HTML:
+   Overview <overview.rst>
+   Platform Support <confidential-containers.rst>
+   Deploy Confidential Containers with NVIDIA GPU Operator <confidential-containers-deploy.rst>
 
-* `NVIDIA Container Toolkit <./container-toolkit/latest/index.html>`__
-* `NVIDIA Driver Containers <./driver-containers/latest/index.html>`__
-* `NVIDIA GPU Operator <./gpu-operator/latest/index.html>`__
-* `NVIDIA GPU Operator on Red Hat OpenShift Container Platform <./openshift/latest/index.html>`__
-* `NVIDIA GPUs and Edge Computing <./edge/latest/index.html>`__
-* `Partner-Validated Configurations <./partner-validated/latest/index.html>`__
-* `NVIDIA Confidential Containers <./confidential-containers/latest/index.html>`__
+
+.. include:: overview.rst

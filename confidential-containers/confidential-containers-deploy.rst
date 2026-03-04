@@ -5,7 +5,7 @@ Deploy Confidential Containers with NVIDIA GPU Operator
 *******************************************************
 
 This page describes how to deploy Confidential Containers using the NVIDIA GPU Operator.
-For an overview of Confidential Containers, refer to :ref:`early-access-gpu-operator-confidential-containers-kata`.
+For an overview of Confidential Containers, refer to :ref:`overview`.
 
 .. note::
 
