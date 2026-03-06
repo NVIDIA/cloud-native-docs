@@ -87,20 +87,17 @@ This section provides the validated software version combinations for this guide
 
 .. list-table:: Supported RHEL and MicroShift Versions
    :header-rows: 1
-   :widths: 25 30 45
+   :widths: 15 15
 
    * - RHEL Version
      - MicroShift Versions
-     - Notes
    * - RHEL 9.6
-     - 4.21,4.20, 4.19
-     - Current EUS release, recommended for new deployments
+     - 4.21, 4.20, 4.19
    * - RHEL 9.4
      - 4.18, 4.17, 4.16
-     - EUS release, supported for existing deployments
    * - RHEL 9.2
      - 4.15 (EOL), 4.14 (EUS 2 only)
-     - EUS release. See :ref:`MicroShift version requirements <prerequisites>` in Prerequisites for EOL and EUS 2 details
+
 
 **NVIDIA component versions**
 
