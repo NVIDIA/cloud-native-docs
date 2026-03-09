@@ -34,9 +34,22 @@ Starting with GPU Operator v25.10.0, CDI is used by default for enabling GPU sup
 Specifically, CDI support in container runtimes, e.g. containerd and cri-o, is used to inject GPU(s) into workload
 containers. This differs from prior GPU Operator releases where CDI was used via a CDI-enabled ``nvidia`` runtime class.
 
+If you are upgrading from a version of the GPU Operator prior to v25.10.0, where CDI was disabled by default, and you are upgrading to v25.10.0 or later, where CDI is enabled by default, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin.
+For workloads that already have ``runtimeClassName: nvidia`` set in their pod spec YAML, no change is necessary.
+
 Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.
+
+
+CDI and Management Containers
+*****************************
+
+When CDI is enabled in GPU Operator versions v25.10.0 and later, management containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification.
+A management container is a container that requires access to all GPUs without them being allocated by Kubernetes. 
+Examples of management containers include monitoring agents and device plugins.
+
+It is recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by management containers.
 
 ********************************
 Enabling CDI During Installation
