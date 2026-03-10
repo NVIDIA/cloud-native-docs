@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 09, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
 
 
 
@@ -539,7 +539,7 @@ The <code class="docutils literal notranslate"><span class="pre">cdi.default</sp
 runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
 This differs from prior releases where CDI support in container runtimes was not used, and
 instead, an <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class configured in CDI mode was used.</p></li>
-<li><p>When CDI is enabled, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin. <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code> is not required for standard workloads. For workloads that already have <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> set in their pod spec YAML, no change is necessary.</p></li>
+<li><p>When CDI is enabled, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin. Setting <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code> is not required for standard workloads. For workloads that already have <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> set in their pod spec YAML, no change is necessary.</p></li>
 <li><p>Management containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification. It’s recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by management containers. A management containers is a container that requires access to all GPUs without them being allocated by Kubernetes. Examples include monitoring agents and device plugins.</p></li>
 <li><p>For OpenShift users upgrading to v25.10.0, we recommend updating the <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code>
 field in ClusterPolicy to <code class="docutils literal notranslate"><span class="pre">true</span></code> post-upgrade. This field will not automatically be
