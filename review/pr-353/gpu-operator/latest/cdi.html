@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 02, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
 
 
 
@@ -372,11 +372,12 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 </ul>
 </div>
 </nav></div>
@@ -532,11 +533,11 @@ column to determine if your nodes use CRI-O.</p>
 <section id="about-the-node-resource-interface-nri-plugin">
 <span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
 <p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like CRI-O and containerd.
-NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including inject devices (CDI devices, Linux device nodes, device mounts) to a container, topology aware placement strategies, and more.
+NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including inject devices to a container, topology aware placement strategies, and more.
 For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
-<p>When enabled in the GPU Operator, the NRI Plugin, managed by the NVIDIA Container Toolkit, provides an alternative to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class to provision GPU workload pods.
-It allows the GPU Operator to extend the container runtime behaviour without modifying the container runtime.
-This feature also simplifies deployments on platforms like k3s, k0s, or RKE, because the GPU Operator no longer needs setting of values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code>.</p>
+<p>When enabled in the GPU Operator, the NRI Plugin is managed by the NVIDIA Container Toolkit andprovides an alternative to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class to provision GPU workload pods.
+It allows the GPU Operator to extend the container runtime behaviour without modifying the container runtime itself.
+This feature also simplifies deployments on platforms like k3s, k0s, or RKE, because the GPU Operator no longer needs you to set  values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit.</p>
 </section>
 <section id="enabling-the-nri-plugin">
 <h2>Enabling the NRI Plugin<a class="headerlink" href="#enabling-the-nri-plugin" title="Permalink to this headline">#</a></h2>

@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 02, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
 
 
 
@@ -372,11 +372,12 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 </ul>
 </div>
 </nav></div>
@@ -440,16 +441,15 @@ The third field, <code class="docutils literal notranslate"><span class="pre">PP
 Patch releases typically include critical bug and CVE fixes, but can include minor features.</p>
 <section id="nvidia-gpu-operator-life-cycle">
 <span id="operator-life-cycle-policy"></span><h3>NVIDIA GPU Operator Life Cycle<a class="headerlink" href="#nvidia-gpu-operator-life-cycle" title="Permalink to this headline">#</a></h3>
-<p>When a major version of NVIDIA GPU Operator is released, the previous major version enters maintenance support
-and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end-of-life (EOL) and are no longer supported and do not receive patch release updates.</p>
+<p>When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
+All prior major versions enter end of support and are no longer supported and do not receive patch release updates.</p>
 <p>The product life cycle and versioning are subject to change in the future.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id8">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id8" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id6">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -460,14 +460,14 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>26.3.x</p></td>
-<td><p>Generally Available</p></td>
+<tr class="row-even"><td><p>25.10.x</p></td>
+<td><p>Supported</p></td>
 </tr>
-<tr class="row-odd"><td><p>25.10.x</p></td>
-<td><p>Maintenance</p></td>
+<tr class="row-odd"><td><p>25.3.x</p></td>
+<td><p>Deprecated</p></td>
 </tr>
-<tr class="row-even"><td><p>25.3.x and lower</p></td>
-<td><p>EOL</p></td>
+<tr class="row-even"><td><p>24.9.x and lower</p></td>
+<td><p>End of Support</p></td>
 </tr>
 </tbody>
 </table>
@@ -498,8 +498,6 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html">590.48.01</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-16/index.html">580.126.20</a> (<strong>D</strong>, <strong>R</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html">575.57.08</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html">570.211.01</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html">550.163.01</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html">535.288.01</a></div>
 </div>
 </td>
@@ -544,17 +542,14 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.27.3</a></p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA Kata Manager for Kubernetes</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">v0.2.3</a></p></td>
-</tr>
-<tr class="row-odd"><td><div class="line-block">
+<tr class="row-even"><td><div class="line-block">
 <div class="line">NVIDIA Confidential Computing</div>
 <div class="line">Manager for Kubernetes</div>
 </div>
 </td>
 <td><p>v0.1.1</p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA GDRCopy Driver</p></td>
+<tr class="row-odd"><td><p>NVIDIA GDRCopy Driver</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.1</a></p></td>
 </tr>
 </tbody>
@@ -1272,7 +1267,7 @@ Azure Linux 3 are available as precompiled drivers and signed vGPU Guest Driver.
 </div>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id7"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
+<span id="id5"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1399,7 +1394,7 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 <tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
 <td><p>1.32—1.35</p></td>
 <td><p>0.36+</p></td>
-<td><p>0.59.1+</p></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
