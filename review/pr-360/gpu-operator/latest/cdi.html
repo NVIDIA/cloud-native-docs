@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 12, 2026"/>
 
 
 
@@ -447,11 +447,11 @@ For workloads that already have <code class="docutils literal notranslate"><span
 <p>Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.</p>
-<section id="cdi-and-management-containers">
-<h3>CDI and Management Containers<a class="headerlink" href="#cdi-and-management-containers" title="Permalink to this headline">#</a></h3>
-<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, management containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
-A management container is a container that requires access to all GPUs without them being allocated by Kubernetes.
-Examples of management containers include monitoring agents and device plugins.</p>
+<section id="cdi-and-gpu-management-containers">
+<h3>CDI and GPU Management Containers<a class="headerlink" href="#cdi-and-gpu-management-containers" title="Permalink to this headline">#</a></h3>
+<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
+A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes.
+Examples of GPU Management Containers include monitoring agents and device plugins.</p>
 <p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by management containers.</p>
 </section>
 </section>
@@ -590,7 +590,7 @@ column to determine if your nodes use CRI-O.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-container-device-interface">About the Container Device Interface</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cdi-and-management-containers">CDI and Management Containers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cdi-and-gpu-management-containers">CDI and GPU Management Containers</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-during-installation">Enabling CDI During Installation</a></li>
