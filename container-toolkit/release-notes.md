@@ -8,6 +8,38 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.19.0
+
+This release of the NVIDIA Container Toolkit `v1.19.0` is a feature release.
+
+### Fixes and Features
+- Report errors when unknown OCI runtime spec fields are detected.
+- Added support for IGX 2.0 Thor-based systems including those with dGPUs installed.
+- Added support for CUDA Forward Compatibility on Tegra-based systems. On Orin-based systems, this requires specific compat libraries in the container.
+- Added support for running containers as a user that may not have explicit access to a device node without requiring that additional groups be explicitly specified.
+- Improve triggering of systemd service that ensures that CDI specifications are up-to-date.
+- Add support for read-only root filesystems such as those on an initramfs.
+
+### Enhancements to libnvidia-container
+- Bump Golang version to match that used to build the NVIDIA Container Toolkit.
+
+#### Enhancements to container-toolkit Container Images
+- Add NRI plugin server for injecting CDI devices into GPU management containers.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.19.0`
+- `nvidia-container-toolkit-base 1.19.0`
+- `libnvidia-container-tools 1.19.0`
+- `libnvidia-container1 1.19.0`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.19.0`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.19.0-packaging`
+
 ## NVIDIA Container Toolkit 1.18.2
 
 This release of the NVIDIA Container Toolkit `v1.18.2` is a bugfix release.
