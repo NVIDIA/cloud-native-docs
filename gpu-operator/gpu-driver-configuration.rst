@@ -26,21 +26,17 @@ NVIDIA GPU Driver Custom Resource Definition
 Overview of the GPU Driver Custom Resource Definition
 *****************************************************
 
-.. note::
-
-   Technology Preview features are not supported in production environments
-   and are not functionally complete.
-   Technology Preview features provide early access to upcoming product features,
-   enabling customers to test functionality and provide feedback during the development process.
-   These releases may not have any documentation, and testing is limited.
-
-   This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
-   You must uninstall an existing installation and then install the Operator again.
-   Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.
-
-As a technology preview feature, you can create one or more instances of an NVIDIA driver custom resource
+You can create one or more instances of an NVIDIA driver custom resource
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.
+
+
+Known Issues
+============
+
+*  This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
+   You must uninstall an existing installation and then install the Operator again.
+   Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.
 
 Comparison: Managing the Driver with CRD versus the Cluster Policy
 ==================================================================
@@ -72,10 +68,10 @@ Driver Daemon Sets
 
 The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.
 
-For example, if your cluster has one NVIDIA driver custom resource that specifies a 535 branch GPU driver and some
+For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
 worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
 One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
-All the nodes run the same 535 branch GPU driver.
+All the nodes run the same 580 branch GPU driver.
 
 .. image:: graphics/nvd-basics.svg
 
@@ -258,7 +254,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 
    .. code-block:: console
 
-      $ kubectl label node <node-name> --overwrite driver.version=525.125.06
+      $ kubectl label node <node-name> --overwrite driver.version=580.126.20
 
    - To use a mix of driver types, such as vGPU, label nodes for the driver type.
    - To use a mix of driver versions, label the nodes for the different versions.
