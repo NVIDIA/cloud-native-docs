@@ -43,7 +43,7 @@ plugins.
 
 
 CDI and GPU Management Containers
-*****************************
+*********************************
 
 When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification.
 A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes. 
