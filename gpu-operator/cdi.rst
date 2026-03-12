@@ -42,12 +42,12 @@ The benefits of CDI are largely to reduce development and support for runtime-sp
 plugins.
 
 
-CDI and Management Containers
+CDI and GPU Management Containers
 *****************************
 
-When CDI is enabled in GPU Operator versions v25.10.0 and later, management containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification.
-A management container is a container that requires access to all GPUs without them being allocated by Kubernetes. 
-Examples of management containers include monitoring agents and device plugins.
+When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification.
+A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes. 
+Examples of GPU Management Containers include monitoring agents and device plugins.
 
 It is recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by management containers.
 
