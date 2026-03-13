@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Deploy Confidential Containers with NVIDIA GPU Operator &#8212; NVIDIA GPU Operator - Confidential Containers</title>
+    <title>Deploy Confidential Containers with NVIDIA GPU Operator &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -68,14 +68,15 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Platform Support" href="confidential-containers.html" />
+    <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
+    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 04, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 13, 2026"/>
 
 
 
@@ -151,11 +152,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator - Confidential Containers</p>
+    <p class="title logo__title">NVIDIA GPU Operator</p>
   
 </a></div>
     
@@ -262,11 +263,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator - Confidential Containers</p>
+    <p class="title logo__title">NVIDIA GPU Operator</p>
   
 </a>
 
@@ -328,12 +329,52 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Computing</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of NVIDIA Confidential Containers</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers.html">Platform Support</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">   Confidential Containers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 </ul>
 </div>
 </nav></div>
@@ -368,7 +409,7 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="index.html">NVIDIA GPU Operator - Confidential Containers</a>
+      <a href="index.html">NVIDIA GPU Operator</a>
     </li>
     <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers with NVIDIA GPU Operator</li>
   </ul>
@@ -388,16 +429,17 @@
                   
   <section id="deploy-confidential-containers-with-nvidia-gpu-operator">
 <span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers with NVIDIA GPU Operator<a class="headerlink" href="#deploy-confidential-containers-with-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<p>This page describes how to deploy Confidential Containers using the NVIDIA GPU Operator.
-For an overview of Confidential Containers, refer to <a class="reference internal" href="#overview"><span class="std std-ref">Overview</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
 </div>
+<p>The page describes deploying COnfidentail Containers with the NVIDIA GPU Operator.
+The implementation replies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers overview</a> for details on the reference architecture and supported platforms.</p>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/supported-platforms.html#supported-platforms" title="(in NVIDIA Container Toolkit)"><span>Platform support</span></a>. In particular:</p>
+<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers supported platforms</a>. In particular:</p>
 <ul class="simple">
 <li><p>You selected and configured your hardware and BIOS to support confidential computing.</p></li>
 <li><p>You installed and configured Ubuntu 25.10 as host OS with its default kernel to support confidential computing.</p></li>
@@ -418,7 +460,9 @@ For an overview of Confidential Containers, refer to <a class="reference interna
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p></li>
 </ul>
 </li>
-<li><p>You have a Kubernetes cluster and you have cluster administrator privileges. For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).</p></li>
+<li><p>You have a Kubernetes cluster and you have cluster administrator privileges.
+* For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).
+* Make sure <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled on your cluster. The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubele`’s Pod Resources API to discover allocated GPU devices during sandbox creation. For Kubernetes versions older than 1.34, you must explicitly enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate in your Kubelet configuration. For Kubernetes 1.34 and later, this feature is enabled by default.</p></li>
 </ul>
 </section>
 <section id="installation-and-configuration">
@@ -767,13 +811,22 @@ resource types (such as <code class="docutils literal notranslate"><span class="
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="confidential-containers.html"
+       href="gpu-operator-kubevirt.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Platform Support</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="install-gpu-operator-proxy.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Install GPU Operator in Proxy Environments</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

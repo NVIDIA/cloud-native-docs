@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Overview of NVIDIA Confidential Containers &#8212; NVIDIA GPU Operator - Confidential Containers</title>
+    <title>NVIDIA Confidential Containers &#8212; NVIDIA GPU Operator - Confidential Containers</title>
   
   
   
@@ -68,14 +68,14 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview of NVIDIA Confidential Containers" href="overview.html" />
+    <link rel="next" title="NVIDIA Confidential Containers" href="overview.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 04, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 13, 2026"/>
 
 
 
@@ -227,10 +227,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -328,12 +324,10 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Computing</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of NVIDIA Confidential Containers</a></li>
-
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers.html">Platform Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -370,7 +364,7 @@
     <li class="breadcrumb-item">
       <a href="#">NVIDIA GPU Operator - Confidential Containers</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Overview of NVIDIA Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA Confidential Containers</li>
   </ul>
 </nav></div>
       
@@ -386,91 +380,15 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="toctree-wrapper compound">
+  <section id="nvidia-confidential-containers">
+<h1>NVIDIA Confidential Containers<a class="headerlink" href="#nvidia-confidential-containers" title="Permalink to this headline">#</a></h1>
+<div class="toctree-wrapper compound">
 </div>
-<section id="overview-of-nvidia-confidential-containers">
-<h1>Overview of NVIDIA Confidential Containers<a class="headerlink" href="#overview-of-nvidia-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p id="confidential-containers-overview">NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability. As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential.</p>
-<p>While securing data at rest and in transit is industry standard, protecting data in use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as AMD SEV—to create protected enclaves in both CPU and GPU.</p>
-<p>The TEE provides embedded encryption keys and an attestation mechanism through cryptographic verification to ensure that keys are only accessible by authorized application code.</p>
-<p><a class="reference external" href="https://github.com/confidential-containers">Confidential Containers</a> (CoCo) is the cloud-native approach of CC in Kubernetes. <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> is an open source project that provides lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation. Along with the CoCo project, Kata enables the orchestration of secure, GPU-accelerated workloads in Kubernetes.</p>
-<p>This page describes NVIDIA’s Early Access implementation for orchestrating CoCo with Kata using the NVIDIA GPU Operator.</p>
-<section id="architecture-overview">
-<h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h2>
-<p>The following high-level flow and diagram show some fundamental concepts for CoCo. The NVIDIA GPU operator is a central component to enable this workflow. In the following section, we describe the most important components and the deployment scenario.</p>
-<img alt="High-Level Logical Diagram of Software Components and Communication Paths" src="_images/CoCo-Architecture.png" />
-<p><em>High-Level Logical Diagram of Software Components and Communication Paths</em></p>
-<ol class="arabic simple">
-<li><p>The GPU Operator sets up the nodes to be Confidential Computing ready.</p>
+<p>This is documentation for NVIDIA’s approach to Confidential Containers.</p>
 <ul class="simple">
-<li><p>During installation, the GPU Operator deploys the components needed to run Confidential Containers to nodes that meet Confidential Container requirements.</p></li>
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Overview</span></a> — Introduction to Confidential Containers and NVIDIA’s implementation with the GPU Operator.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a> — Prerequisites, installation, and verification for deploying CoCo with the GPU Operator.</p></li>
 </ul>
-</li>
-<li><p>Application Owner deploys container with Kata-Confidential Containers runtime class.</p>
-<ul class="simple">
-<li><p>The user deploys a confidential container GPU workload, which is placed onto a specific node by the Kubernetes control plane. On this node, the local Kubelet instructs its container runtime to create this pod.</p></li>
-<li><p>Containerd is configured to run a Kata runtime to start the Kata CVM.</p></li>
-<li><p>The Kata runtime starts the Kata CVM using the upstream Kata Containers kernel and NVIDIA initial RAM disk containing the VM’s root filesystem.</p></li>
-<li><p>In the Kata CVM’s early boot phase, the <a class="reference external" href="https://github.com/NVIDIA/nvrc/tree/main">NVRC</a> prepares the passthrough GPU for container access.</p></li>
-<li><p>Kata agent starts containers in the Kata CVM.</p></li>
-<li><p>The confidential containers attestation agent exercises remote attestation based on the Remote ATtestation ProcedureS (RATS) model in concert with the Confidential Containers’ Trustee solution. As part of this, the attestation agent transitions the GPU into the Ready state. Refer to the attestation section for more details.</p></li>
-</ul>
-</li>
-</ol>
-</section>
-</section>
-<section id="key-software-components-of-the-nvidia-gpu-operator">
-<h1>Key Software Components of the NVIDIA GPU Operator<a class="headerlink" href="#key-software-components-of-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<p>NVIDIA GPU Operator brings together the following software components to simplify managing the software required for confidential computing and deploying confidential container workloads:</p>
-<p><strong>NVIDIA Kata Manager for Kubernetes</strong></p>
-<p>GPU Operator deploys the NVIDIA Kata Manager for Kubernetes, k8s-kata-manager. The manager is responsible for creating host-side CDI specifications for GPU passthrough.</p>
-<p><strong>NVIDIA Confidential Computing Manager for Kubernetes</strong></p>
-<p>GPU Operator deploys the manager, k8s-cc-manager, to set the confidential computing (CC) mode on the NVIDIA GPUs.</p>
-<p><strong>NVIDIA Sandbox Device Plugin</strong></p>
-<p>GPU Operator deploys the sandbox device plugin, nvidia-sandbox-device-plugin-daemonset, to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.</p>
-<p><strong>NVIDIA VFIO Manager</strong></p>
-<p>GPU Operator deploys the VFIO manager, nvidia-vfio-manager, to bind discovered NVIDIA GPUs to the vfio-pci driver for VFIO passthrough.</p>
-<p><strong>Node Feature Discovery (NFD)</strong></p>
-<p>When you install NVIDIA GPU Operator for confidential computing, you must specify the <code class="docutils literal notranslate"><span class="pre">nfd.nodefeaturerules=true</span></code> option. This option directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware. You can confirm the rules are installed by running <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">nodefeaturerules</span> <span class="pre">nvidia-nfd-nodefeaturerules</span></code>.</p>
-<p>On nodes that have NVIDIA Hopper family GPU and AMD SEV-SNP, NFD adds labels to the node such as <code class="docutils literal notranslate"><span class="pre">&quot;feature.node.kubernetes.io/cpu-security.sev.snp.enabled&quot;:</span> <span class="pre">&quot;true&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;nvidia.com/cc.capable&quot;:</span> <span class="pre">&quot;true&quot;</span></code>. NVIDIA GPU Operator only deploys the operands for confidential containers on nodes that have the <code class="docutils literal notranslate"><span class="pre">&quot;nvidia.com/cc.capable&quot;:</span> <span class="pre">&quot;true&quot;</span></code> label.</p>
-<section id="cluster-topology-considerations">
-<h2>Cluster Topology Considerations<a class="headerlink" href="#cluster-topology-considerations" title="Permalink to this headline">#</a></h2>
-<p>You can configure all the worker nodes in your cluster for running GPU workloads with confidential containers or you configure some nodes for confidential containers and the others for traditional containers. Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.</p>
-<div class="pst-scrollable-table-container"><table class="colwidths-given table">
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Node A - Traditional Containers receives the following software components</p></th>
-<th class="head"><p>Node B - Kata CoCo receives the following software components</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><ul class="simple">
-<li><p>NVIDIA Driver Manager for Kubernetes</p></li>
-<li><p>NVIDIA Container Toolkit</p></li>
-<li><p>NVIDIA Device Plugin for Kubernetes</p></li>
-<li><p>NVIDIA DCGM and DCGM Exporter</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes</p></li>
-<li><p>Node Feature Discovery</p></li>
-<li><p>NVIDIA GPU Feature Discovery</p></li>
-</ul>
-</td>
-<td><ul class="simple">
-<li><p>NVIDIA Kata Manager for Kubernetes</p></li>
-<li><p>NVIDIA Confidential Computing Manager for Kubernetes</p></li>
-<li><p>NVIDIA Sandbox Device Plugin</p></li>
-<li><p>NVIDIA VFIO Manager</p></li>
-<li><p>Node Feature Discovery</p></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>This configuration can be controlled through node labelling as described in <a class="reference internal" href="confidential-containers-deploy.html#confidential-containers-deploy"><span class="std std-ref">Deploy Confidential Containers with NVIDIA GPU Operator</span></a>.</p>
-</section>
 </section>
 
 
@@ -488,7 +406,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Overview of NVIDIA Confidential Containers</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -499,33 +417,9 @@
             
             
 
-
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="bd-sidebar-secondary"></div>
 
 
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Overview of NVIDIA Confidential Containers</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-software-components-of-the-nvidia-gpu-operator">Key Software Components of the NVIDIA GPU Operator</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
-</ul>
-</li>
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
 
