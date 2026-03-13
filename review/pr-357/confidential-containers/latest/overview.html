@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>NVIDIA Confidential Containers &#8212; NVIDIA GPU Operator - Confidential Containers</title>
+    <title>NVIDIA Confidential Containers Support Overview &#8212; NVIDIA Confidential Containers Support</title>
   
   
   
@@ -68,7 +68,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="NVIDIA Confidential Containers" href="index.html" />
+    <link rel="prev" title="NVIDIA Confidential Containers Support" href="index.html" />
 
 
 
@@ -151,11 +151,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Support - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Support - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator - Confidential Containers</p>
+    <p class="title logo__title">NVIDIA Confidential Containers Support</p>
   
 </a></div>
     
@@ -262,11 +262,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Confidential Containers - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Support - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Support - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator - Confidential Containers</p>
+    <p class="title logo__title">NVIDIA Confidential Containers Support</p>
   
 </a>
 
@@ -328,7 +328,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Support</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Overview</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
@@ -366,9 +366,9 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="index.html">NVIDIA GPU Operator - Confidential Containers</a>
+      <a href="index.html">NVIDIA Confidential Containers Support</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">NVIDIA Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">NVIDIA Confidential Containers Support Overview</li>
   </ul>
 </nav></div>
       
@@ -384,27 +384,21 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="nvidia-confidential-containers">
-<h1>NVIDIA Confidential Containers<a class="headerlink" href="#nvidia-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p>NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.
-As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. Additionally, the model deployment landscape is evolving to include public clouds, enterprise on-premises, and edge.</p>
-<p>A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access.</p>
-<p>This page outlines NVIDIA’s approach to Confidential Containers.</p>
+  <section id="nvidia-confidential-containers-support-overview">
+<h1>NVIDIA Confidential Containers Support Overview<a class="headerlink" href="#nvidia-confidential-containers-support-overview" title="Permalink to this headline">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To enable the field and engage early with customers and upstream contributors, NVIDIA has published support for Confidential Containers Early Access (EA) with curated platform and feature support.
 EA features are not supported in production environments and are not functionally complete. EA features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
 </div>
-<section id="overview">
-<span id="confidential-containers-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.</p>
+<p id="confidential-containers-overview">NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.</p>
 <p>As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. Additionally, the model deployment landscape is evolving to include public clouds, enterprise on-premises, and edge. A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access.</p>
 <p>Securing data at rest and in transit is industry standard. However, protecting data in-use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs)—such as AMD SEV-SNP / Intel TDX  technologies and NVIDIA Confidential Computing capabilities to create trusted enclaves.</p>
 <p>In addition to TEEs, Confidential Computing provides Remote Attestation features. Attestation enables remote systems or users to interrogate the security state of a TEE before interacting with it and providing any secrets or sensitive data.</p>
 <p><a class="reference external" href="https://github.com/confidential-containers">Confidential Containers</a> (CoCo) is the cloud-native approach of CC on Kubernetes.
 The Confidential Containers architecture leverages Kata Containers to provide the sandboxing capabilities. <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> is an open-source project that provides lightweight Utility Virtual Machines (UVMs) that feel and perform like containers while providing strong workload isolation. Along with the Confidential Containers project, Kata enables the orchestration of secure, GPU-accelerated workloads in Kubernetes.</p>
 <section id="architecture-overview">
-<h3>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h3>
+<span id="coco-architecture"></span><h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h2>
 <p>NVIDIA’s approach to the Confidential Containers architecture delivers on the key promise of Confidential Computing: confidentiality, integrity, and verifiability.
 Integrating open source and NVIDIA software components with the Confidential Computing capabilities of NVIDIA GPUs, the Reference Architecture for Confidential Containers is designed to be the secure and trusted deployment model for AI workloads.</p>
 <img alt="High-Level Reference Architecture for Confidential Containers" src="_images/CoCo-Reference-Architecture.png" />
@@ -415,10 +409,8 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <li><p><strong>Highest level of isolation</strong> - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).</p></li>
 <li><p><strong>Zero-trust execution with Attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with Attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
 </ol>
-</section>
-</section>
 <section id="use-cases">
-<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
+<span id="coco-use-cases"></span><h3>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h3>
 <p>The target for Confidential Containers is to enable model providers (Close and Open source) and Enterprises to leverage the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
 <ul class="simple">
 <li><p><strong>Zero-Trust AI &amp; IP Protection:</strong> You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.</p></li>
@@ -427,7 +419,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <p><em>Sample Workflow for Securing Model IP on Untrusted Infrastructure with CoCo</em></p>
 </section>
 <section id="software-components-for-confidential-containers">
-<h2>Software Components for Confidential Containers<a class="headerlink" href="#software-components-for-confidential-containers" title="Permalink to this headline">#</a></h2>
+<span id="coco-supported-platforms-components"></span><h3>Software Components for Confidential Containers<a class="headerlink" href="#software-components-for-confidential-containers" title="Permalink to this headline">#</a></h3>
 <p><strong>Kata Containers</strong></p>
 <p>Acts as the secure isolation layer by running standard Kubernetes Pods inside lightweight, hardware-isolated Utility VMs (UVMs) rather than sharing the untrusted host kernel. Kata containers are integrated with Kuberentes’ <a class="reference external" href="https://github.com/kubernetes-sigs/agent-sandbox">Agent Sandbox</a> project to deliver sandboxing capabilities.</p>
 <p><strong>NVIDIA GPU Operator</strong></p>
@@ -455,7 +447,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <p>A minimal, chiseled and hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons and launches the Kata Agent while drastically reducing the attack surface.</p>
 </section>
 <section id="software-stack-and-component-versions">
-<h2>Software Stack and Component Versions<a class="headerlink" href="#software-stack-and-component-versions" title="Permalink to this headline">#</a></h2>
+<h3>Software Stack and Component Versions<a class="headerlink" href="#software-stack-and-component-versions" title="Permalink to this headline">#</a></h3>
 <p>The following is the component stack to support the open Reference Architecture (RA) along with the proposed versions of different SW components.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id1">
 <caption><span class="caption-text">Software stack and component versions</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
@@ -537,8 +529,10 @@ Integrating open source and NVIDIA software components with the Confidential Com
 </tbody>
 </table>
 </div>
+</section>
+</section>
 <section id="cluster-topology-considerations">
-<h3>Cluster Topology Considerations<a class="headerlink" href="#cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
+<h2>Cluster Topology Considerations<a class="headerlink" href="#cluster-topology-considerations" title="Permalink to this headline">#</a></h2>
 <p>You can configure all the worker nodes in your cluster for running GPU workloads with confidential containers, or you can configure some nodes for Confidential Containers and the others for traditional containers. Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -557,10 +551,10 @@ Integrating open source and NVIDIA software components with the Confidential Com
 </tbody>
 </table>
 </div>
-<p>This configuration can be controlled via node labelling, as described in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html#confidential-containers-deploy">Deploy Confidential Containers with NVIDIA GPU Operator</a>.</p>
+<p>This configuration can be controlled via node labelling, as described in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html#confidential-containers-deploy" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Deploy Confidential Containers with NVIDIA GPU Operator</span></a>.</p>
 </section>
 <section id="supported-platforms">
-<h3>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h3>
+<span id="coco-supported-platforms"></span><h2>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h2>
 <p>Following is the platform and feature support scope for Early Access (EA) of Confidential Containers open Reference Architecture  published by NVIDIA.</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id2">
 <caption><span class="caption-text">Supported Platforms</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
@@ -589,7 +583,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 </tbody>
 </table>
 </div>
-<p>Refer to the <em>Confidential Computing Deployment Guide</em> at the [<a class="reference external" href="https://docs.nvidia.com/confidential-computing](https://docs.nvidia.com/confidential-computing">https://docs.nvidia.com/confidential-computing](https://docs.nvidia.com/confidential-computing</a>) website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100, and specifically to [<a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-snp.pdf](https://docs.nvidia.com/cc-deployment-guide-snp.pdf">https://docs.nvidia.com/cc-deployment-guide-snp.pdf](https://docs.nvidia.com/cc-deployment-guide-snp.pdf</a>) for setup specific to AMD SEV-SNP machines.</p>
+<p>Refer to the <em>Confidential Computing Deployment Guide</em> at the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">Confidential Computing</a> website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100, and specifically to <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-snp.pdf">CC deployment guide for SEV-SNP</a> for setup specific to AMD SEV-SNP machines.</p>
 <p>The following topics in the deployment guide apply to a cloud-native environment:</p>
 <ul class="simple">
 <li><p>Hardware selection and initial hardware configuration, such as BIOS settings.</p></li>
@@ -597,10 +591,8 @@ Integrating open source and NVIDIA software components with the Confidential Com
 </ul>
 <p>When following the cloud-native sections in above linked deployment guide, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.</p>
 <p>The remaining configuration topics in the deployment guide do not apply to a cloud-native environment. NVIDIA GPU Operator performs the actions that are described in these topics.</p>
-</section>
-</section>
 <section id="limitations-and-restrictions-for-coco-ea">
-<h2>Limitations and Restrictions for CoCo EA<a class="headerlink" href="#limitations-and-restrictions-for-coco-ea" title="Permalink to this headline">#</a></h2>
+<h3>Limitations and Restrictions for CoCo EA<a class="headerlink" href="#limitations-and-restrictions-for-coco-ea" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.</p></li>
 <li><p>GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.</p></li>
@@ -609,6 +601,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
 <li><p>NFD doesn’t label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described below.</p></li>
 </ul>
+</section>
 </section>
 </section>
 
@@ -628,7 +621,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA Confidential Containers</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Support</p>
       </div>
     </a>
 </div>
@@ -652,18 +645,17 @@ Integrating open source and NVIDIA software components with the Confidential Com
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-components-for-confidential-containers">Software Components for Confidential Containers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-stack-and-component-versions">Software Stack and Component Versions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-components-for-confidential-containers">Software Components for Confidential Containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-stack-and-component-versions">Software Stack and Component Versions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-platforms">Supported Platforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-platforms">Supported Platforms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions-for-coco-ea">Limitations and Restrictions for CoCo EA</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions-for-coco-ea">Limitations and Restrictions for CoCo EA</a></li>
 </ul>
   </nav></div>
 
