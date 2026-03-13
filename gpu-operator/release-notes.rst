@@ -136,6 +136,8 @@ New Features
     runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
     This differs from prior releases where CDI support in container runtimes was not used, and
     instead, an ``nvidia`` runtime class configured in CDI mode was used.
+  - When CDI is enabled, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin. Setting ``runtimeClassName`` is not required for standard workloads. For workloads that already have ``runtimeClassName: nvidia`` set in their pod spec YAML, no change is necessary.
+  - GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification. It's recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by GPU Management Containers. A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes. Examples include monitoring agents and device plugins.
   - For OpenShift users upgrading to v25.10.0, we recommend updating the ``cdi.enabled``
     field in ClusterPolicy to ``true`` post-upgrade. This field will not automatically be
     updated to ``true`` since the Operator Lifecycle Manager (OLM) does not mutate custom
