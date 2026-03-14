@@ -17,9 +17,9 @@
 .. headings # #, * *, =, -, ^, "
 
 
-***************************************************
-NVIDIA Confidential Containers Support Early Access
-***************************************************
+******************************************************
+NVIDIA Confidential Containers Overview (Early Access)
+******************************************************
 
 .. admonition:: Early Access
 

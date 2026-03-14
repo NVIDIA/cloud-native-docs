@@ -16,12 +16,12 @@
 
 .. headings # #, * *, =, -, ^, "
 
-**************************************
-NVIDIA Confidential Containers Support
-**************************************
+**********************************************************
+NVIDIA Confidential Containers Architecture (Early Access)
+**********************************************************
 
 .. toctree::
-   :caption: NVIDIA Confidential Containers Support
+   :caption: NVIDIA Confidential Containers Architecture
    :hidden:
    :titlesonly:
 

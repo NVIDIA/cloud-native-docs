@@ -206,7 +206,7 @@ output_format = "linkcheck"
 [repo_docs.projects.confidential-containers]
 docs_root = "${root}/confidential-containers"
 project = "confidential-containers"
-name = "NVIDIA Confidential Containers Support"
+name = "NVIDIA Confidential Containers Architecture"
 version = "25.10"
 copyright_start = 2020
 
