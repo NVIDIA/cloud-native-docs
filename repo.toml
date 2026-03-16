@@ -195,8 +195,7 @@ redirects = [
   { path="openshift/install-gpu-ocp.html", project="openshift", target="install-gpu-ocp.html" },
   { path="dra-crds.html", target="dra-intro-install.html" },
   { path="dra-gpus.html", target="dra-intro-install.html" },
-  # Use absolute path so redirect target does not get gpu-operator version injected (repo_docs cross-project redirect bug).
-  { path="confidential-containers.html", target="/confidential-containers/latest/overview.html" },
+  { path = "confidential-containers.html", target = "https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html" },
 ]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
