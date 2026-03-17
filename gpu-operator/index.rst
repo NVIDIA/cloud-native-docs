@@ -55,14 +55,8 @@
    :titlesonly:
    :hidden:
 
-<<<<<<< HEAD
       KubeVirt <gpu-operator-kubevirt.rst>
       Confidential Containers <confidential-containers-deploy.rst>
-=======
-   KubeVirt <gpu-operator-kubevirt.rst>
-   Kata Containers <gpu-operator-kata.rst>
-   Confidential Containers <confidential-containers.rst>
->>>>>>> 665840cb (Add docs for 26.3.0 release)
    
 .. toctree::
    :caption: Specialized Networks
