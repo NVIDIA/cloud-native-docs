@@ -69,14 +69,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
-    <link rel="prev" title="Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata" href="confidential-containers.html" />
+    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
 
 
 
@@ -360,12 +360,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
-</ul><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">   Confidential Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -415,9 +411,6 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    
-    <li class="breadcrumb-item"><a href="confidential-containers.html" class="nav-link">Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata</a></li>
-    
     <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers with NVIDIA GPU Operator</li>
   </ul>
 </nav></div>
@@ -436,16 +429,17 @@
                   
   <section id="deploy-confidential-containers-with-nvidia-gpu-operator">
 <span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers with NVIDIA GPU Operator<a class="headerlink" href="#deploy-confidential-containers-with-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<p>This page describes how to deploy Confidential Containers using the NVIDIA GPU Operator.
-For an overview of Confidential Containers, refer to <a class="reference internal" href="confidential-containers.html#early-access-gpu-operator-confidential-containers-kata"><span class="std std-ref">Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
 </div>
+<p>The page describes deploying Confidential Containers with the NVIDIA GPU Operator.
+The implementation relies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers overview</a> for details on the reference architecture and supported platforms.</p>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference internal" href="confidential-containers.html#supported-platforms"><span class="std std-ref">Supported Platforms</span></a>. In particular:</p>
+<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers supported platforms</a>. In particular:</p>
 <ul class="simple">
 <li><p>You selected and configured your hardware and BIOS to support confidential computing.</p></li>
 <li><p>You installed and configured Ubuntu 25.10 as host OS with its default kernel to support confidential computing.</p></li>
@@ -466,7 +460,9 @@ For an overview of Confidential Containers, refer to <a class="reference interna
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p></li>
 </ul>
 </li>
-<li><p>You have a Kubernetes cluster and you have cluster administrator privileges. For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).</p></li>
+<li><p>You have a Kubernetes cluster and you have cluster administrator privileges.
+* For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).</p></li>
+<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled on your cluster. The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet`s Pod Resources API to discover allocated GPU devices during sandbox creation. For Kubernetes versions older than 1.34, you must explicitly enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate in your Kubelet configuration. For Kubernetes 1.34 and later, this feature is enabled by default.</p></li>
 </ul>
 </section>
 <section id="installation-and-configuration">
@@ -790,7 +786,7 @@ resource types (such as <code class="docutils literal notranslate"><span class="
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">io.katacontainers.config.hypervisor.kernel_params: &quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span>
 </pre></div>
 </div>
-<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, see the upstream documentation.</p>
+<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the upstream documentation.</p>
 <p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the nvrc.smi.srs=1 kernel parameter.</p>
 <p>If attestation does not succeed, debugging is best done via the Trustee log. Debug mode can be enabled by setting RUST_LOG=debug in the Trustee environment.</p>
 </section>
@@ -815,12 +811,12 @@ resource types (such as <code class="docutils literal notranslate"><span class="
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="confidential-containers.html"
+       href="gpu-operator-kubevirt.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Early Access: NVIDIA GPU Operator with Confidential Containers based on Kata</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
       </div>
     </a>
     <a class="right-next"

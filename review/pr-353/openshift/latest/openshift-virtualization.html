@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
 
 
 
@@ -698,8 +698,12 @@ private container registry).</p>
 Create the cluster policy using the CLI:</p>
 <ol class="arabic">
 <li><p>Create the ClusterPolicy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath<span class="o">={</span>.metadata.annotations.alm-examples<span class="o">}</span> <span class="p">|</span> jq .<span class="o">[</span><span class="m">0</span><span class="o">]</span> &gt; clusterpolicy.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span> &gt; clusterpolicy.json
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">$STARTING_CSV</span></code> is the value of the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> field in the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR created in the <a class="reference internal" href="install-gpu-ocp.html#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> section.</p>
 </div>
 </li>
 <li><p>Modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file as follows:</p>

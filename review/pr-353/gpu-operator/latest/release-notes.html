@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
 
 
 
@@ -362,12 +362,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -471,9 +467,11 @@ Enable by setting the <code class="docutils literal notranslate"><span class="pr
 Additionally, the GPU Operator no longer requires setting values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit on platforms such as K3s, k0s, and RKE.</p>
 <p>This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
 If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenShift clusters do not support the Node Feature API yet.</p>
+</div>
 </li>
-<li><p>GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
-OpenShift clusters do not support the Node Feature API yet.</p></li>
 <li><p>Added support for dynamic MIG config generation.
 By default, the MIG Manager will automatically generate a per-node ConfigMap with the default MIG profiles for the available GPUs on the node.
 This replaces the previous static ConfigMap.
@@ -645,6 +643,8 @@ The <code class="docutils literal notranslate"><span class="pre">cdi.default</sp
 runtimes, such as containerd and cri-o, for injecting GPU support into workload containers.
 This differs from prior releases where CDI support in container runtimes was not used, and
 instead, an <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class configured in CDI mode was used.</p></li>
+<li><p>When CDI is enabled, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin. Setting <code class="docutils literal notranslate"><span class="pre">runtimeClassName</span></code> is not required for standard workloads. For workloads that already have <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> set in their pod spec YAML, no change is necessary.</p></li>
+<li><p>GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification. It’s recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by GPU Management Containers. A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes. Examples include monitoring agents and device plugins.</p></li>
 <li><p>For OpenShift users upgrading to v25.10.0, we recommend updating the <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code>
 field in ClusterPolicy to <code class="docutils literal notranslate"><span class="pre">true</span></code> post-upgrade. This field will not automatically be
 updated to <code class="docutils literal notranslate"><span class="pre">true</span></code> since the Operator Lifecycle Manager (OLM) does not mutate custom

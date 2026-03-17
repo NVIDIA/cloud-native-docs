@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 10, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
 
 
 
@@ -360,12 +360,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kata.html">Kata Containers</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -504,7 +500,7 @@ Make sure the instance type supports enough IP addresses for your workload.
 For example, the <code class="docutils literal notranslate"><span class="pre">g4dn.xlarge</span></code> instance type supports <code class="docutils literal notranslate"><span class="pre">29</span></code> IP addresses for pods on the node.</p></li>
 </ul>
 </li>
-<li><p>Use an Amazon EKS optimized Amazon Machine Image (AMI) with Ubuntu 20.04 or 22.04 on the nodes in the node group.</p>
+<li><p>Use an Amazon EKS optimized Amazon Machine Image (AMI) with Ubuntu 20.04, 22.04, or 24.04 on the nodes in the node group.</p>
 <p>AMIs support are specific to an AWS region and Kubernetes version.
 See <a class="reference external" href="https://cloud-images.ubuntu.com/aws-eks/">https://cloud-images.ubuntu.com/aws-eks/</a> for the AMI values such as <code class="docutils literal notranslate"><span class="pre">ami-00687acd80b7a620a</span></code>.</p>
 </li>
