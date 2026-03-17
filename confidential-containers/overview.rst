@@ -57,7 +57,7 @@ The key value proposition for this architecture approach is:
 
 1. **Built on OSS standards** - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.
 2. **Highest level of isolation** - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).
-3. **Zero-trust execution with Attestation** - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with Attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.
+3. **Zero-trust execution with attestation** - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.
 
 .. _coco-use-cases:
 
@@ -98,7 +98,7 @@ The GPU Operator deploys the components needed to run Confidential Containers to
 
 **Kata Deploy**
 
-Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
+Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
 
 **Node Feature Discovery (NFD)**
 
@@ -110,19 +110,19 @@ Attestation and key brokering framework (which includes the Key Broker Service a
 
 **Snapshotter (e.g., Nydus)**
 
-Handles the "Guest Pull" functionality. It bypasses the host to fetch and unpack encrypted container images directly inside the protected guest memory, keeping proprietary code hidden.
+Handles the container image "guest pull" functionality. Used as a remote snapshotter, it bypasses image pulls on the host. Instead, it fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.
 
-**Kata Agent Policy**
+**Kata Agent and Agent Security Policy**
 
-Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable policy based on Rego (regorus) for allow-list. This blocks the untrusted host from executing unauthorized commands, such as a malicious ``kubectl exec``.
+Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus). This blocks the untrusted host from executing unauthorized commands, such as a malicious ``kubectl exec``.
 
 **Confidential Data Hub (CDH)**
 
-An in-guest component that securely receives decrypted secrets from Trustee and transparently manages encrypted persistent storage and image decryption for the workload.
+An in-guest component that securely receives sealed secrets from Trustee and transparently manages encrypted persistent storage and image decryption for the workload.
 
 **NVRC (NVIDIA runcom)**
 
-A minimal, chiseled and hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons and launches the Kata Agent while drastically reducing the attack surface.
+A minimal hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons while drastically reducing the attack surface.
 
 Software Stack and Component Versions
 --------------------------------------
