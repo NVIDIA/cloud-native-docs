@@ -56,6 +56,7 @@
    :hidden:
 
       KubeVirt <gpu-operator-kubevirt.rst>
+      Kata Containers <kata-containers-deploy.rst>
       Confidential Containers <confidential-containers-deploy.rst>
    
 .. toctree::

@@ -317,6 +317,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <kata-containers-deploy>`, or :doc:`Confidential Containers <confidential-containers-deploy>` for more details on deploying different workload containers. 
      - ``container``
   
    * - ``sandboxWorkloads.mode``

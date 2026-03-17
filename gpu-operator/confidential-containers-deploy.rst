@@ -139,21 +139,7 @@ Perform the following steps to install the Operator for use with confidential co
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
           --set sandboxWorkloads.enabled=true \
-          --set kataManager.enabled=true \
-          --set kataManager.config.runtimeClasses=null \
-          --set kataManager.repository=nvcr.io/nvidia/cloud-native \
-          --set kataManager.image=k8s-kata-manager \
-          --set kataManager.version=v0.2.4 \
-          --set ccManager.enabled=true \
-          --set ccManager.defaultMode=on \
-          --set ccManager.repository=nvcr.io/nvidia/cloud-native \
-          --set ccManager.image=k8s-cc-manager \
-          --set ccManager.version=v0.2.0 \
-          --set sandboxDevicePlugin.repository=nvcr.io/nvidia/cloud-native \
-          --set sandboxDevicePlugin.image=nvidia-sandbox-device-plugin \
-          --set sandboxDevicePlugin.version=v0.0.1 \
-          --set 'sandboxDevicePlugin.env[0].name=P_GPU_ALIAS' \
-          --set 'sandboxDevicePlugin.env[0].value=pgpu' \
+          --set sandboxWorkloads.mode=kata \
           --set nfd.enabled=true \
           --set nfd.nodefeaturerules=true
 
@@ -172,7 +158,7 @@ Perform the following steps to install the Operator for use with confidential co
    resource types (such as ``nvidia.com/GH100_H100L_94GB``) instead of the generic
    ``nvidia.com/pgpu``. For simplicity, this guide uses the generic alias.
 
-3. Verify that all GPU Operator pods, especially the Kata Manager, Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running::
+3. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running::
 
       $ kubectl get pods -n gpu-operator
 
@@ -184,7 +170,6 @@ Perform the following steps to install the Operator for use with confidential co
       gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s
       gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
       nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
-      nvidia-kata-manager-k8ctm                                         1/1     Running   0          62s
       nvidia-sandbox-device-plugin-daemonset-d5rvg                      1/1     Running   0          30s
       nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s
       nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
