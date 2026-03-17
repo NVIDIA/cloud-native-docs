@@ -323,7 +323,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - Specifies the sandbox mode to use when deploying sandbox workloads.
        Accepted values are ``kubevirt`` (default) and ``kata``.
        Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` page for more information on using KubeVirt based workloads.
-       Refer to the :doc:`Kata Containers <gpu-operator-kata>` page for more information on using Kata Containers based workloads.
      - ``kubevirt``
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)

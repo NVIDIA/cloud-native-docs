@@ -43,7 +43,6 @@ Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.
 
-<<<<<<< HEAD
 
 CDI and GPU Management Containers
 *********************************
@@ -54,14 +53,9 @@ Examples of GPU Management Containers include monitoring agents and device plugi
 
 It is recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by management containers.
 
-********************************
-Enabling CDI During Installation
-********************************
-=======
 ************
 Enabling CDI 
 ************
->>>>>>> 665840cb (Add docs for 26.3.0 release)
 
 CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.

@@ -66,8 +66,8 @@ New Features
   This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
   If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
 
-* GPU Feature Discovery now uses the Node Feature API by default instead of feature files to discover GPUs and add GPU node labels to the nodes.
-  OpenShift clusters do not support the Node Feature API yet.
+  .. note::
+    OpenShift clusters do not support the Node Feature API yet.
 
 * Added support for dynamic MIG config generation.
   By default, the MIG Manager will automatically generate a per-node ConfigMap with the default MIG profiles for the available GPUs on the node. 
