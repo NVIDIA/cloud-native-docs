@@ -31,7 +31,7 @@ Overview
 ========
 NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.
 
-As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. Additionally, the model deployment landscape is evolving to include public clouds, enterprise on-premises, and edge. A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access. 
+As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. Additionally, the model deployment landscape is evolving to include public clouds, enterprise on-premises, and edge. A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access.
 
 Securing data at rest and in transit is standard. Protecting data in-use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs), such as AMD SEV-SNP / Intel TDX technologies, and NVIDIA Confidential Computing capabilities to create trusted enclaves.
 
@@ -66,7 +66,7 @@ Use Cases
 
 The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to leverage the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
 
-* **Zero-Trust AI & IP Protection:** You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.  
+* **Zero-Trust AI & IP Protection:** You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.
 * **Data Clean Rooms:** This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.
 
 .. image:: graphics/CoCo-Sample-Workflow.png
@@ -81,7 +81,7 @@ Software Components for Confidential Containers
 
 The following is a brief overview of the software components for Confidential Containers.
 
-**Kata Containers** 
+**Kata Containers**
 
 Acts as the secure isolation layer by running standard Kubernetes Pods inside lightweight, hardware-isolated Utility VMs (UVMs) rather than sharing the untrusted host kernel. Kata containers are integrated with the Kubernetes `Agent Sandbox <https://github.com/kubernetes-sigs/agent-sandbox>`_ project to deliver sandboxing capabilities.
 
@@ -127,9 +127,9 @@ A minimal, chiseled and hardened init system that securely bootstraps the guest 
 Software Stack and Component Versions
 --------------------------------------
 
-The following is the component stack to support the open Reference Architecture (RA) along with the proposed versions of different SW components. 
+The following is the component stack to support the open Reference Architecture (RA) along with the proposed versions of different SW components.
 
-.. flat-table:: 
+.. flat-table::
    :header-rows: 1
 
    * - Category
@@ -142,39 +142,39 @@ The following is the component stack to support the open Reference Architecture 
        | Blackwell RTX Pro 6000
    * - CPU Platform
      - | AMD Genoa/ Milan
-       | Intel ER/ GR 
-   * - :rspan:`7` **Host SW Components** 
-     - Host OS 
-     - 25.10 
-   * - Host Kernel 
-     - 6.17+ 
-   * - Guest OS 
-     - Distroless 
-   * - Guest kernel 
-     - 6.18.5 
-   * - OVMF 
-     - edk2-stable202511 
-   * - QEMU 
-     - 10.1 \+ Patches 
-   * - Containerd 
-     - 2.2.2 \+ 
-   * - Kubernetes 
-     - 1.32 \+ 
-   * - :rspan:`3` **Confidential Containers Core Components** 
-     - NFD 
-     - v0.6.0 
-   * - NVIDIA/gpu-operator 
-        | - NVIDIA VFIO Manager 
-        | - NVIDIA Sandbox device plugin 
+       | Intel ER/ GR
+   * - :rspan:`7` **Host SW Components**
+     - Host OS
+     - 25.10
+   * - Host Kernel
+     - 6.17+
+   * - Guest OS
+     - Distroless
+   * - Guest kernel
+     - 6.18.5
+   * - OVMF
+     - edk2-stable202511
+   * - QEMU
+     - 10.1 \+ Patches
+   * - Containerd
+     - 2.2.2 \+
+   * - Kubernetes
+     - 1.32 \+
+   * - :rspan:`3` **Confidential Containers Core Components**
+     - NFD
+     - v0.6.0
+   * - NVIDIA/gpu-operator
+        | - NVIDIA VFIO Manager
+        | - NVIDIA Sandbox device plugin
         | - NVIDIA Confidential Computing Manager for Kubernetes
         | - NVIDIA Kata Manager for Kubernetes
-     - v25.10.0 and higher 
-   * - CoCo release (EA) 
-        | - Kata 3.25 (w/ kata-deploy helm) 
-        | - Trustee/Guest components 0.17.0 
-        | - KBS protocol 0.4.0 
-     - v0.18.0 
- 
+     - v25.10.0 and higher
+   * - CoCo release (EA)
+        | - Kata 3.25 (w/ kata-deploy helm)
+        | - Trustee/Guest components 0.17.0
+        | - KBS protocol 0.4.0
+     - v0.18.0
+
 
 Cluster Topology Considerations
 -------------------------------
@@ -227,7 +227,7 @@ Refer to the *Confidential Computing Deployment Guide* at the `Confidential Comp
 
 The following topics in the deployment guide apply to a cloud-native environment:
 
-* Hardware selection and initial hardware configuration, such as BIOS settings.  
+* Hardware selection and initial hardware configuration, such as BIOS settings.
 * Host operating system selection, initial configuration, and validation.
 
 When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.
@@ -235,11 +235,11 @@ When following the cloud-native sections in the deployment guide linked above, u
 The remaining configuration topics in the deployment guide do not apply to a cloud-native environment. NVIDIA GPU Operator performs the actions that are described in these topics.
 
 Limitations and Restrictions for CoCo EA
----------------------------------------- 
+----------------------------------------
 
-* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.  
-* GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.  
-* Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.  
-* Support for confidential computing environments is limited to the implementation described on this page.  
-* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.  
+* Only the AMD platform using SEV-SNP is supported for Confidential Containers Early Access.
+* GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.
+* Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.
+* Support for confidential computing environments is limited to the implementation described on this page.
+* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
 * NFD doesn't label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described in the deployment guide.
