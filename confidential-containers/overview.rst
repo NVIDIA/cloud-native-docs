@@ -94,7 +94,6 @@ The GPU Operator deploys the components needed to run Confidential Containers to
 * NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.
 * NVIDIA Sandbox Device Plugin - to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.
 * NVIDIA VFIO Manager - to bind discovered NVIDIA GPUs to the vfio-pci driver for VFIO passthrough.
-* NVIDIA Kata Manager for Kubernetes - to create host-side CDI specifications for GPU passthrough.
 
 **Kata Deploy**
 
@@ -167,14 +166,13 @@ The following is the component stack to support the open Reference Architecture 
         | - NVIDIA VFIO Manager
         | - NVIDIA Sandbox device plugin
         | - NVIDIA Confidential Computing Manager for Kubernetes
-        | - NVIDIA Kata Manager for Kubernetes
-     - v25.10.0 and higher
-   * - CoCo release (EA)
-        | - Kata 3.25 (w/ kata-deploy helm)
-        | - Trustee/Guest components 0.17.0
-        | - KBS protocol 0.4.0
-     - v0.18.0
-
+     - v25.10.0 and higher 
+   * - CoCo release (EA) 
+        | - Kata 3.25 (w/ kata-deploy helm) 
+        | - Trustee/Guest components 0.17.0 
+        | - KBS protocol 0.4.0 
+     - v0.18.0 
+ 
 
 Cluster Topology Considerations
 -------------------------------
@@ -194,8 +192,7 @@ You can configure all the worker nodes in your cluster for running GPU workloads
        * NVIDIA MIG Manager for Kubernetes
        * Node Feature Discovery
        * NVIDIA GPU Feature Discovery
-     - * NVIDIA Kata Manager for Kubernetes
-       * NVIDIA Confidential Computing Manager for Kubernetes
+     - * NVIDIA Confidential Computing Manager for Kubernetes
        * NVIDIA Sandbox Device Plugin
        * NVIDIA VFIO Manager
        * Node Feature Discovery
