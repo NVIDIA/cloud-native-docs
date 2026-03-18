@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -530,7 +530,7 @@ GPU Allocation</label><div class="sd-tab-content docutils">
 </li>
 <li><p>Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
-<span class="go">  --version=v25.10.1 \</span>
+<span class="go">  --version=v26.3.0 \</span>
 <span class="go">  --create-namespace \</span>
 <span class="go">  --namespace gpu-operator \</span>
 <span class="go">  --set devicePlugin.enabled=false \</span>
@@ -556,7 +556,7 @@ ComputeDomain</label><div class="sd-tab-content docutils">
 <li><p>Install the GPU Operator with the device plugin disabled:</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
-<span class="go">  --version=v25.10.1 \</span>
+<span class="go">  --version=v26.3.0 \</span>
 <span class="go">  --create-namespace \</span>
 <span class="go">  --namespace gpu-operator</span>
 </pre></div>
