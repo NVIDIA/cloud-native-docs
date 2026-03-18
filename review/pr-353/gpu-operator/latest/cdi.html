@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 18, 2026"/>
 
 
 
@@ -447,10 +447,10 @@ The benefits of CDI are largely to reduce development and support for runtime-sp
 plugins.</p>
 <section id="cdi-and-gpu-management-containers">
 <h3>CDI and GPU Management Containers<a class="headerlink" href="#cdi-and-gpu-management-containers" title="Permalink to this headline">#</a></h3>
-<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
-A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes.
+<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
+A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes.
 Examples of GPU Management Containers include monitoring agents and device plugins.</p>
-<p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by management containers.</p>
+<p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by GPU Management Containers.</p>
 </section>
 </section>
 <section id="enabling-cdi">
