@@ -465,11 +465,11 @@ This is a new way of injecting GPU management CDI devices into operands, replaci
 Enable by setting the <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code> field to <code class="docutils literal notranslate"><span class="pre">true</span></code> in the ClusterPolicy custom resource or by setting the <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code> flag in the Helm chart.</p>
 <p>When enabled, the Container Toolkit no longer modifies the container runtime configuration, such as the <code class="docutils literal notranslate"><span class="pre">containerd.toml</span></code> file, to inject GPUs into workload containers. Instead, the NRI Plugin injects GPUs into workload containers.
 Additionally, the GPU Operator no longer requires setting values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit on platforms such as K3s, k0s, and RKE.</p>
-<p>This feature requires CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
+<p>This feature requires containerd v1.7.30, v2.1.x, or v2.2.x.
 If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>OpenShift clusters do not support the NRI Plugin yet.</p>
+<p>Enabling the NRI plugin is not supported with cri-o.</p>
 </div>
 </li>
 <li><p>Added support for dynamic MIG config generation.

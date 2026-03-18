@@ -538,7 +538,7 @@ column to determine if your nodes use CRI-O.</p>
 </section>
 <section id="about-the-node-resource-interface-nri-plugin">
 <span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
-<p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like CRI-O and containerd.
+<p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd.
 NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including inject devices to a container, topology aware placement strategies, and more.
 For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
 <p>When enabled in the GPU Operator, the NRI Plugin is managed by the NVIDIA Container Toolkit andprovides an alternative to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class to provision GPU workload pods.
@@ -548,10 +548,15 @@ This feature also simplifies deployments on platforms like k3s, k0s, or RKE, bec
 <section id="enabling-the-nri-plugin">
 <h2>Enabling the NRI Plugin<a class="headerlink" href="#enabling-the-nri-plugin" title="Permalink to this headline">#</a></h2>
 <p>The NRI Plugin requires the following:</p>
-<ul class="simple">
+<ul>
 <li><p>CDI to be enabled in the GPU Operator.</p></li>
-<li><p>CRI-O v1.34.0 or later or containerd v1.7.30, v2.1.x, or v2.2.x.
-If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p></li>
+<li><p>containerd v1.7.30, v2.1.x, or v2.2.x.
+If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Enabling the NRI plugin is not supported with cri-o.</p>
+</div>
+</li>
 </ul>
 <p>To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page and include the <code class="docutils literal notranslate"><span class="pre">--set</span>&#160; <span class="pre">cdi.nriPluginEnabled=true</span></code> argument in you Helm command.</p>
 <section id="enabling-the-nri-plugin-after-installation">
