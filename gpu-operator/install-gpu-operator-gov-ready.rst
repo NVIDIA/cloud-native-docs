@@ -32,28 +32,47 @@ Supported GPU Operator Components
 ==================================
 The government-ready NVIDIA GPU Operator includes the following components:
 
-.. _fn1: #base-image
-.. |fn1| replace:: :sup:`1`
+.. _gov-ready-fn1: #base-image
+.. |gov-ready-fn1| replace:: :sup:`1`
 
-.. list-table::
-   :header-rows: 1
+.. flat-table::
+   :header-rows: 2
 
-   * - Component
-     - Version
+   * - :rspan:`1` Component
+     - :cspan:`2` GPU Operator Version
+
+   * - v25.10.0
+     - v25.10.1
+
    * - NVIDIA GPU Operator
      - v25.10.0
+     - v25.10.1
+
    * - NVIDIA GPU Feature Discovery
      - 0.18.0
+     - 0.18.1
+
    * - NVIDIA Container Toolkit
      - 1.18.0
-   * - NVIDIA Device Plugin
+
+
+   * - NVIDIA Kubernetes Device Plugin
      - 0.18.0
+     - 0.18.1
+
    * - NVIDIA DCGM-exporter
      - 4.4.1-4.6.0
+     - v4.4.2-4.7.0
+
    * - NVIDIA MIG Manager
      - 0.13.0
-   * - NVIDIA Driver
-     - 580.95.05 |fn1|_
+     - 0.13.1
+
+   * - NVIDIA Driver |gov-ready-fn1|_
+     - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_
+     - | `580.126.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-09/index.html>`_ 
+       | `580.105.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html>`_ 
+       | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ 
 
 :sup:`1`
 Hardened for STIG/FIPS compliance
