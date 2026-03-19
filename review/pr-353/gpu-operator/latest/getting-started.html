@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 18, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 19, 2026"/>
 
 
 
@@ -927,6 +927,8 @@ will be created. By default this will point to <code class="docutils literal not
 <p>For Rancher Kubernetes Engine 2 (RKE2), refer to
 <a class="reference external" href="https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator">Deploy NVIDIA Operator</a>
 in the RKE2 documentation.</p>
+<p>It’s recommended that you enable CDI (default) and the NRI Plugin on RKE.
+With both features enabled, you do not need to set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in your pod spec.</p>
 <p>Refer to the <a class="reference internal" href="release-notes.html#v24-9-0-known-limitations"><span class="std std-ref">Known Limitations</span></a>.</p>
 </section>
 <section id="microk8s">

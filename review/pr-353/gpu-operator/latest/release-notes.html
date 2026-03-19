@@ -78,7 +78,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 18, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 19, 2026"/>
 
 
 
@@ -464,7 +464,7 @@
 This is a new way of injecting GPU management CDI devices into operands, replacing the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class.
 Enable by setting the <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code> field to <code class="docutils literal notranslate"><span class="pre">true</span></code> in the ClusterPolicy custom resource or by setting the <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code> flag in the Helm chart.</p>
 <p>When enabled, the Container Toolkit no longer modifies the container runtime configuration, such as the <code class="docutils literal notranslate"><span class="pre">containerd.toml</span></code> file, to inject GPUs into workload containers. Instead, the NRI Plugin injects GPUs into workload containers.
-Additionally, the GPU Operator no longer requires setting values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit on platforms such as K3s, k0s, and RKE.</p>
+Additionally, the GPU Operator no longer requires setting values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit on platforms such as K3s, k0s, and Rancher Kubernetes Engine 2.</p>
 <p>This feature requires containerd v1.7.30, v2.1.x, or v2.2.x.
 If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
 <div class="admonition note">
@@ -498,6 +498,7 @@ It is recommended that you only use this feature from new installations.</p>
 <li><p>Red Hat Enterprise Linux 9.7</p></li>
 </ul>
 </li>
+<li><p>Added support for NVIDIA GB200 NVL4</p></li>
 <li><p>Added support for including extra manifests with the Helm chart in the <code class="docutils literal notranslate"><span class="pre">extraObjects</span></code> field.</p></li>
 <li><p>Added the <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode</span></code> field to help manage sandbox workloads, with <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> and <code class="docutils literal notranslate"><span class="pre">kata</span></code> as valid values.</p></li>
 <li><p>Added support for the DCGM Exporter to expose a metric port on the host network namespace.
