@@ -451,6 +451,11 @@ plugins.</p>
 A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes.
 Examples of GPU Management Containers include monitoring agents and device plugins.</p>
 <p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by GPU Management Containers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
+Refer to <a class="reference internal" href="#nri-plugin"><span class="std std-ref">About the Node Resource Interface (NRI) Plugin</span></a>.</p>
+</div>
 </section>
 </section>
 <section id="enabling-cdi">
