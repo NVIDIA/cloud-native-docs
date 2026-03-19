@@ -539,11 +539,12 @@ column to determine if your nodes use CRI-O.</p>
 <section id="about-the-node-resource-interface-nri-plugin">
 <span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
 <p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd.
-NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including inject devices to a container, topology aware placement strategies, and more.
-For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
-<p>When enabled in the GPU Operator, the NRI Plugin is managed by the NVIDIA Container Toolkit andprovides an alternative to the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class to provision GPU workload pods.
-It allows the GPU Operator to extend the container runtime behaviour without modifying the container runtime itself.
-This feature also simplifies deployments on platforms like k3s, k0s, or RKE, because the GPU Operator no longer needs you to set  values like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> for the Container Toolkit.</p>
+NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including injecting devices to a container, topology aware placement strategies, and more. For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
+<p>When enabled in the GPU Operator, the NVIDIA Container Toolkit daemonset will run an NRI Plugin on every GPU node.
+The purpose of the NRI Plugin is to inject GPUs into GPU management containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs.</p>
+<p>In previous GPU Operator versions, device injection was handled by the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> container runtime. With CDI and the NRI Plugin enabled, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class is no longer needed. When enabling the NRI plugin during install, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will not be created. If you enable the NRI Plugin after install, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be deleted.</p>
+<p>Additionally, with the NRI Plugin enabled, modifications to the container runtime configuration are no longer needed. For example, no modifications are made to containerd’s config.toml file.
+This means that on platforms that configure containerd in a non-standard way, like k3s, k0s, and Rancher Kubernetes Engine 2, users no longer need to configure environment variables like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code>.</p>
 </section>
 <section id="enabling-the-nri-plugin">
 <h2>Enabling the NRI Plugin<a class="headerlink" href="#enabling-the-nri-plugin" title="Permalink to this headline">#</a></h2>
@@ -571,6 +572,7 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
 </pre></div>
 </div>
+<p>After enabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be delelted.</p>
 </li>
 <li><p>(Optional) Confirm that the container toolkit and device plugin pods restart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -607,6 +609,7 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
 </pre></div>
 </div>
+<p>After disabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be created.</p>
 </section>
 </section>
 
