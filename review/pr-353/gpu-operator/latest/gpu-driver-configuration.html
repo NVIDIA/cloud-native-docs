@@ -707,8 +707,8 @@ label the worker nodes to identify the driver type and version to install on eac
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.0
-<span class="go">    --set driver.nvidiaDriverCRD.enabled=true</span>
+    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    --set driver.nvidiaDriverCRD.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>By default, Helm configures a <code class="docutils literal notranslate"><span class="pre">default</span></code> NVIDIA driver custom resource during installation.
