@@ -149,8 +149,8 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
       $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
-   The GPU Operator uses this label to select nodes to deploy pods specifying a Kata container runtime.
-   You can use this label on nodes for Kata workloads, and run traditional container workloads with GPU or vGPU workloads on other nodes in your cluster.
+   The GPU Operator uses this label to determine what software components to deploy to a node. 
+   You can use this label on nodes for Kata workloads, and run traditional container workloads with GPU on other nodes in your cluster.
 
    Alternatively, if you want to run Kata containers on all your worker nodes, set the default sandbox workload to ``vm-passthrough`` when you install the GPU Operator.
 
@@ -174,7 +174,7 @@ Prerequisites
   If the output from running ``ls /sys/kernel/iommu_groups`` includes ``0``, ``1``, and so on,
   then your host is configured for IOMMU.
 
-  If a host is not configured or you are unsure, add the ``intel_iommu=on`` Linux kernel command-line argument.
+  If a host is not configured or you are unsure, add the ``intel_iommu=on`` (or ``amd_iommu=on`` for AMD CPUs) Linux kernel command-line argument.
   For most Linux distributions, you add the argument to the ``/etc/default/grub`` file:
 
   .. code-block:: text
