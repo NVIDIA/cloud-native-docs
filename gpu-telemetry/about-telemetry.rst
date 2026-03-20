@@ -27,13 +27,32 @@ to create and manage alerts. Prometheus is deployed along with `kube-state-metri
 `node_exporter <https://github.com/prometheus/node_exporter>`_ to expose cluster-level metrics for Kubernetes API objects and node-level
 metrics such as CPU utilization.
 
-An architecture of Prometheus is shown in the figure below:
-
-.. image:: https://boxboat.com/2019/08/08/monitoring-kubernetes-with-prometheus/prometheus-architecture.png
-   :width: 800
-
 
 To gather GPU telemetry in Kubernetes, its recommended to use DCGM Exporter.  DCGM Exporter, based on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes
 GPU metrics for Prometheus and can be visualized using Grafana.  DCGM Exporter is architected to take advantage of
 ``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
 scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
+
+.. note::
+   DCGM and DCGM Exporter are deployed by default with the `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_.
+
+
+*************************
+Benefits of GPU Telemetry
+*************************
+
+Understanding GPU usage provides important insights for IT administrators managing a data center.
+Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
+diagnose anomalies, and increase overall data center efficiency. 
+As GPUs become more mainstream, users would like to get access to GPU metrics to monitor GPU resources, just
+like they do today for CPUs.
+
+*************************
+Quick Links
+*************************
+
+* `DCGM Exporter GitHub repository <https://github.com/NVIDIA/dcgm-exporter>`_
+* `DCGM Documentation <https://docs.nvidia.com/datacenter/dcgm/latest/>`_
+* `DCGM Exporter Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_
+* `Integrating GPU Telemetry into Kubernetes <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/integrating-telemetry-kubernetes.html>`_
+* `NVIDIA GPU Operator Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_
