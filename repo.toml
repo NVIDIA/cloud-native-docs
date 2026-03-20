@@ -70,6 +70,8 @@ sphinx_conf_py_extra = """
                 ("_build/docs/openshift/latest/objects.inv", None)),
     "edge": ("https://docs.nvidia.com/datacenter/cloud-native/edge/latest/",
                 ("_build/docs/edge/latest/objects.inv", None)),
+    "cc": ("https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/",
+                ("_build/docs/confidential-containers/latest/objects.inv", None)),
   }
   rst_epilog = ".. |gitlab_mr_url| replace:: Sorry Charlie...not a merge request."
   if os.environ.get("CI_MERGE_REQUEST_IID") is not None:
@@ -195,7 +197,8 @@ redirects = [
   { path="openshift/install-gpu-ocp.html", project="openshift", target="install-gpu-ocp.html" },
   { path="dra-crds.html", target="dra-intro-install.html" },
   { path="dra-gpus.html", target="dra-intro-install.html" },
-  { path="confidential-containers.html", target="confidential-containers-deploy.html" },
+  { path="confidential-containers-deploy.html", project="confidential-containers", target="overview.html" },
+  { path="confidential-containers.html", project="confidential-containers", target="overview.html" },
 ]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
@@ -207,7 +210,7 @@ output_format = "linkcheck"
 docs_root = "${root}/confidential-containers"
 project = "confidential-containers"
 name = "NVIDIA Confidential Containers Architecture"
-version = "25.10"
+version = "1.0.0"
 copyright_start = 2020
 
 [repo_docs.projects.confidential-containers.builds.linkcheck]

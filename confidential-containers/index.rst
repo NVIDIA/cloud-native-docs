@@ -26,7 +26,7 @@ NVIDIA Confidential Containers Architecture (Early Access)
    :titlesonly:
 
    Overview <overview.rst>
-   Deploy Confidential Containers with NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html>
+   Deploy Confidential Containers with NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/25.10/confidential-containers-deploy.html>
 
 
 This is documentation for NVIDIA's Early Access implementation of Confidential Containers including reference architecture information and supported platforms.

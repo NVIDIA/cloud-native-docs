@@ -200,7 +200,7 @@ You can configure all the worker nodes in your cluster for running GPU workloads
        * NVIDIA VFIO Manager
        * Node Feature Discovery
 
-This configuration can be controlled via node labelling, as described in the `GPU Operator confidential containers deployment guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/confidential-containers-deploy.html#>`_.
+This configuration can be controlled via node labelling, as described in the `GPU Operator confidential containers deployment guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/25.10/confidential-containers-deploy.html#>`_.
 
 .. _coco-supported-platforms:
 
