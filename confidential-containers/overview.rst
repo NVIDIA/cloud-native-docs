@@ -166,16 +166,6 @@ The following is the component stack to support the open Reference Architecture 
         | - NVIDIA VFIO Manager
         | - NVIDIA Sandbox device plugin
         | - NVIDIA Confidential Computing Manager for Kubernetes
-<<<<<<< HEAD
-        | - NVIDIA Kata Manager for Kubernetes
-     - v25.10.0 and higher
-   * - CoCo release (EA)
-        | - Kata 3.25 (w/ kata-deploy helm)
-        | - Trustee/Guest components 0.17.0
-        | - KBS protocol 0.4.0
-     - v0.18.0
-
-=======
      - v25.10.0 and higher 
    * - CoCo release (EA) 
         | - Kata 3.25 (w/ kata-deploy helm) 
@@ -183,7 +173,6 @@ The following is the component stack to support the open Reference Architecture 
         | - KBS protocol 0.4.0 
      - v0.18.0 
  
->>>>>>> 0ee08614 (Update kata docs)
 
 Cluster Topology Considerations
 -------------------------------
