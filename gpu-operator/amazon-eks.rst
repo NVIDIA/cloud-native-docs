@@ -110,7 +110,7 @@ without any limitations, you perform the following high-level actions:
     Make sure the instance type supports enough IP addresses for your workload.
     For example, the ``g4dn.xlarge`` instance type supports ``29`` IP addresses for pods on the node.
 
-* Use an Amazon EKS optimized Amazon Machine Image (AMI) with Ubuntu 20.04, 22.04, or 24.04 on the nodes in the node group.
+* Use an Amazon EKS optimized Amazon Machine Image (AMI) with a `supported operating system <platform-support.html?category=cloud-service-providers#container-platforms>`_ on the nodes in the node group.
 
   AMIs support are specific to an AWS region and Kubernetes version.
   See https://cloud-images.ubuntu.com/aws-eks/ for the AMI values such as ``ami-00687acd80b7a620a``.

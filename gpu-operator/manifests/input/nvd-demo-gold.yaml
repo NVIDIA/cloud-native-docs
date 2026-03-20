@@ -32,4 +32,4 @@ spec:
     periodSeconds: 10
     timeoutSeconds: 60
   usePrecompiled: false
-  version: 535.104.12
+  version: 580.126.20

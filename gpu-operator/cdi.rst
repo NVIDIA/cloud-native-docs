@@ -16,13 +16,15 @@
 
 .. headings # #, * *, =, -, ^, "
 
-############################################################
-Container Device Interface (CDI) Support in the GPU Operator
-############################################################
+#################################################################################
+Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support
+#################################################################################
 
-************************************
-About the Container Device Interface
-************************************
+This page gives an overview of CDI and NRI Plugin support in the GPU Operator.
+
+**************************************
+About Container Device Interface (CDI)
+**************************************
 
 The `Container Device Interface (CDI) <https://github.com/cncf-tags/container-device-interface/blob/main/SPEC.md>`_
 is an open specification for container runtimes that abstracts what access to a device, such as an NVIDIA GPU, means,
@@ -31,7 +33,7 @@ ensure that a device is available in a container. CDI simplifies adding support 
 the specification is applicable to all container runtimes that support CDI.
 
 Starting with GPU Operator v25.10.0, CDI is used by default for enabling GPU support in containers running on Kubernetes.
-Specifically, CDI support in container runtimes, e.g. containerd and cri-o, is used to inject GPU(s) into workload
+Specifically, CDI support in container runtimes, like containerd and cri-o, is used to inject GPU(s) into workload
 containers. This differs from prior GPU Operator releases where CDI was used via a CDI-enabled ``nvidia`` runtime class.
 
 If you are upgrading from a version of the GPU Operator prior to v25.10.0, where CDI was disabled by default, and you are upgrading to v25.10.0 or later, where CDI is enabled by default, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin.
@@ -45,22 +47,27 @@ plugins.
 CDI and GPU Management Containers
 *********************************
 
-When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set ``runtimeClassName: nvidia`` in the pod specification.
-A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes. 
+When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set ``runtimeClassName: nvidia`` in the pod specification.
+A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes. 
 Examples of GPU Management Containers include monitoring agents and device plugins.
 
-It is recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by management containers.
+It is recommended that ``NVIDIA_VISIBLE_DEVICES`` only be used by GPU Management Containers.
 
-********************************
-Enabling CDI During Installation
-********************************
+.. note::
+
+   Setting ``runtimeClassName: nvidia`` in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
+   Refer to :ref:`About the Node Resource Interface (NRI) Plugin <nri-plugin>`.
+
+
+************
+Enabling CDI 
+************
 
 CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page.
 
 CDI is also enabled by default during a Helm upgrade to GPU Operator v25.10.0 and later.
 
-*******************************
 Enabling CDI After Installation
 *******************************
 
@@ -138,3 +145,91 @@ disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the f
           nvidia.com/gpu.deploy.operator-validator=true \
           nvidia.com/gpu.present=true \
           --overwrite
+
+
+.. _nri-plugin:
+
+**********************************************
+About the Node Resource Interface (NRI) Plugin
+**********************************************
+
+Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd. 
+NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including injecting devices to a container, topology aware placement strategies, and more. For more details on NRI, refer to the `NRI overview <https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background>`_ in the containerd repository.
+
+When enabled in the GPU Operator, the NVIDIA Container Toolkit daemonset will run an NRI Plugin on every GPU node. 
+The purpose of the NRI Plugin is to inject GPUs into GPU management containers that use the ``NVIDIA_VISIBLE_DEVICES`` environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs.
+
+In previous GPU Operator versions, device injection was handled by the ``nvidia`` container runtime. With CDI and the NRI Plugin enabled, the ``nvidia`` runtime class is no longer needed. When enabling the NRI plugin during install, the ``nvidia`` runtime class will not be created. If you enable the NRI Plugin after install, the ``nvidia`` runtime class will be deleted. 
+
+Additionally, with the NRI Plugin enabled, modifications to the container runtime configuration are no longer needed. For example, no modifications are made to containerd’s config.toml file.
+This means that on platforms that configure containerd in a non-standard way, like k3s, k0s, and Rancher Kubernetes Engine 2, users no longer need to configure environment variables like ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE``.
+
+
+***********************
+Enabling the NRI Plugin
+***********************
+
+The NRI Plugin requires the following:
+
+- CDI to be enabled in the GPU Operator.
+
+- containerd v1.7.30, v2.1.x, or v2.2.x.
+  If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
+
+  .. note::
+    Enabling the NRI plugin is not supported with cri-o.
+
+To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page and include the ``--set cdi.nriPluginEnabled=true`` argument in your Helm command. 
+
+Enabling the NRI Plugin After Installation
+******************************************
+
+#. Enable NRI Plugin by modifying the cluster policy:
+
+   .. code-block:: console
+
+     $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
+         -p='[{"op": "replace", "path": "/spec/cdi/nriPluginEnabled", "value":true}]'
+
+   *Example Output*
+
+   .. code-block:: output
+
+    clusterpolicy.nvidia.com/cluster-policy patched
+
+   After enabling the NRI Plugin, the ``nvidia`` runtime class will be deleted.
+
+#. (Optional) Confirm that the container toolkit and device plugin pods restart:
+
+   .. code-block:: console
+
+     $ kubectl get pods -n gpu-operator
+
+   *Example Output*
+
+   .. literalinclude:: ./manifests/output/nri-get-pods-restart.txt
+      :language: output
+      :emphasize-lines: 6,9
+
+
+************************
+Disabling the NRI Plugin
+************************
+
+Disable the NRI Plugin and use the ``nvidia`` runtime class instead with the following procedure:
+
+Disable the NRI Plugin by modifying the cluster policy:
+
+.. code-block:: console
+
+   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
+         -p='[{"op": "replace", "path": "/spec/cdi/nriPluginEnabled", "value":false}]'
+
+*Example Output*
+
+.. code-block:: output
+
+   clusterpolicy.nvidia.com/cluster-policy patched
+
+
+After disabling the NRI Plugin, the ``nvidia`` runtime class will be created.

@@ -41,14 +41,14 @@
    :hidden:
 
    NVIDIA DRA Driver for GPUs <dra-intro-install.rst>
-   Multi-Instance GPU <gpu-operator-mig.rst>
+   Multi-Instance GPU (MIG) <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
    gpu-operator-rdma.rst
    Outdated Kernels <install-gpu-operator-outdated-kernels.rst>
    Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
    GPU Driver CRD <gpu-driver-configuration.rst>
-   Container Device Interface (CDI) Support <cdi.rst>
+   CDI and NRI Support <cdi.rst>
 
 .. toctree::
    :caption:  Sandboxed Workloads
