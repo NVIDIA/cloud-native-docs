@@ -527,7 +527,7 @@ You can use the Helm chart to create a ConfigMap from values at install time, or
 For an example, refer to <a class="reference internal" href="#dynamically-creating-the-mig-configuration-configmap"><span class="std std-ref">Example: Custom MIG Configuration During Installation</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a <cite>static Configmap &lt;https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml&gt;, ``default-mig-parted-config`</cite>, for MIG profiles.</p>
+<p>Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a  <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">static Configmap</a>, <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code>, for MIG profiles.</p>
 </div>
 <section id="example-single-mig-strategy">
 <h3>Example: Single MIG Strategy<a class="headerlink" href="#example-single-mig-strategy" title="Permalink to this headline">#</a></h3>
