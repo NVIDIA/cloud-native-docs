@@ -545,8 +545,8 @@ This manager sets the confidential computing (CC) mode on the NVIDIA GPUs.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
-<p>The GPU Operator uses this label to select nodes to deploy pods specifying a Kata container runtime.
-You can use this label on nodes for Kata workloads, and run traditional container workloads with GPU or vGPU workloads on other nodes in your cluster.</p>
+<p>The GPU Operator uses this label to determine what software components to deploy to a node.
+You can use this label on nodes for Kata workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
 <p>Alternatively, if you want to run Kata containers on all your worker nodes, set the default sandbox workload to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> when you install the GPU Operator.</p>
 </li>
 <li><p>Install kata-deploy Helm chart.</p></li>
@@ -565,7 +565,7 @@ Enabling these features is typically performed by configuring the host BIOS.</p>
 <li><p>Your hosts are configured to support IOMMU.</p>
 <p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/sys/kernel/iommu_groups</span></code> includes <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, and so on,
 then your host is configured for IOMMU.</p>
-<p>If a host is not configured or you are unsure, add the <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> Linux kernel command-line argument.
+<p>If a host is not configured or you are unsure, add the <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> (or <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> for AMD CPUs) Linux kernel command-line argument.
 For most Linux distributions, you add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>...
 GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on modprobe.blacklist=nouveau&quot;
