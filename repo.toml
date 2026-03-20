@@ -197,7 +197,7 @@ redirects = [
   { path="openshift/install-gpu-ocp.html", project="openshift", target="install-gpu-ocp.html" },
   { path="dra-crds.html", target="dra-intro-install.html" },
   { path="dra-gpus.html", target="dra-intro-install.html" },
-  { path="confidential-containers.html", project="confidential-containers", target="overview.html" },
+  { path="confidential-containers-deploy.html", project="gpu-operator", target="confidential-containers-deploy.html" },
 ]
 
 [repo_docs.projects.gpu-operator.builds.linkcheck]
@@ -209,7 +209,7 @@ output_format = "linkcheck"
 docs_root = "${root}/confidential-containers"
 project = "confidential-containers"
 name = "NVIDIA Confidential Containers Architecture"
-version = "25.10"
+version = "1.0.0"
 copyright_start = 2020
 
 [repo_docs.projects.confidential-containers.builds.linkcheck]
