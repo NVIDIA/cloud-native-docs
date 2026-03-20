@@ -69,14 +69,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
-    <link rel="prev" title="GPU Operator with Kata Containers" href="kata-containers-deploy.html" />
+    <link rel="prev" title="Deploy with Kata Containers" href="kata-containers-deploy.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 20, 2026"/>
 
 
 
@@ -561,21 +561,7 @@ The implementation relies on the Kata Containers project to provide the lightwei
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
     --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --set kataManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --set kataManager.config.runtimeClasses<span class="o">=</span>null <span class="se">\</span>
-    --set kataManager.repository<span class="o">=</span>nvcr.io/nvidia/cloud-native <span class="se">\</span>
-    --set kataManager.image<span class="o">=</span>k8s-kata-manager <span class="se">\</span>
-    --set kataManager.version<span class="o">=</span>v0.2.4 <span class="se">\</span>
-    --set ccManager.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --set ccManager.defaultMode<span class="o">=</span>on <span class="se">\</span>
-    --set ccManager.repository<span class="o">=</span>nvcr.io/nvidia/cloud-native <span class="se">\</span>
-    --set ccManager.image<span class="o">=</span>k8s-cc-manager <span class="se">\</span>
-    --set ccManager.version<span class="o">=</span>v0.2.0 <span class="se">\</span>
-    --set sandboxDevicePlugin.repository<span class="o">=</span>nvcr.io/nvidia/cloud-native <span class="se">\</span>
-    --set sandboxDevicePlugin.image<span class="o">=</span>nvidia-sandbox-device-plugin <span class="se">\</span>
-    --set sandboxDevicePlugin.version<span class="o">=</span>v0.0.1 <span class="se">\</span>
-    --set <span class="s1">&#39;sandboxDevicePlugin.env[0].name=P_GPU_ALIAS&#39;</span> <span class="se">\</span>
-    --set <span class="s1">&#39;sandboxDevicePlugin.env[0].value=pgpu&#39;</span> <span class="se">\</span>
+    --set sandboxWorkloads.mode<span class="o">=</span>kata <span class="se">\</span>
     --set nfd.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
     --set nfd.nodefeaturerules<span class="o">=</span><span class="nb">true</span>
 </pre></div>
@@ -595,7 +581,7 @@ options). This causes the sandbox device plugin to create GPU model-specific
 resource types (such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>) instead of the generic
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>. For simplicity, this guide uses the generic alias.</p>
 </li>
-<li><p>Verify that all GPU Operator pods, especially the Kata Manager, Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
+<li><p>Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
@@ -606,7 +592,6 @@ resource types (such as <code class="docutils literal notranslate"><span class="
 <span class="go">gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s</span>
 <span class="go">gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s</span>
 <span class="go">nvidia-cc-manager-7z74t                                           1/1     Running   0          61s</span>
-<span class="go">nvidia-kata-manager-k8ctm                                         1/1     Running   0          62s</span>
 <span class="go">nvidia-sandbox-device-plugin-daemonset-d5rvg                      1/1     Running   0          30s</span>
 <span class="go">nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s</span>
 <span class="go">nvidia-vfio-manager-h229x                                         1/1     Running   0          62s</span>
@@ -817,7 +802,7 @@ resource types (such as <code class="docutils literal notranslate"><span class="
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GPU Operator with Kata Containers</p>
+        <p class="prev-next-title">Deploy with Kata Containers</p>
       </div>
     </a>
     <a class="right-next"

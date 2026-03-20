@@ -75,7 +75,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 17, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 20, 2026"/>
 
 
 
@@ -409,7 +409,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <ol class="arabic simple">
 <li><p><strong>Built on OSS standards</strong> - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.</p></li>
 <li><p><strong>Highest level of isolation</strong> - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).</p></li>
-<li><p><strong>Zero-trust execution with Attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with Attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
+<li><p><strong>Zero-trust execution with attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
 </ol>
 </section>
 <section id="use-cases">
@@ -434,22 +434,21 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.</p></li>
 <li><p>NVIDIA Sandbox Device Plugin - to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.</p></li>
 <li><p>NVIDIA VFIO Manager - to bind discovered NVIDIA GPUs to the vfio-pci driver for VFIO passthrough.</p></li>
-<li><p>NVIDIA Kata Manager for Kubernetes - to create host-side CDI specifications for GPU passthrough.</p></li>
 </ul>
 <p><strong>Kata Deploy</strong></p>
-<p>Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
+<p>Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
 <p><strong>Node Feature Discovery (NFD)</strong></p>
 <p>Bootstraps the node by advertising the node features via labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
 <p><strong>Trustee</strong></p>
 <p>Attestation and key brokering framework (which includes the Key Broker Service and Attestation Service). It acts as the cryptographic gatekeeper, verifying hardware/software evidence and only releasing secrets if the environment is proven secure.</p>
 <p><strong>Snapshotter (e.g., Nydus)</strong></p>
-<p>Handles the “Guest Pull” functionality. It bypasses the host to fetch and unpack encrypted container images directly inside the protected guest memory, keeping proprietary code hidden.</p>
-<p><strong>Kata Agent Policy</strong></p>
-<p>Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable policy based on Rego (regorus) for allow-list. This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.</p>
+<p>Handles the container image “guest pull” functionality. Used as a remote snapshotter, it bypasses image pulls on the host. Instead, it fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.</p>
+<p><strong>Kata Agent and Agent Security Policy</strong></p>
+<p>Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus). This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.</p>
 <p><strong>Confidential Data Hub (CDH)</strong></p>
-<p>An in-guest component that securely receives decrypted secrets from Trustee and transparently manages encrypted persistent storage and image decryption for the workload.</p>
+<p>An in-guest component that securely receives sealed secrets from Trustee and transparently manages encrypted persistent storage and image decryption for the workload.</p>
 <p><strong>NVRC (NVIDIA runcom)</strong></p>
-<p>A minimal, chiseled and hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons and launches the Kata Agent while drastically reducing the attack surface.</p>
+<p>A minimal hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons while drastically reducing the attack surface.</p>
 <section id="software-stack-and-component-versions">
 <h3>Software Stack and Component Versions<a class="headerlink" href="#software-stack-and-component-versions" title="Permalink to this headline">#</a></h3>
 <p>The following is the component stack to support the open Reference Architecture (RA) along with the proposed versions of different SW components.</p>
@@ -516,7 +515,6 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <div class="line">- NVIDIA VFIO Manager</div>
 <div class="line">- NVIDIA Sandbox device plugin</div>
 <div class="line">- NVIDIA Confidential Computing Manager for Kubernetes</div>
-<div class="line">- NVIDIA Kata Manager for Kubernetes</div>
 </div>
 </dd>
 </dl>
@@ -563,7 +561,6 @@ Integrating open source and NVIDIA software components with the Confidential Com
 </ul>
 </td>
 <td><ul class="simple">
-<li><p>NVIDIA Kata Manager for Kubernetes</p></li>
 <li><p>NVIDIA Confidential Computing Manager for Kubernetes</p></li>
 <li><p>NVIDIA Sandbox Device Plugin</p></li>
 <li><p>NVIDIA VFIO Manager</p></li>
