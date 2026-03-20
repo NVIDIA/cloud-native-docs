@@ -14,6 +14,10 @@ The implementation relies on the Kata Containers project to provide the lightwei
 
 Refer to the `Confidential Containers overview <https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html>`_ for details on the reference architecture and supported platforms.
 
+.. tip::
+
+   Refer to the :doc:`Kata Containers deployment guide <kata-containers-deploy>` if you'd like to run workloads in Kata Containers, not confidential containers.
+
 .. _coco-prerequisites:
 
 Prerequisites
@@ -60,38 +64,51 @@ Installing and configuring your cluster to support the NVIDIA GPU Operator with 
 
    This step installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for confidential containers and native Kata containers.
 
-3. Install the latest version of the NVIDIA GPU Operator (minimum version: v25.10.0).
+3. Install the latest version of the NVIDIA GPU Operator (minimum version: v26.3.0).
 
    You install the Operator and specify options to deploy the operands that are required for confidential containers.
 
 After installation, you can change the confidential computing mode and run a sample GPU workload in a confidential container.
 
-Label nodes and install the Kata Containers Helm Chart
--------------------------------------------------------
+Label Nodes
+-----------
 
-Perform the following steps to install and verify the Kata Containers Helm Chart:
+Add a label to the nodes on which you intend to run confidential containers.
 
-1. Label the nodes on which you intend to run confidential containers as follows::
+#. Label the nodes on which you intend to run confidential containers as follows:
 
       $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
-2. Use the 3.24.0 Kata Containers version and chart in environment variables::
+By labeling only the nodes that will run confidential containers, you can continue to run traditional container workloads with GPU or vGPU workloads on other nodes in your cluster.
+If you plan to run confidential containers on all your worker nodes, you can set the default sandbox workload to ``vm-passthrough`` when you install the GPU Operator.
+
+Install the Kata Containers Helm Chart
+--------------------------------------
+
+#. Get the ``3.24.0`` version of the ``kata-deploy`` Helm chart:
+
+   .. code-block:: console
 
       $ export VERSION="3.24.0"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
-3. Install the Chart::
 
-      $ helm install kata-deploy \
-          --namespace kata-system \
-          --create-namespace \
-          -f "https://raw.githubusercontent.com/kata-containers/kata-containers/refs/tags/${VERSION}/tools/packaging/kata-deploy/helm-chart/kata-deploy/try-kata-nvidia-gpu.values.yaml" \
-          --set nfd.enabled=false \
-          --set shims.qemu-nvidia-gpu-tdx.enabled=false \
-          --wait --timeout 10m --atomic \
-          "${CHART}" --version "${VERSION}"
+#. Install the kata-deploy Helm chart:
 
-   *Example Output*::
+   .. code-block:: console
+
+
+      $ helm install kata-deploy "${CHART}" \
+        --namespace kata-system --create-namespace \
+        --set nfd.enabled=false \
+        --wait --timeout 10m \
+        --set shims.qemu-nvidia-gpu-tdx.enabled=false \
+        --version "${VERSION}"
+
+
+   *Example Output*
+
+   .. code-block:: output
 
       Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.24.0
       Digest: sha256:d87e4f3d93b7d60eccdb3f368610f2b5ca111bfcd7133e654d08cfd192fb3351
@@ -102,7 +119,7 @@ Perform the following steps to install and verify the Kata Containers Helm Chart
       REVISION: 1
       TEST SUITE: None
 
-4. Optional: View the pod in the kata-system namespace and ensure it is running::
+#. Optional: View the pod in the kata-system namespace and ensure it is running:
 
       $ kubectl get pod,svc -n kata-system
 
@@ -113,51 +130,49 @@ Perform the following steps to install and verify the Kata Containers Helm Chart
 
    Wait a few minutes for kata-deploy to create the base runtime classes.
 
-5. Verify that the kata-qemu-nvidia-gpu and kata-qemu-nvidia-gpu-snp runtime classes are available::
+5. Verify that the ``kata-qemu-nvidia-gpu`` and ``kata-qemu-nvidia-gpu-snp`` runtime classes are available:
+
+   .. code-block:: console
 
       $ kubectl get runtimeclass
 
-   *Example Output*::
+   *Example Output*
 
       NAME                       HANDLER                    AGE
       kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       40s
       kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s
+
+   ``kata-deploy`` installs several runtime classes. The  ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
+   The ``kata-qemu-nvidia-gpu-snp`` runtime class is used to deploy Confidential Containers.
 
 Install the NVIDIA GPU Operator
 --------------------------------
 
 Perform the following steps to install the Operator for use with confidential containers:
 
-1. Add and update the NVIDIA Helm repository::
+1. Add and update the NVIDIA Helm repository:
+
+   .. code-block:: console
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
 
-2. Specify at least the following options when you install the Operator. If you want to run Confidential Containers by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthrough``::
+2. Specify at least the following options when you install the Operator. 
+   If you want to run Confidential Containers by default on all worker nodes, also specify ``--set sandboxWorkloads.defaultWorkload=vm-passthrough``:
+
+   .. code-block:: console
 
       $ helm install --wait --generate-name \
           -n gpu-operator --create-namespace \
           nvidia/gpu-operator \
-          --set sandboxWorkloads.enabled=true \
-          --set kataManager.enabled=true \
-          --set kataManager.config.runtimeClasses=null \
-          --set kataManager.repository=nvcr.io/nvidia/cloud-native \
-          --set kataManager.image=k8s-kata-manager \
-          --set kataManager.version=v0.2.4 \
-          --set ccManager.enabled=true \
-          --set ccManager.defaultMode=on \
-          --set ccManager.repository=nvcr.io/nvidia/cloud-native \
-          --set ccManager.image=k8s-cc-manager \
-          --set ccManager.version=v0.2.0 \
-          --set sandboxDevicePlugin.repository=nvcr.io/nvidia/cloud-native \
-          --set sandboxDevicePlugin.image=nvidia-sandbox-device-plugin \
-          --set sandboxDevicePlugin.version=v0.0.1 \
-          --set 'sandboxDevicePlugin.env[0].name=P_GPU_ALIAS' \
-          --set 'sandboxDevicePlugin.env[0].value=pgpu' \
-          --set nfd.enabled=true \
-          --set nfd.nodefeaturerules=true
+         --set sandboxWorkloads.enabled=true \
+         --set sandboxWorkloads.mode=kata \
+         --set nfd.enabled=true \
+         --set nfd.nodefeaturerules=true
 
-   *Example Output*::
+   *Example Output*:
+
+   .. code-block:: output
 
       NAME: gpu-operator-1766001809
       LAST DEPLOYED: Wed Dec 17 20:03:29 2025
@@ -172,11 +187,13 @@ Perform the following steps to install the Operator for use with confidential co
    resource types (such as ``nvidia.com/GH100_H100L_94GB``) instead of the generic
    ``nvidia.com/pgpu``. For simplicity, this guide uses the generic alias.
 
-3. Verify that all GPU Operator pods, especially the Kata Manager, Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running::
+3. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:
+
+   .. code-block:: console
 
       $ kubectl get pods -n gpu-operator
 
-   *Example Output*::
+   *Example Output*:
 
       NAME                                                              READY   STATUS    RESTARTS   AGE
       gpu-operator-1766001809-node-feature-discovery-gc-75776475sxzkp   1/1     Running   0          86s
@@ -184,12 +201,11 @@ Perform the following steps to install the Operator for use with confidential co
       gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s
       gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
       nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
-      nvidia-kata-manager-k8ctm                                         1/1     Running   0          62s
-      nvidia-sandbox-device-plugin-daemonset-d5rvg                      1/1     Running   0          30s
+      nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                      1/1     Running   0          30s
       nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s
       nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
 
-4. If the nvidia-cc-manager is *not* running, you need to label your CC-capable node(s) by hand. The node labelling capabilities in the early access version are not complete. To label your node(s), run::
+4. If the nvidia-cc-manager is *not* running, you need to label your CC-capable node(s) by hand. The node labelling capabilities in the early access version are not complete. To label your node(s), run:
 
       $ kubectl label node <nodename> nvidia.com/cc.capable=true
 
@@ -206,7 +222,7 @@ Perform the following steps to install the Operator for use with confidential co
                  Kernel driver in use: vfio-pci
                  Kernel modules: nvidiafb, nouveau
 
-   b. Confirm that the kata-deploy functionality installed the kata-qemu-nvidia-gpu-snp and kata-qemu-nvidia-gpu runtime class files::
+   b. Confirm that the kata-deploy functionality installed the kata-qemu-nvidia-gpu-snp and kata-qemu-nvidia-gpu runtime class files:
 
          $ ls -l /opt/kata/share/defaults/kata-containers/ | grep nvidia
 
