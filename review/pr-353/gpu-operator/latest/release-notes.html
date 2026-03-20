@@ -518,7 +518,7 @@ In ClusterPolicy, set <code class="docutils literal notranslate"><span class="pr
 <ul class="simple">
 <li><p>Improved NVIDIA Driver resiliency when the driver container is removed.
 In previous versions, the NVIDIA Driver would unload the kernel modules and perform the driver compilation process, which could take several minutes to complete, delaying the driver container from restarting.
-In v26.3.0, if there is no change to the CUDA driver version in the ClusterPolicy, the NVIDIA Driver will reuse the kernel modules that are available on the node.
+In v26.3.0, if there is no change to the CUDA driver version (or other driver configuration) in the ClusterPolicy, the NVIDIA Driver will reuse the kernel modules that are available on the node.
 This reduces the time to recover from the driver container removal from minutes to seconds.</p></li>
 <li><p>Reduced unnecessary API calls and decreased reconciliation time on large GPU clusters by improving node label logic (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2113">PR #2113</a>).</p></li>
 <li><p>Improved the GPU Operator to now use operating system version labels from GPU worker nodes (added by NFD) when determining OS-specific paths for repository configuration files. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/562">PR #562</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2138">PR #2138</a>)</p></li>
