@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -406,7 +406,7 @@
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>NVIDIA Multi-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
-The new NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
+The NVIDIA Ampere architecture’s MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.</p>
 <p>The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
 Each of these instances presents as a stand-alone GPU device from the system perspective and can be bound to any application, container, or virtual machine running on the node.</p>
@@ -414,7 +414,7 @@ Each of these instances presents as a stand-alone GPU device from the system per
 </section>
 <section id="mig-geometry">
 <h2>MIG geometry<a class="headerlink" href="#mig-geometry" title="Permalink to this headline">#</a></h2>
-<p>The NVIDIA GPU Operator version 1.7.0 and above enables OpenShift Container Platform administrators to dynamically reconfigure the geometry of the MIG partitioning.
+<p>The NVIDIA GPU Operator enables OpenShift Container Platform administrators to dynamically reconfigure the geometry of the MIG partitioning.
 The geometry of the MIG partitioning is how hardware resources are bound to MIG instances, so it directly influences their performance and the number of instances that can be allocated.
 The A100-40GB, for example, has eight compute units and 40 GB of RAM. When the MIG mode is enabled, the eighth instance is reserved for resource management.</p>
 <p>The table below provides a summary of the MIG instance properties of the NVIDIA A100-40GB product:</p>
@@ -519,10 +519,24 @@ This strategy is appropriate for a smaller cluster, where on a single node with 
 <img alt="_images/mig-mixed-profile-A100.png" src="_images/mig-mixed-profile-A100.png" />
 </li>
 </ul>
-<p>Version 1.8 and greater of the NVIDIA GPU Operator supports updating the <strong>Strategy</strong> in the ClusterPolicy after deployment.</p>
-<p>The <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">default configmap</a> defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
-The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
-The tables below describe these configurations:</p>
+</section>
+<section id="configuring-mig-profiles">
+<h3>Configuring MIG Profiles<a class="headerlink" href="#configuring-mig-profiles" title="Permalink to this headline">#</a></h3>
+<p>When MIG is enabled, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> by default.
+To use a profile on a node, update the label value with the desired profile, for example, <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config=all-1g.10gb</span></code>.</p>
+<p>Introduced in GPU Operator v26.3.0, MIG Manager generates the MIG configuration for a node at runtime from the available hardware.
+The configuration is generated on startup, discovering MIG profiles for each MIG-capable GPU on a node using <a class="reference external" href="https://developer.nvidia.com/management-library-nvml">NVIDIA Management Library (NVML)</a>, then writing it to a ConfigMap for each MIG-capable node in your cluster.
+The ConfigMap is named <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;-mig-config</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span></code> is the name of each MIG-capable node.
+Each ConfigMap contains a complete mig-parted config, including <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>, <code class="docutils literal notranslate"><span class="pre">all-enabled</span></code>, per-profile configs such as <code class="docutils literal notranslate"><span class="pre">all-1g.10gb</span></code>, and <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> with device-filter support for mixed GPU types.
+When a new MIG-capable GPU is added to a node, the new GPU is automatically added to the ConfigMap.</p>
+<p>If you need custom profiles, you can use a custom MIG configuration instead of the generated one.
+You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
+For an example, refer to <a class="reference internal" href="#creating-and-applying-custom-mig-configuration-ocp"><span class="std std-ref">Creating and applying a custom MIG configuration</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">static Configmap</a>, <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code>, for MIG profiles.</p>
+</div>
+<p>The following tables describe some supported configurations:</p>
 <div class="pst-scrollable-table-container"><table class="table" id="id2">
 <caption><span class="caption-text">Single configuration</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -763,7 +777,7 @@ The tables below describe these configurations:</p>
 </section>
 </section>
 <section id="creating-and-applying-a-custom-mig-configuration">
-<h2>Creating and applying a custom MIG configuration<a class="headerlink" href="#creating-and-applying-a-custom-mig-configuration" title="Permalink to this headline">#</a></h2>
+<span id="creating-and-applying-custom-mig-configuration-ocp"></span><h2>Creating and applying a custom MIG configuration<a class="headerlink" href="#creating-and-applying-a-custom-mig-configuration" title="Permalink to this headline">#</a></h2>
 <p>Follow the guidance below to create a new slicing profile.</p>
 <ol class="arabic">
 <li><p>Prepare a custom <code class="docutils literal notranslate"><span class="pre">configmap</span></code> resource file for example <code class="docutils literal notranslate"><span class="pre">custom_configmap.yaml</span></code>. Use the <a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/examples/config.yaml">configmap</a>  as guidance to help you build that custom configuration. For more documentation about the file format see <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a>.</p>
@@ -1475,6 +1489,7 @@ in preparation to enable MIG mode and configure the GPU into the specified confi
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-mig-devices-in-openshift">Configuring MIG Devices in OpenShift</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-advertisement-strategies">MIG advertisement strategies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-mig-profiles">Configuring MIG Profiles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-the-mig-advertisement-strategy-and-apply-the-mig-partitioning">Set the MIG advertisement strategy and apply the MIG partitioning</a></li>
 </ul>
 </li>

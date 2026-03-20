@@ -60,7 +60,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -352,14 +352,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multi-Instance GPU</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -437,30 +437,41 @@
 <h2>About Multi-Instance GPU<a class="headerlink" href="#about-multi-instance-gpu" title="Permalink to this headline">#</a></h2>
 <p>Multi-Instance GPU (MIG) enables GPUs based on the NVIDIA Ampere and later architectures, such as NVIDIA A100, to be partitioned into separate and secure GPU instances for CUDA applications.
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">MIG User Guide</a> for more information about MIG.</p>
-<p>GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.</p>
+<p>GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.
+You must enable MIG during installation by choosing a MIG strategy before you can configure MIG.</p>
+<p>Refer to the <a class="reference internal" href="#mig-architecture"><span class="std std-ref">architecture section</span></a> for more information about how MIG is implemented in the GPU Operator.</p>
 </section>
 <section id="enabling-mig-during-installation">
 <h2>Enabling MIG During Installation<a class="headerlink" href="#enabling-mig-during-installation" title="Permalink to this headline">#</a></h2>
-<p>The following steps use the <code class="docutils literal notranslate"><span class="pre">single</span></code> MIG strategy.
-Alternatively, you can specify the <code class="docutils literal notranslate"><span class="pre">mixed</span></code> strategy.</p>
-<p>Perform the following steps to install the Operator and configure MIG:</p>
+<p>Use the following steps to enable MIG and deploy MIG Manager.</p>
 <ol class="arabic">
 <li><p>Install the Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
+    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
     --set mig.strategy<span class="o">=</span>single
 </pre></div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">mig.strategy</span></code> to <code class="docutils literal notranslate"><span class="pre">mixed</span></code> when MIG mode is not enabled on all GPUs on a node.</p>
-<p>In a CSP environment such as Google Cloud, also specify
+<p>This example sets <code class="docutils literal notranslate"><span class="pre">single</span></code>  as the MIG strategy.
+Available MIG strategy options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">single</span></code>: MIG mode is enabled on all GPUs on a node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixed</span></code>: MIG mode is not enabled on all GPUs on a node.</p></li>
+</ul>
+<p>In a cloud service provider (CSP) environment such as Google Cloud, also specify
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">migManager.env[0].name=WITH_REBOOT</span> <span class="pre">--set-string</span> <span class="pre">migManager.env[0].value=true</span></code>
 to ensure that the node reboots and can apply the MIG configuration.</p>
-<p>MIG Manager supports preinstalled drivers.
+<p>MIG Manager supports preinstalled drivers, meaning drivers that are not managed by the GPU Operator and you installed directly on the host.
 If drivers are preinstalled, also specify <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.enabled=false</span></code>.
 Refer to <a class="reference internal" href="#mig-with-preinstalled-drivers"><span class="std std-ref">MIG Manager with Preinstalled Drivers</span></a> for more details.</p>
-<p>After several minutes, all the pods, including the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> are deployed on nodes that have MIG capable GPUs.</p>
+<p>After several minutes, all GPU Operator pods, including the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-manager</span></code> are deployed on nodes that have MIG capable GPUs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MIG Manager requires that no user workloads are running on the GPUs being configured.
+In some cases, the node might need to be rebooted, such as a CSP, so the node might need to be cordoned
+before changing the MIG mode or the MIG geometry on the GPUs.</p>
+</div>
 </li>
 <li><p>Optional: Display the pods in the Operator namespace:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -500,28 +511,25 @@ Refer to <a class="reference internal" href="#mig-with-preinstalled-drivers"><sp
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>MIG Manager requires that no user workloads are running on the GPUs being configured.
-In some cases, the node may need to be rebooted, such as a CSP, so the node might need to be cordoned
-before changing the MIG mode or the MIG geometry on the GPUs.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
-GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
-This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
-NVIDIA recommends that you downgrade the driver to version 570.86.15 to work around this issue.
-For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
-</div>
 </li>
 </ol>
 </section>
 <section id="configuring-mig-profiles">
 <h2>Configuring MIG Profiles<a class="headerlink" href="#configuring-mig-profiles" title="Permalink to this headline">#</a></h2>
-<p>By default, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> and you must specify the MIG configuration to apply.</p>
-<p>MIG Manager uses the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map in the GPU Operator namespace to identify supported MIG profiles.
-Refer to the config map when you label the node or customize the config map.</p>
+<p>When MIG is enabled, nodes are labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config:</span> <span class="pre">all-disabled</span></code> by default.
+To use a profile on a node, update the label value with the desired profile, for example, <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config=all-1g.10gb</span></code>.</p>
+<p>Introduced in GPU Operator v26.3.0, MIG Manager generates the MIG configuration for a node at runtime from the available hardware.
+The configuration is generated on startup, discovering MIG profiles for each MIG-capable GPU on a node using <a class="reference external" href="https://developer.nvidia.com/management-library-nvml">NVIDIA Management Library (NVML)</a>, then writing it to a ConfigMap for each MIG-capable node in your cluster.
+The ConfigMap is named <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;-mig-config</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span></code> is the name of each MIG-capable node.
+Each ConfigMap contains a complete mig-parted config, including <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>, <code class="docutils literal notranslate"><span class="pre">all-enabled</span></code>, per-profile configs such as <code class="docutils literal notranslate"><span class="pre">all-1g.10gb</span></code>, and <code class="docutils literal notranslate"><span class="pre">all-balanced</span></code> with device-filter support for mixed GPU types.
+When a new MIG-capable GPU is added to a node, the new GPU is automatically added to the ConfigMap.</p>
+<p>If you need custom profiles, you can use a custom MIG configuration instead of the generated one.
+You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
+For an example, refer to <a class="reference internal" href="#dynamically-creating-the-mig-configuration-configmap"><span class="std std-ref">Example: Custom MIG Configuration During Installation</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a  <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml">static Configmap</a>, <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code>, for MIG profiles.</p>
+</div>
 <section id="example-single-mig-strategy">
 <h3>Example: Single MIG Strategy<a class="headerlink" href="#example-single-mig-strategy" title="Permalink to this headline">#</a></h3>
 <p>The following steps show how to use the single MIG strategy and configure the <code class="docutils literal notranslate"><span class="pre">1g.10gb</span></code> profile on one node.</p>
@@ -555,7 +563,7 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<p>As described above, if the <code class="docutils literal notranslate"><span class="pre">WITH_REBOOT</span></code> option is set then MIG Manager sets the label to <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">rebooting</span></code>.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">WITH_REBOOT</span></code> option is set, MIG Manager sets the label to <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">rebooting</span></code>.</p>
 </li>
 <li><p>Confirm that MIG Manager completed the configuration by checking the node labels:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels}&#39;</span> <span class="p">|</span> jq .
@@ -563,7 +571,7 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 </div>
 <p>Check for the following labels:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count:</span> <span class="pre">7</span></code>, this value differs according to the GPU model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.count:</span> <span class="pre">7</span></code> (the value differs according to the GPU model)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.ci:</span> <span class="pre">1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.slices.gi:</span> <span class="pre">1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state:</span> <span class="pre">success</span></code></p></li>
@@ -581,7 +589,7 @@ the GPU pods in preparation to enable MIG mode and configure the GPU into the de
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the MIG configuration:</p>
+<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the MIG configuration has been applied.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
 </pre></div>
 </div>
@@ -682,7 +690,7 @@ The profiles and GPU counts differ according to the GPU model.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the GPU has been configured:</p>
+<li><p>Optional: Run the <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> command in the driver container to verify that the GPU has been configured.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -it -n gpu-operator ds/nvidia-driver-daemonset -- nvidia-smi -L
 </pre></div>
 </div>
@@ -766,11 +774,12 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </ol>
 </section>
 <section id="example-custom-mig-configuration-during-installation">
-<h3>Example: Custom MIG Configuration During Installation<a class="headerlink" href="#example-custom-mig-configuration-during-installation" title="Permalink to this headline">#</a></h3>
-<p>By default, the Operator creates the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map and MIG Manager is configured to read profiles from that config map.</p>
-<p>You can use the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file when you install or upgrade the Operator to create a config map with a custom configuration.</p>
+<span id="dynamically-creating-the-mig-configuration-configmap"></span><h3>Example: Custom MIG Configuration During Installation<a class="headerlink" href="#example-custom-mig-configuration-during-installation" title="Permalink to this headline">#</a></h3>
+<p>If you need to use custom profiles, you can create a custom ConfigMap during installation by passing in a name and data for the ConfigMap with the Helm command.</p>
+<p>The MIG Manager daemonset is configured to use this ConfigMap instead of the auto-generated one.</p>
+<p>In your values.yaml file, set <code class="docutils literal notranslate"><span class="pre">migManager.config.create</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, set <code class="docutils literal notranslate"><span class="pre">migManager.config.name</span></code>, and add the ConfigMap data under <code class="docutils literal notranslate"><span class="pre">migManager.config.data</span></code>, for example:</p>
 <ol class="arabic">
-<li><p>In your <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file, add the data for the config map, like the following example:</p>
+<li><p>In your <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file, add the data for the ConfigMap, like the following example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">migManager</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
@@ -784,10 +793,34 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">              </span><span class="no">mig-enabled: false</span><span class="w"></span>
 <span class="w">          </span><span class="no">custom-mig:</span><span class="w"></span>
 <span class="w">            </span><span class="no">- devices: [0]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [1]</span><span class="w"></span>
 <span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
 <span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
 <span class="w">                </span><span class="no">&quot;1g.10gb&quot;: 2</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [2]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
 <span class="w">                </span><span class="no">&quot;2g.20gb&quot;: 2</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;3g.40gb&quot;: 1</span><span class="w"></span>
+<span class="w">            </span><span class="no">- devices: [3]</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">              </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;3g.40gb&quot;: 1</span><span class="w"></span>
+<span class="w">                </span><span class="no">&quot;4g.40gb&quot;: 1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Custom ConfigMaps must contain a key named “config.yaml”</p>
+</div>
+<ol class="arabic">
+<li><p>Install or upgrade the GPU Operator with this values file so the chart creates the ConfigMap:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator -n gpu-operator --create-namespace <span class="se">\</span>
+    nvidia/gpu-operator --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    -f values.yaml
 </pre></div>
 </div>
 </li>
@@ -800,59 +833,6 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </li>
 <li><p>Label the nodes with the profile to configure:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="example-custom-mig-configuration">
-<h3>Example: Custom MIG Configuration<a class="headerlink" href="#example-custom-mig-configuration" title="Permalink to this headline">#</a></h3>
-<p>By default, the Operator creates the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map and MIG Manager is configured to read profiles from that config map.</p>
-<p>You can create a config map with a custom configuration if the default profiles do not meet your business needs.</p>
-<ol class="arabic">
-<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">custom-mig-config.yaml</span></code>, with contents like the following example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
-<span class="nt">data</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">config.yaml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
-<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
-<span class="w">    </span><span class="no">mig-configs:</span><span class="w"></span>
-<span class="w">      </span><span class="no">all-disabled:</span><span class="w"></span>
-<span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-enabled: false</span><span class="w"></span>
-<span class="w">    </span><span class="no">  </span><span class="w"></span>
-<span class="w">      </span><span class="no">five-1g-one-2g:</span><span class="w"></span>
-<span class="w">        </span><span class="no">- devices: all </span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-enabled: true</span><span class="w"></span>
-<span class="w">          </span><span class="no">mig-devices:</span><span class="w"></span>
-<span class="w">            </span><span class="no">&quot;1g.10gb&quot;: 5</span><span class="w"></span>
-<span class="w">            </span><span class="no">&quot;2g.20gb&quot;: 1</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>Apply the manifest:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f custom-mig-config.yaml
-</pre></div>
-</div>
-</li>
-<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
-    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Patch the cluster policy so MIG Manager uses the custom config map:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
-    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/migManager/config/name&quot;, &quot;value&quot;:&quot;custom-mig-config&quot;}]&#39;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Label the nodes with the profile to configure:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-one-2g --overwrite
 </pre></div>
 </div>
 </li>
@@ -883,6 +863,64 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="go">time=&quot;2024-05-15T13:40:08Z&quot; level=debug msg=&quot;    Updating MIG config: map[1g.10gb:5 2g.20gb:1]&quot;</span>
 <span class="go">time=&quot;2024-05-15T13:40:09Z&quot; level=debug msg=&quot;Running apply-exit hook&quot;</span>
 <span class="go">MIG configuration applied successfully</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="example-custom-mig-configuration">
+<span id="id1"></span><h3>Example: Custom MIG Configuration<a class="headerlink" href="#example-custom-mig-configuration" title="Permalink to this headline">#</a></h3>
+<p>You can create and apply a ConfigMap yourself if the default profiles do not meet your needs.</p>
+<ol class="arabic">
+<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">custom-mig-config.yaml</span></code>, with contents like the following example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">custom-mig-config</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">config.yaml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">    </span><span class="no">version: v1</span><span class="w"></span>
+<span class="w">    </span><span class="no">mig-configs:</span><span class="w"></span>
+<span class="w">      </span><span class="no">all-disabled:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- devices: all</span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-enabled: false</span><span class="w"></span>
+<span class="w">    </span><span class="no">  </span><span class="w"></span>
+<span class="w">      </span><span class="no">five-1g-one-2g:</span><span class="w"></span>
+<span class="w">        </span><span class="no">- devices: all </span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-enabled: true</span><span class="w"></span>
+<span class="w">          </span><span class="no">mig-devices:</span><span class="w"></span>
+<span class="w">            </span><span class="no">&quot;1g.10gb&quot;: 5</span><span class="w"></span>
+<span class="w">            </span><span class="no">&quot;2g.20gb&quot;: 1</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Custom ConfigMaps must contain a key named “config.yaml”</p>
+</div>
+<ol class="arabic">
+<li><p>Apply the manifest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f custom-mig-config.yaml
+</pre></div>
+</div>
+</li>
+<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Patch the cluster policy so MIG Manager uses the custom ConfigMap:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
+    --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/migManager/config/name&quot;, &quot;value&quot;:&quot;custom-mig-config&quot;}]&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Label the nodes with the profile to configure:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>five-1g-one-2g --overwrite
 </pre></div>
 </div>
 </li>
@@ -1026,7 +1064,7 @@ We will reuse the same <code class="docutils literal notranslate"><span class="p
 </section>
 <section id="disabling-mig">
 <h2>Disabling MIG<a class="headerlink" href="#disabling-mig" title="Permalink to this headline">#</a></h2>
-<p>You can disable MIG on a node by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.con/mig.config</span></code> label to <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>:</p>
+<p>You can disable MIG on a node by setting the <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config</span></code> label to <code class="docutils literal notranslate"><span class="pre">all-disabled</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-disabled --overwrite
 </pre></div>
 </div>
@@ -1035,14 +1073,14 @@ We will reuse the same <code class="docutils literal notranslate"><span class="p
 <span id="mig-with-preinstalled-drivers"></span><h2>MIG Manager with Preinstalled Drivers<a class="headerlink" href="#mig-manager-with-preinstalled-drivers" title="Permalink to this headline">#</a></h2>
 <p>MIG Manager supports preinstalled drivers.
 Information in the preceding sections still applies, however there are a few additional details to consider.</p>
-<section id="id1">
-<h3>Install<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
+<section id="id2">
+<h3>Install<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <p>During GPU Operator installation, <code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code> must be set. The following options
 can be used to install the GPU Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
+    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
     --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -1050,10 +1088,10 @@ can be used to install the GPU Operator:</p>
 <section id="managing-host-gpu-clients">
 <h3>Managing Host GPU Clients<a class="headerlink" href="#managing-host-gpu-clients" title="Permalink to this headline">#</a></h3>
 <p>MIG Manager stops all operator-managed pods that have access to GPUs when applying a MIG reconfiguration.
-When drivers are preinstalled, there may be GPU clients on the host that also need to be stopped.</p>
+When drivers are preinstalled, there can be GPU clients on the host that also need to be stopped.</p>
 <p>When drivers are preinstalled, MIG Manager attempts to stop and restart a list of systemd services on the host across a MIG reconfiguration.
-The list of services are specified in the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> config map.</p>
-<p>The following sample GPU clients file, <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code>, is used to create the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> config map:</p>
+The list of services is specified in the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> ConfigMap.</p>
+<p>The following sample GPU clients file, <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code>, is used to create the <code class="docutils literal notranslate"><span class="pre">default-gpu-clients</span></code> ConfigMap:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">systemd-services</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvsm.service</span><span class="w"></span>
@@ -1067,8 +1105,8 @@ The list of services are specified in the <code class="docutils literal notransl
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcgm-exporter.service</span><span class="w"></span>
 </pre></div>
 </div>
-<p>You can modify the list by editing the config map after installation.
-Alternatively, you can create a custom config map for use by MIG Manager by performing the following steps:</p>
+<p>You can modify the list by editing the ConfigMap after installation.
+Alternatively, you can create a custom ConfigMap for use by MIG Manager by performing the following steps:</p>
 <ol class="arabic">
 <li><p>Create the <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> namespace:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create namespace gpu-operator
@@ -1084,9 +1122,9 @@ Alternatively, you can create a custom config map for use by MIG Manager by perf
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.1 <span class="se">\</span>
-    --set migManager.gpuClientsConfig.name<span class="o">=</span>gpu-clients
-<span class="go">    --set driver.enabled=false</span>
+    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    --set migManager.gpuClientsConfig.name<span class="o">=</span>gpu-clients <span class="se">\</span>
+    --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
 </li>
@@ -1094,16 +1132,18 @@ Alternatively, you can create a custom config map for use by MIG Manager by perf
 </section>
 </section>
 <section id="architecture">
-<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h2>
+<span id="mig-architecture"></span><h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h2>
 <p>MIG Manager is designed as a controller within Kubernetes. It watches for changes to the
-<code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config</span></code> label on the node and then applies the user-requested MIG configuration
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config</span></code> label on the node and then applies the user-requested MIG configuration.
 When the label changes, MIG Manager first stops all GPU pods, including device plugin, GPU feature discovery,
 and DCGM exporter.
-MIG Manager then stops all host GPU clients listed in the <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code> config map if drivers are preinstalled.
+MIG Manager then stops all host GPU clients listed in the <code class="docutils literal notranslate"><span class="pre">clients.yaml</span></code> ConfigMap if drivers are preinstalled.
 Finally, it applies the MIG reconfiguration and restarts the GPU pods and possibly, host GPU clients.
 The MIG reconfiguration can also involve rebooting a node if a reboot is required to enable MIG mode.</p>
-<p>The default MIG profiles are specified in the <code class="docutils literal notranslate"><span class="pre">default-mig-parted-config</span></code> config map.
-You can specify one of these profiles to apply to the <code class="docutils literal notranslate"><span class="pre">mig.config</span></code> label to trigger a reconfiguration of the MIG geometry.</p>
+<p>The default MIG profiles are specified in the <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;-mig-config</span></code> ConfigMap.
+This ConfigMap is auto-generated by the MIG Manager for each MIG-capable node and contains the standard MIG profiles for the available GPUs on the node.
+You can also configure the operator to configure a custom ConfigMap to use instead of the auto-generated one.</p>
+<p>You can specify one of these profiles to apply to the <code class="docutils literal notranslate"><span class="pre">mig.config</span></code> label to trigger a reconfiguration of the MIG geometry.</p>
 <p>MIG Manager uses the <a class="reference external" href="https://github.com/NVIDIA/mig-parted">mig-parted</a> tool to apply the configuration
 changes to the GPU, including enabling MIG mode, with a node reboot as required by some scenarios.</p>
 <div data-mermaid="flowchart
@@ -1237,7 +1277,7 @@ G -- on failure --&gt; I
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-mig">Disabling MIG</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-manager-with-preinstalled-drivers">MIG Manager with Preinstalled Drivers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Install</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Install</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-host-gpu-clients">Managing Host GPU Clients</a></li>
 </ul>
 </li>

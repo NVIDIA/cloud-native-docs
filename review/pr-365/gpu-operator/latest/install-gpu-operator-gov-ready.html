@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -349,14 +349,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -438,49 +438,12 @@ Government ready is NVIDIA’s designation for software that meets applicable se
 For more information on NVIDIA’s government-ready support, refer to the white paper <a class="reference external" href="https://docs.nvidia.com/ai-enterprise/planning-resource/ai-software-regulated-environments-white-paper/latest/index.html">AI Software for Regulated Environments</a>.</p>
 <section id="supported-gpu-operator-components">
 <h2>Supported GPU Operator Components<a class="headerlink" href="#supported-gpu-operator-components" title="Permalink to this headline">#</a></h2>
-<p>The government-ready NVIDIA GPU Operator includes the following components:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Component</p></th>
-<th class="head"><p>Version</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>NVIDIA GPU Operator</p></td>
-<td><p>v25.10.0</p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA GPU Feature Discovery</p></td>
-<td><p>0.18.0</p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA Container Toolkit</p></td>
-<td><p>1.18.0</p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA Device Plugin</p></td>
-<td><p>0.18.0</p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA DCGM-exporter</p></td>
-<td><p>4.4.1-4.6.0</p></td>
-</tr>
-<tr class="row-odd"><td><p>NVIDIA MIG Manager</p></td>
-<td><p>0.13.0</p></td>
-</tr>
-<tr class="row-even"><td><p>NVIDIA Driver</p></td>
-<td><p>580.95.05 <a class="reference external" href="#base-image"><sup>1</sup></a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><sup>1</sup>
-Hardened for STIG/FIPS compliance</p>
+<p>Refer to the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> for a full list of supported government-ready GPU Operator components.</p>
 <p>Artifacts for these components are available from the <a class="reference external" href="https://registry.ngc.nvidia.com/orgs/nvstaging/teams/cloud-native/containers/gpu-driver-stig-fips">NVIDIA NGC Catalog</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Not all GPU Operator components and features are available as government-ready containers in the v25.10.0 release.
-For example, GPUDirect Storage and KubeVirt are not yet supported.</p>
+<p>Not all GPU Operator components and features are available as government-ready containers in this release.
+For example, NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver are not yet supported.</p>
 </div>
 </section>
 <section id="validated-kubernetes-distributions">
@@ -489,6 +452,8 @@ For example, GPUDirect Storage and KubeVirt are not yet supported.</p>
 <ul class="simple">
 <li><p>Canonical Kubernetes 1.34 with Ubuntu Pro 24.04 and FIPS-compliant kernel</p></li>
 <li><p>Red Hat OpenShift 4.19 in FIPS mode</p></li>
+<li><p>Rancher Kubernetes Engine 2 with Ubuntu 24.04</p></li>
+<li><p>VMware VKS with Ubuntu 24.04</p></li>
 </ul>
 </section>
 <section id="install-government-ready-nvidia-gpu-operator">

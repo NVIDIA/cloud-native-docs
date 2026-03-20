@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -68,7 +68,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Container Device Interface (CDI) Support in the GPU Operator" href="cdi.html" />
+    <link rel="next" title="Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support" href="cdi.html" />
     <link rel="prev" title="Precompiled Driver Containers" href="precompiled-drivers.html" />
 
 
@@ -349,14 +349,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -432,20 +432,19 @@
 <h1>NVIDIA GPU Driver Custom Resource Definition<a class="headerlink" href="#nvidia-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h1>
 <section id="overview-of-the-gpu-driver-custom-resource-definition">
 <h2>Overview of the GPU Driver Custom Resource Definition<a class="headerlink" href="#overview-of-the-gpu-driver-custom-resource-definition" title="Permalink to this headline">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Technology Preview features are not supported in production environments
-and are not functionally complete.
-Technology Preview features provide early access to upcoming product features,
-enabling customers to test functionality and provide feedback during the development process.
-These releases may not have any documentation, and testing is limited.</p>
-<p>This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator.
-You must uninstall an existing installation and then install the Operator again.
-Uninstalling the Operator interrupts services and applications that require access to NVIDIA GPUs.</p>
-</div>
-<p>As a technology preview feature, you can create one or more instances of an NVIDIA driver custom resource
+<p>You can create one or more instances of an NVIDIA driver (<code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code>) custom resource
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.</p>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>This feature is recommended for new cluster installations only.
+Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported.
+Switching from ClusterPolicy to NVIDIA driver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.</p></li>
+<li><p>Users are required to either use the default NVIDIA driver custom resource rendered by helm chart or create and manage their own custom NVIDIA driver.</p></li>
+<li><p>You can’t use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.</p></li>
+</ul>
+</section>
 <section id="comparison-managing-the-driver-with-crd-versus-the-cluster-policy">
 <h3>Comparison: Managing the Driver with CRD versus the Cluster Policy<a class="headerlink" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy" title="Permalink to this headline">#</a></h3>
 <p>Before the introduction of the NVIDIA GPU Driver custom resource definition, you manage the driver by modifying
@@ -481,10 +480,10 @@ This limitation complicates performing an operating system upgrade on your nodes
 <section id="driver-daemon-sets">
 <h3>Driver Daemon Sets<a class="headerlink" href="#driver-daemon-sets" title="Permalink to this headline">#</a></h3>
 <p>The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.</p>
-<p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 535 branch GPU driver and some
+<p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
 worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
 One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
-All the nodes run the same 535 branch GPU driver.</p>
+All the nodes run the same 580 branch GPU driver.</p>
 <img alt="_images/nvd-basics.svg" src="_images/nvd-basics.svg" /><p>If you choose to use precompiled driver containers, the Operator starts a driver daemon set for each Linux kernel version.</p>
 <p>For example, if some nodes run Ubuntu 22.04 and the 5.15.0-84-generic kernel, and other nodes run the 5.15.0-78-generic kernel,
 then the Operator starts two daemon sets.</p>
@@ -522,6 +521,9 @@ The <a class="reference internal" href="precompiled-drivers.html#precomp-limitat
 <dt>Support for X86_64 and ARM64</dt><dd><p>Each daemon set can run pods and driver containers for the X86_64 and ARM64 architectures.
 Refer to the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags">NVIDIA GPU Driver tags</a>
 web page to determine which driver version and operating system combinations support both architectures.</p>
+</dd>
+<dt>Custom Driver Parameters</dt><dd><p>Each NVIDIA driver custom resource can specify custom kernel module parameters via configmap.
+For more information, refer to <a class="reference internal" href="custom-driver-params.html"><span class="doc">Customizing NVIDIA GPU Driver Parameters during Installation</span></a>.</p>
 </dd>
 </dl>
 </section>
@@ -566,7 +568,7 @@ on nodes.</p>
 <span class="w">    </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
 <span class="w">    </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
 <span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">535.104.12</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">580.126.20</span><span class="w"></span>
 </pre></div>
 </div>
 </div>
@@ -674,8 +676,8 @@ with a precompiled driver.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
 <td><p>Specifies the GPU driver version to install.
-For a data-center driver, specify a value like <code class="docutils literal notranslate"><span class="pre">535.104.12</span></code>.
-If you set <code class="docutils literal notranslate"><span class="pre">usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, specify the driver branch, such as <code class="docutils literal notranslate"><span class="pre">535</span></code>.</p></td>
+For a data-center driver, specify a value like <code class="docutils literal notranslate"><span class="pre">580.126.20</span></code>.
+If you set <code class="docutils literal notranslate"><span class="pre">usePrecompiled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, specify the driver branch, such as <code class="docutils literal notranslate"><span class="pre">580</span></code>.</p></td>
 <td><p>Refer to the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>.</p></td>
 </tr>
 </tbody>
@@ -689,7 +691,7 @@ If you set <code class="docutils literal notranslate"><span class="pre">usePreco
 <li><p>Optional: If you want to run more than one driver type or version in the cluster,
 label the worker nodes to identify the driver type and version to install on each node:</p>
 <p><em>Example</em></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="m">525</span>.125.06
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="m">580</span>.126.20
 </pre></div>
 </div>
 <ul class="simple">
@@ -710,8 +712,8 @@ label the worker nodes to identify the driver type and version to install on eac
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v25.10.1
-<span class="go">    --set driver.nvidiaDriverCRD.enabled=true</span>
+    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    --set driver.nvidiaDriverCRD.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
 <p>By default, Helm configures a <code class="docutils literal notranslate"><span class="pre">default</span></code> NVIDIA driver custom resource during installation.
@@ -733,32 +735,40 @@ Refer to the sample manifests.</p></li>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-all</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidiadriver-sample</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># use pre-compiled packages for NVIDIA driver installation.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 <span class="w">  </span><span class="nt">driverType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580.126.20&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
 <span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">rdma</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 <span class="w">    </span><span class="nt">useHostMofed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 <span class="w">  </span><span class="nt">gds</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">startupProbe</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span><span class="w"></span>
-<span class="w">    </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
-<span class="w">    </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
-<span class="w">    </span><span class="nt">timeoutSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w"></span>
-<span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">535.104.12</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Private mirror repository configuration</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repoConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># custom ssl key/certificate configuration</span><span class="w"></span>
+<span class="w">  </span><span class="nt">certConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># vGPU licensing configuration</span><span class="w"></span>
+<span class="w">  </span><span class="nt">licensingConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nlsEnabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># vGPU topology daemon configuration</span><span class="w"></span>
+<span class="w">  </span><span class="nt">virtualTopologyConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># kernel module configuration for NVIDIA driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">kernelModuleConfig</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
 </pre></div>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Because the manifest does not include a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> field, the driver custom
-resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 </div>
 </li>
 <li><p>Apply the manfiest:</p>
@@ -805,7 +815,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 <span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">driver.config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;gold&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535.104.12&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580.126.20&quot;</span><span class="w"></span>
 <span class="nn">---</span><span class="w"></span>
 <span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
@@ -857,7 +867,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -883,7 +893,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 <ol class="arabic">
 <li><p>Label the nodes like the following sample:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.precompiled<span class="o">=</span><span class="s2">&quot;true&quot;</span>
-<span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="s2">&quot;535&quot;</span>
+<span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite driver.version<span class="o">=</span><span class="s2">&quot;580&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -901,11 +911,11 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 <span class="w">  </span><span class="nt">manager</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">driver.precompiled</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">driver.version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">driver.version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
 <span class="w">  </span><span class="nt">usePrecompiled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;535&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -971,7 +981,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:         demo-precomp</span>
 <span class="go">...</span>
-<span class="go">  Version:          535.104.05</span>
+<span class="go">  Version:          580.126.20</span>
 <span class="go">Status:</span>
 <span class="go">  Conditions:</span>
 <span class="go">    Last Transition Time:  2023-10-13T14:33:30Z</span>
@@ -1040,7 +1050,7 @@ The selectors are set from the NVIDIA driver custom resources:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Container Device Interface (CDI) Support in the GPU Operator</p>
+        <p class="prev-next-title">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1066,6 +1076,7 @@ The selectors are set from the NVIDIA driver custom resources:</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-gpu-driver-custom-resource-definition">Overview of the GPU Driver Custom Resource Definition</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy">Comparison: Managing the Driver with CRD versus the Cluster Policy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-daemon-sets">Driver Daemon Sets</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-default-nvidia-driver-custom-resource">About the Default NVIDIA Driver Custom Resource</a></li>

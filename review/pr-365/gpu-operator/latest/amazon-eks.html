@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -349,14 +349,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">Container Device Interface (CDI) Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +501,7 @@ Make sure the instance type supports enough IP addresses for your workload.
 For example, the <code class="docutils literal notranslate"><span class="pre">g4dn.xlarge</span></code> instance type supports <code class="docutils literal notranslate"><span class="pre">29</span></code> IP addresses for pods on the node.</p></li>
 </ul>
 </li>
-<li><p>Use an Amazon EKS optimized Amazon Machine Image (AMI) with Ubuntu 20.04, 22.04, or 24.04 on the nodes in the node group.</p>
+<li><p>Use an Amazon EKS optimized Amazon Machine Image (AMI) with a <a class="reference external" href="platform-support.html?category=cloud-service-providers#container-platforms">supported operating system</a> on the nodes in the node group.</p>
 <p>AMIs support are specific to an AWS region and Kubernetes version.
 See <a class="reference external" href="https://cloud-images.ubuntu.com/aws-eks/">https://cloud-images.ubuntu.com/aws-eks/</a> for the AMI values such as <code class="docutils literal notranslate"><span class="pre">ami-00687acd80b7a620a</span></code>.</p>
 </li>

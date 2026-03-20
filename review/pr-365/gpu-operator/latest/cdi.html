@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Container Device Interface (CDI) Support in the GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -349,14 +349,14 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Container Device Interface (CDI) Support</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
@@ -412,7 +412,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Container Device Interface (CDI) Support in the GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</li>
   </ul>
 </nav></div>
       
@@ -428,17 +428,18 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="container-device-interface-cdi-support-in-the-gpu-operator">
-<h1>Container Device Interface (CDI) Support in the GPU Operator<a class="headerlink" href="#container-device-interface-cdi-support-in-the-gpu-operator" title="Permalink to this headline">#</a></h1>
-<section id="about-the-container-device-interface">
-<h2>About the Container Device Interface<a class="headerlink" href="#about-the-container-device-interface" title="Permalink to this headline">#</a></h2>
+  <section id="container-device-interface-cdi-and-node-resource-interface-nri-plugin-support">
+<h1>Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support<a class="headerlink" href="#container-device-interface-cdi-and-node-resource-interface-nri-plugin-support" title="Permalink to this headline">#</a></h1>
+<p>This page gives an overview of CDI and NRI Plugin support in the GPU Operator.</p>
+<section id="about-container-device-interface-cdi">
+<h2>About Container Device Interface (CDI)<a class="headerlink" href="#about-container-device-interface-cdi" title="Permalink to this headline">#</a></h2>
 <p>The <a class="reference external" href="https://github.com/cncf-tags/container-device-interface/blob/main/SPEC.md">Container Device Interface (CDI)</a>
 is an open specification for container runtimes that abstracts what access to a device, such as an NVIDIA GPU, means,
 and standardizes access across container runtimes. Popular container runtimes can read and process the specification to
 ensure that a device is available in a container. CDI simplifies adding support for devices such as NVIDIA GPUs because
 the specification is applicable to all container runtimes that support CDI.</p>
 <p>Starting with GPU Operator v25.10.0, CDI is used by default for enabling GPU support in containers running on Kubernetes.
-Specifically, CDI support in container runtimes, e.g. containerd and cri-o, is used to inject GPU(s) into workload
+Specifically, CDI support in container runtimes, like containerd and cri-o, is used to inject GPU(s) into workload
 containers. This differs from prior GPU Operator releases where CDI was used via a CDI-enabled <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class.</p>
 <p>If you are upgrading from a version of the GPU Operator prior to v25.10.0, where CDI was disabled by default, and you are upgrading to v25.10.0 or later, where CDI is enabled by default, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin.
 For workloads that already have <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> set in their pod spec YAML, no change is necessary.</p>
@@ -447,20 +448,24 @@ The benefits of CDI are largely to reduce development and support for runtime-sp
 plugins.</p>
 <section id="cdi-and-gpu-management-containers">
 <h3>CDI and GPU Management Containers<a class="headerlink" href="#cdi-and-gpu-management-containers" title="Permalink to this headline">#</a></h3>
-<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
-A GPU Management Containers is a container that requires access to all GPUs without them being allocated by Kubernetes.
+<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
+A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes.
 Examples of GPU Management Containers include monitoring agents and device plugins.</p>
-<p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by management containers.</p>
+<p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by GPU Management Containers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
+Refer to <a class="reference internal" href="#nri-plugin"><span class="std std-ref">About the Node Resource Interface (NRI) Plugin</span></a>.</p>
+</div>
 </section>
 </section>
-<section id="enabling-cdi-during-installation">
-<h2>Enabling CDI During Installation<a class="headerlink" href="#enabling-cdi-during-installation" title="Permalink to this headline">#</a></h2>
+<section id="enabling-cdi">
+<h2>Enabling CDI<a class="headerlink" href="#enabling-cdi" title="Permalink to this headline">#</a></h2>
 <p>CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
 <p>CDI is also enabled by default during a Helm upgrade to GPU Operator v25.10.0 and later.</p>
-</section>
 <section id="enabling-cdi-after-installation">
-<h2>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline">#</a></h2>
+<h3>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline">#</a></h3>
 <p>CDI is enabled by default in GPU Operator v25.10.0 and later.
 Use the following procedure to enable CDI if you disabled CDI during installation.</p>
 <p class="rubric">Procedure</p>
@@ -496,6 +501,7 @@ Use the following procedure to enable CDI if you disabled CDI during installatio
 </div>
 </li>
 </ol>
+</section>
 </section>
 <section id="disabling-cdi">
 <h2>Disabling CDI<a class="headerlink" href="#disabling-cdi" title="Permalink to this headline">#</a></h2>
@@ -535,6 +541,81 @@ column to determine if your nodes use CRI-O.</p>
 </div>
 </li>
 </ol>
+</section>
+<section id="about-the-node-resource-interface-nri-plugin">
+<span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
+<p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd.
+NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including injecting devices to a container, topology aware placement strategies, and more. For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
+<p>When enabled in the GPU Operator, the NVIDIA Container Toolkit daemonset will run an NRI Plugin on every GPU node.
+The purpose of the NRI Plugin is to inject GPUs into GPU management containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs.</p>
+<p>In previous GPU Operator versions, device injection was handled by the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> container runtime. With CDI and the NRI Plugin enabled, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class is no longer needed. When enabling the NRI plugin during install, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will not be created. If you enable the NRI Plugin after install, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be deleted.</p>
+<p>Additionally, with the NRI Plugin enabled, modifications to the container runtime configuration are no longer needed. For example, no modifications are made to containerd’s config.toml file.
+This means that on platforms that configure containerd in a non-standard way, like k3s, k0s, and Rancher Kubernetes Engine 2, users no longer need to configure environment variables like <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code>.</p>
+</section>
+<section id="enabling-the-nri-plugin">
+<h2>Enabling the NRI Plugin<a class="headerlink" href="#enabling-the-nri-plugin" title="Permalink to this headline">#</a></h2>
+<p>The NRI Plugin requires the following:</p>
+<ul>
+<li><p>CDI to be enabled in the GPU Operator.</p></li>
+<li><p>containerd v1.7.30, v2.1.x, or v2.2.x.
+If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Enabling the NRI plugin is not supported with cri-o.</p>
+</div>
+</li>
+</ul>
+<p>To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page and include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.nriPluginEnabled=true</span></code> argument in your Helm command.</p>
+<section id="enabling-the-nri-plugin-after-installation">
+<h3>Enabling the NRI Plugin After Installation<a class="headerlink" href="#enabling-the-nri-plugin-after-installation" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Enable NRI Plugin by modifying the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/nriPluginEnabled&quot;, &quot;value&quot;:true}]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+<p>After enabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be deleted.</p>
+</li>
+<li><p>(Optional) Confirm that the container toolkit and device plugin pods restart:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS      RESTARTS   AGE</span>
+<span class="go">gpu-feature-discovery-qnw2q                                   1/1     Running     0          47h</span>
+<span class="go">gpu-operator-6d59774ff-hznmr                                  1/1     Running     0          2d</span>
+<span class="go">gpu-operator-node-feature-discovery-master-6d6649d597-7l8bj   1/1     Running     0          2d</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-v86vj              1/1     Running     0          2d</span>
+<span class="hll"><span class="go">nvidia-container-toolkit-daemonset-2768s                      1/1     Running     0          2m11s</span>
+</span><span class="go">nvidia-cuda-validator-ls4vc                                   0/1     Completed   0          47h</span>
+<span class="go">nvidia-dcgm-exporter-fxp9h                                    1/1     Running     0          47h</span>
+<span class="hll"><span class="go">nvidia-device-plugin-daemonset-dvp4v                          1/1     Running     0          2m26s</span>
+</span><span class="go">nvidia-device-plugin-validator-kvxbs                          0/1     Completed   0          47h</span>
+<span class="go">nvidia-driver-daemonset-m86r7                                 1/1     Running     0          2d</span>
+<span class="go">nvidia-operator-validator-xg98r                               1/1     Running     0          47h</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="disabling-the-nri-plugin">
+<h2>Disabling the NRI Plugin<a class="headerlink" href="#disabling-the-nri-plugin" title="Permalink to this headline">#</a></h2>
+<p>Disable the NRI Plugin and use the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class instead with the following procedure:</p>
+<p>Disable the NRI Plugin by modifying the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+      -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/cdi/nriPluginEnabled&quot;, &quot;value&quot;:false}]&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
+<p>After disabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be created.</p>
 </section>
 </section>
 
@@ -587,13 +668,21 @@ column to determine if your nodes use CRI-O.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-container-device-interface">About the Container Device Interface</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-container-device-interface-cdi">About Container Device Interface (CDI)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cdi-and-gpu-management-containers">CDI and GPU Management Containers</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-during-installation">Enabling CDI During Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-after-installation">Enabling CDI After Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi">Enabling CDI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-after-installation">Enabling CDI After Installation</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-cdi">Disabling CDI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-node-resource-interface-nri-plugin">About the Node Resource Interface (NRI) Plugin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-the-nri-plugin">Enabling the NRI Plugin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-the-nri-plugin-after-installation">Enabling the NRI Plugin After Installation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-the-nri-plugin">Disabling the NRI Plugin</a></li>
 </ul>
   </nav></div>
 

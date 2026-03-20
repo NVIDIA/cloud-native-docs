@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -969,6 +969,7 @@ At runtime, a node label, <code class="docutils literal notranslate"><span class
 If the node is not labeled, then the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be used.</p>
 <p>For more information on this component and how it is configured, refer to the project <a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">README</a>.</p>
 <p>By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all <a class="reference external" href="https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu">vGPU types</a> supported by NVIDIA vGPU.
+The GPU Operator only adds Q and C profiles in the default ConfigMap
 Users can select a specific configuration for a worker node by applying the <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config</span></code> node label.</p>
 <p>For example, labeling a node with <code class="docutils literal notranslate"><span class="pre">nvidia.com/vgpu.config=A10-8Q</span></code> would create 3 vGPU devices of type <strong>A10-8Q</strong> on all <strong>A10</strong> GPUs on the node (note: 3 is the maximum number of <strong>A10-8Q</strong> devices that can be created per GPU).
 If the node is not labeled, the <code class="docutils literal notranslate"><span class="pre">default</span></code> configuration will be applied.</p>
