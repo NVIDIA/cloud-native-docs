@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 19, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 20, 2026"/>
 
 
 
@@ -438,9 +438,10 @@ You can specify labels in the node selector field to control which NVIDIA driver
 <h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>This feature is recommended for new cluster installations only.
-Seamless upgrades from ClusterPolicy managed drivers to NVIDIADriver CR managed drivers are not supported.
-Switching from ClusterPolicy to NVIDIADriver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.</p></li>
-<li><p>Users are required to either use the default NVIDIADriver rendered by helm chart or create and manage their own custom NVIDIADriver.</p></li>
+Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported.
+Switching from ClusterPolicy to NVIDIA driver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.</p></li>
+<li><p>Users are required to either use the default NVIDIA driver custom resource rendered by helm chart or create and manage their own custom NVIDIA driver.</p></li>
+<li><p>You can’t use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.</p></li>
 </ul>
 </section>
 <section id="comparison-managing-the-driver-with-crd-versus-the-cluster-policy">
@@ -519,6 +520,9 @@ The <a class="reference internal" href="precompiled-drivers.html#precomp-limitat
 <dt>Support for X86_64 and ARM64</dt><dd><p>Each daemon set can run pods and driver containers for the X86_64 and ARM64 architectures.
 Refer to the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags">NVIDIA GPU Driver tags</a>
 web page to determine which driver version and operating system combinations support both architectures.</p>
+</dd>
+<dt>Custom Driver Parameters</dt><dd><p>Each NVIDIA driver custom resource can specify custom kernel module parameters via configmap.
+For more information, refer to <a class="reference internal" href="custom-driver-params.html"><span class="doc">Customizing NVIDIA GPU Driver Parameters during Installation</span></a>.</p>
 </dd>
 </dl>
 </section>
