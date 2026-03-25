@@ -134,6 +134,16 @@ Improvements
 
 * Driver validation now waits for all enabled additional drivers (such as GDS and GDRCopy) to be installed before proceeding, and each node records a node-local view of enabled features when using multiple NVIDIADriver CRs or optional components. (`PR #2014 <https://github.com/NVIDIA/gpu-operator/pull/2014>`_)
 
+* Improved support for Kata Containers.
+  Changes in this release include:
+
+  * Deprecating the NVIDIA Kata Manager. 
+    You now use ``kata-deploy`` to install the Kata Container and the Kata runtime class
+  * Adding support for the NVIDIA Kata Sandbox Device Plugin.
+  * Configure ``sandboxWorkload.mode=kata`` during installation or in the ClusterPolicy to enable Kata Containers.
+
+  Refer to the :doc:`Kata Containers documentation <deploy-kata-containers>` for full details on configuring the GPU Operator to use Kata Containers.
+
 
 Fixed Issues
 ------------
@@ -157,6 +167,8 @@ Removals and Deprecations
 -------------------------
 
 * Marked unused field ``defaultRuntime`` as optional in the ClusterPolicy. (`PR #2000 <https://github.com/NVIDIA/gpu-operator/pull/2000>`_)
+* NVIDIA Kata Manager is now deprecated.
+  Refer to the :doc:`Kata Containers documentation <deploy-kata-containers>` for more information on using Kata Containers without this component.
 
 
 
