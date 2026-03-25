@@ -515,7 +515,7 @@ In ClusterPolicy, set <code class="docutils literal notranslate"><span class="pr
 </section>
 <section id="improvements">
 <h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
+<ul>
 <li><p>Improved NVIDIA Driver resiliency when the driver container is removed.
 In previous versions, the NVIDIA Driver would unload the kernel modules and perform the driver compilation process, which could take several minutes to complete, delaying the driver container from restarting.
 In v26.3.0, if there is no change to the CUDA driver version (or other driver configuration) in the ClusterPolicy, the NVIDIA Driver will reuse the kernel modules that are available on the node.
@@ -523,6 +523,16 @@ This reduces the time to recover from the driver container removal from minutes 
 <li><p>Reduced unnecessary API calls and decreased reconciliation time on large GPU clusters by improving node label logic (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2113">PR #2113</a>).</p></li>
 <li><p>Improved the GPU Operator to now use operating system version labels from GPU worker nodes (added by NFD) when determining OS-specific paths for repository configuration files. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/562">PR #562</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2138">PR #2138</a>)</p></li>
 <li><p>Driver validation now waits for all enabled additional drivers (such as GDS and GDRCopy) to be installed before proceeding, and each node records a node-local view of enabled features when using multiple NVIDIADriver CRs or optional components. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2014">PR #2014</a>)</p></li>
+<li><p>Improved support for Kata Containers.
+Changes in this release include:</p>
+<ul class="simple">
+<li><p>Deprecating the NVIDIA Kata Manager.
+You now use <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> to install the Kata Container and the Kata runtime class</p></li>
+<li><p>Adding support for the NVIDIA Kata Sandbox Device Plugin.</p></li>
+<li><p>Configure <code class="docutils literal notranslate"><span class="pre">sandboxWorkload.mode=kata</span></code> during installation or in the ClusterPolicy to enable Kata Containers.</p></li>
+</ul>
+<p>Refer to the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Kata Containers documentation</span></a> for full details on configuring the GPU Operator to use Kata Containers.</p>
+</li>
 </ul>
 </section>
 <section id="fixed-issues">
@@ -541,6 +551,8 @@ This reduces the time to recover from the driver container removal from minutes 
 <h3>Removals and Deprecations<a class="headerlink" href="#removals-and-deprecations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Marked unused field <code class="docutils literal notranslate"><span class="pre">defaultRuntime</span></code> as optional in the ClusterPolicy. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2000">PR #2000</a>)</p></li>
+<li><p>NVIDIA Kata Manager is now deprecated.
+Refer to the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Kata Containers documentation</span></a> for more information on using Kata Containers without this component.</p></li>
 </ul>
 </section>
 </section>
