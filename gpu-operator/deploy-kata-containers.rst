@@ -117,7 +117,7 @@ Consider the following example where node A is configured to run traditional con
        * ``Node Feature Discovery (NFD)`` -- to detect CPU, kernel, and host features and label worker nodes.
        * ``NVIDIA GPU Feature Discovery`` -- to detect NVIDIA GPUs and label worker nodes.
      - * ``NVIDIA Kata Sandbox Device Plugin`` -- to discover and advertise the passthrough GPUs to kubelet.
-       * ``NVIDIA VFIO Manager`` -- to load the vfio-pci device driver and bind it to all GPUs on the node.
+       * ``NVIDIA VFIO Manager`` -- to bind NVIDIA GPUs and NVIDIA NVSwitches to the vfio-pci driver for VFIO passthrough.
        * ``Node Feature Discovery`` -- to detect CPU security features, NVIDIA GPUs, and label worker nodes.
        * ``NVIDIA Confidential Computing Manager for Kubernetes`` -- to set the confidential computing (CC) mode on the NVIDIA GPUs.
          This component is deployed to all nodes configured for Kata Containers, even if you are not planning to run Confidential Containers.
@@ -173,10 +173,16 @@ Prerequisites
 
 * You have cluster administrator privileges on the cluster you are installing the GPU Operator on.
 
-* The NVIDIA GPU runtime classes use VFIO cold-plug which requires the Kata runtime to query Kubelet's Pod Resources API to discover allocated GPU devices during sandbox creation. 
-  For Kubernetes versions older than 1.34, you must explicitly enable the ``KubeletPodResourcesGet`` feature gate in your Kubelet configuration. 
-  For Kubernetes 1.34 and later, the ``KubeletPodResourcesGet`` feature gate is enabled by default.
+* The ``KubeletPodResourcesGet`` featuregate enabled on your cluster.
+  The NVIDIA GPU runtime classes use VFIO cold-plug which requires the Kata runtime to query Kubelet's Pod Resources API to discover allocated GPU devices during sandbox creation. 
 
+  * For Kubernetes v1.34 and later, the ``KubeletPodResourcesGet`` feature gate is enabled by default.
+
+  * For Kubernetes versions older than v1.34, you must explicitly enable the ``KubeletPodResourcesGet`` feature gate in your Kubelet configuration.
+    One way to do this is to edit the Kubelet configuration file by running ``sudo nano /var/lib/kubelet/config.yaml``, setting ``featureGates.KubeletPodResourcesGet`` to ``true``, then restarting the Kubelet service with ``sudo systemctl restart kubelet``.
+
+
+  Refer to the `Kata Containers documentation <https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime>`_ for more details on the Kata runtime and VFIO cold-plug.
 
 .. _label-nodes-kata-containers:
 
@@ -269,9 +275,10 @@ Perform the following steps to install the Operator for use with Kata Containers
 
    .. code-block:: console
 
-      $ helm install --wait --generate-name \
+      $ helm install --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
+         --version=${version} \
          --set sandboxWorkloads.enabled=true \
          --set sandboxWorkloads.mode=kata \
          --set nfd.enabled=true \
@@ -285,12 +292,13 @@ Perform the following steps to install the Operator for use with Kata Containers
 
    .. code-block:: output
 
-      NAME: gpu-operator
-      LAST DEPLOYED: Tue Mar 10 17:58:12 2026
-      NAMESPACE: gpu-operator
-      STATUS: deployed
-      REVISION: 1
-      TEST SUITE: None
+        NAME: gpu-operator
+        LAST DEPLOYED: Wed Mar 25 17:21:34 2026
+        NAMESPACE: gpu-operator
+        STATUS: deployed
+        REVISION: 1
+        DESCRIPTION: Install complete
+        TEST SUITE: None
 
 Verification
 ============
