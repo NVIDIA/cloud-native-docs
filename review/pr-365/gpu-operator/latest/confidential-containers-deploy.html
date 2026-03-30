@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Deploy Confidential Containers with NVIDIA GPU Operator &#8212; NVIDIA GPU Operator</title>
+    <title>Deploy Confidential Containers &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -69,14 +69,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Install GPU Operator in Proxy Environments" href="install-gpu-operator-proxy.html" />
-    <link rel="prev" title="Deploy with Kata Containers" href="kata-containers-deploy.html" />
+    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Mar 20, 2026"/>
+    <meta name="docbuild:last-update" content="Mar 30, 2026"/>
 
 
 
@@ -361,7 +361,6 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kata-containers-deploy.html">   Kata Containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">   Confidential Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
@@ -412,7 +411,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers with NVIDIA GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers</li>
   </ul>
 </nav></div>
       
@@ -428,8 +427,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="deploy-confidential-containers-with-nvidia-gpu-operator">
-<span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers with NVIDIA GPU Operator<a class="headerlink" href="#deploy-confidential-containers-with-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
+  <section id="deploy-confidential-containers">
+<span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers<a class="headerlink" href="#deploy-confidential-containers" title="Permalink to this headline">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
@@ -437,10 +436,6 @@
 <p>The page describes deploying Confidential Containers with the NVIDIA GPU Operator.
 The implementation relies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.</p>
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers overview</a> for details on the reference architecture and supported platforms.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Refer to the <a class="reference internal" href="kata-containers-deploy.html"><span class="doc">Kata Containers deployment guide</span></a> if you’d like to run workloads in Kata Containers, not confidential containers.</p>
-</div>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
@@ -811,12 +806,12 @@ nvidia-vfio-manager-h229x                                         1/1     Runnin
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="kata-containers-deploy.html"
+       href="gpu-operator-kubevirt.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Deploy with Kata Containers</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
       </div>
     </a>
     <a class="right-next"
