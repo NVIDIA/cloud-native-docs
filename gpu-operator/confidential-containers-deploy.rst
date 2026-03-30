@@ -1,8 +1,8 @@
 .. _confidential-containers-deploy:
 
-*******************************************************
-Deploy Confidential Containers with NVIDIA GPU Operator
-*******************************************************
+******************************
+Deploy Confidential Containers
+******************************
 
 .. note::
 
@@ -13,10 +13,6 @@ The page describes deploying Confidential Containers with the NVIDIA GPU Operato
 The implementation relies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.
 
 Refer to the `Confidential Containers overview <https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html>`_ for details on the reference architecture and supported platforms.
-
-.. tip::
-
-   Refer to the :doc:`Kata Containers deployment guide <kata-containers-deploy>` if you'd like to run workloads in Kata Containers, not confidential containers.
 
 .. _coco-prerequisites:
 
