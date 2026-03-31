@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>NVIDIA Confidential Containers Reference Architecture &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Supported Platforms &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'overview';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'supported-platforms';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -68,8 +68,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Supported Platforms" href="supported-platforms.html" />
-    <link rel="prev" title="NVIDIA Confidential Containers Architecture (Early Access)" href="index.html" />
+    <link rel="next" title="Deploy Confidential Containers" href="confidential-containers-deploy.html" />
+    <link rel="prev" title="NVIDIA Confidential Containers Reference Architecture" href="overview.html" />
 
 
 
@@ -331,8 +331,8 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Supported Platforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
@@ -372,7 +372,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">NVIDIA Confidential Containers Reference Architecture</li>
+    <li class="breadcrumb-item active" aria-current="page">Supported Platforms</li>
   </ul>
 </nav></div>
       
@@ -388,111 +388,109 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="nvidia-confidential-containers-reference-architecture">
-<h1>NVIDIA Confidential Containers Reference Architecture<a class="headerlink" href="#nvidia-confidential-containers-reference-architecture" title="Permalink to this headline">#</a></h1>
-<section id="overview">
-<span id="confidential-containers-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.</p>
-<p>As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. Additionally, the model deployment landscape is evolving to include public clouds, enterprise on-premises, and edge. A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access.</p>
-<p>Securing data at rest and in transit is standard. Protecting data in-use remains a critical gap. Confidential Computing (CC) addresses this gap by providing isolation, encryption, and integrity verification of proprietary application code and sensitive data during processing. CC uses hardware-based Trusted Execution Environments (TEEs), such as AMD SEV-SNP / Intel TDX technologies, and NVIDIA Confidential Computing capabilities to create trusted enclaves.</p>
-<p>In addition to TEEs, Confidential Computing provides Remote Attestation features. Attestation enables remote systems or users to interrogate the security state of a TEE before interacting with it and providing any secrets or sensitive data.</p>
-<p><a class="reference external" href="https://github.com/confidential-containers">Confidential Containers</a> (CoCo) is the cloud-native approach of CC on Kubernetes.
-The Confidential Containers project leverages Kata Containers to provide the sandboxing capabilities. <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> is an open-source project that provides lightweight Utility Virtual Machines (UVMs) that feel and perform like containers while providing strong workload isolation. Along with the Confidential Containers project, Kata enables the orchestration of secure, GPU-accelerated workloads in Kubernetes.</p>
-</section>
-<section id="architecture-overview">
-<span id="coco-architecture"></span><h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">#</a></h2>
-<p>NVIDIA’s approach to the Confidential Containers architecture delivers on the key promise of Confidential Computing: confidentiality, integrity, and verifiability.
-Integrating open source and NVIDIA software components with the Confidential Computing capabilities of NVIDIA GPUs, the Reference Architecture for Confidential Containers is designed to be the secure and trusted deployment model for AI workloads.</p>
-<img alt="High-Level Reference Architecture for Confidential Containers" src="_images/CoCo-Reference-Architecture.png" />
-<p><em>High-Level Reference Architecture for Confidential Containers</em></p>
-<p>The key values of this architecture approach are:</p>
-<ol class="arabic simple">
-<li><p><strong>Built on OSS standards</strong> - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.</p></li>
-<li><p><strong>Highest level of isolation</strong> - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).</p></li>
-<li><p><strong>Zero-trust execution with attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
-</ol>
-</section>
-<section id="use-cases">
-<span id="coco-use-cases"></span><h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
-<p>The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to leverage the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
-<ul class="simple">
-<li><p><strong>Zero-Trust AI &amp; IP Protection:</strong> You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.</p></li>
-<li><p><strong>Data Clean Rooms:</strong> This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.</p></li>
-</ul>
-<img alt="Sample Workflow for Securing Model IP on Untrusted Infrastructure with CoCo" src="_images/CoCo-Sample-Workflow.png" />
-<p><em>Sample Workflow for Securing Model IP on Untrusted Infrastructure with CoCo</em></p>
-</section>
-<section id="software-components-for-confidential-containers">
-<span id="coco-supported-platforms-components"></span><h2>Software Components for Confidential Containers<a class="headerlink" href="#software-components-for-confidential-containers" title="Permalink to this headline">#</a></h2>
-<p>The following is a brief overview of the software components in NVIDIA’s Reference Architecture for Confidential Containers</p>
-<p><strong>Kata Containers</strong></p>
-<p>Acts as the secure isolation layer by running standard Kubernetes Pods inside lightweight, hardware-isolated Utility Virtual Machines (UVMs) rather than sharing the untrusted host kernel.
-Kata containers are integrated with the Kubernetes <a class="reference external" href="https://github.com/kubernetes-sigs/agent-sandbox">Agent Sandbox</a> project to deliver sandboxing capabilities.</p>
-<p><strong>NVIDIA GPU Operator</strong></p>
-<p>Automates GPU lifecycle management.
-For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM)without breaking the hardware trust boundary.</p>
-<p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads:</p>
-<ul class="simple">
-<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.</p></li>
-<li><p>NVIDIA Kata Sandbox Device Plugin - to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.</p></li>
-</ul>
-<p>Creating host-side CDI specifications for GPU passthrough, resulting in the file /var/run/cdi/nvidia.yaml, containing kind: nvidia.com/pgpu
-Allocating GPUs during pod deployment.
-Discovering NVIDIA GPUs, their capabilities, and advertising these to the Kubernetes control plane (allocatable resources as type nvidia.com/pgpu resources will appear for the node and GPU Device IDs will be registered with Kubelet). These GPUs can thus be allocated as container resources in your pod manifests. See below GPU Operator deployment instructions for the use of the key pgpu, controlled via a variable.</p>
-<ul class="simple">
-<li><p>NVIDIA VFIO Manager - binds discovered NVIDIA GPUs and nvswitches to the vfio-pci driver for VFIO passthrough.</p></li>
-</ul>
-<p><strong>Kata Deploy</strong></p>
-<p>Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
-<p><strong>Node Feature Discovery (NFD)</strong></p>
-<p>Bootstraps the node by advertising the node features via labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
-<p><strong>Trustee</strong></p>
-<p>Attestation and key brokering framework (which includes the Key Broker Service and Attestation Service). It acts as the cryptographic gatekeeper, verifying hardware/software evidence and only releasing secrets if the environment is proven secure.</p>
-<p><strong>Snapshotter (e.g., Nydus)</strong></p>
-<p>Handles the container image “guest pull” functionality. Used as a remote snapshotter, it bypasses image pulls on the host. Instead, it fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.</p>
-<p><strong>Kata Agent and Agent Security Policy</strong></p>
-<p>Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus). This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.</p>
-<p><strong>Confidential Data Hub (CDH)</strong></p>
-<p>An in-guest component that securely receives sealed secrets from Trustee and transparently manages encrypted persistent storage and image decryption for the workload.</p>
-<p><strong>NVRC (NVIDIA runcom)</strong></p>
-<p>A minimal hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons while drastically reducing the attack surface.</p>
-<section id="cluster-topology-considerations">
-<h3>Cluster Topology Considerations<a class="headerlink" href="#cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
-<p>You can configure all the worker nodes in your cluster for running GPU workloads with confidential containers, or you can configure some nodes for Confidential Containers and the others for traditional containers. Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.</p>
-<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+  <section id="supported-platforms">
+<h1>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h1>
+<p>Following are the platforms supported by Confidential Containers open Reference Architecture published by NVIDIA.</p>
+<section id="supported-hardware-platforms">
+<h2>Supported Hardware Platforms<a class="headerlink" href="#supported-hardware-platforms" title="Permalink to this headline">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Node A - Traditional Containers receives the following software components</p></th>
-<th class="head"><p>Node B - Kata CoCo receives the following software components</p></th>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Release/Version</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><ul class="simple">
-<li><p>NVIDIA Driver Manager for Kubernetes</p></li>
-<li><p>NVIDIA Container Toolkit</p></li>
-<li><p>NVIDIA Device Plugin for Kubernetes</p></li>
-<li><p>NVIDIA DCGM and DCGM Exporter</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes</p></li>
-<li><p>Node Feature Discovery</p></li>
-<li><p>NVIDIA GPU Feature Discovery</p></li>
-</ul>
+<tr class="row-even"><td><p>GPU Platform</p></td>
+<td><div class="line-block">
+<div class="line">Hopper 100/200</div>
+<div class="line">Blackwell B200</div>
+<div class="line">Blackwell RTX Pro 6000</div>
+</div>
 </td>
-<td><ul class="simple">
-<li><p>NVIDIA Confidential Computing Manager for Kubernetes</p></li>
-<li><p>NVIDIA Sandbox Device Plugin</p></li>
-<li><p>NVIDIA VFIO Manager</p></li>
-<li><p>Node Feature Discovery</p></li>
-</ul>
+</tr>
+<tr class="row-odd"><td><p>CPU Platform</p></td>
+<td><div class="line-block">
+<div class="line">AMD Genoa/ Milan</div>
+<div class="line">Intel ER/ GR</div>
+</div>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>This configuration can be controlled through node labelling, as described in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a>.</p>
 </section>
+<section id="supported-software-components">
+<h2>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Release/Version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Host OS</p></td>
+<td><p>Ubuntu 25.10</p></td>
+</tr>
+<tr class="row-odd"><td><p>Host Kernel</p></td>
+<td><p>6.17+</p></td>
+</tr>
+<tr class="row-even"><td><p>Guest OS</p></td>
+<td><p>Distroless</p></td>
+</tr>
+<tr class="row-odd"><td><p>Guest kernel</p></td>
+<td><p>6.18.5</p></td>
+</tr>
+<tr class="row-even"><td><p>OVMF</p></td>
+<td><p>edk2-stable202511</p></td>
+</tr>
+<tr class="row-odd"><td><p>QEMU</p></td>
+<td><p>10.1 + Patches</p></td>
+</tr>
+<tr class="row-even"><td><p>Containerd</p></td>
+<td><p>2.2.2 +</p></td>
+</tr>
+<tr class="row-odd"><td><p>Kubernetes</p></td>
+<td><p>1.32 +</p></td>
+</tr>
+<tr class="row-even"><td><p>Node Feature Discovery (NFD)</p></td>
+<td><p>v0.6.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA GPU Operator</p></td>
+<td><p>v25.10.0 and higher</p></td>
+</tr>
+<tr class="row-even"><td><p>Kata</p></td>
+<td><p>3.25 (w/ kata-deploy helm)</p></td>
+</tr>
+<tr class="row-odd"><td><p>KBS protocol</p></td>
+<td><p>0.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Kubernetes</p></td>
+<td><p>1.32+</p></td>
+</tr>
+<tr class="row-odd"><td><p>Attestation Support</p></td>
+<td><p>Composite Attestation for CPU + GPU; integration with Trustee for local verifier.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="limitations-and-restrictions">
+<span id="coco-supported-platforms"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.</p></li>
+<li><p>Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.</p></li>
+<li><p>Support for confidential computing environments is limited to the implementation described on this page.</p></li>
+<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
+<li><p>NFD doesn’t label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described in the deployment guide.</p></li>
+</ul>
 </section>
 </section>
 
@@ -507,20 +505,20 @@ Discovering NVIDIA GPUs, their capabilities, and advertising these to the Kubern
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="overview.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA Confidential Containers Architecture (Early Access)</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Reference Architecture</p>
       </div>
     </a>
     <a class="right-next"
-       href="supported-platforms.html"
+       href="confidential-containers-deploy.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Supported Platforms</p>
+        <p class="prev-next-title">Deploy Confidential Containers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -545,13 +543,9 @@ Discovering NVIDIA GPUs, their capabilities, and advertising these to the Kubern
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture-overview">Architecture Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-components-for-confidential-containers">Software Components for Confidential Containers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cluster-topology-considerations">Cluster Topology Considerations</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-hardware-platforms">Supported Hardware Platforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
 </ul>
   </nav></div>
 
