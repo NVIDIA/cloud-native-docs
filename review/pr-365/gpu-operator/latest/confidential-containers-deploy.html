@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Deploy Confidential Containers &#8212; NVIDIA GPU Operator</title>
+    <title>Confidential Containers &#8212; NVIDIA GPU Operator</title>
   
   
   
@@ -228,10 +228,6 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
 </div>
 
     </header>
@@ -411,7 +407,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">Confidential Containers</li>
   </ul>
 </nav></div>
       
@@ -427,372 +423,42 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="deploy-confidential-containers">
-<span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers<a class="headerlink" href="#deploy-confidential-containers" title="Permalink to this headline">#</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Early Access features are not supported in production environments and are not functionally complete. Early Access features provide a preview of upcoming product features, enabling customers to test functionality and provide feedback during the development process. These releases may not have complete documentation, and testing is limited. Additionally, API and architectural designs are not final and may change in the future.</p>
-</div>
+  <section id="confidential-containers">
+<span id="confidential-containers-deploy"></span><h1>Confidential Containers<a class="headerlink" href="#confidential-containers" title="Permalink to this headline">#</a></h1>
 <p>The page describes deploying Confidential Containers with the NVIDIA GPU Operator.
 The implementation relies on the Kata Containers project to provide the lightweight utility Virtual Machines (UVMs) that feel and perform like containers but provide strong workload isolation.</p>
-<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers overview</a> for details on the reference architecture and supported platforms.</p>
-<section id="prerequisites">
-<span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>You are using a supported platform for confidential containers. For more information, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html">Confidential Containers supported platforms</a>. In particular:</p>
-<ul class="simple">
-<li><p>You selected and configured your hardware and BIOS to support confidential computing.</p></li>
-<li><p>You installed and configured Ubuntu 25.10 as host OS with its default kernel to support confidential computing.</p></li>
-<li><p>You validated that the Linux kernel is SNP-aware.</p></li>
-</ul>
-</li>
-<li><p>Your hosts are configured to enable hardware virtualization and Access Control Services (ACS). With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER). Enabling these features is typically performed by configuring the host BIOS.</p></li>
-<li><p>Your hosts are configured to support IOMMU.</p>
-<ul>
-<li><p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/sys/kernel/iommu_groups</span></code> includes 0, 1, and so on, then your host is configured for IOMMU.</p></li>
-<li><p>If the host is not configured or you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument. For most Linux distributions, you add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
-<span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
-<span class="go">...</span>
-</pre></div>
+<p>This is documentation for NVIDIA’s Early Access implementation of Confidential Containers including reference architecture information and supported platforms.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-3 sd-row-cols-xs-3 sd-row-cols-sm-3 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-book sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 3.75A.75.75 0 0 1 .75 3h7.497c1.566 0 2.945.8 3.751 2.014A4.495 4.495 0 0 1 15.75 3h7.5a.75.75 0 0 1 .75.75v15.063a.752.752 0 0 1-.755.75l-7.682-.052a3 3 0 0 0-2.142.878l-.89.891a.75.75 0 0 1-1.061 0l-.902-.901a2.996 2.996 0 0 0-2.121-.879H.75a.75.75 0 0 1-.75-.75Zm12.75 15.232a4.503 4.503 0 0 1 2.823-.971l6.927.047V4.5h-6.75a3 3 0 0 0-3 3ZM11.247 7.497a3 3 0 0 0-3-2.997H1.5V18h6.947c1.018 0 2.006.346 2.803.98Z"></path></svg> Reference Architecture</div>
+<p class="sd-card-text">Overview, reference architecture, and software components for Confidential Containers.</p>
 </div>
-</li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p></li>
-</ul>
-</li>
-<li><p>You have a Kubernetes cluster and you have cluster administrator privileges.
-* For this cluster, you are using containerd 2.1 and Kubernetes version v1.34. These versions have been validated with the kata-containers project and are recommended. You use a <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> of more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> (the current method to pull container images within the confidential container may exceed the two minute default timeout in case of using large container images).</p></li>
-<li><p>Make sure <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled on your cluster. The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet`s Pod Resources API to discover allocated GPU devices during sandbox creation. For Kubernetes versions older than 1.34, you must explicitly enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate in your Kubelet configuration. For Kubernetes 1.34 and later, this feature is enabled by default.</p></li>
-</ul>
-</section>
-<section id="installation-and-configuration">
-<span id="id1"></span><h2>Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">#</a></h2>
-<section id="overview">
-<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h3>
-<p>Installing and configuring your cluster to support the NVIDIA GPU Operator with confidential containers is as follows:</p>
-<ol class="arabic">
-<li><p>Label the worker nodes that you want to use with confidential containers.</p>
-<p>This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster. Alternatively, you can set a default sandbox workload parameter to vm-passthrough to run confidential containers on all worker nodes when you install the GPU Operator.</p>
-</li>
-<li><p>Install the latest Kata Containers helm chart (minimum version: 3.24.0).</p>
-<p>This step installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for confidential containers and native Kata containers.</p>
-</li>
-<li><p>Install the latest version of the NVIDIA GPU Operator (minimum version: v26.3.0).</p>
-<p>You install the Operator and specify options to deploy the operands that are required for confidential containers.</p>
-</li>
-</ol>
-<p>After installation, you can change the confidential computing mode and run a sample GPU workload in a confidential container.</p>
-</section>
-<section id="label-nodes">
-<h3>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h3>
-<p>Add a label to the nodes on which you intend to run confidential containers.</p>
-<ol class="arabic">
-<li><p>Label the nodes on which you intend to run confidential containers as follows:</p>
-<blockquote>
-<div><p>$ kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config=vm-passthrough</p>
-</div></blockquote>
-</li>
-</ol>
-<p>By labeling only the nodes that will run confidential containers, you can continue to run traditional container workloads with GPU or vGPU workloads on other nodes in your cluster.
-If you plan to run confidential containers on all your worker nodes, you can set the default sandbox workload to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> when you install the GPU Operator.</p>
-</section>
-<section id="install-the-kata-containers-helm-chart">
-<h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
-<ol class="arabic">
-<li><p>Get the <code class="docutils literal notranslate"><span class="pre">3.24.0</span></code> version of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.24.0&quot;</span>
-<span class="gp">$ </span><span class="nb">export</span> <span class="nv">CHART</span><span class="o">=</span><span class="s2">&quot;oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy&quot;</span>
-</pre></div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html"><span>https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html</span></a></div>
 </div>
-</li>
-<li><p>Install the kata-deploy Helm chart:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install kata-deploy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHART</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-  --namespace kata-system --create-namespace <span class="se">\</span>
-  --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-  --wait --timeout 10m <span class="se">\</span>
-  --set shims.qemu-nvidia-gpu-tdx.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-  --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
-</pre></div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-rocket sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.322.75h1.176a1.75 1.75 0 0 1 1.75 1.749v1.177a10.75 10.75 0 0 1-2.925 7.374l-1.228 1.304a23.699 23.699 0 0 1-1.596 1.542v5.038c0 .615-.323 1.184-.85 1.5l-4.514 2.709a.75.75 0 0 1-1.12-.488l-.963-4.572a1.305 1.305 0 0 1-.14-.129L8.04 15.96l-1.994-1.873a1.305 1.305 0 0 1-.129-.14l-4.571-.963a.75.75 0 0 1-.49-1.12l2.71-4.514c.316-.527.885-.85 1.5-.85h5.037a23.668 23.668 0 0 1 1.542-1.594l1.304-1.23A10.753 10.753 0 0 1 20.321.75Zm-6.344 4.018v-.001l-1.304 1.23a22.275 22.275 0 0 0-3.255 3.851l-2.193 3.29 1.859 1.744a.545.545 0 0 1 .034.034l1.743 1.858 3.288-2.192a22.263 22.263 0 0 0 3.854-3.257l1.228-1.303a9.251 9.251 0 0 0 2.517-6.346V2.5a.25.25 0 0 0-.25-.25h-1.177a9.252 9.252 0 0 0-6.344 2.518ZM6.5 21c-1.209 1.209-3.901 1.445-4.743 1.49a.236.236 0 0 1-.18-.067.236.236 0 0 1-.067-.18c.045-.842.281-3.534 1.49-4.743.9-.9 2.6-.9 3.5 0 .9.9.9 2.6 0 3.5Zm-.592-8.588L8.17 9.017c.23-.346.47-.685.717-1.017H5.066a.25.25 0 0 0-.214.121l-2.167 3.612ZM16 15.112c-.333.248-.672.487-1.018.718l-3.393 2.262.678 3.223 3.612-2.167a.25.25 0 0 0 .121-.214ZM17.5 8a1.5 1.5 0 1 1-3.001-.001A1.5 1.5 0 0 1 17.5 8Z"></path></svg> Deploy</div>
+<p class="sd-card-text">Deploy Confidential Containers with the NVIDIA GPU Operator on Kubernetes.</p>
 </div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.24.0</span>
-<span class="go">Digest: sha256:d87e4f3d93b7d60eccdb3f368610f2b5ca111bfcd7133e654d08cfd192fb3351</span>
-<span class="go">NAME: kata-deploy</span>
-<span class="go">LAST DEPLOYED: Wed Dec 17 20:01:53 2025</span>
-<span class="go">NAMESPACE: kata-system</span>
-<span class="go">STATUS: deployed</span>
-<span class="go">REVISION: 1</span>
-<span class="go">TEST SUITE: None</span>
-</pre></div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/confidential-containers-deploy.html"><span>https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/confidential-containers-deploy.html</span></a></div>
 </div>
-</li>
-<li><p>Optional: View the pod in the kata-system namespace and ensure it is running:</p>
-<blockquote>
-<div><p>$ kubectl get pod,svc -n kata-system</p>
-</div></blockquote>
-<p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                    READY   STATUS    RESTARTS   AGE</span>
-<span class="go">pod/kata-deploy-4f658   1/1     Running   0          21s</span>
-</pre></div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-server sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.75 6.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM6 7.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 6 7.25Zm4 9a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75Zm-3.25-.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5h-.5Z"></path><path d="M3.25 2h17.5c.966 0 1.75.784 1.75 1.75v7c0 .372-.116.716-.314 1 .198.284.314.628.314 1v7a1.75 1.75 0 0 1-1.75 1.75H3.25a1.75 1.75 0 0 1-1.75-1.75v-7c0-.358.109-.707.314-1a1.741 1.741 0 0 1-.314-1v-7C1.5 2.784 2.284 2 3.25 2Zm0 10.5a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25Zm0-1.5h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25H3.25a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25Z"></path></svg> Supported Platforms</div>
+<p class="sd-card-text">Hardware, host, and component versions validated for Early Access (EA).</p>
 </div>
-<p>Wait a few minutes for kata-deploy to create the base runtime classes.</p>
-</li>
-</ol>
-<ol class="arabic" start="5">
-<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes are available:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
-</pre></div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html"><span>https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html</span></a></div>
 </div>
-<p><em>Example Output</em></p>
-<blockquote>
-<div><p>NAME                       HANDLER                    AGE
-kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       40s
-kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s</p>
-</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> installs several runtime classes. The  <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime class is used to deploy Confidential Containers.</p>
-</li>
-</ol>
-</section>
-<section id="install-the-nvidia-gpu-operator">
-<h3>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h3>
-<p>Perform the following steps to install the Operator for use with confidential containers:</p>
-<ol class="arabic">
-<li><p>Add and update the NVIDIA Helm repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
-   <span class="o">&amp;&amp;</span> helm repo update
-</pre></div>
 </div>
-</li>
-<li><p>Specify at least the following options when you install the Operator.
-If you want to run Confidential Containers by default on all worker nodes, also specify <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
-    -n gpu-operator --create-namespace <span class="se">\</span>
-    nvidia/gpu-operator <span class="se">\</span>
-   --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-   --set sandboxWorkloads.mode<span class="o">=</span>kata <span class="se">\</span>
-   --set nfd.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-   --set nfd.nodefeaturerules<span class="o">=</span><span class="nb">true</span>
-</pre></div>
 </div>
-<p><em>Example Output</em>:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME: gpu-operator-1766001809</span>
-<span class="go">LAST DEPLOYED: Wed Dec 17 20:03:29 2025</span>
-<span class="go">NAMESPACE: gpu-operator</span>
-<span class="go">STATUS: deployed</span>
-<span class="go">REVISION: 1</span>
-<span class="go">TEST SUITE: None</span>
-</pre></div>
-</div>
-<p>Note that, for heterogeneous clusters with different GPU types, you can omit
-the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable lines (the two <code class="docutils literal notranslate"><span class="pre">sandboxDevicePlugin.env</span></code>
-options). This causes the sandbox device plugin to create GPU model-specific
-resource types (such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>) instead of the generic
-<code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>. For simplicity, this guide uses the generic alias.</p>
-</li>
-<li><p>Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
-</pre></div>
-</div>
-<p><em>Example Output</em>:</p>
-<blockquote>
-<div><p>NAME                                                              READY   STATUS    RESTARTS   AGE
-gpu-operator-1766001809-node-feature-discovery-gc-75776475sxzkp   1/1     Running   0          86s
-gpu-operator-1766001809-node-feature-discovery-master-6869lxq2g   1/1     Running   0          86s
-gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s
-gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
-nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
-nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                      1/1     Running   0          30s
-nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s
-nvidia-vfio-manager-h229x                                         1/1     Running   0          62s</p>
-</div></blockquote>
-</li>
-<li><p>If the nvidia-cc-manager is <em>not</em> running, you need to label your CC-capable node(s) by hand. The node labelling capabilities in the early access version are not complete. To label your node(s), run:</p>
-<blockquote>
-<div><p>$ kubectl label node &lt;nodename&gt; nvidia.com/cc.capable=true</p>
-</div></blockquote>
-</li>
-<li><p>Optional: If you have host access to the worker node, you can perform the following validation steps:</p>
-<ol class="loweralpha">
-<li><p>Confirm that the host uses the vfio-pci device driver for GPUs:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
-</pre></div>
-</div>
-<p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)</span>
-<span class="go">        Subsystem: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx]</span>
-<span class="go">        Kernel driver in use: vfio-pci</span>
-<span class="go">        Kernel modules: nvidiafb, nouveau</span>
-</pre></div>
-</div>
-</li>
-<li><p>Confirm that the kata-deploy functionality installed the kata-qemu-nvidia-gpu-snp and kata-qemu-nvidia-gpu runtime class files:</p>
-<blockquote>
-<div><p>$ ls -l /opt/kata/share/defaults/kata-containers/ | grep nvidia</p>
-</div></blockquote>
-<p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-rw-r--r-- 1 root root  3333 Dec 17 20:01 configuration-qemu-nvidia-gpu-snp.toml</span>
-<span class="go">-rw-r--r-- 1 root root 30812 Dec 12 17:41 configuration-qemu-nvidia-gpu-tdx.toml</span>
-<span class="go">-rw-r--r-- 1 root root 30279 Dec 12 17:41 configuration-qemu-nvidia-gpu.toml</span>
-</pre></div>
-</div>
-</li>
-<li><p>Confirm that the kata-deploy functionality installed the UVM components:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -l /opt/kata/share/kata-containers/ <span class="p">|</span> grep nvidia
-</pre></div>
-</div>
-<p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lrwxrwxrwx 1 root root        58 Dec 17 20:01 kata-containers-initrd-nvidia-gpu-confidential.img -&gt; kata-ubuntu-noble-nvidia-gpu-confidential-580.95.05.initrd</span>
-<span class="go">lrwxrwxrwx 1 root root        45 Dec 17 20:01 kata-containers-initrd-nvidia-gpu.img -&gt; kata-ubuntu-noble-nvidia-gpu-580.95.05.initrd</span>
-<span class="go">lrwxrwxrwx 1 root root        57 Dec 17 20:01 kata-containers-nvidia-gpu-confidential.img -&gt; kata-ubuntu-noble-nvidia-gpu-confidential-580.95.05.image</span>
-<span class="go">lrwxrwxrwx 1 root root        44 Dec 17 20:01 kata-containers-nvidia-gpu.img -&gt; kata-ubuntu-noble-nvidia-gpu-580.95.05.image</span>
-<span class="go">lrwxrwxrwx 1 root root        42 Dec 17 20:01 vmlinux-nvidia-gpu-confidential.container -&gt; vmlinux-6.16.7-173-nvidia-gpu-confidential</span>
-<span class="go">lrwxrwxrwx 1 root root        30 Dec 17 20:01 vmlinux-nvidia-gpu.container -&gt; vmlinux-6.12.47-173-nvidia-gpu</span>
-</pre></div>
-</div>
-</li>
-</ol>
-</li>
-</ol>
-</section>
-<section id="run-a-sample-workload">
-<h3>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h3>
-<p>A pod manifest for a confidential computing GPU workload requires the following:</p>
-<ol class="arabic">
-<li><p>Create a file, such as the following cuda-vectoradd-kata.yaml sample, specifying the kata-qemu-nvidia-gpu-snp runtime class:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
-<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvrc.smi.srs=1&quot;</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"></span>
-<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
-<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
-<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>Create the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
-</pre></div>
-</div>
-</li>
-<li><p>View the logs from pod after the container was started:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n default cuda-vectoradd-kata
-</pre></div>
-</div>
-<p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
-<span class="go">Copy input data from the host memory to the CUDA device</span>
-<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
-<span class="go">Copy output data from the CUDA device to the host memory</span>
-<span class="go">Test PASSED</span>
-<span class="go">Done</span>
-</pre></div>
-</div>
-</li>
-<li><p>Delete the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd-kata.yaml
-</pre></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="managing-the-confidential-computing-mode">
-<span id="managing-confidential-computing-mode"></span><h2>Managing the Confidential Computing Mode<a class="headerlink" href="#managing-the-confidential-computing-mode" title="Permalink to this headline">#</a></h2>
-<p>You can set the default confidential computing mode of the NVIDIA GPUs by setting the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off|devtools&gt;</span></code> option. The default value is off. You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.</p>
-<p>When you change the mode, the manager performs the following actions:</p>
-<ul>
-<li><p>Evicts the other GPU Operator operands from the node.</p>
-<p>However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.</p>
-</li>
-<li><p>Unbinds the GPU from the VFIO PCI device driver.</p></li>
-<li><p>Changes the mode and resets the GPU.</p></li>
-<li><p>Reschedules the other GPU Operator operands.</p></li>
-</ul>
-<p>Three modes are supported:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">on</span></code> – Enable confidential computing.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">off</span></code> – Disable confidential computing.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">devtools</span></code> – Development mode for software development and debugging.</p></li>
-</ul>
-<p>You can set a cluster-wide default mode and you can set the mode on individual nodes. The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
-<section id="setting-a-cluster-wide-default-mode">
-<h3>Setting a Cluster-Wide Default Mode<a class="headerlink" href="#setting-a-cluster-wide-default-mode" title="Permalink to this headline">#</a></h3>
-<p>To set a cluster-wide mode, specify the ccManager.defaultMode field like the following example:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
-      --type<span class="o">=</span>merge <span class="se">\</span>
-      -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;ccManager&quot;: {&quot;defaultMode&quot;: &quot;on&quot;}}}&#39;</span>
-</pre></div>
-</div>
-</section>
-<section id="setting-a-node-level-mode">
-<h3>Setting a Node-Level Mode<a class="headerlink" href="#setting-a-node-level-mode" title="Permalink to this headline">#</a></h3>
-<p>To set a node-level mode, apply the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=&lt;on|off|devtools&gt;</span></code> label like the following example:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/cc.mode<span class="o">=</span>on --overwrite
-</pre></div>
-</div>
-<p>The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
-</section>
-<section id="verifying-a-mode-change">
-<h3>Verifying a Mode Change<a class="headerlink" href="#verifying-a-mode-change" title="Permalink to this headline">#</a></h3>
-<p>To verify that changing the mode was successful, a cluster-wide or node-level change, view the nvidia.com/cc.mode and nvidia.com/cc.mode.state node labels:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node &lt;node-name&gt; -o json <span class="p">|</span> <span class="se">\</span>
-    jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc.mode&quot;)))&#39;</span>
-</pre></div>
-</div>
-<p>Example output when CC mode is disabled:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Example output when CC mode is enabled:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-<p>The “nvidia.com/cc.mode.state” variable is either “off” or “on”, with “off” meaning that mode state transition is still ongoing and “on” meaning mode state transition completed.</p>
-</section>
-</section>
-<section id="attestation">
-<span id="id2"></span><h2>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h2>
-<p>Confidential Containers has remote attestation support for the CPU and GPU built-in. Attestation allows a workload owner to cryptographically validate the guest TCB. This process is facilitated by components inside the guest rootfs. When a secret resource is required inside the confidential guest (to decrypt a container image, or to decrypt a model, for instance), the guest components detect which CPU and GPU enclaves are in use and collect hardware evidence from them. This evidence is sent to a remote verifier/broker known as Trustee, which evaluates the evidence and conditionally releases secrets. Features that depend on secrets depend on attestation. These features include, pulling encrypted images, authenticated registry support, sealed secrets, direct workload requests for secrets, and more. To use these features, Trustee must first be provisioned in some trusted environment.</p>
-<p>Trustee can be set up following <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream documentation</a>, with one key requirement for attesting NVIDIA devices. Specifically, Trustee must be configured to use the remote NVIDIA verifier, which uses NRAS to evaluate the evidence. This is not enabled by default. Enabling the remote verifier assumes that the user has entered into a <a class="reference external" href="https://docs.nvidia.com/attestation/cloud-services/latest/license.html">licensing agreement</a> covering NVIDIA attestation services.</p>
-<p>To enable the remote verifier, add the following lines to the Trustee configuration file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[attestation_service.verifier_config.nvidia_verifier]</span>
-<span class="go">type = &quot;Remote&quot;</span>
-</pre></div>
-</div>
-<p>If you are using the docker compose Trustee deployment, add the verifier type to kbs/config/as-config.json prior to starting Trustee.</p>
-<p>Per upstream documentation, add the following annotation to the workload to point the guest components to Trustee:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">io.katacontainers.config.hypervisor.kernel_params: &quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span>
-</pre></div>
-</div>
-<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the upstream documentation.</p>
-<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the nvrc.smi.srs=1 kernel parameter.</p>
-<p>If attestation does not succeed, debugging is best done via the Trustee log. Debug mode can be enabled by setting RUST_LOG=debug in the Trustee environment.</p>
-</section>
-<section id="additional-resources">
-<span id="id3"></span><h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>NVIDIA Confidential Computing documentation is available at <a class="reference external" href="https://docs.nvidia.com/confidential-computing">https://docs.nvidia.com/confidential-computing</a>.</p></li>
-<li><p>Trustee Upstream Documentation: <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">https://confidentialcontainers.org/docs/attestation/</a></p></li>
-<li><p>Trustee NVIDIA Verifier Documentation: <a class="github reference external" href="https://github.com/confidential-containers/trustee/blob/main/deps/verifier/src/nvidia/README.md">confidential-containers/trustee</a></p></li>
-</ul>
-</section>
 </section>
 
 
@@ -830,41 +496,9 @@ nvidia-vfio-manager-h229x                                         1/1     Runnin
             
             
 
-
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+<div class="bd-sidebar-secondary"></div>
 
 
-  <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-configuration">Installation and Configuration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes">Label Nodes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-sample-workload">Run a Sample Workload</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-confidential-computing-mode">Managing the Confidential Computing Mode</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-cluster-wide-default-mode">Setting a Cluster-Wide Default Mode</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-node-level-mode">Setting a Node-Level Mode</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attestation">Attestation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional Resources</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
 

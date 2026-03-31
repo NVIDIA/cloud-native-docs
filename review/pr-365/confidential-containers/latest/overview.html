@@ -433,7 +433,8 @@ Kata containers are integrated with the Kubernetes <a class="reference external"
 For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM)without breaking the hardware trust boundary.</p>
 <p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads:</p>
 <ul class="simple">
-<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.</p></li>
+<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.
+This manager is deployed by default on all nodes that have the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label.</p></li>
 <li><p>NVIDIA Kata Sandbox Device Plugin - to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.</p></li>
 </ul>
 <p>Creating host-side CDI specifications for GPU passthrough, resulting in the file /var/run/cdi/nvidia.yaml, containing kind: nvidia.com/pgpu

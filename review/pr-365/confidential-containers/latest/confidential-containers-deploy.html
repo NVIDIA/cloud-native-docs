@@ -390,8 +390,8 @@
                   
   <section id="deploy-confidential-containers">
 <span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers<a class="headerlink" href="#deploy-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p>The page describes deploying Confidential Containers with the NVIDIA GPU Operator and Kata Containers.</p>
-<p>Refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
+<p>The page describes deploying the NVIDIA Confidential Container Reference Architecture on Kubernetes using Kata Containers and the NVIDIA GPU Operator.</p>
+<p>Before you begin, refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <p>The high-level workflow for configuring Confidential Containers is as follows:</p>
@@ -443,6 +443,7 @@ The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runti
 <li><p>For Kubernetes versions older than 1.34, explicitly enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate in your Kubelet configuration.</p></li>
 <li><p>For Kubernetes 1.34 and later, this feature is enabled by default.</p></li>
 </ul>
+<p>Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime">Kata runtime (VFIO cold-plug)</a> section in the upstream NVIDIA GPU passthrough guide for more information.</p>
 </li>
 </ul>
 </section>
@@ -450,28 +451,26 @@ The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runti
 <span id="id1"></span><h2>Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">#</a></h2>
 <section id="label-nodes">
 <span id="coco-label-nodes"></span><h3>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h3>
-<p>The GPU Operator uses these labels to determine which operands to deploy on the worker nodes.
-This step ensures that you can continue to run traditional container workloads with GPU or vGPU workloads on some nodes in your cluster. Alternatively, you can set a default sandbox workload parameter to vm-passthrough to run confidential containers on all worker nodes when you install the GPU Operator.</p>
 <ol class="arabic">
 <li><p>Label the nodes that you want to use with Confidential Containers:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
+</li>
+</ol>
 <p>The GPU Operator uses this label to determine what software components to deploy to a node.
 The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.
-You can use this label on nodes for Kata workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
+You can use this label on nodes for  Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
 </div>
-</li>
-</ol>
 </section>
 <section id="install-the-kata-containers-helm-chart">
 <span id="coco-install-kata-chart"></span><h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
-<p>Install the kata-deploy Helm chart.
-The minimum required version is 3.29.0.</p>
-<p>This step installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for Confidential Containers and native Kata containers.</p>
+<p>Install the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart.
+The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for Confidential Containers and native Kata containers.</p>
+<p>The minimum required version is 3.29.0.</p>
 <ol class="arabic">
 <li><p>Get the latest version of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.29.0&quot;</span>
@@ -514,14 +513,15 @@ The minimum required version is 3.29.0.</p>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
-<blockquote>
-<div><p>NAME                       HANDLER                    AGE
-kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       40s
-kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s
-kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s</p>
-</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> installs several runtime classes. The  <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy Confidential Containers.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                       HANDLER                    AGE</span>
+<span class="go">kata-qemu-nvidia-gpu       kata-qemu-nvidia-gpu       40s</span>
+<span class="go">kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s</span>
+<span class="go">kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s</span>
+</pre></div>
+</div>
+<p>Several runtimes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy Confidential Containers workloads.</p>
 </li>
 </ol>
 </section>
@@ -580,8 +580,6 @@ The following configures the GPU Operator to deploy the operands that are requir
 </pre></div>
 </div>
 </li>
-</ol>
-<ol class="arabic" start="5">
 <li><p>Optional: If you have host access to the worker node, you can perform the following validation steps:</p>
 <ol class="loweralpha">
 <li><p>Confirm that the host uses the vfio-pci device driver for GPUs:</p>
@@ -589,7 +587,7 @@ The following configures the GPU Operator to deploy the operands that are requir
 </pre></div>
 </div>
 <p><em>Example Output</em>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)</span>
 <span class="go">        Subsystem: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx]</span>
 <span class="go">        Kernel driver in use: vfio-pci</span>
 <span class="go">        Kernel modules: nvidiafb, nouveau</span>
@@ -720,7 +718,9 @@ Done</p>
 </section>
 <section id="managing-the-confidential-computing-mode">
 <span id="managing-confidential-computing-mode"></span><h2>Managing the Confidential Computing Mode<a class="headerlink" href="#managing-the-confidential-computing-mode" title="Permalink to this headline">#</a></h2>
-<p>You can set the default confidential computing mode of the NVIDIA GPUs by setting the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off|ppcie|devtools&gt;</span></code> option. The default value is off. You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.</p>
+<p>You can set the default confidential computing mode of the NVIDIA GPUs by setting the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off|ppcie|devtools&gt;</span></code> option.
+The default value of ccManager.defaultMode is <code class="docutils literal notranslate"><span class="pre">on</span></code>.
+You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.</p>
 <p>When you change the mode, the manager performs the following actions:</p>
 <ul>
 <li><p>Evicts the other GPU Operator operands from the node.</p>
@@ -730,11 +730,12 @@ Done</p>
 <li><p>Changes the mode and resets the GPU.</p></li>
 <li><p>Reschedules the other GPU Operator operands.</p></li>
 </ul>
-<p>Three modes are supported:</p>
+<p>The supported modes are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">on</span></code> – Enable Confidential Containers.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">off</span></code> – Disable Confidential Containers.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code> – Enable Confidential Containers with multi-node passthrough on HGX or DGX GPUs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code> – Enable Confidential Containers with multi-node passthrough on HGX or DGX GPUs.
+On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the nvswitches for a single CVM. In this case, transition your relevant node(s) GPU mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode. The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and so does not require a separate switch setting.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">devtools</span></code> – Development mode for software development and debugging.</p></li>
 </ul>
 <p>You can set a cluster-wide default mode and you can set the mode on individual nodes. The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
