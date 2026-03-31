@@ -91,6 +91,7 @@ For Confidential Containers, it securely provisions GPU support and handles VFIO
 The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads:
 
 * NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes - to set the confidential computing (CC) mode on the NVIDIA GPUs.
+  This manager is deployed by default on all nodes that have the ``nvidia.com/gpu.workload.config=vm-passthrough`` label.
 * NVIDIA Kata Sandbox Device Plugin - to discover NVIDIA GPUs along with their capabilities, to advertise these to Kubernetes, and to allocate GPUs during pod deployment.
 
 Creating host-side CDI specifications for GPU passthrough, resulting in the file /var/run/cdi/nvidia.yaml, containing kind: nvidia.com/pgpu

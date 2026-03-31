@@ -3,7 +3,14 @@
 Attestation
 ===========
 
-Confidential Containers has remote attestation support for the CPU and GPU built-in. Attestation allows a workload owner to cryptographically validate the guest TCB. This process is facilitated by components inside the guest rootfs. When a secret resource is required inside the confidential guest (to decrypt a container image, or to decrypt a model, for instance), the guest components detect which CPU and GPU enclaves are in use and collect hardware evidence from them. This evidence is sent to a remote verifier/broker known as Trustee, which evaluates the evidence and conditionally releases secrets. Features that depend on secrets depend on attestation. These features include, pulling encrypted images, authenticated registry support, sealed secrets, direct workload requests for secrets, and more. To use these features, Trustee must first be provisioned in some trusted environment.
+Confidential Containers has remote attestation support for the CPU and GPU built-in. 
+Attestation allows a workload owner to cryptographically validate the guest TCB. 
+This process is facilitated by components inside the guest rootfs. 
+When a secret resource is required inside the confidential guest (to decrypt a container image, or to decrypt a model, for instance), the guest components detect which CPU and GPU enclaves are in use and collect hardware evidence from them. 
+This evidence is sent to a remote verifier/broker, for example Trustee, which evaluates the evidence and conditionally releases secrets. 
+Features that depend on secrets depend on attestation. 
+These features include, pulling encrypted images, authenticated registry support, sealed secrets, direct workload requests for secrets, and more. 
+To use these features, a remote verifier/broker, like Trustee, must first be provisioned in some trusted environment.
 
 Trustee can be set up following `upstream documentation <https://confidentialcontainers.org/docs/attestation/installation/>`_, with one key requirement for attesting NVIDIA devices. Specifically, Trustee must be configured to use the remote NVIDIA verifier, which uses NRAS to evaluate the evidence. This is not enabled by default. Enabling the remote verifier assumes that the user has entered into a `licensing agreement <https://docs.nvidia.com/attestation/cloud-services/latest/license.html>`_ covering NVIDIA attestation services.
 
@@ -20,6 +27,6 @@ Per upstream documentation, add the following annotation to the workload to poin
 
 Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the upstream documentation.
 
-During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the nvrc.smi.srs=1 kernel parameter.
+During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the nvrc.smi.srs=1 and RUST_LOG=debug kernel parameters.
 
 If attestation does not succeed, debugging is best done via the Trustee log. Debug mode can be enabled by setting RUST_LOG=debug in the Trustee environment.
