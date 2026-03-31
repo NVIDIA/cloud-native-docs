@@ -21,7 +21,7 @@ The high-level workflow for configuring Confidential Containers is as follows:
 
 #. Install the :ref:`NVIDIA GPU Operator configured for Confidential Containers <coco-install-gpu-operator>`.
 
-After installation, you can change the confidential computing mode and run a sample GPU workload in a confidential container.
+After installation, you can change the :ref:`confidential computing mode <managing-confidential-computing-mode>` and :ref:`run a sample GPU workload <coco-run-sample-workload>` in a confidential container.
 
 
 .. _coco-prerequisites:
@@ -316,6 +316,8 @@ Similarly, NVSwitches are exposed as resources of type
 environment variable to configure advertising behavior similar to
 ``P_GPU_ALIAS``.
 
+.. _coco-run-sample-workload:
+
 Run a Sample Workload
 =====================
 
@@ -328,20 +330,20 @@ A pod manifest for a confidential container GPU workload requires the following:
       apiVersion: v1
       kind: Pod
       metadata:
-      name: cuda-vectoradd-kata
-      namespace: default
-      annotations:
-         io.katacontainers.config.hypervisor.kernel_params: "nvrc.smi.srs=1"
+        name: cuda-vectoradd-kata
+        namespace: default
+        annotations:
+          io.katacontainers.config.hypervisor.kernel_params: "nvrc.smi.srs=1"
       spec:
-      runtimeClassName: kata-qemu-nvidia-gpu-snp
-      restartPolicy: Never
-      containers:
-      - name: cuda-vectoradd
-         image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
-         resources:
-            limits:
-            nvidia.com/pgpu: "1"
-            memory: 16Gi
+        runtimeClassName: kata-qemu-nvidia-gpu-snp
+        restartPolicy: Never
+        containers:
+          - name: cuda-vectoradd
+            image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
+            resources:
+              limits:
+                nvidia.com/pgpu: "1"
+                memory: 16Gi
 
    Use the runtime class to specify that your workload should run in a
    Confidential Container.
@@ -353,13 +355,19 @@ A pod manifest for a confidential container GPU workload requires the following:
 
 2. Create the pod:
 
+   .. code-block:: console
+
       $ kubectl apply -f cuda-vectoradd-kata.yaml
 
-3. View the logs from pod after the container was started::
+3. View the logs from pod after the container was started:
+
+   .. code-block:: console
 
       $ kubectl logs -n default cuda-vectoradd-kata
 
-   *Example Output*:
+   *Example Output*
+
+   .. code-block:: output
 
       [Vector addition of 50000 elements]
       Copy input data from the host memory to the CUDA device
@@ -369,6 +377,8 @@ A pod manifest for a confidential container GPU workload requires the following:
       Done
 
 4. Delete the pod:
+
+   .. code-block:: console
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
 
@@ -449,9 +459,10 @@ The "nvidia.com/cc.mode.state" variable is either "off" or "on", with "off" mean
 
 .. _additional-resources:
 
-Additional Resources
-====================
 
-* NVIDIA Confidential Computing documentation is available at https://docs.nvidia.com/confidential-computing.
-* Trustee Upstream Documentation: https://confidentialcontainers.org/docs/attestation/
-* Trustee NVIDIA Verifier Documentation: https://github.com/confidential-containers/trustee/blob/main/deps/verifier/src/nvidia/README.md
+Next Steps
+==========
+
+* Refer to the :doc:`Attestation <attestation>` page for more information on attestation.
+* Additional NVIDIA Confidential Computing documentation is available at https://docs.nvidia.com/confidential-computing.
+* Licensing information is available on the :doc:`Licensing <licensing>` page.
