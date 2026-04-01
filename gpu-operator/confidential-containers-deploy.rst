@@ -27,5 +27,5 @@ Documentation for configuring the GPU Operator for Confidential Containers is av
       :link: https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html
       :link-type: url
 
-      Hardware, host, and component versions validated for Early Access (EA).
+      Hardware, host, and component versions validated for general availability (GA).
 

@@ -45,7 +45,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 Use Cases
 =========
 
-The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to leverage the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
+The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
 
 * **Zero-Trust AI & IP Protection:** You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.
 * **Data Clean Rooms:** This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.
@@ -95,14 +95,14 @@ Acts as the secure isolation layer by running standard Kubernetes Pods inside li
 
 **Kata Deploy**
 
-Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
+Deployment mechanism (often managed with Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
 
 Refer to the `Kata Containers documentation <https://katacontainers.io/docs/>`_ for more information.
 
 **NVIDIA GPU Operator**
 
 Automates GPU lifecycle management. 
-For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM)without breaking the hardware trust boundary.
+For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM) without breaking the hardware trust boundary.
 
 The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads.
 These components include:
@@ -116,12 +116,12 @@ Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` page for more informati
 
 **Node Feature Discovery (NFD)**
 
-Bootstraps the node by advertising the node features via labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.
+Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.
 
 Refer to the `Node Feature Discovery documentation <https://kubernetes-sigs.github.io/node-feature-discovery/>`_ for upstream usage and reference material.
 The project source repository is `kubernetes-sigs/node-feature-discovery <https://github.com/kubernetes-sigs/node-feature-discovery>`_ on GitHub.
 
-**Snapshotter (e.g., Nydus)**
+**Snapshotter (for example, Nydus)**
 
 Handles the container image "guest pull" functionality. Used as a remote snapshotter, it bypasses image pulls on the host. Instead, it fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.
 
@@ -149,7 +149,7 @@ GPU Operator Cluster Topology Considerations
 
 The GPU Operator deploys and manages components for allocating and utilizing the GPU resources on your cluster. 
 Depending on how you configure the Operator, different components are deployed on the worker nodes.
-When setting up Confidential Cointainers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers. 
+When setting up Confidential Containers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers. 
 This configuration is done through node labelling and configuration flags set during installation or by editing the ClusterPolicy object post installation. 
 
 
@@ -192,6 +192,11 @@ The following features are supported with Confidential Containers:
 * Container image signature verification and encrypted container images.
 * Ephemeral container data and image layer storage.
 
+Limitations and Restrictions
+----------------------------
+
+* NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
+* Image signature verification for signed multi-arch images is currently not supported.
 
 Getting Started
 ===============
@@ -204,7 +209,7 @@ Refer to the following pages to learn more about deploying with Confidential Con
       :link: supported-platforms
       :link-type: doc
 
-      Hardware, OS, and component versions validated for Early Access (EA).
+      Hardware, OS, and component versions validated for general availability (GA).
 
    .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Deploy Confidential Containers
       :link: confidential-containers-deploy

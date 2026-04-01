@@ -17,7 +17,7 @@
 .. headings # #, * *, =, -, ^, "
 
 **********************************************************
-NVIDIA Confidential Containers Architecture (Early Access)
+NVIDIA Confidential Containers Architecture
 **********************************************************
 
 .. toctree::
@@ -32,7 +32,7 @@ NVIDIA Confidential Containers Architecture (Early Access)
    Licensing <licensing.rst>
 
 
-This is documentation for NVIDIA's Early Access implementation of Confidential Containers including reference architecture information and supported platforms.
+This is documentation for NVIDIA's implementation of Confidential Containers including reference architecture information and supported platforms.
 
 
 .. grid:: 3
@@ -42,29 +42,29 @@ This is documentation for NVIDIA's Early Access implementation of Confidential C
       :link: overview
       :link-type: doc
 
-      Reference architecture, use cases, and software components.
+      Start here to review the reference architecture, use cases, and software components.
 
    .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms
       :link: supported-platforms
       :link-type: doc
 
-      Hardware, OS, and component versions validated for Early Access (EA).
+      Learn about the validated hardware, OS, and component versions.
 
    .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Deploy Confidential Containers
       :link: confidential-containers-deploy
       :link-type: doc
 
-      Deploy with the NVIDIA GPU Operator on Kubernetes.
+      Use this page to deploy with the NVIDIA GPU Operator on Kubernetes.
 
    .. grid-item-card:: :octicon:`shield-check;1.5em;sd-mr-1` Attestation
       :link: attestation
       :link-type: doc
 
-      Remote attestation, Trustee, and the NVIDIA verifier for GPU workloads.
+      Learn about remote attestation, Trustee, and the NVIDIA verifier for GPU workloads.
 
    .. grid-item-card:: :octicon:`law;1.5em;sd-mr-1` Licensing
       :link: licensing
       :link-type: doc
 
-      Licensing information for Confidential Containers documentation.
+      Learn about the licensing information for Confidential Containers documentation.
 

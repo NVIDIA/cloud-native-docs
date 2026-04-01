@@ -62,14 +62,17 @@ Prerequisites
 
 * A Kubernetes cluster with cluster administrator privileges.
 
-* It is recommended that you configure your cluster's ``runtimeRequestTimeout``
-  to more than 5 minutes in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_.
-  Depending on the image sizes you plan to use you may need a larger timeout value as it will take longer to pull those images.
-
-  Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start, possibly leading your Kubelet to de-allocate your pod before it transitions from the container creating to the container running state. 
-  The NVIDIA shim configurations in Kata Containers use a ``create_container_timeout`` of 1200s, which is the equivalent value on shim side, controlling the time the shim allows for a container to remain in container creating state. 
-  If you need a timeout of more than 1200s (the default value), you will also need to adjust the agent's ``image_pull_timeout`` value which controls the agent-side timeout for guest-image pull. 
-  To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value via a pod annotation via ``io.katacontainers.config.hypervisor.kernel_params= "..."``. 
+* It is recommended that you configure your cluster's ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ with a higher timeout value than the two minute default.
+  You could set this value to 20 minutes to match the default values for the NVIDIA shim configurations in Kata Containers ``create_container_timeout`` and the agent's ``image_pull_timeout``.
+ 
+  Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start.
+  This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state. 
+  
+  The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes). 
+  This controls the time the shim allows for a container to remain in container creating state. 
+ 
+  If you need a timeout of more than 1200 seconds, you will also need to adjust the agent's ``image_pull_timeout`` value which controls the agent-side timeout for guest-image pull. 
+  To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params="..."`` annotation.  
 
 * Enable ``KubeletPodResourcesGet`` on your cluster.
   The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet's Pod Resources API to discover allocated GPU devices during sandbox creation.
@@ -97,11 +100,23 @@ Label Nodes
 
 The GPU Operator uses this label to determine what software components to deploy to a node.
 The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
-You can use this label on nodes for  Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.
+You can use this label on nodes for Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.
 
 .. tip::
 
    Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set ``sandboxWorkloads.defaultWorkload=vm-passthrough`` when installing the GPU Operator.
+
+To check whether the node label has been added, run the following command:
+
+.. code-block:: console
+
+   $ kubectl describe node <node-name> | grep nvidia.com/gpu.workload.config
+
+Example output:
+
+.. code-block:: output
+
+   nvidia.com/gpu.workload.config: vm-passthrough
 
 .. _coco-install-kata-chart:
 
@@ -131,6 +146,16 @@ The minimum required version is 3.29.0.
        --wait --timeout 10m \
        --version "${VERSION}"
 
+   *Example Output*
+
+   .. code-block:: output
+
+      LAST DEPLOYED: Wed Apr  1 17:03:00 2026
+      NAMESPACE: kata-system
+      STATUS: deployed
+      REVISION: 1
+      DESCRIPTION: Install complete
+      TEST SUITE: None
 
 #. Optional: Verify that the kata-deploy pod is running:
 
@@ -294,7 +319,6 @@ The following are the available GPU Operator configuration settings to enable Co
    * - ``sandboxWorkloads.mode``
      - Specifies the sandbox mode to use when deploying sandbox workloads.
        Accepted values are ``kubevirt`` (default) and ``kata``.
-       Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` page for more information on using KubeVirt based workloads.
      - ``kubevirt``
 
    * - ``sandboxDevicePlugin.env``
@@ -356,7 +380,8 @@ A pod manifest for a confidential container GPU workload requires the following:
 
    Use the runtime class to specify that your workload should run in a
    Confidential Container.
-   Specify either the ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx`` runtime class, depending on your available nodes.
+   Specify either the ``kata-qemu-nvidia-gpu-snp`` for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX, depending on your available nodes.
+   Refer to the :doc:`Supported Platforms <supported-platforms>` page for more information on the supported platforms.
 
    In the sample above ``nvidia.com/pgpu`` is the default resource type for GPUs.
    If you are deploying on a heterogeneous cluster, you may want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the sandbox device plugin.
@@ -418,7 +443,8 @@ The supported modes are:
   On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the nvswitches for a single CVM. In this case, transition your relevant node(s) GPU mode to ``ppcie`` mode. The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and so does not require a separate switch setting.
 * ``devtools`` -- Development mode for software development and debugging.
 
-You can set a cluster-wide default mode and you can set the mode on individual nodes. The mode that you set on a node has higher precedence than the cluster-wide default mode.
+You can set a cluster-wide default mode and you can set the mode on individual nodes. 
+The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
 Setting a Cluster-Wide Default Mode
 ------------------------------------
@@ -472,6 +498,6 @@ The "nvidia.com/cc.mode.state" variable is either "off" or "on", with "off" mean
 Next Steps
 ==========
 
-* Refer to the :doc:`Attestation <attestation>` page for more information on attestation.
+* Refer to the :doc:`Attestation <attestation>` page for more information on configuringattestation.
 * Additional NVIDIA Confidential Computing documentation is available at https://docs.nvidia.com/confidential-computing.
 * Licensing information is available on the :doc:`Licensing <licensing>` page.
