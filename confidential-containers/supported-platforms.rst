@@ -19,6 +19,8 @@ Supported Hardware Platforms
      - | AMD Genoa/ Milan
        | Intel ER/ GR
 
+Also refer to the :doc:`Licensing <licensing>` page for more information on the licensing requirements for NVIDIA Confidential Computing capabilities.
+
 Supported Software Components
 -----------------------------
 
@@ -61,8 +63,5 @@ Supported Software Components
 Limitations and Restrictions
 ----------------------------
 
-* GPUs are available to containers as a single GPU in passthrough mode only. Multi-GPU passthrough and vGPU are not supported.
-* Support is limited to initial installation and configuration only. Upgrade and configuration of existing clusters to configure confidential computing is not supported.
-* Support for confidential computing environments is limited to the implementation described on this page.
 * NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
-* NFD doesn't label all Confidential Container capable nodes as such automatically. In some cases, users must manually label nodes to deploy the NVIDIA Confidential Computing Manager for Kubernetes operand onto these nodes as described in the deployment guide.
+
