@@ -69,7 +69,7 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Supported Platforms" href="supported-platforms.html" />
-    <link rel="prev" title="NVIDIA Confidential Containers Architecture (Early Access)" href="index.html" />
+    <link rel="prev" title="NVIDIA Confidential Containers Architecture" href="index.html" />
 
 
 
@@ -403,7 +403,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 </section>
 <section id="use-cases">
 <span id="coco-use-cases"></span><h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
-<p>The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to leverage the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
+<p>The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
 <ul class="simple">
 <li><p><strong>Zero-Trust AI &amp; IP Protection:</strong> You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.</p></li>
 <li><p><strong>Data Clean Rooms:</strong> This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.</p></li>
@@ -435,11 +435,11 @@ Refer to the diagram above for a visual representation of the components.</p>
 <p>Acts as the secure isolation layer by running standard Kubernetes Pods inside lightweight, hardware-isolated Utility Virtual Machines (UVMs) rather than sharing the untrusted host kernel.
 <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> is an open source project, which is integrated with the Kubernetes <a class="reference external" href="https://github.com/kubernetes-sigs/agent-sandbox">Agent Sandbox</a> project, that delivers sandboxing capabilities.</p>
 <p><strong>Kata Deploy</strong></p>
-<p>Deployment mechanism (often managed via Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
+<p>Deployment mechanism (often managed with Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
 <p>Refer to the <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers documentation</a> for more information.</p>
 <p><strong>NVIDIA GPU Operator</strong></p>
 <p>Automates GPU lifecycle management.
-For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM)without breaking the hardware trust boundary.</p>
+For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM) without breaking the hardware trust boundary.</p>
 <p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads.
 These components include:</p>
 <ul class="simple">
@@ -450,10 +450,10 @@ This manager is deployed by default on all nodes that have the <code class="docu
 </ul>
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> page for more information on the NVIDIA GPU Operator.</p>
 <p><strong>Node Feature Discovery (NFD)</strong></p>
-<p>Bootstraps the node by advertising the node features via labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
+<p>Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
 <p>Refer to the <a class="reference external" href="https://kubernetes-sigs.github.io/node-feature-discovery/">Node Feature Discovery documentation</a> for upstream usage and reference material.
 The project source repository is <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery">kubernetes-sigs/node-feature-discovery</a> on GitHub.</p>
-<p><strong>Snapshotter (e.g., Nydus)</strong></p>
+<p><strong>Snapshotter (for example, Nydus)</strong></p>
 <p>Handles the container image “guest pull” functionality. Used as a remote snapshotter, it bypasses image pulls on the host. Instead, it fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.</p>
 <p><strong>Kata Agent and Agent Security Policy</strong></p>
 <p>Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus). This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.</p>
@@ -467,7 +467,7 @@ The project source repository is <a class="reference external" href="https://git
 <h3>GPU Operator Cluster Topology Considerations<a class="headerlink" href="#gpu-operator-cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator deploys and manages components for allocating and utilizing the GPU resources on your cluster.
 Depending on how you configure the Operator, different components are deployed on the worker nodes.
-When setting up Confidential Cointainers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers.
+When setting up Confidential Containers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers.
 This configuration is done through node labelling and configuration flags set during installation or by editing the ClusterPolicy object post installation.</p>
 <p>Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
@@ -523,6 +523,13 @@ For example, NVIDIA HGX Hopper (SXM) and NVIDIA HGX Blackwell or NVIDIA HGX B200
 <li><p>Container image signature verification and encrypted container images.</p></li>
 <li><p>Ephemeral container data and image layer storage.</p></li>
 </ul>
+<section id="limitations-and-restrictions">
+<h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
+<li><p>Image signature verification for signed multi-arch images is currently not supported.</p></li>
+</ul>
+</section>
 </section>
 <section id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h2>
@@ -534,7 +541,7 @@ For example, NVIDIA HGX Hopper (SXM) and NVIDIA HGX Blackwell or NVIDIA HGX B200
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
 <svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-server sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.75 6.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM6 7.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 6 7.25Zm4 9a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75Zm-3.25-.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5h-.5Z"></path><path d="M3.25 2h17.5c.966 0 1.75.784 1.75 1.75v7c0 .372-.116.716-.314 1 .198.284.314.628.314 1v7a1.75 1.75 0 0 1-1.75 1.75H3.25a1.75 1.75 0 0 1-1.75-1.75v-7c0-.358.109-.707.314-1a1.741 1.741 0 0 1-.314-1v-7C1.5 2.784 2.284 2 3.25 2Zm0 10.5a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25Zm0-1.5h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25H3.25a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25Z"></path></svg> Supported Platforms</div>
-<p class="sd-card-text">Hardware, OS, and component versions validated for Early Access (EA).</p>
+<p class="sd-card-text">Hardware, OS, and component versions validated for general availability (GA).</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></div>
 </div>
@@ -577,7 +584,7 @@ For example, NVIDIA HGX Hopper (SXM) and NVIDIA HGX Blackwell or NVIDIA HGX B200
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA Confidential Containers Architecture (Early Access)</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Architecture</p>
       </div>
     </a>
     <a class="right-next"
@@ -617,7 +624,10 @@ For example, NVIDIA HGX Hopper (SXM) and NVIDIA HGX Blackwell or NVIDIA HGX B200
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-cluster-topology-considerations">GPU Operator Cluster Topology Considerations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-features-and-deployment-scenarios">Supported Features and Deployment Scenarios</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-features-and-deployment-scenarios">Supported Features and Deployment Scenarios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
 </ul>
   </nav></div>

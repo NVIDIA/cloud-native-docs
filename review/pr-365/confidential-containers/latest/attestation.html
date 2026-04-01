@@ -228,6 +228,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -386,28 +390,38 @@
                   
   <section id="attestation">
 <span id="id1"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>Confidential Containers has remote attestation support for the CPU and GPU built-in.
-Attestation allows a workload owner to cryptographically validate the guest TCB.
-This process is facilitated by components inside the guest rootfs.
+<p>The NVIDIA Reference Architecture for Confidential Containers has remote attestation support for the CPU and GPU built-in.
+Attestation allows a workload owner to cryptographically validate the guest Trusted Computing Base (TCB).
+This process is facilitated by components inside the guest root file system.
 When a secret resource is required inside the confidential guest (to decrypt a container image, or to decrypt a model, for instance), the guest components detect which CPU and GPU enclaves are in use and collect hardware evidence from them.
-This evidence is sent to a remote verifier/broker, for example Trustee, which evaluates the evidence and conditionally releases secrets.
-Features that depend on secrets depend on attestation.
-These features include, pulling encrypted images, authenticated registry support, sealed secrets, direct workload requests for secrets, and more.
-To use these features, a remote verifier/broker, like Trustee, must first be provisioned in some trusted environment.</p>
-<p>Trustee can be set up following <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream documentation</a>, with one key requirement for attesting NVIDIA devices. Specifically, Trustee must be configured to use the remote NVIDIA verifier, which uses NRAS to evaluate the evidence. This is not enabled by default. Enabling the remote verifier assumes that the user has entered into a <a class="reference external" href="https://docs.nvidia.com/attestation/cloud-services/latest/license.html">licensing agreement</a> covering NVIDIA attestation services.</p>
+This evidence is sent to a remote verifier/broker, for example Trustee, which evaluates the evidence and conditionally releases secrets.</p>
+<p>Features that depend on secrets depend on attestation.
+These features include:</p>
+<ul class="simple">
+<li><p>Pulling encrypted images</p></li>
+<li><p>Authenticated container registry support</p></li>
+<li><p>Sealed secrets</p></li>
+<li><p>Direct workload requests for secrets</p></li>
+</ul>
+<p>To use these features, a remote verifier/broker, like Trustee, must first be provisioned in some trusted environment.</p>
+<section id="configure-remote-verifier-broker-trustee">
+<h2>Configure Remote Verifier/Broker (Trustee)<a class="headerlink" href="#configure-remote-verifier-broker-trustee" title="Permalink to this headline">#</a></h2>
+<p>Follow the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream Trustee documentation</a> to provision a Trustee instance in a trusted environment with one adjustment.
+To enable the remote NVIDIA verifier, Trustee must be configured to use the remote NVIDIA verifier, which uses the NVIDIA Remote Attestation Service (NRAS) to evaluate the evidence. This is not enabled by default.</p>
 <p>To enable the remote verifier, add the following lines to the Trustee configuration file:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[attestation_service.verifier_config.nvidia_verifier]</span>
 <span class="go">type = &quot;Remote&quot;</span>
 </pre></div>
 </div>
-<p>If you are using the docker compose Trustee deployment, add the verifier type to kbs/config/as-config.json prior to starting Trustee.</p>
-<p>Per upstream documentation, add the following annotation to the workload to point the guest components to Trustee:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">io.katacontainers.config.hypervisor.kernel_params: &quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span>
+<p>If you are using the docker compose Trustee deployment, add the verifier type to <code class="docutils literal notranslate"><span class="pre">kbs/config/as-config.json</span></code> prior to starting Trustee.</p>
+<p>Following the upstream Trustee documentation, add the following annotation to the workload to point the guest components to Trustee:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the upstream documentation.</p>
-<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the nvrc.smi.srs=1 and RUST_LOG=debug kernel parameters.</p>
-<p>If attestation does not succeed, debugging is best done via the Trustee log. Debug mode can be enabled by setting RUST_LOG=debug in the Trustee environment.</p>
+<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
+<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> and <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> kernel parameters.</p>
+<p>If attestation does not succeed, debugging is best done through the Trustee log. Debug mode can be enabled by setting the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> and <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> kernel parameters in the Trustee environment.</p>
+</section>
 </section>
 
 
@@ -445,9 +459,25 @@ To use these features, a remote verifier/broker, like Trustee, must first be pro
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-remote-verifier-broker-trustee">Configure Remote Verifier/Broker (Trustee)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

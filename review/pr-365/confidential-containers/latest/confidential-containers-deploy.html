@@ -438,13 +438,14 @@ Enabling these features is typically performed by configuring the host BIOS.</p>
 </ul>
 </li>
 <li><p>A Kubernetes cluster with cluster administrator privileges.</p></li>
-<li><p>It is recommended that you configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code>
-to more than 5 minutes in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a>.
-Depending on the image sizes you plan to use you may need a larger timeout value as it will take longer to pull those images.</p>
-<p>Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start, possibly leading your Kubelet to de-allocate your pod before it transitions from the container creating to the container running state.
-The NVIDIA shim configurations in Kata Containers use a <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200s, which is the equivalent value on shim side, controlling the time the shim allows for a container to remain in container creating state.
-If you need a timeout of more than 1200s (the default value), you will also need to adjust the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
-To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value via a pod annotation via <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params=</span> <span class="pre">&quot;...&quot;</span></code>.</p>
+<li><p>It is recommended that you configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> with a higher timeout value than the two minute default.
+You could set this value to 20 minutes to match the default values for the NVIDIA shim configurations in Kata Containers <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> and the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.</p>
+<p>Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start.
+This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state.</p>
+<p>The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
+This controls the time the shim allows for a container to remain in container creating state.</p>
+<p>If you need a timeout of more than 1200 seconds, you will also need to adjust the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
+To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params=&quot;...&quot;</span></code> annotation.</p>
 </li>
 <li><p>Enable <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> on your cluster.
 The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.</p>
@@ -469,10 +470,18 @@ The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runti
 </ol>
 <p>The GPU Operator uses this label to determine what software components to deploy to a node.
 The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.
-You can use this label on nodes for  Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
+You can use this label on nodes for Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
+</div>
+<p>To check whether the node label has been added, run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt; <span class="p">|</span> grep nvidia.com/gpu.workload.config
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/gpu.workload.config: vm-passthrough</span>
+</pre></div>
 </div>
 </section>
 <section id="install-the-kata-containers-helm-chart">
@@ -493,6 +502,15 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
   --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
   --wait --timeout 10m <span class="se">\</span>
   --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST DEPLOYED: Wed Apr  1 17:03:00 2026</span>
+<span class="go">NAMESPACE: kata-system</span>
+<span class="go">STATUS: deployed</span>
+<span class="go">REVISION: 1</span>
+<span class="go">DESCRIPTION: Install complete</span>
+<span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
 </li>
@@ -636,8 +654,7 @@ machine-style workloads and related operands.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode</span></code></p></td>
 <td><p>Specifies the sandbox mode to use when deploying sandbox workloads.
-Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">KubeVirt</span></a> page for more information on using KubeVirt based workloads.</p></td>
+Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kubevirt</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxDevicePlugin.env</span></code></p></td>
@@ -694,7 +711,8 @@ environment variable to configure advertising behavior similar to
 </div>
 <p>Use the runtime class to specify that your workload should run in a
 Confidential Container.
-Specify either the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime class, depending on your available nodes.</p>
+Specify either the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for SEV-SNP or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for TDX, depending on your available nodes.
+Refer to the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for more information on the supported platforms.</p>
 <p>In the sample above <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is the default resource type for GPUs.
 If you are deploying on a heterogeneous cluster, you may want to update the default behavior by specifying the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable for the sandbox device plugin.
 Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuration for Heterogeneous Clusters</span></a> section on this page for more details.</p>
@@ -747,7 +765,8 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the nvswitches for a single CVM. In this case, transition your relevant node(s) GPU mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode. The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and so does not require a separate switch setting.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">devtools</span></code> – Development mode for software development and debugging.</p></li>
 </ul>
-<p>You can set a cluster-wide default mode and you can set the mode on individual nodes. The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
+<p>You can set a cluster-wide default mode and you can set the mode on individual nodes.
+The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
 <section id="setting-a-cluster-wide-default-mode">
 <h3>Setting a Cluster-Wide Default Mode<a class="headerlink" href="#setting-a-cluster-wide-default-mode" title="Permalink to this headline">#</a></h3>
 <p>To set a cluster-wide mode, specify the ccManager.defaultMode field like the following example:</p>
@@ -792,7 +811,7 @@ On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPC
 <section id="next-steps">
 <span id="additional-resources"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Refer to the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> page for more information on attestation.</p></li>
+<li><p>Refer to the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> page for more information on configuringattestation.</p></li>
 <li><p>Additional NVIDIA Confidential Computing documentation is available at <a class="reference external" href="https://docs.nvidia.com/confidential-computing">https://docs.nvidia.com/confidential-computing</a>.</p></li>
 <li><p>Licensing information is available on the <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a> page.</p></li>
 </ul>
