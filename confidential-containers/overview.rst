@@ -185,7 +185,7 @@ The following features are supported with Confidential Containers:
   * Single‑GPU passthrough (one physical GPU per pod).  
   * Multi‑GPU passthrough on NVSwitch (NVLink) based HGX systems.
     For example, NVIDIA HGX Hopper (SXM) and NVIDIA HGX Blackwell or NVIDIA HGX B200.
-* Composite attestation using Trustee and the NVIDIA Remote Attestation Service NRAS.
+* Composite attestation using Trustee and the NVIDIA Remote Attestation Service (NRAS).   
 * Generating Kata Agent Security Policies using the `genpolicy tool <https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md>`_.
 * Use of signed sealed secrets.
 * Access to authenticated registries for container image guest-pull.

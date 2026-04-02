@@ -40,6 +40,6 @@ Following the upstream Trustee documentation, add the following annotation to th
 
 Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the `Trustee documentation <https://confidentialcontainers.org/docs/attestation/>`_.
 
-During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the ``nvrc.smi.srs=1`` and ``RUST_LOG=debug`` kernel parameters.
+During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the ``nvrc.smi.srs=1`` kernel parameters.
 
 If attestation does not succeed, debugging is best done through the Trustee log. Debug mode can be enabled by setting the ``nvrc.smi.srs=1`` and ``RUST_LOG=debug`` kernel parameters in the Trustee environment.

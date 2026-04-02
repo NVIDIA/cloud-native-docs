@@ -21,7 +21,7 @@ The high-level workflow for configuring Confidential Containers is as follows:
    This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
 
 #. Install the :ref:`NVIDIA GPU Operator configured for Confidential Containers <coco-install-gpu-operator>`. 
-   This installs the NVIDIA GPU Operator components that are required to deploy Confidential Containers workloads.
+   This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
 
 After installation, you can change the :ref:`confidential computing mode <managing-confidential-computing-mode>` and :ref:`run a sample GPU workload <coco-run-sample-workload>` in a confidential container.
 
@@ -34,17 +34,7 @@ Prerequisites
 =============
 
 * Use a supported platform for Confidential Containers.
-  For more information, refer to :doc:`Supported Platforms <supported-platforms>`.
-
-  For additional information on node configuration, refer to the *Confidential Computing Deployment Guide* at the `Confidential Computing <https://docs.nvidia.com/confidential-computing>`_ website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100.
-  Specifically refer to the `CC deployment guide for SEV-SNP <https://docs.nvidia.com/cc-deployment-guide-snp.pdf>`_ for setup specific to AMD SEV-SNP machines.
-
-  The following topics in the deployment guide apply to a cloud-native environment:
-
-  * Hardware selection and initial hardware configuration, such as BIOS settings.
-  * Host operating system selection, initial configuration, and validation.
-
-  When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.
+  For more information on machine setup, refer to :doc:`Supported Platforms <supported-platforms>`.
 
 * Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS).
   With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
@@ -63,16 +53,10 @@ Prerequisites
 * A Kubernetes cluster with cluster administrator privileges.
 
 * It is recommended that you configure your cluster's ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ with a higher timeout value than the two minute default.
-  You could set this value to 20 minutes to match the default values for the NVIDIA shim configurations in Kata Containers ``create_container_timeout`` and the agent's ``image_pull_timeout``.
- 
-  Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start.
-  This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state. 
-  
-  The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes). 
-  This controls the time the shim allows for a container to remain in container creating state. 
- 
-  If you need a timeout of more than 1200 seconds, you will also need to adjust the agent's ``image_pull_timeout`` value which controls the agent-side timeout for guest-image pull. 
-  To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params="..."`` annotation.  
+  You could set this value to 20 minutes to match the default values for the other image pull timeout values in Kata Containers.
+
+  Refer to the :ref:`Configure Image Pull Timeouts <configure-image-pull-timeouts>` section on this page for more details on adjusting the image pull timeout values.
+
 
 * Enable ``KubeletPodResourcesGet`` on your cluster.
   The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet's Pod Resources API to discover allocated GPU devices during sandbox creation.
@@ -124,7 +108,7 @@ Install the Kata Containers Helm Chart
 --------------------------------------
 
 Install the ``kata-deploy`` Helm chart.
-The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for Confidential Containers and native Kata containers.
+The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Confidential Containers and native Kata containers.
 
 The minimum required version is 3.29.0.
 
@@ -492,12 +476,29 @@ Example output when CC mode is enabled:
 
 The "nvidia.com/cc.mode.state" variable is either "off" or "on", with "off" meaning that mode state transition is still ongoing and "on" meaning mode state transition completed.
 
-.. _additional-resources:
+.. _configure-image-pull-timeouts:
 
+Configure Image Pull Timeouts
+-----------------------------
+
+Using the guest-pull mechanism to securly manage images in your deployment scenarios means that pulling large images may take a significant amount of time and may delay container start.
+This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state. 
+
+It is recommended that you configure your cluster's ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ with a higher timeout value than the two minute default.
+You could set this value to 20 minutes (``20m``) to match the default values for the NVIDIA shim configurations in Kata Containers ``create_container_timeout`` and the agent's ``image_pull_timeout``.
+  
+The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes). 
+This controls the time the shim allows for a container to remain in container creating state. 
+ 
+If you need a timeout of more than 1200 seconds, you will also need to adjust the agent's ``image_pull_timeout`` value which controls the agent-side timeout for guest-image pull. 
+To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params:="..."`` annotation. 
+ 
 
 Next Steps
 ==========
 
-* Refer to the :doc:`Attestation <attestation>` page for more information on configuringattestation.
+* Refer to the :doc:`Attestation <attestation>` page for more information on configuring attestation.
+* Enable pod security policy with Agent Policy.
+  Refer to the `Kata Containers Agent Policy documentation <https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md>`_ for more information.
 * Additional NVIDIA Confidential Computing documentation is available at https://docs.nvidia.com/confidential-computing.
 * Licensing information is available on the :doc:`Licensing <licensing>` page.
