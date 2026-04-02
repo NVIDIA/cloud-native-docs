@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 01, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2026"/>
 
 
 
@@ -419,7 +419,7 @@ To enable the remote NVIDIA verifier, Trustee must be configured to use the remo
 </pre></div>
 </div>
 <p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
-<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> and <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> kernel parameters.</p>
+<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> kernel parameters.</p>
 <p>If attestation does not succeed, debugging is best done through the Trustee log. Debug mode can be enabled by setting the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> and <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> kernel parameters in the Trustee environment.</p>
 </section>
 </section>

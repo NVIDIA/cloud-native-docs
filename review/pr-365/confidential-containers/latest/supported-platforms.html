@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 01, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2026"/>
 
 
 
@@ -390,7 +390,7 @@
                   
   <section id="supported-platforms">
 <h1>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h1>
-<p>Following are the platforms supported by Confidential Containers open Reference Architecture published by NVIDIA.</p>
+<p>Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.</p>
 <section id="supported-hardware-platform">
 <h2>Supported Hardware Platform<a class="headerlink" href="#supported-hardware-platform" title="Permalink to this headline">#</a></h2>
 </section>
@@ -417,8 +417,8 @@
 </table>
 </div>
 </section>
-<section id="cpu-platform">
-<h2>CPU Platform<a class="headerlink" href="#cpu-platform" title="Permalink to this headline">#</a></h2>
+<section id="cpu-platforms">
+<h2>CPU Platforms<a class="headerlink" href="#cpu-platforms" title="Permalink to this headline">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 33%" />
@@ -432,26 +432,29 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>AMD Genoa/ Milan</p></td>
+<tr class="row-even"><td><p>AMD Genoa / Milan</p></td>
 <td><p>Ubuntu 25.10</p></td>
 <td><p>6.17+</p></td>
 </tr>
-<tr class="row-odd"><td><p>Intel ER/ GR</p></td>
+<tr class="row-odd"><td><p>Intel Emerald Rapids (ER) /  Granite Rapids (GR)</p></td>
 <td><p>Ubuntu 25.10</p></td>
 <td><p>6.17+</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>For additional information on node configuration, refer to the <em>Confidential Computing Deployment Guide</em> at the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">Confidential Computing</a> website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100.
-Specifically refer to the <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-snp.pdf">CC deployment guide for SEV-SNP</a> for setup specific to AMD SEV-SNP machines.</p>
+<p>For additional information on node configuration, refer to the <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-tdx-snp.pdf">Confidential Computing Deployment Guide</a> for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100.</p>
 <p>The following topics in the deployment guide apply to a cloud-native environment:</p>
 <ul class="simple">
 <li><p>Hardware selection and initial hardware configuration, such as BIOS settings.</p></li>
 <li><p>Host operating system selection, initial configuration, and validation.</p></li>
 </ul>
 <p>When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.</p>
-<p>Also refer to the <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a> page for more information on the licensing requirements for NVIDIA Confidential Computing capabilities.</p>
+<p>For additional resources on machine setup:</p>
+<ul class="simple">
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/nvtrust/index.html">NVIDIA Trusted Computing Solutions website</a>.</p></li>
+<li><p>Refer to the <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a> page for more information on the licensing requirements for NVIDIA Confidential Computing capabilities.</p></li>
+</ul>
 </section>
 <section id="supported-software-components">
 <h2>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h2>
@@ -488,16 +491,13 @@ Specifically refer to the <a class="reference external" href="https://docs.nvidi
 <td><p>v0.6.0</p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GPU Operator</p></td>
-<td><p>v25.10.0 and higher</p></td>
+<td><p>v26.3.0 and higher</p></td>
 </tr>
-<tr class="row-even"><td><p>Kata</p></td>
+<tr class="row-even"><td><p>Kata Containers</p></td>
 <td><p>3.29 (w/ kata-deploy helm)</p></td>
 </tr>
-<tr class="row-odd"><td><p>KBS protocol</p></td>
+<tr class="row-odd"><td><p>Key Broker Service (KBS) protocol</p></td>
 <td><p>0.4.0</p></td>
-</tr>
-<tr class="row-even"><td><p>Attestation Support</p></td>
-<td><p>Composite Attestation for CPU + GPU; integration with Trustee for local verifier.</p></td>
 </tr>
 </tbody>
 </table>
@@ -556,7 +556,7 @@ Specifically refer to the <a class="reference external" href="https://docs.nvidi
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-hardware-platform">Supported Hardware Platform</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpus">NVIDIA GPUs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platform">CPU Platform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platforms">CPU Platforms</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
 </ul>
   </nav></div>

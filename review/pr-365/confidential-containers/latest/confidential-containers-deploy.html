@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 01, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 02, 2026"/>
 
 
 
@@ -401,7 +401,7 @@
 <li><p>Install the <a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">latest Kata Containers Helm chart</span></a>.
 This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p></li>
 <li><p>Install the <a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">NVIDIA GPU Operator configured for Confidential Containers</span></a>.
-This installs the NVIDIA GPU Operator components that are required to deploy Confidential Containers workloads.</p></li>
+This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.</p></li>
 </ol>
 <p>After installation, you can change the <a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">confidential computing mode</span></a> and <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.</p>
 <p>This guide will configure your cluster to deploy Confidential Containers workloads.
@@ -411,16 +411,7 @@ Once configured, you can schedule workloads that request GPU resources and use t
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>Use a supported platform for Confidential Containers.
-For more information, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.</p>
-<p>For additional information on node configuration, refer to the <em>Confidential Computing Deployment Guide</em> at the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">Confidential Computing</a> website for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100.
-Specifically refer to the <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-snp.pdf">CC deployment guide for SEV-SNP</a> for setup specific to AMD SEV-SNP machines.</p>
-<p>The following topics in the deployment guide apply to a cloud-native environment:</p>
-<ul class="simple">
-<li><p>Hardware selection and initial hardware configuration, such as BIOS settings.</p></li>
-<li><p>Host operating system selection, initial configuration, and validation.</p></li>
-</ul>
-<p>When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.</p>
-</li>
+For more information on machine setup, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.</p></li>
 <li><p>Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS).
 With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
 Enabling these features is typically performed by configuring the host BIOS.</p></li>
@@ -439,13 +430,8 @@ Enabling these features is typically performed by configuring the host BIOS.</p>
 </li>
 <li><p>A Kubernetes cluster with cluster administrator privileges.</p></li>
 <li><p>It is recommended that you configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> with a higher timeout value than the two minute default.
-You could set this value to 20 minutes to match the default values for the NVIDIA shim configurations in Kata Containers <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> and the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.</p>
-<p>Using the guest-pull mechanism, pulling large images may take a significant amount of time and may delay container start.
-This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state.</p>
-<p>The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
-This controls the time the shim allows for a container to remain in container creating state.</p>
-<p>If you need a timeout of more than 1200 seconds, you will also need to adjust the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
-To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params=&quot;...&quot;</span></code> annotation.</p>
+You could set this value to 20 minutes to match the default values for the other image pull timeout values in Kata Containers.</p>
+<p>Refer to the <a class="reference internal" href="#configure-image-pull-timeouts"><span class="std std-ref">Configure Image Pull Timeouts</span></a> section on this page for more details on adjusting the image pull timeout values.</p>
 </li>
 <li><p>Enable <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> on your cluster.
 The NVIDIA GPU runtime classes use VFIO cold-plug, which requires the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.</p>
@@ -487,7 +473,7 @@ You can use this label on nodes for Confidential Containers workloads, and run t
 <section id="install-the-kata-containers-helm-chart">
 <span id="coco-install-kata-chart"></span><h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
 <p>Install the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart.
-The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel and initrd that NVIDIA uses for Confidential Containers and native Kata containers.</p>
+The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Confidential Containers and native Kata containers.</p>
 <p>The minimum required version is 3.29.0.</p>
 <ol class="arabic">
 <li><p>Get the latest version of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart:</p>
@@ -807,11 +793,24 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 </div>
 <p>The “nvidia.com/cc.mode.state” variable is either “off” or “on”, with “off” meaning that mode state transition is still ongoing and “on” meaning mode state transition completed.</p>
 </section>
+<section id="configure-image-pull-timeouts">
+<span id="id2"></span><h3>Configure Image Pull Timeouts<a class="headerlink" href="#configure-image-pull-timeouts" title="Permalink to this headline">#</a></h3>
+<p>Using the guest-pull mechanism to securly manage images in your deployment scenarios means that pulling large images may take a significant amount of time and may delay container start.
+This can lead to Kubelet de-allocating your pod before it transitions from the container creating to the container running state.</p>
+<p>It is recommended that you configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> with a higher timeout value than the two minute default.
+You could set this value to 20 minutes (<code class="docutils literal notranslate"><span class="pre">20m</span></code>) to match the default values for the NVIDIA shim configurations in Kata Containers <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> and the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.</p>
+<p>The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
+This controls the time the shim allows for a container to remain in container creating state.</p>
+<p>If you need a timeout of more than 1200 seconds, you will also need to adjust the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
+To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:=&quot;...&quot;</span></code> annotation.</p>
+</section>
 </section>
 <section id="next-steps">
-<span id="additional-resources"></span><h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Refer to the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> page for more information on configuringattestation.</p></li>
+<li><p>Refer to the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> page for more information on configuring attestation.</p></li>
+<li><p>Enable pod security policy with Agent Policy.
+Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md">Kata Containers Agent Policy documentation</a> for more information.</p></li>
 <li><p>Additional NVIDIA Confidential Computing documentation is available at <a class="reference external" href="https://docs.nvidia.com/confidential-computing">https://docs.nvidia.com/confidential-computing</a>.</p></li>
 <li><p>Licensing information is available on the <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a> page.</p></li>
 </ul>
@@ -882,6 +881,7 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-cluster-wide-default-mode">Setting a Cluster-Wide Default Mode</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-node-level-mode">Setting a Node-Level Mode</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-image-pull-timeouts">Configure Image Pull Timeouts</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
