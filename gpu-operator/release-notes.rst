@@ -152,6 +152,22 @@ Fixed Issues
 
 * Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (`PR #2039 <https://github.com/NVIDIA/gpu-operator/pull/2039>`_)
 
+Known Issues
+------------
+
+* When GPUDirect RDMA is enabled, the ``nvidia-peermen`` container may fail to restart when the driver pod is restarted without a node reboot, for example if the driver pod is deleted or evicted, and you did not make any changes in the driver configuration.
+  This can happen because the kernel state is not cleared when the driver pod is restarted.
+
+  To work around this issue, you can set the ``FORCE_REINSTALL=true`` environment variable in the ClusterPolicy.
+
+  .. code-block:: console 
+
+    $ kubectl patch clusterpolicy cluster-policy --type=json \
+        -p='[{"op": "add", "path": "/spec/driver/manager/env/-", "value": {"name": "FORCE_REINSTALL", "value": "true"}}]'
+
+  Setting ``FORCE_REINSTALL=true`` forces full driver recompilation, node drain, and GPU workload disruption on every restart. 
+  Rebooting the node would also clear kernel state ``nvidia-peermem`` module will.  
+
 
 Removals and Deprecations
 -------------------------

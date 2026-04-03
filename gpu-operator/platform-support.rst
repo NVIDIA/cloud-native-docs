@@ -426,7 +426,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _rhel-9:
 
     :sup:`3`
-    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, and 9.6 versions are available for x86 based platforms only.
+    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, and 9.7 versions are available for x86 based platforms only.
     They are not available for ARM based systems.
 
     .. note::
