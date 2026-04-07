@@ -14,8 +14,8 @@ MIG Support in OpenShift Container Platform
 Introduction
 ************
 
-NVIDIA Mult-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
-The new NVIDIA Ampere architecture's MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator version 1.7.0 and above provides MIG feature support for the A100 and A30 Ampere cards.
+NVIDIA Multi-Instance GPU (MIG) is useful anytime you have an application that does not require the full power of an entire GPU.
+The NVIDIA Ampere architecture's MIG feature allows you to split your hardware resources into multiple GPU instances, each exposed to the operating system as an independent CUDA-enabled GPU. The NVIDIA GPU Operator MIG feature support for the A100 and A30 Ampere cards.
 These GPU instances are designed to support multiple independent CUDA applications (up to 7), so they operate completely isolated from each other using dedicated hardware resources.
 
 The compute units of the GPU, in addition to its memory, can be partitioned into multiple MIG instances.
@@ -27,7 +27,7 @@ From the perspective of the software consuming the GPU each of these MIG instanc
 MIG geometry
 *************
 
-The NVIDIA GPU Operator version 1.7.0 and above enables OpenShift Container Platform administrators to dynamically reconfigure the geometry of the MIG partitioning.
+The NVIDIA GPU Operator enables OpenShift Container Platform administrators to dynamically reconfigure the geometry of the MIG partitioning.
 The geometry of the MIG partitioning is how hardware resources are bound to MIG instances, so it directly influences their performance and the number of instances that can be allocated.
 The A100-40GB, for example, has eight compute units and 40 GB of RAM. When the MIG mode is enabled, the eighth instance is reserved for resource management.
 
@@ -54,7 +54,7 @@ Here is an example, again for the A100-40GB, with heterogeneous (or “mixed”)
 
 * 2x 1g.5gb
 * 1x 2g.10gb
-* 1x 3g.10gb
+* 1x 3g.20gb
 
 Prerequisites
 *************
@@ -106,11 +106,28 @@ The NVIDIA GPU Operator exposes GPUs to Kubernetes as extended resources that ca
 
   .. image:: graphics/mig-mixed-profile-A100.png
 
-Version 1.8 and greater of the NVIDIA GPU Operator supports updating the **Strategy** in the ClusterPolicy after deployment.
 
-The `default configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_ defines the combination of single (homogeneous) and mixed (heterogeneous) profiles that are supported for A100-40GB, A100-80GB and A30-24GB.
-The configmap allows administrators to declaratively define a set of possible MIG configurations they would like applied to all GPUs on a node.
-The tables below describe these configurations:
+Configuring MIG Profiles
+************************
+
+When MIG is enabled, nodes are labeled with ``nvidia.com/mig.config: all-disabled`` by default.
+To use a profile on a node, update the label value with the desired profile, for example, ``nvidia.com/mig.config=all-1g.10gb``.
+
+Introduced in GPU Operator v26.3.0, MIG Manager generates the MIG configuration for a node at runtime from the available hardware.
+The configuration is generated on startup, discovering MIG profiles for each MIG-capable GPU on a node using `NVIDIA Management Library (NVML) <https://developer.nvidia.com/management-library-nvml>`_, then writing it to a ConfigMap for each MIG-capable node in your cluster.
+The ConfigMap is named ``<node-name>-mig-config``, where ``<node-name>`` is the name of each MIG-capable node.
+Each ConfigMap contains a complete mig-parted config, including ``all-disabled``, ``all-enabled``, per-profile configs such as ``all-1g.10gb``, and ``all-balanced`` with device-filter support for mixed GPU types.
+When a new MIG-capable GPU is added to a node, the new GPU is automatically added to the ConfigMap.
+
+
+If you need custom profiles, you can use a custom MIG configuration instead of the generated one. 
+You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
+For an example, refer to :ref:`creating-and-applying-custom-mig-configuration-ocp`.
+
+.. note::
+   Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a `static Configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_, ``default-mig-parted-config``, for MIG profiles.
+
+The following tables describe some supported configurations:
 
 .. table:: Single configuration
 
@@ -194,7 +211,7 @@ For example to set the advertisement strategy to ``mixed`` and the MIG partition
 
    .. note:: This may take a while so be patient and wait at least 10-20 minutes before digging deeper into any form of troubleshooting.
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, then click the **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), then click the **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab. The status of the newly deployed ClusterPolicy **gpu-cluster-policy** for the **NVIDIA GPU Operator** displays ``State:ready`` once the installation succeeded.
 
@@ -295,13 +312,15 @@ For example to set the advertisement strategy to ``mixed`` and the MIG partition
 
    .. note:: You can ignore values set to 0.
 
+.. _creating-and-applying-custom-mig-configuration-ocp:
+
 ************************************************
 Creating and applying a custom MIG configuration
 ************************************************
 
 Follow the guidance below to create a new slicing profile.
 
-#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
+#. Prepare a custom ``configmap`` resource file for example ``custom_configmap.yaml``. Use the `configmap <https://github.com/NVIDIA/mig-parted/blob/main/examples/config.yaml>`_  as guidance to help you build that custom configuration. For more documentation about the file format see `mig-parted <https://github.com/NVIDIA/mig-parted>`_.
 
    .. note:: For a list of all supported combinations and placements of profiles on A100 and A30, refer to the section on `supported profiles <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html#supported-profiles>`_.
 
@@ -383,7 +402,7 @@ With this strategy and label, each H100 GPU enables these MIG profiles:
 
 * 2 x 1g.10gb
 * 1 x 2g.20gb
-* 1 x 3g.40g
+* 1 x 3g.40gb
 
 For the NVIDIA DGX H100 that has 8 H100 GPUs, performing the steps results in the following GPU capacity on the cluster:
 

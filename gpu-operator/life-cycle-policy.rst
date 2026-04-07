@@ -35,13 +35,11 @@ Patch releases typically include critical bug and CVE fixes, but can include min
 
 .. _operator_life_cycle_policy:
 
-******************************
 NVIDIA GPU Operator Life Cycle
 ******************************
 
-When a major version of NVIDIA GPU Operator is released, the previous major version enters maintenance support
-and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end-of-life (EOL) and are no longer supported and do not receive patch release updates.
+When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
+All prior major versions enter end of support and are no longer supported and do not receive patch release updates.
 
 The product life cycle and versioning are subject to change in the future.
 
@@ -55,14 +53,14 @@ The product life cycle and versioning are subject to change in the future.
    * - GPU Operator Version
      - Status
 
+   * - 26.3.x
+     - Supported
+
    * - 25.10.x
-     - Generally Available
+     - Deprecated
 
-   * - 25.3.x
-     - Maintenance
-
-   * - 24.9.x and lower
-     - EOL
+   * - 25.3.x and lower
+     - End of Support
 
 
 .. _operator-component-matrix:
@@ -81,6 +79,9 @@ The following table shows the operands and default operand versions that corresp
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
+.. note::
+  All the following components are supported as :ref:`government-ready <install-gpu-operator-gov-ready>` in the NVIDIA GPU Operator v26.3.0, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
+
 **D** = Default driver, **R** = Recommended driver
 
 .. flat-table::
@@ -89,63 +90,60 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - :rspan:`1` Component
      - GPU Operator Version
 
-   * - v25.10.0
+   * - v26.3.0
 
    * - NVIDIA GPU Driver |ki|_
-     - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ (**D**, **R**)
-       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
-       | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
-       | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
-       | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
-       | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-03/index.html>`_
-
+     - | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
+       | `580.126.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html>`_ (**D**, **R**)
+       | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_ 
+       | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
-     - `v0.9.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.10.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
-     - `1.18.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
+     - `1.19.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Kubernetes Device Plugin
-     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.19.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DCGM Exporter
-     - `v4.4.1-4.6.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `v4.5.1-4.8.0 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
-     - `v0.18.2 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
+     - `v0.18.3 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.18.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.19.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
-     - `0.13.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
+     - `0.14.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
-     - `4.4.1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.5.2-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
-     - v25.10.0
+     - v26.3.0
 
    * - NVIDIA KubeVirt GPU Device Plugin
-     - `v1.4.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
+     - `v1.5.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
-     - `v0.4.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.4.2 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
-     - `2.26.6 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
-
-   * - NVIDIA Kata Manager for Kubernetes
-     - `v0.2.3 <https://github.com/NVIDIA/k8s-kata-manager>`__
+     - `2.27.3 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
 
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
-     - v0.1.1
+     - `v0.3.0 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
 
    * - NVIDIA GDRCopy Driver
      - `v2.5.1 <https://github.com/NVIDIA/gdrcopy/releases>`__
+
+   * - NVIDIA Kata Sandbox Device Plugin
+     - `v0.0.2 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
 
 .. _known-issue:
 
@@ -170,3 +168,4 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    - The GPU Operator is supported on all active NVIDIA data center production drivers.
      Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions>`_
      for more information.
+

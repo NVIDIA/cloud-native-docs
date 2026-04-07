@@ -40,22 +40,22 @@
    :titlesonly:
    :hidden:
 
-   Multi-Instance GPU <gpu-operator-mig.rst>
+   NVIDIA DRA Driver for GPUs <dra-intro-install.rst>
+   Multi-Instance GPU (MIG) <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
    gpu-operator-rdma.rst
    Outdated Kernels <install-gpu-operator-outdated-kernels.rst>
    Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
    GPU Driver CRD <gpu-driver-configuration.rst>
-   Container Device Interface (CDI) Support <cdi.rst>
+   CDI and NRI Support <cdi.rst>
 
 .. toctree::
    :caption:  Sandboxed Workloads
    :titlesonly:
    :hidden:
 
-   KubeVirt <gpu-operator-kubevirt.rst>
-   Kata Containers <gpu-operator-kata.rst>
+      KubeVirt <gpu-operator-kubevirt.rst>
    
 .. toctree::
    :caption: Specialized Networks
@@ -67,21 +67,20 @@
    Service Mesh <install-gpu-operator-service-mesh.rst>
 
 .. toctree::
-   :caption: CSP configurations
+   :titlesonly:
+   :hidden:
+
+
+
+.. toctree::
+   :caption: Platform-Specific Configurations
    :titlesonly:
    :hidden:
 
    Amazon EKS <amazon-eks.rst>
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
+   NVIDIA GPU Operator on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
 
-.. toctree::
-   :caption: NVIDIA DRA Driver for GPUs
-   :titlesonly:
-   :hidden:
-
-   Introduction & Installation <dra-intro-install.rst>
-   GPUs <dra-gpus.rst>
-   ComputeDomains <dra-cds.rst>
 
 .. include:: overview.rst

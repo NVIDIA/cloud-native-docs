@@ -134,7 +134,7 @@ The NVIDIA container toolkit supports the distributions listed in the `NVIDIA Co
 
    .. code-block:: console
 
-      $ curl -s -L https://nvidia.github.io/libnvidia-container/rhel8.7/libnvidia-container.repo | sudo tee /etc/yum.repos.d/libnvidia-container.repo
+      $ curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | sudo tee /etc/yum.repos.d/libnvidia-container.repo
 
 #. Install the NVIDIA Container Toolkit for RHEL:
 
@@ -142,6 +142,11 @@ The NVIDIA container toolkit supports the distributions listed in the `NVIDIA Co
 
       $ sudo dnf install nvidia-container-toolkit -y
 
+#. Set the NVIDIA Container Toolkit to use the CDI mode:
+
+   .. code-block:: console
+
+      $ sudo nvidia-ctk config --in-place --set nvidia-container-runtime.mode=cdi
 
 #. The NVIDIA Container Toolkit requires some SELinux permissions to work properly. These permissions are set in three steps.
 
@@ -191,7 +196,7 @@ The NVIDIA container toolkit supports the distributions listed in the `NVIDIA Co
          $ semodule_package --outfile nvidia-container-microshift.pp --module nvidia-container-microshift.mod
 
 
-  F. Apply the policy:
+   F. Apply the policy:
 
      .. code-block:: console
 
@@ -214,19 +219,19 @@ The deployment consists of adding manifests and a ``kustomize`` configuration to
 
    .. code-block:: console
 
-      $ sudo mkdir -p /etc/microshift/manifests
+      $ sudo mkdir -p /etc/microshift/manifests.d/nvidia-device-plugin
 
-#. The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, ``nvidia-device-plugin``. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at ``/etc/microshift/manifests/nvidia-device-plugin.yml``.
+#. The device plugin runs in privileged mode, so you need to isolate it from other workloads by running it in its own namespace, ``nvidia-device-plugin``. To add the plugin to the manifests deployed by MicroShift at start time, download the configuration file and save it at ``/etc/microshift/manifests.d/nvidia-device-plugin``.
 
    .. code-block:: console
 
-      $ curl -s -L https://gitlab.com/nvidia/kubernetes/device-plugin/-/raw/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml | sudo tee /etc/microshift/manifests/nvidia-device-plugin.yml
+      $ curl -s -L https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/refs/heads/main/deployments/static/nvidia-device-plugin-privileged-with-service-account.yml | sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/nvidia-device-plugin.yml
 
 #. The resources are not created automatically even though the files exist. You need to add them to the ``kustomize`` configuration. Do this by adding a single ``kustomization.yaml`` file in the ``manifests`` folder that references all the resources you want to create.
 
    .. code-block:: console
 
-      $ cat <<EOF | sudo tee /etc/microshift/manifests/kustomization.yaml
+      $ cat <<EOF | sudo tee /etc/microshift/manifests.d/nvidia-device-plugin/kustomization.yaml
       ---
       apiVersion: kustomize.config.k8s.io/v1beta1
       kind: Kustomization

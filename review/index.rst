@@ -28,3 +28,4 @@ Refer to the following URLs for the review HTML:
 * `NVIDIA GPU Operator on Red Hat OpenShift Container Platform <./openshift/latest/index.html>`__
 * `NVIDIA GPUs and Edge Computing <./edge/latest/index.html>`__
 * `Partner-Validated Configurations <./partner-validated/latest/index.html>`__
+* `NVIDIA Confidential Containers <./confidential-containers/latest/index.html>`__

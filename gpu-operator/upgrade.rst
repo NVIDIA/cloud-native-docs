@@ -205,10 +205,8 @@ Additional Controls for Driver Upgrades
 While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
 Refer to :ref:`GPU Driver Upgrades` for more information.
 
-**********************
-Using OLM in OpenShift
-**********************
+***************************************************
+Using Operator Lifecycle Manager (OLM) in OpenShift
+***************************************************
 
-For upgrading the GPU Operator when running in OpenShift, refer to the official documentation on upgrading installed operators:
-https://docs.openshift.com/container-platform/4.8/operators/admin/olm-upgrading-operators.html
-
+For upgrading the GPU Operator when running in OpenShift, refer to the official OpenShift documentation on `upgrading installed operators <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/administrator-tasks#olm-upgrading-operators>`_.

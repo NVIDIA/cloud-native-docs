@@ -31,8 +31,9 @@ Platform Support
 
 .. _supported nvidia gpus and systems:
 
+*********************************************
 Supported NVIDIA Data Center GPUs and Systems
----------------------------------------------
+*********************************************
 
 The following NVIDIA data center GPUs are supported on x86 based platforms:
 
@@ -152,6 +153,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+-------+
     | NVIDIA RTX PRO 6000D    | NVIDIA Blackwell       |       |
     +-------------------------+------------------------+-------+
+    | NVIDIA RTX Pro 4500     | NVIDIA Blackwell       |       |
+    | Blackwell Server Edition|                        |       |
+    +-------------------------+------------------------+-------+
     | NVIDIA RTX A6000        | NVIDIA Ampere /Ada     |       |
     +-------------------------+------------------------+-------+
     | NVIDIA RTX A5000        | NVIDIA Ampere          |       |
@@ -188,6 +192,8 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+-------+
     | Product                 | Architecture           | Notes |
     +=========================+========================+=======+
+    | NVIDIA DGX B300         | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
     | NVIDIA DGX B200         | NVIDIA Blackwell       |       |
     +-------------------------+------------------------+-------+
     | NVIDIA DGX Spark        | NVIDIA Blackwell       |       |
@@ -198,8 +204,12 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
     +-------------------------+------------------------+-------+
     | NVIDIA HGX GB200 NVL72  | NVIDIA Blackwell       |       |
     +-------------------------+------------------------+-------+
+    | NVIDIA HGX GB200 NVL4   | NVIDIA Blackwell       |       |
+    +-------------------------+------------------------+-------+
     | NVIDIA HGX GB300 NVL72  | NVIDIA Blackwell       |       |
     +-------------------------+------------------------+-------+
+    | NVIDIA DGX Station      | NVIDIA Blackwell       |       |  
+    +-------------------------+------------------------+-------+  
 
     .. note::
 
@@ -208,8 +218,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
 
 .. _gpu-operator-arm-platforms:
 
+*****************************
 Supported ARM Based Platforms
------------------------------
+*****************************
 
 The following NVIDIA data center GPUs are supported:
 
@@ -247,8 +258,9 @@ system that meets the following requirements is supported:
 
 .. _Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products:
 
+****************************
 Supported Deployment Options
-----------------------------
+****************************
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -268,8 +280,9 @@ The GPU Operator has been validated in the following scenarios:
 
 .. _container-platforms:
 
+****************************************************
 Supported Operating Systems and Kubernetes Platforms
-----------------------------------------------------
+****************************************************
 
 .. _fn1: #kubernetes-version
 .. |fn1| replace:: :sup:`1`
@@ -281,8 +294,10 @@ Supported Operating Systems and Kubernetes Platforms
 The GPU Operator has been validated in the following scenarios:
 
 .. tab-set::
+  :sync-group: container-platforms
 
-  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough
+  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
+    :sync: bare-metal
 
     .. list-table::
        :header-rows: 1
@@ -293,46 +308,51 @@ The GPU Operator has been validated in the following scenarios:
          - Kubernetes |fn1|_
          - | Red Hat
            | OpenShift
-         - | VMware vSphere
-           | with Tanzu
+         - | VMware vSphere 
+           | Kubernetes Service (VKS)
          - | Rancher Kubernetes
-           | Engine 2
-         - | Mirantis k0s
+           | Engine 2 
+         - | K3s
+         - | Mirantis k0s 
          - | Canonical
-           | MicroK8s
+           | MicroK8s 
          - | Nutanix
            | NKP
 
        * - Ubuntu 20.04 LTS |fn2|_
-         - 1.30---1.34
+         - 1.32---1.35
          -
-         - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.30---1.34
+         - 1.32---1.35
+         - 1.32---1.35
+         -
          -
          -
          - 2.12, 2.13, 2.14
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.30---1.34
+         - 1.32---1.35 
          -
-         - 8.0 U2, 8.0 U3
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.33---1.34
+         - 1.32---1.35
+         - 1.32---1.35 
+         - 1.32---1.35
+         - 1.32---1.35 
+         - 1.33---1.35
          - 2.12, 2.13, 2.14, 2.15
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.34
+         - 1.32---1.35
          -
          -
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.33---1.34
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.32---1.35
+         - 1.33---1.35
          -
 
        * - Red Hat Core OS
          -
-         - | 4.14---4.20
+         - | 4.17---4.21
+         -
          -
          -
          -
@@ -341,11 +361,24 @@ The GPU Operator has been validated in the following scenarios:
 
        * - | Red Hat
            | Enterprise
-           | Linux 9.2, 9.4, 9.6 |fn3|_
-         - 1.30---1.34
+           | Linux 10.0, 10.1 
+         - 1.32---1.35
          -
          -
-         - 1.30---1.34
+         - 1.32---1.35
+         -
+         -
+         -
+         -
+
+       * - | Red Hat
+           | Enterprise
+           | Linux 9.2, 9.4, 9.6, 9.7 |fn3|_
+         - 1.32---1.35
+         -
+         -
+         - 1.32---1.35
+         -
          -
          -
          -
@@ -354,13 +387,24 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.30---1.34
+         - 1.32---1.35
          -
          -
-         - 1.30---1.34
+         - 1.32---1.35
+         -
          -
          -
          - 2.12, 2.13, 2.14, 2.15
+
+       * - Rocky Linux 9.7
+         - 1.32---1.35
+         -
+         -
+         -
+         -
+         -
+         -
+         -
 
     .. _kubernetes-version:
 
@@ -390,6 +434,7 @@ The GPU Operator has been validated in the following scenarios:
       |ocp_csp_support|
 
   .. tab-item:: Cloud Service Providers
+    :sync: cloud-service-providers
 
     .. list-table::
        :header-rows: 1
@@ -398,87 +443,27 @@ The GPU Operator has been validated in the following scenarios:
        * - | Operating
            | System
          - | Amazon EKS
-           | Kubernetes
+           | Kubernetes 
          - | Google GKE
            | Kubernetes
-         - | Microsoft Azure
-           | Kubernetes Service
 
        * - Ubuntu 20.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
+         - 1.32---1.35
+         - 1.32---1.35
 
        * - Ubuntu 22.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
+         - 1.32---1.35
+         - 1.32---1.35
 
        * - Ubuntu 24.04 LTS
-         - 1.30---1.34
-         - 1.30---1.34
-         - 1.30---1.34
-
-  .. tab-item:: Virtual Machines with NVIDIA vGPU
-
-    .. list-table::
-       :header-rows: 1
-       :stub-columns: 1
-
-       * - | Operating
-           | System
-         - Kubernetes
-         - | Red Hat
-           | OpenShift
-         - | VMware vSphere
-           | with Tanzu
-         - | Rancher Kubernetes
-           | Engine 2
-         - | Nutanix
-           | NKP
-
-       * - Ubuntu 20.04 LTS
-         - 1.30--1.34
-         -
-         - 7.0 U3c, 8.0 U2, 8.0 U3
-         - 1.30--1.34
-         - 2.12, 2.13
-
-       * - Ubuntu 22.04 LTS
-         - 1.30--1.34
-         -
-         - 8.0 U2, 8.0 U3
-         - 1.30--1.34
-         - 2.12, 2.13
-
-       * - Ubuntu 24.04 LTS
-         - 1.30--1.34
-         -
-         -
-         - 1.30--1.34
-         -
-
-       * - Red Hat Core OS
-         -
-         - 4.14--4.20
-         -
-         -
-         -
-
-       * - | Red Hat
-           | Enterprise
-           | Linux 8.4,
-           | 8.6--8.10
-         - 1.30--1.34
-         -
-         -
-         - 1.30--1.34
-         -
+         - 1.32---1.35
+         - 1.32---1.35
 
 .. _supported-precompiled-drivers:
 
+*****************************
 Supported Precompiled Drivers
------------------------------
+*****************************
 
 The GPU Operator has been validated with the following precompiled drivers.
 See the :doc:`precompiled-drivers` page for more information about using precompiled drivers.
@@ -497,14 +482,14 @@ See the :doc:`precompiled-drivers` page for more information about using precomp
 +----------------------------+------------------------+----------------+---------------------+
 
 
-
+****************************
 Supported Container Runtimes
-----------------------------
+****************************
 
 The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.7 - 2.1   | CRI-O          |
+| Operating System           | Containerd 1.7 - 2.2   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -519,9 +504,14 @@ The GPU Operator has been validated for the following container runtimes:
 | Red Hat Enterprise Linux 9 | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 
+.. note::
 
+ If you are planning to use the NRI Plugin, you must use containerd version v1.7.30+, v2.1.x and v2.2.x.
+ The NRI Plugin is not supported with CRI-O.
+
+*************************************************
 Support for KubeVirt and OpenShift Virtualization
--------------------------------------------------
+*************************************************
 
 Red Hat OpenShift Virtualization is based on KubeVirt.
 
@@ -532,9 +522,10 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 20.04 LTS    1.30---1.34   0.36+           0.59.1+
-Ubuntu 22.04 LTS    1.30---1.34   0.36+           0.59.1+
-Red Hat Core OS                                                4.14---4.20      4.14---4.20
+Ubuntu 24.04 LTS    1.32---1.35   0.36+           
+Ubuntu 22.04 LTS    1.32---1.35   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.32---1.35   0.36+           0.59.1+
+Red Hat Core OS                                                4.17---4.21      4.17---4.21
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
@@ -562,34 +553,40 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
   The L40G GPU is excluded.
 
-Note that HGX platforms are not supported.
+-  NVIDIA HGX GB200 NVL72, GB300 NVL72 on Ubuntu 24.04 LTS.
 
 .. note::
 
   KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
 
+**************************
 Support for GPUDirect RDMA
---------------------------
+**************************
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 
+- Ubuntu 24.04 and 22.04 LTS with Network Operator 26.1.0
+- Red Hat Enterprise Linux 10.0 and 8.10 with Network Operator 26.1.0
+- Red Hat Enterprise Linux 8.10 with Network Operator 25.10.0
+- Ubuntu 22.04 LTS with Network Operator 25.10.0
 - RHEL 8 with Network Operator 25.7.0.
 - Ubuntu 24.04 LTS with Network Operator 25.7.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
 - Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
-- Red Hat OpenShift 4.14 and higher with Network Operator 25.7.0.
+- Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.
+- Ubuntu 24.04 LTS with Network Operator 25.10.0
 
 For information about configuring GPUDirect RDMA, refer to :doc:`gpu-operator-rdma`.
 
-
+*****************************
 Support for GPUDirect Storage
------------------------------
+*****************************
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
 - Ubuntu 24.04 LTS Network Operator 25.7.0.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
-- Red Hat OpenShift Container Platform 4.14 and higher.
+- Red Hat OpenShift Container Platform 4.17 and higher.
 
 .. note::
 
@@ -603,8 +600,20 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
    Not supported with secure boot.
    Supported storage types are local NVMe and remote NFS.
 
-Additional Supported Container Management Tools
------------------------------------------------
+*******************************************
+Additional Supported Tools and Integrations
+*******************************************
 
-* Helm v3
-* Red Hat Operator Lifecycle Manager (OLM)
+Container management tools:
+
+* `Helm v3 <https://helm.sh/>`_
+* `Red Hat Operator Lifecycle Manager (OLM) <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm>`_
+
+Orchestration & resource scheduling:
+
+* `NVIDIA Run:ai <https://run-ai-docs.nvidia.com/>`_
+
+.. note::
+
+   Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings. 
+   Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai `cluster requirements documentation <https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator>`_ for more information.

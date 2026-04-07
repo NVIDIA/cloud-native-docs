@@ -224,18 +224,21 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
 #. Download the vGPU Software from the `NVIDIA Licensing Portal <https://nvid.nvidia.com/dashboard/#/dashboard>`_.
 
+   **For NVIDIA AI Enterprise customers, download:**
+
+   * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
+   * Navigate to **[GPU Name] > NVAIE** then **Platform > Linux KVM**.
+   * Download the **NVAIE [GPU Name] Linux KVM driver**. NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image. After downloading, and rename the file to ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``. Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
+
+
+   **For non-NVIDIA AI Enterprise customers:**
+
    * Login to the NVIDIA Licensing Portal and navigate to the **Software Downloads** section.
    * The NVIDIA vGPU Software is located on the **Driver downloads** tab of the **Software Downloads** page.
    * Click the **Download** link for the Linux KVM complete vGPU package.
+   
      Confirm that the **Product Version** column shows the vGPU version to install.
      Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run``.
-
-     .. note::
-
-         NVIDIA AI Enterprise customers must use the ``aie`` .run file for building the NVIDIA vGPU Manager image.
-         Download the ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm-aie.run`` file instead, and rename it to
-         ``NVIDIA-Linux-x86_64-<version>-vgpu-kvm.run`` before proceeding with the rest of the procedure.
-         Refer to the ``Infrastructure Support Matrix`` under section under the `NVIDIA AI Enterprise Infra Release Branches <https://docs.nvidia.com/ai-enterprise/index.html#infrastructure-software>`_ for details on supported version number to use. 
 
    Use the following steps to clone the driver container repository and build the driver image.
 
@@ -260,12 +263,26 @@ Use the following steps to build the vGPU Manager container and push it to a pri
    * ``PRIVATE_REGISTRY`` - Name of the private registry used to store the driver image.
    * ``VGPU_HOST_DRIVER_VERSION`` - The NVIDIA vGPU Manager version downloaded from the NVIDIA Software Portal.
    * ``OS_TAG`` - This must match the Guest OS version.
-     For RedHat OpenShift, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
+
+.. note::
+   The driver container image tag for OpenShift has changed after the OCP 4.19 release.
+   Refer to `OpenShift Container Platform 4.19 Release Notes section 1.4.5 <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes>`_,
+   `RHEL Versions Utilized by RHEL CoreOS and OCP <https://access.redhat.com/articles/6907891>`_,
+   and `Split RHCOS into layers: /etc/os-release <https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release>`_
+   for more information.
+
+
+   For RedHat OpenShift 4.18 or earlier, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
 
    .. code-block:: console
 
-      $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhcos4.18
+         $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhcos4.18
 
+   For OpenShift 4.19 and later, specify ``rhel9.6`` instead.
+
+   .. code-block:: console
+
+      $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhel9.6
 .. note::
 
    The recommended registry to use is the Integrated OpenShift Container Platform registry.
@@ -342,7 +359,9 @@ Create the cluster policy using the CLI:
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]' > clusterpolicy.json
+
+   .. note:: ``$STARTING_CSV`` is the value of the ``startingCSV`` field in the ``Subscription`` CR created in the :ref:`install-gpu-ocp` section.
 
 #. Modify the ``clusterpolicy.json`` file as follows:
 
@@ -384,7 +403,7 @@ Creating a ClusterPolicy for the GPU Operator using the OpenShift Container Plat
 
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform web console.
 
-#. Navigate to **Operators** > **Installed Operators** and find your installed NVIDIA GPU Operator.
+#. Navigate to **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**) and find your installed NVIDIA GPU Operator.
 
 #. Under *Provided APIs*, click **ClusterPolicy**.
 
@@ -641,6 +660,7 @@ If the node is not labeled, then the ``default`` configuration will be used.
 For more information on this component and how it is configured, refer to the project `README <https://github.com/NVIDIA/vgpu-device-manager>`_.
 
 By default, the GPU Operator deploys a ConfigMap for the vGPU Device Manager, containing named configurations for all `vGPU types <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#supported-gpus-grid-vgpu>`_ supported by NVIDIA vGPU.
+The GPU Operator only adds Q and C profiles in the default ConfigMap
 Users can select a specific configuration for a worker node by applying the ``nvidia.com/vgpu.config`` node label.
 
 For example, labeling a node with ``nvidia.com/vgpu.config=A10-8Q`` would create 3 vGPU devices of type **A10-8Q** on all **A10** GPUs on the node (note: 3 is the maximum number of **A10-8Q** devices that can be created per GPU).

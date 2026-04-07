@@ -12,7 +12,7 @@ spec:
   nodeSelector:
     driver.config: "gold"
   repository: nvcr.io/nvidia
-  version: "535.104.12"
+  version: "580.126.20"
 ---
 apiVersion: nvidia.com/v1alpha1
 kind: NVIDIADriver

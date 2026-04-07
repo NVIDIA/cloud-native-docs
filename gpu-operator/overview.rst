@@ -34,18 +34,15 @@ Kubernetes device plugin for GPUs, the `NVIDIA Container Toolkit <https://github
 automatic node labeling using `GFD <https://github.com/NVIDIA/gpu-feature-discovery>`_, `DCGM <https://developer.nvidia.com/dcgm>`_ based monitoring and others.
 
 
-.. card:: Red Hat OpenShift Container Platform
-
-   For information about installing, managing, and upgrading the Operator,
-   refer to :external+ocp:doc:`index`.
-
-   Information about supported versions is available in :ref:`Supported Operating Systems and Kubernetes Platforms`.
-
-
 About This Documentation
 ========================
 
-Browse through the following documents for getting started, platform support and release notes.
+Browse through the following documents for getting started, platform support and release notes for the NVIDIA GPU Operator.
+
+.. admonition:: Red Hat OpenShift Container Platform
+   :class: tip
+
+   Refer to :external+ocp:doc:`index` for information about installing, managing, and upgrading the Operator on Red Hat OpenShift Container Platform.
 
 Getting Started
 ---------------

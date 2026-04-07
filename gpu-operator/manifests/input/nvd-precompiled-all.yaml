@@ -13,4 +13,4 @@ spec:
   repository: nvcr.io/nvidia
   resources: {}
   usePrecompiled: true
-  version: "535"
+  version: "580"

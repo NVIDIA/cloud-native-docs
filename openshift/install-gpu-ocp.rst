@@ -11,10 +11,10 @@ Installing the NVIDIA GPU Operator on OpenShift
 Installing the NVIDIA GPU Operator by using the web console
 ***********************************************************
 
-#. In the OpenShift Container Platform web console, from the side menu, navigate to **Operators** > **OperatorHub** and select **All Projects**.
+#. In the OpenShift Container Platform web console, from the side menu, navigate to **Ecosystem** > **System Catalog** and select **All Projects** from the drop down menu.
+   In versions before 4.20, navigate to **Operators** > **OperatorHub** and select **All Projects**.
 
-#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
-#. In **Operators** > **OperatorHub**, search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
+#. Search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
 #. Select the **NVIDIA GPU Operator**, click **Install**. In the following screen, click **Install**.
 
@@ -28,6 +28,8 @@ Installing the NVIDIA GPU Operator by using the web console
          $ oc label ns/$NAMESPACE_NAME openshift.io/cluster-monitoring=true
 
 Proceed to :ref:`Create the cluster policy for the NVIDIA GPU Operator <create-cluster-policy>`.
+
+.. _install-gpu-ocp:
 
 *************************************************
 Installing the NVIDIA GPU Operator using the CLI
@@ -90,52 +92,36 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
          operatorgroup.operators.coreos.com/nvidia-gpu-operator-group created
 
-#. Run the following command to get the ``channel`` value required for step 5.
+#. Get the value of ``channel``, and store it in a variable:
 
    .. code-block:: console
 
-      $ oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}'
+      $ CHANNEL=$(oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}')
 
-   *Example Output*
-
-   .. code-block:: console
-
-      v22.9
-
-#. Run the following commands to get the ``startingCSV`` value required for step 5.
+#. Get the ``startingCSV`` value and store it in a variable:
 
    .. code-block:: console
 
-      $ CHANNEL=v22.9
+      $ STARTING_CSV=$(oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV')
+
+#. Create the ``Subscription`` CR using the variables and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
 
    .. code-block:: console
 
-      $ oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV'
-
-   *Example Output*
-
-   .. code-block:: console
-
-      gpu-operator-certified.v22.9.0
-
-#. Create the following ``Subscription`` CR and save the YAML in the ``nvidia-gpu-sub.yaml`` file:
-
-   .. code-block:: yaml
-
+      $ cat <<EOF > nvidia-gpu-sub.yaml
       apiVersion: operators.coreos.com/v1alpha1
       kind: Subscription
       metadata:
         name: gpu-operator-certified
         namespace: nvidia-gpu-operator
       spec:
-        channel: "v22.9"
+        channel: $CHANNEL
         installPlanApproval: Manual
         name: gpu-operator-certified
         source: certified-operators
         sourceNamespace: openshift-marketplace
-        startingCSV: "gpu-operator-certified.v22.9.0"
-
-   .. note:: Update the ``channel`` and ``startingCSV`` fields with the information returned in steps 3 and 4.
+        startingCSV: $STARTING_CSV
+      EOF
 
 #. Create the subscription object by running the following command:
 
@@ -147,7 +133,10 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
       subscription.operators.coreos.com/gpu-operator-certified created
 
-#. Optional: Log in to the web console and navigate to the **Operators** > **Installed Operators** page. In the ``Project: nvidia-gpu-operator`` the following is displayed:
+#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**. 
+    In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
+
+    In the ``Project: nvidia-gpu-operator`` the following is displayed:
 
    .. image:: graphics/gpu-operator-certified-cli-install.png
 
@@ -206,11 +195,11 @@ when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 Create the cluster policy using the web console
 -----------------------------------------------
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), and click **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-      .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
+   .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
 
    .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
 
@@ -231,12 +220,14 @@ Create the cluster policy using the web console
 Create the cluster policy using the CLI
 ---------------------------------------
 
+
 #. Create the ClusterPolicy:
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json 
 
+   .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
    .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` (optional). The following snippet is shown as an example. Change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
 
@@ -263,22 +254,53 @@ Create the ClusterPolicy instance with NVIDIA vGPU
 Prerequisites
 --------------
 
-* Refer to the :ref:`install-gpu-operator-vgpu` section for prerequisite steps for using NVIDIA vGPU on Red Hat OpenShift.
+Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
+
+* Refer to the :ref:`install-gpu-operator-vgpu` section for detailed prerequisite steps, including building the vGPU driver container image and obtaining licensing files.
+
+* Create a licensing secret in the ``nvidia-gpu-operator`` namespace:
+
+  .. code-block:: console
+
+     $ oc create secret generic licensing-config \
+         -n nvidia-gpu-operator --from-file=gridd.conf --from-file=client_configuration_token.tok
+
+  .. note::
+
+     Using a Kubernetes Secret to store licensing information is the recommended approach.
+     The ``configMap`` option is deprecated and will be removed in a future release.
+
+* If your private registry requires authentication, create an image pull secret:
+
+  .. code-block:: console
+
+     $ oc create secret docker-registry registry-secret \
+         --docker-server=<private-registry-url> \
+         --docker-username=<username> \
+         --docker-password=<password> \
+         --docker-email=<email-id> \
+         -n nvidia-gpu-operator
 
 Create the cluster policy using the web console
 -----------------------------------------------
 
-#. In the OpenShift Container Platform web console, from the side menu, select **Operators** > **Installed Operators**, and click **NVIDIA GPU Operator**.
+#. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**.
+   In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
 
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
-#. Provide the name of the licensing ``ConfigMap`` under the **Driver** section. This should be created during the prerequisite steps for NVIDIA vGPU. Refer to the following screenshots for examples and modify values accordingly.
+#. Under the  **NVIDIA GPU/vGPU Driver config** section fill in the following information
+   
+   * Specify the ``secretName`` as the name of the licensing ``Secret`` created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``). 
 
-   .. image:: graphics/cluster_policy_vgpu_1.png
+   .. note::
 
-#. Specify the ``repository`` path, ``image`` name, and NVIDIA vGPU driver ``version`` bundled under the **Driver** section. If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under the **Driver** advanced configurations section.
+      The ``ConfigMap`` option is deprecated. Use a Kubernetes ``Secret`` to store licensing information instead.
 
-   .. image:: graphics/cluster_policy_vgpu_2.png
+
+   * Specify the ``repository`` path, ``image`` name, and NVIDIA vGPU driver ``version``.
+     If the registry is not public, specify the ``imagePullSecret`` created during the prerequisite step under the **Driver** advanced configurations section.
+
 
 #. Click **Create**.
 
@@ -289,6 +311,7 @@ Create the cluster policy using the web console
    .. image:: graphics/cluster-policy-state-ready.png
 
 
+
 Create the cluster policy using the CLI
 ---------------------------------------
 
@@ -296,22 +319,31 @@ Create the cluster policy using the CLI
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator gpu-operator-certified.v22.9.0 -ojsonpath={.metadata.annotations.alm-examples} | jq .[0] > clusterpolicy.json
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json 
 
-   Modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
+   .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
+
+#. Modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` created during the prerequisite steps. The following snippet is shown as an example. Change values accordingly.
 
    .. code-block:: json
 
          "driver": {
               "repository": "<repository-path>",
               "image": "driver",
-              "imagePullSecrets": [],
+              "imagePullSecrets": ["registry-secret"],
               "licensingConfig": {
-                "configMapName": "licensing-config",
+                "secretName": "licensing-config",
                 "nlsEnabled": true
               },
-              "version": "470.82.01"
+              "version": "580.95.05"
          }
+
+   .. note::
+
+      Using ``secretName`` to reference a Kubernetes Secret is the recommended approach.
+      The ``configMapName`` option is deprecated and will be removed in a future release.
+
+#. Apply the ClusterPolicy:
 
    .. code-block:: console
 
