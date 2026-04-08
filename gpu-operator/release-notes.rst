@@ -155,10 +155,12 @@ Fixed Issues
 Known Issues
 ------------
 
-* When GPUDirect RDMA is enabled, the ``nvidia-peermen`` container may fail to restart when the driver pod is restarted without a node reboot, for example if the driver pod is deleted or evicted, and you did not make any changes in the driver configuration.
-  This can happen because the kernel state is not cleared when the driver pod is restarted.
+* When GPUDirect RDMA is enabled, the ``nvidia-peermem`` container may fail to restart after the driver pod restarts without a node reboot and without any driver configuration changes.
+  In this scenario, the driver uses a fast-path optimization that skips recompilation, but the ``nvidia-peermem`` sidecar does not detect that its module is already loaded and fails to start.
+  This occurs because the kernel state is not cleared when the driver pod restarts.
 
-  To work around this issue, you can set the ``FORCE_REINSTALL=true`` environment variable in the ClusterPolicy.
+
+  To work around this issue, set the ``FORCE_REINSTALL=true`` environment variable in the ClusterPolicy.
 
   .. code-block:: console 
 
@@ -166,7 +168,8 @@ Known Issues
         -p='[{"op": "add", "path": "/spec/driver/manager/env/-", "value": {"name": "FORCE_REINSTALL", "value": "true"}}]'
 
   Setting ``FORCE_REINSTALL=true`` forces full driver recompilation, node drain, and GPU workload disruption on every restart. 
-  Rebooting the node would also clear kernel state ``nvidia-peermem`` module will.  
+  Alternatively, rebooting the node clears the kernel state and allows the ``nvidia-peermem`` module to load successfully, though this may disrupt running workloads.
+
 
 
 Removals and Deprecations
