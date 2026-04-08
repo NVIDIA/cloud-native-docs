@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 03, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 08, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -544,15 +544,16 @@ This reduces the time to recover from the driver container removal from minutes 
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>When GPUDirect RDMA is enabled, the <code class="docutils literal notranslate"><span class="pre">nvidia-peermen</span></code> container may fail to restart when the driver pod is restarted without a node reboot, for example if the driver pod is deleted or evicted, and you did not make any changes in the driver configuration.
-This can happen because the kernel state is not cleared when the driver pod is restarted.</p>
-<p>To work around this issue, you can set the <code class="docutils literal notranslate"><span class="pre">FORCE_REINSTALL=true</span></code> environment variable in the ClusterPolicy.</p>
+<li><p>When GPUDirect RDMA is enabled, the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> container may fail to restart after the driver pod restarts without a node reboot and without any driver configuration changes.
+In this scenario, the driver uses a fast-path optimization that skips recompilation, but the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> sidecar does not detect that its module is already loaded and fails to start.
+This occurs because the kernel state is not cleared when the driver pod restarts.</p>
+<p>To work around this issue, set the <code class="docutils literal notranslate"><span class="pre">FORCE_REINSTALL=true</span></code> environment variable in the ClusterPolicy.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicy cluster-policy --type<span class="o">=</span>json <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/driver/manager/env/-&quot;, &quot;value&quot;: {&quot;name&quot;: &quot;FORCE_REINSTALL&quot;, &quot;value&quot;: &quot;true&quot;}}]&#39;</span>
 </pre></div>
 </div>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">FORCE_REINSTALL=true</span></code> forces full driver recompilation, node drain, and GPU workload disruption on every restart.
-Rebooting the node would also clear kernel state <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> module will.</p>
+Alternatively, rebooting the node clears the kernel state and allows the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> module to load successfully, though this may disrupt running workloads.</p>
 </li>
 </ul>
 </section>
