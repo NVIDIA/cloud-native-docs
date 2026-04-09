@@ -162,10 +162,10 @@ The minimum required version is 3.29.0.
    .. code-block:: console
 
      $ helm install kata-deploy "${CHART}" \
-       --namespace kata-system --create-namespace \
-       --set nfd.enabled=false \
-       --wait --timeout 10m \
-       --version "${VERSION}"
+        --namespace kata-system --create-namespace \
+        --set nfd.enabled=false \
+        --wait --timeout 10m \
+        --version "${VERSION}"
 
    *Example Output*
 
@@ -356,7 +356,7 @@ Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific 
 ----------------------------------------------------------------------------------------------
 
 By default, the NVIDIA GPU Operator creates a single resource type for GPUs, ``nvidia.com/pgpu``.
-In homogenious clusters, were all GPUs are the same type, using a single resource type is fine because all available GPUs are the same type as well.
+In clusters where all GPUs are the same type, using a single resource type is fine because all available GPUs are the same type as well.
 
 In heterogeneous clusters, where you have different GPU types on your nodes, you may want to use specific GPU types for your workload. 
 To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the sandbox device plugin by
@@ -364,7 +364,7 @@ the following in your GPU Operator installation:
 ``--set sandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
 ``--set sandboxDevicePlugin.env[0].value=""``.
 
-When this valiable is set to ``""``, the sandbox device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
+When this variable is set to ``""``, the sandbox device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
 Use the exposed device resource types in pod specs by specifying respective resource limits.
 
 Similarly, NVSwitches are exposed as resources of type ``nvidia.com/nvswitch`` by default. 

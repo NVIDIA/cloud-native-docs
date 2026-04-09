@@ -22,11 +22,11 @@ NVIDIA Confidential Containers Reference Architecture
 *****************************************************
 
 NVIDIA GPUs with Confidential Computing support provide the hardware foundation for running GPU workloads inside a hardware-enforced Trusted Execution Environment (TEE).
-The NVIDIA Confidential Containers Reference Architecture provides a validated deployment model for cluster administrators interested in to leveraging NVIDIA GPU Confidential Computing capabilities on Kubernetes platforms.
+The NVIDIA Confidential Containers Reference Architecture provides a validated deployment model for cluster administrators interested in leveraging NVIDIA GPU Confidential Computing capabilities on Kubernetes platforms.
 
 This documentation describes the architecture overview and the key software components, including the NVIDIA GPU Operator and Kata Containers, used to deploy and manage confidential workloads.
-This architecture build on principles of Confidential Computing and `Confidential Containers <https://confidentialcontainers.org/docs/architecture/design-overview/>`__, the cloud-native approach to Confidential Computing.
-Its recommended to be familiar with the basic concepts of Confidential Containers, including attestation, before reading this documentation.
+This architecture builds on principles of Confidential Computing and `Confidential Containers <https://confidentialcontainers.org/docs/architecture/design-overview/>`__, the cloud-native approach to Confidential Computing.
+It is recommended to be familiar with the basic concepts of Confidential Containers, including attestation, before reading this documentation.
 Refer to the `Confidential Containers <https://confidentialcontainers.org/docs/>`__ documentation for more information.
 
 .. _confidential-containers-overview:
