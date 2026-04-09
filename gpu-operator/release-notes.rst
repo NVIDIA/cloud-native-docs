@@ -155,6 +155,15 @@ Fixed Issues
 Known Issues
 ------------
 
+* On RHEL 8 hosts, MIG configuration can fail when the GPU Operator is deployed in host-driver mode (``driver.enabled=false``).
+  When a pre-installed NVIDIA driver is detected on the host, NVIDIA MIG Manager for Kubernetes v0.14.0 copies the ``nvidia-mig-parted`` binary to the host and executes it in the host's userspace via ``chroot``.
+  The binary requires GLIBC 2.32 and GLIBC 2.34, which are not available on RHEL 8, causing the following errors in the MIG Manager pod logs:
+
+  .. code-block:: console
+
+    /usr/local/nvidia/mig-manager/nvidia-mig-parted: /lib64/libc.so.6: version `GLIBC_2.32' not found
+    /usr/local/nvidia/mig-manager/nvidia-mig-parted: /lib64/libc.so.6: version `GLIBC_2.34' not found
+
 * When GPUDirect RDMA is enabled, the ``nvidia-peermem`` container may fail to restart after the driver pod restarts without a node reboot and without any driver configuration changes.
   In this scenario, the driver uses a fast-path optimization that skips recompilation, but the ``nvidia-peermem`` sidecar does not detect that its module is already loaded and fails to start.
   This occurs because the kernel state is not cleared when the driver pod restarts.
