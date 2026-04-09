@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
 
 
@@ -56,12 +56,13 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'platform-support';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
 
@@ -76,7 +77,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Feb 12, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 09, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
 
 
 
@@ -86,14 +93,12 @@
 
   </head>
 
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-default-mode="">
+
 
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-
 
   
   <div id="pst-scroll-pixel-helper"></div>
@@ -126,7 +131,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -360,11 +365,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">KubeVirt</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="confidential-containers.html">Confidential Containers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers with NVIDIA GPU Operator</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
 <ul class="nav bd-sidenav">
@@ -372,11 +374,12 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">CSP configurations</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 </ul>
 </div>
 </nav></div>
@@ -441,16 +444,15 @@ Patch releases typically include critical bug and CVE fixes, but can include min
 </section>
 <section id="nvidia-gpu-operator-life-cycle">
 <span id="operator-life-cycle-policy"></span><h2>NVIDIA GPU Operator Life Cycle<a class="headerlink" href="#nvidia-gpu-operator-life-cycle" title="Permalink to this headline">#</a></h2>
-<p>When a major version of NVIDIA GPU Operator is released, the previous major version enters maintenance support
-and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end-of-life (EOL) and are no longer supported and do not receive patch release updates.</p>
+<p>When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
+All prior major versions enter end of support and are no longer supported and do not receive patch release updates.</p>
 <p>The product life cycle and versioning are subject to change in the future.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id19">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id19" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id20">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id20" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -462,13 +464,13 @@ All prior major versions enter end-of-life (EOL) and are no longer supported and
 </thead>
 <tbody>
 <tr class="row-even"><td><p>25.10.x</p></td>
-<td><p>Generally Available</p></td>
+<td><p>Supported</p></td>
 </tr>
 <tr class="row-odd"><td><p>25.3.x</p></td>
-<td><p>Maintenance</p></td>
+<td><p>Deprecated</p></td>
 </tr>
 <tr class="row-even"><td><p>24.9.x and lower</p></td>
-<td><p>EOL</p></td>
+<td><p>End of Support</p></td>
 </tr>
 </tbody>
 </table>
@@ -508,8 +510,9 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </td>
 <td colspan="2"><div class="line-block">
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html">590.48.01</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-16/index.html">580.126.16</a> (<strong>R</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-09/index.html">580.126.09</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html">580.105.08</a> (<strong>D</strong>, <strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html">580.105.08</a> (<strong>D</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html">580.95.05</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html">580.82.07</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html">575.57.08</a></div>
@@ -588,7 +591,7 @@ Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
 NVIDIA recommends that you upgrade the driver to version 580.65.06 or later to resolve this issue.
-For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p>
+For more detailed information, see GitHub issue <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">https://github.com/NVIDIA/gpu-operator/issues/1361</a>.</p>
 </div></blockquote>
 <blockquote id="gds-open-kernel">
 <div><p><sup>2</sup>
@@ -1062,7 +1065,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 </th>
 <th class="head"><div class="line-block">
 <div class="line">VMware vSphere</div>
-<div class="line">with Tanzu</div>
+<div class="line">Kubernetes Service (VKS)</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
@@ -1090,7 +1093,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-even"><th class="stub"><p>Ubuntu 20.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
 <td><p>1.30—1.35</p></td>
 <td></td>
-<td><p>7.0 U3c, 8.0 U2, 8.0 U3</p></td>
+<td><p>1.30—1.35</p></td>
 <td><p>1.30—1.35</p></td>
 <td></td>
 <td></td>
@@ -1099,7 +1102,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-odd"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
 <td><p>1.30—1.35</p></td>
 <td></td>
-<td><p>8.0 U2, 8.0 U3</p></td>
+<td><p>1.30—1.35</p></td>
 <td><p>1.30—1.35</p></td>
 <td><p>1.30—1.35</p></td>
 <td><p>1.33—1.35</p></td>
@@ -1236,7 +1239,7 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </div>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id18"></span><h3>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h3>
+<span id="id19"></span><h3>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1437,12 +1440,22 @@ Refer to <a class="reference internal" href="getting-started.html#common-chart-c
 Supported storage types are local NVMe and remote NFS.</p>
 </div>
 </section>
-<section id="additional-supported-container-management-tools">
-<h3>Additional Supported Container Management Tools<a class="headerlink" href="#additional-supported-container-management-tools" title="Permalink to this headline">#</a></h3>
+<section id="additional-supported-tools-and-integrations">
+<h3>Additional Supported Tools and Integrations<a class="headerlink" href="#additional-supported-tools-and-integrations" title="Permalink to this headline">#</a></h3>
+<p>Container management tools:</p>
 <ul class="simple">
-<li><p>Helm v3</p></li>
-<li><p>Red Hat Operator Lifecycle Manager (OLM)</p></li>
+<li><p><a class="reference external" href="https://helm.sh/">Helm v3</a></p></li>
+<li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm">Red Hat Operator Lifecycle Manager (OLM)</a></p></li>
 </ul>
+<p>Orchestration &amp; resource scheduling:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://run-ai-docs.nvidia.com/">NVIDIA Run:ai</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
+Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai <a class="reference external" href="https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator">cluster requirements documentation</a> for more information.</p>
+</div>
 </section>
 </section>
 </section>
@@ -1494,8 +1507,8 @@ Supported storage types are local NVMe and remote NFS.</p>
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-operator-versioning">NVIDIA GPU Operator Versioning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-operator-life-cycle">NVIDIA GPU Operator Life Cycle</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-operator-component-matrix">GPU Operator Component Matrix</a><ul class="nav section-nav flex-column">
@@ -1508,7 +1521,7 @@ Supported storage types are local NVMe and remote NFS.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-rdma">Support for GPUDirect RDMA</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-storage">Support for GPUDirect Storage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-container-management-tools">Additional Supported Container Management Tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-tools-and-integrations">Additional Supported Tools and Integrations</a></li>
 </ul>
 </li>
 </ul>
@@ -1529,8 +1542,8 @@ Supported storage types are local NVMe and remote NFS.</p>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
 
 
 
