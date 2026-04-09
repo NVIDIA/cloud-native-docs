@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
 
 
 
@@ -56,12 +56,13 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'attestation';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
 
@@ -76,7 +77,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 02, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 09, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
 
 
 
@@ -86,14 +93,12 @@
 
   </head>
 
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-default-mode="">
+
 
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-
 
   
   <div id="pst-scroll-pixel-helper"></div>
@@ -126,7 +131,7 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
   <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
@@ -390,11 +395,8 @@
                   
   <section id="attestation">
 <span id="id1"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>The NVIDIA Reference Architecture for Confidential Containers has remote attestation support for the CPU and GPU built-in.
-Attestation allows a workload owner to cryptographically validate the guest Trusted Computing Base (TCB).
-This process is facilitated by components inside the guest root file system.
-When a secret resource is required inside the confidential guest (to decrypt a container image, or to decrypt a model, for instance), the guest components detect which CPU and GPU enclaves are in use and collect hardware evidence from them.
-This evidence is sent to a remote verifier/broker, for example Trustee, which evaluates the evidence and conditionally releases secrets.</p>
+<p>The NVIDIA Reference Architecture for Confidential Containers includes built-in remote attestation support for the CPU and GPU. Attestation allows a workload owner to cryptographically verify the guest Trusted Computing Base (TCB) before secrets are released to the workload.</p>
+<p>When a workload requires a secret, for example, to decrypt a container image or model, guest components identify the active CPU and GPU enclaves, collect hardware evidence, and send it to a remote verifier/broker such as Trustee. The verifier evaluates the evidence and conditionally releases the secret.</p>
 <p>Features that depend on secrets depend on attestation.
 These features include:</p>
 <ul class="simple">
@@ -403,24 +405,34 @@ These features include:</p>
 <li><p>Sealed secrets</p></li>
 <li><p>Direct workload requests for secrets</p></li>
 </ul>
-<p>To use these features, a remote verifier/broker, like Trustee, must first be provisioned in some trusted environment.</p>
+<p>To use these features, a remote verifier/broker, like Trustee, must be provisioned in a trusted environment.
+Then you can direct your workloads to use the verifier/broker to authenticate and release secrets based on your configured policies.</p>
 <section id="configure-remote-verifier-broker-trustee">
 <h2>Configure Remote Verifier/Broker (Trustee)<a class="headerlink" href="#configure-remote-verifier-broker-trustee" title="Permalink to this headline">#</a></h2>
-<p>Follow the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream Trustee documentation</a> to provision a Trustee instance in a trusted environment with one adjustment.
-To enable the remote NVIDIA verifier, Trustee must be configured to use the remote NVIDIA verifier, which uses the NVIDIA Remote Attestation Service (NRAS) to evaluate the evidence. This is not enabled by default.</p>
-<p>To enable the remote verifier, add the following lines to the Trustee configuration file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[attestation_service.verifier_config.nvidia_verifier]</span>
-<span class="go">type = &quot;Remote&quot;</span>
-</pre></div>
+<p>For an overview of attestation with Trustee, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
+<p>Follow the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream Trustee documentation</a> to provision a Trustee instance in a trusted environment.
+This will configure Trustee to use the remote NVIDIA verifier, NVIDIA Remote Attestation Service (NRAS), to evaluate the evidence by default.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If attestation does not succeed after provisioning Trustee, enable debug logging by setting the <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> environment variable in the Trustee environment.
+The Trustee log can then be used to diagnose the attestation process.</p>
 </div>
-<p>If you are using the docker compose Trustee deployment, add the verifier type to <code class="docutils literal notranslate"><span class="pre">kbs/config/as-config.json</span></code> prior to starting Trustee.</p>
-<p>Following the upstream Trustee documentation, add the following annotation to the workload to point the guest components to Trustee:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Now, the guest can be used with attestation. For more information on how to provision Trustee with resources and policies, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
-<p>During attestation, the GPU will be set to ready. As such, when running a workload that does attestation, it is not necessary to set the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> kernel parameters.</p>
-<p>If attestation does not succeed, debugging is best done through the Trustee log. Debug mode can be enabled by setting the <code class="docutils literal notranslate"><span class="pre">nvrc.smi.srs=1</span></code> and <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> kernel parameters in the Trustee environment.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>Configure policies to use attestation features.</p>
+<p><a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/agent/README.md">Kata Agent</a> (deployed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>) runs inside the guest virtual machine to manage the container lifecycle.
+It enforces a strict, immutable security policy based on Rego (regorus) that prevents the untrusted host from executing unauthorized commands, such as a malicious kubectl exec.
+Attestation-dependent features require that these policies permit the relevant operations.</p>
+<p>Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md">Kata Containers Agent Policy documentation</a> for more on using policies. You can use the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">genpolicy tool</a> (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>) to autogenerate policies, or write your own manually.</p>
+<p>Refer to the Confidential Containers’ <a class="reference external" href="https://confidentialcontainers.org/docs/features/initdata">Init-Data</a> documentation for more information on using the genpolicy tool to autogenerate policies.</p>
+</li>
+<li><p>Configure workloads to use attestation features.
+You can configure workloads to use attestation and specify configuration for encrypted images and authenticated container registries.</p>
+<p>Refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for more information on using attestation features.</p>
+</li>
+</ul>
 </section>
 </section>
 
@@ -471,9 +483,10 @@ To enable the remote NVIDIA verifier, Trustee must be configured to use the remo
     class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> On this page
   </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-remote-verifier-broker-trustee">Configure Remote Verifier/Broker (Trustee)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 
@@ -492,8 +505,8 @@ To enable the remote NVIDIA verifier, Trustee must be configured to use the remo
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
 
 
 
