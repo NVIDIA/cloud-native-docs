@@ -499,10 +499,10 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </li>
 <li><p>Install the kata-deploy Helm chart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install kata-deploy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHART</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
-  --namespace kata-system --create-namespace <span class="se">\</span>
-  --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-  --wait --timeout 10m <span class="se">\</span>
-  --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
+   --namespace kata-system --create-namespace <span class="se">\</span>
+   --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+   --wait --timeout 10m <span class="se">\</span>
+   --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -674,13 +674,13 @@ Device Plugin pod. Each list item is an <code class="docutils literal notranslat
 <section id="optional-configuring-the-sandbox-device-plugin-to-use-gpu-or-nvswitch-specific-resource-types">
 <span id="coco-configuration-heterogeneous-clusters"></span><h3>Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types<a class="headerlink" href="#optional-configuring-the-sandbox-device-plugin-to-use-gpu-or-nvswitch-specific-resource-types" title="Permalink to this headline">#</a></h3>
 <p>By default, the NVIDIA GPU Operator creates a single resource type for GPUs, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>.
-In homogenious clusters, were all GPUs are the same type, using a single resource type is fine because all available GPUs are the same type as well.</p>
+In clusters where all GPUs are the same type, using a single resource type is fine because all available GPUs are the same type as well.</p>
 <p>In heterogeneous clusters, where you have different GPU types on your nodes, you may want to use specific GPU types for your workload.
 To do this, specify an empty <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the sandbox device plugin by
 the following in your GPU Operator installation:
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=P_GPU_ALIAS</span></code> and
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].value=&quot;&quot;</span></code>.</p>
-<p>When this valiable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the sandbox device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
+<p>When this variable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the sandbox device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
 Use the exposed device resource types in pod specs by specifying respective resource limits.</p>
 <p>Similarly, NVSwitches are exposed as resources of type <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code> by default.
 You can include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=NVSWITCH_ALIAS</span></code> and
