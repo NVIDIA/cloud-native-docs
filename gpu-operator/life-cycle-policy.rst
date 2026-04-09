@@ -93,9 +93,10 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - v26.3.0
 
    * - NVIDIA GPU Driver |ki|_
-     - | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
+     - | `595.58.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html>`_
+       | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
        | `580.126.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html>`_ (**D**, **R**)
-       | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_ 
+       | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
        | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
