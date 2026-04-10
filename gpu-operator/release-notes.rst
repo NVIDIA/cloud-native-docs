@@ -81,6 +81,8 @@ New Features
   You are still able to use a custom MIG configuration if you have specific requirements.
   Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information.
 
+  There is a known issue with MIG configurations on RHEL 8 with pre-installed NVIDIA drivers, refer to the :ref:`Known Issues <v26.3.0-known-issues>` section for more information.
+
 * Added support for the NVIDIA Driver Custom Resource Definition (CRD).
   Use this feature on new cluster installations to configure multiple driver types and versions on different nodes or multiple operating system versions on nodes.
   Refer to the :doc:`NVIDIA Driver Custom Resource Definition documentation <gpu-driver-configuration>` for more information.
@@ -152,6 +154,8 @@ Fixed Issues
 
 * Fixed an issue where the GPU Operator was not adding a namespace to ServiceAccount objects. (`PR #2039 <https://github.com/NVIDIA/gpu-operator/pull/2039>`_)
 
+.. _v26.3.0-known-issues:
+
 Known Issues
 ------------
 
@@ -170,14 +174,26 @@ Known Issues
   Setting ``FORCE_REINSTALL=true`` forces full driver recompilation, node drain, and GPU workload disruption on every restart. 
   Alternatively, rebooting the node clears the kernel state and allows the ``nvidia-peermem`` module to load successfully, though this may disrupt running workloads.
 
+* On RHEL 8 nodes with pre-installed NVIDIA drivers (``driver.enabled=false``), MIG configuration can fail when using NVIDIA MIG MAnager v0.13.1 or later.
+  NVIDIA MIG Manager copies the ``nvidia-mig-parted`` binary to the host and runs it in the host userspace by using ``chroot``.
+  Recent versions of the binary were compiled against a UBI9 base image and require GLIBC 2.32 and GLIBC 2.34 which are not available on RHEL 8, causing the following errors in the MIG Manager pod logs:
 
+  .. code-block:: console
+
+    /usr/local/nvidia/mig-manager/nvidia-mig-parted: /lib64/libc.so.6: version `GLIBC_2.32' not found
+    /usr/local/nvidia/mig-manager/nvidia-mig-parted: /lib64/libc.so.6: version `GLIBC_2.34' not found
+
+  To work around this issue, downgrade the NVIDIA MIG Manager component to v0.12.3.
+  After downgrading, automatically generated per-node MIG configuration ConfigMaps will not be available. 
+  MIG configuration information will be available in the ``default-mig-parted-config`` ConfigMap instead.
+  Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information on MIG configuration.
+
+  Refer to the MIG Controller issue `#329 <https://github.com/NVIDIA/mig-parted/issues/329>`_ for more information.
 
 Removals and Deprecations
 -------------------------
 
 * Marked unused field ``defaultRuntime`` as optional in the ClusterPolicy. (`PR #2000 <https://github.com/NVIDIA/gpu-operator/pull/2000>`_)
-
-
 
 
 .. _v25.10.1:
