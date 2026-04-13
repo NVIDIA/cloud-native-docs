@@ -190,6 +190,24 @@ Known Issues
 
   Refer to the MIG Controller issue `#329 <https://github.com/NVIDIA/mig-parted/issues/329>`_ for more information.
 
+* After you delete the default NVIDIADriver custom resource, any custom NVIDIADriver
+  custom resources that you created might not become active automatically.
+  The custom resources remain in a pending state because the Operator controller
+  does not re-evaluate them after the conflicting default custom resource is removed.
+
+  To work around this issue, restart the GPU Operator controller by deleting
+  the controller pod:
+
+  .. code-block:: console
+
+    $ kubectl delete pod -n gpu-operator -l app=gpu-operator
+
+  Restarting the controller pod does not disrupt running GPU workloads or
+  driver pods on nodes.
+
+  Refer to issue `#2259 <https://github.com/NVIDIA/gpu-operator/issues/2259>`_
+  for more information.
+
 Removals and Deprecations
 -------------------------
 
