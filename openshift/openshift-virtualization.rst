@@ -290,6 +290,11 @@ Use the following steps to build the vGPU Manager container and push it to a pri
 
 #. Build the NVIDIA vGPU Manager image.
 
+   .. note::
+
+      Docker is the only supported container tool for building the vGPU Manager image.
+      Multi-architecture builds additionally require `buildx <https://github.com/docker/buildx>`_.
+
    .. code-block:: console
 
       $ VGPU_HOST_DRIVER_VERSION=${VGPU_HOST_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/vgpu-manager make build-vgpuhost-${OS_TAG}
