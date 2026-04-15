@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 13, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 15, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -557,7 +557,7 @@ This occurs because the kernel state is not cleared when the driver pod restarts
 <p>Setting <code class="docutils literal notranslate"><span class="pre">FORCE_REINSTALL=true</span></code> forces full driver recompilation, node drain, and GPU workload disruption on every restart.
 Alternatively, rebooting the node clears the kernel state and allows the <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> module to load successfully, though this may disrupt running workloads.</p>
 </li>
-<li><p>On RHEL 8 nodes with pre-installed NVIDIA drivers (<code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code>), MIG configuration can fail when using NVIDIA MIG MAnager v0.13.1 or later.
+<li><p>On RHEL 8 nodes with pre-installed NVIDIA drivers (<code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code>), MIG configuration can fail when using NVIDIA MIG Manager v0.13.1 or later.
 NVIDIA MIG Manager copies the <code class="docutils literal notranslate"><span class="pre">nvidia-mig-parted</span></code> binary to the host and runs it in the host userspace by using <code class="docutils literal notranslate"><span class="pre">chroot</span></code>.
 Recent versions of the binary were compiled against a UBI9 base image and require GLIBC 2.32 and GLIBC 2.34 which are not available on RHEL 8, causing the following errors in the MIG Manager pod logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">/usr/local/nvidia/mig-manager/nvidia-mig-parted: /lib64/libc.so.6: version `GLIBC_2.32&#39; not found</span>
