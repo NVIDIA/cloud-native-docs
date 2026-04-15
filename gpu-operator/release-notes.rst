@@ -174,7 +174,7 @@ Known Issues
   Setting ``FORCE_REINSTALL=true`` forces full driver recompilation, node drain, and GPU workload disruption on every restart. 
   Alternatively, rebooting the node clears the kernel state and allows the ``nvidia-peermem`` module to load successfully, though this may disrupt running workloads.
 
-* On RHEL 8 nodes with pre-installed NVIDIA drivers (``driver.enabled=false``), MIG configuration can fail when using NVIDIA MIG MAnager v0.13.1 or later.
+* On RHEL 8 nodes with pre-installed NVIDIA drivers (``driver.enabled=false``), MIG configuration can fail when using NVIDIA MIG Manager v0.13.1 or later.
   NVIDIA MIG Manager copies the ``nvidia-mig-parted`` binary to the host and runs it in the host userspace by using ``chroot``.
   Recent versions of the binary were compiled against a UBI9 base image and require GLIBC 2.32 and GLIBC 2.34 which are not available on RHEL 8, causing the following errors in the MIG Manager pod logs:
 
