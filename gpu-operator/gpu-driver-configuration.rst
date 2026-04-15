@@ -34,16 +34,16 @@ You can specify labels in the node selector field to control which NVIDIA driver
 Limitations
 ===========
 
-* This feature is recommended for new cluster installations only. 
-  Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported. 
-  Switching from ClusterPolicy to NVIDIA driver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.
-* Users are required to either use the default NVIDIA driver custom resource rendered by helm chart or create and manage their own custom NVIDIA driver.
+* This feature is recommended for new cluster installations only.
+  Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported.
+  Switching from ClusterPolicy to the NVIDIA driver custom resource will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.
+* You must either use the default NVIDIA driver custom resource that the Helm chart creates or create and manage your own custom NVIDIA driver custom resource.
 * You can't use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.
 
 Comparison: Managing the Driver with CRD versus the Cluster Policy
 ==================================================================
 
-Before the introduction of the NVIDIA GPU Driver custom resource definition, you manage the driver by modifying
+Before the introduction of the NVIDIA GPU Driver custom resource definition, you managed the driver by modifying
 the driver field and subfields of the cluster policy custom resource definition.
 
 The key differences between the two approaches are summarized in the following table.
@@ -86,7 +86,7 @@ then the Operator starts two daemon sets.
 About the Default NVIDIA Driver Custom Resource
 ===============================================
 
-By default, the helm chart configures a default NVIDIA driver custom resource during installation.
+By default, the Helm chart configures a default NVIDIA driver custom resource during installation.
 This custom resource does not include a node selector and as a result, the custom resource applies to every node in your cluster
 that has an NVIDIA GPU.
 The Operator starts a driver daemon set and pods for each operating system version in your cluster.
@@ -98,6 +98,15 @@ matching all nodes and your custom resources matching some of the same nodes.
 
 To prevent configuring the default custom resource, specify the ``--set driver.nvidiaDriverCRD.deployDefaultCR=false``
 argument when you install the Operator with Helm.
+
+If the Operator is already installed with the default custom resource and you want to create your own
+driver custom resources and apply them to specific nodes, delete the default custom resource.
+
+.. note::
+
+   After you delete the default custom resource, your custom resources might not reconcile
+   automatically due to a known issue. Refer to the :ref:`v26.3.0 known issues <v26.3.0-known-issues>`
+   for the workaround.
 
 
 Feature Compatibility
@@ -128,7 +137,7 @@ Support for X86_64 and ARM64
   web page to determine which driver version and operating system combinations support both architectures.
 
 Custom Driver Parameters
-  Each NVIDIA driver custom resource can specify custom kernel module parameters via configmap.
+  Each NVIDIA driver custom resource can specify custom kernel module parameters by using a ConfigMap.
   For more information, refer to :doc:`Customizing NVIDIA GPU Driver Parameters during Installation <custom-driver-params>`.
 
 ***************************************
@@ -304,7 +313,7 @@ One Driver Type and Version on All Nodes
    .. literalinclude:: ./manifests/input/nvd-all.yaml
       :language: yaml
 
-#. Apply the manfiest:
+#. Apply the manifest:
 
    .. code-block:: console
 
@@ -339,7 +348,7 @@ Multiple Driver Versions
    .. literalinclude:: ./manifests/input/nvd-driver-multiple.yaml
       :language: yaml
 
-#. Apply the manfiest:
+#. Apply the manifest:
 
    .. code-block:: console
 
@@ -364,10 +373,10 @@ One Precompiled Driver Container on All Nodes
 
    .. tip::
 
-      Because the manfiest does not include a ``nodeSelector`` field, the driver custom
+      Because the manifest does not include a ``nodeSelector`` field, the driver custom
       resource selects all nodes in the cluster that have an NVIDIA GPU.
 
-#. Apply the manfiest:
+#. Apply the manifest:
 
    .. code-block:: console
 
@@ -395,7 +404,7 @@ Precompiled Driver Container on Some Nodes
    .. literalinclude:: ./manifests/input/nvd-precompiled-some.yaml
       :language: yaml
 
-#. Apply the manfiest:
+#. Apply the manifest:
 
    .. code-block:: console
 
