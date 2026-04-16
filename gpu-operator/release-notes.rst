@@ -114,6 +114,9 @@ New Features
 * Added support for the DCGM Exporter to expose a metric port on the host network namespace.
   Enabled by setting ``hostNetwork: true`` in the ClusterPolicy custom resource, or passing ``--set dcgmExporter.hostNetwork=true`` to the Helm chart. (`PR #1962 <https://github.com/NVIDIA/gpu-operator/pull/1962>`_)
 
+* Added liveness and readiness probes for the DCGM and DCGM Exporter pods.
+  The probes ensure that pods are not marked as ready until DCGM is ready to serve traffic. (`PR #2175 <https://github.com/NVIDIA/gpu-operator/pull/2175>`_)
+
 * Added PodSecurityContext support for DaemonSets (`PR #2120 <https://github.com/NVIDIA/gpu-operator/pull/2120>`_).
   In ClusterPolicy, set ``spec.daemonsets.podSecurityContext``; in NVIDIADriver, set ``spec.podSecurityContext``.
 
