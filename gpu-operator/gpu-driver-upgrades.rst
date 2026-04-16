@@ -129,7 +129,7 @@ You can set the following fields in the cluster policy to configure the upgrade 
 
        # gpuPodDeletion: Options for the 'pod-deletion' state, which will evict all pods on the node allocated a GPU.
        gpuPodDeletion:
-         # force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,
+         # force (default=false): Delete pods even if they are not managed by a controller (for example ReplicationController, ReplicaSet,
          # Job, DaemonSet or StatefulSet).
          force: false
          # timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,
@@ -138,21 +138,38 @@ You can set the following fields in the cluster policy to configure the upgrade 
          # deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).
          deleteEmptyDir: false
 
-       # drain: Options for the 'drain' state, which will drain the node (i.e. 'kubectl drain'). This is only performed if
-       # enabled and the 'pod-deletion' state cannot successfully remove all pods using GPU.
+       # drain: Options for the 'drain' state, which invokes 'kubectl drain' on the node.
+       # Unlike 'gpuPodDeletion', which targets only GPU-allocated pods, drain evicts all pods on the node.
+       # This should only be enabled as a fallback when 'gpuPodDeletion' cannot remove all GPU-using pods on its own.
        drain:
-         # enable (default=false): Switch for allowing node drain during the upgrade process
+         # enable (default=false): Set to true to allow node drain as a fallback when
+         # 'gpuPodDeletion' cannot evict all GPU pods. By default, drain evicts all pods
+         # on the node. Use podSelector to limit which pods are evicted.
          enable: false
-         # force (default=false): Delete pods even if they are not managed by a controller (e.g. ReplicationController, ReplicaSet,
-         # Job, DaemonSet or StatefulSet).
+         # force (default=false): Delete pods even if they are not managed by a controller
+         # (for example, ReplicationController, ReplicaSet, Job, DaemonSet, or StatefulSet).
+         # Applies to all pods on the node, not just GPU pods.
          force: false
-         # podSelector (default=""): The label selector to filter pods on the node. "" will drain all pods.
+         # podSelector (default=""): Label selector to restrict which pods are evicted
+         # during drain. An empty string means all pods on the node are evicted.
          podSelector: ""
-         # timeoutSeconds (default=300): The length of time to wait before giving up. 0 means infinite. When the timeout is met,
-         # the GPU  pod(s) will be forcefully deleted.
+         # timeoutSeconds (default=300): The length of time to wait before giving up.
+         # 0 means infinite. When the timeout is reached, the drain attempt is abandoned.
          timeoutSeconds: 300
-         # deleteEmptyDir (default=false): Delete pods even if they are using emptyDir volumes (local data will be deleted).
+         # deleteEmptyDir (default=false): Allow eviction of pods that use emptyDir volumes.
+         # Enabling this results in permanent loss of any data stored in those volumes.
          deleteEmptyDir: false
+
+.. warning::
+
+   ``driver.upgradePolicy.drain.enable`` is a cluster-wide policy setting.
+   When set to ``true``, the upgrade controller drains each node before upgrading the driver on that node.
+   Draining a node evicts all pods from that node, including workloads unrelated to the GPU driver.
+   This is a disruptive operation that interrupts running GPU and non-GPU workloads on every node the upgrade controller processes.
+
+   Enable ``drain`` only when ``gpuPodDeletion`` is insufficient to remove all GPU-using pods on its own.
+   Adjust the ``gpuPodDeletion`` settings first and use ``drain`` only if those settings do not work.
+   If you must enable ``drain``, use ``podSelector`` to limit which pods are evicted.
 
 If you specify a value for ``maxUnavailable`` and also specify ``maxParallelUpgrades``,
 the ``maxUnavailable`` value applies an additional constraint on the value of
@@ -179,7 +196,11 @@ The set of possible states are:
 * ``wait-for-jobs-required``: Node will wait on the completion of a group of pods/jobs before proceeding.
 * ``pod-deletion-required``: Pods allocated with GPUs are deleted from the node. If pod deletion fails, the node state is set to ``drain-required``
   if drain is enabled in ClusterPolicy.
-* ``drain-required``: Node will be drained. This state is skipped if all GPU pods are successfully deleted from the node.
+* ``drain-required``: Node is drained using ``kubectl drain``, which evicts all pods on the
+  node.
+  This state is only reached if ``gpuPodDeletion`` fails to remove all
+  GPU-using pods and ``drain.enable`` is set to ``true`` in the cluster policy.
+  This state is skipped if all GPU pods are successfully deleted from the node.
 * ``pod-restart-required``: The NVIDIA driver pod running on the node will be restarted and upgraded to the new version.
 * ``validation-required``: Validation of the new driver deployed on the node is required before proceeding. The GPU Operator
   performs validations in the pod named ``operator-validator``.
