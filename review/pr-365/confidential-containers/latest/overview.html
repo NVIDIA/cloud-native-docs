@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 09, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -411,7 +411,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 </section>
 <section id="use-cases">
 <span id="coco-use-cases"></span><h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
-<p>The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
+<p>The target for Confidential Containers is to enable model providers (closed and open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:</p>
 <ul class="simple">
 <li><p><strong>Zero-Trust AI &amp; IP Protection:</strong> You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.</p></li>
 <li><p><strong>Data Clean Rooms:</strong> This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.</p></li>
@@ -425,7 +425,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 Integrating open source and NVIDIA software components with the Confidential Computing capabilities of NVIDIA GPUs, the Reference Architecture for Confidential Containers is designed to be the secure and trusted deployment model for AI workloads.</p>
 <p>The key values of this architecture approach are:</p>
 <ol class="arabic simple">
-<li><p><strong>Built on OSS standards</strong> - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.</p></li>
+<li><p><strong>Built on Open Source Software (OSS) standards</strong> - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.</p></li>
 <li><p><strong>Highest level of isolation</strong> - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).</p></li>
 <li><p><strong>Zero-trust execution with attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
 </ol>
@@ -527,7 +527,8 @@ This configuration is done through node labelling and configuration flags set du
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
+<p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing.
+For multi-GPU passthrough, all GPUs must be assigned to one Confidential Container virtual machine.
 Configuring only some GPUs on a node for Confidential Computing is not supported.</p>
 </div>
 <ul class="simple">
@@ -542,12 +543,21 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <p>More information on these features can be found in the <a class="reference external" href="https://confidentialcontainers.org/docs/features/">Confidential Containers documentation</a>.</p>
 </section>
 <section id="limitations-and-restrictions">
-<h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
+<span id="coco-limitations"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
+<ul>
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
 <li><p>Image signature verification for signed multi-arch images is currently not supported.</p></li>
 <li><p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
 Configuring only some GPUs on a node for Confidential Computing is not supported.</p></li>
+<li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
+When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.
+This is expected behavior and does not affect GPU functionality.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">qemu-system-x86_64: warning: IOMMU_IOAS_MAP failed: Bad address, PCI BAR?</span>
+<span class="go">qemu-system-x86_64: vfio_container_dma_map(0x560cb6cb1620, 0xe000000021000, 0x3000, 0x7f32ed55c000) = -14 (Bad address)</span>
+</pre></div>
+</div>
+<p>Refer to the <a class="reference external" href="https://www.qemu.org/docs/master/devel/vfio-iommufd.html">QEMU IOMMUFD documentation</a> for more information.</p>
+</li>
 </ul>
 </section>
 <section id="next-steps">

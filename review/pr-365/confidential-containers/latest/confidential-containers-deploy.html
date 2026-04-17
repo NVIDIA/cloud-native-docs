@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 09, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -395,7 +395,7 @@
                   
   <section id="deploy-confidential-containers">
 <span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers<a class="headerlink" href="#deploy-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p>The page describes deploying Kata Containers and the NVIDIA GPU Operator.
+<p>This page describes deploying Kata Containers and the NVIDIA GPU Operator.
 These are key pieces of the NVIDIA Confidential Container Reference Architecture used to manage GPU resources on your cluster and deploy workloads into Confidential Containers.</p>
 <p>Before you begin, refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
 <section id="overview">
@@ -410,9 +410,8 @@ This installs the Kata Containers runtime binaries, UVM images and kernels, and 
 This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
 The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
 </ol>
-<p>After installation, you can change the <a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">confidential computing mode</span></a> and <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.
-You can also configure Attestation with Trustee and the NVIDIA Remote Attestation Service (NRAS).
-Refer to the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> page for more information on configuring attestation.</p>
+<p>After installation, you can <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.
+You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with Trustee.</p>
 <p>This guide will configure your cluster to deploy Confidential Containers workloads.
 Once configured, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes for secure deployment.</p>
 </section>
@@ -434,6 +433,14 @@ Enabling these features is typically performed by configuring the host BIOS.</p>
 </pre></div>
 </div>
 <p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After configuring IOMMU, you may see QEMU warnings about PCI P2P DMA when running GPU workloads.
+These are expected and can be safely ignored.
+See <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
+</div>
+</div></blockquote>
 </li>
 </ul>
 </li>
@@ -443,7 +450,7 @@ You could set this value to 20 minutes to match the default values for the other
 <p>Refer to the <a class="reference internal" href="#configure-image-pull-timeouts"><span class="std std-ref">Configure Image Pull Timeouts</span></a> section on this page for more details on adjusting the image pull timeout values.</p>
 </li>
 <li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> Kubelet feature gate on your cluster.
-The NVIDIA GPU runtime classes use VFIO cold-plug and requires this feature get to be enabled to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
+The NVIDIA GPU runtime classes use VFIO cold-plug and requires this feature gate to be enabled to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
 Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime">Kata runtime (VFIO cold-plug)</a> section in the upstream NVIDIA GPU passthrough guide for more information.</p>
 <p>This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p>
 <p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.</p>
@@ -493,7 +500,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <ol class="arabic">
 <li><p>Get the latest version of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.29.0&quot;</span>
-<span class="gp">$ </span><span class="nb">export</span> <span class="nv">CHART</span><span class="o">=</span><span class="s2">&quot;oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy&quot;</span>
+<span class="gp">$ </span><span class="nb">export</span> <span class="nv">CHART</span><span class="o">=</span><span class="s2">&quot;oci://quay.io/fidencio/kata-deploy-charts/kata-deploy&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -541,7 +548,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <p>Wait a few minutes for kata-deploy to create the base runtime classes.</p>
 </li>
 <li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code>, and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -786,7 +793,7 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 <td><p>Disable Confidential Containers.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code></p></td>
-<td><p>Enable Confidential Containers with multi-node passthrough on HGX GPUs.</p>
+<td><p>Enable Confidential Containers with multi-GPU passthrough on HGX GPUs.</p>
 <p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
 which claims exclusive use of the NVSwitches for a single Confidential Container
 virtual machine.
@@ -854,7 +861,7 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 <span class="w">   </span><span class="nt">nvidia.com/nvswitch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the nvswitches for a single CVM.
+<p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container virtual machine (CVM).
 When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your relevant node(s) GPU Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode by adding the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=ppcie</span></code> label; see <a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a> for details.
 The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to <code class="docutils literal notranslate"><span class="pre">on</span></code>.</p>
 </section>

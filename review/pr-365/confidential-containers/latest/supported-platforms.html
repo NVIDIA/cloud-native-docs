@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 09, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -398,9 +398,8 @@
 <p>Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.</p>
 <section id="supported-hardware-platform">
 <h2>Supported Hardware Platform<a class="headerlink" href="#supported-hardware-platform" title="Permalink to this headline">#</a></h2>
-</section>
 <section id="nvidia-gpus">
-<h2>NVIDIA GPUs<a class="headerlink" href="#nvidia-gpus" title="Permalink to this headline">#</a></h2>
+<h3>NVIDIA GPUs<a class="headerlink" href="#nvidia-gpus" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
 <col style="width: 50%" />
@@ -418,8 +417,8 @@
 <tr class="row-odd"><td><p>NVIDIA HGX H200</p></td>
 <td><p>Single-GPU</p></td>
 </tr>
-<tr class="row-even"><td><p>NVIDIA H100 PCIe</p></td>
-<td><p>Single-GPU</p></td>
+<tr class="row-even"><td><p>NVIDIA H100 Protected PCIe (PPCIe)</p></td>
+<td><p>Single-GPU, Multi-GPU</p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA HGX B200</p></td>
 <td><p>Single-GPU, Multi-GPU</p></td>
@@ -435,7 +434,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Multi-GPU passthrough on NVIDIA Hopper HGX systems requires <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
+<p>Multi-GPU passthrough on NVIDIA Hopper HGX systems requires taht you set the Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
 Refer to <a class="reference internal" href="confidential-containers-deploy.html#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a> in the deployment guide for details.</p>
 </div>
 <div class="admonition note">
@@ -445,7 +444,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 </div>
 </section>
 <section id="cpu-platforms">
-<h2>CPU Platforms<a class="headerlink" href="#cpu-platforms" title="Permalink to this headline">#</a></h2>
+<h3>CPU Platforms<a class="headerlink" href="#cpu-platforms" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 33%" />
@@ -484,7 +483,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 </ul>
 </section>
 <section id="supported-software-components">
-<h2>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h2>
+<h3>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
@@ -502,36 +501,37 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <tr class="row-odd"><td><p>Guest kernel</p></td>
 <td><p>6.18.5</p></td>
 </tr>
-<tr class="row-even"><td><p>OVMF</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/tianocore/edk2">OVMF</a></p></td>
 <td><p>edk2-stable202511</p></td>
 </tr>
-<tr class="row-odd"><td><p>QEMU</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.qemu.org/">QEMU</a></p></td>
 <td><p>10.1 + Patches</p></td>
 </tr>
-<tr class="row-even"><td><p>Containerd</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/containerd/containerd">Containerd</a></p></td>
 <td><p>2.2.2 +</p></td>
 </tr>
-<tr class="row-odd"><td><p>Kubernetes</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a></p></td>
 <td><p>1.32 +</p></td>
 </tr>
-<tr class="row-even"><td><p>Node Feature Discovery (NFD)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery">Node Feature Discovery (NFD)</a></p></td>
 <td><p>v0.6.0</p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA GPU Operator</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html">NVIDIA GPU Operator</a></p></td>
 <td><p>v26.3.0 and higher</p></td>
 </tr>
-<tr class="row-even"><td><p>Kata Containers</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://katacontainers.io/">Kata Containers</a></p></td>
 <td><p>3.29 (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></td>
 </tr>
-<tr class="row-odd"><td><p>Key Broker Service (KBS) protocol</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Key Broker Service (KBS) protocol</a></p></td>
 <td><p>0.4.0</p></td>
 </tr>
-<tr class="row-even"><td><p>Kata Lifecycle Manager</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-kata-manager">Kata Lifecycle Manager</a></p></td>
 <td><p>0.1.4</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
 </section>
 </section>
 
@@ -584,10 +584,12 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-hardware-platform">Supported Hardware Platform</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpus">NVIDIA GPUs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platforms">CPU Platforms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-hardware-platform">Supported Hardware Platform</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpus">NVIDIA GPUs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platforms">CPU Platforms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
