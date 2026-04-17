@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 14, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -443,14 +443,14 @@ You can specify labels in the node selector field to control which NVIDIA driver
 <ul class="simple">
 <li><p>This feature is recommended for new cluster installations only.
 Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported.
-Switching from ClusterPolicy to NVIDIA driver, will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.</p></li>
-<li><p>Users are required to either use the default NVIDIA driver custom resource rendered by helm chart or create and manage their own custom NVIDIA driver.</p></li>
+Switching from ClusterPolicy to the NVIDIA driver custom resource will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.</p></li>
+<li><p>You must either use the default NVIDIA driver custom resource that the Helm chart creates or create and manage your own custom NVIDIA driver custom resource.</p></li>
 <li><p>You can’t use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.</p></li>
 </ul>
 </section>
 <section id="comparison-managing-the-driver-with-crd-versus-the-cluster-policy">
 <h3>Comparison: Managing the Driver with CRD versus the Cluster Policy<a class="headerlink" href="#comparison-managing-the-driver-with-crd-versus-the-cluster-policy" title="Permalink to this headline">#</a></h3>
-<p>Before the introduction of the NVIDIA GPU Driver custom resource definition, you manage the driver by modifying
+<p>Before the introduction of the NVIDIA GPU Driver custom resource definition, you managed the driver by modifying
 the driver field and subfields of the cluster policy custom resource definition.</p>
 <p>The key differences between the two approaches are summarized in the following table.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
@@ -493,7 +493,7 @@ then the Operator starts two daemon sets.</p>
 </section>
 <section id="about-the-default-nvidia-driver-custom-resource">
 <h3>About the Default NVIDIA Driver Custom Resource<a class="headerlink" href="#about-the-default-nvidia-driver-custom-resource" title="Permalink to this headline">#</a></h3>
-<p>By default, the helm chart configures a default NVIDIA driver custom resource during installation.
+<p>By default, the Helm chart configures a default NVIDIA driver custom resource during installation.
 This custom resource does not include a node selector and as a result, the custom resource applies to every node in your cluster
 that has an NVIDIA GPU.
 The Operator starts a driver daemon set and pods for each operating system version in your cluster.</p>
@@ -503,6 +503,14 @@ By preventing the installation, you can avoid node selector conflicts due to the
 matching all nodes and your custom resources matching some of the same nodes.</p>
 <p>To prevent configuring the default custom resource, specify the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.nvidiaDriverCRD.deployDefaultCR=false</span></code>
 argument when you install the Operator with Helm.</p>
+<p>If the Operator is already installed with the default custom resource and you want to create your own
+driver custom resources and apply them to specific nodes, delete the default custom resource.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After you delete the default custom resource, your custom resources might not reconcile
+automatically due to a known issue. Refer to the <a class="reference internal" href="release-notes.html#v26-3-0-known-issues"><span class="std std-ref">v26.3.0 known issues</span></a>
+for the workaround.</p>
+</div>
 </section>
 <section id="feature-compatibility">
 <h3>Feature Compatibility<a class="headerlink" href="#feature-compatibility" title="Permalink to this headline">#</a></h3>
@@ -525,7 +533,7 @@ The <a class="reference internal" href="precompiled-drivers.html#precomp-limitat
 Refer to the <a class="reference external" href="https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags">NVIDIA GPU Driver tags</a>
 web page to determine which driver version and operating system combinations support both architectures.</p>
 </dd>
-<dt>Custom Driver Parameters</dt><dd><p>Each NVIDIA driver custom resource can specify custom kernel module parameters via configmap.
+<dt>Custom Driver Parameters</dt><dd><p>Each NVIDIA driver custom resource can specify custom kernel module parameters by using a ConfigMap.
 For more information, refer to <a class="reference internal" href="custom-driver-params.html"><span class="doc">Customizing NVIDIA GPU Driver Parameters during Installation</span></a>.</p>
 </dd>
 </dl>
@@ -774,7 +782,7 @@ Refer to the sample manifests.</p></li>
 </pre></div>
 </div>
 </li>
-<li><p>Apply the manfiest:</p>
+<li><p>Apply the manifest:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-all.yaml
 </pre></div>
 </div>
@@ -838,7 +846,7 @@ Refer to the sample manifests.</p></li>
 </pre></div>
 </div>
 </li>
-<li><p>Apply the manfiest:</p>
+<li><p>Apply the manifest:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-driver-multiple.yaml
 </pre></div>
 </div>
@@ -875,11 +883,11 @@ Refer to the sample manifests.</p></li>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Because the manfiest does not include a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> field, the driver custom
+<p>Because the manifest does not include a <code class="docutils literal notranslate"><span class="pre">nodeSelector</span></code> field, the driver custom
 resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 </div>
 </li>
-<li><p>Apply the manfiest:</p>
+<li><p>Apply the manifest:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-precompiled-all.yaml
 </pre></div>
 </div>
@@ -922,7 +930,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Apply the manfiest:</p>
+<li><p>Apply the manifest:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -n gpu-operator -f nvd-precompiled-some.yaml
 </pre></div>
 </div>
