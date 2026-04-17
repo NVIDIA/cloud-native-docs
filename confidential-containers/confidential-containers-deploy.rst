@@ -457,7 +457,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
 Managing the Confidential Computing Mode
 =========================================
 
-You can set the default confidential computing mode of the NVIDIA GPUs by setting the ``ccManager.defaultMode=<on|off|ppcie|devtools>`` option.
+You can set the default confidential computing mode of the NVIDIA GPUs by setting the ``ccManager.defaultMode=<on|off|devtools>`` option.
 The default value of ccManager.defaultMode is ``on``.
 You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.
 
@@ -474,15 +474,18 @@ When you change the mode, the manager performs the following actions:
 The supported modes are:
 
 .. list-table::
-   :widths: 15 85
+   :widths: 15 55 30
    :header-rows: 1
 
    * - Mode
      - Description
+     - Configuration Method
    * - ``on``
      - Enable Confidential Containers.
+     - cluster-wide default, node-level override
    * - ``off``
      - Disable Confidential Containers.
+     - cluster-wide default, node-level override
    * - ``ppcie``
      - Enable Confidential Containers with multi-GPU passthrough on HGX GPUs.
 
@@ -495,8 +498,10 @@ The supported modes are:
        The NVIDIA Blackwell architecture uses NVLink
        encryption which places the switches outside of the Trusted Computing Base (TCB),
        meaning the ``ppcie`` mode is not required. Use ``on`` mode in this case.
+     - node-level override
    * - ``devtools``
      - Development mode for software development and debugging.
+     - cluster-wide default, node-level override
 
 You can set a cluster-wide default mode and you can set the mode on individual nodes.
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
@@ -510,6 +515,10 @@ To set a cluster-wide mode, specify the ccManager.defaultMode field like the fol
          --type=merge \
          -p '{"spec": {"ccManager": {"defaultMode": "on"}}}'
 
+.. note::
+
+   The ``ppcie`` mode cannot be set as a cluster-wide default, it can only be set as a node label value.
+
 Setting a Node-Level Mode
 --------------------------
 
@@ -522,10 +531,13 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 Verifying a Mode Change
 ------------------------
 
-To verify that changing the mode was successful, a cluster-wide or node-level change, view the nvidia.com/cc.mode and nvidia.com/cc.mode.state node labels::
+To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
+``nvidia.com/cc.mode.state``, and ``nvidia.com/cc.ready.state`` node labels:
+
+.. code-block:: console
 
    $ kubectl get node <node-name> -o json | \
-       jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc.mode")))'
+       jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
 
 Example output when CC mode is disabled:
 
@@ -533,7 +545,8 @@ Example output when CC mode is disabled:
 
    {
      "nvidia.com/cc.mode": "off",
-     "nvidia.com/cc.mode.state": "on"
+     "nvidia.com/cc.mode.state": "off",
+     "nvidia.com/cc.ready.state": "false"
    }
 
 Example output when CC mode is enabled:
@@ -542,14 +555,28 @@ Example output when CC mode is enabled:
 
    {
      "nvidia.com/cc.mode": "on",
-     "nvidia.com/cc.mode.state": "on"
+     "nvidia.com/cc.mode.state": "on",
+     "nvidia.com/cc.ready.state": "true"
    }
 
-The "nvidia.com/cc.mode.state" variable is either "off" or "on", with "off" meaning that mode state transition is still ongoing and "on" meaning mode state transition completed.
+The ``nvidia.com/cc.mode`` label is the desired state.
+The ``nvidia.com/cc.mode.state`` label reflects the mode that was last successfully applied
+to the GPU hardware by the Confidential Computing Manager. 
+Its value mirrors the applied mode ``on``, ``off``,
+``devtools``, or ``ppcie``, once the trasition is complete on the node.
+A value of ``failed`` indicates that the last mode transition encountered an error.
+
+The ``nvidia.com/cc.ready.state`` label indicates whether the node is ready to run
+Confidential Container workloads. It is set to ``true`` when ``cc.mode.state`` is ``on``
+or ``ppcie``, and ``false`` when cc.mode.state is ``off``.
+It is empty when "devtools" mode is applied.
+
+A mode change is complete and successful when ``nvidia.com/cc.mode`` and
+``nvidia.com/cc.mode.state`` have the same value.
 
 
-Configuring a Multi-GPU Passthrough Support
-===========================================
+Configuring Multi-GPU Passthrough Support
+=========================================
 
 To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:
 
@@ -559,9 +586,15 @@ To configure multi-GPU passthrough, you can specify the following resource limit
       nvidia.com/pgpu: "8"
       nvidia.com/nvswitch: "4"
 
+
+You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.
+
 On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container virtual machine (CVM). 
-When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your relevant node(s) GPU Confidential Computing mode to ``ppcie`` mode by adding the ``nvidia.com/cc.mode=ppcie`` label; see :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` for details. 
+When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your relevant node's GPU Confidential Computing mode to ``ppcie`` mode by adding the ``nvidia.com/cc.mode=ppcie`` label.
+Refer to the :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` section for details. 
+
 The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to ``on``.
+
 
 .. _configure-image-pull-timeouts:
 

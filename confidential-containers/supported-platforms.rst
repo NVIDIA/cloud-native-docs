@@ -123,7 +123,7 @@ Supported Software Components
      - 3.29 (installed with ``kata-deploy`` Helm chart)
    * - `Key Broker Service (KBS) protocol <https://confidentialcontainers.org/docs/attestation/>`__
      - 0.4.0
-   * - `Kata Lifecycle Manager <https://github.com/NVIDIA/k8s-kata-manager>`__
+   * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.4
 
 
