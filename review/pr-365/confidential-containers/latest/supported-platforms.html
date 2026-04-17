@@ -434,7 +434,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Multi-GPU passthrough on NVIDIA Hopper HGX systems requires taht you set the Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
+<p>Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
 Refer to <a class="reference internal" href="confidential-containers-deploy.html#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a> in the deployment guide for details.</p>
 </div>
 <div class="admonition note">
@@ -513,19 +513,18 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <tr class="row-odd"><td><p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a></p></td>
 <td><p>1.32 +</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery">Node Feature Discovery (NFD)</a></p></td>
-<td><p>v0.6.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html">NVIDIA GPU Operator</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html">NVIDIA GPU Operator</a> and its components.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html#operator-component-matrix" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">GPU Operator Component Matrix</span></a> for the list of components and versions included in each release.</p>
+</td>
 <td><p>v26.3.0 and higher</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://katacontainers.io/">Kata Containers</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://katacontainers.io/">Kata Containers</a></p></td>
 <td><p>3.29 (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Key Broker Service (KBS) protocol</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Key Broker Service (KBS) protocol</a></p></td>
 <td><p>0.4.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a></p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a></p></td>
 <td><p>0.1.4</p></td>
 </tr>
 </tbody>

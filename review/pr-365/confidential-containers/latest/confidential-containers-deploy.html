@@ -453,11 +453,15 @@ You could set this value to 20 minutes to match the default values for the other
 The NVIDIA GPU runtime classes use VFIO cold-plug and requires this feature gate to be enabled to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
 Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime">Kata runtime (VFIO cold-plug)</a> section in the upstream NVIDIA GPU passthrough guide for more information.</p>
 <p>This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p>
-<p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
+The following example shows the feature gate in context with other common kubelet configuration fields:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">KubeletPodResourcesGet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 </pre></div>
 </div>
+<p>If your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> already has a <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> section, add <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet:</span> <span class="pre">true</span></code> to the existing section rather than creating a duplicate.</p>
 <p>Restart the Kubelet service to apply the changes.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
@@ -526,7 +530,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <p>Node Feature Discovery (NFD) is deployed by both kata-deploy and the GPU Operator. Pass <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nfd.enabled=false</span></code> to disable NFD in the kata-deploy command above, so it will be deployed and managed by the GPU Operator in the next step.</p>
 </div>
 </li>
-<li><p>Optional: Verify that the kata-deploy pod is running:</p>
+<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
 </pre></div>
 </div>
@@ -536,18 +540,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </pre></div>
 </div>
 </li>
-<li><p>Optional: View the pod in the kata-system namespace and ensure it is running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod,svc -n kata-system
-</pre></div>
-</div>
-<p><em>Example Output</em>:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                    READY   STATUS    RESTARTS   AGE</span>
-<span class="go">pod/kata-deploy-4f658   1/1     Running   0          21s</span>
-</pre></div>
-</div>
-<p>Wait a few minutes for kata-deploy to create the base runtime classes.</p>
-</li>
-<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code>, and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
+<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code>, and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
 </pre></div>
 </div>
@@ -601,7 +594,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 </pre></div>
 </div>
 </li>
-<li><p>Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
+<li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
@@ -762,7 +755,7 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 </section>
 <section id="managing-the-confidential-computing-mode">
 <span id="managing-confidential-computing-mode"></span><h2>Managing the Confidential Computing Mode<a class="headerlink" href="#managing-the-confidential-computing-mode" title="Permalink to this headline">#</a></h2>
-<p>You can set the default confidential computing mode of the NVIDIA GPUs by setting the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off|devtools&gt;</span></code> option.
+<p>You can set the default confidential computing mode of the NVIDIA GPUs by setting the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off&gt;</span></code> option.
 The default value of ccManager.defaultMode is <code class="docutils literal notranslate"><span class="pre">on</span></code>.
 You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.</p>
 <p>When you change the mode, the manager performs the following actions:</p>
@@ -789,15 +782,15 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on</span></code></p></td>
-<td><p>Enable Confidential Containers.</p></td>
+<td><p>Enable Confidential Computing.</p></td>
 <td><p>cluster-wide default, node-level override</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">off</span></code></p></td>
-<td><p>Disable Confidential Containers.</p></td>
+<td><p>Disable Confidential Computing.</p></td>
 <td><p>cluster-wide default, node-level override</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code></p></td>
-<td><p>Enable Confidential Containers with multi-GPU passthrough on HGX GPUs.</p>
+<td><p>Enable Confidential Computing on NVIDIA HGX GPUs.</p>
 <p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
 which claims exclusive use of the NVSwitches for a single Confidential Container
 virtual machine.
@@ -808,10 +801,6 @@ encryption which places the switches outside of the Trusted Computing Base (TCB)
 meaning the <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode is not required. Use <code class="docutils literal notranslate"><span class="pre">on</span></code> mode in this case.</p>
 </td>
 <td><p>node-level override</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devtools</span></code></p></td>
-<td><p>Development mode for software development and debugging.</p></td>
-<td><p>cluster-wide default, node-level override</p></td>
 </tr>
 </tbody>
 </table>
@@ -826,6 +815,10 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
       -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;ccManager&quot;: {&quot;defaultMode&quot;: &quot;on&quot;}}}&#39;</span>
 </pre></div>
 </div>
+<p>Example output:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">clusterpolicy.nvidia.com/cluster-policy patched</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode cannot be set as a cluster-wide default, it can only be set as a node label value.</p>
@@ -833,7 +826,7 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 </section>
 <section id="setting-a-node-level-mode">
 <h3>Setting a Node-Level Mode<a class="headerlink" href="#setting-a-node-level-mode" title="Permalink to this headline">#</a></h3>
-<p>To set a node-level mode, apply the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=&lt;on|off|ppcie|devtools&gt;</span></code> label like the following example:</p>
+<p>To set a node-level mode, apply the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=&lt;on|off|ppcie&gt;</span></code> label like the following example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/cc.mode<span class="o">=</span>on --overwrite
 </pre></div>
 </div>
@@ -867,12 +860,11 @@ The mode that you set on a node has higher precedence than the cluster-wide defa
 The <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label reflects the mode that was last successfully applied
 to the GPU hardware by the Confidential Computing Manager.
 Its value mirrors the applied mode <code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>,
-<code class="docutils literal notranslate"><span class="pre">devtools</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>, once the trasition is complete on the node.
+or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>, once the transition is complete on the node.
 A value of <code class="docutils literal notranslate"><span class="pre">failed</span></code> indicates that the last mode transition encountered an error.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state</span></code> label indicates whether the node is ready to run
 Confidential Container workloads. It is set to <code class="docutils literal notranslate"><span class="pre">true</span></code> when <code class="docutils literal notranslate"><span class="pre">cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code>
-or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>, and <code class="docutils literal notranslate"><span class="pre">false</span></code> when cc.mode.state is <code class="docutils literal notranslate"><span class="pre">off</span></code>.
-It is empty when “devtools” mode is applied.</p>
+or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>, and <code class="docutils literal notranslate"><span class="pre">false</span></code> when cc.mode.state is <code class="docutils literal notranslate"><span class="pre">off</span></code>.</p>
 <p>A mode change is complete and successful when <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code> and
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> have the same value.</p>
 </section>
@@ -886,7 +878,7 @@ It is empty when “devtools” mode is applied.</p>
 </pre></div>
 </div>
 <p>You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.</p>
-<p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container virtual machine (CVM).
+<p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container.
 When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your relevant node’s GPU Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode by adding the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=ppcie</span></code> label.
 Refer to the <a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a> section for details.</p>
 <p>The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to <code class="docutils literal notranslate"><span class="pre">on</span></code>.</p>
