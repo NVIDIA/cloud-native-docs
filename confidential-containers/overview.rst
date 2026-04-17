@@ -48,7 +48,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 Use Cases
 =========
 
-The target for Confidential Containers is to enable model providers (Closed and Open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
+The target for Confidential Containers is to enable model providers (closed and open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
 
 * **Zero-Trust AI & IP Protection:** You can deploy proprietary models (like LLMs) on third-party or private infrastructure. The model weights remain encrypted and are only decrypted inside the hardware-protected enclave, ensuring absolute IP protection from the host.
 * **Data Clean Rooms:** This allows you to process sensitive enterprise data (like financial analytics or healthcare records) securely. Neither the infrastructure provider nor the model builder can see the raw data.
@@ -69,7 +69,7 @@ Integrating open source and NVIDIA software components with the Confidential Com
 
 The key values of this architecture approach are:
 
-1. **Built on OSS standards** - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.
+1. **Built on Open Source Software (OSS) standards** - The Reference Architecture for Confidential Containers is built on key OSS components such as Kata, Trustee, QEMU, OVMF, and Node Feature Discovery (NFD), along with hardened NVIDIA components like NVIDIA GPU Operator.
 2. **Highest level of isolation** - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).
 3. **Zero-trust execution with attestation** - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.
 
@@ -191,7 +191,8 @@ The following features are supported with Confidential Containers:
 
 .. note::
 
-    For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
+    For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing.
+    For multi-GPU passthrough, all GPUs must be assigned to one Confidential Container virtual machine.
     Configuring only some GPUs on a node for Confidential Computing is not supported.
 
 
@@ -205,6 +206,8 @@ The following features are supported with Confidential Containers:
 
 More information on these features can be found in the `Confidential Containers documentation <https://confidentialcontainers.org/docs/features/>`_.
 
+.. _coco-limitations:
+
 Limitations and Restrictions
 ============================
 
@@ -212,6 +215,16 @@ Limitations and Restrictions
 * Image signature verification for signed multi-arch images is currently not supported.
 * For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
   Configuring only some GPUs on a node for Confidential Computing is not supported.
+* PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
+  When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.
+  This is expected behavior and does not affect GPU functionality.
+
+  .. code-block:: output
+
+     qemu-system-x86_64: warning: IOMMU_IOAS_MAP failed: Bad address, PCI BAR?
+     qemu-system-x86_64: vfio_container_dma_map(0x560cb6cb1620, 0xe000000021000, 0x3000, 0x7f32ed55c000) = -14 (Bad address)
+
+  Refer to the `QEMU IOMMUFD documentation <https://www.qemu.org/docs/master/devel/vfio-iommufd.html>`_ for more information.
 
 Next Steps
 ==========

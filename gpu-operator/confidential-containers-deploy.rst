@@ -1,4 +1,4 @@
-.. _confidential-containers-deploy:
+.. _gpu-operator-confidential-containers-deploy:
 
 ***********************
 Confidential Containers

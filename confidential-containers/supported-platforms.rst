@@ -18,13 +18,14 @@
 
 .. _coco-supported-platforms:
 
+*******************
 Supported Platforms
-====================
+*******************
 
 Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.
 
 Supported Hardware Platform
----------------------------
+===========================
 
 NVIDIA GPUs
 -----------
@@ -42,8 +43,8 @@ NVIDIA GPUs
    * - NVIDIA HGX H200
      - Single-GPU
 
-   * - NVIDIA H100 PCIe
-     - Single-GPU
+   * - NVIDIA H100 Protected PCIe (PPCIe)
+     - Single-GPU, Multi-GPU
 
    * - NVIDIA HGX B200
      - Single-GPU, Multi-GPU
@@ -56,7 +57,7 @@ NVIDIA GPUs
 
 .. note::
 
-    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires ``ppcie`` mode.
+    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires taht you set the Confidential Computing mode to ``ppcie`` mode.
     Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` in the deployment guide for details.
 
 .. note::
@@ -106,23 +107,23 @@ Supported Software Components
      - Distroless
    * - Guest kernel
      - 6.18.5
-   * - OVMF
+   * - `OVMF <https://github.com/tianocore/edk2>`__
      - edk2-stable202511
-   * - QEMU
+   * - `QEMU <https://www.qemu.org/>`__
      - 10.1 \+ Patches
-   * - Containerd
+   * - `Containerd <https://github.com/containerd/containerd>`__
      - 2.2.2 \+
-   * - Kubernetes
+   * - `Kubernetes <https://kubernetes.io/>`__
      - 1.32 \+
-   * - Node Feature Discovery (NFD)
+   * - `Node Feature Discovery (NFD) <https://github.com/kubernetes-sigs/node-feature-discovery>`__
      - v0.6.0
-   * - NVIDIA GPU Operator
+   * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__
      - v26.3.0 and higher
-   * - Kata Containers
+   * - `Kata Containers <https://katacontainers.io/>`__
      - 3.29 (installed with ``kata-deploy`` Helm chart)
-   * - Key Broker Service (KBS) protocol
+   * - `Key Broker Service (KBS) protocol <https://confidentialcontainers.org/docs/attestation/>`__
      - 0.4.0
-   * - Kata Lifecycle Manager
+   * - `Kata Lifecycle Manager <https://github.com/NVIDIA/k8s-kata-manager>`__
      - 0.1.4
 
 

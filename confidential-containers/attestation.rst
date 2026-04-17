@@ -59,7 +59,7 @@ Next Steps
 * Configure policies to use attestation features.
 
   `Kata Agent <https://github.com/kata-containers/kata-containers/blob/main/src/agent/README.md>`_ (deployed with ``kata-deploy``) runs inside the guest virtual machine to manage the container lifecycle. 
-  It enforces a strict, immutable security policy based on Rego (regorus) that prevents the untrusted host from executing unauthorized commands, such as a malicious kubectl exec. 
+  It enforces a strict, immutable security policy based on Rego (regorus) that prevents the untrusted host from executing unauthorized commands, such as a malicious ``kubectl exec`` command. 
   Attestation-dependent features require that these policies permit the relevant operations.
 
   Refer to the `Kata Containers Agent Policy documentation <https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md>`_ for more on using policies. You can use the `genpolicy tool <https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md>`_ (installed with ``kata-deploy``) to autogenerate policies, or write your own manually.
