@@ -57,7 +57,7 @@ NVIDIA GPUs
 
 .. note::
 
-    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires taht you set the Confidential Computing mode to ``ppcie`` mode.
+    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
     Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` in the deployment guide for details.
 
 .. note::
@@ -115,9 +115,9 @@ Supported Software Components
      - 2.2.2 \+
    * - `Kubernetes <https://kubernetes.io/>`__
      - 1.32 \+
-   * - `Node Feature Discovery (NFD) <https://github.com/kubernetes-sigs/node-feature-discovery>`__
-     - v0.6.0
-   * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__
+   * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
+       
+       Refer to the :ref:`GPU Operator Component Matrix <operator-component-matrix>` for the list of components and versions included in each release.
      - v26.3.0 and higher
    * - `Kata Containers <https://katacontainers.io/>`__
      - 3.29 (installed with ``kata-deploy`` Helm chart)

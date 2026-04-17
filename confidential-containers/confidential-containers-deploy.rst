@@ -92,12 +92,16 @@ Prerequisites
   This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.
 
   Enable the ``KubeletPodResourcesGet`` feature gate by adding it to the ``/var/lib/kubelet/config.yaml`` file.
-  
+  The following example shows the feature gate in context with other common kubelet configuration fields:
+
   .. code-block:: yaml
 
+     apiVersion: kubelet.config.k8s.io/v1beta1
+     kind: KubeletConfiguration
      featureGates:
        KubeletPodResourcesGet: true
 
+  If your ``config.yaml`` already has a ``featureGates`` section, add ``KubeletPodResourcesGet: true`` to the existing section rather than creating a duplicate.
 
   Restart the Kubelet service to apply the changes.
 
@@ -186,7 +190,7 @@ The minimum required version is 3.29.0.
       Node Feature Discovery (NFD) is deployed by both kata-deploy and the GPU Operator. Pass ``--set nfd.enabled=false`` to disable NFD in the kata-deploy command above, so it will be deployed and managed by the GPU Operator in the next step.
 
 
-#. Optional: Verify that the kata-deploy pod is running:
+#. Optional: Verify that the ``kata-deploy`` pod is running:
 
    .. code-block:: console
 
@@ -199,22 +203,7 @@ The minimum required version is 3.29.0.
       NAME                    READY   STATUS    RESTARTS      AGE
       kata-deploy-b2lzs       1/1     Running   0             6m37s
 
-#. Optional: View the pod in the kata-system namespace and ensure it is running:
-
-   .. code-block:: console
-
-      $ kubectl get pod,svc -n kata-system
-
-   *Example Output*:
-
-   .. code-block:: output
-
-      NAME                    READY   STATUS    RESTARTS   AGE
-      pod/kata-deploy-4f658   1/1     Running   0          21s
-
-   Wait a few minutes for kata-deploy to create the base runtime classes.
-
-#. Verify that the ``kata-qemu-nvidia-gpu``, ``kata-qemu-nvidia-gpu-snp``, and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
+#. Optional: Verify that the ``kata-qemu-nvidia-gpu``, ``kata-qemu-nvidia-gpu-snp``, and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
 
    .. code-block:: console
 
@@ -279,7 +268,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
       REVISION: 1
       TEST SUITE: None
 
-#. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:
+#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:
 
    .. code-block:: console
 
@@ -302,7 +291,9 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
 #. Optional: If you have host access to the worker node, you can perform the following validation step:
 
-   a. Confirm that the host uses the vfio-pci device driver for GPUs::
+   a. Confirm that the host uses the vfio-pci device driver for GPUs:
+
+      .. code-block:: console
 
          $ lspci -nnk -d 10de:
 
@@ -457,7 +448,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
 Managing the Confidential Computing Mode
 =========================================
 
-You can set the default confidential computing mode of the NVIDIA GPUs by setting the ``ccManager.defaultMode=<on|off|devtools>`` option.
+You can set the default confidential computing mode of the NVIDIA GPUs by setting the ``ccManager.defaultMode=<on|off>`` option.
 The default value of ccManager.defaultMode is ``on``.
 You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.
 
@@ -481,13 +472,13 @@ The supported modes are:
      - Description
      - Configuration Method
    * - ``on``
-     - Enable Confidential Containers.
+     - Enable Confidential Computing.
      - cluster-wide default, node-level override
    * - ``off``
-     - Disable Confidential Containers.
+     - Disable Confidential Computing.
      - cluster-wide default, node-level override
    * - ``ppcie``
-     - Enable Confidential Containers with multi-GPU passthrough on HGX GPUs.
+     - Enable Confidential Computing on NVIDIA HGX GPUs.
 
        On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
        which claims exclusive use of the NVSwitches for a single Confidential Container
@@ -499,21 +490,26 @@ The supported modes are:
        encryption which places the switches outside of the Trusted Computing Base (TCB),
        meaning the ``ppcie`` mode is not required. Use ``on`` mode in this case.
      - node-level override
-   * - ``devtools``
-     - Development mode for software development and debugging.
-     - cluster-wide default, node-level override
-
+     
 You can set a cluster-wide default mode and you can set the mode on individual nodes.
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
 Setting a Cluster-Wide Default Mode
 ------------------------------------
 
-To set a cluster-wide mode, specify the ccManager.defaultMode field like the following example::
+To set a cluster-wide mode, specify the ccManager.defaultMode field like the following example:
+
+.. code-block:: console
 
    $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
          --type=merge \
          -p '{"spec": {"ccManager": {"defaultMode": "on"}}}'
+
+Example output:
+
+.. code-block:: output
+
+   clusterpolicy.nvidia.com/cluster-policy patched
 
 .. note::
 
@@ -522,7 +518,9 @@ To set a cluster-wide mode, specify the ccManager.defaultMode field like the fol
 Setting a Node-Level Mode
 --------------------------
 
-To set a node-level mode, apply the ``nvidia.com/cc.mode=<on|off|ppcie|devtools>`` label like the following example::
+To set a node-level mode, apply the ``nvidia.com/cc.mode=<on|off|ppcie>`` label like the following example:
+
+.. code-block:: console
 
    $ kubectl label node <node-name> nvidia.com/cc.mode=on --overwrite
 
@@ -563,13 +561,12 @@ The ``nvidia.com/cc.mode`` label is the desired state.
 The ``nvidia.com/cc.mode.state`` label reflects the mode that was last successfully applied
 to the GPU hardware by the Confidential Computing Manager. 
 Its value mirrors the applied mode ``on``, ``off``,
-``devtools``, or ``ppcie``, once the trasition is complete on the node.
+or ``ppcie``, once the transition is complete on the node.
 A value of ``failed`` indicates that the last mode transition encountered an error.
 
 The ``nvidia.com/cc.ready.state`` label indicates whether the node is ready to run
 Confidential Container workloads. It is set to ``true`` when ``cc.mode.state`` is ``on``
 or ``ppcie``, and ``false`` when cc.mode.state is ``off``.
-It is empty when "devtools" mode is applied.
 
 A mode change is complete and successful when ``nvidia.com/cc.mode`` and
 ``nvidia.com/cc.mode.state`` have the same value.
@@ -589,7 +586,7 @@ To configure multi-GPU passthrough, you can specify the following resource limit
 
 You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.
 
-On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container virtual machine (CVM). 
+On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single Confidential Container. 
 When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your relevant node's GPU Confidential Computing mode to ``ppcie`` mode by adding the ``nvidia.com/cc.mode=ppcie`` label.
 Refer to the :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` section for details. 
 
