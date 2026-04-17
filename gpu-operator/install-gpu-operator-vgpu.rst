@@ -65,7 +65,7 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following:
       For vGPU 18.0 and later, ensure that you use DLS 3.4 or later.
 
 * You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.
-* Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.
+* Git and Docker are required to build the vGPU driver image from source repository and push to the private registry.
 * Each Kubernetes worker node in the cluster has access to the private registry.
   Private registry access is usually managed through image pull secrets.
   You specify the secrets to the NVIDIA GPU Operator when you install the Operator with Helm.
@@ -153,7 +153,12 @@ Perform the following steps to build and push a container image that includes th
      If you disable the version check by specifying ``--build-arg DISABLE_VGPU_VERSION_CHECK=true`` when you build the driver image,
      then the ``VGPU_DRIVER_VERSION`` value is used as default.
 
-#. Build the driver container image:
+#. Build the driver container image.
+
+   .. note::
+
+      Docker is the only supported container tool for building the driver container image.
+      Multi-architecture builds additionally require `buildx <https://github.com/docker/buildx>`_.
 
    .. code-block:: console
 
