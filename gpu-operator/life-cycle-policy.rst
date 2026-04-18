@@ -80,7 +80,7 @@ When post-release testing confirms support for newer versions of operands, these
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
 .. note::
-  All the following components are supported as :ref:`government-ready <install-gpu-operator-gov-ready>` in the NVIDIA GPU Operator v26.3.0, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
+  All the following components are supported as :ref:`government-ready <install-gpu-operator-gov-ready>` in the NVIDIA GPU Operator v26.3, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
 
 **D** = Default driver, **R** = Recommended driver
 
@@ -88,11 +88,17 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    :header-rows: 2
 
    * - :rspan:`1` Component
-     - GPU Operator Version
+     - :cspan:`1` GPU Operator Version
 
    * - v26.3.0
+     - v26.3.1
 
    * - NVIDIA GPU Driver |ki|_
+     - | `595.58.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html>`_
+       | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
+       | `580.126.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html>`_ (**D**, **R**)
+       | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
+       | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
      - | `595.58.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html>`_
        | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
        | `580.126.20 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html>`_ (**D**, **R**)
@@ -126,6 +132,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - Validator for NVIDIA GPU Operator
      - v26.3.0
+     - v26.3.1
 
    * - NVIDIA KubeVirt GPU Device Plugin
      - `v1.5.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
@@ -139,12 +146,15 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
      - `v0.3.0 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
+     - `v0.4.0 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
 
    * - NVIDIA GDRCopy Driver
      - `v2.5.1 <https://github.com/NVIDIA/gdrcopy/releases>`__
+     - `v2.5.2 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
    * - NVIDIA Kata Sandbox Device Plugin
      - `v0.0.2 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
+     - `v0.0.3 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
 
 .. _known-issue:
 

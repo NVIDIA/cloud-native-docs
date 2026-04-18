@@ -33,6 +33,44 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.1:
+
+26.3.1
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA GDRCopy Driver v2.5.2
+  - NVIDIA Kata Sandbox Device Plugin v0.0.3
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.4.0
+
+* The ClusterPolicy and NVIDIADriver custom resources now support ``hostNetwork`` for all GPU Operator operands.
+  Previously, only DCGM Exporter supported the ``hostNetwork`` field.
+  Setting ``hostNetwork: true`` for a component causes its pods to share the host's network namespace,
+  binding directly to the host's network interfaces and IP address rather than using the cluster's virtual network.
+  This is useful in environments where GPU Operator component pods need to expose ports directly on the host network,
+  such as when a Prometheus instance scrapes metrics from the host network namespace,
+  or in bare-metal and HPC environments where cluster network overhead or non-standard network configuration
+  makes host networking preferable. (`PR #2246 <https://github.com/NVIDIA/gpu-operator/pull/2246>`_)
+
+* Added support for mounting ``/lib/modules`` from the host when using precompiled drivers.
+  This is required for precompiled driver containers on SUSE Linux Enterprise Server (SLES) 15 SP7 and SLES 16,
+  which use host kernel modules without requiring the full kernel to be bundled in the driver container. (`PR #2252 <https://github.com/NVIDIA/gpu-operator/pull/2252>`_)
+
+
+Fixed Issues
+------------
+
+* Fixed an issue in the OLM bundle where the NVIDIA KubeVirt GPU Device Plugin referenced an amd64-only image digest instead of a multi-arch digest.
+  On ARM servers, this caused pods to fail with an ``Exec format error``. (`PR #2265 <https://github.com/NVIDIA/gpu-operator/pull/2265>`_)
+
+* Fixed an issue where the operating system release name was recalculated from the node label tag rather than being stored when it was first retrieved.
+  This could cause errors when the tag format was not recognized. (`PR #2244 <https://github.com/NVIDIA/gpu-operator/pull/2244>`_)
+
+
 .. _v26.3.0:
 
 26.3.0
