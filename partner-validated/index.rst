@@ -29,7 +29,7 @@ About Partner-Validated Configurations
    self
    k0rdent.rst
    mirantis-mke.rst
-   suse-nvidia-driver.rst
+   suse-rke2.rst
 
 Partner-validated configurations help end users who want to use
 NVIDIA GPUs with a Kubernetes-based software stack that is not supported by NVIDIA.
