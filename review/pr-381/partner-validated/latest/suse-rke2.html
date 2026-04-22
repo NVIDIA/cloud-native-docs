@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>NVIDIA GPU Operator with SUSE Linux Enterprise Server NVIDIA Driver &#8212; Partner Validated Configurations with NVIDIA GPU Operator</title>
+    <title>SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator &#8212; Partner Validated Configurations with NVIDIA GPU Operator</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'suse-nvidia-driver';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'suse-rke2';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -340,7 +340,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">About Partner-Validated Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="k0rdent.html">Mirantis k0rdent with the NVIDIA GPU Operator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mirantis-mke.html">Mirantis Kubernetes Engine with the NVIDIA GPU Operator</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">NVIDIA GPU Operator with SUSE Linux Enterprise Server NVIDIA Driver</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -377,7 +377,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">Partner Validated Configurations with NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">NVIDIA GPU Operator with SUSE Linux Enterprise Server NVIDIA Driver</li>
+    <li class="breadcrumb-item active" aria-current="page">SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</li>
   </ul>
 </nav></div>
       
@@ -393,11 +393,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="nvidia-gpu-operator-with-prod-name-long">
-<h1>NVIDIA GPU Operator with SUSE Linux Enterprise Server NVIDIA Driver<a class="headerlink" href="#nvidia-gpu-operator-with-prod-name-long" title="Permalink to this headline">#</a></h1>
+  <section id="prod-name-long-with-the-nvidia-gpu-operator">
+<h1>SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator<a class="headerlink" href="#prod-name-long-with-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
 <section id="validated-configuration-matrix">
 <h2>Validated Configuration Matrix<a class="headerlink" href="#validated-configuration-matrix" title="Permalink to this headline">#</a></h2>
-<p>SLES NVIDIA Driver  has self-validated with the following components and versions:</p>
+<p>SUSE, which provides its own driver container for SUSE Linux Enterprise Server (SLES), has self-validated using the following components and versions:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 17%" />
@@ -430,34 +430,27 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>RKE2</p></td>
-<td><div class="line-block">
-<div class="line">25.10</div>
-<div class="line">26.3</div>
-</div>
-</td>
+<td><p>v26.3.1</p></td>
 <td><div class="line-block">
 <div class="line">SLES 15</div>
 <div class="line">SLES 16</div>
 </div>
 </td>
-<td><p>Containerd</p></td>
+<td><p>containerd</p></td>
 <td><p>1.34</p></td>
 <td><div class="line-block">
 <div class="line">NVIDIA H200 NVL</div>
-<div class="line">L40S</div>
+<div class="line">NVIDIA L40S</div>
 </div>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>Refer to the SUSE Registry for more information on these precompiled driver containers:</p>
 <ul class="simple">
-<li><p>Refer to the SUSE Registry for more information on these precomplied drivers:</p>
-<ul>
 <li><p><a class="reference external" href="https://registry.suse.com/repositories/third-party-nvidia-driver-sles15">SUSE Linux Enterprise Server 15 NVIDIA Driver</a></p></li>
 <li><p><a class="reference external" href="https://registry.suse.com/repositories/third-party-nvidia-driver-sles16">SUSE Linux Enterprise Server 16 NVIDIA Driver</a></p></li>
-</ul>
-</li>
 </ul>
 </section>
 </section>
