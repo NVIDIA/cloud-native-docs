@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.17.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 17, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -105,7 +105,9 @@
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -436,7 +438,7 @@
 <span id="operator-install-guide"></span><span id="install-gpu-operator"></span><h1>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
 <div class="admonition-version admonition">
 <p class="admonition-title">Version</p>
-<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v26.3.0</span></code>.</p>
+<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v26.3.1</span></code>.</p>
 </div>
 <div class="tip admonition">
 <p class="admonition-title">Red Hat OpenShift Container Platform Install</p>
@@ -498,7 +500,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.0
+    --version<span class="o">=</span>v26.3.1
 </pre></div>
 </div>
 </li>
@@ -506,7 +508,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
     --set &lt;option-name&gt;<span class="o">=</span>&lt;option-value&gt;
 </pre></div>
 </div>
@@ -739,7 +741,7 @@ For example, to install the GPU Operator in the <code class="docutils literal no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n nvidia-gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
 </pre></div>
 </div>
 <p>If you do not specify a namespace during installation, all GPU Operator components are installed in the <code class="docutils literal notranslate"><span class="pre">default</span></code> namespace.</p>
@@ -768,7 +770,7 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
      --set toolkit.version<span class="o">=</span>v1.16.1-ubi8
 </pre></div>
 </div>
@@ -785,7 +787,7 @@ Network restricted environments are not supported.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -807,7 +809,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
@@ -828,7 +830,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+    --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -841,7 +843,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 you can build a custom driver container image. Follow these steps:</p>
 <ul>
 <li><p>Rebuild the driver container by specifying the <code class="docutils literal notranslate"><span class="pre">$DRIVER_VERSION</span></code> argument when building the Docker image. For
-reference, the driver container Dockerfiles are available on the Git repository at <a class="reference external" href="https://github.com/NVIDIA/gpu-driver-container/">https://github.com/NVIDIA/gpu-driver-container/</a>.</p></li>
+reference, the driver container Dockerfiles are available on the Git repository at <a class="github reference external" href="https://github.com/NVIDIA/gpu-driver-container/">NVIDIA/gpu-driver-container</a>.</p></li>
 <li><p>Build the container using the appropriate Dockerfile. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build --pull -t <span class="se">\</span>
     --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="m">455</span>.28 <span class="se">\</span>
@@ -856,7 +858,7 @@ the Helm install command. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.0 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
      --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="s2">&quot;465.27&quot;</span>
 </pre></div>
@@ -891,7 +893,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v26.3.0 \</span>
+<span class="go">    --version=v26.3.1 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/etc/containerd/containerd.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -952,7 +954,7 @@ With both features enabled, you do not need to set <code class="docutils literal
 <p>These options can be passed to GPU Operator during install time as below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v26.3.0 \</span>
+<span class="go">    --version=v26.3.1 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -1238,8 +1240,8 @@ With both features enabled, you do not need to set <code class="docutils literal
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
 
 
