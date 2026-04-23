@@ -161,7 +161,7 @@ The minimum required version is 3.29.0.
    .. code-block:: console
 
       $ export VERSION="3.29.0"
-      $ export CHART="oci://quay.io/fidencio/kata-deploy-charts/kata-deploy"
+      $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
 
 #. Install the kata-deploy Helm chart:

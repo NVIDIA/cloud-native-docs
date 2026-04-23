@@ -49,9 +49,6 @@ NVIDIA GPUs
    * - NVIDIA HGX B200
      - Single-GPU, Multi-GPU
 
-   * - NVIDIA HGX B300
-     - Single-GPU, Multi-GPU
-
    * - NVIDIA RTX Pro 6000 BSE
      - Single-GPU
 
