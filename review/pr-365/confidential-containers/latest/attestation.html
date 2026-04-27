@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 23, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 27, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -398,43 +398,53 @@
   <section id="attestation">
 <span id="id1"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
 <p>The NVIDIA Reference Architecture for Confidential Containers includes built-in remote attestation support for the CPU and GPU. Attestation allows a workload owner to cryptographically verify the guest Trusted Computing Base (TCB) before secrets are released to the workload.</p>
-<p>When a workload requires a secret, for example, to decrypt a container image or model, guest components identify the active CPU and GPU enclaves, collect hardware evidence, and send it to a remote verifier/broker such as Trustee. The verifier evaluates the evidence and conditionally releases the secret.</p>
-<p>Features that depend on secrets depend on attestation.
+<p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components identify the active CPU and GPU enclaves and collect hardware evidence.
+The evidence is sent to a remote verifier such as Trustee, which evaluates it and conditionally releases the secret.</p>
+<p>Attestation is required for features that depend on secrets.
 These features include:</p>
 <ul class="simple">
 <li><p>Pulling encrypted images</p></li>
-<li><p>Authenticated container registry support</p></li>
-<li><p>Sealed secrets</p></li>
-<li><p>Direct workload requests for secrets</p></li>
+<li><p>Accessing authenticated container registries</p></li>
+<li><p>Using sealed secrets</p></li>
+<li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>To use these features, a remote verifier/broker, like Trustee, must be provisioned in a trusted environment.
-Then you can direct your workloads to use the verifier/broker to authenticate and release secrets based on your configured policies.</p>
+<p>To start using attestation features in your clusters, you must do the following:</p>
+<ol class="arabic simple">
+<li><p>Provision a remote verifier/broker, like Trustee, in a trusted environment.</p></li>
+<li><p>Configure resources and policies for your attestation workflow.
+Exact configurations depend on your use cases.</p></li>
+<li><p>Direct your workloads to use the verifier/broker to authenticate and release secrets based on your configured policies.</p></li>
+</ol>
 <section id="configure-remote-verifier-broker-trustee">
 <h2>Configure Remote Verifier/Broker (Trustee)<a class="headerlink" href="#configure-remote-verifier-broker-trustee" title="Permalink to this headline">#</a></h2>
-<p>For an overview of attestation with Trustee, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
-<p>Follow the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/">upstream Trustee documentation</a> to provision a Trustee instance in a trusted environment.
-This will configure Trustee to use the remote NVIDIA verifier, NVIDIA Remote Attestation Service (NRAS), to evaluate the evidence by default.</p>
+<p>Trustee is an open-source framework used in Confidential Containers to verify attestations and conditionally release secrets.
+Trustee can attest any confidential workload.
+For a full overview of attestation with Trustee, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
+<p>To provision a Trustee instance in a trusted environment, follow the upstream installation documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a></p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/kubernetes/">Install Trustee Operator</a></p></li>
+</ul>
+<p>After you complete either installation, Trustee is configured to use the remote NVIDIA verifier, NVIDIA Remote Attestation Service (NRAS), to evaluate evidence by default.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If attestation does not succeed after provisioning Trustee, enable debug logging by setting the <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> environment variable in the Trustee environment.
-The Trustee log can then be used to diagnose the attestation process.</p>
+Use the Trustee log to diagnose the attestation process.</p>
 </div>
 </section>
-<section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>Configure policies to use attestation features.</p>
-<p><a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/agent/README.md">Kata Agent</a> (deployed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>) runs inside the guest virtual machine to manage the container lifecycle.
-It enforces a strict, immutable security policy based on Rego (regorus) that prevents the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code> command.
-Attestation-dependent features require that these policies permit the relevant operations.</p>
-<p>Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md">Kata Containers Agent Policy documentation</a> for more on using policies. You can use the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">genpolicy tool</a> (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>) to autogenerate policies, or write your own manually.</p>
-<p>Refer to the Confidential Containers’ <a class="reference external" href="https://confidentialcontainers.org/docs/features/initdata">Init-Data</a> documentation for more information on using the genpolicy tool to autogenerate policies.</p>
-</li>
-<li><p>Configure workloads to use attestation features.
-You can configure workloads to use attestation and specify configuration for encrypted images and authenticated container registries.</p>
-<p>Refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for more information on using attestation features.</p>
-</li>
+<section id="configure-attestation-features-and-workloads">
+<h2>Configure Attestation Features and Workloads<a class="headerlink" href="#configure-attestation-features-and-workloads" title="Permalink to this headline">#</a></h2>
+<p>After Trustee is configured, you can begin customizing attestation workflows to enforce your desired security policies.
+This can include the following:</p>
+<ul class="simple">
+<li><p>Configuring Trustee with the Key Broker Service (KBS) Client Tool.
+Refer to the upstream documentation for more information on <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">using the KBS Client Tool</a>.</p></li>
+<li><p>Configuring policies with the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/how-to/how-to-use-the-kata-agent-policy.md">Kata Containers Agent Policy documentation</a>.
+You can use the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">genpolicy tool</a> to autogenerate policies, or write your own manually.
+Both are installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>.</p></li>
+<li><p>Configuring workloads to use attestation features such as encrypted images and authenticated container registries.</p></li>
 </ul>
+<p>Refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for more information on using attestation features.</p>
 </section>
 </section>
 
@@ -488,7 +498,7 @@ You can configure workloads to use attestation and specify configuration for enc
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-remote-verifier-broker-trustee">Configure Remote Verifier/Broker (Trustee)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-attestation-features-and-workloads">Configure Attestation Features and Workloads</a></li>
 </ul>
   </nav></div>
 
