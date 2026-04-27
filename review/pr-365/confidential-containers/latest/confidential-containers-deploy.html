@@ -338,6 +338,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy Confidential Containers</a></li>
@@ -419,21 +420,34 @@ You can also configure <a class="reference internal" href="attestation.html"><sp
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p>Use a supported platform for Confidential Containers.
+<li><p>Use a supported platform configured for Confidential Computing.
 For more information on machine setup, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.</p></li>
-<li><p>Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS).
-With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
-Enable these features in the host BIOS.</p></li>
-<li><p>Configure hosts to support IOMMU.</p>
-<ul>
-<li><p>If the output from running <code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">/sys/kernel/iommu_groups</span></code> includes 0, 1, and so on, then your host is configured for IOMMU.</p></li>
-<li><p>If the host is not configured or if you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument. For most Linux distributions, add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
+<li><p>Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS). With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER). Enable these features in the host BIOS.</p></li>
+<li><p>Configure hosts to support IOMMU.
+You can check if your host is configured for IOMMU by running the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls /sys/kernel/iommu_groups
+</pre></div>
+</div>
+<p>If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.</p>
+<p>If the host is not configured or if you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument. For most Linux distributions, add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
 <span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
 <span class="go">...</span>
 </pre></div>
 </div>
-<p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p>
+<p>After making the change, configure the bootloader</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-grub
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Sourcing file `/etc/default/grub&#39;</span>
+<span class="go">Generating grub configuration file ...</span>
+<span class="go">Found linux image: /boot/vmlinuz-5.15.0-generic</span>
+<span class="go">Found initrd image: /boot/initrd.img-5.15.0-generic</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+<p>Reboot the host after configuring the bootloader.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>After configuring IOMMU, you might see QEMU warnings about PCI P2P DMA when running GPU workloads.
@@ -441,12 +455,11 @@ These are expected and can be safely ignored.
 Refer to <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
 </div>
 </li>
-</ul>
-</li>
-<li><p>A Kubernetes cluster with cluster administrator privileges.</p></li>
+<li><p>A Kubernetes cluster with cluster administrator privileges.
+Refer to the <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> table for supported Kubernetes versions.</p></li>
 <li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> Kubelet feature gate on your cluster.
 This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p>
-<p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
+<p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to your Kubelet configuration, typically the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
 The following example shows the feature gate in context with other common kubelet configuration fields:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
@@ -481,7 +494,7 @@ Refer to the <a class="reference external" href="https://github.com/kata-contain
 </div>
 </li>
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the name of the node you want to configure:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;node-01&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -931,7 +944,7 @@ Kubelet can de-allocate your pod if the image pull exceeds the configured timeou
 Consider setting this value to 20 minutes (<code class="docutils literal notranslate"><span class="pre">20m</span></code>) to match the default values for the NVIDIA shim configurations in Kata Containers <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> and the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.</p>
 <p>The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
 This controls the time the shim allows for a container to remain in container creating state.</p>
-<p>If you need a timeout of more than 1200 seconds, you will also need to adjust the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
+<p>If you need a timeout of more than 1200 seconds, you will also need to adjust Kata Agent Policy’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
 To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:</span> <span class="pre">&quot;...&quot;</span></code> annotation.</p>
 </section>
 <section id="next-steps">

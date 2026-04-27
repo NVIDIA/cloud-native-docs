@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Licensing &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Release Notes &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'licensing';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'release-notes';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,7 +69,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Attestation" href="attestation.html" />
+    <link rel="next" title="NVIDIA Confidential Containers Reference Architecture" href="overview.html" />
+    <link rel="prev" title="NVIDIA Confidential Containers Architecture" href="index.html" />
 
 
 
@@ -234,6 +235,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -333,12 +338,12 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Licensing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
 </div>
 </nav></div>
@@ -375,7 +380,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Licensing</li>
+    <li class="breadcrumb-item active" aria-current="page">Release Notes</li>
   </ul>
 </nav></div>
       
@@ -391,11 +396,57 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="licensing">
-<h1>Licensing<a class="headerlink" href="#licensing" title="Permalink to this headline">#</a></h1>
-<p>While the Confidential Containers (CoCo) Reference Architecture includes some components that are open source, the NVIDIA Confidential Computing capability is a licensed feature for production use cases.
-To use these products, you must have a valid NVIDIA Confidential Computing license.
-Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-confidential-computing/">NVIDIA Product-Specific Terms for NVIDIA Confidential Computing</a> for more information.</p>
+  <section id="release-notes">
+<span id="coco-release-notes"></span><h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">#</a></h1>
+<p>This document describes the new features and known issues for the NVIDIA Confidential Containers Reference Architecture.</p>
+<hr class="docutils" />
+<section id="coco-v1-0-0">
+<span id="id1"></span><h2>1.0.0<a class="headerlink" href="#coco-v1-0-0" title="Permalink to this headline">#</a></h2>
+<p>This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture.
+The NVIDIA Confidential Containers Reference Architecture is a validated deployment model for cluster administrators who need to run GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
+It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.
+By combining NVIDIA GPU Confidential Computing capabilities with Kata Containers and the NVIDIA GPU Operator, this architecture delivers a secure, attestable, and Kubernetes-native deployment model for confidential AI workloads.</p>
+<section id="key-features">
+<h3>Key Features<a class="headerlink" href="#key-features" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p>This release includes support for the following software components:</p>
+<ul class="simple">
+<li><p>NVIDIA GPU Operator v26.3.1</p></li>
+<li><p>NVIDIA Confidential Computing Manager for Kubernetes v0.3.0</p></li>
+<li><p>NVIDIA Kata Sandbox Device Plugin v0.0.2</p></li>
+<li><p>Kata Containers 3.29 (installed with the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></li>
+<li><p>Kata Lifecycle Manager 0.1.4</p></li>
+<li><p>Key Broker Service (KBS) protocol 0.4.0</p></li>
+<li><p>QEMU 10.1 + Patches</p></li>
+<li><p>OVMF edk2-stable202511</p></li>
+<li><p>Guest kernel 6.18.5</p></li>
+<li><p>Containerd 2.2.2+</p></li>
+<li><p>Kubernetes 1.32+</p></li>
+</ul>
+<p>Refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for the full list of supported hardware and software.</p>
+</li>
+<li><p>Enables GPU-accelerated workloads inside hardware-enforced Trusted Execution Environments (TEEs) using AMD SEV-SNP or Intel TDX, with <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes for secure deployment.
+For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a>.</p></li>
+<li><p>Supports multi-GPU passthrough on NVSwitch-based HGX systems, including NVIDIA HGX H100 and H200 with PPCIe mode, and NVIDIA HGX B200 using NVLink encryption.
+For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a>.</p></li>
+<li><p>Supports composite attestation using Trustee and the NVIDIA Remote Attestation Service (NRAS), enabling cryptographic verification of the TEE state before releasing secrets.
+For more information, refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p></li>
+<li><p>Supports model-specific GPU resource types by configuring the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the Sandbox Device Plugin, enabling mixed-GPU clusters to schedule workloads to specific GPU models.
+For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a>.</p></li>
+</ul>
+</section>
+<section id="known-issues">
+<h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>On single-node clusters, the Helm <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag may return before all <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pods finish initializing.
+If this occurs, wait an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to reach the <code class="docutils literal notranslate"><span class="pre">Running</span></code> state.
+Refer to the <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> for more information.</p></li>
+<li><p>Image signature verification for signed multi-arch images is not supported.</p></li>
+<li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
+When a GPU is assigned as a VFIO PCI device, QEMU logs expected warnings at VM startup for each assigned device. This does not affect GPU functionality.</p></li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -409,13 +460,22 @@ Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/ag
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="attestation.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Attestation</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Architecture</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Reference Architecture</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -424,9 +484,29 @@ Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/ag
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-0-0">1.0.0</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

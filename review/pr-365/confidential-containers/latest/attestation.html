@@ -338,6 +338,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers</a></li>
@@ -420,12 +421,14 @@ Exact configurations depend on your use cases.</p></li>
 <p>Trustee is an open-source framework used in Confidential Containers to verify attestations and conditionally release secrets.
 Trustee can attest any confidential workload.
 For a full overview of attestation with Trustee, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
-<p>To provision a Trustee instance in a trusted environment, follow the upstream installation documentation:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a></p></li>
-<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/kubernetes/">Install Trustee Operator</a></p></li>
-</ul>
-<p>After you complete either installation, Trustee is configured to use the remote NVIDIA verifier, NVIDIA Remote Attestation Service (NRAS), to evaluate evidence by default.</p>
+<p>To provision a Trustee instance follow the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a>.
+This is the recommended install method.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For production scenarios, Trustee should be deployed in a separate, trusted environment.
+For testing and development, Trustee can run in the same cluster.</p>
+</div>
+<p>After you complete installation, Trustee is configured to use the remote NVIDIA verifier, NVIDIA Remote Attestation Service (NRAS), to evaluate evidence by default.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If attestation does not succeed after provisioning Trustee, enable debug logging by setting the <code class="docutils literal notranslate"><span class="pre">RUST_LOG=debug</span></code> environment variable in the Trustee environment.
