@@ -434,22 +434,16 @@ Enable these features in the host BIOS.</p></li>
 </pre></div>
 </div>
 <p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">update-grub</span></code> after making the change to configure the bootloader. Reboot the host after configuring the bootloader.</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>After configuring IOMMU, you may see QEMU warnings about PCI P2P DMA when running GPU workloads.
+<p>After configuring IOMMU, you might see QEMU warnings about PCI P2P DMA when running GPU workloads.
 These are expected and can be safely ignored.
-See <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
+Refer to <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </li>
 <li><p>A Kubernetes cluster with cluster administrator privileges.</p></li>
-<li><p>Configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> with a higher timeout value than the two-minute default.
-Consider setting this value to 20 minutes to match the default values for the other image pull timeout values in Kata Containers.</p>
-<p>Refer to the <a class="reference internal" href="#configure-image-pull-timeouts"><span class="std std-ref">Configure Image Pull Timeouts</span></a> section on this page for more details on adjusting the image pull timeout values.</p>
-</li>
 <li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> Kubelet feature gate on your cluster.
 This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p>
 <p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
@@ -474,13 +468,6 @@ Refer to the <a class="reference external" href="https://github.com/kata-contain
 <span id="id1"></span><h2>Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">#</a></h2>
 <section id="label-nodes">
 <span id="coco-label-nodes"></span><h3>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h3>
-<p>The GPU Operator uses this label to determine what software components to deploy to a node.
-The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.
-You can use this label on nodes for Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
-</div>
 <ol class="arabic">
 <li><p>Get a list of the nodes in your cluster:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes
@@ -505,6 +492,13 @@ You can use this label on nodes for Confidential Containers workloads, and run t
 <li><p>Label the node for Confidential Containers:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
+</div>
+<p>The GPU Operator uses this label to determine what software components to deploy to a node.
+The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.
+You can use this label on nodes for Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
 </div>
 </li>
 <li><p>Verify the node label was added:</p>
@@ -547,6 +541,11 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="go">DESCRIPTION: Install complete</span>
 <span class="go">TEST SUITE: None</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
+It can take a few minutes to return output.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -601,12 +600,6 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
    --version<span class="o">=</span>v26.3.0
 </pre></div>
 </div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.</p>
-</div>
-<p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Confidential Containers Configuration Settings</span></a> section on this page for more details on the Confidential Containers configuration options you can specify when installing the GPU Operator.</p>
-<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p>
 <p><em>Example Output:</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME: gpu-operator</span>
 <span class="go">LAST DEPLOYED: Tue Mar 10 17:58:12 2026</span>
@@ -616,6 +609,17 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
+It can take a few minutes to return output.</p>
+</div>
+<p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Confidential Containers Configuration Settings</span></a> section on this page for more details on the Confidential Containers configuration options you can specify when installing the GPU Operator.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p>
 </li>
 <li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
