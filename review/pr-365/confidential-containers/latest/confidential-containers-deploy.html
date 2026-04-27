@@ -546,6 +546,8 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
 It can take a few minutes to return output.</p>
+<p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
+If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to be in the Running state.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
