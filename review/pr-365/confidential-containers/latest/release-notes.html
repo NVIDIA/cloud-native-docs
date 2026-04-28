@@ -438,12 +438,7 @@ For more information, refer to <a class="reference internal" href="confidential-
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>On single-node clusters, the Helm <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag may return before all <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pods finish initializing.
-If this occurs, wait an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to reach the <code class="docutils literal notranslate"><span class="pre">Running</span></code> state.
-Refer to the <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> for more information.</p></li>
-<li><p>Image signature verification for signed multi-arch images is not supported.</p></li>
-<li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
-When a GPU is assigned as a VFIO PCI device, QEMU logs expected warnings at VM startup for each assigned device. This does not affect GPU functionality.</p></li>
+<li></li>
 </ul>
 </section>
 </section>

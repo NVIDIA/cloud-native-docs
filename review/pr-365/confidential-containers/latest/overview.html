@@ -476,7 +476,7 @@ This component is deployed and managed by default by the GPU Operator.</p>
 <p><strong>NVIDIA Runtime Container (NVRC)</strong></p>
 <p>A minimal hardened init system that securely bootstraps the guest environment, life cycles the kata-agent, provides health checks on started helper daemons while drastically reducing the attack surface.</p>
 <section id="gpu-operator-cluster-topology-considerations">
-<h3>GPU Operator Cluster Topology Considerations<a class="headerlink" href="#gpu-operator-cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
+<span id="coco-gpu-operator-cluster-topology"></span><h3>GPU Operator Cluster Topology Considerations<a class="headerlink" href="#gpu-operator-cluster-topology-considerations" title="Permalink to this headline">#</a></h3>
 <p>The GPU Operator deploys and manages components for allocating and utilizing the GPU resources on your cluster.
 Depending on how you configure the Operator, different components are deployed on the worker nodes.
 When setting up Confidential Containers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers.
@@ -549,7 +549,6 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <span id="coco-limitations"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>Image signature verification for signed multi-arch images is currently not supported.</p></li>
 <li><p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
 Configuring only some GPUs on a node for Confidential Computing is not supported.</p></li>
 <li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.

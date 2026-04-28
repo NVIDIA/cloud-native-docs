@@ -401,6 +401,9 @@
 <p>This page describes deploying Kata Containers and the NVIDIA GPU Operator.
 These are key pieces of the NVIDIA Confidential Containers Reference Architecture used to manage GPU resources on your cluster and deploy workloads into Confidential Containers.</p>
 <p>Before you begin, refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
+<p>This guide assumes you are familiar with the NVIDIA GPU Operator, and Kata Containers, and Kubernetes cluster administration.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> and <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers</a> documentation for more information on these software components.
+Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> for more information on Kubernetes cluster administration.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <p>The high-level workflow for configuring Confidential Containers is as follows:</p>
@@ -414,7 +417,8 @@ This installs the NVIDIA GPU Operator components that are required to deploy GPU
 The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
 </ol>
 <p>After installation, you can <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.
-You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with Trustee.</p>
+You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.
+The Trustee attestation service is typically deployed on a separate, trusted environment.</p>
 <p>After configuration, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes for secure deployment.</p>
 </section>
 <section id="prerequisites">
@@ -508,7 +512,9 @@ Refer to the <a class="reference external" href="https://github.com/kata-contain
 </div>
 <p>The GPU Operator uses this label to determine what software components to deploy to a node.
 The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.
-You can use this label on nodes for Confidential Containers workloads, and run traditional container workloads with GPU on other nodes in your cluster.</p>
+A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
+The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
+For more details on GPU Operator cluster topology, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-cluster-topology"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
@@ -612,7 +618,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
    --set sandboxWorkloads.mode<span class="o">=</span>kata <span class="se">\</span>
    --set nfd.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
    --set nfd.nodefeaturerules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-   --version<span class="o">=</span>v26.3.0
+   --version<span class="o">=</span>v26.3.1
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
@@ -772,8 +778,17 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
 </pre></div>
 </div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd-kata created</span>
+</pre></div>
+</div>
 <p>Optional: Verify the pod was created.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                  READY   STATUS    RESTARTS   AGE</span>
+<span class="go">cuda-vectoradd-kata   1/1     Running   0          10s</span>
 </pre></div>
 </div>
 </li>
