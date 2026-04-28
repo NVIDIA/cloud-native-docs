@@ -442,7 +442,7 @@ This is the recommended install method.</p>
 </section>
 <section id="configure-workloads-for-attestation">
 <span id="configure-workloads-trustee"></span><h2>Configure Workloads for Attestation<a class="headerlink" href="#configure-workloads-for-attestation" title="Permalink to this headline">#</a></h2>
-<p>To enable attestation for your workloads, point them to the Trustee network endpoint, sometimes refered to as the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
+<p>To enable attestation for your workloads, point them to the Trustee network endpoint, sometimes referred to as the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
@@ -459,7 +459,7 @@ This can include configuring the following:</p>
 Refer to the upstream documentation on <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">using the KBS Client Tool</a>.</p></li>
 <li><p>Configure resources: Create resources, or secrets, that your workloads need.
 Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/resources/">Confidential Containers resources</a> documentation for more information on the resources.</p></li>
-<li><p>Configure policies: Confidential Containers uses different policy types to secure workload at differentlayers.
+<li><p>Configure policies: Confidential Containers uses different policy types to secure workload at different layers.
 Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/policies/">Confidential Containers policy</a> documentation for more information on the policy types and configuring policies.</p></li>
 </ul>
 <p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for a full list of attestation features and how to configure them.</p>
