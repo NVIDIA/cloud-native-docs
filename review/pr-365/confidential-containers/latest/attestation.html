@@ -438,6 +438,12 @@ Trustee does not require Confidential Computing hardware or a GPU.</p></li>
 For a full overview of attestation with Trustee, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
 <p>To provision a Trustee instance, follow the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.
 This is the recommended install method.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Guests with many passthrough devices, such as NVIDIA PPCIE GPUs, can produce attestation tokens that exceed HTTP header size limits.</p>
+<p>To avoid this, set <code class="docutils literal notranslate"><span class="pre">verbose_token</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> in the Attestation Service configuration file and restart Trustee.
+Refer to the upstream <a class="reference external" href="https://github.com/confidential-containers/trustee/blob/main/attestation-service/docs/config.md">Attestation Service configuration</a> documentation for details.</p>
+</div>
 <p>After you complete installation, Trustee is configured to use the NVIDIA Remote Attestation Service (NRAS) to evaluate GPU evidence by default.</p>
 </section>
 <section id="configure-workloads-for-attestation">

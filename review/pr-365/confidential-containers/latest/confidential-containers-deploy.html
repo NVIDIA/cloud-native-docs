@@ -423,6 +423,8 @@ The Trustee attestation service is typically deployed on a separate, trusted env
 </section>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<section id="hardware-and-bios">
+<h3>Hardware and BIOS<a class="headerlink" href="#hardware-and-bios" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>Use a supported platform configured for Confidential Computing.
 For more information on machine setup, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.</p></li>
@@ -459,27 +461,49 @@ These are expected and can be safely ignored.
 Refer to <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
 </div>
 </li>
+<li><p>Ensure that no NVIDIA GPU drivers are installed on the host.
+Confidential Containers uses VFIO to pass GPUs directly to the confidential VM, and host-level GPU drivers interfere with VFIO device binding.</p>
+<p>To check if NVIDIA GPU drivers are installed, run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep nvidia
+</pre></div>
+</div>
+<p>If the output is empty, no NVIDIA GPU drivers are loaded.
+If modules such as <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia_uvm</span></code>, or <code class="docutils literal notranslate"><span class="pre">nvidia_modeset</span></code> are listed, NVIDIA GPU drivers are present and must be removed before proceeding.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html">Removing the Driver</a> in the NVIDIA Driver Installation Guide.</p>
+</li>
+</ul>
+</section>
+<section id="kubernetes-cluster">
+<h3>Kubernetes Cluster<a class="headerlink" href="#kubernetes-cluster" title="Permalink to this headline">#</a></h3>
+<ul>
 <li><p>A Kubernetes cluster with cluster administrator privileges.
 Refer to the <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> table for supported Kubernetes versions.</p></li>
-<li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> Kubelet feature gate on your cluster.
-This feature gate is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p>
-<p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate by adding it to your Kubelet configuration, typically the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
-The following example shows the feature gate in context with other common kubelet configuration fields:</p>
+<li><p>Helm installed on your cluster.
+Refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p></li>
+<li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> Kubelet feature gates on your cluster.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> is in alpha since Kubernetes v1.29 and is not enabled by default.</p></li>
+</ul>
+<p>Enable both feature gates by adding them to your Kubelet configuration, typically the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
+The following example shows the feature gates in context with other common Kubelet configuration fields:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
 <span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">KubeletPodResourcesGet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">RuntimeClassInImageCriApi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 </pre></div>
 </div>
-<p>If your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> already has a <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> section, add <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet:</span> <span class="pre">true</span></code> to the existing section rather than creating a duplicate.</p>
+<p>If your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> already has a <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> section, add the feature gates to the existing section rather than creating a duplicate.</p>
 <p>Restart the Kubelet service to apply the changes.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
-<p>The NVIDIA GPU runtime classes use VFIO cold-plug and require this feature gate to be enabled to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
+<p>The NVIDIA GPU runtime classes use VFIO cold-plug and require the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
 Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime">Kata runtime (VFIO cold-plug)</a> section in the upstream NVIDIA GPU passthrough guide for more details about this requirement.</p>
 </li>
 </ul>
+</section>
 </section>
 <section id="installation-and-configuration">
 <span id="id1"></span><h2>Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">#</a></h2>
@@ -597,6 +621,14 @@ If you are deploying to a single node cluster, you may need to wait for an addit
 <p>Several runtimes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy Confidential Containers workloads.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod, you can view the logs with the following command.
+Update the &lt;pod-name&gt; placeholder with the name of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl -n kata-system logs kata-deploy-&lt;pod-name&gt;
+</pre></div>
+</div>
+</div>
 </li>
 </ol>
 </section>
@@ -611,7 +643,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 </div>
 </li>
 <li><p>Install the GPU Operator with the following configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
    --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
@@ -674,6 +706,10 @@ It can take a few minutes to return output.</p>
 </div>
 </li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you have an issue deploying the GPU Operator, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a> for guidance on troubleshooting and resolving issues.</p>
+</div>
 </li>
 </ol>
 </section>
@@ -782,7 +818,7 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd-kata created</span>
 </pre></div>
 </div>
-<p>Optional: Verify the pod was created.</p>
+<p>Optional: Verify the pod is running.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
 </pre></div>
 </div>
@@ -1024,7 +1060,11 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware-and-bios">Hardware and BIOS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-cluster">Kubernetes Cluster</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-configuration">Installation and Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes">Label Nodes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
