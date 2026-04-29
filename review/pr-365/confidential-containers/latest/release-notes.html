@@ -458,26 +458,6 @@ Configuring only a subset of GPUs on a node is not supported.
 For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
 </ul>
 </section>
-<section id="id2">
-<h2>Limitations and Restrictions<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>All GPUs on the host must be configured for Confidential Computing.
-Configuring only a subset of GPUs on a node is not supported.
-For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
-<li><p>Nested virtualization is not supported.
-Confidential Containers provides its own virtualization based on Kata Containers and must be installed directly on the host, not within a guest VM.</p></li>
-<li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
-When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.
-This is expected behavior and does not affect GPU functionality.</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">qemu-system-x86_64: warning: IOMMU_IOAS_MAP failed: Bad address, PCI BAR?</span>
-<span class="go">qemu-system-x86_64: vfio_container_dma_map(0x560cb6cb1620, 0xe000000021000, 0x3000, 0x7f32ed55c000) = -14 (Bad address)</span>
-</pre></div>
-</div>
-<p>Refer to the <a class="reference external" href="https://www.qemu.org/docs/master/devel/vfio-iommufd.html">QEMU IOMMUFD documentation</a> for more information.</p>
-</li>
-</ul>
-</section>
 </section>
 
 
@@ -534,7 +514,6 @@ This is expected behavior and does not affect GPU functionality.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Limitations and Restrictions</a></li>
 </ul>
   </nav></div>
 
