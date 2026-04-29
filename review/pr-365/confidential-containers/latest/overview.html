@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 28, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -549,7 +549,8 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <span id="coco-limitations"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
+<li><p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing.
+For multi GPU Passthrough, all GPUs must be assigned to one Confidential Container virtual machine.
 Configuring only some GPUs on a node for Confidential Computing is not supported.</p></li>
 <li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
 When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.

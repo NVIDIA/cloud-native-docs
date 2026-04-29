@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 28, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -482,11 +482,13 @@ Refer to the <a class="reference internal" href="supported-platforms.html#coco-s
 Refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p></li>
 <li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> Kubelet feature gates on your cluster.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled by default on Kubernetes v1.34 and later, but must be explicitly enabled in older versions.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> is in alpha since Kubernetes v1.29 and is not enabled by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code>: Enabled by default on Kubernetes v1.34 and later.
+On older versions, you must enable it explicitly.
+The Kata runtime uses this feature gate to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code>: Alpha since Kubernetes v1.29 and is not enabled by default.
+This feature gate is required to support pod deployments that use multiple snapshotters side-by-side.</p></li>
 </ul>
-<p>Enable both feature gates by adding them to your Kubelet configuration, typically the <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> file.
-The following example shows the feature gates in context with other common Kubelet configuration fields:</p>
+<p>Add both feature gates to your Kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
 <span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
@@ -494,13 +496,11 @@ The following example shows the feature gates in context with other common Kubel
 <span class="w">  </span><span class="nt">RuntimeClassInImageCriApi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 </pre></div>
 </div>
-<p>If your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> already has a <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> section, add the feature gates to the existing section rather than creating a duplicate.</p>
-<p>Restart the Kubelet service to apply the changes.</p>
+<p>If your <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> already has a <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> section, add the gates to the existing section rather than creating a duplicate.</p>
+<p>Restart the Kubelet service to apply the changes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
-<p>The NVIDIA GPU runtime classes use VFIO cold-plug and require the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate to allow the Kata runtime to query Kubelet’s Pod Resources API to discover allocated GPU devices during sandbox creation.
-Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime">Kata runtime (VFIO cold-plug)</a> section in the upstream NVIDIA GPU passthrough guide for more details about this requirement.</p>
 </li>
 </ul>
 </section>
