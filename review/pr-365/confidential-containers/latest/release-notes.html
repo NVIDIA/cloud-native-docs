@@ -408,9 +408,9 @@ It is designed for organizations in regulated industries that require strong iso
 <p>The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.</p>
 <section id="key-features">
 <h3>Key Features<a class="headerlink" href="#key-features" title="Permalink to this headline">#</a></h3>
-<ul>
-<li><p>This release supports the following hardware platforms:</p>
 <ul class="simple">
+<li><p>This release supports the following hardware platforms:</p>
+<ul>
 <li><p>NVIDIA HGX H100 (single-GPU passthrough)</p></li>
 <li><p>NVIDIA HGX H200 (single-GPU passthrough)</p></li>
 <li><p>NVIDIA H100 Protected PCIe (single-GPU and multi-GPU passthrough)</p></li>
@@ -422,7 +422,7 @@ It is designed for organizations in regulated industries that require strong iso
 </ul>
 </li>
 <li><p>This release supports the following software components:</p>
-<ul class="simple">
+<ul>
 <li><p>NVIDIA GPU Operator v26.3.1</p></li>
 <li><p>Kata Containers 3.29 (installed with the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></li>
 <li><p>Kata Lifecycle Manager 0.1.4</p></li>
@@ -434,20 +434,7 @@ It is designed for organizations in regulated industries that require strong iso
 <li><p>Ubuntu 25.10 (host OS)</p></li>
 </ul>
 </li>
-<li><p>This release supports Red Hat OpenShift Sandboxed Containers 1.12.</p>
-<p>Refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for additional details on supported hardware and software.</p>
-</li>
-<li><p>GPU-accelerated workloads inside hardware-enforced TEEs using AMD SEV-SNP or Intel TDX, with the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes.</p></li>
-<li><p>Multi-GPU passthrough on NVSwitch-based HGX systems, including NVIDIA HGX H100 and H200 with PPCIe mode and NVIDIA HGX B200 using NVLink encryption.</p></li>
-<li><p>Composite attestation using Trustee and the NVIDIA Remote Attestation Service (NRAS) for cryptographic verification of the TEE state before releasing secrets.</p></li>
-<li><p>Model-specific GPU resource types through the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the Sandbox Device Plugin, enabling mixed-GPU clusters to schedule workloads to specific GPU models.</p></li>
-</ul>
-<p>To get started, refer to the following documentation:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="overview.html"><span class="doc">Overview</span></a></p></li>
-<li><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></p></li>
-<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a></p></li>
-<li><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a></p></li>
+<li><p>This release supports Red Hat OpenShift Sandboxed Containers 1.12.</p></li>
 </ul>
 </section>
 <section id="limitations-and-restrictions">
