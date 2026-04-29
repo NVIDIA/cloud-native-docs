@@ -414,10 +414,11 @@ It is designed for organizations in regulated industries that require strong iso
 <li><p>NVIDIA HGX H100 (single-GPU passthrough)</p></li>
 <li><p>NVIDIA HGX H200 (single-GPU passthrough)</p></li>
 <li><p>NVIDIA H100 Protected PCIe (single-GPU and multi-GPU passthrough)</p></li>
+<li><p>NVIDIA H200 Protected PCIe (single-GPU and multi-GPU passthrough)</p></li>
 <li><p>NVIDIA HGX B200 (single-GPU and multi-GPU passthrough)</p></li>
 <li><p>NVIDIA RTX Pro 6000 BSE (single-GPU passthrough)</p></li>
-<li><p>AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+)</p></li>
-<li><p>Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+)</p></li>
+<li><p>AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP</p></li>
+<li><p>Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+) for TDX</p></li>
 </ul>
 </li>
 <li><p>This release supports the following software components:</p>
@@ -431,8 +432,9 @@ It is designed for organizations in regulated industries that require strong iso
 <li><p>Containerd 2.2.2</p></li>
 <li><p>Kubernetes 1.32+</p></li>
 <li><p>Ubuntu 25.10 (host OS)</p></li>
-<li><p>Red Hat OpenShift Sandboxed Containers 1.12</p></li>
 </ul>
+</li>
+<li><p>This release supports Red Hat OpenShift Sandboxed Containers 1.12.</p>
 <p>Refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for additional details on supported hardware and software.</p>
 </li>
 <li><p>GPU-accelerated workloads inside hardware-enforced TEEs using AMD SEV-SNP or Intel TDX, with the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes.</p></li>
