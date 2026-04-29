@@ -549,9 +549,11 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <span id="coco-limitations"></span><h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing.
-For multi GPU Passthrough, all GPUs must be assigned to one Confidential Container virtual machine.
-Configuring only some GPUs on a node for Confidential Computing is not supported.</p></li>
+<li><p>All GPUs on the host must be configured for Confidential Computing.
+Configuring only a subset of GPUs on a node is not supported.
+For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
+<li><p>Nested virtualization is not supported.
+Confidential Containers provides its own virtualization based on Kata Containers and must be installed directly on the host, not within a guest VM.</p></li>
 <li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
 When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.
 This is expected behavior and does not affect GPU functionality.</p>
@@ -562,6 +564,21 @@ This is expected behavior and does not affect GPU functionality.</p>
 <p>Refer to the <a class="reference external" href="https://www.qemu.org/docs/master/devel/vfio-iommufd.html">QEMU IOMMUFD documentation</a> for more information.</p>
 </li>
 </ul>
+<section id="security-considerations">
+<h3>Security Considerations<a class="headerlink" href="#security-considerations" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Application security defects: Confidential Computing does not protect against threats within the confidential VM, including vulnerabilities in the application itself.
+Applications must still follow security best practices such as input validation.</p></li>
+<li><p>Control plane: Confidential Containers provides protections to limit the influence of the Kubernetes control plane.
+However, applications may expose themselves to attack if they rely on control-plane-managed configuration.</p></li>
+<li><p>Environment variables and ConfigMaps: Unless provisioned as sealed secrets using Trustee, orchestrator-provided environment variables and ConfigMaps remain untrusted and susceptible to manipulation.</p></li>
+<li><p>Storage and volume mounts: Manipulating volume mounts can expose the workload to malicious untrusted host storage or deny access to required persistent data.</p></li>
+<li><p>Physical attacks: Confidential Computing considers most physical attacks out of scope.
+Kubernetes hosts should be in physically secure datacenters.</p></li>
+<li><p>Availability: Confidential Computing does not provide availability guarantees.
+Achieve availability through replication, which is standard practice in Kubernetes deployments.</p></li>
+</ul>
+</section>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
@@ -657,7 +674,10 @@ This is expected behavior and does not affect GPU functionality.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-features-and-deployment-scenarios">Supported Features and Deployment Scenarios</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>

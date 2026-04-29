@@ -402,14 +402,25 @@
 <hr class="docutils" />
 <section id="coco-v1-0-0">
 <span id="id1"></span><h2>1.0.0<a class="headerlink" href="#coco-v1-0-0" title="Permalink to this headline">#</a></h2>
-<p>This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture.
-The NVIDIA Confidential Containers Reference Architecture is a validated deployment model for cluster administrators who need to run GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
-It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.
-By combining NVIDIA GPU Confidential Computing capabilities with Kata Containers and the NVIDIA GPU Operator, this architecture delivers a secure, attestable, and Kubernetes-native deployment model for confidential AI workloads.</p>
+<p>This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
+a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
+It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.</p>
+<p>The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.</p>
 <section id="key-features">
 <h3>Key Features<a class="headerlink" href="#key-features" title="Permalink to this headline">#</a></h3>
 <ul>
-<li><p>This release includes support for the following software components:</p>
+<li><p>This release supports the following hardware platforms:</p>
+<ul class="simple">
+<li><p>NVIDIA HGX H100 (single-GPU passthrough)</p></li>
+<li><p>NVIDIA HGX H200 (single-GPU passthrough)</p></li>
+<li><p>NVIDIA H100 Protected PCIe (single-GPU and multi-GPU passthrough)</p></li>
+<li><p>NVIDIA HGX B200 (single-GPU and multi-GPU passthrough)</p></li>
+<li><p>NVIDIA RTX Pro 6000 BSE (single-GPU passthrough)</p></li>
+<li><p>AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+)</p></li>
+<li><p>Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+)</p></li>
+</ul>
+</li>
+<li><p>This release supports the following software components:</p>
 <ul class="simple">
 <li><p>NVIDIA GPU Operator v26.3.1</p></li>
 <li><p>Kata Containers 3.29 (installed with the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></li>
@@ -417,24 +428,55 @@ By combining NVIDIA GPU Confidential Computing capabilities with Kata Containers
 <li><p>Key Broker Service (KBS) protocol 0.4.0</p></li>
 <li><p>QEMU 10.1 + Patches</p></li>
 <li><p>OVMF edk2-stable202511</p></li>
-<li><p>Guest kernel 6.18.5</p></li>
-<li><p>Containerd 2.2.2+</p></li>
+<li><p>Containerd 2.2.2</p></li>
 <li><p>Kubernetes 1.32+</p></li>
-<li><p>Ubuntu 25.10</p></li>
-<li><p>Red Hat Openshift Sandbox Container Platform v1.12</p></li>
+<li><p>Ubuntu 25.10 (host OS)</p></li>
+<li><p>Red Hat OpenShift Sandboxed Containers 1.12</p></li>
 </ul>
-<p>Refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for the full list of supported hardware and software.</p>
+<p>Refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for additional details on supported hardware and software.</p>
 </li>
-<li><p>Enables GPU-accelerated workloads inside hardware-enforced Trusted Execution Environments (TEEs) using AMD SEV-SNP or Intel TDX, with <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes for secure deployment.
-For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a>.</p></li>
-<li><p>Supports multi-GPU passthrough on NVSwitch-based HGX systems, including NVIDIA HGX H100 and H200 with PPCIe mode, and NVIDIA HGX B200 using NVLink encryption.
-For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a>.</p></li>
-<li><p>Supports composite attestation using Trustee and the NVIDIA Remote Attestation Service (NRAS), enabling cryptographic verification of the TEE state before releasing secrets.
-For more information, refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p></li>
-<li><p>Supports model-specific GPU resource types by configuring the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the Sandbox Device Plugin, enabling mixed-GPU clusters to schedule workloads to specific GPU models.
-For more information, refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a>.</p></li>
+<li><p>GPU-accelerated workloads inside hardware-enforced TEEs using AMD SEV-SNP or Intel TDX, with the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes.</p></li>
+<li><p>Multi-GPU passthrough on NVSwitch-based HGX systems, including NVIDIA HGX H100 and H200 with PPCIe mode and NVIDIA HGX B200 using NVLink encryption.</p></li>
+<li><p>Composite attestation using Trustee and the NVIDIA Remote Attestation Service (NRAS) for cryptographic verification of the TEE state before releasing secrets.</p></li>
+<li><p>Model-specific GPU resource types through the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the Sandbox Device Plugin, enabling mixed-GPU clusters to schedule workloads to specific GPU models.</p></li>
+</ul>
+<p>To get started, refer to the following documentation:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Overview</span></a></p></li>
+<li><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></p></li>
+<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Deploy Confidential Containers</span></a></p></li>
+<li><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a></p></li>
 </ul>
 </section>
+</section>
+<section id="limitations-and-restrictions">
+<h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
+<li><p>All GPUs on the host must be configured for Confidential Computing.
+Configuring only a subset of GPUs on a node is not supported.
+For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>Limitations and Restrictions<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
+<li><p>All GPUs on the host must be configured for Confidential Computing.
+Configuring only a subset of GPUs on a node is not supported.
+For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
+<li><p>Nested virtualization is not supported.
+Confidential Containers provides its own virtualization based on Kata Containers and must be installed directly on the host, not within a guest VM.</p></li>
+<li><p>PCI peer-to-peer (P2P) DMA is unsupported because IOMMUFD does not yet support mapping hardware PCI BAR regions.
+When a GPU is assigned as a VFIO PCI device, QEMU logs the following warnings at VM startup for each assigned device.
+This is expected behavior and does not affect GPU functionality.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">qemu-system-x86_64: warning: IOMMU_IOAS_MAP failed: Bad address, PCI BAR?</span>
+<span class="go">qemu-system-x86_64: vfio_container_dma_map(0x560cb6cb1620, 0xe000000021000, 0x3000, 0x7f32ed55c000) = -14 (Bad address)</span>
+</pre></div>
+</div>
+<p>Refer to the <a class="reference external" href="https://www.qemu.org/docs/master/devel/vfio-iommufd.html">QEMU IOMMUFD documentation</a> for more information.</p>
+</li>
+</ul>
 </section>
 </section>
 
@@ -491,6 +533,8 @@ For more information, refer to <a class="reference internal" href="confidential-
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Limitations and Restrictions</a></li>
 </ul>
   </nav></div>
 

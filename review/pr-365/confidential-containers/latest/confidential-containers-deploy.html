@@ -886,7 +886,7 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 <td><p>cluster-wide default, node-level override</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code></p></td>
-<td><p>Enable Confidential Computing on NVIDIA HGX GPUs.</p>
+<td><p>Enable Confidential Computing on NVIDIA Hopper GPUs.</p>
 <p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
 which claims exclusive use of the NVSwitches for a single Confidential Container
 virtual machine.
@@ -983,7 +983,7 @@ A mode change is complete and successful when <code class="docutils literal notr
 </div>
 <p>You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.</p>
 <p>On the NVIDIA Hopper architecture, multi-GPU passthrough uses protected PCIe (PPCIE), which claims exclusive use of the NVSwitches for a single Confidential Container.
-When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your node’s GPU Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> by adding the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=ppcie</span></code> label.
+When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your node’s GPU Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> by applying the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=ppcie</span></code> label.
 Refer to the <a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a> section for details.</p>
 <p>The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to <code class="docutils literal notranslate"><span class="pre">on</span></code>.</p>
 </section>
