@@ -17,11 +17,17 @@
 .. headings # #, * *, =, -, ^, "
 
 
-.. _attestation-overview:
-
 ***********
 Attestation
 ***********
+
+As a :ref:`Security Engineer <coco-persona-security-engineer>`, use this page to understand more about attestation and stand up a local attestation backend for testing.
+
+.. note::
+
+   Attestation is not required to configure your cluster to deploy Confidential Containers workloads.
+   This page gives an overview of attestation and a quickstart for standing up a local attestation backend for testing.
+   You should refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/attestation/>`__ for more details on attestation and production deployment.
 
 In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
@@ -32,8 +38,7 @@ Attestation is required for any feature that depends on secrets, including:
 * Using sealed secrets
 * Requesting secrets directly from workloads
 
-When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves. 
-The evidence is sent to the remote verifier to evaluate the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.
+Configure attestation when workloads require a secret, to decrypt a container image or model, or guest components collect hardware evidence from the active CPU and GPU enclaves. 
 
 Key Concepts
 ============
@@ -52,7 +57,7 @@ The following concepts appear throughout this page:
 * KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Most resources are addressed by a three-part path: ``<repository>/<type>/<tag>``.
 * Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.
 
-Refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/architecture/design-overview/>`_ for more details on these concepts and attestation best practices.
+Refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/architecture/design-overview/>`__ for more details on these concepts and attestation best practices.
 
 Quickstart
 ==========
@@ -103,6 +108,7 @@ Prerequisites
 Step 1: Install Trustee with Docker Compose
 -------------------------------------------
 
+Installing Trustee with Docker Compose is the recommended install path.
 Clone the upstream Trustee repository.
 The repository ships with a ``docker-compose.yml`` that wires KBS, the Attestation Service, and the Reference Value Provider Service together.
 

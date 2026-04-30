@@ -18,9 +18,9 @@
 
 .. _coco-release-notes:
 
-*************
+#############
 Release Notes
-*************
+#############
 
 This document describes the new features and known issues for the NVIDIA Confidential Containers Reference Architecture.
 
@@ -28,8 +28,9 @@ This document describes the new features and known issues for the NVIDIA Confide
 
 .. _coco-v1.0.0:
 
+*****
 1.0.0
-=====
+*****
 
 This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
 It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.
@@ -37,7 +38,7 @@ It is designed for organizations in regulated industries that require strong iso
 The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.
 
 Key Features
-------------
+============
 
 * This release supports HGX platforms with:
 
@@ -66,7 +67,7 @@ Key Features
 
 
 Limitations and Restrictions
-----------------------------
+============================
 
 * NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
 
