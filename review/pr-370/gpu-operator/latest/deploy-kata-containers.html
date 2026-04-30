@@ -483,12 +483,11 @@ This approach ensures that the workload cannot access additional devices.</p></l
 <section id="limitations-and-restrictions">
 <h2>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>GPUs are available to containers as a single GPU in passthrough mode only.
+<li><p>GPUs are available to containers in passthrough mode only: either single-GPU passthrough
+or multi-GPU passthrough on NVSwitch-based systems.
 vGPU is not supported.</p></li>
-<li><p>Support is limited to initial installation and configuration only.
-Upgrade and configuration of existing clusters for Kata Containers is not supported.</p></li>
 <li><p>Support for Kata Containers is limited to the implementation described on this page.
-The Operator offers Technology Preview support for Red Hat OpenShift sandbox containers.</p></li>
+The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.</p></li>
 <li><p>NVIDIA supports the Operator and Kata Containers with the containerd runtime only.</p></li>
 </ul>
 </section>
@@ -722,13 +721,16 @@ If you are deploying to a single node cluster, you may need to wait for an addit
 <p>Several runtime classes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/index.html" title="(in NVIDIA Confidential Containers Architecture)"><span class="xref std std-doc">Confidential Containers</span></a>.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
 <p>If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod, you can view the logs with the following command.
 Update the &lt;pod-name&gt; placeholder with the name of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl -n kata-system logs kata-deploy-&lt;pod-name&gt;
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To manage the lifecycle of Kata Containers, including upgrades and day-two operations,
+install the <a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a>.
+This Argo Workflows-based tool is the recommended way to manage Kata Containers deployments.</p>
 </div>
 </li>
 </ol>
