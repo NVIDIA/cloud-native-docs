@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
 
 
@@ -58,7 +58,7 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'release-notes';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.17.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '25.10';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 15, 2026"/>
+    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -107,7 +107,9 @@
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -712,7 +714,7 @@ User-supplied environment variables now take precedence over environment variabl
 <ul class="simple">
 <li><p>Fixed an issue where the GPU Operator failed to render the nvidia-container-toolkit DaemonSet correctly when a custom value for <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code> was provided as input.
 Specifically, the hostPath volumes were not included in the DaemonSet.
-Refer to GitHub issue <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1694">https://github.com/NVIDIA/gpu-operator/issues/1694</a> for more details.</p></li>
+Refer to GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1694">NVIDIA/gpu-operator#1694</a> for more details.</p></li>
 </ul>
 </section>
 </section>
@@ -755,7 +757,7 @@ NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported sys
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
 NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
-For more detailed information, see GitHub issue <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">https://github.com/NVIDIA/gpu-operator/issues/1361</a>.</p></li>
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p></li>
 <li><p>Configuring the Operator to enable CDI is not supported on Rancher Kubernetes Engine 2 (RKE2).</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> driver must be blacklisted when using NVIDIA vGPU.
 Otherwise the driver fails to initialize the GPU with the error <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">enable</span> <span class="pre">MSI-X</span></code> in the system journal logs.
@@ -814,7 +816,7 @@ Choose Local if you want to route internal traffic within the node only.</p></li
 GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
 This manifests as GPU pods getting stuck indefinitely in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
 NVIDIA recommends that you upgrade the driver to version 570.172.08 to avoid this issue.
-For more detailed information, see GitHub issue <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">https://github.com/NVIDIA/gpu-operator/issues/1361</a>.</p></li>
+For more detailed information, see GitHub issue <a class="github reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1361">NVIDIA/gpu-operator#1361</a>.</p></li>
 <li><p>GPU Operator in CDI mode is not operational with RKE2.</p></li>
 </ul>
 </section>
@@ -3401,8 +3403,8 @@ would not be available after reboot.</p></li>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
 
 
