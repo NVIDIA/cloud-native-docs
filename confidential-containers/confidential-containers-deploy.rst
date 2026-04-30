@@ -28,7 +28,7 @@ These are key pieces of the NVIDIA Confidential Containers Reference Architectur
 
 Before you begin, refer to the :doc:`Confidential Containers Reference Architecture <overview>` for details on the reference architecture and the :doc:`Supported Platforms <supported-platforms>` page for the supported platforms.
 
-This guide assumes you are familiar with the NVIDIA GPU Operator, and Kata Containers, and Kubernetes cluster administration.
+This guide assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, and Kubernetes cluster administration.
 Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` and `Kata Containers <https://katacontainers.io/docs/>`_ documentation for more information on these software components.
 Refer to the `Kubernetes documentation <https://kubernetes.io/docs/home/>`_ for more information on Kubernetes cluster administration.
 
@@ -77,13 +77,13 @@ Hardware and BIOS
 
   If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.
 
-  If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance::
+  If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument for AMD CPUs, or ``intel_iommu=on`` for Intel CPUs. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance:
 
       ...
       GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
       ...
 
-  After making the change, configure the bootloader
+  After making the change, configure the bootloader.
 
   .. code-block:: console
 
@@ -127,7 +127,14 @@ Kubernetes Cluster
   Refer to the :ref:`Supported Software Components <coco-supported-software-components>` table for supported Kubernetes versions.
 
 * Helm installed on your cluster.
-  Refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+  Use the command below to install Helm or refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+
+  .. code-block:: console
+
+      $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+            && chmod 700 get_helm.sh \
+            && ./get_helm.sh
+
 
 * Enable the ``KubeletPodResourcesGet`` and ``RuntimeClassInImageCriApi`` Kubelet feature gates on your cluster.
 
@@ -198,9 +205,10 @@ Label Nodes
 
    The GPU Operator uses this label to determine what software components to deploy to a node.
    The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
+
    A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
    The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster. 
-   For more details on GPU Operator cluster topology, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
+   For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
 
    .. tip::
 
@@ -314,6 +322,9 @@ The minimum required version is 3.29.0.
          $ kubectl -n kata-system logs kata-deploy-<pod-name>
 
 
+      This should return logs for your ``kata-deploy`` pod.
+
+
 .. _coco-install-gpu-operator:
 
 Install the NVIDIA GPU Operator
@@ -327,6 +338,15 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      "nvidia" has been added to your repositories
+      Hang tight while we grab the latest from your chart repositories...
+      ...Successfully got an update from the "nvidia" chart repository
+      Update Complete. ⎈Happy Helming!⎈
 
 #. Install the GPU Operator with the following configuration:
 
@@ -524,7 +544,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       pod/cuda-vectoradd-kata created
 
 
-   Optional: Verify the pod is running.
+3. Optional: Verify the pod is running:
 
    .. code-block:: console 
 
@@ -537,7 +557,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       NAME                  READY   STATUS    RESTARTS   AGE
       cuda-vectoradd-kata   1/1     Running   0          10s
 
-3. View the logs from the pod after the container starts:
+4. View the logs from the pod after the container starts:
 
    .. code-block:: console
 
@@ -554,7 +574,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       Test PASSED
       Done
 
-4. Delete the pod:
+5. Delete the pod:
 
    .. code-block:: console
 
