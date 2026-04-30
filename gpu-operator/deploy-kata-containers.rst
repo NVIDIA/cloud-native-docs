@@ -78,14 +78,12 @@ The primary benefits of Kata Containers are as follows:
 Limitations and Restrictions
 ****************************
 
-* GPUs are available to containers as a single GPU in passthrough mode only.
+* GPUs are available to containers in passthrough mode only: either single-GPU passthrough
+  or multi-GPU passthrough on NVSwitch-based systems.
   vGPU is not supported.
 
-* Support is limited to initial installation and configuration only.
-  Upgrade and configuration of existing clusters for Kata Containers is not supported.
-
 * Support for Kata Containers is limited to the implementation described on this page.
-  The Operator offers Technology Preview support for Red Hat OpenShift sandbox containers.
+  The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.
 
 * NVIDIA supports the Operator and Kata Containers with the containerd runtime only.
 
@@ -352,14 +350,18 @@ The minimum required version is 3.29.0.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
    The ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are used to deploy :doc:`Confidential Containers <cc:index>`.
 
-   .. tip::
+   If you have an issue deploying the ``kata-deploy`` pod, you can view the logs with the following command.
+   Update the <pod-name> placeholder with the name of the ``kata-deploy`` pod.
 
-      If you have an issue deploying the ``kata-deploy`` pod, you can view the logs with the following command.
-      Update the <pod-name> placeholder with the name of the ``kata-deploy`` pod.
+   .. code-block:: console
 
-      .. code-block:: console
+      $ kubectl -n kata-system logs kata-deploy-<pod-name>
 
-         $ kubectl -n kata-system logs kata-deploy-<pod-name>
+   .. note::
+
+      To manage the lifecycle of Kata Containers, including upgrades and day-two operations,
+      install the `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__.
+      This Argo Workflows-based tool is the recommended way to manage Kata Containers deployments.
 
 
 Install the NVIDIA GPU Operator
