@@ -58,7 +58,7 @@ NVIDIA GPUs
 .. note::
 
     Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
-    Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` in the deployment guide for details.
+    Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` for details.
 
 .. note::
 
