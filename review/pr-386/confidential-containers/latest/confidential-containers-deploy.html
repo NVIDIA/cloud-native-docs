@@ -688,7 +688,7 @@ It can take a few minutes to return output.</p>
 <p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> section on this page for more details on the configuration options you can specify when installing the GPU Operator.</p>
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p>
 </li>
-<li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
+<li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
@@ -731,8 +731,8 @@ To run a sample workload, refer to the <a class="reference internal" href="#coco
 <p>For further configuration settings, refer to the following sections:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a></p></li>
-<li><p><a class="reference internal" href="#coco-configuration-multi-gpu-passthrough"><span class="std std-ref">Configuring Workload to use Multi-GPU Passthrough</span></a></p></li>
-<li><p><a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-configuration-multi-gpu-passthrough"><span class="std std-ref">Configuring Workloads to use Multi-GPU Passthrough</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring GPU or NVSwitch Resource Types Name</span></a></p></li>
 </ul>
 </section>
 </section>
@@ -762,8 +762,8 @@ To run a sample workload, refer to the <a class="reference internal" href="#coco
 <ul class="simple">
 <li><p>Set the runtime class to <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for SEV-SNP or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for TDX, depending on the node type where the workloads should run.</p></li>
 <li><p>In the sample above, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is the default resource type for GPUs.
-If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable for the sandbox device plugin.
-Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a> section on this page for more details.</p></li>
+If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable for the Kata device plugin.
+Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring GPU or NVSwitch Resource Types Name</span></a> section on this page for more details.</p></li>
 <li><p>If you have machines that support multi-GPU passthrough, use a pod deployment manifest that specifies 8 PGPU and 4 NVSwitch resources.</p></li>
 </ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
@@ -848,29 +848,58 @@ machine-style workloads and related operands.</p></td>
 Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kubevirt</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxDevicePlugin.env</span></code></p></td>
-<td><p>Optional list of environment variables passed to the NVIDIA Sandbox
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataSandboxDevicePlugin.env</span></code></p></td>
+<td><p>Optional list of environment variables passed to the NVIDIA Kata
 Device Plugin pod. Each list item is an <code class="docutils literal notranslate"><span class="pre">EnvVar</span></code> object with required
 <code class="docutils literal notranslate"><span class="pre">name</span></code> and optional <code class="docutils literal notranslate"><span class="pre">value</span></code> fields.
-Use the setting to configure <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> or <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> for the sandbox device plugin.
-Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a> section for more details.</p></td>
+Use the setting to configure <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> or <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> for the Kata sandbox device plugin.
+Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring GPU or NVSwitch Resource Types Name</span></a> section for more details.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code> (empty list)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<section id="configuring-gpu-or-nvswitch-specific-resource-types">
-<span id="coco-configuration-heterogeneous-clusters"></span><h3>Configuring GPU or NVSwitch Specific Resource Types<a class="headerlink" href="#configuring-gpu-or-nvswitch-specific-resource-types" title="Permalink to this headline">#</a></h3>
-<p>By default, the NVIDIA GPU Operator creates a single resource type for GPUs, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>.
-In clusters where all GPUs are the same model, a single resource type is sufficient.</p>
+<section id="configuring-gpu-or-nvswitch-resource-types-name">
+<span id="coco-configuration-heterogeneous-clusters"></span><h3>Configuring GPU or NVSwitch Resource Types Name<a class="headerlink" href="#configuring-gpu-or-nvswitch-resource-types-name" title="Permalink to this headline">#</a></h3>
+<p>By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code>.
+You can reference this name in your manifests to request GPU or NVSwitch resources for your workload.
+If you want to use a different name, you can set the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> or <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> environment variables in the Kata device plugin to your preferred name.
+In clusters where all GPUs are the same model, a single resource type is typically sufficient.</p>
 <p>In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
-To do this, specify an empty <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
-<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=P_GPU_ALIAS</span></code> and
-<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].value=&quot;&quot;</span></code>.</p>
-<p>When this variable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the sandbox device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
+To do this, specify an empty <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the Kata sandbox device plugin by adding the following to your GPU Operator installation:
+<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">kataSandboxDevicePlugin.env[0].value=&quot;&quot;</span></code>.</p>
+<p>When this variable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the Kata device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
 Use the exposed device resource types in pod specs by specifying respective resource limits.</p>
-<p>Similarly, NVSwitches are exposed as resources of type <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code> by default.
-You can set <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> to advertise model-specific NVSwitch resource types.</p>
+<p>Similarly, you can set <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> to advertise model-specific NVSwitch resource types.</p>
+<p>The following example installs the GPU Operator with both <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> and <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> configured:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
+   -n gpu-operator --create-namespace <span class="se">\</span>
+   nvidia/gpu-operator <span class="se">\</span>
+   --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+   --set sandboxWorkloads.mode<span class="o">=</span>kata <span class="se">\</span>
+   --set nfd.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+   --set nfd.nodefeaturerules<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+   --set kataSandboxDevicePlugin.env<span class="o">[</span><span class="m">0</span><span class="o">]</span>.name<span class="o">=</span>P_GPU_ALIAS <span class="se">\</span>
+   --set kataSandboxDevicePlugin.env<span class="o">[</span><span class="m">0</span><span class="o">]</span>.value<span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="se">\</span>
+   --set kataSandboxDevicePlugin.env<span class="o">[</span><span class="m">1</span><span class="o">]</span>.name<span class="o">=</span>NVSWITCH_ALIAS <span class="se">\</span>
+   --set kataSandboxDevicePlugin.env<span class="o">[</span><span class="m">1</span><span class="o">]</span>.value<span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="se">\</span>
+   --version<span class="o">=</span>v26.3.1
+</pre></div>
+</div>
+<p>After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> grep nvidia.com
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable was set in the <a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes</span></a> section.
+If you want to view the resource types for a different node, you can update the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable and run the command again.</p>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia.com/GH100_H100L_94GB&quot;: &quot;1&quot;</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="managing-the-confidential-computing-mode">
@@ -997,8 +1026,8 @@ A mode change is complete and successful when <code class="docutils literal notr
 </div>
 </section>
 </section>
-<section id="configuring-workload-to-use-multi-gpu-passthrough">
-<span id="coco-configuration-multi-gpu-passthrough"></span><h2>Configuring Workload to use Multi-GPU Passthrough<a class="headerlink" href="#configuring-workload-to-use-multi-gpu-passthrough" title="Permalink to this headline">#</a></h2>
+<section id="configuring-workloads-to-use-multi-gpu-passthrough">
+<span id="coco-configuration-multi-gpu-passthrough"></span><h2>Configuring Workloads to use Multi-GPU Passthrough<a class="headerlink" href="#configuring-workloads-to-use-multi-gpu-passthrough" title="Permalink to this headline">#</a></h2>
 <p>To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
 <span class="w">   </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
@@ -1107,7 +1136,7 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-sample-workload">Run a Sample Workload</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-gpu-operator-configuration-settings">Common GPU Operator Configuration Settings</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpu-or-nvswitch-specific-resource-types">Configuring GPU or NVSwitch Specific Resource Types</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpu-or-nvswitch-resource-types-name">Configuring GPU or NVSwitch Resource Types Name</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-confidential-computing-mode">Managing the Confidential Computing Mode</a><ul class="nav section-nav flex-column">
@@ -1116,7 +1145,7 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-workload-to-use-multi-gpu-passthrough">Configuring Workload to use Multi-GPU Passthrough</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-workloads-to-use-multi-gpu-passthrough">Configuring Workloads to use Multi-GPU Passthrough</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-image-pull-timeouts">Configure Image Pull Timeouts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
