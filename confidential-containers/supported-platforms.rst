@@ -119,7 +119,7 @@ Supported Software Components
      - 1.32 \+
    * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
        
-       Refer to the :ref:`GPU Operator Component Matrix <operator-component-matrix>` for the list of components and versions included in each release.
+       Refer to the :ref:`GPU Operator Component Matrix <gpuop:operator-component-matrix>` for the list of components and versions included in each release.
      - v26.3.1 and higher
    * - `Kata Containers <https://katacontainers.io/>`__
      - 3.29 (installed with ``kata-deploy`` Helm chart)
@@ -127,8 +127,9 @@ Supported Software Components
      - 0.4.0
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.4
-   * - `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__
-     - 1.12
+
+Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ to deploy Confidential Containers, however, Confidential GPU features are currently classified as Technology Preview by the downstream provider.
+
 
 
 

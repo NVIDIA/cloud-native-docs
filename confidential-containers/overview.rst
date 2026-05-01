@@ -75,6 +75,10 @@ The key values of this architecture approach are:
 
 .. image:: graphics/CoCo-Reference-Architecture.png
    :alt: High-Level Reference Architecture for Confidential Containers
+   :class: only-light
+
+.. image:: graphics/CoCo-Reference-Architecture-Dark.png
+    :class: only-dark
 
 *High-Level Reference Architecture for Confidential Containers*
 

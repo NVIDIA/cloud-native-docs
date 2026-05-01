@@ -28,7 +28,7 @@ These are key pieces of the NVIDIA Confidential Containers Reference Architectur
 
 Before you begin, refer to the :doc:`Confidential Containers Reference Architecture <overview>` for details on the reference architecture and the :doc:`Supported Platforms <supported-platforms>` page for the supported platforms.
 
-This guide assumes you are familiar with the NVIDIA GPU Operator, and Kata Containers, and Kubernetes cluster administration.
+This guide assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, and Kubernetes cluster administration.
 Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` and `Kata Containers <https://katacontainers.io/docs/>`_ documentation for more information on these software components.
 Refer to the `Kubernetes documentation <https://kubernetes.io/docs/home/>`_ for more information on Kubernetes cluster administration.
 
@@ -50,7 +50,7 @@ The high-level workflow for configuring Confidential Containers is as follows:
    The GPU Operator uses the node labels to determine what software components to deploy to a node.
 
 After installation, you can :ref:`run a sample GPU workload <coco-run-sample-workload>` in a confidential container.
-You can also configure :doc:`Attestation <attestation>` with the Trustee framework. 
+You can also configure :doc:`Attestation <attestation>` with the Trustee framework.
 The Trustee attestation service is typically deployed on a separate, trusted environment.
 
 After configuration, you can schedule workloads that request GPU resources and use the ``kata-qemu-nvidia-gpu-tdx`` or ``kata-qemu-nvidia-gpu-snp`` runtime classes for secure deployment.
@@ -68,7 +68,7 @@ Hardware and BIOS
 
 * Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS). With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER). Enable these features in the host BIOS.
 
-* Configure hosts to support IOMMU. 
+* Configure hosts to support IOMMU.
   You can check if your host is configured for IOMMU by running the following command:
 
   .. code-block:: console
@@ -77,13 +77,15 @@ Hardware and BIOS
 
   If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.
 
-  If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance::
+  If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument for AMD CPUs, or ``intel_iommu=on`` for Intel CPUs. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance:
+
+  .. code-block:: console
 
       ...
       GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
       ...
 
-  After making the change, configure the bootloader
+  After making the change, configure the bootloader.
 
   .. code-block:: console
 
@@ -127,7 +129,14 @@ Kubernetes Cluster
   Refer to the :ref:`Supported Software Components <coco-supported-software-components>` table for supported Kubernetes versions.
 
 * Helm installed on your cluster.
-  Refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+  Use the command below to install Helm or refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+
+  .. code-block:: console
+
+      $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+            && chmod 700 get_helm.sh \
+            && ./get_helm.sh
+
 
 * Enable the ``KubeletPodResourcesGet`` and ``RuntimeClassInImageCriApi`` Kubelet feature gates on your cluster.
 
@@ -158,8 +167,8 @@ Kubernetes Cluster
 
 .. _installation-and-configuration:
 
-Installation and Configuration
-===============================
+Installation
+============
 
 .. _coco-label-nodes:
 
@@ -198,9 +207,10 @@ Label Nodes
 
    The GPU Operator uses this label to determine what software components to deploy to a node.
    The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
+
    A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
-   The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster. 
-   For more details on GPU Operator cluster topology, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
+   The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
+   For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
 
    .. tip::
 
@@ -314,6 +324,9 @@ The minimum required version is 3.29.0.
          $ kubectl -n kata-system logs kata-deploy-<pod-name>
 
 
+      This should return logs for your ``kata-deploy`` pod.
+
+
 .. _coco-install-gpu-operator:
 
 Install the NVIDIA GPU Operator
@@ -327,6 +340,15 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      "nvidia" has been added to your repositories
+      Hang tight while we grab the latest from your chart repositories...
+      ...Successfully got an update from the "nvidia" chart repository
+      Update Complete. ⎈Happy Helming!⎈
 
 #. Install the GPU Operator with the following configuration:
 
@@ -360,11 +382,11 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
       The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
       It can take a few minutes to return output.
 
-   Refer to the :ref:`Confidential Containers Configuration Settings <coco-configuration-settings>` section on this page for more details on the Confidential Containers configuration options you can specify when installing the GPU Operator.
+   Refer to the :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` section on this page for more details on the configuration options you can specify when installing the GPU Operator.
 
    Refer to the :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>` for more details on the additional general configuration options you can specify when installing the GPU Operator.
 
-#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:
+#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
 
    .. code-block:: console
 
@@ -406,62 +428,14 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
       If you have an issue deploying the GPU Operator, refer to the :doc:`NVIDIA GPU Operator troubleshooting guide <gpuop:troubleshooting>` for guidance on troubleshooting and resolving issues.
 
-.. _coco-configuration-settings:
+With Kata Containers and the GPU Operator installed, you can start using your cluster to run Confidential Containers workloads.
+To run a sample workload, refer to the :ref:`Run a Sample Workload <coco-run-sample-workload>` section.
 
-Optional: Confidential Containers Configuration Settings
---------------------------------------------------------
+For further configuration settings, refer to the following sections:
 
-The following are the available GPU Operator configuration settings to enable Confidential Containers:
-
-.. list-table::
-   :widths: 20 50 30
-   :header-rows: 1
-
-   * - Parameter
-     - Description
-     - Default
-
-   * - ``sandboxWorkloads.enabled``
-     - Enables sandbox workload management in the GPU Operator for virtual
-       machine-style workloads and related operands.
-     - ``false``
-
-   * - ``sandboxWorkloads.defaultWorkload``
-     - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
-
-       Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-     - ``container``
-
-   * - ``sandboxWorkloads.mode``
-     - Specifies the sandbox mode to use when deploying sandbox workloads.
-       Accepted values are ``kubevirt`` (default) and ``kata``.
-     - ``kubevirt``
-
-   * - ``sandboxDevicePlugin.env``
-     - Optional list of environment variables passed to the NVIDIA Sandbox
-       Device Plugin pod. Each list item is an ``EnvVar`` object with required
-       ``name`` and optional ``value`` fields.
-     - ``[]`` (empty list)
-
-.. _coco-configuration-heterogeneous-clusters:
-
-Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types
-----------------------------------------------------------------------------------------------
-
-By default, the NVIDIA GPU Operator creates a single resource type for GPUs, ``nvidia.com/pgpu``.
-In clusters where all GPUs are the same model, a single resource type is sufficient.
-
-In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
-To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
-``--set sandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
-``--set sandboxDevicePlugin.env[0].value=""``.
-
-When this variable is set to ``""``, the sandbox device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
-Use the exposed device resource types in pod specs by specifying respective resource limits.
-
-Similarly, NVSwitches are exposed as resources of type ``nvidia.com/nvswitch`` by default. 
-You can include ``--set sandboxDevicePlugin.env[0].name=NVSWITCH_ALIAS`` and
-``--set sandboxDevicePlugin.env[0].value=""`` for the device plugin environment variable when installing the GPU Operator to configure advertising behavior similar to ``P_GPU_ALIAS``.
+* :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>`
+* :ref:`Configuring Workloads to use Multi-GPU Passthrough <coco-configuration-multi-gpu-passthrough>`
+* :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>`
 
 .. _coco-run-sample-workload:
 
@@ -496,8 +470,8 @@ A pod manifest for a confidential container GPU workload requires that you speci
    * Set the runtime class to ``kata-qemu-nvidia-gpu-snp`` for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX, depending on the node type where the workloads should run.
 
    * In the sample above, ``nvidia.com/pgpu`` is the default resource type for GPUs.
-     If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the sandbox device plugin.
-     Refer to the :ref:`Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types <coco-configuration-heterogeneous-clusters>` section on this page for more details.
+     If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the Kata device plugin.
+     Refer to the :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>` section on this page for more details.
 
    * If you have machines that support multi-GPU passthrough, use a pod deployment manifest that specifies 8 PGPU and 4 NVSwitch resources.
 
@@ -516,7 +490,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
    .. code-block:: console
 
       $ kubectl apply -f cuda-vectoradd-kata.yaml
-   
+
    *Example Output:*
 
    .. code-block:: output
@@ -524,9 +498,9 @@ A pod manifest for a confidential container GPU workload requires that you speci
       pod/cuda-vectoradd-kata created
 
 
-   Optional: Verify the pod is running.
+3. Verify the pod is running:
 
-   .. code-block:: console 
+   .. code-block:: console
 
       $ kubectl get pod cuda-vectoradd-kata
 
@@ -537,7 +511,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       NAME                  READY   STATUS    RESTARTS   AGE
       cuda-vectoradd-kata   1/1     Running   0          10s
 
-3. View the logs from the pod after the container starts:
+4. View the logs from the pod after the container starts:
 
    .. code-block:: console
 
@@ -554,11 +528,105 @@ A pod manifest for a confidential container GPU workload requires that you speci
       Test PASSED
       Done
 
-4. Delete the pod:
+5. Delete the pod:
 
    .. code-block:: console
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
+
+
+.. _coco-configuration-settings:
+
+Common GPU Operator Configuration Settings
+===========================================
+
+The following are the available GPU Operator configuration settings to enable Confidential Containers:
+
+.. list-table::
+   :widths: 20 50 30
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+     - Default
+
+   * - ``sandboxWorkloads.enabled``
+     - Enables sandbox workload management in the GPU Operator for virtual
+       machine-style workloads and related operands.
+     - ``false``
+
+   * - ``sandboxWorkloads.defaultWorkload``
+     - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
+
+       Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
+     - ``container``
+
+   * - ``sandboxWorkloads.mode``
+     - Specifies the sandbox mode to use when deploying sandbox workloads.
+       Accepted values are ``kubevirt`` (default) and ``kata``.
+     - ``kubevirt``
+
+   * - ``kataSandboxDevicePlugin.env``
+     - Optional list of environment variables passed to the NVIDIA Kata
+       Device Plugin pod. Each list item is an ``EnvVar`` object with required
+       ``name`` and optional ``value`` fields.
+       Use the setting to configure ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` for the Kata sandbox device plugin.
+       Refer to the :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>` section for more details.
+     - ``[]`` (empty list)
+
+.. _coco-configuration-heterogeneous-clusters:
+
+Configuring GPU or NVSwitch Resource Types Name
+------------------------------------------------
+
+By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, ``nvidia.com/pgpu`` and ``nvidia.com/nvswitch``.
+You can reference this name in your manifests to request GPU or NVSwitch resources for your workload.
+If you want to use a different name, you can set the ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` environment variables in the Kata device plugin to your preferred name.
+In clusters where all GPUs are the same model, a single resource type is typically sufficient.
+
+In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
+To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the Kata sandbox device plugin by adding the following to your GPU Operator installation:
+``--set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
+``--set kataSandboxDevicePlugin.env[0].value=""``.
+
+When this variable is set to ``""``, the Kata device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
+Use the exposed device resource types in pod specs by specifying respective resource limits.
+
+Similarly, you can set ``NVSWITCH_ALIAS`` to ``""`` to advertise model-specific NVSwitch resource types.
+
+The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``NVSWITCH_ALIAS`` configured:
+
+.. code-block:: console
+
+   $ helm install --wait --timeout 10m --generate-name \
+      -n gpu-operator --create-namespace \
+      nvidia/gpu-operator \
+      --set sandboxWorkloads.enabled=true \
+      --set sandboxWorkloads.mode=kata \
+      --set nfd.enabled=true \
+      --set nfd.nodefeaturerules=true \
+      --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
+      --set kataSandboxDevicePlugin.env[0].value="" \
+      --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
+      --set kataSandboxDevicePlugin.env[1].value="" \
+      --version=v26.3.1
+
+After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
+
+.. code-block:: console
+
+   $ kubectl get node $NODE_NAME -o json | grep nvidia.com
+
+.. note::
+   The ``NODE_NAME`` environment variable was set in the :ref:`Label Nodes <coco-label-nodes>` section.
+   If you want to view the resource types for a different node, you can update the ``NODE_NAME`` environment variable and run the command again.
+
+*Example Output:*
+
+.. code-block:: output
+
+   "nvidia.com/GH100_H100L_94GB": "1"
+
 
 
 .. _managing-confidential-computing-mode:
@@ -600,15 +668,15 @@ The supported modes are:
 
        On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
        which claims exclusive use of the NVSwitches for a single Confidential Container
-       virtual machine. 
+       virtual machine.
        If you are using NVIDIA Hopper GPUs for multi-GPU passthrough,
-       set the GPU mode to ``ppcie`` mode. 
-       
+       set the GPU mode to ``ppcie`` mode.
+
        The NVIDIA Blackwell architecture uses NVLink
        encryption which places the switches outside of the Trusted Computing Base (TCB),
        meaning the ``ppcie`` mode is not required. Use ``on`` mode in this case.
      - node-level override
-     
+
 You can set a cluster-wide default mode, and you can set the mode on individual nodes.
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
@@ -682,11 +750,11 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
 
 * The ``nvidia.com/cc.mode`` label is the desired state.
 
-* The ``nvidia.com/cc.mode.state`` label reflects the mode that was last successfully applied to the GPU hardware by the Confidential Computing Manager. 
+* The ``nvidia.com/cc.mode.state`` label reflects the mode that was last successfully applied to the GPU hardware by the Confidential Computing Manager.
   Its value mirrors the applied mode ``on``, ``off``, or ``ppcie``, after the transition is complete on the node.
   A value of ``failed`` indicates that the last mode transition encountered an error.
 
-* The ``nvidia.com/cc.ready.state`` label indicates whether the node is ready to run Confidential Container workloads. 
+* The ``nvidia.com/cc.ready.state`` label indicates whether the node is ready to run Confidential Container workloads.
   It is set to ``true`` when ``cc.mode.state`` is ``on`` or ``ppcie``, and ``false`` when ``cc.mode.state`` is ``off``.
 
 .. note::
@@ -696,8 +764,10 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
    ``nvidia.com/cc.mode.state`` have the same value.
 
 
-Configuring Multi-GPU Passthrough Support
-=========================================
+.. _coco-configuration-multi-gpu-passthrough:
+
+Configuring Workloads to use Multi-GPU Passthrough
+===================================================
 
 To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:
 
@@ -712,7 +782,7 @@ You must assign all the GPUs and NVSwitches on the node in your manifest to the 
 
 On the NVIDIA Hopper architecture, multi-GPU passthrough uses protected PCIe (PPCIE), which claims exclusive use of the NVSwitches for a single Confidential Container.
 When using NVIDIA Hopper nodes for multi-GPU passthrough, transition your node's GPU Confidential Computing mode to ``ppcie`` by applying the ``nvidia.com/cc.mode=ppcie`` label.
-Refer to the :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` section for details. 
+Refer to the :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` section for details.
 
 The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to ``on``.
 
@@ -725,9 +795,24 @@ Configure Image Pull Timeouts
 The guest-pull mechanism pulls images inside the confidential VM, which means large images can take longer to download and delay container start.
 Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
 
-Configure your cluster's ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ with a higher timeout value than the two-minute default.
-Consider setting this value to 20 minutes (``20m``) to match the default values for the NVIDIA shim configurations in Kata Containers ``create_container_timeout`` and the agent's ``image_pull_timeout``.
+If you plan to use large images, increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the NVIDIA shim configurations in Kata Containers.
 
+Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
+
+.. code-block:: yaml
+   :emphasize-lines: 3
+
+   apiVersion: kubelet.config.k8s.io/v1beta1
+   kind: KubeletConfiguration
+   runtimeRequestTimeout: 20m
+
+Restart the kubelet service to apply the change:
+
+.. code-block:: console
+
+   $ sudo systemctl restart kubelet
+
+Additional timeouts to consider updating are the NVIDIA Shim and Kata Agent Policy timeouts.
 The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes).
 This controls the time the shim allows for a container to remain in container creating state.
 
