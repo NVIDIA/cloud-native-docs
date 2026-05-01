@@ -79,6 +79,8 @@ Hardware and BIOS
 
   If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument for AMD CPUs, or ``intel_iommu=on`` for Intel CPUs. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance:
 
+  .. code-block:: console
+
       ...
       GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
       ...
@@ -207,7 +209,7 @@ Label Nodes
    The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
 
    A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
-   The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster. 
+   The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
    For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
 
    .. tip::
@@ -544,7 +546,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       pod/cuda-vectoradd-kata created
 
 
-3. Optional: Verify the pod is running:
+3. Verify the pod is running:
 
    .. code-block:: console 
 

@@ -119,7 +119,7 @@ Supported Software Components
      - 1.32 \+
    * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
        
-       Refer to the :ref:`GPU Operator Component Matrix <operator-component-matrix>` for the list of components and versions included in each release.
+       Refer to the :ref:`GPU Operator Component Matrix <gpuop:operator-component-matrix>` for the list of components and versions included in each release.
      - v26.3.1 and higher
    * - `Kata Containers <https://katacontainers.io/>`__
      - 3.29 (installed with ``kata-deploy`` Helm chart)
