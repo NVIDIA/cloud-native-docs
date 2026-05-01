@@ -127,8 +127,9 @@ Supported Software Components
      - 0.4.0
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.4
-   * - `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__
-     - 1.12
+
+Additionally, `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ version 1.12 is supported as a Technology Preview and not supported in production environments.
+
 
 
 

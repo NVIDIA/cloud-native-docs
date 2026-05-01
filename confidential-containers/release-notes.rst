@@ -63,7 +63,7 @@ Key Features
   - Kubernetes 1.32+
   - Ubuntu 25.10 (host OS)
 
-* This release supports Red Hat OpenShift Sandboxed Containers 1.12.
+* This release has Technology Support for Red Hat OpenShift Sandboxed Containers 1.12.
 
 
 Limitations and Restrictions
