@@ -78,9 +78,9 @@ The primary benefits of Kata Containers are as follows:
 Limitations and Restrictions
 ****************************
 
-* GPUs are available to containers in passthrough mode only: either single-GPU passthrough
-  or multi-GPU passthrough on NVSwitch-based systems.
-  vGPU is not supported.
+* For GPU passthrough workloads, all GPUs must be assigned to one Kata Container virtual machine.
+   Configuring only some GPUs on a node for Kata Containers is not supported.
+   vGPU is not supported.
 
 * Support for Kata Containers is limited to the implementation described on this page.
   The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.
