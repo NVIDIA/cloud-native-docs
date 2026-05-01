@@ -511,8 +511,8 @@ This feature gate is required to support pod deployments that use multiple snaps
 </ul>
 </section>
 </section>
-<section id="installation-and-configuration">
-<span id="id1"></span><h2>Installation and Configuration<a class="headerlink" href="#installation-and-configuration" title="Permalink to this headline">#</a></h2>
+<section id="installation">
+<span id="installation-and-configuration"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <section id="label-nodes">
 <span id="coco-label-nodes"></span><h3>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
@@ -685,7 +685,7 @@ Update the &lt;pod-name&gt; placeholder with the name of the <code class="docuti
 <p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
 It can take a few minutes to return output.</p>
 </div>
-<p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Confidential Containers Configuration Settings</span></a> section on this page for more details on the Confidential Containers configuration options you can specify when installing the GPU Operator.</p>
+<p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> section on this page for more details on the configuration options you can specify when installing the GPU Operator.</p>
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p>
 </li>
 <li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:</p>
@@ -726,62 +726,14 @@ It can take a few minutes to return output.</p>
 </div>
 </li>
 </ol>
-</section>
-<section id="optional-confidential-containers-configuration-settings">
-<span id="coco-configuration-settings"></span><h3>Optional: Confidential Containers Configuration Settings<a class="headerlink" href="#optional-confidential-containers-configuration-settings" title="Permalink to this headline">#</a></h3>
-<p>The following are the available GPU Operator configuration settings to enable Confidential Containers:</p>
-<div class="pst-scrollable-table-container"><table class="colwidths-given table">
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 50%" />
-<col style="width: 30%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Default</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code></p></td>
-<td><p>Enables sandbox workload management in the GPU Operator for virtual
-machine-style workloads and related operands.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
-<td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
-<p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.</p>
-</td>
-<td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode</span></code></p></td>
-<td><p>Specifies the sandbox mode to use when deploying sandbox workloads.
-Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">kubevirt</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxDevicePlugin.env</span></code></p></td>
-<td><p>Optional list of environment variables passed to the NVIDIA Sandbox
-Device Plugin pod. Each list item is an <code class="docutils literal notranslate"><span class="pre">EnvVar</span></code> object with required
-<code class="docutils literal notranslate"><span class="pre">name</span></code> and optional <code class="docutils literal notranslate"><span class="pre">value</span></code> fields.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code> (empty list)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="optional-configuring-the-sandbox-device-plugin-to-use-gpu-or-nvswitch-specific-resource-types">
-<span id="coco-configuration-heterogeneous-clusters"></span><h3>Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types<a class="headerlink" href="#optional-configuring-the-sandbox-device-plugin-to-use-gpu-or-nvswitch-specific-resource-types" title="Permalink to this headline">#</a></h3>
-<p>By default, the NVIDIA GPU Operator creates a single resource type for GPUs, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>.
-In clusters where all GPUs are the same model, a single resource type is sufficient.</p>
-<p>In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
-To do this, specify an empty <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
-<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=P_GPU_ALIAS</span></code> and
-<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].value=&quot;&quot;</span></code>.</p>
-<p>When this variable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the sandbox device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
-Use the exposed device resource types in pod specs by specifying respective resource limits.</p>
-<p>Similarly, NVSwitches are exposed as resources of type <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code> by default.
-You can include <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=NVSWITCH_ALIAS</span></code> and
-<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].value=&quot;&quot;</span></code> for the device plugin environment variable when installing the GPU Operator to configure advertising behavior similar to <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code>.</p>
+<p>With Kata Containers and the GPU Operator installed, you can start using your cluster to run Confidential Containers workloads.
+To run a sample workload, refer to the <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">Run a Sample Workload</span></a> section.</p>
+<p>For further configuration settings, refer to the following sections:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#managing-confidential-computing-mode"><span class="std std-ref">Managing the Confidential Computing Mode</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-configuration-multi-gpu-passthrough"><span class="std std-ref">Configuring Workload to use Multi-GPU Passthrough</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a></p></li>
+</ul>
 </section>
 </section>
 <section id="run-a-sample-workload">
@@ -863,6 +815,63 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 </div>
 </li>
 </ol>
+</section>
+<section id="common-gpu-operator-configuration-settings">
+<span id="coco-configuration-settings"></span><h2>Common GPU Operator Configuration Settings<a class="headerlink" href="#common-gpu-operator-configuration-settings" title="Permalink to this headline">#</a></h2>
+<p>The following are the available GPU Operator configuration settings to enable Confidential Containers:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 50%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled</span></code></p></td>
+<td><p>Enables sandbox workload management in the GPU Operator for virtual
+machine-style workloads and related operands.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
+<td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode</span></code></p></td>
+<td><p>Specifies the sandbox mode to use when deploying sandbox workloads.
+Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kubevirt</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxDevicePlugin.env</span></code></p></td>
+<td><p>Optional list of environment variables passed to the NVIDIA Sandbox
+Device Plugin pod. Each list item is an <code class="docutils literal notranslate"><span class="pre">EnvVar</span></code> object with required
+<code class="docutils literal notranslate"><span class="pre">name</span></code> and optional <code class="docutils literal notranslate"><span class="pre">value</span></code> fields.
+Use the setting to configure <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> or <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> for the sandbox device plugin.
+Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a> section for more details.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code> (empty list)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="configuring-gpu-or-nvswitch-specific-resource-types">
+<span id="coco-configuration-heterogeneous-clusters"></span><h3>Configuring GPU or NVSwitch Specific Resource Types<a class="headerlink" href="#configuring-gpu-or-nvswitch-specific-resource-types" title="Permalink to this headline">#</a></h3>
+<p>By default, the NVIDIA GPU Operator creates a single resource type for GPUs, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>.
+In clusters where all GPUs are the same model, a single resource type is sufficient.</p>
+<p>In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
+To do this, specify an empty <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
+<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].name=P_GPU_ALIAS</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxDevicePlugin.env[0].value=&quot;&quot;</span></code>.</p>
+<p>When this variable is set to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, the sandbox device plugin creates GPU model-specific resource types, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H100L_94GB</span></code>, instead of the default <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> type.
+Use the exposed device resource types in pod specs by specifying respective resource limits.</p>
+<p>Similarly, NVSwitches are exposed as resources of type <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code> by default.
+You can set <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> to advertise model-specific NVSwitch resource types.</p>
+</section>
 </section>
 <section id="managing-the-confidential-computing-mode">
 <span id="managing-confidential-computing-mode"></span><h2>Managing the Confidential Computing Mode<a class="headerlink" href="#managing-the-confidential-computing-mode" title="Permalink to this headline">#</a></h2>
@@ -988,8 +997,8 @@ A mode change is complete and successful when <code class="docutils literal notr
 </div>
 </section>
 </section>
-<section id="configuring-multi-gpu-passthrough-support">
-<h2>Configuring Multi-GPU Passthrough Support<a class="headerlink" href="#configuring-multi-gpu-passthrough-support" title="Permalink to this headline">#</a></h2>
+<section id="configuring-workload-to-use-multi-gpu-passthrough">
+<span id="coco-configuration-multi-gpu-passthrough"></span><h2>Configuring Workload to use Multi-GPU Passthrough<a class="headerlink" href="#configuring-workload-to-use-multi-gpu-passthrough" title="Permalink to this headline">#</a></h2>
 <p>To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
 <span class="w">   </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
@@ -1003,12 +1012,22 @@ Refer to the <a class="reference internal" href="#managing-confidential-computin
 <p>The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to <code class="docutils literal notranslate"><span class="pre">on</span></code>.</p>
 </section>
 <section id="configure-image-pull-timeouts">
-<span id="id2"></span><h2>Configure Image Pull Timeouts<a class="headerlink" href="#configure-image-pull-timeouts" title="Permalink to this headline">#</a></h2>
+<span id="id1"></span><h2>Configure Image Pull Timeouts<a class="headerlink" href="#configure-image-pull-timeouts" title="Permalink to this headline">#</a></h2>
 <p>The guest-pull mechanism pulls images inside the confidential VM, which means large images can take longer to download and delay container start.
 Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.</p>
-<p>Configure your cluster’s <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> with a higher timeout value than the two-minute default.
-Consider setting this value to 20 minutes (<code class="docutils literal notranslate"><span class="pre">20m</span></code>) to match the default values for the NVIDIA shim configurations in Kata Containers <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> and the agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.</p>
-<p>The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
+<p>If you plan to use large images, increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the NVIDIA shim configurations in Kata Containers.</p>
+<p>Add or update the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> field in your kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="hll"><span class="nt">runtimeRequestTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20m</span><span class="w"></span>
+</span></pre></div>
+</div>
+<p>Restart the kubelet service to apply the change:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
+</pre></div>
+</div>
+<p>Additional timeouts to consider updating are the NVIDIA Shim and Kata Agent Policy timeouts.
+The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
 This controls the time the shim allows for a container to remain in container creating state.</p>
 <p>If you need a timeout of more than 1200 seconds, you will also need to adjust Kata Agent Policy’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
 To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:</span> <span class="pre">&quot;...&quot;</span></code> annotation.</p>
@@ -1080,22 +1099,24 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-cluster">Kubernetes Cluster</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-configuration">Installation and Configuration</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes">Label Nodes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-confidential-containers-configuration-settings">Optional: Confidential Containers Configuration Settings</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-configuring-the-sandbox-device-plugin-to-use-gpu-or-nvswitch-specific-resource-types">Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-sample-workload">Run a Sample Workload</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-gpu-operator-configuration-settings">Common GPU Operator Configuration Settings</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpu-or-nvswitch-specific-resource-types">Configuring GPU or NVSwitch Specific Resource Types</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-the-confidential-computing-mode">Managing the Confidential Computing Mode</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-cluster-wide-default-mode">Setting a Cluster-Wide Default Mode</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-node-level-mode">Setting a Node-Level Mode</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-multi-gpu-passthrough-support">Configuring Multi-GPU Passthrough Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-workload-to-use-multi-gpu-passthrough">Configuring Workload to use Multi-GPU Passthrough</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-image-pull-timeouts">Configure Image Pull Timeouts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
