@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 01, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -468,7 +468,7 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/license
 </div>
 </li>
 <li><p>You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.</p></li>
-<li><p>Git and Docker or Podman are required to build the vGPU driver image from source repository and push to the private registry.</p></li>
+<li><p>Git and Docker are required to build the vGPU driver image from source repository and push to the private registry.</p></li>
 <li><p>Each Kubernetes worker node in the cluster has access to the private registry.
 Private registry access is usually managed through image pull secrets.
 You specify the secrets to the NVIDIA GPU Operator when you install the Operator with Helm.</p>
@@ -540,7 +540,12 @@ then the <code class="docutils literal notranslate"><span class="pre">VGPU_DRIVE
 </li>
 </ul>
 </li>
-<li><p>Build the driver container image:</p>
+<li><p>Build the driver container image.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Docker is the only supported container tool for building the driver container image.
+Multi-architecture builds additionally require <a class="reference external" href="https://github.com/docker/buildx">buildx</a>.</p>
+</div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">VGPU_GUEST_DRIVER_VERSION</span><span class="o">=</span><span class="si">${</span><span class="nv">VGPU_DRIVER_VERSION</span><span class="si">}</span> <span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="si">${</span><span class="nv">PRIVATE_REGISTRY</span><span class="si">}</span>/driver make build-vgpuguest-<span class="si">${</span><span class="nv">OS_TAG</span><span class="si">}</span>
 </pre></div>
 </div>
