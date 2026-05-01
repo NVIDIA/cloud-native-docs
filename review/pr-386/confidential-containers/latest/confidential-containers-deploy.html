@@ -436,11 +436,11 @@ You can check if your host is configured for IOMMU by running the following comm
 </div>
 <p>If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.</p>
 <p>If the host is not configured or if you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument for AMD CPUs, or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> for Intel CPUs. For most Linux distributions, add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
-<blockquote>
-<div><p>…
-GRUB_CMDLINE_LINUX_DEFAULT=”quiet amd_iommu=on modprobe.blacklist=nouveau”
-…</p>
-</div></blockquote>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
 <p>After making the change, configure the bootloader.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-grub
 </pre></div>
@@ -833,7 +833,7 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Verify the pod is running:</p>
+<li><p>Verify the pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
 </pre></div>
 </div>
