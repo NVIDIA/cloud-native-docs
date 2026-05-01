@@ -386,7 +386,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
    Refer to the :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>` for more details on the additional general configuration options you can specify when installing the GPU Operator.
 
-#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Sandbox Device Plugin and VFIO Manager operands, are running:
+#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
 
    .. code-block:: console
 
@@ -434,8 +434,8 @@ To run a sample workload, refer to the :ref:`Run a Sample Workload <coco-run-sam
 For further configuration settings, refer to the following sections:
 
 * :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>`
-* :ref:`Configuring Workload to use Multi-GPU Passthrough <coco-configuration-multi-gpu-passthrough>`
-* :ref:`Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types <coco-configuration-heterogeneous-clusters>`
+* :ref:`Configuring Workloads to use Multi-GPU Passthrough <coco-configuration-multi-gpu-passthrough>`
+* :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>`
 
 .. _coco-run-sample-workload:
 
@@ -470,8 +470,8 @@ A pod manifest for a confidential container GPU workload requires that you speci
    * Set the runtime class to ``kata-qemu-nvidia-gpu-snp`` for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX, depending on the node type where the workloads should run.
 
    * In the sample above, ``nvidia.com/pgpu`` is the default resource type for GPUs.
-     If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the sandbox device plugin.
-     Refer to the :ref:`Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types <coco-configuration-heterogeneous-clusters>` section on this page for more details.
+     If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the Kata device plugin.
+     Refer to the :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>` section on this page for more details.
 
    * If you have machines that support multi-GPU passthrough, use a pod deployment manifest that specifies 8 PGPU and 4 NVSwitch resources.
 
@@ -566,32 +566,68 @@ The following are the available GPU Operator configuration settings to enable Co
        Accepted values are ``kubevirt`` (default) and ``kata``.
      - ``kubevirt``
 
-   * - ``sandboxDevicePlugin.env``
-     - Optional list of environment variables passed to the NVIDIA Sandbox
+   * - ``kataSandboxDevicePlugin.env``
+     - Optional list of environment variables passed to the NVIDIA Kata
        Device Plugin pod. Each list item is an ``EnvVar`` object with required
        ``name`` and optional ``value`` fields.
-       Use the setting to configure ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` for the sandbox device plugin.
-       Refer to the :ref:`Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types <coco-configuration-heterogeneous-clusters>` section for more details.
+       Use the setting to configure ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` for the Kata sandbox device plugin.
+       Refer to the :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>` section for more details.
      - ``[]`` (empty list)
 
 .. _coco-configuration-heterogeneous-clusters:
 
-Configuring GPU or NVSwitch Specific Resource Types
-----------------------------------------------------
+Configuring GPU or NVSwitch Resource Types Name
+------------------------------------------------
 
-By default, the NVIDIA GPU Operator creates a single resource type for GPUs, ``nvidia.com/pgpu``.
-In clusters where all GPUs are the same model, a single resource type is sufficient.
+By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, ``nvidia.com/pgpu`` and ``nvidia.com/nvswitch``.
+You can reference this name in your manifests to request GPU or NVSwitch resources for your workload.
+If you want to use a different name, you can set the ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` environment variables in the Kata device plugin to your preferred name.
+In clusters where all GPUs are the same model, a single resource type is typically sufficient.
 
 In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
-To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
-``--set sandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
-``--set sandboxDevicePlugin.env[0].value=""``.
+To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the Kata sandbox device plugin by adding the following to your GPU Operator installation:
+``--set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
+``--set kataSandboxDevicePlugin.env[0].value=""``.
 
-When this variable is set to ``""``, the sandbox device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
+When this variable is set to ``""``, the Kata device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
 Use the exposed device resource types in pod specs by specifying respective resource limits.
 
-Similarly, NVSwitches are exposed as resources of type ``nvidia.com/nvswitch`` by default.
-You can set ``NVSWITCH_ALIAS`` to ``""`` to advertise model-specific NVSwitch resource types.
+Similarly, you can set ``NVSWITCH_ALIAS`` to ``""`` to advertise model-specific NVSwitch resource types.
+
+The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``NVSWITCH_ALIAS`` configured:
+
+.. code-block:: console
+
+   $ helm install --wait --timeout 10m --generate-name \
+      -n gpu-operator --create-namespace \
+      nvidia/gpu-operator \
+      --set sandboxWorkloads.enabled=true \
+      --set sandboxWorkloads.mode=kata \
+      --set nfd.enabled=true \
+      --set nfd.nodefeaturerules=true \
+      --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
+      --set kataSandboxDevicePlugin.env[0].value="" \
+      --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
+      --set kataSandboxDevicePlugin.env[1].value="" \
+      --version=v26.3.1
+
+After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
+
+.. code-block:: console
+
+   $ kubectl get node $NODE_NAME -o json | grep nvidia.com
+
+.. note::
+   The ``NODE_NAME`` environment variable was set in the :ref:`Label Nodes <coco-label-nodes>` section.
+   If you want to view the resource types for a different node, you can update the ``NODE_NAME`` environment variable and run the command again.
+
+*Example Output:*
+
+.. code-block:: output
+
+   "nvidia.com/GH100_H100L_94GB": "1"
+
+
 
 .. _managing-confidential-computing-mode:
 
@@ -730,8 +766,8 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
 
 .. _coco-configuration-multi-gpu-passthrough:
 
-Configuring Workload to use Multi-GPU Passthrough
-=================================================
+Configuring Workloads to use Multi-GPU Passthrough
+===================================================
 
 To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:
 
@@ -776,7 +812,7 @@ Restart the kubelet service to apply the change:
 
    $ sudo systemctl restart kubelet
 
-Additional timeouts to consider updating are the NVIDIA Shim and Kata Agent Policy timeouts. 
+Additional timeouts to consider updating are the NVIDIA Shim and Kata Agent Policy timeouts.
 The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes).
 This controls the time the shim allows for a container to remain in container creating state.
 
