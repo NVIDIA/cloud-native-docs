@@ -187,6 +187,10 @@ Improvements
 
   Refer to the :doc:`Kata Containers documentation <deploy-kata-containers>` for full details on configuring the GPU Operator to use Kata Containers.
 
+* Improved support for Confidential Containers.
+  The GPU Operator now supports deploying Confidential Containers using Kata Containers and NVIDIA Reference Architecture for Confidential Containers.
+  Refer to the :doc:`Confidential Containers documentation <cc:overview>` for full details the Confidential Contaienrs reference architecture and on configuring the GPU Operator to use Confidential Containers.
+
 
 Fixed Issues
 ------------

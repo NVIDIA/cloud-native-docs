@@ -79,8 +79,8 @@ Limitations and Restrictions
 ****************************
 
 * For GPU passthrough workloads, all GPUs must be assigned to one Kata Container virtual machine.
-   Configuring only some GPUs on a node for Kata Containers is not supported.
-   vGPU is not supported.
+  Configuring only some GPUs on a node for Kata Containers is not supported.
+  vGPU is not supported.
 
 * Support for Kata Containers is limited to the implementation described on this page.
   The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.
