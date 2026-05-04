@@ -240,7 +240,7 @@ The ``kata-deploy`` chart installs all required components from the Kata Contain
 
 The minimum required version is 3.29.0.
 
-#. Get the latest version of the ``kata-deploy`` Helm chart:
+#. Set the chart version and registry path:
 
    .. code-block:: console
 
@@ -272,7 +272,7 @@ The minimum required version is 3.29.0.
    .. note::
 
       The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
-      It can take a few minutes to return output.
+      It can take a 2-3 minutes to return output.
 
       There is a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
       If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the ``kata-deploy`` pod to be in the Running state.
@@ -314,18 +314,14 @@ The minimum required version is 3.29.0.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
    The ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are used to deploy Confidential Containers workloads.
 
-   .. tip::
+#. Optional: If you have an issue deploying the ``kata-deploy`` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
 
-      If you have an issue deploying the ``kata-deploy`` pod, you can view the logs with the following command.
-      Update the <pod-name> placeholder with the name of the ``kata-deploy`` pod.
+   .. code-block:: console
 
-      .. code-block:: console
+      $ kubectl get pods -n kata-system | grep kata-deploy
+      $ kubectl logs -n kata-system <pod-name>
 
-         $ kubectl -n kata-system logs kata-deploy-<pod-name>
-
-
-      This should return logs for your ``kata-deploy`` pod.
-
+   Replace ``<pod-name>`` with the name of the ``kata-deploy`` pod from the first command's output.
 
 .. _coco-install-gpu-operator:
 
@@ -354,7 +350,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
    .. code-block:: console
 
-      $ helm install --wait --timeout 10m --generate-name \
+      $ helm install --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
          --set sandboxWorkloads.enabled=true \
@@ -378,10 +374,6 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
       Add ``--set sandboxWorkloads.defaultWorkload=vm-passthrough`` if every worker node should deploy Confidential Containers by default.
 
-   .. note::
-      The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
-      It can take a few minutes to return output.
-
    Refer to the :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` section on this page for more details on the configuration options you can specify when installing the GPU Operator.
 
    Refer to the :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>` for more details on the additional general configuration options you can specify when installing the GPU Operator.
@@ -403,9 +395,19 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
       gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
       nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
       nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                 1/1     Running   0          30s
-      nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s
+      nvidia-sandbox-validator-6xnzc                                    1/1     Running   0          30s
       nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
 
+   For more details on each of the GPU Operator components, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-components>` section in the architecture overview.
+
+   .. note::
+      It can take several minutes for all GPU Operator pods to be in the Running state.
+      If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
+      .. code-block:: console
+
+         $ kubectl logs -n gpu-operator <pod-name>
+
+      Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get pods -n gpu-operator``.
 
 #. Optional: If you have host access to the worker node, you can perform the following validation step:
 
@@ -477,9 +479,10 @@ A pod manifest for a confidential container GPU workload requires that you speci
 
    .. code-block:: yaml
 
-      limits:
-         nvidia.com/pgpu: "8"
-         nvidia.com/nvswitch: "4"
+      resources:
+        limits:
+          nvidia.com/pgpu: "8"
+          nvidia.com/nvswitch: "4"
 
    .. note::
       If you are using NVIDIA Hopper GPUs for multi-GPU passthrough, also refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` for details on how to set the ``ppcie`` mode.
@@ -657,7 +660,7 @@ The supported modes are:
    * - Mode
      - Description
      - Configuration Method
-   * - ``on``
+   * - ``on`` (default)
      - Enable Confidential Computing.
      - cluster-wide default, node-level override
    * - ``off``

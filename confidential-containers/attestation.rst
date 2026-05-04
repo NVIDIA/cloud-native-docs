@@ -92,8 +92,7 @@ To enable attestation for your workloads, point them to the Trustee network endp
 
    io.katacontainers.config.hypervisor.kernel_params: "agent.aa_kbc_params=cc_kbc::http://<kbs-ip>:<kbs-port>"
 
-Replace ``<kbs-ip>`` and ``<kbs-port>`` with the IP address and port of your Trustee instance.
-The default KBS port is ``8080``.
+Replace ``<kbs-ip>`` with the IP address or hostname at which your Trustee instance is reachable from the worker nodes, and ``<kbs-port>`` with the port (default: ``8080``).
 
 Refer to the upstream `Setup Confidential Containers <https://confidentialcontainers.org/docs/attestation/coco-setup/>`_ documentation for more information on configuring workloads for attestation.
 
