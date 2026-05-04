@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 01, 2026"/>
+    <meta name="docbuild:last-update" content="May 04, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -449,18 +449,20 @@ Refer to the diagram above for a visual representation of the components.</p>
 <p><strong>Kata Deploy</strong></p>
 <p>Deployment mechanism (often managed with Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
 <p>Refer to the <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers documentation</a> for more information.</p>
-<p><strong>NVIDIA GPU Operator</strong></p>
+<p id="coco-gpu-operator-components"><strong>NVIDIA GPU Operator</strong></p>
 <p>Automates GPU lifecycle management.
 For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM) without breaking the hardware trust boundary.</p>
-<p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads.
-The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster.
+<p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing, managing the Confidential Computing mode on GPUs, and deploying confidential container workloads.
+The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster that should run Confidential Containers.
 These components include:</p>
 <ul class="simple">
-<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.</p></li>
-<li><p>NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.</p></li>
+<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.
+By default, the Confidential Computing Manager will transition all NVIDIA GPUs to the Confidential Computing mode, if they are not already in that mode.</p></li>
+<li><p>NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.
+Allocatable GPU resources are advertised as type <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> by default.</p></li>
 <li><p>NVIDIA VFIO Manager: Binds discovered NVIDIA GPUs and NVSwitches to the vfio-pci driver for VFIO passthrough.</p></li>
 </ul>
-<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> page for more information on the NVIDIA GPU Operator.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> documentation for more information on the NVIDIA GPU Operator or the <a class="reference internal" href="#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section for more information on selecting nodes for Confidential Containers.</p>
 <p><strong>Node Feature Discovery (NFD)</strong></p>
 <p>Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
 <p>Refer to the <a class="reference external" href="https://kubernetes-sigs.github.io/node-feature-discovery/">Node Feature Discovery documentation</a> for upstream usage and reference material.

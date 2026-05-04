@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 01, 2026"/>
+    <meta name="docbuild:last-update" content="May 04, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -452,8 +452,7 @@ Refer to the upstream <a class="reference external" href="https://github.com/con
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-ip&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;kbs-port&gt;</span></code> with the IP address and port of your Trustee instance.
-The default KBS port is <code class="docutils literal notranslate"><span class="pre">8080</span></code>.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-ip&gt;</span></code> with the IP address or hostname at which your Trustee instance is reachable from the worker nodes, and <code class="docutils literal notranslate"><span class="pre">&lt;kbs-port&gt;</span></code> with the port (default: <code class="docutils literal notranslate"><span class="pre">8080</span></code>).</p>
 <p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/coco-setup/">Setup Confidential Containers</a> documentation for more information on configuring workloads for attestation.</p>
 </section>
 <section id="customize-attestation-workflows">
