@@ -192,7 +192,13 @@ Kubernetes Cluster
 * A Kubernetes cluster with cluster administrator privileges.
 
 * Helm installed on your cluster.
-  Refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+  Use the command below to install Helm or refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
+
+  .. code-block:: console
+
+      $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+            && chmod 700 get_helm.sh \
+            && ./get_helm.sh
 
 * Enable the ``KubeletPodResourcesGet`` Kubelet feature gate on your cluster.
   The Kata runtime uses this feature gate to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.
@@ -276,7 +282,7 @@ The ``kata-deploy`` chart installs all required components from the Kata Contain
 
 The minimum required version is 3.29.0.
 
-#. Get the latest version of the ``kata-deploy`` Helm chart:
+#. Set the chart version and registry path:
 
    .. code-block:: console
 
@@ -350,18 +356,20 @@ The minimum required version is 3.29.0.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
    The ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are used to deploy :doc:`Confidential Containers <cc:index>`.
 
-   If you have an issue deploying the ``kata-deploy`` pod, you can view the logs with the following command.
-   Update the <pod-name> placeholder with the name of the ``kata-deploy`` pod.
-
-   .. code-block:: console
-
-      $ kubectl -n kata-system logs kata-deploy-<pod-name>
-
    .. note::
 
       To manage the lifecycle of Kata Containers, including upgrades and day-two operations,
       install the `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__.
       This Argo Workflows-based tool is the recommended way to manage Kata Containers deployments.
+
+#. Optional: If you have an issue deploying the ``kata-deploy`` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n kata-system | grep kata-deploy
+      $ kubectl logs -n kata-system <pod-name>
+
+   Replace ``<pod-name>`` with the name of the ``kata-deploy`` pod from the first command's output.
 
 
 Install the NVIDIA GPU Operator
@@ -375,6 +383,15 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      "nvidia" has been added to your repositories
+      Hang tight while we grab the latest from your chart repositories...
+      ...Successfully got an update from the "nvidia" chart repository
+      Update Complete. ⎈Happy Helming!⎈
 
 #. Install the GPU Operator.
    The following configures the GPU Operator to deploy the operands that are required for Kata Containers.
@@ -424,9 +441,18 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
       gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
       nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
       nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                 1/1     Running   0          30s
-      nvidia-sandbox-validator-6xnzc                                    1/1     Running   1          30s
+      nvidia-sandbox-validator-6xnzc                                    1/1     Running   0          30s
       nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
 
+   .. note::
+      It can take several minutes for all GPU Operator pods to be in the Running state.
+      If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
+
+      .. code-block:: console
+
+         $ kubectl logs -n gpu-operator <pod-name>
+
+      Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get pods -n gpu-operator``.
 
    .. note::
 
@@ -453,25 +479,25 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
 
 .. _kata-configuration-heterogeneous-clusters:
 
-Optional: Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types
-==============================================================================================
+Optional: Configuring GPU or NVSwitch Resource Types Name
+=========================================================
 
-By default, the NVIDIA GPU Operator creates a single resource type for GPUs, ``nvidia.com/pgpu``.
-In clusters where all GPUs are the same model, a single resource type is sufficient.
+By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, ``nvidia.com/pgpu`` and ``nvidia.com/nvswitch``.
+You can reference these names in your manifests to request GPU or NVSwitch resources for your workload.
+If you want to use a different name, you can set the ``P_GPU_ALIAS`` or ``NVSWITCH_ALIAS`` environment variables in the Kata device plugin to your preferred name.
+In clusters where all GPUs are the same model, a single resource type is typically sufficient.
 
 In heterogeneous clusters, where you have different GPU types on your nodes, you might want to use specific GPU types for your workload.
-To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the sandbox device plugin by adding the following to your GPU Operator installation:
-``--set sandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
-``--set sandboxDevicePlugin.env[0].value=""``.
+To do this, specify an empty ``P_GPU_ALIAS`` environment variable in the Kata device plugin by adding the following to your GPU Operator installation:
+``--set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS`` and
+``--set kataSandboxDevicePlugin.env[0].value=""``.
 
-When this variable is set to ``""``, the sandbox device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
+When this variable is set to ``""``, the Kata device plugin creates GPU model-specific resource types, for example ``nvidia.com/GH100_H100L_94GB``, instead of the default ``nvidia.com/pgpu`` type.
 Use the exposed device resource types in pod specs by specifying respective resource limits.
 
-Similarly, NVSwitches are exposed as resources of type ``nvidia.com/nvswitch`` by default.
-You can include ``--set sandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS`` and
-``--set sandboxDevicePlugin.env[1].value=""`` for the device plugin environment variable when installing the GPU Operator to configure advertising behavior similar to ``P_GPU_ALIAS``.
+Similarly, you can set ``NVSWITCH_ALIAS`` to ``""`` to advertise model-specific NVSwitch resource types.
 
-For example, to configure both GPU and NVSwitch specific resource types:
+The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``NVSWITCH_ALIAS`` configured:
 
 .. code-block:: console
 
@@ -483,10 +509,22 @@ For example, to configure both GPU and NVSwitch specific resource types:
       --set sandboxWorkloads.mode=kata \
       --set nfd.enabled=true \
       --set nfd.nodefeaturerules=true \
-      --set sandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
-      --set sandboxDevicePlugin.env[0].value="" \
-      --set sandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
-      --set sandboxDevicePlugin.env[1].value=""
+      --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
+      --set kataSandboxDevicePlugin.env[0].value="" \
+      --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
+      --set kataSandboxDevicePlugin.env[1].value=""
+
+After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
+
+.. code-block:: console
+
+   $ kubectl get node <node-name> -o json | grep nvidia.com
+
+*Example Output:*
+
+.. code-block:: output
+
+   "nvidia.com/GH100_H100L_94GB": "1"
 
 
 *********************
