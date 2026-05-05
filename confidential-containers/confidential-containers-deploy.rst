@@ -128,7 +128,22 @@ Kubernetes Cluster
 * A Kubernetes cluster with cluster administrator privileges.
   Refer to the :ref:`Supported Software Components <coco-supported-software-components>` table for supported Kubernetes versions.
 
-* Helm installed on your cluster.
+* containerd version 2.2.2 installed.
+  Refer to the `containerd Getting Started guide <https://containerd.io/docs/2.2/getting-started/>`_ for installation instructions.
+
+  To verify the installed version, run the following command:
+
+  .. code-block:: console
+
+      $ containerd --version
+
+  *Example Output:*
+
+  .. code-block:: output
+
+      containerd containerd.io 2.2.2 ...
+
+* Helm installed.
   Use the command below to install Helm or refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
 
   .. code-block:: console
@@ -279,7 +294,9 @@ The minimum required version is 3.29.0.
 
    .. note::
 
-      Node Feature Discovery (NFD) is deployed by both kata-deploy and the GPU Operator. Pass ``--set nfd.enabled=false`` to disable NFD in kata-deploy so that the GPU Operator manages NFD in the next step.
+      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
+      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
+      The GPU Operator will deploy and manage NFD in the next step.
 
 
 #. Optional: Verify that the ``kata-deploy`` pod is running:
