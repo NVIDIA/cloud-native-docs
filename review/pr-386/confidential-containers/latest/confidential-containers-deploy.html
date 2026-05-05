@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 04, 2026"/>
+    <meta name="docbuild:last-update" content="May 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -478,7 +478,18 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <ul>
 <li><p>A Kubernetes cluster with cluster administrator privileges.
 Refer to the <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> table for supported Kubernetes versions.</p></li>
-<li><p>Helm installed on your cluster.
+<li><p>containerd version 2.2.2 installed.
+Refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
+<p>To verify the installed version, run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>containerd --version
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">containerd containerd.io 2.2.2 ...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Helm installed.
 Use the command below to install Helm or refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 <span class="se">\</span>
       <span class="o">&amp;&amp;</span> chmod <span class="m">700</span> get_helm.sh <span class="se">\</span>
@@ -600,7 +611,9 @@ If you are deploying to a single node cluster, you may need to wait for an addit
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Node Feature Discovery (NFD) is deployed by both kata-deploy and the GPU Operator. Pass <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nfd.enabled=false</span></code> to disable NFD in kata-deploy so that the GPU Operator manages NFD in the next step.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator deploy Node Feature Discovery (NFD) by default.
+The install command includes <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nfd.enabled=false</span></code> to prevent <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> from deploying NFD.
+The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 </li>
 <li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
