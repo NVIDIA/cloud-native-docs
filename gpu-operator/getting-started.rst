@@ -313,16 +313,21 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - The GPU Operator deploys ``PodSecurityPolicies`` if enabled.
      - ``false``
 
+   * - ``sandboxWorkloads.enabled``
+     - Specifies if sandbox containers are enabled.
+     - ``false``
+
    * - ``sandboxWorkloads.defaultWorkload``
      - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
 
        Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
+       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <deploy-kata-containers>` for more details on deploying different workload containers. 
      - ``container``
   
    * - ``sandboxWorkloads.mode``
      - Specifies the sandbox mode to use when deploying sandbox workloads.
        Accepted values are ``kubevirt`` (default) and ``kata``.
-       Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` page for more information on using KubeVirt based workloads.
+       Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` or the :doc:`Kata Containers <deploy-kata-containers>` pages for more information on using KubeVirt or Kata based workloads.
      - ``kubevirt``
    * - ``toolkit.enabled``
      - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
