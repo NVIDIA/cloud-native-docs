@@ -321,7 +321,9 @@ The minimum required version is 3.29.0.
 
    .. note::
 
-      Node Feature Discovery (NFD) is deployed by both kata-deploy and the GPU Operator. Pass ``--set nfd.enabled=false`` to disable NFD in kata-deploy so that the GPU Operator manages NFD in the next step.
+      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
+      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
+      The GPU Operator will deploy and manage NFD in the next step.
 
 
 #. Optional: Verify that the ``kata-deploy`` pod is running:
