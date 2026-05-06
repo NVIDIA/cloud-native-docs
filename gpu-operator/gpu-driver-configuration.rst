@@ -71,8 +71,8 @@ Driver Daemon Sets
 The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.
 
 For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
-worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
-One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
+worker nodes run Ubuntu 22.04 and other worker nodes run Ubuntu 24.04, the Operator starts two driver daemon sets.
+One daemon set configures the GPU driver on the Ubuntu 22.04 nodes and the other configures the driver on the Ubuntu 24.04 nodes.
 All the nodes run the same 580 branch GPU driver.
 
 .. image:: graphics/nvd-basics.svg
@@ -445,7 +445,7 @@ When you update the custom resource, the Operator performs a rolling update of t
    .. code-block:: output
 
       NAME                                             READY   STATUS        RESTARTS   AGE
-      nvidia-gpu-driver-ubuntu20.04-788484b9bb-6zhd9   1/1     Running       0          5m1s
+      nvidia-gpu-driver-ubuntu24.04-788484b9bb-6zhd9   1/1     Running       0          5m1s
       nvidia-gpu-driver-ubuntu22.04-8896c4bf7-7s68q    1/1     Terminating   0          37m
       nvidia-gpu-driver-ubuntu22.04-8896c4bf7-jm74l    1/1     Running       0          37m
 
@@ -515,7 +515,7 @@ If the driver daemon sets and pods are not running as you expect, perform the fo
    .. code-block:: output
 
       NAME                                       DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                                                                                                             AGE
-      nvidia-gpu-driver-ubuntu20.04-788484b9bb   1         1         1       1            1           driver.config=silver,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=20.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true   10m
+      nvidia-gpu-driver-ubuntu24.04-788484b9bb   1         1         1       1            1           driver.config=silver,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=24.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true   10m
       nvidia-gpu-driver-ubuntu22.04-8896c4bf7    2         2         2       2            2           driver.config=gold,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=22.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true     10m
 
 #. View the logs from the GPU Operator pod:

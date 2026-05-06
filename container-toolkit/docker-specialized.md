@@ -175,7 +175,7 @@ For example, specify the `compute` and `utility` capabilities, allowing usage of
 >
 > ```console
 > $ docker run --rm --gpus 'all,"capabilities=compute,utility"' \
->     nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+>     nvidia/cuda:12.5.0-base-ubuntu22.04 nvidia-smi
 > ```
 
 ### Constraints

@@ -214,5 +214,5 @@ Related Information
 * If you have an existing Amazon EKS cluster, you can refer to
   `Launching self-managed Amazon Linux nodes <https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html>`_
   in the Amazon EKS documentation to add a self-managed node group to your cluster.
-  However, all nodes in the cluster must run Ubuntu 20.04 or 22.04.
+  However, all nodes in the cluster must run a `supported operating system <platform-support.html?category=cloud-service-providers#container-platforms>`_.
   This documentation includes steps for using the AWS Management Console.
