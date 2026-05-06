@@ -139,11 +139,11 @@ There is one caveat with regards to the driver image. The version field must be 
      image: driver
      version: "${recommended}"
 
-To pull the driver image for Ubuntu 20.04:
+To pull the driver image for Ubuntu 22.04:
 
 .. code-block:: console
 
-   $ docker pull nvcr.io/nvidia/driver:${recommended}-ubuntu20.04
+   $ docker pull nvcr.io/nvidia/driver:${recommended}-ubuntu22.04
 
 To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.
 
@@ -152,14 +152,14 @@ Using the above examples, this will result in:
 .. code-block:: console
 
    $ docker tag nvcr.io/nvidia/gpu-operator:${version} <local-registry>/<local-path>/gpu-operator:${version}
-   $ docker tag nvcr.io/nvidia/driver:${recommended}-ubuntu20.04 <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
+   $ docker tag nvcr.io/nvidia/driver:${recommended}-ubuntu22.04 <local-registry>/<local-path>/driver:${recommended}-ubuntu22.04
 
 Finally, push the images to the local registry:
 
 .. code-block:: console
 
    $ docker push <local-registry>/<local-path>/gpu-operator:${version}
-   $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
+   $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu22.04
 
 Update ``values.yaml`` with local registry information in the repository field.
 
@@ -301,15 +301,15 @@ An example of repo list is shown below for Ubuntu 22.04 (access to local package
    deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-updates main universe
    deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu jammy-security main universe
 
-An example of repo list is shown below for Ubuntu 20.04 (access to local package repository via HTTP):
+An example of repo list is shown below for Ubuntu 24.04 (access to local package repository via HTTP):
 
 ``custom-repo.list``:
 
 .. code-block::
 
-   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu focal main universe
-   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu focal-updates main universe
-   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu focal-security main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-updates main universe
+   deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-security main universe
 
 An example of repo list is shown below for CentOS 8 (access to local package repository via HTTP):
 

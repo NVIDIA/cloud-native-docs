@@ -473,7 +473,7 @@ In this scenario, the NVIDIA Container Toolkit is already installed on the worke
 Running a Custom Driver Image
 =============================
 
-If you want to use custom driver container images, such as version 465.27, then
+If you want to use custom driver container images, such as version 580.126.20, then
 you can build a custom driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
@@ -483,8 +483,8 @@ you can build a custom driver container image. Follow these steps:
   .. code-block:: console
 
     $ docker build --pull -t \
-        --build-arg DRIVER_VERSION=455.28 \
-        nvidia/driver:455.28-ubuntu20.04 \
+        --build-arg DRIVER_VERSION=580.126.20 \
+        nvidia/driver:580.126.20-ubuntu22.04 \
         --file Dockerfile .
 
   Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema.
@@ -498,7 +498,7 @@ you can build a custom driver container image. Follow these steps:
           nvidia/gpu-operator \
           --version=${version} \
           --set driver.repository=docker.io/nvidia \
-          --set driver.version="465.27"
+          --set driver.version="580.126.20"
 
 These instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
@@ -647,7 +647,7 @@ In the first example, let's run a simple CUDA sample, which adds two vectors tog
         restartPolicy: OnFailure
         containers:
         - name: cuda-vectoradd
-          image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
+          image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
           resources:
             limits:
               nvidia.com/gpu: 1
