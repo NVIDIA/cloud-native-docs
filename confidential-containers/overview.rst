@@ -75,6 +75,10 @@ The key values of this architecture approach are:
 
 .. image:: graphics/CoCo-Reference-Architecture.png
    :alt: High-Level Reference Architecture for Confidential Containers
+   :class: only-light
+
+.. image:: graphics/CoCo-Reference-Architecture-Dark.png
+    :class: only-dark
 
 *High-Level Reference Architecture for Confidential Containers*
 
@@ -83,6 +87,7 @@ the key components that are used to deploy and manage Confidential Containers wo
 The components are described in more detail in the next section.
 
 .. _coco-supported-platforms-components:
+
 
 Software Components for Confidential Containers
 ===============================================
@@ -102,20 +107,24 @@ Deployment mechanism (often managed with Helm) that installs the Kata runtime bi
 
 Refer to the `Kata Containers documentation <https://katacontainers.io/docs/>`_ for more information.
 
+.. _coco-gpu-operator-components:
+
 **NVIDIA GPU Operator**
 
 Automates GPU lifecycle management.
 For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM) without breaking the hardware trust boundary.
 
-The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads.
-The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster.
+The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing, managing the Confidential Computing mode on GPUs, and deploying confidential container workloads.
+The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster that should run Confidential Containers.
 These components include:
 
 * NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.
+  By default, the Confidential Computing Manager will transition all NVIDIA GPUs to the Confidential Computing mode, if they are not already in that mode.
 * NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.
+  Allocatable GPU resources are advertised as type ``nvidia.com/pgpu`` by default. 
 * NVIDIA VFIO Manager: Binds discovered NVIDIA GPUs and NVSwitches to the vfio-pci driver for VFIO passthrough.
 
-Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` page for more information on the NVIDIA GPU Operator.
+Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` documentation for more information on the NVIDIA GPU Operator or the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-components>` section for more information on selecting nodes for Confidential Containers.
 
 **Node Feature Discovery (NFD)**
 
@@ -157,7 +166,6 @@ The GPU Operator deploys and manages components for allocating and utilizing the
 Depending on how you configure the Operator, different components are deployed on the worker nodes.
 When setting up Confidential Containers support, you can configure all the worker nodes in your cluster for running GPU workloads with Confidential Containers, or you can configure some nodes for Confidential Containers and the others for traditional containers.
 This configuration is done through node labelling and configuration flags set during installation or by editing the ClusterPolicy object post installation.
-
 
 Consider the following example where node A is configured to run traditional containers and node B is configured to run confidential containers.
 

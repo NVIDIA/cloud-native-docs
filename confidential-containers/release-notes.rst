@@ -32,7 +32,6 @@ This document describes the new features and known issues for the NVIDIA Confide
 =====
 
 This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
-a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
 It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.
 
 The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.
@@ -63,7 +62,7 @@ Key Features
   - Kubernetes 1.32+
   - Ubuntu 25.10 (host OS)
 
-* This release supports Red Hat OpenShift Sandboxed Containers 1.12.
+* This release has Technology Preview support for Red Hat OpenShift Sandboxed Containers 1.12.
 
 
 Limitations and Restrictions
