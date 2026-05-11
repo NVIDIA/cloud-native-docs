@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 07, 2026"/>
+    <meta name="docbuild:last-update" content="May 11, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -1458,8 +1458,9 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 <p>KubeVirt with NVIDIA vGPU is supported on <code class="docutils literal notranslate"><span class="pre">nodes</span></code> with Linux kernel &lt; 6.0, such as Ubuntu 22.04 <code class="docutils literal notranslate"><span class="pre">LTS</span></code>.</p>
 </div>
 </section>
-<section id="support-for-kata-containers">
-<h2>Support for Kata Containers<a class="headerlink" href="#support-for-kata-containers" title="Permalink to this headline">#</a></h2>
+<section id="support-for-kata-containers-and-openshift-sandboxed-containers">
+<h2>Support for Kata Containers and OpenShift Sandboxed Containers<a class="headerlink" href="#support-for-kata-containers-and-openshift-sandboxed-containers" title="Permalink to this headline">#</a></h2>
+<p>Red Hat OpenShift Sandboxed Containers is based on Kata Containers.</p>
 <p>The GPU Operator supports running GPU workloads in lightweight virtual machines using
 <a class="reference external" href="https://katacontainers.io/">Kata Containers</a> for GPU passthrough workloads.
 Refer to <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Deploy with Kata Containers</span></a> for installation details.</p>
@@ -1486,19 +1487,16 @@ Refer to <a class="reference internal" href="deploy-kata-containers.html"><span 
 </tbody>
 </table>
 </div>
-<p>Refer to the Limitations and Restrictions section of the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Kata Containers documentation</span></a> for more information on the limitations and restrictions of using Kata Containers with the GPU Operator.</p>
+<p>Refer to the Limitations and Restrictions section of the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Kata Containers documentation</span></a> for more information on using Kata Containers with the GPU Operator.</p>
 </section>
 <section id="support-for-confidential-containers">
 <h2>Support for Confidential Containers<a class="headerlink" href="#support-for-confidential-containers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator supports deploying Confidential Containers using Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
 This is a dedicated architecture for deploying Confidential Containers on Kubernetes clusters.</p>
 <p>For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/index.html" title="(in NVIDIA Confidential Containers Architecture)"><span class="xref std std-doc">NVIDIA Confidential Containers documentation</span></a>.</p>
-</section>
-<section id="support-for-openshift-sandboxed-containers">
-<h2>Support for OpenShift Sandboxed Containers<a class="headerlink" href="#support-for-openshift-sandboxed-containers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator offers Technology Preview support for
 <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> v1.12
-to deploy both Kata Containers and Confidential Containers workloads.</p>
+to deploy Confidential Containers workloads.</p>
 </section>
 <section id="support-for-gpudirect-rdma">
 <h2>Support for GPUDirect RDMA<a class="headerlink" href="#support-for-gpudirect-rdma" title="Permalink to this headline">#</a></h2>
@@ -1617,9 +1615,8 @@ Running the GPU Operator with Container Device Interface (CDI) enabled (default 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-precompiled-drivers">Supported Precompiled Drivers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-container-runtimes">Supported Container Runtimes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kata-containers">Support for Kata Containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kata-containers-and-openshift-sandboxed-containers">Support for Kata Containers and OpenShift Sandboxed Containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-confidential-containers">Support for Confidential Containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-openshift-sandboxed-containers">Support for OpenShift Sandboxed Containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-rdma">Support for GPUDirect RDMA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-storage">Support for GPUDirect Storage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-tools-and-integrations">Additional Supported Tools and Integrations</a></li>
