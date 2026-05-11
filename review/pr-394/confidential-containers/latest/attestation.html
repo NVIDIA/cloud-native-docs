@@ -398,8 +398,8 @@
                   
   <section id="attestation">
 <span id="id1"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>This page provides an overview of how to configure remote attestation for Confidential Container workloads.
-Attestation cryptographically verifies the guest Trusted Execution Environment (TEE) for the CPU and GPU before secrets are released to a workload.</p>
+<p>The <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a> configures your cluster to run workloads in a Confidential Container.
+To strengthen workload security, configure attestation to verify the guest Trusted Execution Environment (TEE) for the CPU and GPU before secrets are released to a workload.</p>
 <p>Attestation is required for any feature that depends on secrets, including:</p>
 <ul class="simple">
 <li><p>Pulling encrypted container images</p></li>
@@ -408,8 +408,14 @@ Attestation cryptographically verifies the guest Trusted Execution Environment (
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
 <p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves.
-The evidence is sent to a remote verifier, Trustee, which evaluates the evidence against configured policies and conditionally releases the secret.</p>
-<p>For background on how attestation fits into the Confidential Containers architecture, refer to the <a class="reference internal" href="overview.html"><span class="doc">NVIDIA Confidential Containers Reference Architecture overview</span></a>.</p>
+The evidence is sent to a remote verifier, Trustee, which evaluates the evidence against configured policies and conditionally releases the secret.
+Trustee is typically deployed in a separate trusted environment that is reachable from your worker nodes over the network.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is an educational overview of attestation with Confidential Containers, not a complete configuration guide.
+The attestation workflow is fully documented in the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a>, which is the source of truth for setup and configuration details.</p>
+<p>Attestation is not required to deploy Confidential Containers; it is needed only for features that rely on secret release, such as those listed above.</p>
+</div>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
@@ -447,7 +453,7 @@ Refer to the upstream <a class="reference external" href="https://github.com/con
 </section>
 <section id="configure-workloads-for-attestation">
 <span id="configure-workloads-trustee"></span><h2>Configure Workloads for Attestation<a class="headerlink" href="#configure-workloads-for-attestation" title="Permalink to this headline">#</a></h2>
-<p>To enable attestation for your workloads, point them to the Trustee network endpoint, sometimes referred to as the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
+<p>To enable attestation for your workloads, point them to the Trustee network endpoint, also called the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
@@ -458,18 +464,16 @@ Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-por
 <section id="optional-customize-attestation-workflows">
 <span id="customize-attestation"></span><h2>Optional: Customize Attestation Workflows<a class="headerlink" href="#optional-customize-attestation-workflows" title="Permalink to this headline">#</a></h2>
 <p>Confidential Containers enables sensible default attestation policies for NVIDIA Confidential Computing GPUs.
-In most cases, the policy is already configured appropriately and you only need to provide reference values.
-Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/reference-values/">Confidential Containers reference values</a> documentation for more information on the reference values.</p>
+In most cases, the default policy is appropriate and you only need to provide reference values.
+For more information, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/reference-values/">Confidential Containers reference values</a> documentation.</p>
 <p>You can use the Key Broker Service (KBS) Client Tool to configure Trustee reference values and secrets.
 Refer to the upstream documentation on <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">using the KBS Client Tool</a>.</p>
-<p>If you choose to customize attestation workflows, refer to the following Confidential Containers documentation for more details:</p>
+<p>For more advanced customization, refer to the following upstream Confidential Containers documentation:</p>
 <ul class="simple">
-<li><p>Configure resources: Create resources, or secrets, that your workloads need.
-Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/resources/">Confidential Containers resources</a> documentation for more information on the resources.</p></li>
-<li><p>Configure policies: Confidential Containers uses different policy types to secure workloads at different layers.
-Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/policies/">Confidential Containers policy</a> documentation for more information on the policy types and configuring policies.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/resources/">Resources</a>: Create the resources, such as secrets, that your workloads need.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/policies/">Policies</a>: Configure the policy types that secure workloads at different layers.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a>: Browse the full list of attestation features and how to configure them.</p></li>
 </ul>
-<p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for a full list of attestation features and how to configure them.</p>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
@@ -479,9 +483,8 @@ Use the Trustee log to diagnose the attestation process.</p>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">deployment guide</span></a> for Confidential Containers setup instructions.</p></li>
-<li><p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for a complete list of attestation-dependent features.</p></li>
-<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">NVIDIA Confidential Computing documentation</a> for additional information.</p></li>
+<li><p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> for complete documentation on attestation features.</p></li>
+<li><p>If you haven’t already, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a> to configure your environment for confidential workloads.</p></li>
 </ul>
 </section>
 </section>
