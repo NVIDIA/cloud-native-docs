@@ -19,15 +19,20 @@
 
 .. _coco-run-sample-workload:
 
-*********************
+#####################
 Run a Sample Workload
-*********************
+#####################
 
-After completing the :doc:`deployment steps <confidential-containers-deploy>`, you can verify your installation by running a sample GPU workload in a confidential container.
+After completing the :doc:`deployment steps <confidential-containers-deploy>`, verify your
+installation by running a basic single-GPU sample workload inside a Confidential Container.
 
-A pod manifest for a confidential container GPU workload requires that you specify the ``kata-qemu-nvidia-gpu-snp`` runtime class for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX.
+This page intentionally uses the simplest possible manifest so that you can confirm the
+deployment end-to-end.
+For the full set of workload configuration options, including runtime class selection,
+resource type naming, and multi-GPU passthrough, refer to
+:doc:`Configuring Confidential Container Workloads <configure-multi-gpu>`.
 
-1. Create a file, such as the following ``cuda-vectoradd-kata.yaml`` sample, specifying the kata-qemu-nvidia-gpu-snp runtime class:
+#. Create a file named ``cuda-vectoradd-kata.yaml`` with the following sample manifest:
 
    .. code-block:: yaml
       :emphasize-lines: 7,14
@@ -38,7 +43,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
         name: cuda-vectoradd-kata
         namespace: default
       spec:
-        runtimeClassName: kata-qemu-nvidia-gpu-snp
+        runtimeClassName: kata-qemu-nvidia-gpu-snp # or kata-qemu-nvidia-gpu-tdx
         restartPolicy: Never
         containers:
           - name: cuda-vectoradd
@@ -48,33 +53,33 @@ A pod manifest for a confidential container GPU workload requires that you speci
                 nvidia.com/pgpu: "1"
                 memory: 16Gi
 
-   The following are Confidential Containers configurations in the sample manifest:
+   Before applying the manifest, adjust the two highlighted lines for your environment:
 
-   * Set the runtime class to ``kata-qemu-nvidia-gpu-snp`` for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX, depending on the node type where the workloads should run.
+   * **Runtime class.** Use ``kata-qemu-nvidia-gpu-snp`` on AMD SEV-SNP nodes or
+     ``kata-qemu-nvidia-gpu-tdx`` on Intel TDX nodes.
+   * **GPU resource type.** The sample requests ``nvidia.com/pgpu``, which is the default
+     resource name advertised by the NVIDIA Kata sandbox device plugin.
+     If your cluster was installed with the ``P_GPU_ALIAS=""`` setting, replace it with the
+     model-specific name advertised on your node, for example ``nvidia.com/GH100_H200_141GB``.
 
-   * In the sample above, ``nvidia.com/pgpu`` is the default resource type for GPUs.
-     If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the sandbox device plugin.
-     Refer to the :ref:`Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types <coco-configuration-heterogeneous-clusters>` for more details.
+   Refer to :doc:`Configuring Confidential Container Workloads <configure-multi-gpu>` for
+   guidance on each option.
 
-   * If you have machines that support multi-GPU passthrough, refer to the :doc:`Configuring Multi-GPU Passthrough <configure-multi-gpu>` page for a complete workload example and architecture-specific CC mode requirements.
-
-
-2. Create the pod:
+#. Create the pod:
 
    .. code-block:: console
 
       $ kubectl apply -f cuda-vectoradd-kata.yaml
-   
+
    *Example Output:*
 
    .. code-block:: output
 
       pod/cuda-vectoradd-kata created
 
+#. Optional: Verify the pod is running:
 
-   Optional: Verify the pod is running.
-
-   .. code-block:: console 
+   .. code-block:: console
 
       $ kubectl get pod cuda-vectoradd-kata
 
@@ -85,7 +90,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
       NAME                  READY   STATUS    RESTARTS   AGE
       cuda-vectoradd-kata   1/1     Running   0          10s
 
-3. View the logs from the pod after the container starts:
+#. View the logs from the pod after the container starts:
 
    .. code-block:: console
 
@@ -102,17 +107,19 @@ A pod manifest for a confidential container GPU workload requires that you speci
       Test PASSED
       Done
 
-4. Delete the pod:
+#. Delete the pod:
 
    .. code-block:: console
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
 
 
+**********
 Next Steps
-==========
+**********
 
-* Configure :doc:`Attestation <attestation>` with the Trustee framework to enable remote verification of your confidential environment.
-* Set up :doc:`multi-GPU passthrough <configure-multi-gpu>` for NVSwitch-based HGX systems.
-* Tune :doc:`image pull timeouts <configure-image-pull-timeouts>` if you are pulling large container images.
+* :doc:`Configure Confidential Container workloads <configure-multi-gpu>` for runtime class
+  selection, resource type naming, and single- or multi-GPU passthrough patterns.
+* Configure :doc:`Attestation <attestation>` with the Trustee framework to enable remote
+  verification of your confidential environment.
 * Manage the :doc:`confidential computing mode <configure-cc-mode>` on your GPUs.

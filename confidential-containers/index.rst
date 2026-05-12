@@ -16,9 +16,9 @@
 
 .. headings # #, * *, =, -, ^, "
 
-**********************************************************
+###########################################
 NVIDIA Confidential Containers Architecture
-**********************************************************
+###########################################
 
 .. toctree::
    :caption: NVIDIA Confidential Containers Architecture
@@ -42,10 +42,10 @@ NVIDIA Confidential Containers Architecture
    :hidden:
    :titlesonly:
 
-   Managing the CC Mode <configure-cc-mode.rst>
-   Multi-GPU Passthrough <configure-multi-gpu.rst>
-   Image Pull Timeouts <configure-image-pull-timeouts.rst>
+   Configure Overview <configure.rst>
    Attestation <attestation.rst>
+   Managing the Confidential Computing Mode <configure-cc-mode.rst>
+   Configuring Workloads <configure-multi-gpu.rst>
 
 .. toctree::
    :caption: Reference
@@ -90,25 +90,7 @@ This is documentation for NVIDIA's implementation of Confidential Containers inc
       :link: run-sample-workload
       :link-type: doc
 
-      Verify your deployment by running a GPU workload in a confidential container.
-
-   .. grid-item-card:: :octicon:`gear;1.5em;sd-mr-1` Managing the CC Mode
-      :link: configure-cc-mode
-      :link-type: doc
-
-      Set the confidential computing mode on NVIDIA GPUs at cluster or node level.
-
-   .. grid-item-card:: :octicon:`cpu;1.5em;sd-mr-1` Multi-GPU Passthrough
-      :link: configure-multi-gpu
-      :link-type: doc
-
-      Configure multi-GPU passthrough for NVSwitch-based HGX systems.
-
-   .. grid-item-card:: :octicon:`clock;1.5em;sd-mr-1` Image Pull Timeouts
-      :link: configure-image-pull-timeouts
-      :link-type: doc
-
-      Tune image pull timeouts for large container images in confidential VMs.
+      Run a sample GPU workload in a confidential container.
 
    .. grid-item-card:: :octicon:`shield-check;1.5em;sd-mr-1` Attestation
       :link: attestation
@@ -116,15 +98,4 @@ This is documentation for NVIDIA's implementation of Confidential Containers inc
 
       Remote attestation, Trustee, and the NVIDIA verifier for GPU workloads.
 
-   .. grid-item-card:: :octicon:`note;1.5em;sd-mr-1` Release Notes
-      :link: release-notes
-      :link-type: doc
-
-      New features and known issues for each release.
-
-   .. grid-item-card:: :octicon:`law;1.5em;sd-mr-1` Licensing
-      :link: licensing
-      :link-type: doc
-
-      Licensing information for Confidential Containers documentation.
 

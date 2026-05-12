@@ -19,9 +19,9 @@
 
 .. _managing-confidential-computing-mode:
 
-*****************************************
+#########################################
 Managing the Confidential Computing Mode
-*****************************************
+#########################################
 
 You can set the default confidential computing mode of the NVIDIA GPUs by setting the ``ccManager.defaultMode=<on|off>`` option.
 The default value of ``ccManager.defaultMode`` is ``on``.
@@ -46,7 +46,7 @@ The supported modes are:
    * - Mode
      - Description
      - Configuration Method
-   * - ``on``
+   * - ``on`` (default)
      - Enable Confidential Computing.
      - cluster-wide default, node-level override
    * - ``off``
@@ -55,9 +55,9 @@ The supported modes are:
    * - ``ppcie``
      - Enable Confidential Computing on NVIDIA Hopper GPUs.
 
-       On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
-       which claims exclusive use of the NVSwitches for a single Confidential Container
-       virtual machine. 
+       On the NVIDIA Hopper architecture :ref:`multi-GPU passthrough <coco-multi-gpu-passthrough>`
+       uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single
+       Confidential Container virtual machine.
        If you are using NVIDIA Hopper GPUs for multi-GPU passthrough,
        set the GPU mode to ``ppcie`` mode. 
        
@@ -69,8 +69,9 @@ The supported modes are:
 You can set a cluster-wide default mode, and you can set the mode on individual nodes.
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
+***********************************
 Setting a Cluster-Wide Default Mode
-====================================
+***********************************
 
 To set a cluster-wide mode, specify the ``ccManager.defaultMode`` field like the following example:
 
@@ -90,8 +91,9 @@ To set a cluster-wide mode, specify the ``ccManager.defaultMode`` field like the
 
    The ``ppcie`` mode cannot be set as a cluster-wide default, it can only be set as a node label value.
 
+*************************
 Setting a Node-Level Mode
-==========================
+*************************
 
 To set a node-level mode, apply the ``nvidia.com/cc.mode=<on|off|ppcie>`` label on the node.
 
@@ -109,8 +111,9 @@ Then apply the label:
 
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
+***********************
 Verifying a Mode Change
-========================
+***********************
 
 To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
 ``nvidia.com/cc.mode.state``, and ``nvidia.com/cc.ready.state`` node labels:
