@@ -563,11 +563,12 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 Support for Kata Containers and OpenShift Sandboxed Containers
 **************************************************************
 
-Red Hat OpenShift Sandboxed Containers is based on Kata Containers.
-
 The GPU Operator supports running GPU workloads in lightweight virtual machines using
-`Kata Containers <https://katacontainers.io/>`__ for GPU passthrough workloads.
+`Kata Containers <https://katacontainers.io/>`__ for single and multi GPU passthrough workloads.
 Refer to :doc:`deploy-kata-containers` for installation details.
+
+`Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ is based on Kata Containers. 
+The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.
 
 .. list-table::
    :header-rows: 1
@@ -591,7 +592,7 @@ Support for Confidential Containers
 The GPU Operator supports deploying Confidential Containers using Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
 This is a dedicated architecture for deploying Confidential Containers on Kubernetes clusters.
 
-For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the :doc:`NVIDIA Confidential Containers documentation <cc:index>`.
+For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the NVIDIA Confidential Containers :doc:`support matrix documentation <cc:supported-platforms>`.
 
 The GPU Operator offers Technology Preview support for
 `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ v1.12
