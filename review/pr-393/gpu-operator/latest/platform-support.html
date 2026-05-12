@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 11, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -1460,10 +1460,11 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 </section>
 <section id="support-for-kata-containers-and-openshift-sandboxed-containers">
 <h2>Support for Kata Containers and OpenShift Sandboxed Containers<a class="headerlink" href="#support-for-kata-containers-and-openshift-sandboxed-containers" title="Permalink to this headline">#</a></h2>
-<p>Red Hat OpenShift Sandboxed Containers is based on Kata Containers.</p>
 <p>The GPU Operator supports running GPU workloads in lightweight virtual machines using
-<a class="reference external" href="https://katacontainers.io/">Kata Containers</a> for GPU passthrough workloads.
+<a class="reference external" href="https://katacontainers.io/">Kata Containers</a> for single and multi GPU passthrough workloads.
 Refer to <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Deploy with Kata Containers</span></a> for installation details.</p>
+<p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> is based on Kata Containers.
+The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
 <col style="width: 40%" />
@@ -1493,7 +1494,7 @@ Refer to <a class="reference internal" href="deploy-kata-containers.html"><span 
 <h2>Support for Confidential Containers<a class="headerlink" href="#support-for-confidential-containers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator supports deploying Confidential Containers using Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
 This is a dedicated architecture for deploying Confidential Containers on Kubernetes clusters.</p>
-<p>For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/index.html" title="(in NVIDIA Confidential Containers Architecture)"><span class="xref std std-doc">NVIDIA Confidential Containers documentation</span></a>.</p>
+<p>For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the NVIDIA Confidential Containers <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html" title="(in NVIDIA Confidential Containers Architecture)"><span class="xref std std-doc">support matrix documentation</span></a>.</p>
 <p>The GPU Operator offers Technology Preview support for
 <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> v1.12
 to deploy Confidential Containers workloads.</p>
