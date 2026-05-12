@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -446,7 +446,8 @@ Integrating open source and NVIDIA software components with the Confidential Com
 <li><p><strong>Highest level of isolation</strong> - The Confidential Containers architecture is built on Kata containers, which is the industry standard for providing hardened sandbox isolation, and augmenting it with support for GPU passthrough to Kata containers makes the base of the Trusted Execution Environment (TEE).</p></li>
 <li><p><strong>Zero-trust execution with attestation</strong> - Ensuring the trust of the model providers/data owners by providing a full-stack verification capability with attestation. The integration of NVIDIA GPU attestation capabilities with Trustee based architecture, to provide composite attestation provides the base for secure, attestation based key-release for encrypted workloads, deployed inside the TEE.</p></li>
 </ol>
-<img alt="High-Level Reference Architecture for Confidential Containers" src="_images/CoCo-Reference-Architecture.png" />
+<img alt="High-Level Reference Architecture for Confidential Containers" class="only-light" src="_images/CoCo-Reference-Architecture.png" />
+<img alt="_images/CoCo-Reference-Architecture-Dark.png" class="only-dark" src="_images/CoCo-Reference-Architecture-Dark.png" />
 <p><em>High-Level Reference Architecture for Confidential Containers</em></p>
 <p>The above diagram shows the high-level reference architecture for Confidential Containers and
 the key components that are used to deploy and manage Confidential Containers workloads.
@@ -462,18 +463,20 @@ Refer to the diagram above for a visual representation of the components.</p>
 <p><strong>Kata Deploy</strong></p>
 <p>Deployment mechanism (often managed with Helm) that installs the Kata runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p>
 <p>Refer to the <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers documentation</a> for more information.</p>
-<p><strong>NVIDIA GPU Operator</strong></p>
+<p id="coco-gpu-operator-components"><strong>NVIDIA GPU Operator</strong></p>
 <p>Automates GPU lifecycle management.
 For Confidential Containers, it securely provisions GPU support and handles VFIO-based GPU passthrough directly into the Kata confidential Virtual Machine (VM) without breaking the hardware trust boundary.</p>
-<p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing and deploying confidential container workloads.
-The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster.
+<p>The GPU Operator deploys the components needed to run Confidential Containers to simplify managing the software required for confidential computing, managing the Confidential Computing mode on GPUs, and deploying confidential container workloads.
+The GPU Operator uses node labels to manage the deployment of components to the nodes in your cluster that should run Confidential Containers.
 These components include:</p>
 <ul class="simple">
-<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.</p></li>
-<li><p>NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.</p></li>
+<li><p>NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.
+By default, the Confidential Computing Manager will transition all NVIDIA GPUs to the Confidential Computing mode, if they are not already in that mode.</p></li>
+<li><p>NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.
+Allocatable GPU resources are advertised as type <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> by default.</p></li>
 <li><p>NVIDIA VFIO Manager: Binds discovered NVIDIA GPUs and NVSwitches to the vfio-pci driver for VFIO passthrough.</p></li>
 </ul>
-<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> page for more information on the NVIDIA GPU Operator.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> documentation for more information on the NVIDIA GPU Operator or the <a class="reference internal" href="#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section for more information on selecting nodes for Confidential Containers.</p>
 <p><strong>Node Feature Discovery (NFD)</strong></p>
 <p>Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, like installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. This feature directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.</p>
 <p>Refer to the <a class="reference external" href="https://kubernetes-sigs.github.io/node-feature-discovery/">Node Feature Discovery documentation</a> for upstream usage and reference material.
@@ -519,7 +522,7 @@ This configuration is done through node labelling and configuration flags set du
 </td>
 <td><ul class="simple">
 <li><p>NVIDIA Confidential Computing Manager for Kubernetes</p></li>
-<li><p>NVIDIA Sandbox Device Plugin</p></li>
+<li><p>NVIDIA Kata Sandbox Device Plugin</p></li>
 <li><p>NVIDIA VFIO Manager</p></li>
 <li><p>Node Feature Discovery</p></li>
 </ul>
@@ -537,8 +540,8 @@ This configuration is done through node labelling and configuration flags set du
 <ul class="simple">
 <li><p>Support for Confidential Container workloads as</p>
 <ul>
-<li><p>Single-GPU passthrough (one physical GPU per pod).</p></li>
-<li><p>Multi-GPU passthrough on NVSwitch (NVLink) based HGX systems.</p></li>
+<li><p><a class="reference internal" href="configure-multi-gpu.html#coco-single-gpu-workload"><span class="std std-ref">Single-GPU passthrough</span></a> (one physical GPU per pod).</p></li>
+<li><p><a class="reference internal" href="configure-multi-gpu.html#coco-multi-gpu-passthrough"><span class="std std-ref">Multi-GPU passthrough</span></a> on NVSwitch (NVLink) based HGX systems.</p></li>
 </ul>
 </li>
 </ul>

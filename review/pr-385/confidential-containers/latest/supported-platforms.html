@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -413,8 +413,8 @@
   <section id="supported-platforms">
 <span id="coco-supported-platforms"></span><h1>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h1>
 <p>Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.</p>
-<section id="supported-hardware-platform">
-<h2>Supported Hardware Platform<a class="headerlink" href="#supported-hardware-platform" title="Permalink to this headline">#</a></h2>
+<section id="hardware">
+<h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">#</a></h2>
 <section id="nvidia-gpus">
 <h3>NVIDIA GPUs<a class="headerlink" href="#nvidia-gpus" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
@@ -451,7 +451,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
+<p><a class="reference internal" href="configure-multi-gpu.html#coco-multi-gpu-passthrough"><span class="std std-ref">Multi-GPU passthrough</span></a> on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.
 Refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> for details.</p>
 </div>
 <div class="admonition note">
@@ -544,12 +544,10 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <tr class="row-odd"><td><p><a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a></p></td>
 <td><p>0.1.4</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a></p></td>
-<td><p>1.12</p></td>
-</tr>
 </tbody>
 </table>
 </div>
+<p>Users may leverage <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> to deploy Confidential Containers, however, Confidential GPU features are currently classified as Technology Preview by the downstream provider.</p>
 </section>
 </section>
 </section>
@@ -603,7 +601,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-hardware-platform">Supported Hardware Platform</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">Hardware</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpus">NVIDIA GPUs</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platforms">CPU Platforms</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>

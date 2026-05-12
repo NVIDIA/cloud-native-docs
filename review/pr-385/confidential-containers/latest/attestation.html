@@ -69,15 +69,15 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Release Notes" href="release-notes.html" />
-    <link rel="prev" title="Configure Image Pull Timeouts" href="configure-image-pull-timeouts.html" />
+    <link rel="next" title="Managing the Confidential Computing Mode" href="configure-cc-mode.html" />
+    <link rel="prev" title="Configure Confidential Containers" href="configure.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -412,8 +412,8 @@
                   
   <section id="attestation">
 <span id="id1"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>This page provides an overview of how to configure remote attestation for Confidential Container workloads.
-Attestation cryptographically verifies the guest Trusted Execution Environment (TEE) for the CPU and GPU before secrets are released to a workload.</p>
+<p>The <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a> configures your cluster to run workloads in a Confidential Container.
+To strengthen workload security, configure attestation to verify the guest Trusted Execution Environment (TEE) for the CPU and GPU before secrets are released to a workload.</p>
 <p>Attestation is required for any feature that depends on secrets, including:</p>
 <ul class="simple">
 <li><p>Pulling encrypted container images</p></li>
@@ -422,8 +422,14 @@ Attestation cryptographically verifies the guest Trusted Execution Environment (
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
 <p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves.
-The evidence is sent to a remote verifier, Trustee, which evaluates the evidence against configured policies and conditionally releases the secret.</p>
-<p>For background on how attestation fits into the Confidential Containers architecture, refer to the <a class="reference internal" href="overview.html"><span class="doc">NVIDIA Confidential Containers Reference Architecture overview</span></a>.</p>
+The evidence is sent to a remote verifier, Trustee, which evaluates the evidence against configured policies and conditionally releases the secret.
+Trustee is typically deployed in a separate trusted environment that is reachable from your worker nodes over the network.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is an educational overview of attestation with Confidential Containers, not a complete configuration guide.
+The attestation workflow is fully documented in the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a>, which is the source of truth for setup and configuration details.</p>
+<p>Attestation is not required to deploy Confidential Containers, but is required for features that rely on secrets in your cluster.</p>
+</div>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
@@ -450,8 +456,7 @@ Trustee does not require Confidential Computing hardware or a GPU.</p></li>
 <span id="id2"></span><h2>Provision Trustee<a class="headerlink" href="#provision-trustee" title="Permalink to this headline">#</a></h2>
 <p>Trustee is an open-source framework used in Confidential Containers to verify attestation evidence and conditionally release secrets.
 For a full overview of attestation with Trustee, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Trustee documentation</a>.</p>
-<p>To provision a Trustee instance, follow the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.
-This is the recommended install method.</p>
+<p>To provision a Trustee instance, follow the recommended upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Guests with many passthrough devices, such as NVIDIA PPCIE GPUs, can produce attestation tokens that exceed HTTP header size limits.</p>
@@ -462,27 +467,27 @@ Refer to the upstream <a class="reference external" href="https://github.com/con
 </section>
 <section id="configure-workloads-for-attestation">
 <span id="configure-workloads-trustee"></span><h2>Configure Workloads for Attestation<a class="headerlink" href="#configure-workloads-for-attestation" title="Permalink to this headline">#</a></h2>
-<p>To enable attestation for your workloads, point them to the Trustee network endpoint, sometimes referred to as the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
+<p>To enable attestation for your workloads, point them to the Trustee network endpoint, also called the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">io.katacontainers.config.hypervisor.kernel_params</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;agent.aa_kbc_params=cc_kbc::http://&lt;kbs-ip&gt;:&lt;kbs-port&gt;&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-ip&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;kbs-port&gt;</span></code> with the IP address and port of your Trustee instance.
-The default KBS port is <code class="docutils literal notranslate"><span class="pre">8080</span></code>.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-ip&gt;</span></code> with the IP address or hostname at which your Trustee instance is reachable from the worker nodes.
+Replace <code class="docutils literal notranslate"><span class="pre">&lt;kbs-port&gt;</span></code> with the port that Trustee listens on (default: <code class="docutils literal notranslate"><span class="pre">8080</span></code>).</p>
 <p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/coco-setup/">Setup Confidential Containers</a> documentation for more information on configuring workloads for attestation.</p>
 </section>
-<section id="customize-attestation-workflows">
-<span id="customize-attestation"></span><h2>Customize Attestation Workflows<a class="headerlink" href="#customize-attestation-workflows" title="Permalink to this headline">#</a></h2>
-<p>After Trustee is provisioned and workloads are configured, you can customize attestation workflows to enforce your desired security policies.
-This can include configuring the following:</p>
+<section id="optional-customize-attestation-workflows">
+<span id="customize-attestation"></span><h2>Optional: Customize Attestation Workflows<a class="headerlink" href="#optional-customize-attestation-workflows" title="Permalink to this headline">#</a></h2>
+<p>Confidential Containers enables sensible default attestation policies for NVIDIA Confidential Computing GPUs.
+In most cases, the default policy is appropriate and you only need to provide reference values.
+For more information, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/reference-values/">Confidential Containers reference values</a> documentation.</p>
+<p>You can use the Key Broker Service (KBS) Client Tool to configure Trustee reference values and secrets.
+Refer to the upstream documentation on <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">using the KBS Client Tool</a>.</p>
+<p>For more advanced customization, refer to the following upstream Confidential Containers documentation:</p>
 <ul class="simple">
-<li><p>KBS Client Tool: Configure Trustee resources and secrets by using the Key Broker Service (KBS) Client Tool.
-Refer to the upstream documentation on <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">using the KBS Client Tool</a>.</p></li>
-<li><p>Configure resources: Create resources, or secrets, that your workloads need.
-Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/resources/">Confidential Containers resources</a> documentation for more information on the resources.</p></li>
-<li><p>Configure policies: Confidential Containers uses different policy types to secure workload at different layers.
-Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/policies/">Confidential Containers policy</a> documentation for more information on the policy types and configuring policies.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/resources/">Resources</a>: Create the resources, such as secrets, that your workloads need.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/policies/">Policies</a>: Configure the policy types that secure workloads at different layers.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a>: Browse the full list of attestation features and how to configure them.</p></li>
 </ul>
-<p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for a full list of attestation features and how to configure them.</p>
 </section>
 <section id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
@@ -492,9 +497,8 @@ Use the Trustee log to diagnose the attestation process.</p>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">deployment guide</span></a> for Confidential Containers setup instructions.</p></li>
-<li><p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> documentation for a complete list of attestation-dependent features.</p></li>
-<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/confidential-computing">NVIDIA Confidential Computing documentation</a> for additional information.</p></li>
+<li><p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/features">Confidential Containers Features</a> for complete documentation on attestation features.</p></li>
+<li><p>If you haven’t already, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a> to configure your environment for confidential workloads.</p></li>
 </ul>
 </section>
 </section>
@@ -510,20 +514,20 @@ Use the Trustee log to diagnose the attestation process.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="configure-image-pull-timeouts.html"
+       href="configure.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Configure Image Pull Timeouts</p>
+        <p class="prev-next-title">Configure Confidential Containers</p>
       </div>
     </a>
     <a class="right-next"
-       href="release-notes.html"
+       href="configure-cc-mode.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Release Notes</p>
+        <p class="prev-next-title">Managing the Confidential Computing Mode</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -552,7 +556,7 @@ Use the Trustee log to diagnose the attestation process.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-workflow">Configuration Workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#provision-trustee">Provision Trustee</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-workloads-for-attestation">Configure Workloads for Attestation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customize-attestation-workflows">Customize Attestation Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-customize-attestation-workflows">Optional: Customize Attestation Workflows</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>

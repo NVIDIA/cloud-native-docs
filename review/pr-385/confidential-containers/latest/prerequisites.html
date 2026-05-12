@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -412,8 +412,8 @@
                   
   <section id="prerequisites">
 <span id="coco-prerequisites"></span><h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h1>
-<p>Complete the following prerequisites before deploying Confidential Containers.
-Refer to the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for validated hardware and software versions.</p>
+<p>The following prerequisites are required to configure your cluster to deploy Confidential Containers.</p>
+<p>Refer to the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for validated hardware and software versions.</p>
 <section id="hardware-and-bios">
 <h2>Hardware and BIOS<a class="headerlink" href="#hardware-and-bios" title="Permalink to this headline">#</a></h2>
 <ul>
@@ -426,13 +426,13 @@ You can check if your host is configured for IOMMU by running the following comm
 </pre></div>
 </div>
 <p>If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.</p>
-<p>If the host is not configured or if you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument. For most Linux distributions, add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
+<p>If the host is not configured or if you are unsure, add the <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> Linux kernel command-line argument for AMD CPUs, or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> for Intel CPUs. For most Linux distributions, add the argument to the <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code> file, for instance:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
 <span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
 <span class="go">...</span>
 </pre></div>
 </div>
-<p>After making the change, configure the bootloader</p>
+<p>After making the change, configure the bootloader.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-grub
 </pre></div>
 </div>
@@ -469,8 +469,25 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <ul>
 <li><p>A Kubernetes cluster with cluster administrator privileges.
 Refer to the <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> table for supported Kubernetes versions.</p></li>
-<li><p>Helm installed on your cluster.
-Refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p></li>
+<li><p>containerd version 2.2.2 installed.
+Refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
+<p>To verify the installed version, run the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>containerd --version
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">containerd containerd.io 2.2.2 ...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Helm installed.
+Use the command below to install Helm or refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 <span class="se">\</span>
+      <span class="o">&amp;&amp;</span> chmod <span class="m">700</span> get_helm.sh <span class="se">\</span>
+      <span class="o">&amp;&amp;</span> ./get_helm.sh
+</pre></div>
+</div>
+</li>
 <li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> Kubelet feature gates on your cluster.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code>: Enabled by default on Kubernetes v1.34 and later.
@@ -492,6 +509,25 @@ This feature gate is required to support pod deployments that use multiple snaps
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
+</li>
+<li><p>Configure image pull timeouts. The guest-pull mechanism pulls images inside the confidential VM, which means large images can take longer to download and delay container start.
+Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.</p>
+<p>If you plan to use large images, increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the NVIDIA shim configurations in Kata Containers.</p>
+<p>Add or update the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> field in your kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="hll"><span class="nt">runtimeRequestTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20m</span><span class="w"></span>
+</span></pre></div>
+</div>
+<p>Restart the kubelet service to apply the change:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
+</pre></div>
+</div>
+<p>Optionally, you can configure additional timeouts for the NVIDIA Shim and Kata Agent Policy.
+The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
+This controls the time the shim allows for a container to remain in container creating state.
+If you need a timeout of more than 1200 seconds, you will also need to adjust Kata Agent Policy’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
+To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:</span> <span class="pre">&quot;...&quot;</span></code> annotation.</p>
 </li>
 </ul>
 </section>

@@ -69,7 +69,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Managing the Confidential Computing Mode" href="configure-cc-mode.html" />
+    <link rel="next" title="Configure Confidential Containers" href="configure.html" />
     <link rel="prev" title="Deploy Confidential Containers" href="confidential-containers-deploy.html" />
 
 
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -412,17 +412,22 @@
                   
   <section id="run-a-sample-workload">
 <span id="coco-run-sample-workload"></span><h1>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h1>
-<p>After completing the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">deployment steps</span></a>, you can verify your installation by running a sample GPU workload in a confidential container.</p>
-<p>A pod manifest for a confidential container GPU workload requires that you specify the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime class for SEV-SNP or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for TDX.</p>
+<p>After completing the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">deployment steps</span></a>, verify your
+installation by running a basic single-GPU sample workload inside a Confidential Container.</p>
+<p>This page intentionally uses the simplest possible manifest so that you can confirm the
+deployment end-to-end.
+For the full set of workload configuration options, including runtime class selection,
+resource type naming, and multi-GPU passthrough, refer to
+<a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a>.</p>
 <ol class="arabic">
-<li><p>Create a file, such as the following <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> sample, specifying the kata-qemu-nvidia-gpu-snp runtime class:</p>
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with the following sample manifest:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
 <span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"> </span><span class="c1"># or kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
 </span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
@@ -433,14 +438,17 @@
 </span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
 </pre></div>
 </div>
-<p>The following are Confidential Containers configurations in the sample manifest:</p>
+<p>Before applying the manifest, adjust the two highlighted lines for your environment:</p>
 <ul class="simple">
-<li><p>Set the runtime class to <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for SEV-SNP or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for TDX, depending on the node type where the workloads should run.</p></li>
-<li><p>In the sample above, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is the default resource type for GPUs.
-If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable for the sandbox device plugin.
-Refer to the <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring the Sandbox Device Plugin to Use GPU or NVSwitch Specific Resource Types</span></a> for more details.</p></li>
-<li><p>If you have machines that support multi-GPU passthrough, refer to the <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Multi-GPU Passthrough</span></a> page for a complete workload example and architecture-specific CC mode requirements.</p></li>
+<li><p><strong>Runtime class.</strong> Use <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> on AMD SEV-SNP nodes or
+<code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> on Intel TDX nodes.</p></li>
+<li><p><strong>GPU resource type.</strong> The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default
+resource name advertised by the NVIDIA Kata sandbox device plugin.
+If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the
+model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
 </ul>
+<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for
+guidance on each option.</p>
 </li>
 <li><p>Create the pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
@@ -450,7 +458,8 @@ Refer to the <a class="reference internal" href="confidential-containers-deploy.
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd-kata created</span>
 </pre></div>
 </div>
-<p>Optional: Verify the pod is running.</p>
+</li>
+<li><p>Optional: Verify the pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
 </pre></div>
 </div>
@@ -483,9 +492,10 @@ Refer to the <a class="reference internal" href="confidential-containers-deploy.
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p>Configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework to enable remote verification of your confidential environment.</p></li>
-<li><p>Set up <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">multi-GPU passthrough</span></a> for NVSwitch-based HGX systems.</p></li>
-<li><p>Tune <a class="reference internal" href="configure-image-pull-timeouts.html"><span class="doc">image pull timeouts</span></a> if you are pulling large container images.</p></li>
+<li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configure Confidential Container workloads</span></a> for runtime class
+selection, resource type naming, and single- or multi-GPU passthrough patterns.</p></li>
+<li><p>Configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework to enable remote
+verification of your confidential environment.</p></li>
 <li><p>Manage the <a class="reference internal" href="configure-cc-mode.html"><span class="doc">confidential computing mode</span></a> on your GPUs.</p></li>
 </ul>
 </section>
@@ -511,11 +521,11 @@ Refer to the <a class="reference internal" href="confidential-containers-deploy.
       </div>
     </a>
     <a class="right-next"
-       href="configure-cc-mode.html"
+       href="configure.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Managing the Confidential Computing Mode</p>
+        <p class="prev-next-title">Configure Confidential Containers</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

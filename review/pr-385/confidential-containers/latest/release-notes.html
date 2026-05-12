@@ -70,14 +70,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Licensing" href="licensing.html" />
-    <link rel="prev" title="Attestation" href="attestation.html" />
+    <link rel="prev" title="Configuring Confidential Container Workloads" href="configure-multi-gpu.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current nav bd-sidenav">
@@ -417,7 +417,6 @@
 <section id="coco-v1-0-0">
 <span id="id1"></span><h2>1.0.0<a class="headerlink" href="#coco-v1-0-0" title="Permalink to this headline">#</a></h2>
 <p>This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
-a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
 It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.</p>
 <p>The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.</p>
 <section id="key-features">
@@ -448,7 +447,7 @@ It is designed for organizations in regulated industries that require strong iso
 <li><p>Ubuntu 25.10 (host OS)</p></li>
 </ul>
 </li>
-<li><p>This release supports Red Hat OpenShift Sandboxed Containers 1.12.</p></li>
+<li><p>This release has Technology Preview support for Red Hat OpenShift Sandboxed Containers 1.12.</p></li>
 </ul>
 </section>
 <section id="limitations-and-restrictions">
@@ -474,12 +473,12 @@ For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="attestation.html"
+       href="configure-multi-gpu.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Attestation</p>
+        <p class="prev-next-title">Configuring Confidential Container Workloads</p>
       </div>
     </a>
     <a class="right-next"

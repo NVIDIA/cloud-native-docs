@@ -69,15 +69,15 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configuring Multi-GPU Passthrough Support" href="configure-multi-gpu.html" />
-    <link rel="prev" title="Run a Sample Workload" href="run-sample-workload.html" />
+    <link rel="next" title="Configuring Confidential Container Workloads" href="configure-multi-gpu.html" />
+    <link rel="prev" title="Attestation" href="attestation.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Apr 30, 2026"/>
+    <meta name="docbuild:last-update" content="May 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,10 +349,10 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Managing the CC Mode</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Multi-GPU Passthrough</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-image-pull-timeouts.html">Image Pull Timeouts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -438,7 +438,7 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">on</span></code> (default)</p></td>
 <td><p>Enable Confidential Computing.</p></td>
 <td><p>cluster-wide default, node-level override</p></td>
 </tr>
@@ -448,9 +448,9 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code></p></td>
 <td><p>Enable Confidential Computing on NVIDIA Hopper GPUs.</p>
-<p>On the NVIDIA Hopper architecture multi-GPU passthrough uses protected PCIe (PPCIE)
-which claims exclusive use of the NVSwitches for a single Confidential Container
-virtual machine.
+<p>On the NVIDIA Hopper architecture <a class="reference internal" href="configure-multi-gpu.html#coco-multi-gpu-passthrough"><span class="std std-ref">multi-GPU passthrough</span></a>
+uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single
+Confidential Container virtual machine.
 If you are using NVIDIA Hopper GPUs for multi-GPU passthrough,
 set the GPU mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.</p>
 <p>The NVIDIA Blackwell architecture uses NVLink
@@ -546,12 +546,12 @@ A mode change is complete and successful when <code class="docutils literal notr
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="run-sample-workload.html"
+       href="attestation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Run a Sample Workload</p>
+        <p class="prev-next-title">Attestation</p>
       </div>
     </a>
     <a class="right-next"
@@ -559,7 +559,7 @@ A mode change is complete and successful when <code class="docutils literal notr
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configuring Multi-GPU Passthrough Support</p>
+        <p class="prev-next-title">Configuring Confidential Container Workloads</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
