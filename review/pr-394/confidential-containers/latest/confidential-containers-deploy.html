@@ -521,9 +521,10 @@ This feature gate is required to support pod deployments that use multiple snaps
 </li>
 </ul>
 <ul id="configure-image-pull-timeouts">
-<li><p>Configure image pull timeouts. The guest-pull mechanism pulls images inside the confidential VM, which means large images can take longer to download and delay container start.
-Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.</p>
-<p>If you plan to use large images, increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the NVIDIA shim configurations in Kata Containers.</p>
+<li><p>Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts on large image pulls.
+Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+This is more likely to happen when using large images.</p>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the Kata shim configurations in Kata Containers.</p>
 <p>Add or update the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> field in your kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
@@ -534,10 +535,8 @@ Kubelet can de-allocate your pod if the image pull exceeds the configured timeou
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
-<p>Optionally, you can configure additional timeouts for the NVIDIA Shim and Kata Agent Policy.
-The NVIDIA shim configurations in Kata Containers use a default <code class="docutils literal notranslate"><span class="pre">create_container_timeout</span></code> of 1200 seconds (20 minutes).
-This controls the time the shim allows for a container to remain in container creating state.
-If you need a timeout of more than 1200 seconds, you will also need to adjust Kata Agent Policy’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> value which controls the agent-side timeout for guest-image pull.
+<p>If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>, which defaults to 1200s.
+This setting also sets the confidential data hub’s image pull API timeout in seconds.
 To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:</span> <span class="pre">&quot;...&quot;</span></code> annotation.</p>
 </li>
 </ul>
