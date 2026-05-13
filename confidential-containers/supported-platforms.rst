@@ -18,17 +18,18 @@
 
 .. _coco-supported-platforms:
 
-*******************
+###################
 Supported Platforms
-*******************
+###################
 
 Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.
 
-Supported Hardware Platform
-===========================
+********
+Hardware
+********
 
 NVIDIA GPUs
------------
+===========
 
 .. list-table::
    :header-rows: 1
@@ -57,8 +58,8 @@ NVIDIA GPUs
 
 .. note::
 
-    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
-    Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` in the deployment guide for details.
+    :ref:`Multi-GPU passthrough <coco-multi-gpu-passthrough>` on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
+    Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` for details.
 
 .. note::
 
@@ -66,7 +67,7 @@ NVIDIA GPUs
     Configuring only some GPUs on a node for Confidential Computing is not supported.
 
 CPU Platforms
--------------
+=============
 
 .. flat-table::
    :header-rows: 1
@@ -98,7 +99,7 @@ For additional resources on machine setup:
 .. _coco-supported-software-components:
 
 Supported Software Components
------------------------------
+=============================
 
 .. flat-table::
    :header-rows: 1

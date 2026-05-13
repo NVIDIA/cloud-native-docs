@@ -17,9 +17,9 @@
 .. headings # #, * *, =, -, ^, "
 
 
-*****************************************************
+#####################################################
 NVIDIA Confidential Containers Reference Architecture
-*****************************************************
+#####################################################
 
 NVIDIA GPUs with Confidential Computing support provide the hardware foundation for running GPU workloads inside a hardware-enforced Trusted Execution Environment (TEE).
 The NVIDIA Confidential Containers Reference Architecture provides a validated deployment model for cluster administrators interested in leveraging NVIDIA GPU Confidential Computing capabilities on Kubernetes platforms.
@@ -31,8 +31,9 @@ Refer to the `Confidential Containers <https://confidentialcontainers.org/docs/>
 
 .. _confidential-containers-overview:
 
+**********
 Background
-==========
+**********
 
 NVIDIA GPUs power the training and deployment of Frontier Models—world-class Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.
 
@@ -45,8 +46,9 @@ The Confidential Containers project leverages Kata Containers to provide the san
 
 .. _coco-use-cases:
 
+*********
 Use Cases
-=========
+*********
 
 The target for Confidential Containers is to enable model providers (closed and open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge). Some of the key use cases that CC and Confidential Containers enable are:
 
@@ -61,8 +63,9 @@ The target for Confidential Containers is to enable model providers (closed and 
 
 .. _coco-architecture:
 
+*********************
 Architecture Overview
-=====================
+*********************
 
 NVIDIA's approach to the Confidential Containers architecture delivers on the key promise of Confidential Computing: confidentiality, integrity, and verifiability.
 Integrating open source and NVIDIA software components with the Confidential Computing capabilities of NVIDIA GPUs, the Reference Architecture for Confidential Containers is designed to be the secure and trusted deployment model for AI workloads.
@@ -89,8 +92,9 @@ The components are described in more detail in the next section.
 .. _coco-supported-platforms-components:
 
 
+***********************************************
 Software Components for Confidential Containers
-===============================================
+***********************************************
 
 The following is a brief overview of the software components in NVIDIA's Reference Architecture for Confidential Containers.
 Refer to the diagram above for a visual representation of the components.
@@ -160,7 +164,7 @@ A minimal hardened init system that securely bootstraps the guest environment, l
 .. _coco-gpu-operator-cluster-topology:
 
 GPU Operator Cluster Topology Considerations
---------------------------------------------
+============================================
 
 The GPU Operator deploys and manages components for allocating and utilizing the GPU resources on your cluster.
 Depending on how you configure the Operator, different components are deployed on the worker nodes.
@@ -183,21 +187,22 @@ Consider the following example where node A is configured to run traditional con
        * Node Feature Discovery
        * NVIDIA GPU Feature Discovery
      - * NVIDIA Confidential Computing Manager for Kubernetes
-       * NVIDIA Sandbox Device Plugin
+       * NVIDIA Kata Sandbox Device Plugin
        * NVIDIA VFIO Manager
        * Node Feature Discovery
 
 This configuration can be controlled through node labelling, as described in the :doc:`Confidential Containers deployment guide <confidential-containers-deploy>`.
 
+*******************************************
 Supported Features and Deployment Scenarios
-===========================================
+*******************************************
 
 The following features are supported with Confidential Containers:
 
 * Support for Confidential Container workloads as
 
-  * Single-GPU passthrough (one physical GPU per pod).
-  * Multi-GPU passthrough on NVSwitch (NVLink) based HGX systems.
+  * :ref:`Single-GPU passthrough <coco-single-gpu-workload>` (one physical GPU per pod).
+  * :ref:`Multi-GPU passthrough <coco-multi-gpu-passthrough>` on NVSwitch (NVLink) based HGX systems.
 
 .. note::
 
@@ -218,8 +223,9 @@ More information on these features can be found in the `Confidential Containers 
 
 .. _coco-limitations:
 
+****************************
 Limitations and Restrictions
-============================
+****************************
 
 * NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
 * All GPUs on the host must be configured for Confidential Computing.
@@ -241,7 +247,7 @@ Limitations and Restrictions
   Refer to the `QEMU IOMMUFD documentation <https://www.qemu.org/docs/master/devel/vfio-iommufd.html>`_ for more information.
 
 Security Considerations
------------------------
+=======================
 
 * Application security defects: Confidential Computing does not protect against threats within the confidential VM, including vulnerabilities in the application itself.
   Applications must still follow security best practices such as input validation.
@@ -259,8 +265,9 @@ Security Considerations
 * Availability: Confidential Computing does not provide availability guarantees.
   Achieve availability through replication, which is standard practice in Kubernetes deployments.
 
+**********
 Next Steps
-==========
+**********
 Refer to the following pages to learn more about deploying with Confidential Containers:
 
 .. grid:: 3

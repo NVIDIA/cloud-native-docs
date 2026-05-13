@@ -16,20 +16,43 @@
 
 .. headings # #, * *, =, -, ^, "
 
-**********************************************************
+###########################################
 NVIDIA Confidential Containers Architecture
-**********************************************************
+###########################################
 
 .. toctree::
    :caption: NVIDIA Confidential Containers Architecture
    :hidden:
    :titlesonly:
 
-   Release Notes <release-notes.rst>
    Overview <overview.rst>
    Supported Platforms <supported-platforms.rst>
+
+.. toctree::
+   :caption: Install
+   :hidden:
+   :titlesonly:
+
+   Prerequisites <prerequisites.rst>
    Deploy Confidential Containers <confidential-containers-deploy.rst>
+   Run a Sample Workload <run-sample-workload.rst>
+
+.. toctree::
+   :caption: Configure
+   :hidden:
+   :titlesonly:
+
+   Configure Overview <configure.rst>
    Attestation <attestation.rst>
+   Managing the Confidential Computing Mode <configure-cc-mode.rst>
+   Configuring Workloads <configure-multi-gpu.rst>
+
+.. toctree::
+   :caption: Reference
+   :hidden:
+   :titlesonly:
+
+   Release Notes <release-notes.rst>
    Licensing <licensing.rst>
 
 
@@ -51,28 +74,28 @@ This is documentation for NVIDIA's implementation of Confidential Containers inc
 
       Learn about the validated hardware, OS, and component versions.
 
+   .. grid-item-card:: :octicon:`checklist;1.5em;sd-mr-1` Prerequisites
+      :link: prerequisites
+      :link-type: doc
+
+      Hardware, BIOS, and Kubernetes cluster requirements.
+
    .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Deploy Confidential Containers
       :link: confidential-containers-deploy
       :link-type: doc
 
-      Use this page to deploy with the NVIDIA GPU Operator on Kubernetes.
+      Install Kata Containers and the NVIDIA GPU Operator on Kubernetes.
+
+   .. grid-item-card:: :octicon:`play;1.5em;sd-mr-1` Run a Sample Workload
+      :link: run-sample-workload
+      :link-type: doc
+
+      Run a sample GPU workload in a confidential container.
 
    .. grid-item-card:: :octicon:`shield-check;1.5em;sd-mr-1` Attestation
       :link: attestation
       :link-type: doc
 
-      Learn about remote attestation, Trustee, and the NVIDIA verifier for GPU workloads.
+      Remote attestation, Trustee, and the NVIDIA verifier for GPU workloads.
 
-
-   .. grid-item-card:: :octicon:`note;1.5em;sd-mr-1` Release Notes
-      :link: release-notes
-      :link-type: doc
-
-      Review new features and known issues for each release.
-
-   .. grid-item-card:: :octicon:`law;1.5em;sd-mr-1` Licensing
-      :link: licensing
-      :link-type: doc
-
-      Learn about the licensing information for Confidential Containers documentation.
 
