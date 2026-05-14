@@ -1097,7 +1097,7 @@ A mode change is complete and successful when <code class="docutils literal notr
 <p>To configure multi-GPU passthrough, you can specify the following resource limits in your manifests:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
 <span class="w">   </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8&quot;</span><span class="w"></span>
-<span class="w">   </span><span class="nt">nvidia.com/nvswitch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">nvidia.com/nvswitch</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4&quot;</span><span class="w"> </span><span class="c1"># Only for NVIDIA Hopper GPUs with PPCIE mode</span><span class="w"></span>
 </pre></div>
 </div>
 <p>You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.</p>
