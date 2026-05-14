@@ -559,13 +559,13 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
   KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
 
-**************************************************************
-Support for Kata Containers and OpenShift Sandboxed Containers
-**************************************************************
+****************************************************************************************
+Support for Kata Containers, Confidential Containers, and OpenShift Sandboxed Containers
+****************************************************************************************
 
 The GPU Operator supports running GPU workloads in lightweight virtual machines using
 `Kata Containers <https://katacontainers.io/>`__ for single and multi GPU passthrough workloads.
-Refer to :doc:`deploy-kata-containers` for installation details.
+Confidential Containers are also supported through Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
 
 .. list-table::
    :header-rows: 1
@@ -575,14 +575,13 @@ Refer to :doc:`deploy-kata-containers` for installation details.
      - Support
    * - Kata Containers
      - 3.29.0 and higher (installed with the upstream ``kata-deploy`` Helm chart)
-   * - Container runtime
-     - containerd only
-   * - Kubernetes
-     - 1.32---1.35
+   * - NVIDIA Reference Architecture for Confidential Containers
+     - Refer to the NVIDIA Confidential Containers :doc:`support matrix documentation <cc:supported-platforms>`.
    * - OpenShift Sandboxed Containers
      - 1.12 (Technology Preview support)
 
-Refer to the Limitations and Restrictions section of the :doc:`Kata Containers documentation <deploy-kata-containers>` for more information on using Kata Containers with the GPU Operator.
+For deatils on installing Kata Containers with the GPU Operator, refer to the :doc:`deploy-kata-containers` page.
+This page includes additional limitations and restrictions for using Kata Containers with the GPU Operator.
 
 Refer to the `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__  documentation for more details.
 
@@ -592,6 +591,7 @@ Support for Confidential Containers
 
 The GPU Operator supports deploying Confidential Containers using Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
 This is a dedicated architecture for deploying Confidential Containers on Kubernetes clusters.
+It supports everything listed in the 
 
 For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the NVIDIA Confidential Containers :doc:`support matrix documentation <cc:supported-platforms>`.
 
