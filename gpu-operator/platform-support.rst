@@ -567,9 +567,6 @@ The GPU Operator supports running GPU workloads in lightweight virtual machines 
 `Kata Containers <https://katacontainers.io/>`__ for single and multi GPU passthrough workloads.
 Refer to :doc:`deploy-kata-containers` for installation details.
 
-`Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ is based on Kata Containers. 
-The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed Containers v1.12.
-
 .. list-table::
    :header-rows: 1
    :widths: 40 60
@@ -582,8 +579,12 @@ The Operator offers Technology Preview support for Red Hat OpenShift Sandboxed C
      - containerd only
    * - Kubernetes
      - 1.32---1.35
+   * - OpenShift Sandboxed Containers
+     - 1.12 (Technology Preview support)
 
 Refer to the Limitations and Restrictions section of the :doc:`Kata Containers documentation <deploy-kata-containers>` for more information on using Kata Containers with the GPU Operator.
+
+Refer to the `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__  documentation for more details.
 
 ***********************************
 Support for Confidential Containers
