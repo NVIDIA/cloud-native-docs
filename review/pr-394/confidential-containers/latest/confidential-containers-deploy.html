@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 13, 2026"/>
+    <meta name="docbuild:last-update" content="May 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -411,7 +411,7 @@ Refer to the <a class="reference external" href="https://kubernetes.io/docs/home
 <li><p>Configure the <a class="reference internal" href="#coco-prerequisites"><span class="std std-ref">Prerequisites</span></a>.</p></li>
 <li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes</span></a> that you want to use with Confidential Containers.</p></li>
 <li><p>Install the <a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">latest Kata Containers Helm chart</span></a>.
-This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p></li>
+This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems) onto the cluster’s worker nodes.</p></li>
 <li><p>Install the <a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">NVIDIA GPU Operator configured for Confidential Containers</span></a>.
 This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
 The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
@@ -419,7 +419,7 @@ The GPU Operator uses the node labels to determine what software components to d
 <p>After installation, you can <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.
 You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.
 The Trustee attestation service is typically deployed on a separate, trusted environment.</p>
-<p>After configuration, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes for secure deployment.</p>
+<p>After configuration, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems runtime classes for secure deployment.</p>
 </section>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
@@ -659,7 +659,7 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 <p>Several runtimes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy Confidential Containers workloads.</p>
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems runtime classes are used to deploy Confidential Containers workloads.</p>
 </li>
 <li><p>Optional: If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod or are not seeing the expected runtime classes, get the pod name and view the logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
@@ -775,16 +775,20 @@ To run a sample workload, refer to the <a class="reference internal" href="#coco
 </section>
 <section id="run-a-sample-workload">
 <span id="coco-run-sample-workload"></span><h2>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h2>
-<p>A pod manifest for a confidential container GPU workload requires that you specify the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime class for AMD based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel based systems.</p>
+<p>A pod manifest for a confidential container GPU workload requires that you specify the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime class for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems.</p>
 <ol class="arabic">
-<li><p>Create a file, such as the following <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> sample, specifying the kata-qemu-nvidia-gpu-snp runtime class:</p>
+<li><p>Create a file, such as the following <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> sample, specifying the appropriate runtime class for your system:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="amd-snp" for="sd-tab-item-0">
+AMD-based system (SNP)</label><div class="sd-tab-content docutils">
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
 <span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"> </span><span class="c1"># or kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"></span>
 </span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
@@ -795,9 +799,32 @@ To run a sample workload, refer to the <a class="reference internal" href="#coco
 </span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
 </pre></div>
 </div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="intel-tdx" for="sd-tab-item-1">
+Intel-based system (TDX)</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># for single GPU passthrough</span><span class="w"></span>
+</span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>The following are Confidential Containers configurations in the sample manifest:</p>
 <ul class="simple">
-<li><p>Set the runtime class to <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel based systems, depending on the node type where the workloads should run.</p></li>
+<li><p>Set the runtime class to <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems, depending on the node type where the workloads should run.</p></li>
 <li><p>In the sample above, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is the default resource type for GPUs.
 If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> environment variable for the Kata device plugin.
 Refer to the <a class="reference internal" href="#coco-configuration-heterogeneous-clusters"><span class="std std-ref">Configuring GPU or NVSwitch Resource Types Name</span></a> section on this page for more details.</p></li>
