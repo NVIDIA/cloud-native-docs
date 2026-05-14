@@ -505,7 +505,7 @@ The Kata runtime uses this feature gate to query the Kubelet Pod Resources API a
 <li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code>: Alpha since Kubernetes v1.29 and is not enabled by default.
 This feature gate is required to support pod deployments that use multiple snapshotters side-by-side.</p></li>
 </ul>
-<p>Add both feature gates to your Kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">vi</span> <span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
+<p>Add both feature gates to your Kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
 <span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
@@ -521,10 +521,10 @@ This feature gate is required to support pod deployments that use multiple snaps
 </li>
 </ul>
 <ul id="configure-image-pull-timeouts">
-<li><p>Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts on large image pulls.
-Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
-This is more likely to happen when using large images.</p>
-<p>Increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the Kata shim configurations in Kata Containers.</p>
+<li><p>Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images.
+Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.</p>
+<p>Increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the Kata shim configurations in Kata Containers.
+The default timeout is 2 minutes.</p>
 <p>Add or update the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> field in your kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
