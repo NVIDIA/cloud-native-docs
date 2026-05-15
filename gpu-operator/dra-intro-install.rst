@@ -21,44 +21,83 @@ NVIDIA DRA Driver for GPUs
 ##########################
 
 Dynamic Resource Allocation (DRA) is a Kubernetes concept for flexibly requesting, configuring, and sharing specialized devices like GPUs.
-DRA puts device configuration and scheduling into the hands of device vendors through drivers such as the DRA Driver for GPUs.
-This page outlines how to install the NVIDIA DRA Driver for GPUs v25.12.0 and later with the NVIDIA GPU Operator.
+This page describes how to install and upgrade the DRA Driver for NVIDIA GPUs v${dra_version} with the NVIDIA GPU Operator.
 
-Before using the DRA Driver for GPUs, it is recommended that you are familiar with the following concepts:
+Before using the DRA Driver for NVIDIA GPUs, it is recommended that you are familiar with the following:
 
 * `Upstream Kubernetes DRA documentation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_.
-* `DRA Driver repository documentation <https://github.com/NVIDIA/k8s-dra-driver-gpu>`__
+* `DRA Driver repository <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu>`__.
 
 *****************
 Overview
 *****************
 
-With NVIDIA's DRA Driver for GPUs, your Kubernetes workload can allocate and consume the following two types of resources:
+With the DRA Driver for NVIDIA GPUs, your Kubernetes workloads can allocate and consume the following two types of resources:
 
-* GPU allocation: for controlled sharing and dynamic reconfiguration of GPUs. This functionality is a replacement for the traditional GPU allocation method used by the NVIDIA Kubernetes Device Plugin. 
-* ComputeDomains: An abstraction for robust and secure `Multi-Node NVLink (MNNVL) <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for NVIDIA GB200 and similar systems.
+* GPU allocation: for controlled sharing and dynamic reconfiguration of GPUs.
+  This functionality replaces the traditional GPU allocation method used by the NVIDIA Kubernetes Device Plugin.
+* ComputeDomains: an abstraction for robust and secure `Multi-Node NVLink (MNNVL) <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for NVIDIA GB200 and similar systems.
 
-You can use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator to deploy and manage your GPUs and ComputeDomains.
+You can use these features independently or together in the same cluster.
 
 .. _known-issues:
 
 Known Issues
 ************
 
+This section covers known issues for the DRA Driver when used with the NVIDIA GPU Operator.
+For known issues specific to the DRA Driver itself, refer to the `DRA Driver v${dra_version} release notes <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__.
+
 * There is a known issue where the NVIDIA Driver Manager is not aware of the DRA driver kubelet plugin, and will not correctly evict it on pod restarts.
   You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm command in the ``driver.manager.env`` flag.
   This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.
-* For A100 GPUs, the MIG manager does not automatically evict the DRA kubelet plugin during MIG configuration changes.
-  If the DRA kubelet plugin is deployed before a MIG change, then you must manually restart the DRA kubelet plugin. 
 
 *************
 Prerequisites
 *************
 
-.. tip::
-   You can use both NVIDIA DRA Driver for GPUs ComputeDomain and GPU allocation independently or together in the same cluster. 
-   However, they have different prerequisites.
-   If you plan to use both features together, you must configure your cluster with the minimum prerequisites for both GPU allocation and ComputeDomains.
+Installing GPU Operator ${version} (in the next step) handles configuring the following and the DRA Driver for NVIDIA GPUs prerequisites for you:
+
+* Container Device Interface (CDI) to be enabled in the underlying container runtime (such as containerd or CRI-O)
+* NVIDIA Driver version 580 or later.
+* Deploying Node Feature Discovery (NFD) and GPU Feature Discovery (GFD).
+
+Refer to the `DRA Driver for NVIDIA GPUs prerequisites <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/prerequisites.md>`_ documentation for more information.
+
+Make sure your GPUs and cluster align with the :ref:`GPU Operator support matrix <operator-platform-support>`. The DRA Driver also requires the following:
+
+* Kubernetes v1.34.2 or later.
+
+  .. note::
+     If you plan to use traditional extended resource requests such as ``nvidia.com/gpu`` alongside the DRA driver, you must enable the `DRAExtendedResource <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>`_ feature gate. This allows the scheduler to translate extended resource requests into ResourceClaims for the DRA driver.
+
+* For GPU allocation, label nodes that will support GPU allocation with ``nvidia.com/dra-kubelet-plugin=true`` and use this label as a node selector in the DRA driver Helm chart.
+  This is required to avoid the :ref:`known issue <known-issues>` when using the GPU Operator with the DRA Driver.
+  Steps for labeling nodes are provided in the install section.
+  The label is also passed to the GPU Operator Helm command via the ``driver.manager.env`` flag.
+
+.. _computedomain-prereqs:
+
+Additional prerequisites for ComputeDomain: 
+
+* NVIDIA Grace Blackwell GPUs with Multi-Node NVLink (MNNVL) available on your cluster.
+  For example, NVIDIA HGX GB200 NVL72 or NVIDIA HGX GB300 NVL72.
+  Refer to the `NVIDIA Multi-Node NVLink Systems documentation <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for details on Multi-Node NVLink systems.
+
+
+*******
+Install
+*******
+
+This section covers fresh installs of the GPU Operator and DRA Driver for NVIDIA GPUs.
+If you are upgrading from an earlier version for the DRA Driver for NVIDIA GPUs, refer to the :ref:`Upgrade <upgrade>` section.
+
+.. note::
+   The ``nvidiaDriverRoot`` flag sets the root directory for the NVIDIA GPU driver.
+   The default value is ``/``, which is typical for drivers installed directly on the host.
+   With GPU Operator–managed drivers (default), drivers are installed to ``/run/nvidia/driver``.
+   If you are using `pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`_, remove the ``nvidiaDriverRoot`` flag or set it to ``/``.
+
 
 .. tab-set::
    :sync-group: dra
@@ -66,66 +105,18 @@ Prerequisites
    .. tab-item:: GPU Allocation
       :sync: gpu-allocation
 
-      Using the NVIDIA DRA Driver for GPUs allocation with the GPU Operator requires the following:
-
-      * Kubernetes v1.34.2 or newer.
-
-        .. note::
-           If you plan to use traditional extended resource requests such as `nvidia.com/gpu` with the DRA driver, you must enable the `DRAExtendedResource <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>`_ feature gate. This feature allows the scheduler to automatically translate extended resource requests into ResourceClaims, which are then allocated by the DRA driver.
-
-      * GPU Operator v25.10.0 or later with the NVIDIA Kubernetes Device Plugin disabled to avoid conflicts with the DRA Driver for GPUs.
-
-        The DRA Driver requires Container Device Interface (CDI) to be enabled in the underlying container runtime (such as containerd or CRI-O) and NVIDIA Driver version 580 or later.
-        These are both default in GPU Operator v25.10.0 and later.
-
-      * Label nodes you plan to use for GPU allocation with something like ``nvidia.com/dra-kubelet-plugin=true`` and use them as nodeSelectors in the DRA driver helm chart.
-        This is required to avoid the :ref:`known issue <known-issues>` when using the GPU Operator with the DRA Driver for GPUs.
-        Steps for labeling nodes are provided in the next section. 
-        This label is then passed in the GPU Operator Helm command in the ``driver.manager.env`` flag.
-
-   .. tab-item:: ComputeDomain
-      :sync: computedomain
-
-      * Kubernetes v1.32 or later.
-
-        * DRA is enabled by default in Kubernetes v1.34 and later.
-        * If you are using Kubernetes v1.32 or v1.33, you must enable DRA and corresponding API groups on your cluster. Refer to the `Kubernetes DRA documentation <https://kubernetes.io/docs/tasks/configure-pod-container/assign-resources/set-up-dra-cluster/#enable-dra>`_ for details on enabling the correct DRA API groups for your version of Kubernetes.
-
-        .. note::
-           It is recommended that you use Kubernetes v1.34.2 or later with the DRA Driver to avoid a `known issue <https://github.com/kubernetes/kubernetes/issues/133920>`_.
-
-      * GPU Operator v25.10.0 or later.
-        The DRA Driver requires Container Device Interface (CDI) to be enabled in the underlying container runtime (such as containerd or CRI-O) and NVIDIA Driver version 580 or later.
-        These are both default in GPU Operator v25.10.0 and later.
-
-      * NVIDIA Grace Blackwell GPUs with Multi-Node NVLink (MNNVL) available on your cluster.
-        For example, NVIDIA HGX GB200 NVL72 or NVIDIA HGX GB300 NVL72.
-        Refer to the `NVIDIA Multi-Node NVLink Systems documentation <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for details on Multi-Node NVLink systems.
-
-
-
-*******************************
-Install the NVIDIA GPU Operator
-*******************************
-
-.. tab-set::
-   :sync-group: dra
-
-   .. tab-item:: GPU Allocation
-      :sync: gpu-allocation
-
-      1. Create a node selector label on all the nodes in your cluster that support GPU allocation through DRA:
+      1. Label every node that will support GPU allocation through DRA:
 
          .. code-block:: console
 
             kubectl label node $HOSTNAME nvidia.com/dra-kubelet-plugin=true
 
-      2. Add the Helm repo:
+      2. Add the NVIDIA Helm repository:
 
          .. code-block:: console
 
             helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
-            && helm repo update
+              && helm repo update
 
       3. Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:
 
@@ -139,164 +130,102 @@ Install the NVIDIA GPU Operator
               --set driver.manager.env[0].name=NODE_LABEL_FOR_GPU_POD_EVICTION \
               --set driver.manager.env[0].value="nvidia.com/dra-kubelet-plugin"
 
-         Make sure that the value of ``driver.manager.env`` matches the node selector label that was used when installing the DRA driver helm chart.
+         Make sure the value of ``driver.manager.env`` matches the node label applied in step 1.
 
-   .. tab-item:: ComputeDomain
-      :sync: computedomain
+         Make sure the ``devicePlugin.enabled`` flag is set to ``false`` to disable the NVIDIA Kubernetes Device Plugin.
+         The DRA Driver for NVIDIA GPUs will be used to allocate GPUs.
 
-      1. Add the Helm repo:
+         Refer to the `GPU Operator installation guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-install.html>`_ for additional configuration options.
+         If you plan to use MIG devices, refer to the `GPU Operator MIG documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html>`_ to configure your cluster for MIG support.
 
-      .. code-block:: console
+      4. Create a ``values.yaml`` file for the DRA driver:
 
-         helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
-         && helm repo update
+         .. code-block:: yaml
 
-      2. Install the GPU Operator with the device plugin disabled:
+            image:
+              pullPolicy: IfNotPresent
+            kubeletPlugin:
+              nodeSelector:
+                nvidia.com/dra-kubelet-plugin: "true"
 
-      .. code-block:: console
+         If you are using Google Kubernetes Engine (GKE), the DRA driver requires additional overrides for the driver root, controller affinity, and tolerations:
 
-         helm upgrade --install gpu-operator nvidia/gpu-operator \
-           --version=${version} \
-           --create-namespace \
-           --namespace gpu-operator 
+         .. code-block:: yaml
 
+            # GKE helm values example
+            # "/home/kubernetes/bin/nvidia" is the default driver root on GKE.
+            nvidiaDriverRoot: "/home/kubernetes/bin/nvidia"
 
-Refer to the `GPU Operator installation guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-install.html>`_ for additional configuration options when installing the GPU Operator.
+            controller:
+              priorityClassName: ""
+              affinity: null
+            image:
+              pullPolicy: IfNotPresent
+            kubeletPlugin:
+              priorityClassName: ""
+              tolerations:
+                - effect: NoSchedule
+                  key: nvidia.com/gpu
+                  operator: Exists
+              nodeSelector:
+                nvidia.com/dra-kubelet-plugin: "true"
 
-If you are planning to use MIG devices, refer to the `NVIDIA GPU Operator MIG documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html>`_ to configure your cluster for MIG support.
-
-***************************
-Install DRA Driver for GPUs
-***************************
-
-.. note::
-    The ``gpuResourcesEnabledOverride=true`` is an additional flag that is required to fully enable GPU allocation support. 
-    Include it in the Helm command if you want to enable GPU allocation support.
-
-    If you want to disable either functionality:
-
-    * To disable GPU allocation support, include ``--set resources.gpus.enabled=false`` in the Helm command.
-    * To disable ComputeDomain support, include ``--set resources.computeDomains.enabled=false`` in the Helm command.
-    
-
-.. note::
-    The ``nvidiaDriverRoot`` flag sets the root directory for the NVIDIA GPU driver.
-    The default value is ``/``, which is the typical value for drivers installed directly on the host.
-    If you are using GPU Operator managed drivers (default), the drivers are installed to ``/run/nvidia/driver`` by default.
-    If you are using `pre-installed drivers <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers>`_, you can remove the ``nvidiaDriverRoot`` flag or set it to ``/`` in the command above.
-
-.. tab-set::
-   :sync-group: dra
-
-   .. tab-item:: GPU Allocation
-      :sync: gpu-allocation
-
-      1. Create a custom ``values.yaml`` file for installing the DRA driver helm chart.
-
-         .. tab-set::
-
-            .. tab-item:: values.yaml file
-
-             Specifies the node selector label for nodes that will support GPU allocation through the DRA Driver.
-
-             .. code-block:: yaml
-
-                image:
-                  pullPolicy: IfNotPresent
-                kubeletPlugin:
-                  nodeSelector:
-                    nvidia.com/dra-kubelet-plugin: "true"
-
-            .. tab-item:: GKE values.yaml file
-
-             Google Kubernetes Engine requires some specific values to be set in the ``values.yaml`` file, including the driver root on the host in ``nvidiaDriverRoot`` as well as the node selector label for nodes that will support GPU allocation through the DRA Driver.
-
-             .. code-block:: yaml
-
-                # Specify the driver root on the host in nvidiaDriverRoot.
-                # "/home/kubernetes/bin/nvidia" is the default driver root on GKE.
-                nvidiaDriverRoot: "/home/kubernetes/bin/nvidia"
-
-                controller:
-                  priorityClassName: ""
-                  affinity: null
-                image:
-                  pullPolicy: IfNotPresent
-                kubeletPlugin:
-                  priorityClassName: ""
-                  tolerations:
-                    - effect: NoSchedule
-                      key: nvidia.com/gpu
-                      operator: Exists
-                  nodeSelector:
-                    nvidia.com/dra-kubelet-plugin: "true"
-
-      2. Add the Helm repo:
+      5. Install the DRA driver:
 
          .. code-block:: console
 
-            helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
-            && helm repo update
+            helm upgrade -i dra-driver-nvidia-gpu nvidia/dra-driver-nvidia-gpu \
+              --version=${dra_version} \
+              --namespace nvidia-dra-driver-gpu \
+              --create-namespace \
+              --set nvidiaDriverRoot=/run/nvidia/driver \
+              --set gpuResourcesEnabledOverride=true \
+              -f values.yaml
 
-      3. Install the DRA driver:
-
-         .. tab-set::
-
-            .. tab-item:: install command
-
-               .. code-block:: console
-
-                  helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-                    --version="${dra_version}" \
-                    --namespace nvidia-dra-driver-gpu \
-                    --create-namespace \
-                    --set nvidiaDriverRoot=/run/nvidia/driver \
-                    --set gpuResourcesEnabledOverride=true \
-                    -f values.yaml
-
-            .. tab-item:: GKE install command
-
-               .. code-block:: console
-
-                  helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-                    --version="${dra_version}" \
-                    --namespace nvidia-dra-driver-gpu \
-                    --create-namespace \
-                    --set gpuResourcesEnabledOverride=true \
-                    -f values.yaml
+         For GKE, omit ``--set nvidiaDriverRoot=/run/nvidia/driver``; the value comes from the GKE ``values.yaml`` file.
 
    .. tab-item:: ComputeDomain
       :sync: computedomain
 
-      1. Add the NVIDIA NGC Catalog's Helm chart repository:
+      1. Add the NVIDIA Helm repository:
 
          .. code-block:: console
 
             helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
 
-      2. Install the DRA driver.
-
-         Example for Operator-provided GPU driver:
+      2. Install the GPU Operator:
 
          .. code-block:: console
 
-            helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-              --version="${dra_version}" \
+            helm upgrade --install gpu-operator nvidia/gpu-operator \
+              --version=${version} \
               --create-namespace \
+              --namespace gpu-operator
+
+         Refer to the `GPU Operator installation guide <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-install.html>`_ for additional configuration options.
+
+      3. Install the DRA driver.
+
+         Example for an Operator-provided GPU driver:
+
+         .. code-block:: console
+
+            helm upgrade -i dra-driver-nvidia-gpu nvidia/dra-driver-nvidia-gpu \
+              --version=${dra_version} \
               --namespace nvidia-dra-driver-gpu \
+              --create-namespace \
               --set resources.gpus.enabled=false \
               --set nvidiaDriverRoot=/run/nvidia/driver
 
-         Example for host-provided GPU driver:
+         Example for a host-provided GPU driver:
 
          .. code-block:: console
 
-            helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-              --version="${dra_version}" \
-              --create-namespace \
+            helm upgrade -i dra-driver-nvidia-gpu nvidia/dra-driver-nvidia-gpu \
+              --version=${dra_version} \
               --namespace nvidia-dra-driver-gpu \
+              --create-namespace \
               --set resources.gpus.enabled=false
-
 
 *********************
 Validate Installation
@@ -313,8 +242,15 @@ Validate Installation
    .. code-block:: output
 
       NAME                                                READY   STATUS    RESTARTS   AGE
-      nvidia-dra-driver-gpu-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s
-      nvidia-dra-driver-gpu-kubelet-plugin-h5xsn          1/1     Running   0          7m27s
+      dra-driver-nvidia-gpu-controller-67cb99d84b-5q7kj   1/1     Running   0          7m26s
+      dra-driver-nvidia-gpu-kubelet-plugin-h5xsn          1/1     Running   0          7m27s
+
+   The controller pod runs the ComputeDomain controller (1 container). The kubelet-plugin pod runs two containers, one for GPU resources (gpus) and one for ComputeDomain resources (compute-domains), so it shows 2/2 when both are enabled. One kubelet-plugin pod appears per GPU node.
+
+   If you installed with --set resources.computeDomains.enabled=false, the controller pod will not be present and the kubelet-plugin pod will show 1/1. The same is true if you disabled GPU allocation during install.
+
+   .. note::
+      If you upgraded an existing v25.x installation, the pod names retain the ``nvidia-dra-driver-gpu-`` prefix (for example, ``nvidia-dra-driver-gpu-controller-*``) because the upgrade preserves the original resource names through the ``nameOverride`` flag.
 
 2. Verify that GPU DeviceClasses are available:
 
@@ -326,7 +262,8 @@ Validate Installation
 
    .. code-block:: output
 
-      NAME              AGE
+
+      NAME                                        AGE
       compute-domain-daemon.nvidia.com            55s
       compute-domain-default-channel.nvidia.com   55s
       gpu.nvidia.com                              55s
@@ -335,69 +272,62 @@ Validate Installation
 The ``compute-domain-daemon.nvidia.com`` and ``compute-domain-default-channel.nvidia.com`` DeviceClasses are installed when ComputeDomain support is enabled.
 The ``gpu.nvidia.com`` and ``mig.nvidia.com`` DeviceClasses are installed when GPU allocation support is enabled.
 
-Additional validation steps are available in the DRA Driver repository documentation:
+Additional validation steps are available in the upstream DRA Driver documentation:
 
-* `Validate setup for ComputeDomain allocation <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
-* `Validate setup for GPU allocation <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation>`_
+* `Validate setup for ComputeDomain allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
+* `Validate setup for GPU allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-GPU-allocation>`_
 
-*********************
-Enable Health Checks
-*********************
+.. _upgrade:
 
-The NVIDIA DRA driver supports GPU health monitoring using the `NVIDIA Management Library (NVML) <https://developer.nvidia.com/management-library-nvml>`_.
-This feature uses NVML to check for `GPU XID errors <https://docs.nvidia.com/deploy/xid-errors/introduction.html>`_ and determines if a GPU or MIG device is functioning properly.
+*******
+Upgrade
+*******
 
-Health checking is managed by the ``NVMLDeviceHealthCheck`` feature gate. 
-This is currently an alpha feature and is disabled by default.
+Starting with v0.4.0, the DRA Driver for NVIDIA GPUs moved to ``kubernetes-sigs/dra-driver-nvidia-gpu`` and adopted semantic versioning.
+The Helm chart was renamed from ``nvidia-dra-driver-gpu`` to ``dra-driver-nvidia-gpu`` and is published to new NGC Helm and container registries.
 
-When enabled, the DRA Driver for GPUs continuously monitors GPUs for XID errors and assigns health statuses:
-* Healthy - GPU is functioning normally. The GPU may have a non-critical XID error but is still available for workloads.
-* Unhealthy - GPU has a critical XID error and is not suitable for workloads.
+When upgrading from v25.x you must explicitly set ``nameOverride`` and ``--version`` to avoid creating duplicate Kubernetes manifests under different names.
+Without ``--set nameOverride=nvidia-dra-driver-gpu``, the upgrade creates new daemonsets and deployments under the new chart name instead of upgrading the existing resources in place.
 
+.. important::
+   After upgrading to v0.4.0, downgrading to v25.x is not supported.
 
-To enable GPU health monitoring, deploy the DRA driver with the NVMLDeviceHealthCheck feature gate:
+Upgrade from v25.x to v0.4.0
+*************************************
 
-.. code-block:: console
+1. Apply the v${dra_version} CRDs for ComputeDomains and ComputeDomainsCliques before upgrading the Helm chart.
+   Refer to the `v${dra_version} release page <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__ for the CRD manifests.
 
-   helm repo add nvidia https://helm.ngc.nvidia.com/nvidia && helm repo update
-   helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-     --namespace nvidia-dra-driver-gpu \
-     --set gpuResourcesEnabledOverride=true \
-     --set featureGates.NVMLDeviceHealthCheck=true
-
-.. note::
-   Unhealthy GPUs will not appear in the ResourceSlice list. After the device recovers and is marked healthy again, you must restart the DRA Driver for the device to be added back into the available resources pool.
-
-After enabling health checks, you can monitor health status in the kubelet logs.
-
-1. Check kubelet plugin logs.
-   Health status changes are logged in the kubelet plugin container. Run ``kubectl get pods -n nvidia-dra-driver-gpu`` and find the ``nvidia-dra-driver-gpu-kubelet-plugin-<pod>`` pod name. Replace ``<pod>`` with your actual pod name.
+2. Run ``helm upgrade`` with ``nameOverride`` and ``--version``, preserving any original install flags such as ``gpuResourcesEnabledOverride`` and ``nvidiaDriverRoot``:
 
    .. code-block:: console
 
-      kubectl logs nvidia-dra-driver-gpu-kubelet-plugin-<pod> \
-        -n nvidia-dra-driver-gpu \
-        -c gpus
+      helm upgrade -i nvidia-dra-driver-gpu nvidia/dra-driver-nvidia-gpu \
+        --version=${dra_version} \
+        --namespace nvidia-dra-driver-gpu \
+        --set nameOverride=nvidia-dra-driver-gpu \
+        --set gpuResourcesEnabledOverride=true \
+        --set nvidiaDriverRoot=/run/nvidia/driver
 
-2. List all ResourceSlices.
-   View all ResourceSlices in the cluster to see which devices are available:
-
-   .. code-block:: console
-
-      kubectl get resourceslice
-
-3. Inspect a specific ResourceSlice.
-   View detailed information about a specific resource slice. Healthy devices are listed in the resource slice, while unhealthy devices are not listed:
+3. Verify the upgrade:
 
    .. code-block:: console
 
-      kubectl get resourceslice <resourceslice-name> -o yaml
+      kubectl get pods -n nvidia-dra-driver-gpu
+
+   All controller and kubelet-plugin pods should reach ``Running`` status, and existing ResourceClaims should remain in the ``allocated,reserved`` state.
+
+Refer to the `upstream upgrade guide <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/upgrade.md>`__ for additional detail.
 
 *************************
 Additional Documentation
 *************************
 
-Refer to the `DRA Driver for GPUs repository <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki>`_ for additional documentation, including
+Refer to the `DRA Driver for NVIDIA GPUs repository <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/tree/main/docs>`__ for additional documentation, including:
 
-* `Upgrade Guide <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Installation#upgrading>`_
-* `Troubleshooting Guide <https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Troubleshooting>`_
+* `Architecture <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/architecture.md>`_
+* `Prerequisites <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/prerequisites.md>`_
+* `Upstream install guide <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/install.md>`_
+* `Upstream upgrade guide <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/main/docs/upgrade.md>`_
+
+Release notes for the DRA Driver are available on the `v${dra_version} releases page <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__.
