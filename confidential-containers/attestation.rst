@@ -69,8 +69,7 @@ Provision Trustee
 Trustee is an open-source framework used in Confidential Containers to verify attestation evidence and conditionally release secrets.
 For a full overview of attestation with Trustee, refer to the upstream `Trustee documentation <https://confidentialcontainers.org/docs/attestation/>`_.
 
-To provision a Trustee instance, follow the upstream `Install Trustee in Docker <https://confidentialcontainers.org/docs/attestation/installation/docker/>`_ guide.
-This is the recommended install method.
+To provision a Trustee instance, follow the recommended upstream `Install Trustee in Docker <https://confidentialcontainers.org/docs/attestation/installation/docker/>`_ guide.
 
 .. note::
 
@@ -86,20 +85,21 @@ After you complete installation, Trustee is configured to use the NVIDIA Remote 
 Configure Workloads for Attestation
 ====================================
 
-To enable attestation for your workloads, point them to the Trustee network endpoint, sometimes referred to as the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:
+To enable attestation for your workloads, point them to the Trustee network endpoint, also called the Key Broker Service (KBS) endpoint, by adding the following annotation to your workload pod spec:
 
 .. code-block:: yaml
 
    io.katacontainers.config.hypervisor.kernel_params: "agent.aa_kbc_params=cc_kbc::http://<kbs-ip>:<kbs-port>"
 
-Replace ``<kbs-ip>`` with the IP address or hostname at which your Trustee instance is reachable from the worker nodes, and ``<kbs-port>`` with the port (default: ``8080``).
+Replace ``<kbs-ip>`` with the IP address or hostname at which your Trustee instance is reachable from the worker nodes.
+Replace ``<kbs-port>`` with the port that Trustee listens on (default: ``8080``).
 
 Refer to the upstream `Setup Confidential Containers <https://confidentialcontainers.org/docs/attestation/coco-setup/>`_ documentation for more information on configuring workloads for attestation.
 
 .. _customize-attestation:
 
-Customize Attestation Workflows
-===============================
+Optional: Customize Attestation Workflows
+=========================================
 
 After Trustee is provisioned and workloads are configured, you can customize attestation workflows to enforce your desired security policies.
 This can include configuring the following:
@@ -108,7 +108,7 @@ This can include configuring the following:
   Refer to the upstream documentation on `using the KBS Client Tool <https://confidentialcontainers.org/docs/attestation/client-tool/>`_.
 * Configure resources: Create resources, or secrets, that your workloads need. 
   Refer to the upstream `Confidential Containers resources <https://confidentialcontainers.org/docs/attestation/resources/>`_ documentation for more information on the resources.
-* Configure policies: Confidential Containers uses different policy types to secure workload at different layers.
+* Configure policies: Confidential Containers uses different policies to secure workload at different layers.
   Refer to the upstream `Confidential Containers policy <https://confidentialcontainers.org/docs/attestation/policies/>`_ documentation for more information on the policy types and configuring policies.
  
 Refer to the upstream `Confidential Containers Features <https://confidentialcontainers.org/docs/features>`_ documentation for a full list of attestation features and how to configure them.
@@ -122,6 +122,5 @@ Use the Trustee log to diagnose the attestation process.
 Next Steps
 ==========
 
-* Refer to the :doc:`deployment guide <confidential-containers-deploy>` for Confidential Containers setup instructions.
-* Refer to the upstream `Confidential Containers Features <https://confidentialcontainers.org/docs/features>`_ documentation for a complete list of attestation-dependent features.
-* Refer to the `NVIDIA Confidential Computing documentation <https://docs.nvidia.com/confidential-computing>`_ for additional information.
+* Refer to the upstream `Confidential Containers Features <https://confidentialcontainers.org/docs/features>`_ for complete documentation on attestation features.
+* If you haven't already, refer to the :doc:`Confidential Containers deployment guide <confidential-containers-deploy>` to configure your environment for confidential workloads.

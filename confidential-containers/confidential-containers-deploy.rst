@@ -43,7 +43,7 @@ The high-level workflow for configuring Confidential Containers is as follows:
 #. :ref:`Label Nodes <coco-label-nodes>` that you want to use with Confidential Containers.
 
 #. Install the :ref:`latest Kata Containers Helm chart <coco-install-kata-chart>`.
-   This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` or ``kata-qemu-nvidia-gpu-tdx``) onto the cluster's worker nodes.
+   This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems) onto the cluster's worker nodes.
 
 #. Install the :ref:`NVIDIA GPU Operator configured for Confidential Containers <coco-install-gpu-operator>`.
    This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
@@ -53,7 +53,7 @@ After installation, you can :ref:`run a sample GPU workload <coco-run-sample-wor
 You can also configure :doc:`Attestation <attestation>` with the Trustee framework.
 The Trustee attestation service is typically deployed on a separate, trusted environment.
 
-After configuration, you can schedule workloads that request GPU resources and use the ``kata-qemu-nvidia-gpu-tdx`` or ``kata-qemu-nvidia-gpu-snp`` runtime classes for secure deployment.
+After configuration, you can schedule workloads that request GPU resources and use the ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems or ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems runtime classes for secure deployment.
 
 .. _coco-prerequisites:
 
@@ -77,13 +77,27 @@ Hardware and BIOS
 
   If the output of this command includes 0, 1, and so on, then your host is configured for IOMMU.
 
-  If the host is not configured or if you are unsure, add the ``amd_iommu=on`` Linux kernel command-line argument for AMD CPUs, or ``intel_iommu=on`` for Intel CPUs. For most Linux distributions, add the argument to the ``/etc/default/grub`` file, for instance:
+  If the host is not configured or if you are unsure, add the appropriate IOMMU kernel command-line argument to the ``/etc/default/grub`` file: ``amd_iommu=on`` for AMD CPUs or ``intel_iommu=on`` for Intel CPUs. 
 
-  .. code-block:: console
+  .. tab-set::
 
-      ...
-      GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
-      ...
+     .. tab-item:: AMD-based system (SNP)
+        :sync: amd-snp
+
+        .. code-block:: console
+
+           ...
+           GRUB_CMDLINE_LINUX_DEFAULT="quiet amd_iommu=on modprobe.blacklist=nouveau"
+           ...
+
+     .. tab-item:: Intel-based system (TDX)
+        :sync: intel-tdx
+
+        .. code-block:: console
+
+           ...
+           GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on modprobe.blacklist=nouveau"
+           ...
 
   After making the change, configure the bootloader.
 
@@ -179,6 +193,33 @@ Kubernetes Cluster
   .. code-block:: console
 
      $ sudo systemctl restart kubelet
+
+.. _configure-image-pull-timeouts:
+
+* Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images. 
+  Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+
+  Increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the Kata shim configurations in Kata Containers.
+  The default timeout is 2 minutes.
+
+  Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
+
+  .. code-block:: yaml
+     :emphasize-lines: 3
+
+     apiVersion: kubelet.config.k8s.io/v1beta1
+     kind: KubeletConfiguration
+     runtimeRequestTimeout: 20m
+
+  Restart the kubelet service to apply the change:
+
+  .. code-block:: console
+
+     $ sudo systemctl restart kubelet
+
+  If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent's ``image_pull_timeout``, which defaults to 1200s. 
+  This setting also sets the confidential data hub's image pull API timeout in seconds. 
+  To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params: "..."`` annotation.
 
 .. _installation-and-configuration:
 
@@ -329,7 +370,7 @@ The minimum required version is 3.29.0.
 
    Several runtimes are installed by the ``kata-deploy`` chart.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
-   The ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are used to deploy Confidential Containers workloads.
+   The ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime classes are used to deploy Confidential Containers workloads.
 
 #. Optional: If you have an issue deploying the ``kata-deploy`` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
 
@@ -367,7 +408,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
    .. code-block:: console
 
-      $ helm install --generate-name \
+      $ helm install --wait --timeout 10m --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
          --set sandboxWorkloads.enabled=true \
@@ -375,6 +416,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
          --set nfd.enabled=true \
          --set nfd.nodefeaturerules=true \
          --version=v26.3.1
+          
 
    *Example Output:*
 
@@ -461,48 +503,77 @@ For further configuration settings, refer to the following sections:
 Run a Sample Workload
 =====================
 
-A pod manifest for a confidential container GPU workload requires that you specify the ``kata-qemu-nvidia-gpu-snp`` runtime class for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX.
+A pod manifest for a confidential container GPU workload requires that you specify the ``kata-qemu-nvidia-gpu-snp`` runtime class for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems.
 
-1. Create a file, such as the following ``cuda-vectoradd-kata.yaml`` sample, specifying the kata-qemu-nvidia-gpu-snp runtime class:
+1. Create a file, such as the following ``cuda-vectoradd-kata.yaml`` sample, specifying the appropriate runtime class for your system:
 
-   .. code-block:: yaml
-      :emphasize-lines: 7,14
+   .. tab-set::
 
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: cuda-vectoradd-kata
-        namespace: default
-      spec:
-        runtimeClassName: kata-qemu-nvidia-gpu-snp
-        restartPolicy: Never
-        containers:
-          - name: cuda-vectoradd
-            image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
-            resources:
-              limits:
-                nvidia.com/pgpu: "1"
-                memory: 16Gi
+      .. tab-item:: AMD-based system (SNP)
+         :sync: amd-snp
+
+         .. code-block:: yaml
+            :emphasize-lines: 7,14
+
+            apiVersion: v1
+            kind: Pod
+            metadata:
+              name: cuda-vectoradd-kata
+              namespace: default
+            spec:
+              runtimeClassName: kata-qemu-nvidia-gpu-snp
+              restartPolicy: Never
+              containers:
+                - name: cuda-vectoradd
+                  image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
+                  resources:
+                    limits:
+                      nvidia.com/pgpu: "1" # for single GPU passthrough
+                      memory: 16Gi
+
+      .. tab-item:: Intel-based system (TDX)
+         :sync: intel-tdx
+
+         .. code-block:: yaml
+            :emphasize-lines: 7,14
+
+            apiVersion: v1
+            kind: Pod
+            metadata:
+              name: cuda-vectoradd-kata
+              namespace: default
+            spec:
+              runtimeClassName: kata-qemu-nvidia-gpu-tdx
+              restartPolicy: Never
+              containers:
+                - name: cuda-vectoradd
+                  image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
+                  resources:
+                    limits:
+                      nvidia.com/pgpu: "1" # for single GPU passthrough
+                      memory: 16Gi
 
    The following are Confidential Containers configurations in the sample manifest:
 
-   * Set the runtime class to ``kata-qemu-nvidia-gpu-snp`` for SEV-SNP or ``kata-qemu-nvidia-gpu-tdx`` for TDX, depending on the node type where the workloads should run.
+   * Set the runtime class to ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems, depending on the node type where the workloads should run.
 
    * In the sample above, ``nvidia.com/pgpu`` is the default resource type for GPUs.
      If you are deploying on a heterogeneous cluster, you might want to update the default behavior by specifying the ``P_GPU_ALIAS`` environment variable for the Kata device plugin.
      Refer to the :ref:`Configuring GPU or NVSwitch Resource Types Name <coco-configuration-heterogeneous-clusters>` section on this page for more details.
 
-   * If you have machines that support multi-GPU passthrough, use a pod deployment manifest that specifies 8 PGPU and 4 NVSwitch resources.
+   * If you have machines that support multi-GPU passthrough, use a pod deployment manifest that specifies 8 PGPU. 
+     If you are using NVIDIA Hopper GPUs with PPCIE mode, also specify 4 NVSwitch resources.
 
    .. code-block:: yaml
 
       resources:
         limits:
           nvidia.com/pgpu: "8"
-          nvidia.com/nvswitch: "4"
+          nvidia.com/nvswitch: "4" # Only for NVIDIA Hopper GPUs with PPCIE mode
 
    .. note::
-      If you are using NVIDIA Hopper GPUs for multi-GPU passthrough, also refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` for details on how to set the ``ppcie`` mode.
+      If you are using NVIDIA Hopper GPUs for multi-GPU passthrough, you must also set the Confidential Computing mode to ``ppcie`` mode. 
+      Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` for details.
 
 
 2. Create the pod:
@@ -553,6 +624,7 @@ A pod manifest for a confidential container GPU workload requires that you speci
    .. code-block:: console
 
       $ kubectl delete -f cuda-vectoradd-kata.yaml
+
 
 
 .. _coco-configuration-settings:
@@ -647,7 +719,7 @@ After installing the GPU Operator, you can view the GPU or NVSwitch resource typ
 
    "nvidia.com/GH100_H100L_94GB": "1"
 
-
+You should see the resource type information for the GPUs and NVSwitches on the node.
 
 .. _managing-confidential-computing-mode:
 
@@ -664,7 +736,6 @@ When you change the mode, the manager performs the following actions:
 
   However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.
 
-* Unbinds the GPU from the VFIO PCI device driver.
 * Changes the mode and resets the GPU.
 * Reschedules the other GPU Operator operands.
 
@@ -795,7 +866,7 @@ To configure multi-GPU passthrough, you can specify the following resource limit
 
    limits:
       nvidia.com/pgpu: "8"
-      nvidia.com/nvswitch: "4"
+      nvidia.com/nvswitch: "4" # Only for NVIDIA Hopper GPUs with PPCIE mode
 
 
 You must assign all the GPUs and NVSwitches on the node in your manifest to the same Confidential Container virtual machine.
@@ -807,44 +878,10 @@ Refer to the :ref:`Managing the Confidential Computing Mode <managing-confidenti
 The NVIDIA Blackwell architecture uses NVLink encryption which places the switches outside of the Trusted Computing Base (TCB) and only requires the GPU Confidential Computing mode to be set to ``on``.
 
 
-.. _configure-image-pull-timeouts:
-
-Configure Image Pull Timeouts
-=============================
-
-The guest-pull mechanism pulls images inside the confidential VM, which means large images can take longer to download and delay container start.
-Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
-
-If you plan to use large images, increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the NVIDIA shim configurations in Kata Containers.
-
-Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
-
-.. code-block:: yaml
-   :emphasize-lines: 3
-
-   apiVersion: kubelet.config.k8s.io/v1beta1
-   kind: KubeletConfiguration
-   runtimeRequestTimeout: 20m
-
-Restart the kubelet service to apply the change:
-
-.. code-block:: console
-
-   $ sudo systemctl restart kubelet
-
-Additional timeouts to consider updating are the NVIDIA Shim and Kata Agent Policy timeouts.
-The NVIDIA shim configurations in Kata Containers use a default ``create_container_timeout`` of 1200 seconds (20 minutes).
-This controls the time the shim allows for a container to remain in container creating state.
-
-If you need a timeout of more than 1200 seconds, you will also need to adjust Kata Agent Policy's ``image_pull_timeout`` value which controls the agent-side timeout for guest-image pull.
-To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params: "..."`` annotation.
-
-
 Next Steps
 ==========
 
 * Refer to the :doc:`Attestation <attestation>` page for more information on configuring attestation.
 * To help manage the lifecycle of Kata Containers, install the `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`_.
   This Argo Workflows-based tool manages Kata Containers upgrades and day-two operations.
-* Refer to the `NVIDIA Confidential Computing documentation <https://docs.nvidia.com/confidential-computing>`_ for additional information.
 * Licensing information is available on the :doc:`Licensing <licensing>` page.
