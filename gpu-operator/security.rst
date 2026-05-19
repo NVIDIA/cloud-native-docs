@@ -1,4 +1,13 @@
 
+
+.. meta::
+   :title: Security Considerations
+   :description: Review security considerations for deploying and operating the NVIDIA GPU Operator.
+   :description-agent: Explains GPU Operator security considerations, elevated privileges, and known CVEs. Use when reviewing security posture, vulnerability exposure, or operator namespace access.
+   :keywords: NVIDIA GPU Operator, security, Kubernetes, deployment
+   :tags: gpu-operator, nvidia, kubernetes, gpu, security, cve
+   :content.type: concept
+
 *****************************
 Security Considerations
 *****************************

@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA GPU Operator Documentation
+   :description: Browse the NVIDIA GPU Operator documentation for installation, upgrades, configuration, and troubleshooting.
+   :description-agent: Provides the top-level NVIDIA GPU Operator documentation navigation. Use when users need an overview of available GPU Operator topics.
+   :keywords: NVIDIA GPU Operator, documentation, Kubernetes, GPU workloads
+   :tags: gpu-operator, nvidia, kubernetes, gpu, documentation
+   :content.type: get_started
+
 .. headings # #, * *, =, -, ^, "
 
 .. toctree::

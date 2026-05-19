@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Troubleshooting
+   :description: Troubleshoot common NVIDIA GPU Operator installation and runtime issues.
+   :description-agent: Provides troubleshooting steps for GPU Operator installation and runtime issues. Use when diagnosing failed pods, driver problems, validator failures, or GPU workload issues.
+   :keywords: NVIDIA GPU Operator, troubleshooting, diagnostics, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, troubleshooting, diagnostics
+   :content.type: reference
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 #######################################

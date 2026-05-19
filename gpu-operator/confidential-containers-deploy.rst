@@ -1,5 +1,13 @@
 .. _gpu-operator-confidential-containers-deploy:
 
+.. meta::
+   :title: Confidential Containers
+   :description: Deploy GPU workloads with Confidential Containers and the NVIDIA GPU Operator.
+   :description-agent: Points users to the Confidential Containers reference architecture and deployment documentation. Use when users ask about confidential GPU workloads or Confidential Containers with the GPU Operator.
+   :keywords: NVIDIA GPU Operator, Confidential Containers, sandboxed workloads, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, confidential-computing, sandboxed-workloads
+   :content.type: concept
+
 ***********************
 Confidential Containers
 ***********************

@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA GPU Operator with Azure Kubernetes Service
+   :description: Install and configure the NVIDIA GPU Operator on Microsoft Azure Kubernetes Service.
+   :description-agent: Guides users through installing and configuring the NVIDIA GPU Operator on Azure AKS. Use when deploying GPU workloads on Azure or troubleshooting AKS-specific GPU Operator setup.
+   :keywords: NVIDIA GPU Operator, Azure AKS, Microsoft Azure, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, azure, aks
+   :content.type: how_to
+   :skill.priority: 40
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 #################################################

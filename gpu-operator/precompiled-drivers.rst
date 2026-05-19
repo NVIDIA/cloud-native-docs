@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Precompiled Drivers
+   :description: Use precompiled NVIDIA driver containers with the NVIDIA GPU Operator.
+   :description-agent: Explains how to use precompiled NVIDIA driver containers with the GPU Operator. Use when reducing driver build time or selecting precompiled driver images.
+   :keywords: NVIDIA GPU Operator, precompiled drivers, driver containers, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, driver, precompiled-drivers
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings # #, * *, =, -, ^, "
 
 .. _install-precompiled-drivers:

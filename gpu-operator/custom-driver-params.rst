@@ -1,3 +1,14 @@
+
+
+.. meta::
+   :title: Custom GPU Driver Parameters
+   :description: Customize NVIDIA driver parameters for GPU Operator managed driver containers.
+   :description-agent: Shows how to provide custom NVIDIA driver parameters to GPU Operator driver containers. Use when changing driver module options or customizing driver container behavior.
+   :keywords: NVIDIA GPU Operator, driver parameters, NVIDIA driver, configuration
+   :tags: gpu-operator, nvidia, kubernetes, gpu, driver, configuration
+   :content.type: how_to
+   :skill.priority: 70
+
 .. Date: Mar 11 2022
 .. Author: cdesiniotis
 

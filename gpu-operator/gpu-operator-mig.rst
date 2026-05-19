@@ -17,6 +17,15 @@
 .. Date: May 11 2021
 .. Author: pramarao
 
+.. meta::
+   :title: Multi-Instance GPU
+   :description: Configure Multi-Instance GPU support with the NVIDIA GPU Operator.
+   :description-agent: Explains MIG strategies, labels, and configuration with the GPU Operator. Use when partitioning GPUs, enabling MIG, or troubleshooting MIG resource exposure.
+   :keywords: NVIDIA GPU Operator, MIG, Multi-Instance GPU, GPU partitioning
+   :tags: gpu-operator, nvidia, kubernetes, gpu, mig, gpu-partitioning
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _install-gpu-operator-mig:

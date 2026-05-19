@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA DRA Driver for GPUs
+   :description: Install and use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator.
+   :description-agent: Explains how to install and use the NVIDIA DRA Driver for GPUs. Use when users ask about Dynamic Resource Allocation, DRA installation, or GPU resource claims.
+   :keywords: NVIDIA GPU Operator, DRA, Dynamic Resource Allocation, Kubernetes, installation
+   :tags: gpu-operator, nvidia, kubernetes, gpu, dra, dynamic-resource-allocation
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 ##########################

@@ -1,3 +1,14 @@
+
+
+.. meta::
+   :title: Install with NVIDIA vGPU
+   :description: Install the NVIDIA GPU Operator with NVIDIA vGPU.
+   :description-agent: Guides users through installing the GPU Operator with NVIDIA vGPU. Use when deploying virtual GPU software or configuring vGPU licensing with Kubernetes.
+   :keywords: NVIDIA GPU Operator, NVIDIA vGPU, installation, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, vgpu, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. license-header
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0

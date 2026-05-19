@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Uninstalling the NVIDIA GPU Operator
+   :description: Uninstall the NVIDIA GPU Operator from a Kubernetes cluster.
+   :description-agent: Guides users through uninstalling the NVIDIA GPU Operator and cleaning up related resources. Use when removing the Operator from a Kubernetes cluster.
+   :keywords: NVIDIA GPU Operator, uninstall, removal, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, uninstall, cleanup
+   :content.type: how_to
+   :skill.priority: 30
+
 .. headings # #, * *, =, -, ^, "
 
 #############################

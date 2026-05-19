@@ -1,0 +1,133 @@
+---
+name: "gpu-operator-install-nvidia-enterprise"
+description: "Guides users through installing the GPU Operator with NVIDIA AI Enterprise. Use when deploying licensed NVIDIA AI Enterprise GPU software on Kubernetes. Trigger keywords - NVIDIA GPU Operator, NVIDIA AI Enterprise, installation, Kubernetes."
+---
+
+<!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+# NVIDIA AI Enterprise
+
+## About NVIDIA AI Enterprise and Supported Platforms
+
+NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
+
+Deploying the GPU Operator with NVIDIA AI Enterprise offers two installation options.
+
+| vGPU Guest Driver | Data Center Driver |
+| --- | --- |
+| Uses a a prebuilt vGPU driver image that is only available to NVIDIA AI Enterprise customers. It is configured to use the [NVIDIA License System (NLS)](https://docs.nvidia.com/license-system/latest/). Installations on virtualization platforms must use the vGPU driver installation. Installation is performed by downloading a Bash script from NVIDIA NGC and running the script. | Uses the GPU Operator Helm chart that is publicly available and GPU driver containers that are publicly available. You must determine the supported driver branch, such as 550, for your NVIDIA AI Enterprise release. Installation is performed by running the `helm` command. |
+For information about supported platforms, hypervisors, and operating systems, refer to the
+[Product Support Matrix](https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html)
+in the NVIDIA AI Enterprise documentation.
+
+For information about using vGPU with Red Hat OpenShift, refer to :external+ocpnvaie-with-ocp.
+
+## Step 1: Installing GPU Operator Using the vGPU Driver
+
+### Prerequisites
+
+- A client configuration token has been generated for the client on which the script will install the vGPU guest driver.
+  Refer to [Generating a Client Configuration Token](https://docs.nvidia.com/license-system/latest/nvidia-license-system-user-guide/index.html#generating-client-configuration-token)
+  in the *NVIDIA License System User Guide* for more information.
+- An NGC CLI API key that is used to create an image pull secret.
+  The secret is used to pull the prebuilt vGPU driver image from NVIDIA NGC.
+  Refer to [Generating Your NGC API Key](https://docs.nvidia.com/ngc/latest/ngc-private-registry-user-guide.html#prug-generating-personal-api-key)
+  in the *NVIDIA NGC Private Registry User Guide* for more information.
+
+### Procedure
+
+1. Export the NGC CLI API key and your email address as environment variables:
+
+   ```console
+   $ export NGC_API_KEY="M2Vub3QxYmgyZ..."
+   $ export NGC_USER_EMAIL="user@example.com"
+   ```
+
+1. Go to the
+   [NVIDIA GPU Operator - Deploy Installer Script](https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5)
+   web page on NVIDIA NGC.
+
+   Click the **File Browser** tab, identify your NVIDIA AI Enterprise release, click ellipses-img, and select **Download File**.
+
+   Copy the downloaded script to the same directory as the client configuration token.
+
+1. Rename the client configuration token that you downloaded to `client_configuration_token.tok`.
+   Originally, the client configuration token is named to match the pattern: `client_configuration_token_mm-dd-yyyy-hh-mm-ss.tok`.
+
+1. From the directory that contains the downloaded script and the client configuration token, run the script:
+
+   ```console
+   $ bash gpu-operator-nvaie.sh install
+   ```
+
+## Step 2: Updating NLS Client License Token
+
+In case the NLS client license token needs to be updated, use the following procedure:
+
+Create an empty vGPU license configuration file:
+
+```console
+$ sudo touch gridd.conf
+```
+
+Generate and download a new NLS client license token. Refer to Section 4.6 of the [NLS User Guide](https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf) for instructions.
+
+Rename the NLS client license token that you downloaded to `client_configuration_token.tok`.
+
+**Warning:**
+
+The `configMap(configMapName)` is  **deprecated** and will be removed in a future release.
+Use `secrets(secretName)` instead.
+Create a new `licensing-config-new` Secret object in the `gpu-operator` namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:
+
+```console
+$ kubectl create secret generic licensing-config-new \
+    -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
+```
+
+Edit the clusterpolicies by using the command:
+
+```console
+$ kubectl edit clusterpolicies.nvidia.com
+```
+
+Go to the driver section and replace the following argument:
+
+```console
+licensingConfig:
+    secretName: licensing-config
+```
+
+with
+
+```console
+licensingConfig:
+    secretName: licensing-config-new
+```
+
+Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
+
+GPU Operator sequentially redeploys all the driver pods with this new licensing information.
+
+## Step 3: Installing GPU Operator Using the Data Center Driver
+
+This installation method is available for bare metal clusters or any cluster that does not use virtualization.
+
+You must install the driver that matches the supported driver branch for your NVIDIA AI Enterprise release.
+
+To identify the correct driver branch:
+
+1. Refer to the [NVIDIA AI Enterprise Infra Release Branches](https://docs.nvidia.com/ai-enterprise/index.html#nvidiatab-infrastructure-software---infra-release-branches)
+   table to determine the driver branch for your release.
+
+   For example, NVIDIA AI Enterprise Infra 7.x uses the R580 driver branch.
+
+1. Refer to operator-component-matrix to identify the recommended GPU Operator version and driver version that uses the same driver branch.
+
+After identifying the correct driver version, refer to install-gpu-operator for installation instructions.
+Use the `--version=<supported-version>` argument when installing with Helm.
+
+## Step 4: Related Information
+
+-  [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/) web page.

@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Life Cycle Policy
+   :description: Review the life cycle policy for NVIDIA GPU Operator releases.
+   :description-agent: Explains the GPU Operator life cycle and support policy. Use when users ask about release support windows, maintenance, or version lifecycle.
+   :keywords: NVIDIA GPU Operator, life cycle policy, support, releases
+   :tags: gpu-operator, nvidia, kubernetes, gpu, lifecycle, support, releases
+   :content.type: reference
+
 .. headings # #, * *, =, -, ^, "
 
 .. Date: September 25 2022

@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: About the NVIDIA GPU Operator
+   :description: Learn how the NVIDIA GPU Operator manages NVIDIA software components in Kubernetes.
+   :description-agent: Explains what the NVIDIA GPU Operator is, which components it manages, and how it automates GPU node provisioning. Use when users ask for a GPU Operator overview or documentation orientation.
+   :keywords: NVIDIA GPU Operator, overview, Kubernetes, GPU workloads
+   :tags: gpu-operator, nvidia, kubernetes, gpu, overview
+   :content.type: concept
+
 .. headings # #, * *, =, -, ^, "
 
 
