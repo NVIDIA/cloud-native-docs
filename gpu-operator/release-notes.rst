@@ -71,6 +71,26 @@ Fixed Issues
   This could cause errors when the tag format was not recognized. (`PR #2244 <https://github.com/NVIDIA/gpu-operator/pull/2244>`_)
 
 
+.. _v26.3.1-known-issues:
+
+Known Issues
+------------
+
+* Pod specifications that set ``spec.hostUsers: false`` to enable Kubernetes user namespaces are not supported.
+  When a pod runs in its own user namespace, the NVIDIA Container Toolkit ``createContainer`` hook (``nvidia-cdi-hook``) runs as the
+  remapped user inside the container's user namespace and cannot read the OCI bundle's ``config.json`` to determine the container root.
+  As a result, container creation fails with an error such as:
+
+  .. code-block:: console
+
+    Error: container create failed: read status from sync socket: No such process
+
+  As a workaround, omit the ``hostUsers`` field or set ``spec.hostUsers: true`` for any pods that request GPUs
+  or that are managed by the GPU Operator.
+
+  Refer to NVIDIA Container Toolkit issue `#648 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/648>`_ for more information.
+
+
 .. _v26.3.0:
 
 26.3.0
