@@ -76,15 +76,14 @@ Fixed Issues
 Known Issues
 ------------
 
-* Pod specifications that set ``spec.hostUsers: false`` to enable Kubernetes user namespaces are not supported with GPU Operator v26.3.1.
+* Pod specifications that set ``spec.hostUsers: false`` to enable Kubernetes user namespaces are not supported.
   When a pod runs in its own user namespace, the NVIDIA Container Toolkit ``createContainer`` hook (``nvidia-cdi-hook``) runs as the
   remapped user inside the container's user namespace and cannot read the OCI bundle's ``config.json`` to determine the container root.
   As a result, container creation fails with an error such as:
 
   .. code-block:: console
 
-    error executing hook `/usr/bin/nvidia-cdi-hook` (exit code: 1)
-    failed to determined container root: failed to open OCI spec file: ... permission denied
+    Error: container create failed: read status from sync socket: No such process
 
   As a workaround, omit the ``hostUsers`` field or set ``spec.hostUsers: true`` for any pods that request GPUs
   or that are managed by the GPU Operator.
