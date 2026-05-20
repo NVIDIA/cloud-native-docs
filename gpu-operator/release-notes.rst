@@ -88,8 +88,7 @@ Known Issues
   As a workaround, omit the ``hostUsers`` field or set ``spec.hostUsers: true`` for any pods that request GPUs
   or that are managed by the GPU Operator.
 
-  Refer to NVIDIA Container Toolkit issue `#648 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/648>`_
-  and Podman issue `#28028 <https://github.com/containers/podman/issues/28028>`_ for more information.
+  Refer to NVIDIA Container Toolkit issue `#648 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/648>`_ for more information.
 
 
 .. _v26.3.0:
