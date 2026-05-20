@@ -638,6 +638,19 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 </div>
 <p>After disabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be created.</p>
 </section>
+<section id="known-issues">
+<h2>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h2>
+<p>Pod specifications that set <code class="docutils literal notranslate"><span class="pre">spec.hostUsers:</span> <span class="pre">false</span></code> to enable Kubernetes user namespaces are not supported.
+When a pod runs in its own user namespace, the NVIDIA Container Toolkit <code class="docutils literal notranslate"><span class="pre">createContainer</span></code> hook (<code class="docutils literal notranslate"><span class="pre">nvidia-cdi-hook</span></code>)
+runs as the remapped user inside the container’s user namespace and cannot read the OCI bundle’s <code class="docutils literal notranslate"><span class="pre">config.json</span></code> to
+determine the container root. As a result, container creation fails with an error such as:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Error: container create failed: read status from sync socket: No such process</span>
+</pre></div>
+</div>
+<p>As a workaround, omit the <code class="docutils literal notranslate"><span class="pre">hostUsers</span></code> field or set <code class="docutils literal notranslate"><span class="pre">spec.hostUsers:</span> <span class="pre">true</span></code> for any pods that request GPUs or that
+are managed by the GPU Operator.</p>
+<p>Refer to NVIDIA Container Toolkit issue <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/648">#648</a> for more information.</p>
+</section>
 </section>
 
 
@@ -704,6 +717,7 @@ If you are not using the latest containerd version, check that both CDI and NRI 
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-the-nri-plugin">Disabling the NRI Plugin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
   </nav></div>
 
