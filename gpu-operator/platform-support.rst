@@ -386,7 +386,27 @@ The GPU Operator has been validated in the following scenarios:
          -
          - 2.15, 2.16, 2.17
 
+       * - Rocky Linux 10.1
+         - 1.32---1.35
+         -
+         -
+         -
+         -
+         -
+         -
+         -
+
        * - Rocky Linux 9.7
+         - 1.32---1.35
+         -
+         -
+         -
+         -
+         -
+         -
+         -
+
+       * - Rocky Linux 8.10
          - 1.32---1.35
          -
          -
