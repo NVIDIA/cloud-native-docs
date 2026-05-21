@@ -8,6 +8,36 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.19.1
+
+This release of the NVIDIA Container Toolkit `v1.19.1` is a bugfix release.
+
+### Fixes and Features
+- Fix the `nvidia-cdi-refresh` systemd unit conditions to work on WSL2.
+- Remove the dependency on multi-user.target in the `nvidia-cdi-refresh` systemd service. For more information, see [issue #1735](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1735).
+- The egl-wayland2 library and configuration file are now discovered and added to CDI specifications.
+- Fix handling of the CUDA compat header on Orin systems.
+- Fix default path used by `nvidia-ctk` and `nvidia-ctk-installer` for cri-o's drop-in configuration directory.
+- Add support for injecting /dev/dri* device nodes for MIG devices.
+- Add `disable-ipc-discoverer` feature flag to the nvcdi library for disabling the discovery of IPC sockets.
+
+#### Enhancements to container-toolkit Container Images
+- Improve the NRI Plugin server and add support for cri-o
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.19.1`
+- `nvidia-container-toolkit-base 1.19.1`
+- `libnvidia-container-tools 1.19.1`
+- `libnvidia-container1 1.19.1`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.19.1`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.19.1-packaging`
+
 ## NVIDIA Container Toolkit 1.19.0
 
 This release of the NVIDIA Container Toolkit `v1.19.0` is a feature release.
