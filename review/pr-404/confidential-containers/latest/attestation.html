@@ -436,7 +436,7 @@ Attestation is required for any feature that depends on secrets, including:</p>
 <li><p>Reference Value Provider Service (RVPS): Holds the known-good reference values that the Attestation Service compares evidence against.</p></li>
 </ul>
 </li>
-<li><p>KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Resources are addressed by a three-part path: <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;type&gt;/&lt;tag&gt;</span></code>.</p></li>
+<li><p>KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Most resources are addressed by a three-part path: <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;type&gt;/&lt;tag&gt;</span></code>.</p></li>
 <li><p>Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.</p></li>
 </ul>
 </section>
@@ -451,7 +451,7 @@ In a real deployment, attestation builds on the runtime setup described in the <
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This quickstart is for development and evaluation only. Do not use the Trustee instance you stand up here in production.
-It does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
+This guide does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
 To run attestation against real evidence from a confidential workload, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> documentation for more information.</p>
 </div>
 <section id="what-you-ll-build">
