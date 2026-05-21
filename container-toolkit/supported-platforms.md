@@ -18,7 +18,6 @@ Recent NVIDIA Container Toolkit releases are tested and expected to work on thes
 | RHEL 8.x                 | X              | X       | X                        |
 | RHEL 9.x                 | X              | X       | X                        |
 | RHEL 10.x                | X              | X       | X                        |
-| Ubuntu 20.04             | X              | X       | X                        |
 | Ubuntu 22.04             | X              | X       | X                        |
 | Ubuntu 24.04             | X              |         | X                        |
 | Rocky Linux 9.7          | X              | X       | X                        |

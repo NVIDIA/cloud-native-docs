@@ -319,16 +319,6 @@ The GPU Operator has been validated in the following scenarios:
          - | Nutanix
            | NKP
 
-       * - Ubuntu 20.04 LTS |fn2|_
-         - 1.32---1.35
-         -
-         - 1.32---1.35
-         - 1.32---1.35
-         -
-         -
-         -
-         - 
-
        * - Ubuntu 22.04 LTS |fn2|_
          - 1.32---1.35 
          -
@@ -416,7 +406,6 @@ The GPU Operator has been validated in the following scenarios:
 
     :sup:`2`
     For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
-    For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
     The GPU Driver containers support these Linux kernels.
     Refer to the Kernel release schedule on Canonical's
     `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
@@ -446,10 +435,6 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes 
          - | Google GKE
            | Kubernetes
-
-       * - Ubuntu 20.04 LTS
-         - 1.32---1.35
-         - 1.32---1.35
 
        * - Ubuntu 22.04 LTS
          - 1.32---1.35
@@ -491,8 +476,6 @@ The GPU Operator has been validated for the following container runtimes:
 +----------------------------+------------------------+----------------+
 | Operating System           | Containerd 1.7 - 2.2   | CRI-O          |
 +============================+========================+================+
-| Ubuntu 20.04 LTS           | Yes                    | Yes            |
-+----------------------------+------------------------+----------------+
 | Ubuntu 22.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
 | Ubuntu 24.04 LTS           | Yes                    | Yes            |
@@ -524,7 +507,6 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 24.04 LTS    1.32---1.35   0.36+           
 Ubuntu 22.04 LTS    1.32---1.35   0.36+           0.59.1+
-Ubuntu 20.04 LTS    1.32---1.35   0.36+           0.59.1+
 Red Hat Core OS                                                4.17---4.21      4.17---4.21
 ================    ===========   =============   =========    =============    ===========
 
@@ -571,7 +553,7 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
 - Ubuntu 22.04 LTS with Network Operator 25.10.0
 - RHEL 8 with Network Operator 25.7.0.
 - Ubuntu 24.04 LTS with Network Operator 25.7.0.
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Ubuntu 22.04 LTS with Network Operator 25.7.0.
 - Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
 - Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.
 - Ubuntu 24.04 LTS with Network Operator 25.10.0
@@ -585,7 +567,7 @@ Support for GPUDirect Storage
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
 - Ubuntu 24.04 LTS Network Operator 25.7.0.
-- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Ubuntu 22.04 LTS with Network Operator 25.7.0.
 - Red Hat OpenShift Container Platform 4.17 and higher.
 
 .. note::
