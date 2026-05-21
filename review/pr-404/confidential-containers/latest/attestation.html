@@ -414,7 +414,7 @@
 <span id="attestation-overview"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
 <p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
-oAttestation is required for any feature that depends on secrets, including:</p>
+Attestation is required for any feature that depends on secrets, including:</p>
 <ul class="simple">
 <li><p>Pulling encrypted container images</p></li>
 <li><p>Accessing authenticated container registries</p></li>
@@ -524,10 +524,16 @@ The request body is intentionally empty. You are checking reachability, not subm
 </div>
 <p>Any HTTP response from KBS, including an error response that rejects the empty request body, confirms KBS is listening and responding.
 A connection refused or no-route error indicates that the containers are not running or that port <code class="docutils literal notranslate"><span class="pre">8080</span></code> is not exposed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is typically not recommended to curl the KBS endpoints directly unless you are checking connectivity.
+Use the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, installed in the next step, instead.</p>
+</div>
 </section>
 <section id="step-3-install-the-kbs-client-tool">
 <h3>Step 3: Install the KBS Client Tool<a class="headerlink" href="#step-3-install-the-kbs-client-tool" title="Permalink to this headline">#</a></h3>
-<p>The KBS client tool, <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.</p>
+<p>The KBS client tool, <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.
+This tool is mainly used for configuring Trustee.</p>
 <p>Pull the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact into the current directory with ORAS.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oras pull ghcr.io/confidential-containers/staged-images/kbs-client:latest
 </pre></div>
@@ -560,23 +566,24 @@ For in-enclave use, refer to the upstream <a class="reference external" href="ht
 <section id="step-4-send-a-sample-resource-request">
 <h3>Step 4: Send a Sample Resource Request<a class="headerlink" href="#step-4-send-a-sample-resource-request" title="Permalink to this headline">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> to request a resource from your local Trustee.
-The request below uses a placeholder resource path. You do not need to pre-create the resource for this check.</p>
+The request below uses a placeholder resource path.
+You do not need to pre-create the resource for this check.
+The <code class="docutils literal notranslate"><span class="pre">get-resource</span></code> endpoint can be used (including inside a TEE), but it will always invoke the sample attester, which generates fake evidence for testing.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./kbs-client --url http://127.0.0.1:8080 get-resource --path my_repo/resource_type/123abc
 </pre></div>
 </div>
-<p>Because you are not running inside a TEE and have not presented valid attestation evidence, Trustee denies the request.
-A policy-denied response is the expected, successful outcome of this quickstart: it confirms that the client reached KBS, KBS routed the request through the Attestation Service, and the configured policy rejected the request.</p>
+<p>Trustee will deny the request because you are not running inside a TEE, required by the default policy, and you have not presented valid attestation evidence.
+A policy-denied response is the expected, successful outcome of this quickstart.
+It confirms that the client reached KBS, KBS routed the request through the Attestation Service, and the configured policy rejected the request.</p>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">WARN attester: No TEE platform detected. Sample Attester will be used.</span>
-<span class="go">WARN kbs_protocol::client::rcar_client: Authenticating with KBS failed. Perform a new RCAR handshake: ErrorInformation {</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">WARN kbs_protocol::client::rcar_client: Authenticating with KBS failed. Perform a new RCAR handshake: ErrorInformation {</span>
 <span class="go">    error_type: &quot;https://github.com/confidential-containers/kbs/errors/PolicyDeny&quot;,</span>
 <span class="go">    detail: &quot;Access denied by policy&quot;,</span>
 <span class="go">}</span>
 <span class="go">Error: request unauthorized</span>
 </pre></div>
 </div>
-<p>The first warning confirms <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> detected that it is not running in a TEE and fell back to the sample attester.
-The <code class="docutils literal notranslate"><span class="pre">PolicyDeny</span></code> warning and the final <code class="docutils literal notranslate"><span class="pre">request</span> <span class="pre">unauthorized</span></code> error confirm that KBS received the request, the Attestation Service evaluated it, and policy rejected it.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">PolicyDeny</span></code> warning and the final <code class="docutils literal notranslate"><span class="pre">request</span> <span class="pre">unauthorized</span></code> error confirm that KBS received the request, the Attestation Service evaluated it, and policy rejected it.</p>
 <p>If you instead see a connection error, KBS is not reachable. Revisit Step 2.</p>
 </section>
 </section>
