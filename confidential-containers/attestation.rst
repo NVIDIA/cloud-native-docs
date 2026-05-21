@@ -47,7 +47,7 @@ The following concepts appear throughout this page:
   * Key Broker Service (KBS): The HTTP endpoint that clients and confidential guests talk to. KBS orchestrates the attestation exchange and conditionally releases resources when policy allows.
   * Attestation Service (AS): Verifies hardware evidence presented by a guest TEE against reference values.
   * Reference Value Provider Service (RVPS): Holds the known-good reference values that the Attestation Service compares evidence against.
-* KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Resources are addressed by a three-part path: ``<repository>/<type>/<tag>``.
+* KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Most resources are addressed by a three-part path: ``<repository>/<type>/<tag>``.
 * Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.
 
 Quickstart
@@ -65,7 +65,7 @@ In a real deployment, attestation builds on the runtime setup described in the :
 .. note::
 
    This quickstart is for development and evaluation only. Do not use the Trustee instance you stand up here in production.
-   It does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
+   This guide does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
    To run attestation against real evidence from a confidential workload, refer to the upstream `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ and `Features <https://confidentialcontainers.org/docs/features>`_ documentation for more information.
 
 
