@@ -585,20 +585,6 @@ This page includes additional limitations and restrictions for using Kata Contai
 
 Refer to the `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__  documentation for more details.
 
-***********************************
-Support for Confidential Containers
-***********************************
-
-The GPU Operator supports deploying Confidential Containers using Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
-This is a dedicated architecture for deploying Confidential Containers on Kubernetes clusters.
-It supports everything listed in the 
-
-For additional details on the NVIDIA Reference Architecture for Confidential Containers, including supported GPUs, host CPU platforms, operating systems, and software component, refer to the NVIDIA Confidential Containers :doc:`support matrix documentation <cc:supported-platforms>`.
-
-The GPU Operator offers Technology Preview support for
-`Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__ v1.12
-to deploy Confidential Containers workloads.
-
 **************************
 Support for GPUDirect RDMA
 **************************
