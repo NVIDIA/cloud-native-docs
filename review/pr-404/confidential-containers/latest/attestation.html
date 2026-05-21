@@ -412,33 +412,21 @@
                   
   <section id="attestation">
 <span id="attestation-overview"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>This quickstart walks you through standing up a development Trustee instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
-The goal is to give you a working attestation backend and a client you can use to interact with it before you wire it into a Confidential Containers workload.</p>
-<p>This page is for new users who want to try out attestation on a single Linux host.
-For a deeper explanation of attestation, Trustee, and the full set of features, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> sections of the Confidential Containers documentation.</p>
-<p>This quickstart runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime to complete.
-In a real deployment, attestation builds on the runtime setup described in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a>. Confidential workloads use Trustee to cryptographically verify their TEE before they receive secrets, encrypted container images, authenticated registries, or other sensitive resources.</p>
-<section id="what-you-ll-build">
-<h2>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h2>
-<p>By the end of this quickstart, you will have:</p>
+<p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
+Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
+oAttestation is required for any feature that depends on secrets, including:</p>
 <ul class="simple">
-<li><p>A local Trustee instance (KBS, Attestation Service, and Reference Value Provider Service) running in Docker containers on <code class="docutils literal notranslate"><span class="pre">127.0.0.1:8080</span></code>.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> command-line tool installed and able to reach your Trustee instance.</p></li>
-<li><p>A sample resource request that exercises the end-to-end request path.</p></li>
+<li><p>Pulling encrypted container images</p></li>
+<li><p>Accessing authenticated container registries</p></li>
+<li><p>Using sealed secrets</p></li>
+<li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>You’ll know you’re done when <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
-A denial in this quickstart is the expected, successful outcome: it confirms that the client reached KBS, the Attestation Service evaluated the request, and policy was applied.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This quickstart is for development and evaluation only. Do not use the Trustee instance you stand up here in production.
-It does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
-To run attestation against real evidence from a confidential workload, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> documentation for more information.</p>
-</div>
-</section>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>Familiarity with the following concepts will help you follow along:</p>
+<p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves. The evidence is sent to Trustee, the remote verifier in Confidential Containers deployments. Trustee evaluates the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.</p>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
+<p>The following concepts appear throughout this page:</p>
 <ul class="simple">
+<li><p>Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing. CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework. Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a> for project background and attestation best practices.</p></li>
 <li><p>Trusted Execution Environment (TEE): A hardware-isolated environment, such as AMD SEV-SNP, Intel TDX, or an NVIDIA Confidential Computing GPU, that protects code and data in use.</p></li>
 <li><p>Remote attestation: The process of cryptographically proving to a remote party that a TEE is running the expected, untampered software stack before that party releases secrets to it.</p></li>
 <li><p>Trustee: The remote verifier in the Confidential Containers attestation flow. Trustee is composed of three cooperating services:</p>
@@ -448,12 +436,37 @@ To run attestation against real evidence from a confidential workload, refer to 
 <li><p>Reference Value Provider Service (RVPS): Holds the known-good reference values that the Attestation Service compares evidence against.</p></li>
 </ul>
 </li>
-<li><p>KBS resource: A secret, for example, a key, credential, or token,  that Trustee releases to a guest when attestation succeeds. Resources are addressed by a three-part path: <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;type&gt;/&lt;tag&gt;</span></code>.</p></li>
+<li><p>KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Resources are addressed by a three-part path: <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;type&gt;/&lt;tag&gt;</span></code>.</p></li>
 <li><p>Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.</p></li>
 </ul>
 </section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
+<p>This page walks you through standing up a development Trustee instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
+The goal is to give you a working attestation backend and a client you can use to interact with it before you wire it into a Confidential Containers workload.</p>
+<p>This page is for new users who want to try out attestation on a single Linux host.
+For a deeper explanation of attestation, Trustee, and the full set of features, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> sections of the Confidential Containers documentation.</p>
+<p>This quickstart runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime to complete.
+In a real deployment, attestation builds on the runtime setup described in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Confidential Containers deployment guide</span></a>. Confidential workloads use Trustee to cryptographically verify their TEE before they receive secrets, encrypted container images, authenticated registries, or other sensitive resources.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This quickstart is for development and evaluation only. Do not use the Trustee instance you stand up here in production.
+It does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
+To run attestation against real evidence from a confidential workload, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> documentation for more information.</p>
+</div>
+<section id="what-you-ll-build">
+<h3>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h3>
+<p>By the end of this quickstart, you will have:</p>
+<ul class="simple">
+<li><p>A local Trustee instance (KBS, Attestation Service, and Reference Value Provider Service) running in Docker containers on <code class="docutils literal notranslate"><span class="pre">127.0.0.1:8080</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> command-line tool installed and able to reach your Trustee instance.</p></li>
+<li><p>A sample resource request that exercises the end-to-end request path.</p></li>
+</ul>
+<p>You’ll know you’re done when <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
+A denial in this quickstart is the expected, successful outcome: it confirms that the client reached KBS, the Attestation Service evaluated the request, and policy was applied.</p>
+</section>
 <section id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>A Linux host with internet access.
 Trustee runs as a set of containers, so the host does not require confidential-computing hardware or an NVIDIA GPU.</p></li>
@@ -466,7 +479,7 @@ Refer to the <a class="reference external" href="https://oras.land/docs/installa
 </ul>
 </section>
 <section id="step-1-install-trustee-with-docker-compose">
-<h2>Step 1: Install Trustee with Docker Compose<a class="headerlink" href="#step-1-install-trustee-with-docker-compose" title="Permalink to this headline">#</a></h2>
+<h3>Step 1: Install Trustee with Docker Compose<a class="headerlink" href="#step-1-install-trustee-with-docker-compose" title="Permalink to this headline">#</a></h3>
 <p>Clone the upstream Trustee repository.
 The repository ships with a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> that wires KBS, the Attestation Service, and the Reference Value Provider Service together.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/confidential-containers/trustee.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> trustee
@@ -492,7 +505,7 @@ This step can take several minutes. The command returns once the containers are 
 <p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 </section>
 <section id="step-2-verify-trustee-is-running">
-<h2>Step 2: Verify Trustee Is Running<a class="headerlink" href="#step-2-verify-trustee-is-running" title="Permalink to this headline">#</a></h2>
+<h3>Step 2: Verify Trustee Is Running<a class="headerlink" href="#step-2-verify-trustee-is-running" title="Permalink to this headline">#</a></h3>
 <p>Confirm all three Trustee containers are up.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker compose ps
 </pre></div>
@@ -513,7 +526,7 @@ The request body is intentionally empty. You are checking reachability, not subm
 A connection refused or no-route error indicates that the containers are not running or that port <code class="docutils literal notranslate"><span class="pre">8080</span></code> is not exposed.</p>
 </section>
 <section id="step-3-install-the-kbs-client-tool">
-<h2>Step 3: Install the KBS Client Tool<a class="headerlink" href="#step-3-install-the-kbs-client-tool" title="Permalink to this headline">#</a></h2>
+<h3>Step 3: Install the KBS Client Tool<a class="headerlink" href="#step-3-install-the-kbs-client-tool" title="Permalink to this headline">#</a></h3>
 <p>The KBS client tool, <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.</p>
 <p>Pull the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact into the current directory with ORAS.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oras pull ghcr.io/confidential-containers/staged-images/kbs-client:latest
@@ -545,7 +558,7 @@ For in-enclave use, refer to the upstream <a class="reference external" href="ht
 </div>
 </section>
 <section id="step-4-send-a-sample-resource-request">
-<h2>Step 4: Send a Sample Resource Request<a class="headerlink" href="#step-4-send-a-sample-resource-request" title="Permalink to this headline">#</a></h2>
+<h3>Step 4: Send a Sample Resource Request<a class="headerlink" href="#step-4-send-a-sample-resource-request" title="Permalink to this headline">#</a></h3>
 <p>Use <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> to request a resource from your local Trustee.
 The request below uses a placeholder resource path. You do not need to pre-create the resource for this check.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./kbs-client --url http://127.0.0.1:8080 get-resource --path my_repo/resource_type/123abc
@@ -565,6 +578,7 @@ A policy-denied response is the expected, successful outcome of this quickstart:
 <p>The first warning confirms <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> detected that it is not running in a TEE and fell back to the sample attester.
 The <code class="docutils literal notranslate"><span class="pre">PolicyDeny</span></code> warning and the final <code class="docutils literal notranslate"><span class="pre">request</span> <span class="pre">unauthorized</span></code> error confirm that KBS received the request, the Attestation Service evaluated it, and policy rejected it.</p>
 <p>If you instead see a connection error, KBS is not reachable. Revisit Step 2.</p>
+</section>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
@@ -629,13 +643,16 @@ The <code class="docutils literal notranslate"><span class="pre">PolicyDeny</spa
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-trustee-with-docker-compose">Step 1: Install Trustee with Docker Compose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-verify-trustee-is-running">Step 2: Verify Trustee Is Running</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-install-the-kbs-client-tool">Step 3: Install the KBS Client Tool</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-send-a-sample-resource-request">Step 4: Send a Sample Resource Request</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-trustee-with-docker-compose">Step 1: Install Trustee with Docker Compose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-verify-trustee-is-running">Step 2: Verify Trustee Is Running</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-install-the-kbs-client-tool">Step 3: Install the KBS Client Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-send-a-sample-resource-request">Step 4: Send a Sample Resource Request</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
