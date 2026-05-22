@@ -55,7 +55,7 @@ After completing the installation, you can :doc:`Run a Sample Workload <run-samp
 Label Nodes for Confidential Containers Components
 **************************************************
 
-The GPU Operator reads labels to determine what software components to deploy to a node. 
+The GPU Operator reads labels to determine what software components to deploy to a node.
 To configure a node for Confidential Container workloads, you label the node with the ``nvidia.com/gpu.workload.config=vm-passthrough`` label.
 Then, when the GPU Operator is installed in a subsequent step, it will deploy the software components needed to run Confidential Containers to the node.
 
@@ -144,13 +144,13 @@ Install the Kata Containers Helm Chart
 Install Kata Containers using the ``kata-deploy`` Helm chart.
 The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Confidential Containers and native Kata containers.
 
-The minimum required version is 3.29.0.
+The minimum required version is ${kata_version}.
 
 #. Set the chart version and registry path:
 
    .. code-block:: console
 
-      $ export VERSION="3.29.0"
+      $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
 
@@ -161,7 +161,6 @@ The minimum required version is 3.29.0.
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
          --set nfd.enabled=false \
-         --wait --timeout 10m \
          --version "${VERSION}"
 
    *Example Output immediately after running the command:*
@@ -173,7 +172,7 @@ The minimum required version is 3.29.0.
 
    The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
    It can take a 2-3 minutes to return more output.
- 
+
    *Example Output when the release is deployed:*
 
    .. code-block:: output
@@ -201,12 +200,13 @@ The minimum required version is 3.29.0.
       The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
       The GPU Operator will deploy and manage NFD in the next step.
 
+   .. note::
 
 #. Verify that the ``kata-deploy`` pod is running:
 
    .. code-block:: console
 
-      $ kubectl get pods -n kata-system | grep kata-deploy
+      $ kubectl -n kata-system | grep kata-deploy
 
    *Example Output:*
 
@@ -234,10 +234,10 @@ The minimum required version is 3.29.0.
       kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s
 
    Several runtimes are installed by the ``kata-deploy`` chart.
-   The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata 
+   The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata
    Containers, in a non-Confidential Containers scenario.
-   The ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or 
-   ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime 
+   The ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or
+   ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime
    classes are used to deploy Confidential Containers workloads.
 
    The ``kata-deploy`` chart typically creates these runtime classes within 1-2 minutes after the ``kata-deploy`` pod reaches ``Running``.
@@ -300,7 +300,7 @@ For more details on each of the GPU Operator components, refer to the :ref:`GPU 
          --set sandboxWorkloads.mode=kata \
          --set nfd.enabled=true \
          --set nfd.nodefeaturerules=true \
-         --version=v26.3.1
+         --version=${gpu_operator_version}
 
    *Example Output:*
 
@@ -316,7 +316,7 @@ For more details on each of the GPU Operator components, refer to the :ref:`GPU 
    ``STATUS: deployed`` confirms the Helm release succeeded.
    The ``--wait`` flag instructs Helm to wait until the release is deployed before returning.
    It may take 3-5 minutes for the Helm command to complete.
-   
+
    Use the following steps to confirm the GPU Operator components are deployed and configured correctly.
 
 #. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
@@ -436,17 +436,17 @@ The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``
 .. code-block:: console
 
    $ helm install --wait --timeout 10m --generate-name \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --set sandboxWorkloads.enabled=true \
-        --set sandboxWorkloads.mode=kata \
-        --set nfd.enabled=true \
-        --set nfd.nodefeaturerules=true \
-        --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
-        --set kataSandboxDevicePlugin.env[0].value="" \
-        --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
-        --set kataSandboxDevicePlugin.env[1].value="" \
-        --version=v26.3.1
+      -n gpu-operator --create-namespace \
+      nvidia/gpu-operator \
+      --set sandboxWorkloads.enabled=true \
+      --set sandboxWorkloads.mode=kata \
+      --set nfd.enabled=true \
+      --set nfd.nodefeaturerules=true \
+      --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
+      --set kataSandboxDevicePlugin.env[0].value="" \
+      --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
+      --set kataSandboxDevicePlugin.env[1].value="" \
+      --version=${gpu_operator_version}
 
 After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
 
@@ -474,7 +474,7 @@ Next Steps
 
 .. note::
 
-   You now have a working Confidential Containers runtime. 
+   You now have a working Confidential Containers runtime.
 
    Attestation is what cryptographically verifies the TEE and releases secrets to a
    production workload. For attestation concepts and a local
