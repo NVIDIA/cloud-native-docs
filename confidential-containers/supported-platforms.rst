@@ -52,6 +52,9 @@ NVIDIA GPUs
    * - NVIDIA B200
      - Single-GPU, Multi-GPU
 
+   * - NVIDIA HGX B300
+     - Single-GPU, Multi-GPU
+
    * - NVIDIA RTX Pro 6000 BSE
      - Single-GPU
 
@@ -75,10 +78,10 @@ CPU Platforms
      - Operating System
      - Kernel Version
    * - AMD Genoa / Milan
-     - Ubuntu 25.10
+     - Ubuntu 25.10 or 26.04
      - 6.17+
    * - Intel Emerald Rapids (ER) /  Granite Rapids (GR)
-     - Ubuntu 25.10
+     - Ubuntu 25.10 or 26.04
      - 6.17+
 
 For additional information on node configuration, refer to the `Confidential Computing Deployment Guide <https://docs.nvidia.com/cc-deployment-guide-tdx-snp.pdf>`_ for information about supported NVIDIA GPUs, such as the NVIDIA Hopper H100.
@@ -88,7 +91,7 @@ The following topics in the deployment guide apply to a cloud-native environment
 * Hardware selection and initial hardware configuration, such as BIOS settings.
 * Host operating system selection, initial configuration, and validation.
 
-When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.
+When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 or 26.04 as the host OS with its default kernel version and configuration.
 
 For additional resources on machine setup:
 
@@ -114,15 +117,15 @@ Supported Software Components
    * - `QEMU <https://www.qemu.org/>`__
      - 10.1 \+ Patches
    * - `Containerd <https://github.com/containerd/containerd>`__
-     - 2.2.2
+     - 2.2.x or 2.3.x
    * - `Kubernetes <https://kubernetes.io/>`__
      - 1.32 \+
    * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
-       
+
        Refer to the :ref:`GPU Operator Component Matrix <gpuop:operator-component-matrix>` for the list of components and versions included in each release.
-     - v26.3.1 and higher
+     - ${gpu_operator_version} and higher
    * - `Kata Containers <https://katacontainers.io/>`__
-     - 3.29 (installed with ``kata-deploy`` Helm chart)
+     - ${kata_version} (installed with ``kata-deploy`` Helm chart)
    * - `Key Broker Service (KBS) protocol <https://confidentialcontainers.org/docs/attestation/>`__
      - 0.4.0
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__

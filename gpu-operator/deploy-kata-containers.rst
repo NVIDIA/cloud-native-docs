@@ -280,13 +280,13 @@ Install the Kata Containers Helm Chart
 Install Kata Containers using the ``kata-deploy`` Helm chart.
 The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Kata Containers.
 
-The minimum required version is 3.29.0.
+The minimum required version is ${kata_version}.
 
 #. Set the chart version and registry path:
 
    .. code-block:: console
 
-      $ export VERSION="3.29.0"
+      $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
 
@@ -297,7 +297,6 @@ The minimum required version is 3.29.0.
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
          --set nfd.enabled=false \
-         --wait --timeout 10m \
          --version "${VERSION}"
 
    *Example Output:*
@@ -313,31 +312,43 @@ The minimum required version is 3.29.0.
 
    .. note::
 
-      The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
-      It can take a few minutes to return output.
-
-      There is a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
-      If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the ``kata-deploy`` pod to be in the Running state.
-
-   .. note::
-
       Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
       The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
       The GPU Operator will deploy and manage NFD in the next step.
 
+   .. note::
 
-#. Optional: Verify that the ``kata-deploy`` pod is running:
+      The Helm install command returns as soon as the Kubernetes resources are created.
+      The ``kata-deploy`` DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
+      You can use either of the optional verification steps below to confirm readiness before continuing.
+
+
+#. Optional: Verify that the ``kata-deploy`` DaemonSet has finished rolling out on every node:
 
    .. code-block:: console
 
-      $ kubectl get pods -n kata-system | grep kata-deploy
+      $ kubectl -n kata-system rollout status ds/kata-deploy --timeout=20m
 
    *Example Output:*
 
    .. code-block:: output
 
-      NAME                    READY   STATUS    RESTARTS      AGE
-      kata-deploy-b2lzs       1/1     Running   0             6m37s
+      Waiting for daemon set "kata-deploy" rollout to finish: 0 of 1 updated pods are available...
+      daemon set "kata-deploy" successfully rolled out
+
+
+#. Optional: Verify that the ``kata-deploy`` pods are running:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n kata-system
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      NAME                READY   STATUS    RESTARTS   AGE
+      kata-deploy-b2lzs   1/1     Running   0          6m37s
 
 #. Optional: Verify that the ``kata-qemu-nvidia-gpu`` runtime class is available:
 

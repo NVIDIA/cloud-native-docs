@@ -26,6 +26,28 @@ This document describes the new features and known issues for the NVIDIA Confide
 
 ----
 
+.. _coco-v1.1.0:
+
+1.1.0
+=====
+
+This release expands hardware coverage and updates the validated software stack.
+
+New Features
+------------
+
+* Added support for the NVIDIA HGX B300 platform with both single-GPU and multi-GPU passthrough.
+
+* Added support for Ubuntu 26.04 as a host operating system.
+
+* Added support for the following software components:
+
+  * Kata Containers 3.31.0 
+  * containerd 2.3.x
+  * NVIDIA GPU Operator v26.3.1
+
+----
+
 .. _coco-v1.0.0:
 
 1.0.0
