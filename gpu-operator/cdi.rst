@@ -153,6 +153,11 @@ disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the f
 About the Node Resource Interface (NRI) Plugin
 **********************************************
 
+.. note::
+
+   The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
+   Refer to the `containerd NRI repository <https://github.com/containerd/nri#api-stability>`_ for details on project details.
+
 Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd. 
 NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including injecting devices to a container, topology aware placement strategies, and more. For more details on NRI, refer to the `NRI overview <https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background>`_ in the containerd repository.
 
