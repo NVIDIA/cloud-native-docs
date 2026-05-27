@@ -32,14 +32,16 @@ Attestation is required for any feature that depends on secrets, including:
 * Using sealed secrets
 * Requesting secrets directly from workloads
 
-When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves. The evidence is sent to Trustee, the remote verifier in Confidential Containers deployments. Trustee evaluates the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.
+When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves. 
+The evidence is sent to the remote verifier to evaluate the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.
 
 Key Concepts
 ============
 
 The following concepts appear throughout this page:
 
-* Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing. CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework. Refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/>`_ for project background and attestation best practices.
+* Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing. 
+  CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework. 
 * Trusted Execution Environment (TEE): A hardware-isolated environment, such as AMD SEV-SNP, Intel TDX, or an NVIDIA Confidential Computing GPU, that protects code and data in use.
 * Remote attestation: The process of cryptographically proving to a remote party that a TEE is running the expected, untampered software stack before that party releases secrets to it.
 * Trustee: The remote verifier in the Confidential Containers attestation flow. Trustee is composed of three cooperating services:
@@ -50,22 +52,25 @@ The following concepts appear throughout this page:
 * KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Most resources are addressed by a three-part path: ``<repository>/<type>/<tag>``.
 * Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.
 
+Refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/architecture/design-overview/>`_ for more details on these concepts and attestation best practices.
+
 Quickstart
 ==========
 
 This page walks you through standing up a development Trustee instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
-The goal is to give you a working attestation backend and a client you can use to interact with it before you wire it into a Confidential Containers workload.
+It runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime.
 
-This page is for new users who want to try out attestation on a single Linux host.
-For a deeper explanation of attestation, Trustee, and the full set of features, refer to the upstream `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ and `Features <https://confidentialcontainers.org/docs/features>`_ sections of the Confidential Containers documentation.
-
-This quickstart runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime to complete.
-In a real deployment, attestation builds on the runtime setup described in the :doc:`Confidential Containers deployment guide <confidential-containers-deploy>`. Confidential workloads use Trustee to cryptographically verify their TEE before they receive secrets, encrypted container images, authenticated registries, or other sensitive resources.
+The goal is to give you a working local attestation backend and a client to interact with it before you wire Trustee into a Confidential Containers workload.
 
 .. note::
 
-   This quickstart is for development and evaluation only. Do not use the Trustee instance you stand up here in production.
-   This guide does not deploy a Trusted Execution Environment (TEE), does not produce real hardware attestation evidence, and does not release any secrets to a workload. It only validates that the Trustee components are running and reachable.
+   This quickstart is for evaluation only. 
+   Do not use the Trustee instance you stand up here in production.
+   This guide does not deploy a TEE, does not produce real hardware attestation evidence, and does not release any secrets to a workload. 
+   It only validates that the Trustee components are running and reachable.
+
+   A production attestation workflow depends on your environment and your organization's security policies.
+   Documenting a full attestation workflow is outside the scope of this quickstart.
    To run attestation against real evidence from a confidential workload, refer to the upstream `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ and `Features <https://confidentialcontainers.org/docs/features>`_ documentation for more information.
 
 
