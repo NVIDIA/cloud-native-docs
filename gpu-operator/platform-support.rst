@@ -561,6 +561,32 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
   KubeVirt with NVIDIA vGPU is supported on ``nodes`` with Linux kernel < 6.0, such as Ubuntu 22.04 ``LTS``.
 
+****************************************************************************************
+Support for Kata Containers, Confidential Containers, and OpenShift Sandboxed Containers
+****************************************************************************************
+
+The GPU Operator supports running GPU workloads in lightweight virtual machines using
+`Kata Containers <https://katacontainers.io/>`__ for single and multi GPU passthrough workloads.
+Confidential Containers are also supported through Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Component
+     - Support
+   * - Kata Containers
+     - 3.29.0 and higher (installed with the upstream ``kata-deploy`` Helm chart)
+   * - NVIDIA Reference Architecture for Confidential Containers
+     - Refer to the NVIDIA Confidential Containers :doc:`support matrix documentation <cc:supported-platforms>`.
+   * - OpenShift Sandboxed Containers
+     - 1.12 (Technology Preview support)
+
+For details on installing Kata Containers with the GPU Operator, refer to the :doc:`deploy-kata-containers` page.
+This page includes additional limitations and restrictions for using Kata Containers with the GPU Operator.
+
+Refer to the `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__  documentation for more details.
+
 **************************
 Support for GPUDirect RDMA
 **************************

@@ -225,6 +225,31 @@ Kubernetes Cluster
 
   Refer to the `Kata Containers documentation <https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime>`_ for more details on the Kata runtime and VFIO cold-plug.
 
+* Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images. 
+  Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+
+  Increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the Kata shim configurations in Kata Containers.
+  The default timeout is 2 minutes.
+
+  Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
+
+  .. code-block:: yaml
+     :emphasize-lines: 3
+
+     apiVersion: kubelet.config.k8s.io/v1beta1
+     kind: KubeletConfiguration
+     runtimeRequestTimeout: 20m
+
+  Restart the kubelet service to apply the change:
+
+  .. code-block:: console
+
+     $ sudo systemctl restart kubelet
+
+  If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent's ``image_pull_timeout``, which defaults to 1200s. 
+  This setting also sets the confidential data hub's image pull API timeout in seconds. 
+  To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params: "..."`` annotation.
+
 .. _label-nodes-kata-containers:
 
 Label Nodes to use Kata Containers
