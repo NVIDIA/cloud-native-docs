@@ -627,7 +627,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example values file to enable NVIDIA GPU shims for the NVIDIA</span><span class="w"></span>
 <span class="c1"># Confidential Containers Reference Architecture. </span><span class="w"></span>
 
-<span class="c1"># Disable verbose debug logging in kata-deploy and the Kata runtime. Change this to true if you want to troubleshoot issues.</span><span class="w"></span>
+<span class="c1"># Set to true for verbose kata-deploy and Kata runtime logging.</span><span class="w"></span>
 <span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 
 <span class="c1"># Disable Node Feature Discovery (NFD) deployment by kata-deploy.</span><span class="w"></span>
@@ -645,12 +645,8 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="nt">snapshotter</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">setup</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;nydus&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
 
-<span class="c1"># Disable every shim the kata-deploy chart enables by default, then opt in</span><span class="w"></span>
-<span class="c1"># only to the NVIDIA GPU shims.</span><span class="w"></span>
-<span class="c1"># The default chart installs a broad set of hypervisor and TEE shims</span><span class="w"></span>
-<span class="c1"># (clh, dragonball, fc, qemu, qemu-sev, qemu-snp, qemu-tdx, stratovirt,</span><span class="w"></span>
-<span class="c1"># and the -runtime-rs variants) that are not part of this reference</span><span class="w"></span>
-<span class="c1"># architecture.</span><span class="w"></span>
+<span class="c1"># Disable the chart&#39;s default hypervisor/TEE shims and opt in only to</span><span class="w"></span>
+<span class="c1"># the NVIDIA GPU shims supported by this reference architecture.</span><span class="w"></span>
 <span class="nt">shims</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">disableAll</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 
@@ -673,19 +669,10 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="w">      </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">nvidia.com/cc.ready.state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
 
-<span class="w">  </span><span class="c1"># Note: the upstream kata-deploy chart also distributes -runtime-rs</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># variants of the NVIDIA GPU shims (an alternative Rust-based runtime).</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># They are not yet supported by this reference architecture and are</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># left disabled by the disableAll setting above.</span><span class="w"></span>
-
-<span class="w">  </span><span class="c1"># Confidential NVIDIA GPU passthrough shim for AMD SEV-SNP nodes.</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># The runtime class is pinned to nodes where the GPU Operator has set</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># nvidia.com/cc.ready.state=true (CC mode applied) AND where Node</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># Feature Discovery has set amd.feature.node.kubernetes.io/snp=true</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># (host CPU advertises SEV-SNP). The nydus containerd snapshotter and</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># CRI-O guestPull pull container images directly into the confidential</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># VM. Set agent.httpsProxy / agent.noProxy if the guest needs to reach</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># the registry through a proxy.</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Confidential NVIDIA GPU passthrough for AMD SEV-SNP nodes.</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Scheduled where the GPU Operator reports CC mode is on AND NFD</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># reports SEV-SNP support. Set agent.httpsProxy / agent.noProxy if</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># the guest needs a proxy to reach the registry.</span><span class="w"></span>
 <span class="w">  </span><span class="nt">qemu-nvidia-gpu-snp</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">    </span><span class="nt">supportedArches</span><span class="p">:</span><span class="w"></span>
@@ -706,12 +693,9 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="w">        </span><span class="nt">nvidia.com/cc.ready.state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 <span class="w">        </span><span class="nt">amd.feature.node.kubernetes.io/snp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 
-<span class="w">  </span><span class="c1"># Confidential NVIDIA GPU passthrough shim for Intel TDX nodes.</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># The runtime class is pinned to nodes where the GPU Operator has set</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># nvidia.com/cc.ready.state=true (CC mode applied) AND where Node</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># Feature Discovery has set intel.feature.node.kubernetes.io/tdx=true</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># (host CPU advertises TDX). Snapshotter, guest pull, and proxy</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># behavior match the SNP shim above.</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Confidential NVIDIA GPU passthrough for Intel TDX nodes.</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Same selectors and snapshotter behavior as the SNP shim above,</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># but pinned to TDX-capable hosts.</span><span class="w"></span>
 <span class="w">  </span><span class="nt">qemu-nvidia-gpu-tdx</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">    </span><span class="nt">supportedArches</span><span class="p">:</span><span class="w"></span>
@@ -732,11 +716,9 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="w">        </span><span class="nt">nvidia.com/cc.ready.state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 <span class="w">        </span><span class="nt">intel.feature.node.kubernetes.io/tdx</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
 
-<span class="c1"># Default shim per architecture used by kata-deploy when a pod does not</span><span class="w"></span>
-<span class="c1"># request a specific runtime class. Set to the non-confidential NVIDIA</span><span class="w"></span>
-<span class="c1"># GPU shim so pods only run inside a confidential VM when they</span><span class="w"></span>
-<span class="c1"># explicitly request the kata-qemu-nvidia-gpu-snp or</span><span class="w"></span>
-<span class="c1"># kata-qemu-nvidia-gpu-tdx runtime class.</span><span class="w"></span>
+<span class="c1"># Default shim when a pod does not request a runtime class. Set to the</span><span class="w"></span>
+<span class="c1"># non-confidential shim so pods only run in a confidential VM when</span><span class="w"></span>
+<span class="c1"># they explicitly request the -snp or -tdx runtime class.</span><span class="w"></span>
 <span class="nt">defaultShim</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">amd64</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qemu-nvidia-gpu</span><span class="w"> </span><span class="c1"># Can be changed to qemu-nvidia-gpu-snp or qemu-nvidia-gpu-tdx if preferred</span><span class="w"></span>
 

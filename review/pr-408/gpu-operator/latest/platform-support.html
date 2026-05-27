@@ -1472,6 +1472,38 @@ Refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-oper
 <p>KubeVirt with NVIDIA vGPU is supported on <code class="docutils literal notranslate"><span class="pre">nodes</span></code> with Linux kernel &lt; 6.0, such as Ubuntu 22.04 <code class="docutils literal notranslate"><span class="pre">LTS</span></code>.</p>
 </div>
 </section>
+<section id="support-for-kata-containers-confidential-containers-and-openshift-sandboxed-containers">
+<h2>Support for Kata Containers, Confidential Containers, and OpenShift Sandboxed Containers<a class="headerlink" href="#support-for-kata-containers-confidential-containers-and-openshift-sandboxed-containers" title="Permalink to this headline">#</a></h2>
+<p>The GPU Operator supports running GPU workloads in lightweight virtual machines using
+<a class="reference external" href="https://katacontainers.io/">Kata Containers</a> for single and multi GPU passthrough workloads.
+Confidential Containers are also supported through Kata Containers and the NVIDIA Reference Architecture for Confidential Containers.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Support</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Kata Containers</p></td>
+<td><p>3.29.0 and higher (installed with the upstream <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></td>
+</tr>
+<tr class="row-odd"><td><p>NVIDIA Reference Architecture for Confidential Containers</p></td>
+<td><p>Refer to the NVIDIA Confidential Containers <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html" title="(in NVIDIA Confidential Containers Architecture)"><span class="xref std std-doc">support matrix documentation</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>OpenShift Sandboxed Containers</p></td>
+<td><p>1.12 (Technology Preview support)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For details on installing Kata Containers with the GPU Operator, refer to the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Deploy with Kata Containers</span></a> page.
+This page includes additional limitations and restrictions for using Kata Containers with the GPU Operator.</p>
+<p>Refer to the <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a>  documentation for more details.</p>
+</section>
 <section id="support-for-gpudirect-rdma">
 <h2>Support for GPUDirect RDMA<a class="headerlink" href="#support-for-gpudirect-rdma" title="Permalink to this headline">#</a></h2>
 <p>Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.</p>
@@ -1589,6 +1621,7 @@ Running the GPU Operator with Container Device Interface (CDI) enabled (default 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-precompiled-drivers">Supported Precompiled Drivers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-container-runtimes">Supported Container Runtimes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kata-containers-confidential-containers-and-openshift-sandboxed-containers">Support for Kata Containers, Confidential Containers, and OpenShift Sandboxed Containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-rdma">Support for GPUDirect RDMA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-gpudirect-storage">Support for GPUDirect Storage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-supported-tools-and-integrations">Additional Supported Tools and Integrations</a></li>

@@ -429,6 +429,16 @@
 </ul>
 </li>
 </ul>
+</section>
+<section id="docs-changelog">
+<h3>Docs Changelog<a class="headerlink" href="#docs-changelog" title="Permalink to this headline">#</a></h3>
+<p>The <a class="reference internal" href="confidential-containers-deploy.html#coco-install-kata-chart"><span class="std std-ref">Install the Kata Containers Helm Chart</span></a> procedure was updated for this release.
+Changes include:</p>
+<ul class="simple">
+<li><p>Installs <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> with a values file instead of inline <code class="docutils literal notranslate"><span class="pre">--set</span></code> flags.</p></li>
+<li><p>Includes a new sample values file, <code class="file docutils literal notranslate"><span class="pre">samples/kata-nvidia-gpu-values.yaml</span></code>, that configures the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart for the NVIDIA Confidential Containers reference architecture (NVIDIA GPU shims only, NFD disabled, <code class="docutils literal notranslate"><span class="pre">nydus</span></code> snapshotter, and per-shim runtime class node selectors).</p></li>
+<li><p>Adds a readiness verification step using <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">rollout</span> <span class="pre">status</span> <span class="pre">ds/kata-deploy</span></code>. This step relies on the readiness reporting added in Kata Containers 3.31.0 and lets you confirm that <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> has finished extracting artifacts and restarting containerd on every node before continuing.</p></li>
+</ul>
 <hr class="docutils" />
 </section>
 </section>
@@ -531,6 +541,7 @@ For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-1-0">1.1.0</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docs-changelog">Docs Changelog</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-0-0">1.0.0</a><ul class="nav section-nav flex-column">
