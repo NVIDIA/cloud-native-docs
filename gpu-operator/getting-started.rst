@@ -370,8 +370,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``true``
 
    * - ``cdi.nriPluginEnabled``
-     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. 
-      The NRI Plugin is not GA and not recommended for production use.
+     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers.
 
        In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
        This feature requires containerd v1.7.30, v2.1.x, or v2.2.x, or cri-o v1.34 or later.
