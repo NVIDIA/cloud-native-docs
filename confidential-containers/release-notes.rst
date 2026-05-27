@@ -45,6 +45,19 @@ New Features
   * Kata Containers 3.31.0 
   * containerd 2.3.x
 
+
+Docs Changelog
+--------------
+
+The :ref:`coco-install-kata-chart` procedure was updated for this release.
+Changes include:
+
+* Installs ``kata-deploy`` with a values file instead of inline ``--set`` flags.
+
+* Includes a new sample values file, :file:`samples/kata-nvidia-gpu-values.yaml`, that configures the ``kata-deploy`` Helm chart for the NVIDIA Confidential Containers reference architecture (NVIDIA GPU shims only, NFD disabled, ``nydus`` snapshotter, and per-shim runtime class node selectors).
+
+* Adds a readiness verification step using ``kubectl rollout status ds/kata-deploy``. This step relies on the readiness reporting added in Kata Containers 3.31.0 and lets you confirm that ``kata-deploy`` has finished extracting artifacts and restarting containerd on every node before continuing.
+
 ----
 
 .. _coco-v1.0.0:
