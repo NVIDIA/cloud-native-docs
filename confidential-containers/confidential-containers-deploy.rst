@@ -142,21 +142,6 @@ Kubernetes Cluster
 * A Kubernetes cluster with cluster administrator privileges.
   Refer to the :ref:`Supported Software Components <coco-supported-software-components>` table for supported Kubernetes versions.
 
-* containerd version 2.2.2 installed.
-  Refer to the `containerd Getting Started guide <https://containerd.io/docs/2.2/getting-started/>`_ for installation instructions.
-
-  To verify the installed version, run the following command:
-
-  .. code-block:: console
-
-      $ containerd --version
-
-  *Example Output:*
-
-  .. code-block:: output
-
-      containerd containerd.io 2.2.2 ...
-
 * Helm installed.
   Use the command below to install Helm or refer to the `Helm documentation <https://helm.sh/docs/intro/install/>`_ for installation instructions.
 
@@ -294,24 +279,27 @@ Install the Kata Containers Helm Chart
 Install Kata Containers using the ``kata-deploy`` Helm chart.
 The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Confidential Containers and native Kata containers.
 
-The minimum required version is 3.29.0.
+The minimum required version is ${kata_version}.
 
 #. Set the chart version and registry path:
 
    .. code-block:: console
 
-      $ export VERSION="3.29.0"
+      $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
+#. Create a values file, such as ``kata-nvidia-gpu-values.yaml``, to configure the ``kata-deploy`` chart for NVIDIA Confidential Containers:
 
-#. Install the kata-deploy Helm chart:
+   .. literalinclude:: ./samples/kata-nvidia-gpu-values.yaml
+      :language: yaml
+
+#. Install the kata-deploy Helm chart with the values file:
 
    .. code-block:: console
 
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
-         --set nfd.enabled=false \
-         --wait --timeout 10m \
+         -f kata-nvidia-gpu-values.yaml \
          --version "${VERSION}"
 
    *Example Output:*
@@ -327,31 +315,37 @@ The minimum required version is 3.29.0.
 
    .. note::
 
-      The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
-      It can take a 2-3 minutes to return output.
-
-      There is a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
-      If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the ``kata-deploy`` pod to be in the Running state.
-
-   .. note::
-
-      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
-      The GPU Operator will deploy and manage NFD in the next step.
+      The Helm install command returns as soon as the Kubernetes resources are created.
+      The ``kata-deploy`` DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
+      You can use either of the optional verification steps below to confirm readiness before continuing.
 
 
-#. Optional: Verify that the ``kata-deploy`` pod is running:
+#. Optional: Verify that the ``kata-deploy`` DaemonSet has finished rolling out on every node:
 
    .. code-block:: console
 
-      $ kubectl get pods -n kata-system | grep kata-deploy
+      $ kubectl -n kata-system rollout status ds/kata-deploy --timeout=20m
 
    *Example Output:*
 
    .. code-block:: output
 
-      NAME                    READY   STATUS    RESTARTS      AGE
-      kata-deploy-b2lzs       1/1     Running   0             6m37s
+      Waiting for daemon set "kata-deploy" rollout to finish: 0 of 1 updated pods are available...
+      daemon set "kata-deploy" successfully rolled out
+
+
+#. Optional: Verify that the ``kata-deploy`` pods are running:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n kata-system
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      NAME                READY   STATUS    RESTARTS   AGE
+      kata-deploy-b2lzs   1/1     Running   0          6m37s
 
 #. Optional: Verify that the ``kata-qemu-nvidia-gpu``, ``kata-qemu-nvidia-gpu-snp``, and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
 
@@ -415,7 +409,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
          --set sandboxWorkloads.mode=kata \
          --set nfd.enabled=true \
          --set nfd.nodefeaturerules=true \
-         --version=v26.3.1
+         --version=${gpu_operator_version}
           
 
    *Example Output:*
@@ -701,7 +695,7 @@ The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``
       --set kataSandboxDevicePlugin.env[0].value="" \
       --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
       --set kataSandboxDevicePlugin.env[1].value="" \
-      --version=v26.3.1
+      --version=${gpu_operator_version}
 
 After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
 

@@ -1,0 +1,107 @@
+# Example values file to enable NVIDIA GPU shims for the NVIDIA
+# Confidential Containers Reference Architecture. 
+
+# Set to true for verbose kata-deploy and Kata runtime logging.
+debug: false
+
+# Disable Node Feature Discovery (NFD) deployment by kata-deploy.
+# Both kata-deploy and the GPU Operator deploy NFD by default. This
+# reference architecture relies on the NFD instance that the GPU Operator
+# deploys and manages, so the kata-deploy NFD is turned off to avoid a
+# duplicate, conflicting deployment.
+nfd:
+  enabled: false
+
+# Install the nydus snapshotter on each node alongside containerd.
+# The confidential -snp and -tdx shims below use nydus to pull container
+# images directly into the confidential VM (guest pull), which keeps image
+# contents inside the trusted execution environment (TEE).
+snapshotter:
+  setup: ["nydus"]
+
+# Disable the chart's default hypervisor/TEE shims and opt in only to
+# the NVIDIA GPU shims supported by this reference architecture.
+shims:
+  disableAll: true
+
+  # Non-confidential NVIDIA GPU passthrough shim used when Confidential
+  # Computing mode is off on the node. The runtime class is restricted to
+  # nodes where the GPU Operator's Confidential Computing Manager has
+  # reported nvidia.com/cc.ready.state=false, so it will not schedule on
+  # CC-ready nodes. The empty containerd snapshotter falls back to the
+  # default (overlayfs); guest pull is not used for this non-confidential
+  # path.
+  qemu-nvidia-gpu:
+    enabled: true
+    supportedArches:
+      - amd64
+    allowedHypervisorAnnotations: []
+    containerd:
+      snapshotter: ""
+    runtimeClass:
+      # This label is automatically added by the GPU Operator. 
+      nodeSelector:
+        nvidia.com/cc.ready.state: "false"
+
+  # Confidential NVIDIA GPU passthrough for AMD SEV-SNP nodes.
+  # Scheduled where the GPU Operator reports CC mode is on AND NFD
+  # reports SEV-SNP support. Set agent.httpsProxy / agent.noProxy if
+  # the guest needs a proxy to reach the registry.
+  qemu-nvidia-gpu-snp:
+    enabled: true
+    supportedArches:
+      - amd64
+    allowedHypervisorAnnotations: []
+    containerd:
+      snapshotter: "nydus"
+      forceGuestPull: false
+    crio:
+      guestPull: true
+    agent:
+      httpsProxy: ""
+      noProxy: ""
+    runtimeClass:
+      # These labels are automatically added by the GPU Operator and NFD
+      # respectively.
+      nodeSelector:
+        nvidia.com/cc.ready.state: "true"
+        amd.feature.node.kubernetes.io/snp: "true"
+
+  # Confidential NVIDIA GPU passthrough for Intel TDX nodes.
+  # Same selectors and snapshotter behavior as the SNP shim above,
+  # but pinned to TDX-capable hosts.
+  qemu-nvidia-gpu-tdx:
+    enabled: true
+    supportedArches:
+      - amd64
+    allowedHypervisorAnnotations: []
+    containerd:
+      snapshotter: "nydus"
+      forceGuestPull: false
+    crio:
+      guestPull: true
+    agent:
+      httpsProxy: ""
+      noProxy: ""
+    runtimeClass:
+      # These labels are automatically added by the GPU Operator and NFD
+      # respectively.
+      nodeSelector:
+        nvidia.com/cc.ready.state: "true"
+        intel.feature.node.kubernetes.io/tdx: "true"
+
+# Default shim when a pod does not request a runtime class. Set to the
+# non-confidential shim so pods only run in a confidential VM when
+# they explicitly request the -snp or -tdx runtime class.
+defaultShim:
+  amd64: qemu-nvidia-gpu # Can be changed to qemu-nvidia-gpu-snp or qemu-nvidia-gpu-tdx if preferred
+
+# Create one Kubernetes RuntimeClass per enabled shim above
+# (kata-qemu-nvidia-gpu, kata-qemu-nvidia-gpu-snp, kata-qemu-nvidia-gpu-tdx).
+# createDefault: false suppresses the generic "kata" RuntimeClass since
+# you should always reference a specific NVIDIA shim
+# by name in pod specs.
+runtimeClasses:
+  enabled: true
+  createDefault: false
+  defaultName: "kata"
