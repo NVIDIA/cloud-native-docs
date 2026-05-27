@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 21, 2026"/>
+    <meta name="docbuild:last-update" content="May 27, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -502,8 +502,8 @@ This limitation complicates performing an operating system upgrade on your nodes
 <h3>Driver Daemon Sets<a class="headerlink" href="#driver-daemon-sets" title="Permalink to this headline">#</a></h3>
 <p>The NVIDIA GPU Operator starts a driver daemon set for each NVIDIA driver custom resource and each operating system version.</p>
 <p>For example, if your cluster has one NVIDIA driver custom resource that specifies a 580 branch GPU driver and some
-worker nodes run Ubuntu 20.04 and other worker nodes run Ubuntu 22.04, the Operator starts two driver daemon sets.
-One daemon set configures the GPU driver on the Ubuntu 20.04 nodes and the other configures the driver on the Ubuntu 22.04 nodes.
+worker nodes run Ubuntu 22.04 and other worker nodes run Ubuntu 24.04, the Operator starts two driver daemon sets.
+One daemon set configures the GPU driver on the Ubuntu 22.04 nodes and the other configures the driver on the Ubuntu 24.04 nodes.
 All the nodes run the same 580 branch GPU driver.</p>
 <img alt="_images/nvd-basics.svg" src="_images/nvd-basics.svg" /><p>If you choose to use precompiled driver containers, the Operator starts a driver daemon set for each Linux kernel version.</p>
 <p>For example, if some nodes run Ubuntu 22.04 and the 5.15.0-84-generic kernel, and other nodes run the 5.15.0-78-generic kernel,
@@ -978,7 +978,7 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                             READY   STATUS        RESTARTS   AGE</span>
-<span class="go">nvidia-gpu-driver-ubuntu20.04-788484b9bb-6zhd9   1/1     Running       0          5m1s</span>
+<span class="go">nvidia-gpu-driver-ubuntu24.04-788484b9bb-6zhd9   1/1     Running       0          5m1s</span>
 <span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-7s68q    1/1     Terminating   0          37m</span>
 <span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-jm74l    1/1     Running       0          37m</span>
 </pre></div>
@@ -1034,7 +1034,7 @@ The selectors are set from the NVIDIA driver custom resources:</p>
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                       DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR                                                                                                                                                                                             AGE</span>
-<span class="go">nvidia-gpu-driver-ubuntu20.04-788484b9bb   1         1         1       1            1           driver.config=silver,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=20.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true   10m</span>
+<span class="go">nvidia-gpu-driver-ubuntu24.04-788484b9bb   1         1         1       1            1           driver.config=silver,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=24.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true   10m</span>
 <span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7    2         2         2       2            2           driver.config=gold,feature.node.kubernetes.io/system-os_release.ID=ubuntu,feature.node.kubernetes.io/system-os_release.VERSION_ID=22.04,nvidia.com/gpu.deploy.driver=true,nvidia.com/gpu.present=true     10m</span>
 </pre></div>
 </div>
