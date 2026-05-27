@@ -895,8 +895,9 @@ support for such custom configurations.</p>
 <span id="custom-runtime-options"></span><h2>Specifying Configuration Options for containerd<a class="headerlink" href="#specifying-configuration-options-for-containerd" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It’s recommended that you enable the NRI Plugin to configure the container runtime by setting <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled=true</span></code>.
-When enabled, you do not need to specify the <code class="docutils literal notranslate"><span class="pre">toolkit.env</span></code> options and injecting GPUs into workload containers is handled by the NRI Plugin.
+<p>When you enable the NRI Plugin, you do not need to specify the <code class="docutils literal notranslate"><span class="pre">toolkit.env</span></code> options and injecting GPUs into workload containers is handled by the NRI Plugin.
+You can enable the NRI Plugin to configure the container runtime by setting <code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled=true</span></code>.
+The NRI Plugin is available for use on RKE2.
 Refer to the <a class="reference internal" href="cdi.html#nri-plugin"><span class="std std-ref">NRI Plugin</span></a> documentation, for more information.</p>
 </div>
 <p>When you use containerd as the container runtime, the following configuration
@@ -955,13 +956,7 @@ will be created. By default this will point to <code class="docutils literal not
 <p>For Rancher Kubernetes Engine 2 (RKE2), refer to
 <a class="reference external" href="https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator">Deploy NVIDIA Operator</a>
 in the RKE2 documentation.</p>
-<p>The NRI Plugin is available for use on RKE2. With CDI (the default) and the NRI Plugin both enabled, you do not need to set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in your pod specification, and you do not need to configure the <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> environment variables.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
-The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
-Refer to the <a class="reference external" href="https://github.com/containerd/nri#api-stability">containerd NRI repository</a> for details on project details.</p>
-</div>
+<p>With CDI (the default) and the NRI Plugin both enabled, you do not need to set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in your pod specification, and you do not need to configure the <code class="docutils literal notranslate"><span class="pre">CONTAINERD_CONFIG</span></code>, <code class="docutils literal notranslate"><span class="pre">CONTAINERD_SOCKET</span></code>, or <code class="docutils literal notranslate"><span class="pre">RUNTIME_CONFIG_SOURCE</span></code> environment variables.</p>
 <p>Refer to the <a class="reference internal" href="release-notes.html#v24-9-0-known-limitations"><span class="std std-ref">Known Limitations</span></a>.</p>
 </section>
 <section id="microk8s">
