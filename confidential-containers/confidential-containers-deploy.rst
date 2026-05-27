@@ -288,14 +288,18 @@ The minimum required version is ${kata_version}.
       $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
+#. Create a values file, such as ``kata-nvidia-gpu-values.yaml``, to configure the ``kata-deploy`` chart for NVIDIA Confidential Containers:
 
-#. Install the kata-deploy Helm chart:
+   .. literalinclude:: ./samples/kata-nvidia-gpu-values.yaml
+      :language: yaml
+
+#. Install the kata-deploy Helm chart with the values file:
 
    .. code-block:: console
 
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
-         --set nfd.enabled=false \
+         -f kata-nvidia-gpu-values.yaml \
          --version "${VERSION}"
 
    *Example Output:*
@@ -308,12 +312,6 @@ The minimum required version is ${kata_version}.
       REVISION: 1
       DESCRIPTION: Install complete
       TEST SUITE: None
-
-   .. note::
-
-      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
-      The GPU Operator will deploy and manage NFD in the next step.
 
    .. note::
 

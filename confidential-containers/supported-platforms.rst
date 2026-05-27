@@ -117,7 +117,7 @@ Supported Software Components
    * - `QEMU <https://www.qemu.org/>`__
      - 10.1 \+ Patches
    * - `Containerd <https://github.com/containerd/containerd>`__
-     - 2.2.x or 2.3.x
+     - 2.2.2 or 2.3.x 
    * - `Kubernetes <https://kubernetes.io/>`__
      - 1.32 \+
    * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
