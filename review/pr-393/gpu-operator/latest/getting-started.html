@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 21, 2026"/>
+    <meta name="docbuild:last-update" content="May 27, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -859,15 +859,15 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 </section>
 <section id="running-a-custom-driver-image">
 <h3>Running a Custom Driver Image<a class="headerlink" href="#running-a-custom-driver-image" title="Permalink to this headline">#</a></h3>
-<p>If you want to use custom driver container images, such as version 465.27, then
+<p>If you want to use custom driver container images, such as version 580.126.20, then
 you can build a custom driver container image. Follow these steps:</p>
 <ul>
 <li><p>Rebuild the driver container by specifying the <code class="docutils literal notranslate"><span class="pre">$DRIVER_VERSION</span></code> argument when building the Docker image. For
 reference, the driver container Dockerfiles are available on the Git repository at <a class="github reference external" href="https://github.com/NVIDIA/gpu-driver-container/">NVIDIA/gpu-driver-container</a>.</p></li>
 <li><p>Build the container using the appropriate Dockerfile. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker build --pull -t <span class="se">\</span>
-    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="m">455</span>.28 <span class="se">\</span>
-    nvidia/driver:455.28-ubuntu20.04 <span class="se">\</span>
+    --build-arg <span class="nv">DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.126.20 <span class="se">\</span>
+    nvidia/driver:580.126.20-ubuntu22.04 <span class="se">\</span>
     --file Dockerfile .
 </pre></div>
 </div>
@@ -880,7 +880,7 @@ the Helm install command. For example:</p>
      nvidia/gpu-operator <span class="se">\</span>
      --version<span class="o">=</span>v26.3.1 <span class="se">\</span>
      --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
-     --set driver.version<span class="o">=</span><span class="s2">&quot;465.27&quot;</span>
+     --set driver.version<span class="o">=</span><span class="s2">&quot;580.126.20&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -1000,7 +1000,7 @@ With both features enabled, you do not need to set <code class="docutils literal
 <span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
