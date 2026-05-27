@@ -44,7 +44,6 @@ New Features
 
   * Kata Containers 3.31.0 
   * containerd 2.3.x
-  * NVIDIA GPU Operator v26.3.1
 
 ----
 
