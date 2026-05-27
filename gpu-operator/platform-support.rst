@@ -580,7 +580,7 @@ Confidential Containers are also supported through Kata Containers and the NVIDI
    * - OpenShift Sandboxed Containers
      - 1.12 (Technology Preview support)
 
-For deatils on installing Kata Containers with the GPU Operator, refer to the :doc:`deploy-kata-containers` page.
+For details on installing Kata Containers with the GPU Operator, refer to the :doc:`deploy-kata-containers` page.
 This page includes additional limitations and restrictions for using Kata Containers with the GPU Operator.
 
 Refer to the `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12>`__  documentation for more details.
