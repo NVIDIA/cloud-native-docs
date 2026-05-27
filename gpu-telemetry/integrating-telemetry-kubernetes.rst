@@ -20,22 +20,6 @@
 Integrating GPU Telemetry into Kubernetes
 #########################################
 
-.. contents::
-   :depth: 5
-   :local:
-   :backlinks: none
-
-
-*************************
-Benefits of GPU Telemetry
-*************************
-
-Understanding GPU usage provides important insights for IT administrators managing a data center.
-Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
-diagnose anomalies, and increase overall data center efficiency. As GPUs become more mainstream in
-Kubernetes environments, users would like to get access to GPU metrics to monitor GPU resources, just
-like they do today for CPUs.
-
 The purpose of this document is to enumerate an end-to-end (e2e) workflow
 for setting up and using `DCGM <https://developer.nvidia.com/dcgm>`_ within a Kubernetes environment.
 
@@ -43,6 +27,8 @@ For simplicity, the base environment being used in this guide is Ubuntu 18.04 LT
 a native installation of the NVIDIA drivers on the GPU enabled nodes (i.e. neither
 the `NVIDIA GPU Operator <https://github.com/NVIDIA/gpu-operator>`_ nor containerized drivers are used
 in this document).
+
+
 
 **************
 NVIDIA Drivers
