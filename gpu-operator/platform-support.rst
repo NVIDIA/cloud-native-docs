@@ -320,22 +320,22 @@ The GPU Operator has been validated in the following scenarios:
            | NKP
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.32---1.35 
+         - 1.32---1.36 
          -
-         - 1.32---1.35
-         - 1.32---1.35 
-         - 1.32---1.35
-         - 1.32---1.35 
+         - 1.32---1.36
+         - 1.32---1.36 
+         - 1.32---1.36
+         - 1.32---1.36 
          - 1.33---1.35
          - 2.15 2.16 2.17
 
        * - Ubuntu 24.04 LTS
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
-         - 1.32---1.35
-         - 1.32---1.35
-         - 1.32---1.35
+         - 1.32---1.36
+         - 1.32---1.36
+         - 1.32---1.36
          - 1.33---1.35
          - 2.17
 
@@ -352,10 +352,10 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 10.0, 10.1 
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
@@ -364,10 +364,10 @@ The GPU Operator has been validated in the following scenarios:
        * - | Red Hat
            | Enterprise
            | Linux 9.2, 9.4, 9.6, 9.7 |fn3|_
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
@@ -377,17 +377,17 @@ The GPU Operator has been validated in the following scenarios:
            | Enterprise
            | Linux 8.8,
            | 8.10
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
          - 2.15, 2.16, 2.17
 
        * - Rocky Linux 10.1
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
@@ -397,7 +397,7 @@ The GPU Operator has been validated in the following scenarios:
          -
 
        * - Rocky Linux 9.7
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
@@ -407,7 +407,7 @@ The GPU Operator has been validated in the following scenarios:
          -
 
        * - Rocky Linux 8.10
-         - 1.32---1.35
+         - 1.32---1.36
          -
          -
          -
@@ -457,12 +457,12 @@ The GPU Operator has been validated in the following scenarios:
            | Kubernetes
 
        * - Ubuntu 22.04 LTS
-         - 1.32---1.35
-         - 1.32---1.35
+         - 1.32---1.36
+         - 1.32---1.36
 
        * - Ubuntu 24.04 LTS
-         - 1.32---1.35
-         - 1.32---1.35
+         - 1.32---1.36
+         - 1.32---1.36
 
 .. _supported-precompiled-drivers:
 
@@ -525,8 +525,8 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 24.04 LTS    1.32---1.35   0.36+           
-Ubuntu 22.04 LTS    1.32---1.35   0.36+           0.59.1+
+Ubuntu 24.04 LTS    1.32---1.36   0.36+           
+Ubuntu 22.04 LTS    1.32---1.36   0.36+           0.59.1+
 Red Hat Core OS                                                4.17---4.21      4.17---4.21
 ================    ===========   =============   =========    =============    ===========
 

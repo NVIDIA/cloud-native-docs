@@ -50,6 +50,8 @@ New Features
   - NVIDIA MIG Manager for Kubernetes v0.14.2
   - NVIDIA DCGM Exporter v4.5.3-4.8.2
 
+* Added support for Kubernetes 1.36.
+
 * Added support for including Kubernetes pod metadata in DCGM Exporter GPU metrics.
   Two new fields under ``spec.dcgmExporter`` in the ClusterPolicy custom resource opt in to this behavior:
 
