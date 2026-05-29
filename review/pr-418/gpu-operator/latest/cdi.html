@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2026"/>
+    <meta name="docbuild:last-update" content="May 29, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -578,12 +578,12 @@ This means that on platforms that configure containerd in a non-standard way, li
 <p>The NRI Plugin requires the following:</p>
 <ul>
 <li><p>CDI to be enabled in the GPU Operator.</p></li>
-<li><p>containerd v1.7.30, v2.1.x, or v2.2.x.
-If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Enabling the NRI plugin is not supported with cri-o.</p>
-</div>
+<li><p>One of the following container runtimes:</p>
+<ul class="simple">
+<li><p>containerd v1.7.30, v2.1.x, or v2.2.x.</p></li>
+<li><p>cri-o v1.34 or later.</p></li>
+</ul>
+<p>If you are not using the latest containerd runtime version, check that both CDI and NRI are enabled in the runtime’s configuration file before deploying GPU Operator.</p>
 </li>
 </ul>
 <p>To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page and include the <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">cdi.nriPluginEnabled=true</span></code> argument in your Helm command.</p>
