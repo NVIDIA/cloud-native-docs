@@ -173,11 +173,12 @@ The NRI Plugin requires the following:
 
 - CDI to be enabled in the GPU Operator.
 
-- containerd v1.7.30, v2.1.x, or v2.2.x.
-  If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
+- One of the following container runtimes:
 
-  .. note::
-    Enabling the NRI plugin is not supported with cri-o.
+  - containerd v1.7.30, v2.1.x, or v2.2.x.
+  - cri-o v1.34 or later.
+
+  If you are not using the latest containerd runtime version, check that both CDI and NRI are enabled in the runtime's configuration file before deploying GPU Operator.
 
 To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the :doc:`getting-started` page and include the ``--set cdi.nriPluginEnabled=true`` argument in your Helm command. 
 

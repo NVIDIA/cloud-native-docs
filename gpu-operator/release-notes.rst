@@ -33,6 +33,63 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.2:
+
+26.3.2
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Driver Manager for Kubernetes v0.11.0
+  - NVIDIA Container Toolkit v1.19.1
+  - NVIDIA Kubernetes Device Plugin v0.19.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.19.2
+  - NVIDIA MIG Manager for Kubernetes v0.14.2
+  - NVIDIA DCGM Exporter v4.5.3-4.8.2
+
+* Added support for Kubernetes 1.36.
+
+* Added support for including Kubernetes pod metadata in DCGM Exporter GPU metrics.
+  Configure this using new fields under ``spec.dcgmExporter`` in the ClusterPolicy custom resource:
+
+  - ``enablePodLabels`` adds pod labels as Prometheus label dimensions on the GPU metrics.
+  - ``enablePodUID`` adds the pod UID as a Prometheus label dimension on the GPU metrics.
+
+  When either field is set to ``true``, the GPU Operator provisions a cluster-scoped ClusterRole and ClusterRoleBinding
+  (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods across the cluster,
+  and sets the corresponding ``DCGM_EXPORTER_KUBERNETES_*`` environment variables on the exporter container.
+  This removes the need to manually set those environment variables or hand-create the corresponding RBAC resources for the DCGM Exporter service account.
+
+  Use the ``podLabelAllowlistRegex`` field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
+  It is recommended to configure this allowlist in clusters with many pod labels to reduce Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
+
+  .. note::
+
+     DRA ``resourceSlices`` enrichment, which the upstream DCGM Exporter Helm chart exposes,
+     is not supported through the GPU Operator in this release.
+
+* Added support for setting custom annotations on the DCGM Exporter DaemonSet through the new
+  ``spec.dcgmExporter.annotations`` field in the ClusterPolicy custom resource
+  (or ``dcgmExporter.annotations`` in the Helm chart). (`PR #2292 <https://github.com/NVIDIA/gpu-operator/pull/2292>`_)
+
+* Added support for the Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
+  Refer to :doc:`Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support <cdi>` for more information.
+
+Fixed Issues
+------------
+
+* Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interruptions could leave nodes with stale ``paused-for-driver-upgrade`` label values during cluster bring-up or driver upgrades.
+  The stale labels prevented operand DaemonSets from matching the node, leaving the ``ClusterPolicy`` in a not-ready state.
+  The driver manager now retries label updates with a longer exponential backoff and treats Kubernetes API errors as fatal so failures
+  surface immediately instead of being silently dropped. (`PR #176 <https://github.com/NVIDIA/k8s-driver-manager/pull/176>`_)
+
+
+
+----
+
 .. _v26.3.1:
 
 26.3.1
