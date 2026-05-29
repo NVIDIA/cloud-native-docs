@@ -61,6 +61,7 @@ New Features
   When either field is set to ``true``, the GPU Operator provisions a cluster-scoped ClusterRole and ClusterRoleBinding
   (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods across the cluster,
   and sets the corresponding ``DCGM_EXPORTER_KUBERNETES_*`` environment variables on the exporter container.
+  This removes the need to manually set those environment variables or hand-create the corresponding RBAC resources for the DCGM Exporter service account.
 
   Use the ``podLabelAllowlistRegex`` field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
   It is recommended to configure this allowlist in clusters with many pod labels to reduce Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
