@@ -601,6 +601,28 @@ Available values are <code class="docutils literal notranslate"><span class="pre
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the DCGM Exporter will expose a metric port on the host’s network namespace.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.annotations</span></code></p></td>
+<td><p>Map of custom annotations to add to the DCGM Exporter DaemonSet.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
+Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
+(<code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter-read-pods</span></code>) that grants the DCGM Exporter service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods.
+Use <code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code> to limit which labels are emitted.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodUID</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
+Like <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code>, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
+service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code></p></td>
+<td><p>List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
 <td><p>Specifies the configuration for the NVIDIA Device Plugin as a config map.</p>
 <p>In most cases, this field is configured after installing the Operator, such as

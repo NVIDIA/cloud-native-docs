@@ -477,7 +477,7 @@
 </li>
 <li><p>Added support for Kubernetes 1.36.</p></li>
 <li><p>Added support for including Kubernetes pod metadata in DCGM Exporter GPU metrics.
-Two new fields under <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter</span></code> in the ClusterPolicy custom resource opt in to this behavior:</p>
+Configure this using new fields under <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter</span></code> in the ClusterPolicy custom resource:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">enablePodLabels</span></code> adds pod labels as Prometheus label dimensions on the GPU metrics.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">enablePodUID</span></code> adds the pod UID as a Prometheus label dimension on the GPU metrics.</p></li>
@@ -486,7 +486,7 @@ Two new fields under <code class="docutils literal notranslate"><span class="pre
 (<code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter-read-pods</span></code>) that grants the DCGM Exporter service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods across the cluster,
 and sets the corresponding <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES_*</span></code> environment variables on the exporter container.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">podLabelAllowlistRegex</span></code> field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
-NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2406">PR #2406</a>)</p>
+It is recommended to configure this allowlist in clusters with many pod labels to bound Prometheus cardinality. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2406">PR #2406</a>)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>DRA <code class="docutils literal notranslate"><span class="pre">resourceSlices</span></code> enrichment, which the upstream DCGM Exporter Helm chart exposes,
@@ -496,14 +496,14 @@ is not wired through the GPU Operator in this release.</p>
 <li><p>Added support for setting custom annotations on the DCGM Exporter DaemonSet through the new
 <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter.annotations</span></code> field in the ClusterPolicy custom resource
 (or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.annotations</span></code> in the Helm chart). (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2292">PR #2292</a>)</p></li>
-<li><p>Added support for configuring Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
+<li><p>Added support for the Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
 Refer to <a class="reference internal" href="cdi.html"><span class="doc">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</span></a> for more information.</p></li>
 </ul>
 </section>
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interuptions could leave nodes with stale <code class="docutils literal notranslate"><span class="pre">paused-for-driver-upgrade</span></code> label values during cluster bring-up or driver upgrades.
+<li><p>Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interruptions could leave nodes with stale <code class="docutils literal notranslate"><span class="pre">paused-for-driver-upgrade</span></code> label values during cluster bring-up or driver upgrades.
 The stale labels prevented operand DaemonSets from matching the node, leaving the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> in a not-ready state.
 The driver manager now retries label updates with a longer exponential backoff and treats Kubernetes API errors as fatal so failures
 surface immediately instead of being silently dropped. (<a class="reference external" href="https://github.com/NVIDIA/k8s-driver-manager/pull/176">PR #176</a>)</p></li>
