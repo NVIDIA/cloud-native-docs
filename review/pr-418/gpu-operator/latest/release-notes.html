@@ -486,11 +486,11 @@ Configure this using new fields under <code class="docutils literal notranslate"
 (<code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter-read-pods</span></code>) that grants the DCGM Exporter service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods across the cluster,
 and sets the corresponding <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES_*</span></code> environment variables on the exporter container.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">podLabelAllowlistRegex</span></code> field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
-It is recommended to configure this allowlist in clusters with many pod labels to bound Prometheus cardinality. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2406">PR #2406</a>)</p>
+It is recommended to configure this allowlist in clusters with many pod labels to reduce Prometheus cardinality. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2406">PR #2406</a>)</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>DRA <code class="docutils literal notranslate"><span class="pre">resourceSlices</span></code> enrichment, which the upstream DCGM Exporter Helm chart exposes,
-is not wired through the GPU Operator in this release.</p>
+is not supported through the GPU Operator in this release.</p>
 </div>
 </li>
 <li><p>Added support for setting custom annotations on the DCGM Exporter DaemonSet through the new

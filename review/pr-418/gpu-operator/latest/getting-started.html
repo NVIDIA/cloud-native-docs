@@ -620,7 +620,7 @@ service account <code class="docutils literal notranslate"><span class="pre">get
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code></p></td>
 <td><p>List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
-NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality.</p></td>
+NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
