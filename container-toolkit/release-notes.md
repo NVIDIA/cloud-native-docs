@@ -38,6 +38,25 @@ The following `container-toolkit` containers are included:
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.19.1`
 - `nvcr.io/nvidia/k8s/container-toolkit:v1.19.1-packaging`
 
+### Known Issues
+
+CDI specifications for NVIDIA GPUs are now generated with version v0.7.0 of the CDI spec schema by default.
+As a result, the generated CDI specs may not work with container runtimes that do not support
+v0.7.0 of the CDI spec schema. The container runtime support for v0.7.0 of the CDI spec is as follows:
+
+- containerd >= 1.7.16 - [containerd/containerd@7a2f49f](https://github.com/containerd/containerd/commit/7a2f49f70f1d2cacfededbbf65452d481476bc10>)
+- docker >= 26.1.0 - [moby/moby@745e235](https://github.com/moby/moby/commit/745e2356ab01363a02cfec947c624a9f6220fe7f)
+- podman >= 5.1.0 - [containers/podman@a40cf31](https://github.com/containers/podman/commit/a40cf3195acb6ac5fea5ab4617afb99006a3bed7)
+- crio >= 1.30.0 - [cri-o/cri-o@fd9aa76](https://github.com/cri-o/cri-o/commit/fd9aa76250fe05625d8c968b922cd1a0ae88eb1b)
+
+If you are using a container runtime version that does not support v0.7.0 of the CDI spec schema, 
+it is recommended to set the `no-additional-gids-for-device-nodes` CDI feature flag
+so that an older version of the CDI spec schema is used for spec file generation:
+
+   ```console
+   $ sudo nvidia-ctk cdi generate --feature-flag no-additional-gids-for-device-nodes
+   ```
+
 ## NVIDIA Container Toolkit 1.19.0
 
 This release of the NVIDIA Container Toolkit `v1.19.0` is a feature release.
