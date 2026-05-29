@@ -74,6 +74,18 @@ New Features
   ``spec.dcgmExporter.annotations`` field in the ClusterPolicy custom resource
   (or ``dcgmExporter.annotations`` in the Helm chart). (`PR #2292 <https://github.com/NVIDIA/gpu-operator/pull/2292>`_)
 
+* Added support for configuring Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
+  Refer to :doc:`Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support <cdi>` for more information.
+
+Fixed Issues
+------------
+
+* Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interuptions could leave nodes with stale ``paused-for-driver-upgrade`` label values during cluster bring-up or driver upgrades.
+  The stale labels prevented operand DaemonSets from matching the node, leaving the ``ClusterPolicy`` in a not-ready state.
+  The driver manager now retries label updates with a longer exponential backoff and treats Kubernetes API errors as fatal so failures
+  surface immediately instead of being silently dropped. (`PR #176 <https://github.com/NVIDIA/k8s-driver-manager/pull/176>`_)
+
+
 
 ----
 

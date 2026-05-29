@@ -509,8 +509,7 @@ The GPU Operator has been validated for the following container runtimes:
 
 .. note::
 
- If you are planning to use the NRI Plugin, you must use containerd version v1.7.30+, v2.1.x and v2.2.x.
- The NRI Plugin is not supported with CRI-O.
+ If you are planning to use the NRI Plugin, you must use containerd v1.7.30+, v2.1.x, or v2.2.x, or CRI-O v1.34 or later.
 
 *************************************************
 Support for KubeVirt and OpenShift Virtualization
