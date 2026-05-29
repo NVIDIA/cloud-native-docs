@@ -484,7 +484,8 @@ Configure this using new fields under <code class="docutils literal notranslate"
 </ul>
 <p>When either field is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the GPU Operator provisions a cluster-scoped ClusterRole and ClusterRoleBinding
 (<code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter-read-pods</span></code>) that grants the DCGM Exporter service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods across the cluster,
-and sets the corresponding <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES_*</span></code> environment variables on the exporter container.</p>
+and sets the corresponding <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES_*</span></code> environment variables on the exporter container.
+This removes the need to manually set those environment variables or hand-create the corresponding RBAC resources for the DCGM Exporter service account.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">podLabelAllowlistRegex</span></code> field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
 It is recommended to configure this allowlist in clusters with many pod labels to reduce Prometheus cardinality. (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2406">PR #2406</a>)</p>
 <div class="admonition note">
