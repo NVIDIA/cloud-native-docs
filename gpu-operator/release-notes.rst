@@ -53,7 +53,7 @@ New Features
 * Added support for Kubernetes 1.36.
 
 * Added support for including Kubernetes pod metadata in DCGM Exporter GPU metrics.
-  Two new fields under ``spec.dcgmExporter`` in the ClusterPolicy custom resource opt in to this behavior:
+  Configure this using new fields under ``spec.dcgmExporter`` in the ClusterPolicy custom resource:
 
   - ``enablePodLabels`` adds pod labels as Prometheus label dimensions on the GPU metrics.
   - ``enablePodUID`` adds the pod UID as a Prometheus label dimension on the GPU metrics.
@@ -63,7 +63,7 @@ New Features
   and sets the corresponding ``DCGM_EXPORTER_KUBERNETES_*`` environment variables on the exporter container.
 
   Use the ``podLabelAllowlistRegex`` field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
-  NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
+  It is recommended to configure this allowlist in clusters with many pod labels to bound Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
 
   .. note::
 
@@ -74,13 +74,13 @@ New Features
   ``spec.dcgmExporter.annotations`` field in the ClusterPolicy custom resource
   (or ``dcgmExporter.annotations`` in the Helm chart). (`PR #2292 <https://github.com/NVIDIA/gpu-operator/pull/2292>`_)
 
-* Added support for configuring Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
+* Added support for the Node Resource Interface (NRI) Plugin with CRI-O v1.34 or later.
   Refer to :doc:`Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support <cdi>` for more information.
 
 Fixed Issues
 ------------
 
-* Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interuptions could leave nodes with stale ``paused-for-driver-upgrade`` label values during cluster bring-up or driver upgrades.
+* Fixed an issue in the NVIDIA Driver Manager for Kubernetes where Kubernetes API server connectivity interruptions could leave nodes with stale ``paused-for-driver-upgrade`` label values during cluster bring-up or driver upgrades.
   The stale labels prevented operand DaemonSets from matching the node, leaving the ``ClusterPolicy`` in a not-ready state.
   The driver manager now retries label updates with a longer exponential backoff and treats Kubernetes API errors as fatal so failures
   surface immediately instead of being silently dropped. (`PR #176 <https://github.com/NVIDIA/k8s-driver-manager/pull/176>`_)

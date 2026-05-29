@@ -191,6 +191,28 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
      - ``false``
 
+   * - ``dcgmExporter.annotations``
+     - Map of custom annotations to add to the DCGM Exporter DaemonSet.
+     - ``{}``
+
+   * - ``dcgmExporter.enablePodLabels``
+     - When set to ``true``, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
+       Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
+       (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods.
+       Use ``dcgmExporter.podLabelAllowlistRegex`` to limit which labels are emitted.
+     - ``false``
+
+   * - ``dcgmExporter.enablePodUID``
+     - When set to ``true``, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
+       Like ``dcgmExporter.enablePodLabels``, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
+       service account ``get``, ``list``, and ``watch`` access to pods.
+     - ``false``
+
+   * - ``dcgmExporter.podLabelAllowlistRegex``
+     - List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when ``dcgmExporter.enablePodLabels`` is ``true``.
+       NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality.
+     - ``none``
+
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
 
