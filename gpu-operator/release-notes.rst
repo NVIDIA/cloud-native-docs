@@ -63,12 +63,12 @@ New Features
   and sets the corresponding ``DCGM_EXPORTER_KUBERNETES_*`` environment variables on the exporter container.
 
   Use the ``podLabelAllowlistRegex`` field (a list of regular expressions) to limit which pod labels are emitted as Prometheus dimensions.
-  It is recommended to configure this allowlist in clusters with many pod labels to bound Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
+  It is recommended to configure this allowlist in clusters with many pod labels to reduce Prometheus cardinality. (`PR #2406 <https://github.com/NVIDIA/gpu-operator/pull/2406>`_)
 
   .. note::
 
      DRA ``resourceSlices`` enrichment, which the upstream DCGM Exporter Helm chart exposes,
-     is not wired through the GPU Operator in this release.
+     is not supported through the GPU Operator in this release.
 
 * Added support for setting custom annotations on the DCGM Exporter DaemonSet through the new
   ``spec.dcgmExporter.annotations`` field in the ClusterPolicy custom resource

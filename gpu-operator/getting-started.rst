@@ -210,7 +210,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``dcgmExporter.podLabelAllowlistRegex``
      - List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when ``dcgmExporter.enablePodLabels`` is ``true``.
-       NVIDIA recommends configuring this allowlist in clusters with many pod labels to bound Prometheus cardinality.
+       NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.
      - ``none``
 
    * - ``devicePlugin.config``
