@@ -457,18 +457,18 @@
 </section>
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
-<p>CDI specs for NVIDIA GPUs are now generated with a default CDI spec version of v0.7.0.
+<p>CDI specifications for NVIDIA GPUs are now generated with version v0.7.0 of the CDI spec schema by default.
 As a result, the generated CDI specs may not work with container runtimes that do not support
-v0.7.0 of the CDI spec. The container runtime support for v0.7.0 of the CDI spec is as follows:</p>
+v0.7.0 of the CDI spec schema. The container runtime support for v0.7.0 of the CDI spec is as follows:</p>
 <ul class="simple">
-<li><p>containerd &gt;= 1.7.16 - <code class="docutils literal notranslate"><span class="pre">containerd/containerd&#64;7a2f49f</span> <span class="pre">&lt;https://github.com/containerd/containerd/commit/7a2f49f70f1d2cacfededbbf65452d481476bc10&gt;</span></code>_</p></li>
-<li><p>docker &gt;= 26.1.0 - <code class="docutils literal notranslate"><span class="pre">moby/moby&#64;745e235</span> <span class="pre">&lt;https://github.com/moby/moby/commit/745e2356ab01363a02cfec947c624a9f6220fe7f&gt;</span></code>_</p></li>
-<li><p>podman &gt;= 5.1.0 - <code class="docutils literal notranslate"><span class="pre">containers/podman&#64;a40cf31</span> <span class="pre">&lt;https://github.com/containers/podman/commit/a40cf3195acb6ac5fea5ab4617afb99006a3bed7&gt;</span></code>_</p></li>
-<li><p>crio &gt;= 1.30.0 - <code class="docutils literal notranslate"><span class="pre">cri-o/cri-o&#64;fd9aa76</span> <span class="pre">&lt;https://github.com/cri-o/cri-o/commit/fd9aa76250fe05625d8c968b922cd1a0ae88eb1b&gt;</span></code>_</p></li>
+<li><p>containerd &gt;= 1.7.16 - <a class="reference external" href="https://github.com/containerd/containerd/commit/7a2f49f70f1d2cacfededbbf65452d481476bc10%3E">containerd/containerd&#64;7a2f49f</a></p></li>
+<li><p>docker &gt;= 26.1.0 - <a class="reference external" href="https://github.com/moby/moby/commit/745e2356ab01363a02cfec947c624a9f6220fe7f">moby/moby&#64;745e235</a></p></li>
+<li><p>podman &gt;= 5.1.0 - <a class="reference external" href="https://github.com/containers/podman/commit/a40cf3195acb6ac5fea5ab4617afb99006a3bed7">containers/podman&#64;a40cf31</a></p></li>
+<li><p>crio &gt;= 1.30.0 - <a class="reference external" href="https://github.com/cri-o/cri-o/commit/fd9aa76250fe05625d8c968b922cd1a0ae88eb1b">cri-o/cri-o&#64;fd9aa76</a></p></li>
 </ul>
-<p>If you are using a container runtime that does not support v0.7.0 of the CDI spec,
+<p>If you are using a container runtime version that does not support v0.7.0 of the CDI spec schema,
 it is recommended to set the <code class="docutils literal notranslate"><span class="pre">no-additional-gids-for-device-nodes</span></code> CDI feature flag
-to lower the version of the CDI spec that gets generated:</p>
+so that an older version of the CDI spec schema is used for spec file generation:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate --feature-flag no-additional-gids-for-device-nodes
 </pre></div>
 </div>
