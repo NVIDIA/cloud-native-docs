@@ -19,9 +19,6 @@ tags:
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
-
-> [!TIP]
 # NVIDIA DRA Driver for GPUs
 
 Dynamic Resource Allocation (DRA) is a Kubernetes concept for flexibly requesting, configuring, and sharing specialized devices like GPUs.
@@ -32,6 +29,17 @@ Before using the DRA Driver for GPUs, it is recommended that you are familiar wi
 
 * [Upstream Kubernetes DRA documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/).
 * [DRA Driver repository documentation](https://github.com/NVIDIA/k8s-dra-driver-gpu)
+
+## Prerequisites
+
+> [!TIP]
+> You can use the NVIDIA DRA Driver for GPUs ComputeDomain and GPU allocation independently or together in the same cluster. They have different prerequisites; to use both features together, configure your cluster to meet the prerequisites for both.
+
+For GPU allocation with the GPU Operator:
+
+- Kubernetes v1.34.2 or newer. If you plan to use traditional extended resource requests such as `nvidia.com/gpu` with the DRA driver, enable the [`DRAExtendedResource`](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource) feature gate.
+- GPU Operator v25.10.0 or later with the NVIDIA Kubernetes Device Plugin disabled to avoid conflicts with the DRA Driver for GPUs. The DRA Driver requires Container Device Interface (CDI) enabled in the container runtime and NVIDIA Driver version 580 or later, both of which are default in GPU Operator v25.10.0 and later.
+- Label the nodes you plan to use for GPU allocation (for example, `nvidia.com/dra-kubelet-plugin=true`) and use them as node selectors in the DRA driver Helm chart.
 
 ## Overview
 

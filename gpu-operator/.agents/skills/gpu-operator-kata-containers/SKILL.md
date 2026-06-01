@@ -20,6 +20,13 @@ tags:
 
 # Deploy with Kata Containers
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes, and the `kubectl` and `helm` CLIs available.
+- Hosts configured to enable hardware virtualization and Access Control Services (ACS) in the BIOS. With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
+- Hosts configured to support IOMMU. Check with `ls /sys/kernel/iommu_groups`; if the host is not configured, add the `intel_iommu=on` (or `amd_iommu=on` for AMD CPUs) kernel command-line argument.
+- For Kubernetes versions older than v1.34, the `KubeletPodResourcesGet` feature gate must be explicitly enabled.
+
 ## About the Operator with Kata Containers
 
 [Kata Containers](https://katacontainers.io/) is an open source project that creates lightweight Virtual Machines (VMs) that feel and perform like traditional containers such as a Docker container.

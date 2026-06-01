@@ -18,31 +18,31 @@ tags:
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
-
-* Kubernetes cluster is configured with HTTP proxy settings (container runtime should be enabled with HTTP proxy)
-
 # Install GPU Operator in Proxy Environments
+
+## Prerequisites
+
+- A Kubernetes cluster configured with HTTP proxy settings, where the container runtime is enabled with the HTTP proxy.
+- The `kubectl` and `helm` CLIs available on a client machine.
 
 ## Introduction
 
 This page describes how to successfully deploy the GPU Operator in clusters behind an HTTP proxy.
 By default, the GPU Operator requires internet access for the following reasons:
 
-    1) Container images need to be pulled during GPU Operator installation.
-    2) The `driver` container needs to download several OS packages prior to driver installation.
+1. Container images need to be pulled during GPU Operator installation.
+1. The `driver` container needs to download several OS packages prior to driver installation.
 
-       > [!TIP]
-       > Using precompiled-drivers removes the need for the `driver` containers to
-       > download operating system packages.
-       > To address these requirements, all Kubernetes nodes as well as the `driver` container need proper configuration
-       > in order to direct traffic through the proxy.
+   > [!TIP]
+   > Using precompiled drivers removes the need for the `driver` containers to download operating system packages (use the `gpu-operator-precompiled-drivers` skill).
+
+To address these requirements, all Kubernetes nodes as well as the `driver` container need proper configuration in order to direct traffic through the proxy.
 
 This document demonstrates how to configure the GPU Operator so that the `driver` container can successfully
 download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
 a proxy is not specific to the GPU Operator, we do not include those instructions here.
 
-The instructions for Openshift are different, so skip the section titled proxy_config_openshift if you are not running Openshift.
+The instructions for Openshift are different, so skip the **HTTP Proxy Configuration for Openshift** section if you are not running Openshift.
 
 ## HTTP Proxy Configuration for Openshift
 

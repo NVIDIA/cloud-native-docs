@@ -18,11 +18,26 @@ tags:
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
+# Using NVIDIA vGPU
+
+## Prerequisites
 
 Before installing the GPU Operator on NVIDIA vGPU, ensure the following:
 
-# Using NVIDIA vGPU
+- The NVIDIA vGPU Host Driver version 12.0 (or later) is pre-installed on all hypervisors hosting NVIDIA vGPU accelerated Kubernetes worker node virtual machines. Refer to the [NVIDIA Virtual GPU Software Documentation](https://docs.nvidia.com/grid/) for details.
+- You must have access to the NVIDIA Enterprise Application Hub at https://nvid.nvidia.com/dashboard/ and the NVIDIA Licensing Portal.
+- Your organization must have an instance of a Cloud License Service (CLS) or a Delegated License Service (DLS).
+- You must generate and download a client configuration token for your CLS instance or DLS instance. Refer to the [NVIDIA License System Quick Start Guide](https://docs.nvidia.com/license-system/latest/nvidia-license-system-quick-start-guide/) for information about generating a token.
+
+  > [!NOTE]
+  > For vGPU 18.0 and later, ensure that you use DLS 3.4 or later.
+
+- You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.
+- Git and Docker are required to build the vGPU driver image from the source repository and push it to the private registry.
+- Each Kubernetes worker node in the cluster has access to the private registry. Private registry access is usually managed through image pull secrets. You specify the secrets to the NVIDIA GPU Operator when you install the Operator with Helm.
+
+  > [!NOTE]
+  > Uploading the NVIDIA vGPU driver to a publicly available repository or otherwise publicly sharing the driver is a violation of the NVIDIA vGPU EULA.
 
 ## About Installing the Operator and NVIDIA vGPU
 
@@ -210,6 +225,14 @@ Perform the following steps to build and push a container image that includes th
 The preceding command installs the Operator with the default configuration.
 Refer to the [GPU Operator Helm chart options](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options) for information about configuration options.
 
-## Related Skills
+## Verification
 
-- verify gpu operator install
+Confirm that the Operator installed and the vGPU driver pods are running:
+
+1. Confirm the Operator pods, including the vGPU driver, are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   The `nvidia-vgpu-driver-daemonset` pods should report `Running` and the `nvidia-operator-validator` pod should report `Completed`. For general post-install validation, use the `gpu-operator-install` skill's verification steps.

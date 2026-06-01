@@ -18,13 +18,14 @@ tags:
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
-
-* You installed and initialized the Google Cloud CLI.
-
-- name: RUNTIME_CONFIG_SOURCE
-
 # NVIDIA GPU Operator with Google GKE
+
+## Prerequisites
+
+- You installed and initialized the Google Cloud CLI. Refer to [gcloud CLI overview](https://cloud.google.com/sdk/gcloud) in the Google Cloud documentation.
+- You have a Google Cloud project to use for your GKE cluster. Refer to [Creating and managing projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects) in the Google Cloud documentation.
+- You have the project ID for your Google Cloud project. Refer to [Identifying projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects) in the Google Cloud documentation.
+- You know the machine type for the node pool and that the machine type is supported in your region and zone. Refer to [GPU platforms](https://cloud.google.com/compute/docs/gpus) in the Google Cloud documentation.
 
 ## About Using the Operator with Google GKE
 
@@ -34,9 +35,11 @@ or you can use the Operator and driver manager to manage the driver and other NV
 
 The choice depends on the operating system and whether you prefer to have the Operator manage all the software components.
 
-| Google Driver Installer - | Container-Optimized OS | Ubuntu with containerd | The Google driver installer manages the NVIDIA GPU Driver. NVIDIA GPU Operator manages other software components. |
-| --- | --- | --- | --- |
-| NVIDIA Driver Manager - | Ubuntu with containerd | NVIDIA GPU Operator manages the lifecycle and upgrades of the driver and other NVIDIA software. |  |
+| Approach | Supported OS | Summary |
+| --- | --- | --- |
+| Google Driver Installer | Container-Optimized OS, Ubuntu with containerd | The Google driver installer manages the NVIDIA GPU Driver. NVIDIA GPU Operator manages other software components. |
+| NVIDIA Driver Manager | Ubuntu with containerd | NVIDIA GPU Operator manages the lifecycle and upgrades of the driver and other NVIDIA software. |
+
 The preceding information relates to using GKE Standard node pools.
 For Autopilot Pods, using the GPU Operator is not supported, and you can refer to
 [Deploy GPU workloads in Autopilot](https://cloud.google.com/kubernetes-engine/docs/how-to/autopilot-gpus).
@@ -243,8 +246,25 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
    gpu-operator-quota    38s     pods: 0/100
    ```
 
-1. Install the Operator.
-   Refer to install the NVIDIA GPU Operator.
+1. Install the Operator (use the `gpu-operator-install` skill).
+
+## Verification
+
+After installing the Operator, confirm that the GPU nodes are managed and operands are healthy:
+
+1. Confirm the GPU nodes advertise GPU capacity:
+
+   ```console
+   $ kubectl get nodes -o json | jq '.items[].status.capacity."nvidia.com/gpu"'
+   ```
+
+1. Confirm the GPU Operator pods are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   The `nvidia-operator-validator` pod should report `Completed`.
 
 ## Related Information
 

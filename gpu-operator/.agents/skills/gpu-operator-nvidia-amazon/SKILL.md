@@ -21,6 +21,12 @@ tags:
 
 # NVIDIA GPU Operator with Amazon EKS
 
+## Prerequisites
+
+- An AWS account, plus the AWS CLI and `eksctl` installed and configured (see the per-example prerequisites below for details).
+- The `kubectl` and `helm` CLIs available on a client machine.
+- An Amazon EKS cluster, or the ability to create one, with a GPU-enabled node group that uses an AMI with an operating system that the GPU Operator supports.
+
 ## Approaches for Working with Amazon EKS
 
 You can approach running workloads in Amazon EKS with NVIDIA GPUs in at least two ways.
@@ -192,6 +198,26 @@ The steps create a self-managed node group that uses an Amazon EKS optimized AMI
    NAME          REGION     EKSCTL CREATED
    demo-cluster  us-west-2  True
    ```
+
+## Verification
+
+After the node group is created and the GPU Operator is installed on the cluster (use the `gpu-operator-install` skill), confirm that the GPU nodes are managed:
+
+1. Confirm the GPU nodes advertise GPU capacity:
+
+   ```console
+   $ kubectl get nodes -o json | jq '.items[].status.capacity."nvidia.com/gpu"'
+   ```
+
+   Each GPU node should report a non-null GPU count.
+
+1. Confirm the GPU Operator pods are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   The `nvidia-operator-validator` pod should report `Completed`.
 
 ## Related Information
 

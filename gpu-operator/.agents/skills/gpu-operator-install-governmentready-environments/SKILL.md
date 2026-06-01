@@ -20,6 +20,14 @@ tags:
 
 # NVIDIA GPU Operator Government Ready
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The `kubectl` and `helm` CLIs available on a client machine.
+- An NVIDIA AI Enterprise subscription. Government-ready components are available to NVIDIA AI Enterprise customers for FedRAMP High or equivalent sovereign use cases.
+
+## Overview
+
 The NVIDIA GPU Operator now offers government-ready components for NVIDIA AI Enterprise customers.
 Government ready is NVIDIA's designation for software that meets applicable security requirements for deployment in your FedRAMP High or equivalent sovereign use case.
 For more information on NVIDIA's government-ready support, refer to the white paper [AI Software for Regulated Environments](https://docs.nvidia.com/ai-enterprise/planning-resource/ai-software-regulated-environments-white-paper/latest/index.html).

@@ -20,6 +20,12 @@ tags:
 
 # Precompiled Driver Containers
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The `kubectl` and `helm` CLIs available on a client machine.
+- A supported operating system for which NVIDIA publishes precompiled driver containers. Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) for supported operating systems.
+
 ## About Precompiled Driver Containers
 
 Containers with precompiled drivers do not require internet access to download Linux kernel

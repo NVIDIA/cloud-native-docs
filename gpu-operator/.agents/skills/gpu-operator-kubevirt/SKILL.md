@@ -18,11 +18,22 @@ tags:
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
+# GPU Operator with KubeVirt
+
+## Prerequisites
 
 Before using KubeVirt with the GPU Operator, ensure the following prerequisites are configured on your cluster and nodes:
 
-# GPU Operator with KubeVirt
+- The virtualization and IOMMU extensions (Intel VT-d or AMD IOMMU) are enabled in the BIOS.
+- The host is booted with `intel_iommu=on` or `amd_iommu=on` on the kernel command line.
+- If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the [NVIDIA vGPU Documentation](https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu) to ensure you have met all the prerequisites for using NVIDIA vGPU.
+- KubeVirt is installed in the cluster.
+- Starting with KubeVirt v0.58.2 and v0.59.1, set the `DisableMDEVConfiguration` feature gate:
+
+  ```console
+  $ kubectl patch kubevirt -n kubevirt kubevirt  --type='json' \
+      -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "DisableMDEVConfiguration" }]'
+  ```
 
 ## About the Operator with KubeVirt
 

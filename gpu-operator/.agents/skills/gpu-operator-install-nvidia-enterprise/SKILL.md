@@ -20,6 +20,12 @@ tags:
 
 # NVIDIA AI Enterprise
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The `kubectl` and `helm` CLIs available on a client machine.
+- An NVIDIA AI Enterprise subscription with access to the NVIDIA Enterprise Catalog (NGC) and an NGC API key for the private registry.
+
 ## About NVIDIA AI Enterprise and Supported Platforms
 
 NVIDIA AI Enterprise is an end-to-end, cloud-native suite of AI and data analytics software, optimized, certified, and supported by NVIDIA with NVIDIA-Certified Systems.
@@ -134,10 +140,30 @@ To identify the correct driver branch:
 
    For example, NVIDIA AI Enterprise Infra 7.x uses the R580 driver branch.
 
-1. Refer to operator-component-matrix to identify the recommended GPU Operator version and driver version that uses the same driver branch.
+1. Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) to identify the recommended GPU Operator version and driver version that uses the same driver branch.
 
-After identifying the correct driver version, refer to install-gpu-operator for installation instructions.
+After identifying the correct driver version, use the `gpu-operator-install` skill for installation instructions.
 Use the `--version=<supported-version>` argument when installing with Helm.
+
+## Verification
+
+Confirm that the Operator installed with the NVIDIA AI Enterprise components and that licensing succeeded:
+
+1. Confirm the Operator pods are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   The driver pods should report `Running` and the `nvidia-operator-validator` pod should report `Completed`.
+
+1. Confirm the driver acquired a valid license:
+
+   ```console
+   $ kubectl exec -it -n gpu-operator <driver-pod> -- nvidia-smi -q | grep -i "License Status"
+   ```
+
+   The license status should report `Licensed`.
 
 ## Related Information
 
