@@ -20,6 +20,13 @@ tags:
 
 # Uninstalling the GPU Operator
 
+## Prerequisites
+
+- A Kubernetes cluster with the NVIDIA GPU Operator installed.
+- The `kubectl` and `helm` CLIs available on a client machine, with access to the cluster and the namespace where the Operator is installed (typically `gpu-operator`).
+
+## Procedure
+
 Perform the following steps to uninstall the Operator.
 
 1. Optional: List and delete NVIDIA driver custom resources.
@@ -84,13 +91,13 @@ $ kubectl delete crd clusterpolicies.nvidia.com
 ```
 
 > [!NOTE]
-> * After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
+> - After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
 >   Either reboot the node or unload them using the following command:
-
-  ```console
-  $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
-  ```
-
-* Helm hooks used with the GPU Operator use the Operator image itself.
-  If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-  In this case, delete the chart and specify the `--no-hooks` argument to avoid hanging on hook failures.
+>
+>   ```console
+>   $ sudo rmmod nvidia_modeset nvidia_uvm nvidia
+>   ```
+>
+> - Helm hooks used with the GPU Operator use the Operator image itself.
+>   If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
+>   In this case, delete the chart and specify the `--no-hooks` argument to avoid hanging on hook failures.

@@ -21,6 +21,14 @@ tags:
 
 # Considerations when Installing with Outdated Kernels in Cluster
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The `kubectl` and `helm` CLIs available on a client machine.
+- One or more GPU nodes whose running kernel is not the latest available kernel, where the `driver` container reports `Could not resolve Linux kernel version`.
+
+## About This Workaround
+
 The `driver` container deployed as part of the GPU Operator requires certain packages to be available as part of the driver installation.
 On GPU nodes where the running kernel is not the latest, the `driver` container may fail to find the right version of these packages
 (e.g. kernel-headers, kernel-devel) that correspond to the running kernel version. In the `driver` container logs, you will most likely

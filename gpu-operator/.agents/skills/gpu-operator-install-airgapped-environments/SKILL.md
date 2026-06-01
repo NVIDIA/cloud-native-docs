@@ -21,6 +21,12 @@ tags:
 
 # Install NVIDIA GPU Operator in Air-Gapped Environments
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes that has restricted or no internet access.
+- A private container registry reachable from the cluster, and a local package repository or HTTP proxy for operating-system packages.
+- The `kubectl` and `helm` CLIs available on a client machine, plus a workstation with internet access for mirroring images and charts.
+
 ## About Air-Gapped Installations
 
 This page describes how to successfully deploy the GPU Operator in clusters with restricted internet access.

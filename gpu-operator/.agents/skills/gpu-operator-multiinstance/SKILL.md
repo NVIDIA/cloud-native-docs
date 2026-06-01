@@ -20,6 +20,12 @@ tags:
 
 # GPU Operator with MIG
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- One or more MIG-capable NVIDIA GPUs (such as A100, A30, H100, or H200). The MIG Manager runs by default only on nodes with GPUs that support MIG.
+
 ## About Multi-Instance GPU
 
 Multi-Instance GPU (MIG) enables GPUs based on the NVIDIA Ampere and later architectures, such as NVIDIA A100, to be partitioned into separate and secure GPU instances for CUDA applications.

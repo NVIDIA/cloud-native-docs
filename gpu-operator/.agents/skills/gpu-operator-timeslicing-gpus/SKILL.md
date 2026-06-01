@@ -20,6 +20,12 @@ tags:
 
 # Time-Slicing GPUs in Kubernetes
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- NVIDIA GPUs that support time-slicing. Time-slicing shares access to a GPU among workloads without memory or fault isolation; for hardware-isolated partitioning, use MIG (use the `gpu-operator-multiinstance` skill).
+
 ## Understanding Time-Slicing GPUs
 
 The NVIDIA GPU Operator enables oversubscription of GPUs through a set
@@ -87,7 +93,7 @@ the mixed MIG strategy.
 
 - DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
 - The Operator does not monitor changes to a time-slicing config map.
-  Refer to time-slicing-update-config-map.
+  Refer to the **Updating a Time-Slicing Config Map** section.
 
 ### Changes to Node Labels
 
@@ -308,8 +314,7 @@ Perform the following steps to configure time-slicing before installing the oper
 
 1. Create a file, such as `time-slicing-config.yaml`, with the config map contents.
 
-   Refer to the time-slicing-cluster-wide-config or
-   time-slicing-node-specific-config sections.
+   Refer to the **Applying One Cluster-Wide Configuration** or **Applying Multiple Node-Specific Configurations** sections.
 
 1. Add the config map to the same namespace as the GPU operator:
 
@@ -326,8 +331,7 @@ Perform the following steps to configure time-slicing before installing the oper
        --set devicePlugin.config.name=time-slicing-config
    ```
 
-1. Refer to either time-slicing-cluster-wide-config or
-   time-slicing-node-specific-config and perform the following tasks:
+1. Refer to either the **Applying One Cluster-Wide Configuration** or **Applying Multiple Node-Specific Configurations** section and perform the following tasks:
 
    * Configure the device plugin by running the `kubectl patch` command.
    * Apply labels to nodes if you added a config map with node-specific configurations.

@@ -22,6 +22,13 @@ tags:
 
 # GPUDirect RDMA and GPUDirect Storage
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- NVIDIA Network Operator installed for RDMA-capable networking, and compatible RDMA-capable NICs on the GPU nodes.
+- A supported NVIDIA Open GPU Kernel module driver, which is required for GPUDirect Storage.
+
 ## About GPUDirect RDMA and GPUDirect Storage
 
 [GPUDirect RDMA](https://docs.nvidia.com/cuda/gpudirect-rdma/index.html) is a technology in NVIDIA GPUs that enables direct
