@@ -1,6 +1,19 @@
 ---
 name: "gpu-operator-install-outdated-kernels"
-description: "Explains how to install the GPU Operator when nodes run outdated kernels. Use when driver containers fail because kernel versions are older than supported defaults. Trigger keywords - NVIDIA GPU Operator, outdated kernels, driver containers, installation."
+description: "Explains how to install the GPU Operator when nodes run outdated kernels. Use when driver containers fail because kernel versions are older than supported defaults."
+triggers:
+  - NVIDIA GPU Operator
+  - outdated kernels
+  - driver containers
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - kernels
+  - driver
+  - installation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -16,7 +29,7 @@ see the following error message: `Could not resolve Linux kernel version`.
 In general, upgrading your system to the latest kernel should fix this issue. But if this is not an option, the following is a
 workaround to successfully deploy the GPU Operator when GPU nodes in your cluster may not be running the latest kernel.
 
-## Step 1: Add Archived Package Repositories
+## Add Archived Package Repositories
 
 The workaround is to find the package archive containing packages for your outdated kernel and to add this repository to the package
 manager running inside the `driver` container. To achieve this, we can simply mount a repository list file into the `driver` container using a `ConfigMap`.
@@ -87,7 +100,7 @@ Deploy GPU Operator with updated `values.yaml`:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      -f values.yaml
 ```
 

@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-multiinstance"
-description: "Explains MIG strategies, labels, and configuration with the GPU Operator. Use when partitioning GPUs, enabling MIG, or troubleshooting MIG resource exposure. Trigger keywords - NVIDIA GPU Operator, MIG, Multi-Instance GPU, GPU partitioning."
+description: "Explains MIG strategies, labels, and configuration with the GPU Operator. Use when partitioning GPUs, enabling MIG, or troubleshooting MIG resource exposure."
+triggers:
+  - NVIDIA GPU Operator
+  - MIG
+  - Multi-Instance GPU
+  - GPU partitioning
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - mig
+  - gpu-partitioning
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -18,7 +30,7 @@ You must enable MIG during installation by choosing a MIG strategy before you ca
 
 Refer to the architecture section for more information about how MIG is implemented in the GPU Operator.
 
-## Step 1: Enabling MIG During Installation
+## Enabling MIG During Installation
 
 Use the following steps to enable MIG and deploy MIG Manager.
 
@@ -28,7 +40,7 @@ Use the following steps to enable MIG and deploy MIG Manager.
    $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set mig.strategy=single
    ```
 
@@ -48,12 +60,11 @@ Use the following steps to enable MIG and deploy MIG Manager.
 
    After several minutes, all GPU Operator pods, including the `nvidia-mig-manager` are deployed on nodes that have MIG capable GPUs.
 
-   **Note:**
-
-   MIG Manager requires that no user workloads are running on the GPUs being configured.
-   In some cases, the node might need to be rebooted, such as a CSP, so the node might need to be cordoned
-   before changing the MIG mode or the MIG geometry on the GPUs.
-1. Optional: Display the pods in the Operator namespace:
+   > [!NOTE]
+   > MIG Manager requires that no user workloads are running on the GPUs being configured.
+   > In some cases, the node might need to be rebooted, such as a CSP, so the node might need to be cordoned
+   > before changing the MIG mode or the MIG geometry on the GPUs.
+   > 1. Optional: Display the pods in the Operator namespace:
 
    ```console
    $ kubectl get pods -n gpu-operator
@@ -69,7 +80,7 @@ Use the following steps to enable MIG and deploy MIG Manager.
 
    *Partial Output*
 
-## Step 2: Configuring MIG Profiles
+## Configuring MIG Profiles
 
 When MIG is enabled, nodes are labeled with `nvidia.com/mig.config: all-disabled` by default.
 To use a profile on a node, update the label value with the desired profile, for example, `nvidia.com/mig.config=all-1g.10gb`.
@@ -84,9 +95,8 @@ If you need custom profiles, you can use a custom MIG configuration instead of t
 You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
 For an example, refer to dynamically-creating-the-mig-configuration-configmap.
 
-**Note:**
-
-Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a  [static Configmap](https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml), `default-mig-parted-config`, for MIG profiles.
+> [!NOTE]
+> Generated MIG configuration might not be available on older drivers, such as 535 branch GPU drivers, as they do not support querying MIG profiles when MIG mode is disabled. In those cases, the GPU Operator will use a  [static Configmap](https://github.com/NVIDIA/gpu-operator/blob/main/assets/state-mig-manager/0400_configmap.yaml), `default-mig-parted-config`, for MIG profiles.
 ### Example: Single MIG Strategy
 
 The following steps show how to use the single MIG strategy and configure the `1g.10gb` profile on one node.
@@ -292,14 +302,13 @@ In your values.yaml file, set `migManager.config.create` to `true`, set `migMana
 
 1. In your `values.yaml` file, add the data for the ConfigMap, like the following example:
 
-**Note:**
-
-Custom ConfigMaps must contain a key named "config.yaml"
-1. Install or upgrade the GPU Operator with this values file so the chart creates the ConfigMap:
+> [!NOTE]
+> Custom ConfigMaps must contain a key named "config.yaml"
+> 1. Install or upgrade the GPU Operator with this values file so the chart creates the ConfigMap:
 
    ```console
    $ helm upgrade --install gpu-operator -n gpu-operator --create-namespace \
-       nvidia/gpu-operator --version=${version} \
+       nvidia/gpu-operator --version=v26.3.1 \
        -f values.yaml
    ```
 
@@ -356,10 +365,30 @@ You can create and apply a ConfigMap yourself if the default profiles do not mee
 
 1. Create a file, such as `custom-mig-config.yaml`, with contents like the following example:
 
-**Note:**
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: custom-mig-config
+   data:
+     config.yaml: |
+       version: v1
+       mig-configs:
+         all-disabled:
+           - devices: all
+             mig-enabled: false
 
-Custom ConfigMaps must contain a key named "config.yaml"
-1. Apply the manifest:
+         five-1g-one-2g:
+           - devices: all
+             mig-enabled: true
+             mig-devices:
+               "1g.10gb": 5
+               "2g.20gb": 1
+   ```
+
+> [!NOTE]
+> Custom ConfigMaps must contain a key named "config.yaml"
+> 1. Apply the manifest:
 
    ```console
    $ kubectl apply -n gpu-operator -f custom-mig-config.yaml
@@ -387,9 +416,9 @@ Custom ConfigMaps must contain a key named "config.yaml"
    $ kubectl label nodes <node-name> nvidia.com/mig.config=five-1g-one-2g --overwrite
    ```
 
-## Step 3: Verification: Running Sample CUDA Workloads
+## Verification: Running Sample CUDA Workloads
 
-## Step 4: Disabling MIG
+## Disabling MIG
 
 You can disable MIG on a node by setting the `nvidia.com/mig.config` label to `all-disabled`:
 
@@ -397,7 +426,7 @@ You can disable MIG on a node by setting the `nvidia.com/mig.config` label to `a
 $ kubectl label nodes <node-name> nvidia.com/mig.config=all-disabled --overwrite
 ```
 
-## Step 5: MIG Manager with Preinstalled Drivers
+## MIG Manager with Preinstalled Drivers
 
 MIG Manager supports preinstalled drivers.
 Information in the preceding sections still applies, however there are a few additional details to consider.
@@ -411,7 +440,7 @@ can be used to install the GPU Operator:
 $ helm install gpu-operator \
     -n gpu-operator --create-namespace \
     nvidia/gpu-operator \
-    --version=${version} \
+    --version=v26.3.1 \
     --set driver.enabled=false
 ```
 
@@ -460,12 +489,12 @@ Alternatively, you can create a custom ConfigMap for use by MIG Manager by perfo
    $ helm install gpu-operator \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set migManager.gpuClientsConfig.name=gpu-clients \
        --set driver.enabled=false
    ```
 
-## Step 6: Architecture
+## Architecture
 
 MIG Manager is designed as a controller within Kubernetes. It watches for changes to the
 `nvidia.com/mig.config` label on the node and then applies the user-requested MIG configuration.

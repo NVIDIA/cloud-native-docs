@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-install-governmentready-environments"
-description: "Guides users through government-ready GPU Operator installation considerations. Use when deploying in hardened or regulated Kubernetes environments. Trigger keywords - NVIDIA GPU Operator, government-ready, installation, Kubernetes."
+description: "Guides users through government-ready GPU Operator installation considerations. Use when deploying in hardened or regulated Kubernetes environments."
+triggers:
+  - NVIDIA GPU Operator
+  - government-ready
+  - installation
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - government-ready
+  - installation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -12,18 +24,17 @@ The NVIDIA GPU Operator now offers government-ready components for NVIDIA AI Ent
 Government ready is NVIDIA's designation for software that meets applicable security requirements for deployment in your FedRAMP High or equivalent sovereign use case.
 For more information on NVIDIA's government-ready support, refer to the white paper [AI Software for Regulated Environments](https://docs.nvidia.com/ai-enterprise/planning-resource/ai-software-regulated-environments-white-paper/latest/index.html).
 
-## Step 1: Supported GPU Operator Components
+## Supported GPU Operator Components
 
 Refer to the operator-component-matrix for a full list of supported government-ready GPU Operator components.
 
 Artifacts for these components are available from the [NVIDIA NGC Catalog](https://registry.ngc.nvidia.com/orgs/nvstaging/teams/cloud-native/containers/gpu-driver-stig-fips).
 
-**Note:**
+> [!NOTE]
+> Not all GPU Operator components and features are available as government-ready containers in this release.
+> For example, NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver are not yet supported.
 
-Not all GPU Operator components and features are available as government-ready containers in this release.
-For example, NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver are not yet supported.
-
-## Step 2: Validated Kubernetes Distributions
+## Validated Kubernetes Distributions
 
 The government-ready NVIDIA GPU Operator has been validated on the following Kubernetes distributions:
 
@@ -32,7 +43,7 @@ The government-ready NVIDIA GPU Operator has been validated on the following Kub
 - Rancher Kubernetes Engine 2 with Ubuntu 24.04
 - VMware VKS with Ubuntu 24.04
 
-## Step 3: Install Government-Ready NVIDIA GPU Operator
+## Install Government-Ready NVIDIA GPU Operator
 
 Once you have your gov-ready-prerequisites configured, use the following steps to install the NVIDIA GPU Operator on Canonical Kubernetes distributions:
 
@@ -41,9 +52,8 @@ Once you have your gov-ready-prerequisites configured, use the following steps t
 1. create-ubuntu-pro-token-secret
 1. deploy-nvidia-gpu-operator-gov-ready
 
-**Note:**
-
-For deployment on OpenShift, refer to the :external+ocpinstall-gpu-operator-gov-ready-openshift page.
+> [!NOTE]
+> For deployment on OpenShift, refer to [Install GPU Operator (government-ready) on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-operator-gov-ready-openshift.html).
 ### Prerequisites
 
 - An active NVIDIA AI Enterprise subscription and NGC API token to access GPU Operator government-ready containers.
@@ -148,7 +158,7 @@ The Ubuntu Pro Token is required for the driver container to download kernel hea
 
 Refer to [Common Chart Customization Options](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options) for more information about installation options.
 
-## Step 4: Update Ubuntu Pro Token in ClusterPolicy
+## Update Ubuntu Pro Token in ClusterPolicy
 
 You can update your Ubuntu Pro Token after installation by editing your Ubuntu Pro Token secret.
 This secret name is set as value of `driver.secretEnv` of the GPU Operator ClusterPolicy.

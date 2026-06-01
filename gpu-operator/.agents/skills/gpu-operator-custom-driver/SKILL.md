@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-custom-driver"
-description: "Shows how to provide custom NVIDIA driver parameters to GPU Operator driver containers. Use when changing driver module options or customizing driver container behavior. Trigger keywords - NVIDIA GPU Operator, driver parameters, NVIDIA driver, configuration."
+description: "Shows how to provide custom NVIDIA driver parameters to GPU Operator driver containers. Use when changing driver module options or customizing driver container behavior."
+triggers:
+  - NVIDIA GPU Operator
+  - driver parameters
+  - NVIDIA driver
+  - configuration
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - driver
+  - configuration
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -14,7 +26,7 @@ On a machine with the driver already installed, you can list the parameter names
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (`nvidia`, `nvidia-modeset`, `nvidia-uvm`, and `nvidia-peermem`).
 
-## Step 1: Configure Custom Driver Parameters
+## Configure Custom Driver Parameters
 
 To pass custom parameters, execute the following steps.
 
@@ -42,7 +54,7 @@ To pass custom parameters, execute the following steps.
    $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=${version} \
+      --version=v26.3.1 \
       --set driver.kernelModuleConfig.name="kernel-module-params"
    ```
 
@@ -72,7 +84,7 @@ Refer to [Simplifying GPU Application Development with Heterogeneous Memory Mana
    $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=${version} \
+      --version=v26.3.1 \
       --set driver.kernelModuleConfig.name="kernel-module-params"
    ```
 

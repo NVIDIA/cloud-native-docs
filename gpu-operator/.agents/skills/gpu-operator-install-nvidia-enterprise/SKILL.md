@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-install-nvidia-enterprise"
-description: "Guides users through installing the GPU Operator with NVIDIA AI Enterprise. Use when deploying licensed NVIDIA AI Enterprise GPU software on Kubernetes. Trigger keywords - NVIDIA GPU Operator, NVIDIA AI Enterprise, installation, Kubernetes."
+description: "Guides users through installing the GPU Operator with NVIDIA AI Enterprise. Use when deploying licensed NVIDIA AI Enterprise GPU software on Kubernetes."
+triggers:
+  - NVIDIA GPU Operator
+  - NVIDIA AI Enterprise
+  - installation
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - nvidia-ai-enterprise
+  - installation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -21,9 +33,9 @@ For information about supported platforms, hypervisors, and operating systems, r
 [Product Support Matrix](https://docs.nvidia.com/ai-enterprise/latest/product-support-matrix/index.html)
 in the NVIDIA AI Enterprise documentation.
 
-For information about using vGPU with Red Hat OpenShift, refer to :external+ocpnvaie-with-ocp.
+For information about using vGPU with Red Hat OpenShift, refer to [NVIDIA AI Enterprise with OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/nvaie-with-ocp.html).
 
-## Step 1: Installing GPU Operator Using the vGPU Driver
+## Installing GPU Operator Using the vGPU Driver
 
 ### Prerequisites
 
@@ -61,7 +73,7 @@ For information about using vGPU with Red Hat OpenShift, refer to :external+ocpn
    $ bash gpu-operator-nvaie.sh install
    ```
 
-## Step 2: Updating NLS Client License Token
+## Updating NLS Client License Token
 
 In case the NLS client license token needs to be updated, use the following procedure:
 
@@ -75,11 +87,10 @@ Generate and download a new NLS client license token. Refer to Section 4.6 of th
 
 Rename the NLS client license token that you downloaded to `client_configuration_token.tok`.
 
-**Warning:**
-
-The `configMap(configMapName)` is  **deprecated** and will be removed in a future release.
-Use `secrets(secretName)` instead.
-Create a new `licensing-config-new` Secret object in the `gpu-operator` namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:
+> [!WARNING]
+> The `configMap(configMapName)` is  **deprecated** and will be removed in a future release.
+> Use `secrets(secretName)` instead.
+> Create a new `licensing-config-new` Secret object in the `gpu-operator` namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:
 
 ```console
 $ kubectl create secret generic licensing-config-new \
@@ -110,7 +121,7 @@ Write and exit from the kubectl edit session (you can use :qw for instance if vi
 
 GPU Operator sequentially redeploys all the driver pods with this new licensing information.
 
-## Step 3: Installing GPU Operator Using the Data Center Driver
+## Installing GPU Operator Using the Data Center Driver
 
 This installation method is available for bare metal clusters or any cluster that does not use virtualization.
 
@@ -128,6 +139,6 @@ To identify the correct driver branch:
 After identifying the correct driver version, refer to install-gpu-operator for installation instructions.
 Use the `--version=<supported-version>` argument when installing with Helm.
 
-## Step 4: Related Information
+## Related Information
 
 -  [NVIDIA AI Enterprise](https://www.nvidia.com/en-us/data-center/products/ai-enterprise-suite/) web page.

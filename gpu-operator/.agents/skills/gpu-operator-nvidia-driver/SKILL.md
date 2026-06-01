@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-nvidia-driver"
-description: "Explains how to configure NVIDIA GPU Driver custom resources for driver lifecycle management. Use when users need custom driver configuration or mixed operating system support. Trigger keywords - NVIDIA GPU Operator, GPU driver, custom resource, driver configuration."
+description: "Explains how to configure NVIDIA GPU Driver custom resources for driver lifecycle management. Use when users need custom driver configuration or mixed operating system support."
+triggers:
+  - NVIDIA GPU Operator
+  - GPU driver
+  - custom resource
+  - driver configuration
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - driver
+  - custom-resource
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -64,11 +76,10 @@ argument when you install the Operator with Helm.
 If the Operator is already installed with the default custom resource and you want to create your own
 driver custom resources and apply them to specific nodes, delete the default custom resource.
 
-**Note:**
-
-After you delete the default custom resource, your custom resources might not reconcile
-automatically due to a known issue. Refer to the v26.3.0 known issues
-for the workaround.
+> [!NOTE]
+> After you delete the default custom resource, your custom resources might not reconcile
+> automatically due to a known issue. Refer to the v26.3.0 known issues
+> for the workaround.
 ### Feature Compatibility
 
 Driver type
@@ -128,7 +139,7 @@ The following table describes some of the fields in the custom resource.
 | `usePrecompiled` | When set to `true`, the Operator deploys a driver container image with a precompiled driver. | `false` |  |  |  |
 | `version` | Specifies the GPU driver version to install. For a data-center driver, specify a value like `580.126.20`. If you set `usePrecompiled` to `true`, specify the driver branch, such as `580`. | Refer to the operator-component-matrix. |  |  |  |
 
-## Step 1: Installing the NVIDIA GPU Operator
+## Installing the NVIDIA GPU Operator
 
 Perform the following steps to install the GPU Operator and use the NVIDIA driver custom resources.
 
@@ -160,7 +171,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=${version} \
+         --version=v26.3.1 \
          --set driver.nvidiaDriverCRD.enabled=true
      ```
 
@@ -170,13 +181,52 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 1. Apply NVIDIA driver custom resources manifests to install the NVIDIA GPU driver version, type, and so on for your nodes.
    Refer to the sample manifests.
 
-## Step 2: Sample NVIDIA Driver Manifests
+## Sample NVIDIA Driver Manifests
 
 ### One Driver Type and Version on All Nodes
 
 1. Optional: Remove previously applied node labels.
 
 1. Create a file, such as `nvd-all.yaml`, with contents like the following:
+
+   ```yaml
+   apiVersion: nvidia.com/v1alpha1
+   kind: NVIDIADriver
+   metadata:
+     name: nvidiadriver-sample
+   spec:
+     # use pre-compiled packages for NVIDIA driver installation.
+     usePrecompiled: false
+     driverType: gpu
+     repository: nvcr.io/nvidia
+     image: driver
+     version: "580.126.20"
+     imagePullPolicy: IfNotPresent
+     imagePullSecrets: []
+     nodeSelector: {}
+     manager: {}
+     rdma:
+       enabled: false
+       useHostMofed: false
+     gds:
+       enabled: false
+     # Private mirror repository configuration
+     repoConfig:
+       name: ""
+     # custom ssl key/certificate configuration
+     certConfig:
+       name: ""
+     # vGPU licensing configuration
+     licensingConfig:
+       secretName: ""
+       nlsEnabled: true
+     # vGPU topology daemon configuration
+     virtualTopologyConfig:
+       name: ""
+     # kernel module configuration for NVIDIA driver
+     kernelModuleConfig:
+       name: ""
+   ```
 
 1. Apply the manifest:
 
@@ -208,6 +258,40 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 
 1. Create a file, such as `nvd-driver-multiple.yaml`, with contents like the following:
 
+   ```yaml
+   apiVersion: nvidia.com/v1alpha1
+   kind: NVIDIADriver
+   metadata:
+     name: demo-gold
+   spec:
+     driverType: gpu
+     env: []
+     image: driver
+     imagePullPolicy: IfNotPresent
+     imagePullSecrets: []
+     manager: {}
+     nodeSelector:
+       driver.config: "gold"
+     repository: nvcr.io/nvidia
+     version: "580.126.20"
+   ---
+   apiVersion: nvidia.com/v1alpha1
+   kind: NVIDIADriver
+   metadata:
+     name: demo-silver
+   spec:
+     driverType: gpu
+     env: []
+     image: driver
+     imagePullPolicy: IfNotPresent
+     imagePullSecrets: []
+     manager: {}
+     nodeSelector:
+       driver.config: "silver"
+     repository: nvcr.io/nvidia
+     version: "470.141.10"
+   ```
+
 1. Apply the manifest:
 
    ```console
@@ -226,11 +310,29 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 
 1. Create a file, such as `nvd-precompiled-all.yaml`, with contents like the following:
 
-   **Tip:**
+   ```yaml
+   apiVersion: nvidia.com/v1alpha1
+   kind: NVIDIADriver
+   metadata:
+     name: demo-precomp-all
+   spec:
+     driverType: gpu
+     env: []
+     image: driver
+     imagePullPolicy: IfNotPresent
+     imagePullSecrets: []
+     manager: {}
+     nodeSelector: {}
+     repository: nvcr.io/nvidia
+     resources: {}
+     usePrecompiled: true
+     version: "580"
+   ```
 
-   Because the manifest does not include a `nodeSelector` field, the driver custom
-   resource selects all nodes in the cluster that have an NVIDIA GPU.
-1. Apply the manifest:
+   > [!TIP]
+   > Because the manifest does not include a `nodeSelector` field, the driver custom
+   > resource selects all nodes in the cluster that have an NVIDIA GPU.
+   > 1. Apply the manifest:
 
    ```console
    $ kubectl apply -n gpu-operator -f nvd-precompiled-all.yaml
@@ -251,7 +353,28 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
    $ kubectl label node <node-name> --overwrite driver.version="580"
    ```
 
-1. Create a file, such as `nvd-precomiled-some.yaml`, with contents like the following:
+1. Create a file, such as `nvd-precompiled-some.yaml`, with contents like the following:
+
+   ```yaml
+   apiVersion: nvidia.com/v1alpha1
+   kind: NVIDIADriver
+   metadata:
+     name: demo-precomp
+   spec:
+     driverType: gpu
+     env: []
+     image: driver
+     imagePullPolicy: IfNotPresent
+     imagePullSecrets: []
+     manager: {}
+     nodeSelector:
+       driver.precompiled: "true"
+       driver.version: "580"
+     repository: nvcr.io/nvidia
+     resources: {}
+     usePrecompiled: true
+     version: "580"
+   ```
 
 1. Apply the manifest:
 
@@ -265,7 +388,7 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
    $ kubectl get events -n gpu-operator --sort-by='.lastTimestamp'
    ```
 
-## Step 3: Upgrading the NVIDIA GPU Driver
+## Upgrading the NVIDIA GPU Driver
 
 You can upgrade the driver version by editing or patching the NVIDIA driver custom resource.
 

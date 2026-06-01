@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-install-nvidia-vgpu"
-description: "Guides users through installing the GPU Operator with NVIDIA vGPU. Use when deploying virtual GPU software or configuring vGPU licensing with Kubernetes. Trigger keywords - NVIDIA GPU Operator, NVIDIA vGPU, installation, Kubernetes."
+description: "Guides users through installing the GPU Operator with NVIDIA vGPU. Use when deploying virtual GPU software or configuring vGPU licensing with Kubernetes."
+triggers:
+  - NVIDIA GPU Operator
+  - NVIDIA vGPU
+  - installation
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - vgpu
+  - installation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -24,13 +36,13 @@ Also replace `kubectl` in the following commands with `oc` when running on Red H
 
 NVIDIA vGPU is only supported with the NVIDIA License System.
 
-## Step 1: Platform Support
+## Platform Support
 
 For information about the supported platforms, refer to Supported Deployment Options, Hypervisors, and NVIDIA vGPU Based Products.
 
 For Red Hat OpenShift Virtualization, refer to NVIDIA GPU Operator with OpenShift Virtualization.
 
-## Step 2: Download vGPU Software
+## Download vGPU Software
 
 Perform the following steps to download the vGPU software and the latest NVIDIA vGPU driver catalog file from the NVIDIA Licensing Portal.
 
@@ -44,7 +56,7 @@ The vGPU software is packaged as a ZIP file.
 Unzip the file to obtain the NVIDIA vGPU Linux guest driver.
 The guest driver file name follows the pattern `NVIDIA-Linux-x86_64-<version>-grid.run`.
 
-## Step 3: Build the Driver Container
+## Build the Driver Container
 
 Perform the following steps to build and push a container image that includes the vGPU Linux guest driver.
 
@@ -102,10 +114,9 @@ Perform the following steps to build and push a container image that includes th
 
 1. Build the driver container image.
 
-   **Note:**
-
-   Docker is the only supported container tool for building the driver container image.
-   Multi-architecture builds additionally require [buildx](https://github.com/docker/buildx).
+   > [!NOTE]
+   > Docker is the only supported container tool for building the driver container image.
+   > Multi-architecture builds additionally require [buildx](https://github.com/docker/buildx).
 
    ```console
    $ VGPU_GUEST_DRIVER_VERSION=${VGPU_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/driver make build-vgpuguest-${OS_TAG}
@@ -127,7 +138,7 @@ Perform the following steps to build and push a container image that includes th
       $ VGPU_GUEST_DRIVER_VERSION=${VGPU_DRIVER_VERSION} IMAGE_NAME=${PRIVATE_REGISTRY}/driver make push-vgpuguest-${OS_TAG}
       ```
 
-## Step 4: Configure the Cluster with the vGPU License Information and the Driver Container Image
+## Configure the Cluster with the vGPU License Information and the Driver Container Image
 
 1. Create an NVIDIA vGPU license file named `gridd.conf` with contents like the following example:
 
@@ -182,7 +193,7 @@ Perform the following steps to build and push a container image that includes th
 
    You need to specify the secret name `REGISTRY_SECRET_NAME` when you install the GPU Operator with Helm.
 
-## Step 5: Install the Operator
+## Install the Operator
 
 - Install the Operator:
 

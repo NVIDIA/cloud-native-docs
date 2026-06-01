@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-driver-upgrades"
-description: "Explains GPU driver upgrade behavior and configuration. Use when planning driver upgrades or troubleshooting driver upgrade workflows managed by the GPU Operator. Trigger keywords - NVIDIA GPU Operator, GPU driver, driver upgrades, Kubernetes."
+description: "Explains GPU driver upgrade behavior and configuration. Use when planning driver upgrades or troubleshooting driver upgrade workflows managed by the GPU Operator."
+triggers:
+  - NVIDIA GPU Operator
+  - GPU driver
+  - driver upgrades
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - driver
+  - upgrades
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -21,12 +33,11 @@ Consequently, the following steps must occur across a driver upgrade:
 
 The GPU Operator supports several methods for managing and automating this driver upgrade process.
 
-**Note:**
+> [!NOTE]
+> The GPU Operator only manages the lifecycle of containerized drivers.
+> Drivers which are pre-installed on the host are not managed by the GPU Operator.
 
-The GPU Operator only manages the lifecycle of containerized drivers.
-Drivers which are pre-installed on the host are not managed by the GPU Operator.
-
-## Step 1: Upgrades with the Upgrade Controller
+## Upgrades with the Upgrade Controller
 
 NVIDIA recommends upgrading by using the upgrade controller and the controller is enabled by default in the GPU Operator.
 The controller automates the upgrade process and generates metrics and events so that you can monitor the upgrade process.
@@ -133,12 +144,11 @@ driver:
       deleteEmptyDir: false
 ```
 
-**Warning:**
-
-`driver.upgradePolicy.drain.enable` is a cluster-wide policy setting.
-When set to `true`, the upgrade controller drains each node before upgrading the driver on that node.
-Draining a node evicts all pods from that node, including workloads unrelated to the GPU driver.
-This is a disruptive operation that interrupts running GPU and non-GPU workloads on every node the upgrade controller processes.
+> [!WARNING]
+> `driver.upgradePolicy.drain.enable` is a cluster-wide policy setting.
+> When set to `true`, the upgrade controller drains each node before upgrading the driver on that node.
+> Draining a node evicts all pods from that node, including workloads unrelated to the GPU driver.
+> This is a disruptive operation that interrupts running GPU and non-GPU workloads on every node the upgrade controller processes.
 
 Enable `drain` only when `gpuPodDeletion` is insufficient to remove all GPU-using pods on its own.
 Adjust the `gpuPodDeletion` settings first and use `drain` only if those settings do not work.
@@ -253,7 +263,7 @@ If the upgrade fails for a particular node, the node is labelled with the `upgra
 
    $ kubectl label node <node-name>  nvidia.com/gpu-driver-upgrade-state=upgrade-required --overwrite
 
-## Step 2: Upgrades without the Upgrade Controller
+## Upgrades without the Upgrade Controller
 
 If the upgrade controller is disabled or not supported for your GPU Operator version, a component called `k8s-driver-manager` is responsible
 for executing the driver upgrade process.
@@ -304,10 +314,9 @@ driver:
 * The `DRAIN_USE_FORCE` environment variable must be enabled to evict GPU pods that are not managed by any of the replication controllers such as deployment, daemon set, stateful set, and replica set.
 * The `DRAIN_DELETE_EMPTYDIR_DATA` environment variable must be enabled to delete GPU pods that use the `emptyDir` type volume.
 
-**Note:**
-
-Since GPU pods get evicted whenever the NVIDIA Driver daemon set specification is updated, it might not always be desirable to allow this to happen automatically.
-To prevent this `daemonsets.updateStrategy` parameter in the `ClusterPolicy` can be set to [OnDelete](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy) .
-With `OnDelete` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted.
-Thus, admins can control when to rollout spec updates to driver pods on any given node.
-For more information on DaemonSet update strategies, refer to the [Kubernetes documentation](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy).
+> [!NOTE]
+> Since GPU pods get evicted whenever the NVIDIA Driver daemon set specification is updated, it might not always be desirable to allow this to happen automatically.
+> To prevent this `daemonsets.updateStrategy` parameter in the `ClusterPolicy` can be set to [OnDelete](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy) .
+> With `OnDelete` update strategy, a new driver pod with the updated spec will only get deployed on a node once the old driver pod is manually deleted.
+> Thus, admins can control when to rollout spec updates to driver pods on any given node.
+> For more information on DaemonSet update strategies, refer to the [Kubernetes documentation](https://kubernetes.io/docs/tasks/manage-daemon/update-daemon-set/#daemonset-update-strategy).

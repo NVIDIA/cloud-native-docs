@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-kata-containers"
-description: "Guides users through configuring Kata Containers for GPU workloads with the GPU Operator. Use when deploying sandboxed GPU workloads with Kata Containers. Trigger keywords - NVIDIA GPU Operator, Kata Containers, sandboxed workloads, Kubernetes."
+description: "Guides users through configuring Kata Containers for GPU workloads with the GPU Operator. Use when deploying sandboxed GPU workloads with Kata Containers."
+triggers:
+  - NVIDIA GPU Operator
+  - Kata Containers
+  - sandboxed workloads
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - kata-containers
+  - sandboxed-workloads
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -30,12 +42,11 @@ flowchart LR
   a[Kubelet] --> b[CRI] --> c[Kata\nRuntime] --> d[Lightweight\nQEMU VM] --> e[Lightweight\nGuest OS] --> f[Pod] --> g[Container]
 ```
 
-**Tip:**
+> [!TIP]
+> This page describes deploying with Kata containers only.
+> Refer to the Confidential Containers documentation if you are interested in deploying Confidential Containers with Kata Containers and the GPU Operator.
 
-This page describes deploying with Kata containers only.
-Refer to the Confidential Containers documentation if you are interested in deploying Confidential Containers with Kata Containers and the GPU Operator.
-
-## Step 1: Benefits of Using Kata Containers
+## Benefits of Using Kata Containers
 
 The primary benefits of Kata Containers are as follows:
 
@@ -48,7 +59,7 @@ The primary benefits of Kata Containers are as follows:
 
 * Transparent deployment of unmodified containers.
 
-## Step 2: Limitations and Restrictions
+## Limitations and Restrictions
 
 * For GPU passthrough workloads, all GPUs must be assigned to one Kata Container virtual machine.
   Configuring only some GPUs on a node for Kata Containers is not supported.
@@ -59,7 +70,7 @@ The primary benefits of Kata Containers are as follows:
 
 * NVIDIA supports the Operator and Kata Containers with the containerd runtime only.
 
-## Step 3: Cluster Topology Considerations
+## Cluster Topology Considerations
 
 You can configure all the worker nodes in your cluster for Kata Containers or you can configure some nodes for Kata Containers and others for traditional containers.
 Consider the following example where node A is configured to run traditional containers and node B is configured to run Kata Containers.
@@ -70,7 +81,7 @@ Consider the following example where node A is configured to run traditional con
 This configuration can be controlled through node labelling, as described in the Label Nodes section.
 You can also set `sandboxWorkloads.defaultWorkload=vm-passthrough` when you install the GPU Operator to configure all nodes to run Kata Containers by default.
 
-## Step 4: Configure the GPU Operator for Kata Containers
+## Configure the GPU Operator for Kata Containers
 
 To enable Kata Containers for GPUs on your cluster, you do the following:
 
@@ -113,12 +124,11 @@ After installation, you can run a sample workload that uses the Kata runtime cla
   Refer to the documentation for your operating system.
   Reboot the host after configuring the bootloader.
 
-  **Note:**
-
-  After configuring IOMMU, you might see QEMU warnings about PCI P2P DMA when running GPU workloads.
-  These are expected and can be safely ignored.
-* Ensure that no NVIDIA GPU drivers are installed on the host.
-  Kata Containers uses VFIO to pass GPUs directly to the VM, and host-level GPU drivers interfere with VFIO device binding.
+  > [!NOTE]
+  > After configuring IOMMU, you might see QEMU warnings about PCI P2P DMA when running GPU workloads.
+  > These are expected and can be safely ignored.
+  > * Ensure that no NVIDIA GPU drivers are installed on the host.
+  > Kata Containers uses VFIO to pass GPUs directly to the VM, and host-level GPU drivers interfere with VFIO device binding.
 
   To check if NVIDIA GPU drivers are installed, run the following command:
 
@@ -196,10 +206,9 @@ After installation, you can run a sample workload that uses the Kata runtime cla
    The labeling approach is useful if you want to run Kata container workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
    Refer to the GPU Operator Cluster Topology Considerations section for more details on what gets deployed to a Kata Container node.
 
-   **Tip:**
-
-   Skip this section if you plan to set `sandboxWorkloads.defaultWorkload=vm-passthrough` when you install the GPU Operator.
-1. Verify the node label was added:
+   > [!TIP]
+   > Skip this section if you plan to set `sandboxWorkloads.defaultWorkload=vm-passthrough` when you install the GPU Operator.
+   > 1. Verify the node label was added:
 
    ```console
    $ kubectl describe node <node-name> | grep nvidia.com/gpu.workload.config
@@ -248,19 +257,17 @@ The minimum required version is 3.29.0.
    TEST SUITE: None
    ```
 
-   **Note:**
-
-   The `--wait` flag in the install command instructs Helm to wait until the release is deployed before returning.
-   It can take a few minutes to return output.
+   > [!NOTE]
+   > The `--wait` flag in the install command instructs Helm to wait until the release is deployed before returning.
+   > It can take a few minutes to return output.
 
    There is a [known Helm issue](https://github.com/helm/helm/issues/8660) on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
    If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the `kata-deploy` pod to be in the Running state.
-   **Note:**
-
-   Both `kata-deploy` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-   The install command includes `--set nfd.enabled=false` to prevent `kata-deploy` from deploying NFD.
-   The GPU Operator will deploy and manage NFD in the next step.
-1. Optional: Verify that the `kata-deploy` pod is running:
+   > [!NOTE]
+   > Both `kata-deploy` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
+   > The install command includes `--set nfd.enabled=false` to prevent `kata-deploy` from deploying NFD.
+   > The GPU Operator will deploy and manage NFD in the next step.
+   > 1. Optional: Verify that the `kata-deploy` pod is running:
 
    ```console
    $ kubectl get pods -n kata-system | grep kata-deploy
@@ -292,12 +299,11 @@ The minimum required version is 3.29.0.
    The `kata-qemu-nvidia-gpu` runtime class is used with Kata Containers.
    The `kata-qemu-nvidia-gpu-snp` and `kata-qemu-nvidia-gpu-tdx` runtime classes are used to deploy Confidential Containers.
 
-   **Note:**
-
-   To manage the lifecycle of Kata Containers, including upgrades and day-two operations,
-   install the [Kata Lifecycle Manager](https://github.com/kata-containers/lifecycle-manager).
-   This Argo Workflows-based tool is the recommended way to manage Kata Containers deployments.
-1. Optional: If you have an issue deploying the `kata-deploy` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
+   > [!NOTE]
+   > To manage the lifecycle of Kata Containers, including upgrades and day-two operations,
+   > install the [Kata Lifecycle Manager](https://github.com/kata-containers/lifecycle-manager).
+   > This Argo Workflows-based tool is the recommended way to manage Kata Containers deployments.
+   > 1. Optional: If you have an issue deploying the `kata-deploy` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
 
    ```console
    $ kubectl get pods -n kata-system | grep kata-deploy
@@ -334,7 +340,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    $ helm install --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=${version} \
+      --version=v26.3.1 \
       --set sandboxWorkloads.enabled=true \
       --set sandboxWorkloads.mode=kata \
       --set nfd.enabled=true \
@@ -353,10 +359,9 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    TEST SUITE: None
    ```
 
-   **Tip:**
-
-   Add `--set sandboxWorkloads.defaultWorkload=vm-passthrough` if every worker node should use Kata by default.
-1. Optional: Verify that all GPU Operator pods, especially the Sandbox Device Plugin and VFIO Manager operands, are running:
+   > [!TIP]
+   > Add `--set sandboxWorkloads.defaultWorkload=vm-passthrough` if every worker node should use Kata by default.
+   > 1. Optional: Verify that all GPU Operator pods, especially the Sandbox Device Plugin and VFIO Manager operands, are running:
 
    ```console
    $ kubectl get pods -n gpu-operator
@@ -376,22 +381,20 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
    ```
 
-   **Note:**
-
-   It can take several minutes for all GPU Operator pods to be in the Running state.
-   If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
+   > [!NOTE]
+   > It can take several minutes for all GPU Operator pods to be in the Running state.
+   > If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
 
    ```console
    $ kubectl logs -n gpu-operator <pod-name>
    ```
 
    Replace `<pod-name>` with the name of the GPU Operator pod from `kubectl get pods -n gpu-operator`.
-   **Note:**
-
-   The NVIDIA Confidential Computing (CC) Manager for Kubernetes (`nvidia-cc-manager`) is deployed to all nodes configured to run Kata containers, even if you are not planning to run Confidential Containers.
-   This manager sets the confidential computing mode on the NVIDIA GPUs, if your GPU is capable of Confidential Computing, but will not be used if you are deploying in Kata Containers only.
-   Refer to Confidential Containers for more details.
-1. Optional: If you have host access to the worker node, you can perform the following validation step:
+   > [!NOTE]
+   > The NVIDIA Confidential Computing (CC) Manager for Kubernetes (`nvidia-cc-manager`) is deployed to all nodes configured to run Kata containers, even if you are not planning to run Confidential Containers.
+   > This manager sets the confidential computing mode on the NVIDIA GPUs, if your GPU is capable of Confidential Computing, but will not be used if you are deploying in Kata Containers only.
+   > Refer to Confidential Containers for more details.
+   > 1. Optional: If you have host access to the worker node, you can perform the following validation step:
 
    a. Confirm that the host uses the `vfio-pci` device driver for GPUs:
 
@@ -431,7 +434,7 @@ The following example installs the GPU Operator with both `P_GPU_ALIAS` and `NVS
 $ helm install --generate-name \
    -n gpu-operator --create-namespace \
    nvidia/gpu-operator \
-   --version=${version} \
+   --version=v26.3.1 \
    --set sandboxWorkloads.enabled=true \
    --set sandboxWorkloads.mode=kata \
    --set nfd.enabled=true \
@@ -454,7 +457,7 @@ $ kubectl get node <node-name> -o json | grep nvidia.com
 "nvidia.com/GH100_H100L_94GB": "1"
 ```
 
-## Step 5: Run a Sample Workload
+## Run a Sample Workload
 
 A pod specification for a Kata container requires the following:
 

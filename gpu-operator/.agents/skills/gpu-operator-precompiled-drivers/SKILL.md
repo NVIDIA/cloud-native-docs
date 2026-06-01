@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-precompiled-drivers"
-description: "Explains how to use precompiled NVIDIA driver containers with the GPU Operator. Use when reducing driver build time or selecting precompiled driver images. Trigger keywords - NVIDIA GPU Operator, precompiled drivers, driver containers, Kubernetes."
+description: "Explains how to use precompiled NVIDIA driver containers with the GPU Operator. Use when reducing driver build time or selecting precompiled driver images."
+triggers:
+  - NVIDIA GPU Operator
+  - precompiled drivers
+  - driver containers
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - driver
+  - precompiled-drivers
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -25,7 +37,7 @@ with restricted internet access or sites with resource-constrained hardware.
   hosts with the x86_64 architecture and operating system versions listed in the supported-precompiled-drivers table.
 
   For information about using precompiled drivers with OpenShift Container Platform,
-  refer to :external+ocpgpu-operator-with-precompiled-drivers.
+  refer to [GPU Operator with precompiled drivers on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/gpu-operator-with-precompiled-drivers.html).
 
 * NVIDIA supports precompiled driver containers for the most recently released long-term
   servicing branch (LTSB) driver branch.
@@ -36,7 +48,7 @@ with restricted internet access or sites with resource-constrained hardware.
 
 * Precompiled driver containers do not support NVIDIA vGPU or GPUDirect Storage (GDS).
 
-## Step 1: Determining if a Precompiled Driver Container is Available
+## Determining if a Precompiled Driver Container is Available
 
 The precompiled driver containers are named according to the following pattern:
 
@@ -79,7 +91,7 @@ Use one of the following ways to check if a driver container is available for yo
         ...
   ```
 
-## Step 2: Enabling Precompiled Driver Container Support During Installation
+## Enabling Precompiled Driver Container Support During Installation
 
 Refer to the common instructions for installing the Operator with Helm at install-gpu-operator.
 Specify the `--set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` arguments like the following example command:
@@ -88,7 +100,7 @@ Specify the `--set driver.usePrecompiled=true` and `--set driver.version=<driver
 $ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set driver.usePrecompiled=true \
      --set driver.version="<driver-branch>"
 ```
@@ -96,7 +108,7 @@ $ helm install --wait gpu-operator \
 Specify a value like `525` for `<driver-branch>`.
 Refer to Common Chart Customization Options for information about other installation options.
 
-## Step 3: Enabling Support After Installation
+## Enabling Support After Installation
 
 Perform the following steps to enable support for precompiled driver containers:
 
@@ -136,7 +148,7 @@ Perform the following steps to enable support for precompiled driver containers:
 
    Ensure that the pod names include a Linux kernel semantic version number like `5.15.0-69-generic`.
 
-## Step 4: Disabling Support for Precompiled Driver Containers
+## Disabling Support for Precompiled Driver Containers
 
 Perform the following steps to disable support for precompiled driver containers:
 
@@ -166,14 +178,13 @@ Perform the following steps to disable support for precompiled driver containers
 
    Ensure that the pod names do not include a Linux kernel semantic version number.
 
-## Step 5: Building a Custom Driver Container Image
+## Building a Custom Driver Container Image
 
 If a precompiled driver container for your Linux kernel variant is not available,
 you can perform the following steps to build and run a container image.
 
-**Note:**
-
-NVIDIA provides limited support for custom driver container images.
+> [!NOTE]
+> NVIDIA provides limited support for custom driver container images.
 ### Prerequisites
 * You have access to a private container registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
 * Your build machine has access to the internet to download operating system packages.

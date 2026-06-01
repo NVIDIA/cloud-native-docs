@@ -1,6 +1,19 @@
 ---
 name: "gpu-operator-nvidia-amazon"
-description: "Guides users through installing and configuring the NVIDIA GPU Operator on Amazon EKS. Use when deploying GPU workloads on AWS or troubleshooting EKS-specific GPU Operator setup. Trigger keywords - NVIDIA GPU Operator, Amazon EKS, AWS, Kubernetes, installation."
+description: "Guides users through installing and configuring the NVIDIA GPU Operator on Amazon EKS. Use when deploying GPU workloads on AWS or troubleshooting EKS-specific GPU Operator setup."
+triggers:
+  - NVIDIA GPU Operator
+  - Amazon EKS
+  - AWS
+  - Kubernetes
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - aws
+  - eks
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,7 +21,7 @@ description: "Guides users through installing and configuring the NVIDIA GPU Ope
 
 # NVIDIA GPU Operator with Amazon EKS
 
-## Step 1: Approaches for Working with Amazon EKS
+## Approaches for Working with Amazon EKS
 
 You can approach running workloads in Amazon EKS with NVIDIA GPUs in at least two ways.
 
@@ -94,7 +107,7 @@ without any limitations, you perform the following high-level actions:
 
 * Use your preferred client application to create the node group.
 
-## Step 2: Example: Create a Self-Managed Node Group with eksctl
+## Example: Create a Self-Managed Node Group with eksctl
 
 ### Prerequisites
 
@@ -115,15 +128,39 @@ The steps create a self-managed node group that uses an Amazon EKS optimized AMI
 
 1. Create a file, such as `cluster-config.yaml`, with contents like the following example:
 
+   ```yaml
+   apiVersion: eksctl.io/v1alpha5
+   kind: ClusterConfig
+   metadata:
+     name: demo-cluster
+     region: us-west-2
+     version: "1.25"
+   nodeGroups:
+     - name: demo-gpu-workers
+       instanceType: g4dn.xlarge
+       ami: ami-0770ab88ec35aa875
+       amiFamily: Ubuntu2004
+       minSize: 1
+       desiredCapacity: 3
+       maxSize: 3
+       volumeSize: 100
+       overrideBootstrapCommand: |
+         #!/bin/bash
+         source /var/lib/cloud/scripts/eksctl/bootstrap.helper.sh
+         /etc/eks/bootstrap.sh ${CLUSTER_NAME} --container-runtime containerd --kubelet-extra-args "--node-labels=${NODE_LABELS}"
+       ssh:
+         allow: true
+         publicKeyPath: ~/.ssh/id_rsa.pub
+   ```
+
    Replace the values for the cluster name, Kubernetes version, and so on.
    To resolve the environment variables in the override bootstrap command, you must source the bootstrap helper script.
 
-   **Tip:**
-
-   The default volume size for each node is 20 GB.
-   In many cases, containers with frameworks for AI/ML workloads are often very large.
-   The sample YAML file specifies a 100 GB volume to ensure enough local disk space for containers.
-1. Create the Amazon EKS cluster with the node group:
+   > [!TIP]
+   > The default volume size for each node is 20 GB.
+   > In many cases, containers with frameworks for AI/ML workloads are often very large.
+   > The sample YAML file specifies a 100 GB volume to ensure enough local disk space for containers.
+   > 1. Create the Amazon EKS cluster with the node group:
 
    ```console
    $ eksctl create cluster -f cluster-config.yaml
@@ -155,7 +192,7 @@ The steps create a self-managed node group that uses an Amazon EKS optimized AMI
    demo-cluster  us-west-2  True
    ```
 
-## Step 3: Related Information
+## Related Information
 
 * The preceding procedure is derived from
   [Getting started with Amazon EKS - eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)

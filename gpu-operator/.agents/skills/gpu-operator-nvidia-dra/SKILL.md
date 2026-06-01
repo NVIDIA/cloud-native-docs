@@ -1,6 +1,19 @@
 ---
 name: "gpu-operator-nvidia-dra"
-description: "Explains how to install and use the NVIDIA DRA Driver for GPUs. Use when users ask about Dynamic Resource Allocation, DRA installation, or GPU resource claims. Trigger keywords - NVIDIA GPU Operator, DRA, Dynamic Resource Allocation, Kubernetes, installation."
+description: "Explains how to install and use the NVIDIA DRA Driver for GPUs. Use when users ask about Dynamic Resource Allocation, DRA installation, or GPU resource claims."
+triggers:
+  - NVIDIA GPU Operator
+  - DRA
+  - Dynamic Resource Allocation
+  - Kubernetes
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - dra
+  - dynamic-resource-allocation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,8 +21,7 @@ description: "Explains how to install and use the NVIDIA DRA Driver for GPUs. Us
 
 # Prerequisites
 
-**Tip:**
-
+> [!TIP]
 # NVIDIA DRA Driver for GPUs
 
 Dynamic Resource Allocation (DRA) is a Kubernetes concept for flexibly requesting, configuring, and sharing specialized devices like GPUs.
@@ -38,7 +50,7 @@ You can use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator to deplo
 * For A100 GPUs, the MIG manager does not automatically evict the DRA kubelet plugin during MIG configuration changes.
   If the DRA kubelet plugin is deployed before a MIG change, then you must manually restart the DRA kubelet plugin.
 
-## Step 1: Install the NVIDIA GPU Operator
+## Install the NVIDIA GPU Operator
 
 ### GPU Allocation
 
@@ -59,7 +71,7 @@ You can use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator to deplo
 
    ```console
    helm upgrade --install gpu-operator nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --create-namespace \
      --namespace gpu-operator \
      --set devicePlugin.enabled=false \
@@ -81,7 +93,7 @@ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
 
 ```console
 helm upgrade --install gpu-operator nvidia/gpu-operator \
-  --version=${version} \
+  --version=v26.3.1 \
   --create-namespace \
   --namespace gpu-operator
 ```
@@ -90,23 +102,21 @@ Refer to the [GPU Operator installation guide](https://docs.nvidia.com/datacente
 
 If you are planning to use MIG devices, refer to the [NVIDIA GPU Operator MIG documentation](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html) to configure your cluster for MIG support.
 
-## Step 2: Install DRA Driver for GPUs
+## Install DRA Driver for GPUs
 
-**Note:**
-
-The `gpuResourcesEnabledOverride=true` is an additional flag that is required to fully enable GPU allocation support.
-Include it in the Helm command if you want to enable GPU allocation support.
+> [!NOTE]
+> The `gpuResourcesEnabledOverride=true` is an additional flag that is required to fully enable GPU allocation support.
+> Include it in the Helm command if you want to enable GPU allocation support.
 
 If you want to disable either functionality:
 
 * To disable GPU allocation support, include `--set resources.gpus.enabled=false` in the Helm command.
 * To disable ComputeDomain support, include `--set resources.computeDomains.enabled=false` in the Helm command.
-**Note:**
-
-The `nvidiaDriverRoot` flag sets the root directory for the NVIDIA GPU driver.
-The default value is `/`, which is the typical value for drivers installed directly on the host.
-If you are using GPU Operator managed drivers (default), the drivers are installed to `/run/nvidia/driver` by default.
-If you are using [pre-installed drivers](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers), you can remove the `nvidiaDriverRoot` flag or set it to `/` in the command above.
+> [!NOTE]
+> The `nvidiaDriverRoot` flag sets the root directory for the NVIDIA GPU driver.
+> The default value is `/`, which is the typical value for drivers installed directly on the host.
+> If you are using GPU Operator managed drivers (default), the drivers are installed to `/run/nvidia/driver` by default.
+> If you are using [pre-installed drivers](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#pre-installed-nvidia-gpu-drivers), you can remove the `nvidiaDriverRoot` flag or set it to `/` in the command above.
 ### GPU Allocation
 
 1. Create a custom `values.yaml` file for installing the DRA driver helm chart.
@@ -210,7 +220,7 @@ If you are using [pre-installed drivers](https://docs.nvidia.com/datacenter/clou
      --set resources.gpus.enabled=false
    ```
 
-## Step 3: Validate Installation
+## Validate Installation
 
 1. Confirm that the DRA driver components are running:
 
@@ -250,7 +260,7 @@ Additional validation steps are available in the DRA Driver repository documenta
 * [Validate setup for ComputeDomain allocation](https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-ComputeDomain-allocation)
 * [Validate setup for GPU allocation](https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki/Validate-setup-for-GPU-allocation)
 
-## Step 4: Enable Health Checks
+## Enable Health Checks
 
 The NVIDIA DRA driver supports GPU health monitoring using the [NVIDIA Management Library (NVML)](https://developer.nvidia.com/management-library-nvml).
 This feature uses NVML to check for [GPU XID errors](https://docs.nvidia.com/deploy/xid-errors/introduction.html) and determines if a GPU or MIG device is functioning properly.
@@ -272,10 +282,9 @@ helm upgrade -i nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
   --set featureGates.NVMLDeviceHealthCheck=true
 ```
 
-**Note:**
-
-Unhealthy GPUs will not appear in the ResourceSlice list. After the device recovers and is marked healthy again, you must restart the DRA Driver for the device to be added back into the available resources pool.
-After enabling health checks, you can monitor health status in the kubelet logs.
+> [!NOTE]
+> Unhealthy GPUs will not appear in the ResourceSlice list. After the device recovers and is marked healthy again, you must restart the DRA Driver for the device to be added back into the available resources pool.
+> After enabling health checks, you can monitor health status in the kubelet logs.
 
 1. Check kubelet plugin logs.
    Health status changes are logged in the kubelet plugin container. Run `kubectl get pods -n nvidia-dra-driver-gpu` and find the `nvidia-dra-driver-gpu-kubelet-plugin-<pod>` pod name. Replace `<pod>` with your actual pod name.
@@ -300,7 +309,7 @@ After enabling health checks, you can monitor health status in the kubelet logs.
    kubectl get resourceslice <resourceslice-name> -o yaml
    ```
 
-## Step 5: Additional Documentation
+## Additional Documentation
 
 Refer to the [DRA Driver for GPUs repository](https://github.com/NVIDIA/k8s-dra-driver-gpu/wiki) for additional documentation, including
 

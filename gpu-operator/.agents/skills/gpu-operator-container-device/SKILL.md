@@ -1,6 +1,20 @@
 ---
 name: "gpu-operator-container-device"
-description: "Explains how to configure CDI and NRI support for GPU workloads. Use when enabling CDI, configuring containerd, or troubleshooting CDI-based GPU injection. Trigger keywords - NVIDIA GPU Operator, CDI, NRI, containerd, Kubernetes."
+description: "Explains how to configure CDI and NRI support for GPU workloads. Use when enabling CDI, configuring containerd, or troubleshooting CDI-based GPU injection."
+triggers:
+  - NVIDIA GPU Operator
+  - CDI
+  - NRI
+  - containerd
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - cdi
+  - nri
+  - containerd
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -37,12 +51,11 @@ Examples of GPU Management Containers include monitoring agents and device plugi
 
 It is recommended that `NVIDIA_VISIBLE_DEVICES` only be used by GPU Management Containers.
 
-**Note:**
+> [!NOTE]
+> Setting `runtimeClassName: nvidia` in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
+> Refer to About the Node Resource Interface (NRI) Plugin.
 
-Setting `runtimeClassName: nvidia` in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
-Refer to About the Node Resource Interface (NRI) Plugin.
-
-## Step 1: Enabling CDI
+## Enabling CDI
 
 CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the getting-started page.
@@ -76,7 +89,7 @@ Use the following procedure to enable CDI if you disabled CDI during installatio
 
    *Example Output*
 
-## Step 2: Disabling CDI
+## Disabling CDI
 
 While CDI is the default and recommended mechanism for injecting GPU support into containers, you can
 disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the following procedure:
@@ -91,11 +104,10 @@ disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the f
        --overwrite
    ```
 
-   **Tip:**
-
-   You can run `kubectl get nodes -o wide` and view the `CONTAINER-RUNTIME`
-   column to determine if your nodes use CRI-O.
-1. Disable CDI by modifying the cluster policy:
+   > [!TIP]
+   > You can run `kubectl get nodes -o wide` and view the `CONTAINER-RUNTIME`
+   > column to determine if your nodes use CRI-O.
+   > 1. Disable CDI by modifying the cluster policy:
 
    ```console
    $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
@@ -130,7 +142,7 @@ In previous GPU Operator versions, device injection was handled by the `nvidia` 
 Additionally, with the NRI Plugin enabled, modifications to the container runtime configuration are no longer needed. For example, no modifications are made to containerd’s config.toml file.
 This means that on platforms that configure containerd in a non-standard way, like k3s, k0s, and Rancher Kubernetes Engine 2, users no longer need to configure environment variables like `CONTAINERD_CONFIG`, `CONTAINERD_SOCKET`, or `RUNTIME_CONFIG_SOURCE`.
 
-## Step 3: Enabling the NRI Plugin
+## Enabling the NRI Plugin
 
 The NRI Plugin requires the following:
 
@@ -139,10 +151,9 @@ The NRI Plugin requires the following:
 - containerd v1.7.30, v2.1.x, or v2.2.x.
   If you are not using the latest containerd version, check that both CDI and NRI are enabled in the containerd configuration file before deploying GPU Operator.
 
-  **Note:**
-
-  Enabling the NRI plugin is not supported with cri-o.
-To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the getting-started page and include the `--set cdi.nriPluginEnabled=true` argument in your Helm command.
+  > [!NOTE]
+  > Enabling the NRI plugin is not supported with cri-o.
+  > To enable the NRI Plugin during installation, follow the instructions for installing the Operator with Helm on the getting-started page and include the `--set cdi.nriPluginEnabled=true` argument in your Helm command.
 
 ### Enabling the NRI Plugin After Installation
 
@@ -169,7 +180,7 @@ To enable the NRI Plugin during installation, follow the instructions for instal
 
    *Example Output*
 
-## Step 4: Disabling the NRI Plugin
+## Disabling the NRI Plugin
 
 Disable the NRI Plugin and use the `nvidia` runtime class instead with the following procedure:
 

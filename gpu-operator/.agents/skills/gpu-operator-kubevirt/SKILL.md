@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-kubevirt"
-description: "Guides users through configuring the GPU Operator for KubeVirt virtual machine workloads. Use when deploying GPU-enabled VMs or troubleshooting KubeVirt GPU passthrough. Trigger keywords - NVIDIA GPU Operator, KubeVirt, virtual machines, Kubernetes."
+description: "Guides users through configuring the GPU Operator for KubeVirt virtual machine workloads. Use when deploying GPU-enabled VMs or troubleshooting KubeVirt GPU passthrough."
+triggers:
+  - NVIDIA GPU Operator
+  - KubeVirt
+  - virtual machines
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - kubevirt
+  - virtual-machines
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -67,7 +79,7 @@ To override the default GPU workload configuration, set the following value in `
 
 * Users must manually add all passthrough GPU and vGPU resources to the `permittedDevices` list in the KubeVirt CR before assigning them to KubeVirt virtual machines. Refer to the [KubeVirt documentation](https://kubevirt.io/user-guide/compute/host-devices/#listing-permitted-devices) for more information.
 
-## Step 1: Configure KubeVirt with the GPU Operator
+## Configure KubeVirt with the GPU Operator
 
 After configuring the prerequisites, the high level workflow for using the GPU Operator with KubeVirt is as follows:
 
@@ -108,11 +120,10 @@ The GPU Operator uses the value of the `nvidia.com/gpu.workload.config` label to
 
 Follow one of the below subsections for installing the GPU Operator, depending on whether you plan to use NVIDIA vGPU or not.
 
-**Note:**
-
-The following commands set the `sandboxWorkloads.enabled` flag.
-This `ClusterPolicy` flag controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads.
-This flag is disabled by default, meaning all nodes get provisioned with the same software to enable container workloads, and the `nvidia.com/gpu.workload.config` node label is not used.
+> [!NOTE]
+> The following commands set the `sandboxWorkloads.enabled` flag.
+> This `ClusterPolicy` flag controls whether the GPU Operator can provision GPU worker nodes for virtual machine workloads, in addition to container workloads.
+> This flag is disabled by default, meaning all nodes get provisioned with the same software to enable container workloads, and the `nvidia.com/gpu.workload.config` node label is not used.
 
 The term *sandboxing* refers to running software in a separate isolated environment, typically for added security (that is, a virtual machine).
 We use the term `sandbox workloads` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
@@ -124,7 +135,7 @@ Install the GPU Operator, enabling `sandboxWorkloads`:
 $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=${version} \
+      --version=v26.3.1 \
       --set sandboxWorkloads.enabled=true
 ```
 
@@ -154,7 +165,7 @@ Follow the steps provided in this section.
    $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=${version} \
+         --version=v26.3.1 \
          --set sandboxWorkloads.enabled=true \
          --set vgpuManager.enabled=true \
          --set vgpuManager.repository=<path to private repository> \
@@ -338,7 +349,7 @@ spec:
 
 * `name` is a name to identify the device in the virtual machine
 
-## Step 2: vGPU Device Configuration
+## vGPU Device Configuration
 
 The vGPU Device Manager assists in creating vGPU devices on GPU worker nodes.
 The vGPU Device Manager allows administrators to declaratively define a set of possible vGPU device configurations they would like applied to GPUs on a node.
@@ -387,11 +398,10 @@ Any existing virtual machines should be shutdown/migrated before you apply the n
 
 To apply a new configuration after GPU Operator install, update the `nvidia.com/vgpu.config` node label.
 
-**Note:**
-
-On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
-To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
-The following example shows how to apply a new configuration on a system with two **A10** GPUs.
+> [!NOTE]
+> On GPUs that support MIG, you have the option to select MIG-backed vGPU instances instead of time-sliced vGPU instances.
+> To select a MIG-backed vGPU profile, label the node with the name of the MIG-backed vGPU profile.
+> The following example shows how to apply a new configuration on a system with two **A10** GPUs.
 
 ```console
 $ nvidia-smi -L
@@ -436,13 +446,12 @@ $ kubectl get node cnt-server-2 -o json | jq '.status.allocatable | with_entries
 }
 ```
 
-## Step 3: Building the NVIDIA vGPU Manager image
+## Building the NVIDIA vGPU Manager image
 
-**Note:**
-
-Building the NVIDIA vGPU Manager image is only required if you are planning to use NVIDIA vGPU.
-If only planning to use PCI passthrough, skip this section.
-This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.
+> [!NOTE]
+> Building the NVIDIA vGPU Manager image is only required if you are planning to use NVIDIA vGPU.
+> If only planning to use PCI passthrough, skip this section.
+> This section covers building the NVIDIA vGPU Manager container image and pushing it to a private registry.
 
 Download the vGPU Software from the [NVIDIA Licensing Portal](https://stg.ui.licensing.nvidia.com/).
 
@@ -468,9 +477,8 @@ $ cd gpu-driver-container
    $ cp <local-driver-download-directory>/*-vgpu-kvm.run vgpu-manager/ubuntu22.04/
    ```
 
-**Note:**
-
-For Red Hat OpenShift, use a directory that includes `rhel` in the directory name. For example, `vgpu-manager/rhel8`.
+> [!NOTE]
+> For Red Hat OpenShift, use a directory that includes `rhel` in the directory name. For example, `vgpu-manager/rhel8`.
 | Set the following environment variables:
 | `PRIVATE_REGISTRY` - name of private registry used to store driver image
 | `VGPU_HOST_DRIVER_VERSION` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal

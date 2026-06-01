@@ -1,6 +1,20 @@
 ---
 name: "gpu-operator-gpudirect-rdma"
-description: "Guides users through GPUDirect RDMA and GPUDirect Storage configuration. Use when enabling high-performance networking or storage access for GPU workloads. Trigger keywords - NVIDIA GPU Operator, GPUDirect RDMA, GPUDirect Storage, networking."
+description: "Guides users through GPUDirect RDMA and GPUDirect Storage configuration. Use when enabling high-performance networking or storage access for GPU workloads."
+triggers:
+  - NVIDIA GPU Operator
+  - GPUDirect RDMA
+  - GPUDirect Storage
+  - networking
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - gpudirect
+  - rdma
+  - storage
+  - networking
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -34,7 +48,7 @@ set up the networking related components such as network device kernel drivers a
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
 Refer to the Network Operator [documentation](https://docs.nvidia.com/networking/software/cloud-orchestration/index.html) for installation information.
 
-## Step 1: Common Prerequisites
+## Common Prerequisites
 
 The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on whether you use DMA-BUF from the Linux kernel or the legacy `nvidia-peermem` kernel module.
 
@@ -68,7 +82,7 @@ The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on 
     [Deploy an AI-Ready Enterprise Platform on vSphere 7](https://www.vmware.com/docs/deploy-an-ai-ready-enterprise-platform-on-vsphere-7-update-2#vm-settings-A)
     document from VMWare.
 
-## Step 2: Configuring GPUDirect RDMA
+## Configuring GPUDirect RDMA
 
 ### Platform Support
 
@@ -89,7 +103,7 @@ To use DMA-BUF and network device drivers that are installed by the Network Oper
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
 ```
 
 To use DMA-BUF and network device drivers that are installed on the host:
@@ -98,7 +112,7 @@ To use DMA-BUF and network device drivers that are installed on the host:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set driver.rdma.useHostMofed=true
 ```
 
@@ -232,6 +246,40 @@ correctly and that pods can perform RDMA data transfers.
 
    - Create a file, such as `demo-pod-1.yaml`, for the first pod with contents like the following:
 
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: demo-pod-1
+     annotations:
+       k8s.v1.cni.cncf.io/networks: demo-macvlannetwork
+       # If a network with static IPAM is used replace network annotation with the below.
+       # k8s.v1.cni.cncf.io/networks: '[
+       #   { "name": "rdma-net",
+       #     "ips": ["192.168.111.101/24"],
+       #     "gateway": ["192.168.111.1"]
+       #   }
+       # ]'
+   spec:
+     nodeSelector:
+       # Note: Replace hostname or remove selector altogether
+       kubernetes.io/hostname: nvnode1
+     restartPolicy: OnFailure
+     containers:
+     - image: mellanox/cuda-perftest
+       name: rdma-gpu-test-ctr
+       securityContext:
+         capabilities:
+           add: [ "IPC_LOCK" ]
+       resources:
+         limits:
+           nvidia.com/gpu: 1
+           rdma/rdma_shared_device_a: 1
+         requests:
+           nvidia.com/gpu: 1
+           rdma/rdma_shared_device_a: 1
+   ```
+
    - Apply the manifest:
 
      ```console
@@ -241,6 +289,40 @@ correctly and that pods can perform RDMA data transfers.
    ### demo-pod-2
 
    - Create a file, such as `demo-pod-2.yaml`, for the second pod with contents like the following:
+
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: demo-pod-2
+     annotations:
+       k8s.v1.cni.cncf.io/networks: demo-macvlannetwork
+       # If a network with static IPAM is used replace network annotation with the below.
+       # k8s.v1.cni.cncf.io/networks: '[
+       #   { "name": "rdma-net",
+       #     "ips": ["192.168.111.101/24"],
+       #     "gateway": ["192.168.111.1"]
+       #   }
+       # ]'
+   spec:
+     nodeSelector:
+       # Note: Replace hostname or remove selector altogether
+       kubernetes.io/hostname: nvnode2
+     restartPolicy: OnFailure
+     containers:
+     - image: mellanox/cuda-perftest
+       name: rdma-gpu-test-ctr
+       securityContext:
+         capabilities:
+           add: [ "IPC_LOCK" ]
+       resources:
+         limits:
+           nvidia.com/gpu: 1
+           rdma/rdma_shared_device_a: 1
+         requests:
+           nvidia.com/gpu: 1
+           rdma/rdma_shared_device_a: 1
+   ```
 
    - Apply the manifest:
 
@@ -349,7 +431,7 @@ correctly and that pods can perform RDMA data transfers.
    $ kubectl delete -f demo-macvlannetworks.yaml
    ```
 
-## Step 3: Using GPUDirect Storage
+## Using GPUDirect Storage
 
 ### Platform Support
 
@@ -370,7 +452,7 @@ The following sample command applies to clusters that use the Network Operator t
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set gds.enabled=true
 ```
 
@@ -452,7 +534,7 @@ ib_core               319488  9 rdma_cm,ib_ipoib,iw_cm,ib_umad,rdma_ucm,ib_uverb
 drm                   491520  6 drm_kms_helper,drm_vram_helper,nvidia,mgag200,ttm
 ```
 
-## Step 4: Related Information
+## Related Information
 
 Refer to the following resources for more information:
 

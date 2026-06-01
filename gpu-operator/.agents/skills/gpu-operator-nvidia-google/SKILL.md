@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-nvidia-google"
-description: "Guides users through installing and configuring the NVIDIA GPU Operator on Google GKE. Use when deploying GPU workloads on GKE or troubleshooting GKE-specific GPU Operator setup. Trigger keywords - NVIDIA GPU Operator, Google GKE, Kubernetes, installation."
+description: "Guides users through installing and configuring the NVIDIA GPU Operator on Google GKE. Use when deploying GPU workloads on GKE or troubleshooting GKE-specific GPU Operator setup."
+triggers:
+  - NVIDIA GPU Operator
+  - Google GKE
+  - Kubernetes
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - google-cloud
+  - gke
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -29,7 +41,7 @@ The preceding information relates to using GKE Standard node pools.
 For Autopilot Pods, using the GPU Operator is not supported, and you can refer to
 [Deploy GPU workloads in Autopilot](https://cloud.google.com/kubernetes-engine/docs/how-to/autopilot-gpus).
 
-## Step 1: Using the Google Driver Installer
+## Using the Google Driver Installer
 
 Perform the following steps to create a GKE cluster with the `gcloud` CLI and use Google driver installer to manage the GPU driver.
 You can create a node pool that uses a Container-Optimized OS node image or a Ubuntu node image.
@@ -67,6 +79,23 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
    ```
 
 1. Create a file, such as `gpu-operator-quota.yaml`, with contents like the following example:
+
+   ```yaml
+   apiVersion: v1
+   kind: ResourceQuota
+   metadata:
+     name: gpu-operator-quota
+   spec:
+     hard:
+       pods: 100
+     scopeSelector:
+       matchExpressions:
+       - operator: In
+         scopeName: PriorityClass
+         values:
+           - system-node-critical
+           - system-cluster-critical
+   ```
 
 1. Apply the resource quota:
 
@@ -106,7 +135,7 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
    $ helm install --wait --generate-name \
        -n gpu-operator \
        nvidia/gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set hostPaths.driverInstallDir=/home/kubernetes/bin/nvidia \
        --set toolkit.installDir=/home/kubernetes/bin/nvidia \
        --set cdi.enabled=true \
@@ -124,7 +153,7 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
    --set-string migManager.env[0].value=true
    ```
 
-## Step 2: Using NVIDIA Driver Manager
+## Using NVIDIA Driver Manager
 
 Perform the following steps to create a GKE cluster with the `gcloud` CLI and use the Operator and NVIDIA Driver Manager to manage the GPU driver.
 The steps create the cluster with a node pool that uses a Ubuntu and containerd node image.
@@ -177,6 +206,23 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
 
 1. Create a file, such as `gpu-operator-quota.yaml`, with contents like the following example:
 
+   ```yaml
+   apiVersion: v1
+   kind: ResourceQuota
+   metadata:
+     name: gpu-operator-quota
+   spec:
+     hard:
+       pods: 100
+     scopeSelector:
+       matchExpressions:
+       - operator: In
+         scopeName: PriorityClass
+         values:
+           - system-node-critical
+           - system-cluster-critical
+   ```
+
 1. Apply the resource quota:
 
    ```console
@@ -200,7 +246,7 @@ The steps create the cluster with a node pool that uses a Ubuntu and containerd 
 1. Install the Operator.
    Refer to install the NVIDIA GPU Operator.
 
-## Step 3: Related Information
+## Related Information
 
 * If you have an existing GKE cluster, refer to
   [Add and manage node pools](https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools)

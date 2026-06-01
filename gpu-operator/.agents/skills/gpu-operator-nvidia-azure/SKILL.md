@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-nvidia-azure"
-description: "Guides users through installing and configuring the NVIDIA GPU Operator on Azure AKS. Use when deploying GPU workloads on Azure or troubleshooting AKS-specific GPU Operator setup. Trigger keywords - NVIDIA GPU Operator, Azure AKS, Microsoft Azure, Kubernetes."
+description: "Guides users through installing and configuring the NVIDIA GPU Operator on Azure AKS. Use when deploying GPU workloads on Azure or troubleshooting AKS-specific GPU Operator setup."
+triggers:
+  - NVIDIA GPU Operator
+  - Azure AKS
+  - Microsoft Azure
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - azure
+  - aks
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,7 +20,7 @@ description: "Guides users through installing and configuring the NVIDIA GPU Ope
 
 # NVIDIA GPU Operator with Azure Kubernetes Service
 
-## Step 1: Approaches for Working with Azure AKS
+## Approaches for Working with Azure AKS
 
 ### Create AKS Cluster with a Node Pool to Skip GPU Driver installation
 
@@ -62,7 +74,7 @@ manage the lifecycle of these software components and others.
 
 However, using the Operator can overcome the limitations identified in the preceding section.
 
-## Step 2: Installing the Operator for Preinstalled Driver and Toolkit
+## Installing the Operator for Preinstalled Driver and Toolkit
 
 After you start your Azure AKS cluster with an image that includes a preinstalled NVIDIA GPU Driver
 and NVIDIA Container Toolkit, you are ready to install the NVIDIA GPU Operator.
@@ -82,7 +94,7 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
    ```console
    $ helm install gpu-operator nvidia/gpu-operator \
        -n gpu-operator --create-namespace \
-       --version=${version} \
+       --version=v26.3.1 \
        --set driver.enabled=false \
        --set toolkit.enabled=false \
        --set operator.runtimeClass=nvidia-container-runtime

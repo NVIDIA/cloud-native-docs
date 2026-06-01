@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-timeslicing-gpus"
-description: "Explains GPU sharing and time-slicing configuration. Use when users need multiple workloads to share GPUs or need to configure time-sliced GPU resources. Trigger keywords - NVIDIA GPU Operator, GPU sharing, time-slicing, Kubernetes."
+description: "Explains GPU sharing and time-slicing configuration. Use when users need multiple workloads to share GPUs or need to configure time-sliced GPU resources."
+triggers:
+  - NVIDIA GPU Operator
+  - GPU sharing
+  - time-slicing
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - gpu-sharing
+  - time-slicing
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,7 +20,7 @@ description: "Explains GPU sharing and time-slicing configuration. Use when user
 
 # Time-Slicing GPUs in Kubernetes
 
-## Step 1: Understanding Time-Slicing GPUs
+## Understanding Time-Slicing GPUs
 
 The NVIDIA GPU Operator enables oversubscription of GPUs through a set
 of extended options for the [NVIDIA Kubernetes Device Plugin](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/k8s-device-plugin).
@@ -24,12 +36,11 @@ than not being able to share at all. Internally, GPU
 time-slicing is used to multiplex workloads from
 replicas of the same underlying GPU.
 
-**Note:**
-
-A typical resource request provides exclusive access to GPUs.
-A request for a time-sliced GPU provides shared access.
-A request for more than one time-sliced GPU does not guarantee that the pod
-receives access to a proportional amount of GPU compute power.
+> [!NOTE]
+> A typical resource request provides exclusive access to GPUs.
+> A request for a time-sliced GPU provides shared access.
+> A request for more than one time-sliced GPU does not guarantee that the pod
+> receives access to a proportional amount of GPU compute power.
 
 A request for more than one time-sliced GPU only specifies that the pod
 receives access to a GPU that is shared by other pods.
@@ -120,7 +131,7 @@ nvidia.com/gpu.product = A100-SXM4-40GB-MIG-1g.5gb-SHARED
 If you set `renameByDefault=true`, then the value of the `nvidia.com/gpu.product` node
 label is not modified.
 
-## Step 2: Configuration
+## Configuration
 
 ### About Configuring GPU Time-Slicing
 
@@ -152,6 +163,23 @@ Perform the following steps to configure GPU time-slicing if you already install
 and want to apply the same time-slicing configuration on all nodes in the cluster.
 
 1. Create a file, such as `time-slicing-config-all.yaml`, with contents like the following example:
+
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: time-slicing-config-all
+   data:
+     any: |-
+       version: v1
+       flags:
+         migStrategy: none
+       sharing:
+         timeSlicing:
+           resources:
+           - name: nvidia.com/gpu
+             replicas: 4
+   ```
 
 1. Add the config map to the same namespace as the GPU operator:
 
@@ -185,6 +213,40 @@ time-slicing configurations in the config map and to apply labels node-by-node t
 control which configuration is applied to which nodes.
 
 1. Create a file, such as `time-slicing-config-fine.yaml`, with contents like the following example:
+
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: time-slicing-config-fine
+   data:
+     a100-40gb: |-
+       version: v1
+       flags:
+         migStrategy: mixed
+       sharing:
+         timeSlicing:
+           resources:
+           - name: nvidia.com/gpu
+             replicas: 8
+           - name: nvidia.com/mig-1g.5gb
+             replicas: 2
+           - name: nvidia.com/mig-2g.10gb
+             replicas: 2
+           - name: nvidia.com/mig-3g.20gb
+             replicas: 3
+           - name: nvidia.com/mig-7g.40gb
+             replicas: 7
+     tesla-t4: |-
+       version: v1
+       flags:
+         migStrategy: none
+       sharing:
+         timeSlicing:
+           resources:
+           - name: nvidia.com/gpu
+             replicas: 4
+   ```
 
 1. Add the config map to the same namespace as the GPU operator:
 
@@ -260,7 +322,7 @@ Perform the following steps to configure time-slicing before installing the oper
    ```console
    $ helm install gpu-operator nvidia/gpu-operator \
        -n gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set devicePlugin.config.name=time-slicing-config
    ```
 
@@ -285,7 +347,7 @@ $ kubectl rollout restart -n gpu-operator daemonset/nvidia-device-plugin-daemons
 
 Currently running workloads are not affected and continue to run, though NVIDIA recommends performing the restart during a maintenance period.
 
-## Step 3: Verifying the GPU Time-Slicing Configuration
+## Verifying the GPU Time-Slicing Configuration
 
 Perform the following steps to verify that the time-slicing configuration is applied successfully:
 
@@ -350,6 +412,39 @@ Perform the following steps to verify that the time-slicing configuration is app
 
    * Create a file, such as `time-slicing-verification.yaml`, with contents like the following:
 
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: time-slicing-verification
+     labels:
+       app: time-slicing-verification
+   spec:
+     replicas: 5
+     selector:
+       matchLabels:
+         app: time-slicing-verification
+     template:
+       metadata:
+         labels:
+           app: time-slicing-verification
+       spec:
+         tolerations:
+           - key: nvidia.com/gpu
+             operator: Exists
+             effect: NoSchedule
+         hostPID: true
+         containers:
+           - name: cuda-sample-vector-add
+             image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
+             command: ["/bin/bash", "-c", "--"]
+             args:
+               - while true; do /cuda-samples/vectorAdd; done
+             resources:
+              limits:
+                nvidia.com/gpu: 1
+   ```
+
    * Create the deployment with multiple replicas:
 
      ```console
@@ -384,7 +479,7 @@ Perform the following steps to verify that the time-slicing configuration is app
     deployment.apps "time-slicing-verification" deleted
     ```
 
-## Step 4: References
+## References
 
 - [Blog post on GPU sharing in Kubernetes](https://developer.nvidia.com/blog/improving-gpu-utilization-in-kubernetes).
 - [NVIDIA Kubernetes Device Plugin](https://github.com/NVIDIA/k8s-device-plugin) repository on GitHub.

@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-uninstalling-nvidia"
-description: "Guides users through uninstalling the NVIDIA GPU Operator and cleaning up related resources. Use when removing the Operator from a Kubernetes cluster. Trigger keywords - NVIDIA GPU Operator, uninstall, removal, Kubernetes."
+description: "Guides users through uninstalling the NVIDIA GPU Operator and cleaning up related resources. Use when removing the Operator from a Kubernetes cluster."
+triggers:
+  - NVIDIA GPU Operator
+  - uninstall
+  - removal
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - uninstall
+  - cleanup
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -71,10 +83,9 @@ Alternatively, you can delete the custom resource definition:
 $ kubectl delete crd clusterpolicies.nvidia.com
 ```
 
-**Note:**
-
-* After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
-  Either reboot the node or unload them using the following command:
+> [!NOTE]
+> * After uninstalling the Operator, the NVIDIA driver modules might still be loaded.
+>   Either reboot the node or unload them using the following command:
 
   ```console
   $ sudo rmmod nvidia_modeset nvidia_uvm nvidia

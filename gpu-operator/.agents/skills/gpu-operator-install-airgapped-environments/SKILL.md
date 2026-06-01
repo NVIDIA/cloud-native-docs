@@ -1,6 +1,19 @@
 ---
 name: "gpu-operator-install-airgapped-environments"
-description: "Guides users through installing the GPU Operator in air-gapped or restricted network environments. Use when users need mirrored images, private registries, or offline installation steps. Trigger keywords - NVIDIA GPU Operator, air-gapped, restricted network, installation."
+description: "Guides users through installing the GPU Operator in air-gapped or restricted network environments. Use when users need mirrored images, private registries, or offline installation steps."
+triggers:
+  - NVIDIA GPU Operator
+  - air-gapped
+  - restricted network
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - air-gapped
+  - private-registry
+  - installation
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -16,14 +29,13 @@ By default, The GPU Operator requires internet access for the following reasons:
     1) Container images need to be pulled during GPU Operator installation.
     2) The `driver` container needs to download several OS packages prior to driver installation.
 
-       **Tip:**
-
-       Using precompiled-drivers removes the need for the `driver` containers to
-       download operating system packages and removes the need to create a local package repository.
-To address these requirements, it may be necessary to create a local image registry and/or a local package repository
-so that the necessary images and packages are available for your cluster. In subsequent sections, we detail how to
-configure the GPU Operator to use local image registries and local package repositories. If your cluster is behind
-a proxy, also follow the steps from install-gpu-operator-proxy.
+       > [!TIP]
+       > Using precompiled-drivers removes the need for the `driver` containers to
+       > download operating system packages and removes the need to create a local package repository.
+       > To address these requirements, it may be necessary to create a local image registry and/or a local package repository
+       > so that the necessary images and packages are available for your cluster. In subsequent sections, we detail how to
+       > configure the GPU Operator to use local image registries and local package repositories. If your cluster is behind
+       > a proxy, also follow the steps from install-gpu-operator-proxy.
 
 Different steps are required for different environments with varying levels of internet connectivity.
 The supported use cases/environments are listed in the below table:
@@ -53,26 +65,23 @@ The supported use cases/environments are listed in the below table:
                                               Repository         |
 +--------+-----------------+--------------------+--------------------+
 
-**Note:**
-
-For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b),
-refer to :external+ocpmirror-gpu-ocp-disconnected.
-**Note:**
-
-Ensure that Kubernetes nodes can successfully reach the local DNS server(s).
-Public name resolution for image registry and package repositories are
-mandatory for use cases 1 and 2.
-Before proceeding to the next sections, get the `values.yaml` file used for GPU Operator configuration.
+> [!NOTE]
+> For Red Hat Openshift deployments in air-gapped environments (use cases 2, 3a and 3b),
+> refer to [Mirror GPU Operator images for disconnected OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/mirror-gpu-ocp-disconnected.html).
+> [!NOTE]
+> Ensure that Kubernetes nodes can successfully reach the local DNS server(s).
+> Public name resolution for image registry and package repositories are
+> mandatory for use cases 1 and 2.
+> Before proceeding to the next sections, get the `values.yaml` file used for GPU Operator configuration.
 
 ```console
 $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
 ```
 
-**Note:**
+> [!NOTE]
+> Replace `v1.7.0` in the above command with the version you want to use.
 
-Replace `v1.7.0` in the above command with the version you want to use.
-
-## Step 1: Local Image Registry
+## Local Image Registry
 
 Without internet access, the GPU Operator requires all images to be hosted in a local image registry that is accessible
 to all nodes in the cluster. To allow the GPU Operator to work with a local registry, users can specify local
@@ -92,13 +101,13 @@ An example is shown below with the Operator container image:
 operator:
   repository: nvcr.io/nvidia
   image: gpu-operator
-  version: "${version}"
+  version: "v26.3.1"
 ```
 
-For instance, to pull the gpu-operator image version ${version}, use the following instruction:
+For instance, to pull the gpu-operator image version v26.3.1, use the following instruction:
 
 ```console
-$ docker pull nvcr.io/nvidia/gpu-operator:${version}
+$ docker pull nvcr.io/nvidia/gpu-operator:v26.3.1
 ```
 
 There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.
@@ -121,23 +130,22 @@ To push the images to the local registry, simply tag the pulled images by prefix
 Using the above examples, this will result in:
 
 ```console
-$ docker tag nvcr.io/nvidia/gpu-operator:${version} <local-registry>/<local-path>/gpu-operator:${version}
+$ docker tag nvcr.io/nvidia/gpu-operator:v26.3.1 <local-registry>/<local-path>/gpu-operator:v26.3.1
 $ docker tag nvcr.io/nvidia/driver:${recommended}-ubuntu20.04 <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 ```
 
 Finally, push the images to the local registry:
 
 ```console
-$ docker push <local-registry>/<local-path>/gpu-operator:${version}
+$ docker push <local-registry>/<local-path>/gpu-operator:v26.3.1
 $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 ```
 
 Update `values.yaml` with local registry information in the repository field.
 
-**Note:**
-
-Replace <repo.example.com:port> below with your local image registry URL and port.
-Sample of `values.yaml` for GPU Operator v1.9.0:
+> [!NOTE]
+> Replace <repo.example.com:port> below with your local image registry URL and port.
+> Sample of `values.yaml` for GPU Operator v1.9.0:
 
 ```yaml
 operator:
@@ -211,16 +219,15 @@ operator:
    imagePullSecrets: []
 ```
 
-## Step 2: Local Package Repository
+## Local Package Repository
 
 The `driver` container deployed as part of the GPU Operator requires certain packages to be available as part of the
 driver installation. In restricted internet access or air-gapped installations, users are required to create a
 local mirror repository for their OS distribution and make the following packages available:
 
-**Note:**
-
-KERNEL_VERSION is the underlying running kernel version on the GPU node
-GCC_VERSION is the gcc version matching the one used for building underlying kernel
+> [!NOTE]
+> KERNEL_VERSION is the underlying running kernel version on the GPU node
+> GCC_VERSION is the gcc version matching the one used for building underlying kernel
 
 Configuring a local package repository is not necessary for clusters that
 can run precompiled-drivers.
@@ -333,14 +340,14 @@ driver:
       name: cert-config
 ```
 
-## Step 3: Deploy GPU Operator
+## Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated `values.yaml`.
 
 Fetch the chart from the NGC repository:
 
 ```console
-$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-${version}.tgz
+$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.3.1.tgz
 ```
 
 Install the GPU Operator with the customized `values.yaml`:
@@ -348,7 +355,7 @@ Install the GPU Operator with the customized `values.yaml`:
 ```console
 $ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
-     gpu-operator-${version}.tgz \
+     gpu-operator-v26.3.1.tgz \
      -f values.yaml
 ```
 

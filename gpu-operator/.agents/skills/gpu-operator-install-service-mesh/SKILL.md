@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-install-service-mesh"
-description: "Guides users through GPU Operator service mesh considerations. Use when deploying with Istio or troubleshooting sidecar injection and service mesh interactions. Trigger keywords - NVIDIA GPU Operator, service mesh, Istio, Kubernetes."
+description: "Guides users through GPU Operator service mesh considerations. Use when deploying with Istio or troubleshooting sidecar injection and service mesh interactions."
+triggers:
+  - NVIDIA GPU Operator
+  - service mesh
+  - Istio
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - service-mesh
+  - istio
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,7 +20,7 @@ description: "Guides users through GPU Operator service mesh considerations. Use
 
 # Install GPU Operator with Service Mesh
 
-## Step 1: Special Considerations for Service Meshes
+## Special Considerations for Service Meshes
 
 You can use NVIDIA GPU Operator in a cluster that uses a service mesh provided by Istio CNI or Linkerd CNI.
 
@@ -26,7 +38,7 @@ Refer to the following documentation for more information:
 - [Overriding injection](https://linkerd.io/2.14/features/proxy-injection/#overriding-injection)
   in the Linkerd documentation.
 
-## Step 2: Label the Namespace to Disable Injection
+## Label the Namespace to Disable Injection
 
 - Label the Operator namespace to prevent automatic injection:
 

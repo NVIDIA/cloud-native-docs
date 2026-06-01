@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-upgrading-nvidia"
-description: "Guides users through upgrading the NVIDIA GPU Operator with Helm and handling CRD updates. Use when planning or performing a GPU Operator upgrade. Trigger keywords - NVIDIA GPU Operator, upgrade, Helm, Kubernetes."
+description: "Guides users through upgrading the NVIDIA GPU Operator with Helm and handling CRD updates. Use when planning or performing a GPU Operator upgrade."
+triggers:
+  - NVIDIA GPU Operator
+  - upgrade
+  - Helm
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - upgrade
+  - helm
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -12,7 +24,7 @@ description: "Guides users through upgrading the NVIDIA GPU Operator with Helm a
 
 # Upgrading the NVIDIA GPU Operator
 
-## Step 1: Using Helm
+## Using Helm
 
 The GPU Operator supports dynamic updates to existing resources.
 This ability enables the GPU Operator to ensure settings from the cluster policy specification are always applied and current.
@@ -37,7 +49,7 @@ With this procedure, all existing GPU Operator resources are updated inline and 
 1. Specify the Operator release tag in an environment variable:
 
    ```console
-   $ export RELEASE_TAG=${version}
+   $ export RELEASE_TAG=v26.3.1
    ```
 
 1. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
@@ -119,7 +131,7 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
 1. Specify the Operator release tag in an environment variable:
 
    ```console
-   $ export RELEASE_TAG=${version}
+   $ export RELEASE_TAG=v26.3.1
    ```
 
 1. Update the information about the Operator chart:
@@ -151,15 +163,14 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
        --disable-openapi-validation -f values-$RELEASE_TAG.yaml --version $RELEASE_TAG
    ```
 
-   **Note:**
-
-   * Option `--disable-openapi-validation` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
-     Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
+   > [!NOTE]
+   > * Option `--disable-openapi-validation` is required in this case so that Helm will not try to validate if CR instance from the new chart is valid as per old CRD.
+   >   Since CR instance in the Chart is valid for the upgraded CRD, this will be compatible.
 
    * Helm hooks used with the GPU Operator use the operator image itself. If operator image itself cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
      In this case, chart needs to be deleted using `--no-hooks` option to avoid deletion to be hung on hook failures.
 
-## Step 2: Cluster Policy Updates
+## Cluster Policy Updates
 
 The GPU Operator also supports dynamic updates to the `ClusterPolicy` CustomResource using `kubectl`:
 
@@ -169,11 +180,11 @@ $ kubectl edit clusterpolicy
 
 After the edits are complete, Kubernetes will automatically apply the updates to cluster.
 
-## Step 3: Additional Controls for Driver Upgrades
+## Additional Controls for Driver Upgrades
 
 While most of the GPU Operator managed daemonsets can be upgraded seamlessly, the NVIDIA driver daemonset has special considerations.
 Refer to GPU Driver Upgrades for more information.
 
-## Step 4: Using Operator Lifecycle Manager (OLM) in OpenShift
+## Using Operator Lifecycle Manager (OLM) in OpenShift
 
 For upgrading the GPU Operator when running in OpenShift, refer to the official OpenShift documentation on [upgrading installed operators](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/administrator-tasks#olm-upgrading-operators).
