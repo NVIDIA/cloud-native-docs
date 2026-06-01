@@ -24,6 +24,12 @@ tags:
 
 This page gives an overview of CDI and NRI Plugin support in the GPU Operator.
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- A container runtime that supports CDI. CDI is enabled by default starting with GPU Operator v25.10.0. The NRI Plugin requires containerd v1.7.30, v2.1.x, or v2.2.x and is not supported with CRI-O.
+
 ## About Container Device Interface (CDI)
 
 The [Container Device Interface (CDI)](https://github.com/cncf-tags/container-device-interface/blob/main/SPEC.md)
@@ -199,3 +205,24 @@ clusterpolicy.nvidia.com/cluster-policy patched
 ```
 
 After disabling the NRI Plugin, the `nvidia` runtime class will be created.
+
+## Verification
+
+Confirm that CDI or the NRI Plugin is configured as expected:
+
+1. Confirm the GPU Operator pods, including the container toolkit and device plugin, are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   The `nvidia-container-toolkit-daemonset` and `nvidia-device-plugin-daemonset` pods should report `Running`.
+
+1. Run a GPU workload and confirm the GPU is injected into the container:
+
+   ```console
+   $ kubectl run cuda-check --rm -it --restart=Never \
+       --image=nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04
+   ```
+
+   A successful run reports `Test PASSED`, confirming that the device was injected through CDI or the NRI Plugin.

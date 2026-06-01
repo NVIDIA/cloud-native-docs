@@ -20,6 +20,12 @@ tags:
 
 # GPU Driver Upgrades
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- The driver deployed as a container by the Operator (`driver.enabled=true`, the default). The GPU Operator only manages the lifecycle of containerized drivers; drivers pre-installed on the host are not managed by the Operator.
+
 ## About Upgrading the GPU Driver
 
 The NVIDIA driver daemon set requires special consideration for upgrades because the driver kernel modules must be unloaded and loaded again on each driver container restart.

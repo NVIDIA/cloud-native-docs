@@ -20,6 +20,12 @@ tags:
 
 # Install GPU Operator with Service Mesh
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- A service mesh based on Istio CNI or Linkerd CNI installed in the cluster.
+- The `kubectl` and `helm` CLIs available on a client machine.
+
 ## Special Considerations for Service Meshes
 
 You can use NVIDIA GPU Operator in a cluster that uses a service mesh provided by Istio CNI or Linkerd CNI.
@@ -52,6 +58,16 @@ Refer to the following documentation for more information:
   $ kubectl label namespace gpu-operator linkerd.io/inject=disabled
   ```
 
-If the GPU Operator is not already installed, refer to
-getting-started
-for information about custom options and common installation scenarios.
+If the GPU Operator is not already installed, use the `gpu-operator-install` skill for information about custom options and common installation scenarios.
+
+## Verification
+
+After labeling the namespace and installing the Operator, confirm that the GPU Operator pods start successfully despite the service mesh:
+
+1. Confirm the Operator pods are running:
+
+   ```console
+   $ kubectl get pods -n gpu-operator
+   ```
+
+   All operands, including the `nvidia-driver-daemonset` and `nvidia-operator-validator` pods, should report `Running` or `Completed`. If the `k8s-driver-manager` init container is stuck, confirm that sidecar injection is disabled for the `gpu-operator` namespace.

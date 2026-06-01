@@ -20,6 +20,12 @@ tags:
 
 # NVIDIA GPU Driver Custom Resource Definition
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed with the driver custom resource enabled (`--set driver.nvidiaDriverCRD.enabled=true`). Use the `gpu-operator-install` skill to install the Operator.
+- This feature is recommended for new cluster installations only. You cannot use ClusterPolicy-managed drivers and the `NVIDIADriver` custom resource at the same time.
+
 ## Overview of the GPU Driver Custom Resource Definition
 
 You can create one or more instances of an NVIDIA driver (`NVIDIADriver`) custom resource
@@ -418,3 +424,25 @@ When you update the custom resource, the Operator performs a rolling update of t
    ```
 
 Eventually, the Operator replaces the pods that used the previous driver version with pods that use the updated driver version.
+
+## Verification
+
+Confirm that the driver custom resources are applied and the driver pods are running:
+
+1. List the `NVIDIADriver` custom resources and confirm their state:
+
+   ```console
+   $ kubectl get nvidiadrivers
+   ```
+
+1. Confirm the driver pods are running on the expected nodes:
+
+   ```console
+   $ kubectl get pods -n gpu-operator -l app.kubernetes.io/component=nvidia-driver -o wide
+   ```
+
+   Each driver pod should report `Running`. If a pod is not progressing, inspect the events:
+
+   ```console
+   $ kubectl get events -n gpu-operator --sort-by='.lastTimestamp'
+   ```

@@ -26,6 +26,12 @@ On a machine with the driver already installed, you can list the parameter names
 You can pass custom parameters to the kernel modules that get loaded as part of the
 NVIDIA Driver installation (`nvidia`, `nvidia-modeset`, `nvidia-uvm`, and `nvidia-peermem`).
 
+## Prerequisites
+
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- The GPU Operator deploys the NVIDIA driver as a container (`driver.enabled=true`, the default). Custom kernel-module parameters do not apply when you use pre-installed host drivers.
+
 ## Configure Custom Driver Parameters
 
 To pass custom parameters, execute the following steps.

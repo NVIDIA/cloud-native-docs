@@ -20,6 +20,12 @@ tags:
 
 # NVIDIA GPU Operator with Azure Kubernetes Service
 
+## Prerequisites
+
+- An Azure subscription and the Azure CLI (`az`) installed and configured.
+- The `kubectl` and `helm` CLIs available on a client machine.
+- An AKS cluster with a GPU-enabled node pool that uses a supported operating system. Use a node pool created with `--skip-gpu-driver-install` so that the GPU Operator manages the driver lifecycle.
+
 ## Approaches for Working with Azure AKS
 
 ### Create AKS Cluster with a Node Pool to Skip GPU Driver installation
