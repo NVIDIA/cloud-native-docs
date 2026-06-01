@@ -140,13 +140,16 @@ The term *sandboxing* refers to running software in a separate isolated environm
 We use the term `sandbox workloads` to signify workloads that run in a virtual machine, irrespective of the virtualization technology used.
 #### Install the GPU Operator without NVIDIA vGPU
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 Install the GPU Operator, enabling `sandboxWorkloads`:
 
 ```console
 $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=v26.3.1 \
+      --version=<gpu-operator-version> \
       --set sandboxWorkloads.enabled=true
 ```
 
@@ -176,7 +179,7 @@ Follow the steps provided in this section.
    $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=v26.3.1 \
+         --version=<gpu-operator-version> \
          --set sandboxWorkloads.enabled=true \
          --set vgpuManager.enabled=true \
          --set vgpuManager.repository=<path to private repository> \

@@ -102,13 +102,16 @@ driver:
       destinationDir: /etc/yum.repos.d
 ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 Deploy GPU Operator with updated `values.yaml`:
 
 ```console
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      -f values.yaml
 ```
 

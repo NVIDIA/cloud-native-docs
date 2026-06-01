@@ -171,13 +171,16 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
          && helm repo update
      ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
    - Install the Operator and specify at least the `--set driver.nvidiaDriverCRD.enabled=true` argument:
 
      ```console
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=v26.3.1 \
+         --version=<gpu-operator-version> \
          --set driver.nvidiaDriverCRD.enabled=true
      ```
 

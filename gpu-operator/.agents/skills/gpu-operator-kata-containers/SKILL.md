@@ -342,6 +342,9 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    Update Complete. ⎈Happy Helming!⎈
    ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the GPU Operator.
    The following configures the GPU Operator to deploy the operands that are required for Kata Containers.
    Refer to Common Chart Customization Options for more details on the additional configuration options you can specify when installing the GPU Operator.
@@ -350,7 +353,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    $ helm install --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=v26.3.1 \
+      --version=<gpu-operator-version> \
       --set sandboxWorkloads.enabled=true \
       --set sandboxWorkloads.mode=kata \
       --set nfd.enabled=true \
@@ -446,7 +449,7 @@ The following example installs the GPU Operator with both `P_GPU_ALIAS` and `NVS
 $ helm install --generate-name \
    -n gpu-operator --create-namespace \
    nvidia/gpu-operator \
-   --version=v26.3.1 \
+   --version=<gpu-operator-version> \
    --set sandboxWorkloads.enabled=true \
    --set sandboxWorkloads.mode=kata \
    --set nfd.enabled=true \

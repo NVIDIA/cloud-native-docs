@@ -132,13 +132,16 @@ You can create a node pool that uses a Container-Optimized OS node image or a Ub
    [Manually install NVIDIA GPU drivers](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#installing_drivers)
    in the GKE documentation.
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the Operator using Helm:
 
    ```console
    $ helm install --wait --generate-name \
        -n gpu-operator \
        nvidia/gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set hostPaths.driverInstallDir=/home/kubernetes/bin/nvidia \
        --set toolkit.installDir=/home/kubernetes/bin/nvidia \
        --set cdi.enabled=true \

@@ -40,13 +40,16 @@ Refer to the [Multi-Instance GPU architecture](https://docs.nvidia.com/datacente
 
 Use the following steps to enable MIG and deploy MIG Manager.
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the Operator:
 
    ```console
    $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set mig.strategy=single
    ```
 
@@ -316,7 +319,7 @@ In your values.yaml file, set `migManager.config.create` to `true`, set `migMana
 
    ```console
    $ helm upgrade --install gpu-operator -n gpu-operator --create-namespace \
-       nvidia/gpu-operator --version=v26.3.1 \
+       nvidia/gpu-operator --version=<gpu-operator-version> \
        -f values.yaml
    ```
 
@@ -449,7 +452,7 @@ can be used to install the GPU Operator:
 $ helm install gpu-operator \
     -n gpu-operator --create-namespace \
     nvidia/gpu-operator \
-    --version=v26.3.1 \
+    --version=<gpu-operator-version> \
     --set driver.enabled=false
 ```
 
@@ -498,7 +501,7 @@ Alternatively, you can create a custom ConfigMap for use by MIG Manager by perfo
    $ helm install gpu-operator \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set migManager.gpuClientsConfig.name=gpu-clients \
        --set driver.enabled=false
    ```

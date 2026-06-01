@@ -51,10 +51,13 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.
 
 With this procedure, all existing GPU Operator resources are updated inline and the cluster policy resource is patched with updates from `values.yaml`.
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Specify the Operator release tag in an environment variable:
 
    ```console
-   $ export RELEASE_TAG=v26.3.1
+   $ export RELEASE_TAG=<gpu-operator-version>
    ```
 
 1. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
@@ -136,7 +139,7 @@ Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by defa
 1. Specify the Operator release tag in an environment variable:
 
    ```console
-   $ export RELEASE_TAG=v26.3.1
+   $ export RELEASE_TAG=<gpu-operator-version>
    ```
 
 1. Update the information about the Operator chart:

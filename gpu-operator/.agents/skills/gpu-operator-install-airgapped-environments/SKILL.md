@@ -101,19 +101,22 @@ The general syntax for the container image is `<repository>/<image>:<version>`.
 If the version is not specified, you can retrieve the information from the NVIDIA NGC catalog at https://catalog.ngc.nvidia.com/containers.
 Search for an image, such as `gpu-operator` and then check the available tags for the image.
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 An example is shown below with the Operator container image:
 
 ```yaml
 operator:
   repository: nvcr.io/nvidia
   image: gpu-operator
-  version: "v26.3.1"
+  version: "<gpu-operator-version>"
 ```
 
-For instance, to pull the gpu-operator image version v26.3.1, use the following instruction:
+For instance, to pull the gpu-operator image version <gpu-operator-version>, use the following instruction:
 
 ```console
-$ docker pull nvcr.io/nvidia/gpu-operator:v26.3.1
+$ docker pull nvcr.io/nvidia/gpu-operator:<gpu-operator-version>
 ```
 
 There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.
@@ -136,14 +139,14 @@ To push the images to the local registry, simply tag the pulled images by prefix
 Using the above examples, this will result in:
 
 ```console
-$ docker tag nvcr.io/nvidia/gpu-operator:v26.3.1 <local-registry>/<local-path>/gpu-operator:v26.3.1
+$ docker tag nvcr.io/nvidia/gpu-operator:<gpu-operator-version> <local-registry>/<local-path>/gpu-operator:<gpu-operator-version>
 $ docker tag nvcr.io/nvidia/driver:${recommended}-ubuntu20.04 <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 ```
 
 Finally, push the images to the local registry:
 
 ```console
-$ docker push <local-registry>/<local-path>/gpu-operator:v26.3.1
+$ docker push <local-registry>/<local-path>/gpu-operator:<gpu-operator-version>
 $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu20.04
 ```
 
@@ -353,7 +356,7 @@ Download and deploy GPU Operator Helm Chart with the updated `values.yaml`.
 Fetch the chart from the NGC repository:
 
 ```console
-$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.3.1.tgz
+$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-<gpu-operator-version>.tgz
 ```
 
 Install the GPU Operator with the customized `values.yaml`:
@@ -361,7 +364,7 @@ Install the GPU Operator with the customized `values.yaml`:
 ```console
 $ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
-     gpu-operator-v26.3.1.tgz \
+     gpu-operator-<gpu-operator-version>.tgz \
      -f values.yaml
 ```
 

@@ -22,7 +22,7 @@ tags:
 
 # Installing the NVIDIA GPU Operator
 
-The current patch release of this version of the NVIDIA GPU Operator is `v26.3.1`.
+Throughout this skill, replace `<gpu-operator-version>` with your target GPU Operator release (for example, the latest patch release listed on the [GPU Operator releases page](https://github.com/NVIDIA/gpu-operator/releases)).
 
 > [!TIP]
 > For installation on Red Hat OpenShift Container Platform, refer to [OpenShift installation steps](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/steps-overview.html).
@@ -84,7 +84,7 @@ The current patch release of this version of the NVIDIA GPU Operator is `v26.3.1
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=v26.3.1
+         --version=<gpu-operator-version>
      ```
 
    - Install the Operator and specify configuration options:
@@ -93,7 +93,7 @@ The current patch release of this version of the NVIDIA GPU Operator is `v26.3.1
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=v26.3.1 \
+         --version=<gpu-operator-version> \
          --set <option-name>=<option-value>
      ```
 
@@ -159,7 +159,7 @@ For example, to install the GPU Operator in the `nvidia-gpu-operator` namespace:
 $ helm install --wait --generate-name \
      -n nvidia-gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
 ```
 
 If you do not specify a namespace during installation, all GPU Operator components are installed in the `default` namespace.
@@ -193,7 +193,7 @@ In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set toolkit.version=v1.16.1-ubi8
 ```
 
@@ -213,7 +213,7 @@ In this scenario, the NVIDIA GPU driver is already installed on the worker nodes
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set driver.enabled=false
 ```
 
@@ -238,7 +238,7 @@ Install the Operator with the following options:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set driver.enabled=false \
      --set toolkit.enabled=false
 ```
@@ -259,7 +259,7 @@ In this scenario, the NVIDIA Container Toolkit is already installed on the worke
    $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set toolkit.enabled=false
    ```
 
@@ -287,7 +287,7 @@ you can build a custom driver container image. Follow these steps:
   $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set driver.repository=docker.io/nvidia \
        --set driver.version="465.27"
   ```
@@ -321,7 +321,7 @@ If you need to specify custom values, refer to the following sample command for 
 ```console
 helm install gpu-operator -n gpu-operator --create-namespace \
   nvidia/gpu-operator $HELM_OPTIONS \
-    --version=v26.3.1 \
+    --version=<gpu-operator-version> \
     --set toolkit.env[0].name=CONTAINERD_CONFIG \
     --set toolkit.env[0].value=/etc/containerd/containerd.toml \
     --set toolkit.env[1].name=CONTAINERD_SOCKET \
@@ -391,7 +391,7 @@ These options can be passed to GPU Operator during install time as below.
 ```console
 helm install gpu-operator -n gpu-operator --create-namespace \
   nvidia/gpu-operator $HELM_OPTIONS \
-    --version=v26.3.1 \
+    --version=<gpu-operator-version> \
     --set toolkit.env[0].name=CONTAINERD_CONFIG \
     --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
     --set toolkit.env[1].name=CONTAINERD_SOCKET \

@@ -104,13 +104,16 @@ For information about the supported versions, refer to Support for GPUDirect RDM
 
 ### Installing the GPU Operator and Enabling GPUDirect RDMA
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 To use DMA-BUF and network device drivers that are installed by the Network Operator:
 
 ```console
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
 ```
 
 To use DMA-BUF and network device drivers that are installed on the host:
@@ -119,7 +122,7 @@ To use DMA-BUF and network device drivers that are installed on the host:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set driver.rdma.useHostMofed=true
 ```
 
@@ -459,7 +462,7 @@ The following sample command applies to clusters that use the Network Operator t
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set gds.enabled=true
 ```
 

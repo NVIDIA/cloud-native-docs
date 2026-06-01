@@ -99,6 +99,9 @@ Use one of the following ways to check if a driver container is available for yo
 
 ## Enabling Precompiled Driver Container Support During Installation
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 Refer to the common instructions for installing the Operator with Helm at install-gpu-operator.
 Specify the `--set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` arguments like the following example command:
 
@@ -106,7 +109,7 @@ Specify the `--set driver.usePrecompiled=true` and `--set driver.version=<driver
 $ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --set driver.usePrecompiled=true \
      --set driver.version="<driver-branch>"
 ```

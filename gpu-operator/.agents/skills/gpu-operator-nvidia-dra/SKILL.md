@@ -75,11 +75,14 @@ You can use the NVIDIA DRA Driver for GPUs with the NVIDIA GPU Operator to deplo
    && helm repo update
    ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 3. Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:
 
    ```console
    helm upgrade --install gpu-operator nvidia/gpu-operator \
-     --version=v26.3.1 \
+     --version=<gpu-operator-version> \
      --create-namespace \
      --namespace gpu-operator \
      --set devicePlugin.enabled=false \
@@ -101,7 +104,7 @@ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
 
 ```console
 helm upgrade --install gpu-operator nvidia/gpu-operator \
-  --version=v26.3.1 \
+  --version=<gpu-operator-version> \
   --create-namespace \
   --namespace gpu-operator
 ```

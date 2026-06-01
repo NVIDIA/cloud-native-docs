@@ -322,12 +322,15 @@ Perform the following steps to configure time-slicing before installing the oper
    $ kubectl create -f time-slicing-config.yaml
    ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the operator with Helm:
 
    ```console
    $ helm install gpu-operator nvidia/gpu-operator \
        -n gpu-operator \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set devicePlugin.config.name=time-slicing-config
    ```
 

@@ -95,12 +95,15 @@ deploying NVIDIA Driver Containers and the NVIDIA Container Toolkit.
       && helm repo update
    ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the Operator without the driver containers and toolkit:
 
    ```console
    $ helm install gpu-operator nvidia/gpu-operator \
        -n gpu-operator --create-namespace \
-       --version=v26.3.1 \
+       --version=<gpu-operator-version> \
        --set driver.enabled=false \
        --set toolkit.enabled=false \
        --set operator.runtimeClass=nvidia-container-runtime

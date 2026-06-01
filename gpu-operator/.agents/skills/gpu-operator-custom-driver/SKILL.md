@@ -53,6 +53,9 @@ To pass custom parameters, execute the following steps.
    $ kubectl create configmap kernel-module-params -n gpu-operator --from-file=nvidia.conf=./nvidia.conf
    ```
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 1. Install the GPU Operator and set `driver.kernelModuleConfig.name` to the name of the `ConfigMap`
    containing the kernel module parameters.
 
@@ -60,7 +63,7 @@ To pass custom parameters, execute the following steps.
    $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=v26.3.1 \
+      --version=<gpu-operator-version> \
       --set driver.kernelModuleConfig.name="kernel-module-params"
    ```
 
@@ -90,7 +93,7 @@ Refer to [Simplifying GPU Application Development with Heterogeneous Memory Mana
    $ helm install --wait --generate-name \
       -n gpu-operator --create-namespace \
       nvidia/gpu-operator \
-      --version=v26.3.1 \
+      --version=<gpu-operator-version> \
       --set driver.kernelModuleConfig.name="kernel-module-params"
    ```
 

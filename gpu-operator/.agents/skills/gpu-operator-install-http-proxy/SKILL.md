@@ -53,10 +53,13 @@ based on information present in the cluster-wide Proxy object.
 
 ## HTTP Proxy Configuration
 
+> [!NOTE]
+> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
+
 First, get the `values.yaml` file used for GPU Operator configuration:
 
 ```console
-$ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v26.3.1/deployments/gpu-operator/values.yaml
+$ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/<gpu-operator-version>/deployments/gpu-operator/values.yaml
 ```
 
 Specify `driver.env` in `values.yaml` with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
@@ -90,7 +93,7 @@ Download and deploy GPU Operator Helm Chart with the updated `values.yaml`.
 Fetch the chart from the NGC repository:
 
 ```console
-$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.3.1.tgz
+$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-<gpu-operator-version>.tgz
 ```
 
 Install the GPU Operator with updated `values.yaml`:
@@ -98,7 +101,7 @@ Install the GPU Operator with updated `values.yaml`:
 ```console
 $ helm install --wait gpu-operator \
      -n gpu-operator --create-namespace \
-     gpu-operator-v26.3.1.tgz \
+     gpu-operator-<gpu-operator-version>.tgz \
      -f values.yaml
 ```
 
