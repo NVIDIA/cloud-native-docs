@@ -6,10 +6,8 @@ This document describes the new features, improvements, fixed issues, and known 
 
 Refer to the GPU Operator Component Matrix for a list of software components and versions included in each release.
 
-**Note:**
-
-GPU Operator beta releases are documented on [GitHub](https://github.com/NVIDIA/gpu-operator/releases). NVIDIA AI Enterprise builds are not posted on GitHub.
-----
+> [!NOTE]
+> GPU Operator beta releases are documented on [GitHub](https://github.com/NVIDIA/gpu-operator/releases). NVIDIA AI Enterprise builds are not posted on GitHub.
 
 ## 26.3.1
 
@@ -77,9 +75,9 @@ GPU Operator beta releases are documented on [GitHub](https://github.com/NVIDIA/
 
   To learn more, refer to Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support (use the `gpu-operator-container-device` skill).
 
-  **Note:**
+  > [!NOTE]
+  > Enabling the NRI plugin is not supported with cri-o.
 
-  Enabling the NRI plugin is not supported with cri-o.
 * Added support for dynamic MIG config generation.
   By default, the MIG Manager will automatically generate a per-node ConfigMap with the default MIG profiles for the available GPUs on the node.
   This replaces the previous static ConfigMap.
@@ -92,11 +90,10 @@ GPU Operator beta releases are documented on [GitHub](https://github.com/NVIDIA/
   Use this feature on new cluster installations to configure multiple driver types and versions on different nodes or multiple operating system versions on nodes.
   Refer to the NVIDIA Driver Custom Resource Definition documentation (use the `gpu-operator-nvidia-driver` skill) for more information.
 
-  **Note:**
-
-  This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator or switching from ClusterPolicy to the NVIDIA Driver CRD.
-  It is recommended that you only use this feature from new installations.
-* Added support for KubeVirt with GPU passthrough on Ubuntu 24.04 LTS
+  > [!NOTE]
+  > This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator or switching from ClusterPolicy to the NVIDIA Driver CRD.
+  > It is recommended that you only use this feature from new installations.
+  > * Added support for KubeVirt with GPU passthrough on Ubuntu 24.04 LTS
 
 * Added support for K3s.
 
@@ -494,14 +491,13 @@ GPU Operator beta releases are documented on [GitHub](https://github.com/NVIDIA/
 * Starting with version **580.65.06**, the driver container has **Coherent Driver Memory Management (CDMM)** enabled by default to support **GB200** on Kubernetes.
   For more information about CDMM, refer to the [release notes](https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-65-06/index.html#hardware-software-support).
 
-  **Note:**
-
-  Currently, CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
-  CDMM is also not compatible with **GPU Direct Storage**.
-  CDMM support for these features is planned for future driver updates.
-  However, these limitations will remain in place until a future driver update removes them.
-  CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
-  NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
+  > [!NOTE]
+  > Currently, CDMM is not compatible with the **Multi-Instance GPUs (MIG)** sharing.
+  > CDMM is also not compatible with **GPU Direct Storage**.
+  > CDMM support for these features is planned for future driver updates.
+  > However, these limitations will remain in place until a future driver update removes them.
+  > CDMM enablement applies only to **Grace-based systems** such as **GH200** and **GB200** and is ignored on other GPU platforms.
+  > NVIDIA strongly recommends keeping CDMM enabled with Kubernetes on supported systems to prevent memory over-reporting and uncontrolled GPU memory access.
 
 * For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
@@ -2238,16 +2234,15 @@ These CVEs are from the base images and are not in libraries that are used by th
   This allows the GPU Operator to complement the [NVIDIA Network Operator](https://github.com/Mellanox/network-operator) to enable GPUDirect RDMA in the
   Kubernetes cluster. Refer to the RDMA documentation on getting started.
 
-  **Note:**
-
-  This feature is available only when used with R470 drivers on Ubuntu 20.04 LTS.
-* Added support for upgrades of the GPU Operator components. A new `k8s-driver-manager` component handles upgrades
-  of the NVIDIA drivers on nodes in the cluster.
-* NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as
-  [DCGM-Exporter](https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html) and [NVSM](https://docs.nvidia.com/nvidia-system-management-nvsm/)
-  to be deployed and connect to the existing DCGM container.
-* Added a `nodeStatusExporter` component that exports operator and node metrics in a Prometheus format. The component provides
-  information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).
+  > [!NOTE]
+  > This feature is available only when used with R470 drivers on Ubuntu 20.04 LTS.
+  > * Added support for upgrades of the GPU Operator components. A new `k8s-driver-manager` component handles upgrades
+  > of the NVIDIA drivers on nodes in the cluster.
+  > * NVIDIA DCGM is now deployed as a component of the GPU Operator. The standalone DCGM container allows multiple clients such as
+  > [DCGM-Exporter](https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html) and [NVSM](https://docs.nvidia.com/nvidia-system-management-nvsm/)
+  > to be deployed and connect to the existing DCGM container.
+  > * Added a `nodeStatusExporter` component that exports operator and node metrics in a Prometheus format. The component provides
+  > information on the status of the operator (e.g. reconciliation status, number of GPU enabled nodes).
 
 ### Improvements
 * Reduced the size of the ClusterPolicy CRD by removing duplicates and redundant fields.
@@ -2418,10 +2413,9 @@ DCGM-Exporter support includes the following:
 ### New Features
 * Added support for CentOS 7 and 8.
 
-  **Note:**
-
-  Due to a known limitation with the GPU Operator's default values on CentOS, install the operator on CentOS 7/8
-  using the following Helm command:
+  > [!NOTE]
+  > Due to a known limitation with the GPU Operator's default values on CentOS, install the operator on CentOS 7/8
+  > using the following Helm command:
 
   ```console
   $ helm install --wait --generate-name \

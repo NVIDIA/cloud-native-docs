@@ -73,10 +73,9 @@ Refer to Common Chart Customization Options for more information.
  NVIDIA A2                NVIDIA Ampere
 +-------------------------+---------------------------+-------+
 
-**Note:**
-
-* The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
-  For installation instructions, see preinstalled-drivers-and-toolkit for DGX OS 5.1+ and openshift-introduction for Red Hat OpenShift.
+> [!NOTE]
+> * The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
+>   For installation instructions, see preinstalled-drivers-and-toolkit for DGX OS 5.1+ and openshift-introduction for Red Hat OpenShift.
 ### D,T and V-series Products
 
 +-----------------------+------------------------+-------+
@@ -128,13 +127,13 @@ Refer to Common Chart Customization Options for more information.
  NVIDIA T400              Turing
 +-------------------------+------------------------+-------+
 
-**Note:**
+> [!NOTE]
+> NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
+>
+> * Driver versions 575.57.08 or later is required.
+> * MIG is not supported on the 575.57.08 driver release.
+> * In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by customizing the NVIDIA GPU driver parameters during installation (use the `gpu-operator-custom-driver` skill).
 
-NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
-
-* Driver versions 575.57.08 or later is required.
-* MIG is not supported on the 575.57.08 driver release.
-* In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by Customizing NVIDIA GPU Driver Parameters during Installation.
 ### B-series Products
 
 +-------------------------+------------------------+-------+
@@ -159,9 +158,8 @@ NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
  NVIDIA DGX Station       NVIDIA Blackwell
 +-------------------------+------------------------+-------+
 
-**Note:**
-
-* HGX B200 requires a driver container version of 570.133.20 or later.
+> [!NOTE]
+> * HGX B200 requires a driver container version of 570.133.20 or later.
 ## Supported ARM Based Platforms
 
 The following NVIDIA data center GPUs are supported:
@@ -191,10 +189,9 @@ system that meets the following requirements is supported:
 - A supported operating system
   such as Ubuntu or Red Hat Enterprise Linux.
 
-**Note:**
-
-The GPU Operator only supports platforms using discrete GPUs.
-NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
+> [!NOTE]
+> The GPU Operator only supports platforms using discrete GPUs.
+> NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
 
 NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
 ## Supported Deployment Options
@@ -211,9 +208,8 @@ The GPU Operator has been validated in the following scenarios:
  Virtual machines with NVIDIA vGPU based products
 +-----------------------------------------------------+
 
-**Note:**
-
-GPU Operator is supported with NVIDIA vGPU 12.0+.
+> [!NOTE]
+> GPU Operator is supported with NVIDIA vGPU 12.0+.
 ## Supported Operating Systems and Kubernetes Platforms
 
 The GPU Operator has been validated in the following scenarios:
@@ -247,9 +243,9 @@ by the `unattended-upgrades` package to prevent an upgrade to an unsupported ker
 Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, and 9.7 versions are available for x86 based platforms only.
 They are not available for ARM based systems.
 
-**Note:**
+> [!NOTE]
+> Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.
 
-ocp_csp_support
 ### Cloud Service Providers
 
 | Operating System | Amazon EKS Kubernetes | Google GKE Kubernetes |
@@ -295,10 +291,9 @@ The GPU Operator has been validated for the following container runtimes:
  Red Hat Enterprise Linux 9  Yes                     Yes
 +----------------------------+------------------------+----------------+
 
-**Note:**
-
-If you are planning to use the NRI Plugin, you must use containerd version v1.7.30+, v2.1.x and v2.2.x.
-The NRI Plugin is not supported with CRI-O.
+> [!NOTE]
+> If you are planning to use the NRI Plugin, you must use containerd version v1.7.30+, v2.1.x and v2.2.x.
+> The NRI Plugin is not supported with CRI-O.
 ## Support for KubeVirt and OpenShift Virtualization
 
 Red Hat OpenShift Virtualization is based on KubeVirt.
@@ -342,9 +337,8 @@ KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the follo
 
 -  NVIDIA HGX GB200 NVL72, GB300 NVL72 on Ubuntu 24.04 LTS.
 
-**Note:**
-
-KubeVirt with NVIDIA vGPU is supported on `nodes` with Linux kernel < 6.0, such as Ubuntu 22.04 `LTS`.
+> [!NOTE]
+> KubeVirt with NVIDIA vGPU is supported on `nodes` with Linux kernel < 6.0, such as Ubuntu 22.04 `LTS`.
 ## Support for GPUDirect RDMA
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
@@ -370,14 +364,13 @@ Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 - Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
 - Red Hat OpenShift Container Platform 4.17 and higher.
 
-**Note:**
-
-Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, `nvidia-fs`,
-requires the NVIDIA Open GPU Kernel module driver.
-You can install the open kernel modules by specifying the `driver.kernelModuleType=auto` if you are using driver container version 570.86.15, 570.124.06 or later.
-Or use `driver.kernelModuleType=open` if you are using a different driver version or branch.
-argument to the `helm` command.
-Refer to Common Chart Customization Options for more information.
+> [!NOTE]
+> Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, `nvidia-fs`,
+> requires the NVIDIA Open GPU Kernel module driver.
+> You can install the open kernel modules by specifying the `driver.kernelModuleType=auto` if you are using driver container version 570.86.15, 570.124.06 or later.
+> Or use `driver.kernelModuleType=open` if you are using a different driver version or branch.
+> argument to the `helm` command.
+> Refer to Common Chart Customization Options for more information.
 
 Not supported with secure boot.
 Supported storage types are local NVMe and remote NFS.
@@ -392,7 +385,6 @@ Orchestration & resource scheduling:
 
 * [NVIDIA Run:ai](https://run-ai-docs.nvidia.com/)
 
-**Note:**
-
-Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
-Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai [cluster requirements documentation](https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator) for more information.
+> [!NOTE]
+> Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
+> Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai [cluster requirements documentation](https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator) for more information.

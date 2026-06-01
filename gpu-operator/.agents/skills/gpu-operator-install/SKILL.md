@@ -1,30 +1,74 @@
 ---
-name: "gpu-operator-install-ing-nvidia"
-description: "Installs the NVIDIA GPU Operator in a Kubernetes cluster with Helm. Use when users are getting started, installing the Operator for the first time, or checking installation prerequisites. Trigger keywords - NVIDIA GPU Operator, installation, Helm, Kubernetes, getting started."
+name: "gpu-operator-install"
+description: "Installs the NVIDIA GPU Operator in a Kubernetes cluster with Helm. Use when users are getting started, installing the Operator for the first time, or checking installation prerequisites."
+triggers:
+  - NVIDIA GPU Operator
+  - installation
+  - Helm
+  - Kubernetes
+  - getting started
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - installation
+  - helm
+  - getting-started
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Prerequisites
+# Installing the NVIDIA GPU Operator
+
+The current patch release of this version of the NVIDIA GPU Operator is `v26.3.1`.
+
+> [!TIP]
+> For installation on Red Hat OpenShift Container Platform, refer to [OpenShift installation steps](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/steps-overview.html).
+
+## Prerequisites
 
 1. You have the `kubectl` and `helm` CLIs available on a client machine.
 
-# Installing the NVIDIA GPU Operator
+   You can run the following commands to install the Helm CLI:
 
-**Version:**
+   ```console
+   $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+       && chmod 700 get_helm.sh \
+       && ./get_helm.sh
+   ```
 
-The current patch release of this version of the NVIDIA GPU Operator is `${version}`.
-**Red Hat OpenShift Container Platform Install:**
+1. If you are planning to use ClusterPolicy for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
 
-For installation on Red Hat OpenShift Container Platform, refer to :external+ocpsteps-overview.
+   For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-## Step 1: Procedure
+   If you are planning to use the NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the NVIDIA GPU Driver Custom Resource Definition (use the `gpu-operator-nvidia-driver` skill) page for more information.
 
-**Tip:**
+1. Nodes must be configured with a container engine such as CRI-O or containerd.
 
-For installation on Red Hat OpenShift Container Platform,
-refer to :external+ocpsteps-overview.
+1. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods, label the namespace for the Operator to set the enforcement policy to privileged:
+
+   ```console
+   $ kubectl create ns gpu-operator
+   $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
+   ```
+
+1. Node Feature Discovery (NFD) is a dependency for the Operator on each node.
+   By default, NFD master and worker are automatically deployed by the Operator.
+   If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.
+
+   One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes:
+
+   ```console
+   $ kubectl get nodes -o json | jq '.items[].metadata.labels | keys | any(startswith("feature.node.kubernetes.io"))'
+   ```
+
+   If the command output is `true`, then NFD is already running in the cluster.
+
+## Procedure
+
 1. Add the NVIDIA Helm repository:
 
    ```console
@@ -40,7 +84,7 @@ refer to :external+ocpsteps-overview.
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=${version}
+         --version=v26.3.1
      ```
 
    - Install the Operator and specify configuration options:
@@ -49,14 +93,13 @@ refer to :external+ocpsteps-overview.
      $ helm install --wait --generate-name \
          -n gpu-operator --create-namespace \
          nvidia/gpu-operator \
-         --version=${version} \
+         --version=v26.3.1 \
          --set <option-name>=<option-value>
      ```
 
-     Refer to the gpu-operator-helm-chart-options
-     and common deployment scenarios for more information.
+     Refer to the **Common Chart Customization Options** and **Common Deployment Scenarios** sections below for more information.
 
-## Step 2: Common Chart Customization Options
+## Common Chart Customization Options
 
 The following options are available when using the Helm chart.
 These options can be used with `--set` when installing with Helm.
@@ -67,29 +110,29 @@ To view all the options, run `helm show values nvidia/gpu-operator`.
 | Parameter | Description | Default |
 | --- | --- | --- |
 | `ccManager.enabled` | When set to `true`, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes. | `false` |
-| `cdi.enabled` | When set to `true` (default), the Container Device Interface (CDI) will be used for injecting GPUs into workload containers. The Operator will no longer configure the `nvidia` runtime class as the default runtime handler. Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers. Refer to the cdi page for more information. | `true` |
-| `cdi.nriPluginEnabled` | When set to `true`, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. This feature requires containerd v1.7.30, v2.1.x, or v2.2.x. Refer to the cdi page for more information. | `false` |
+| `cdi.enabled` | When set to `true` (default), the Container Device Interface (CDI) will be used for injecting GPUs into workload containers. The Operator will no longer configure the `nvidia` runtime class as the default runtime handler. Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers. Refer to the Container Device Interface page (use the `gpu-operator-container-device` skill) for more information. | `true` |
+| `cdi.nriPluginEnabled` | When set to `true`, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. This feature requires containerd v1.7.30, v2.1.x, or v2.2.x. Refer to the Container Device Interface page (use the `gpu-operator-container-device` skill) for more information. | `false` |
 | `cdi.default`  Deprecated. | This field is deprecated as of v25.10.0 and will be ignored. The `cdi.enabled` field is set to `true` by default in versions 25.10.0 and later. When set to `true`, the container runtime uses CDI to perform device injection by default. | `false` |
 | `daemonsets.annotations` | Map of custom annotations to add to all GPU Operator managed pods. | `{}` |
 | `daemonsets.labels` | Map of custom labels to add to all GPU Operator managed pods. | `{}` |
 | `dcgmExporter.enabled` | By default, the Operator gathers GPU telemetry in Kubernetes using [DCGM Exporter](https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html). Set this value to `false` to disable it. Available values are `true` (default) or `false`. | `true` |
 | `dcgmExporter.service.internalTrafficPolicy` | Specifies the [internalTrafficPolicy](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies) for the DCGM Exporter service. Available values are `Cluster` (default) or `Local`. | `Cluster` |
 | `dcgmExporter.hostNetwork` | When set to `true`, the DCGM Exporter will expose a metric port on the host's network namespace. | `false` |
-| `devicePlugin.config` | Specifies the configuration for the NVIDIA Device Plugin as a config map. In most cases, this field is configured after installing the Operator, such as to configure gpu-sharing. | `{}` |
+| `devicePlugin.config` | Specifies the configuration for the NVIDIA Device Plugin as a config map. In most cases, this field is configured after installing the Operator, such as to configure GPU time-slicing (use the `gpu-operator-timeslicing-gpus` skill). | `{}` |
 | `driver.enabled` | By default, the Operator deploys NVIDIA drivers as a container on the system. Set this value to `false` when using the Operator on systems with pre-installed drivers. | `true` |
 | `driver.image` | Name of the NVIDIA Driver Container image to use. | `driver` |
 | `driver.imagePullSecrets` | List of the image pull secret used for pulling the driver container image from the registry. | None |
 | `driver.kernelModuleType` | Specifies the type of the NVIDIA GPU Kernel modules to use. Valid values are `auto` (default), `proprietary`, and `open`. `Auto` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used. The `auto` option is only supported with the 570.86.15 and 570.124.06 or later driver containers. 550 and 535 branch drivers do not yet support this mode. `Open` means the open kernel module is used. `Proprietary` means the proprietary module is used. | `auto` |
 | `driver.nvidiaDriverCRD.enabled` | When set to `true`, the Operator deploys NVIDIA GPU Driver Custom Resource Definition. Refer to the NVIDIA GPU Driver Custom Resource Definition (use the `gpu-operator-nvidia-driver` skill) page for more information. | `false` |
 | `driver.repository` | The images are downloaded from NGC. Specify another image repository when using custom driver images. | `nvcr.io/nvidia` |
-| `driver.rdma.enabled` | Controls whether the driver daemon set builds and loads the legacy `nvidia-peermem` kernel module. You might be able to use GPUDirect RDMA without enabling this option. Refer to gpu-operator-rdma for information about whether you can use DMA-BUF or you need to use legacy `nvidia-peermem`. | `false` |
+| `driver.rdma.enabled` | Controls whether the driver daemon set builds and loads the legacy `nvidia-peermem` kernel module. You might be able to use GPUDirect RDMA without enabling this option. Refer to the GPUDirect RDMA page (use the `gpu-operator-gpudirect-rdma` skill) for information about whether you can use DMA-BUF or you need to use legacy `nvidia-peermem`. | `false` |
 | `driver.rdma.useHostMofed` | Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host. | `false` |
-| `driver.secretEnv` | The name of the secret to the driver container. A common use case is to use this field to pass your Ubuntu Pro token secret if you are deploying the GPU Operator with government-ready components. Refer to install-gpu-operator-gov-ready for more information. | None |
+| `driver.secretEnv` | The name of the secret to the driver container. A common use case is to use this field to pass your Ubuntu Pro token secret if you are deploying the GPU Operator with government-ready components. Refer to the government-ready installation page (use the `gpu-operator-install-governmentready-environments` skill) for more information. | None |
 | `driver.startupProbe` | By default, the driver container has an initial delay of `60s` before starting liveness probes. The probe runs the `nvidia-smi` command with a timeout duration of `60s`. You can increase the `timeoutSeconds` duration if the `nvidia-smi` command runs slowly in your cluster. | `60s` |
 | `driver.useOpenKernelModules` Deprecated. | This field is deprecated as of v25.3.0 and will be ignored. Use `kernelModuleType` instead. When set to `true`, the driver containers install the NVIDIA Open GPU Kernel module driver. | `false` |
 | `driver.usePrecompiled` | When set to `true`, the Operator attempts to deploy driver containers that have precompiled kernel drivers. Refer to the precompiled driver containers (use the `gpu-operator-precompiled-drivers` skill) page for the supported operating systems. | `false` |
-| `driver.version` | Version of the NVIDIA datacenter driver supported by the Operator. If you set `driver.usePrecompiled` to `true`, then set this field to a driver branch, such as `525`. | Depends on the version of the Operator. Refer to the GPU Operator Component Matrix for more information on supported drivers. |
-| `gdrcopy.enabled` | Enables support for GDRCopy. When set to `true`, the GDRCopy Driver runs as a sidecar container in the GPU driver pod. For information about GDRCopy, refer to the [gdrcopy](https://developer.nvidia.com/gdrcopy) page. You can enable GDRCopy if you use the gpu-driver-configuration. | `false` |
+| `driver.version` | Version of the NVIDIA datacenter driver supported by the Operator. If you set `driver.usePrecompiled` to `true`, then set this field to a driver branch, such as `525`. | Depends on the version of the Operator. Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) for more information on supported drivers. |
+| `gdrcopy.enabled` | Enables support for GDRCopy. When set to `true`, the GDRCopy Driver runs as a sidecar container in the GPU driver pod. For information about GDRCopy, refer to the [gdrcopy](https://developer.nvidia.com/gdrcopy) page. You can enable GDRCopy if you use the NVIDIA GPU Driver custom resource (use the `gpu-operator-nvidia-driver` skill). | `false` |
 | `mig.strategy` | Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options are either `mixed` or `single`. | `single` |
 | `migManager.enabled` | The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By default, the MIG manager only runs on nodes with GPUs that support MIG (such as the A100). | `true` |
 | `nfd.enabled` | Deploys Node Feature Discovery plugin as a daemonset. Set this variable to `false` if NFD is already running in the cluster. | `true` |
@@ -101,7 +144,7 @@ To view all the options, run `helm show values nvidia/gpu-operator`.
 | `sandboxWorkloads.mode` | Specifies the sandbox mode to use when deploying sandbox workloads. Accepted values are `kubevirt` (default) and `kata`. Refer to the KubeVirt (use the `gpu-operator-kubevirt` skill) or the Kata Containers (use the `gpu-operator-kata-containers` skill) pages for more information on using KubeVirt or Kata based workloads. | `kubevirt` |
 | `toolkit.enabled` | By default, the Operator deploys the NVIDIA Container Toolkit (`nvidia-docker2` stack) as a container on the system. Set this value to `false` when using the Operator on systems with pre-installed NVIDIA runtimes. | `true` |
 
-## Step 3: Common Deployment Scenarios
+## Common Deployment Scenarios
 
 The following common deployment scenarios and sample commands apply best to
 bare metal hosts or virtual machines with GPU passthrough.
@@ -116,7 +159,7 @@ For example, to install the GPU Operator in the `nvidia-gpu-operator` namespace:
 $ helm install --wait --generate-name \
      -n nvidia-gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
 ```
 
 If you do not specify a namespace during installation, all GPU Operator components are installed in the `default` namespace.
@@ -150,13 +193,13 @@ In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set toolkit.version=v1.16.1-ubi8
 ```
 
 Replace the `v1.16.1` value in the preceding command with the version that is supported
 with the NVIDIA GPU Operator.
-Refer to the GPU Operator Component Matrix on the platform support page.
+Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) on the platform support page.
 
 When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
 Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the `enable_selinux=true` configuration option.
@@ -170,7 +213,7 @@ In this scenario, the NVIDIA GPU driver is already installed on the worker nodes
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set driver.enabled=false
 ```
 
@@ -184,11 +227,10 @@ The Operator proceeds to start other pods, such as the container toolkit pod.
 In this scenario, the NVIDIA GPU driver and the NVIDIA Container Toolkit are already installed on
 the worker nodes that have GPUs.
 
-**Tip:**
-
-This scenario applies to NVIDIA DGX Systems that run NVIDIA Base OS.
-Before installing the Operator, ensure that the default runtime is set to `nvidia`.
-Refer to :external+ctkconfiguration in the NVIDIA Container Toolkit documentation for more information.
+> [!TIP]
+> This scenario applies to NVIDIA DGX Systems that run NVIDIA Base OS.
+> Before installing the Operator, ensure that the default runtime is set to `nvidia`.
+> Refer to the [NVIDIA Container Toolkit configuration](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) documentation for more information.
 
 Install the Operator with the following options:
 
@@ -196,7 +238,7 @@ Install the Operator with the following options:
 $ helm install --wait --generate-name \
      -n gpu-operator --create-namespace \
      nvidia/gpu-operator \
-     --version=${version} \
+     --version=v26.3.1 \
      --set driver.enabled=false \
      --set toolkit.enabled=false
 ```
@@ -217,7 +259,7 @@ In this scenario, the NVIDIA Container Toolkit is already installed on the worke
    $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set toolkit.enabled=false
    ```
 
@@ -245,7 +287,7 @@ you can build a custom driver container image. Follow these steps:
   $ helm install --wait --generate-name \
        -n gpu-operator --create-namespace \
        nvidia/gpu-operator \
-       --version=${version} \
+       --version=v26.3.1 \
        --set driver.repository=docker.io/nvidia \
        --set driver.version="465.27"
   ```
@@ -254,15 +296,14 @@ These instructions are provided for reference and evaluation purposes.
 Not using the standard releases of the GPU Operator from NVIDIA would mean limited
 support for such custom configurations.
 
-## Step 4: Specifying Configuration Options for containerd
+## Specifying Configuration Options for containerd
 
-**Note:**
-
-It's recommended that you enable the NRI Plugin to configure the container runtime by setting `cdi.nriPluginEnabled=true`.
-When enabled, you do not need to specify the `toolkit.env` options and injecting GPUs into workload containers is handled by the NRI Plugin.
-Refer to the NRI Plugin documentation, for more information.
-When you use containerd as the container runtime, the following configuration
-options are used with the container-toolkit deployed with GPU Operator:
+> [!NOTE]
+> It's recommended that you enable the NRI Plugin to configure the container runtime by setting `cdi.nriPluginEnabled=true`.
+> When enabled, you do not need to specify the `toolkit.env` options and injecting GPUs into workload containers is handled by the NRI Plugin.
+> Refer to the Container Device Interface and NRI page (use the `gpu-operator-container-device` skill) for more information.
+> When you use containerd as the container runtime, the following configuration
+> options are used with the container-toolkit deployed with GPU Operator:
 
 ```yaml
 toolkit:
@@ -280,7 +321,7 @@ If you need to specify custom values, refer to the following sample command for 
 ```console
 helm install gpu-operator -n gpu-operator --create-namespace \
   nvidia/gpu-operator $HELM_OPTIONS \
-    --version=${version} \
+    --version=v26.3.1 \
     --set toolkit.env[0].name=CONTAINERD_CONFIG \
     --set toolkit.env[0].value=/etc/containerd/containerd.toml \
     --set toolkit.env[1].name=CONTAINERD_SOCKET \
@@ -328,7 +369,7 @@ in the RKE2 documentation.
 It's recommended that you enable CDI (default) and the NRI Plugin on RKE.
 With both features enabled, you do not need to set `runtimeClassName: nvidia` in your pod spec.
 
-Refer to the v24.9.0-known-limitations.
+Refer to the [v24.9.0 known limitations](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/release-notes.html) in the release notes.
 
 ### MicroK8s
 
@@ -350,7 +391,7 @@ These options can be passed to GPU Operator during install time as below.
 ```console
 helm install gpu-operator -n gpu-operator --create-namespace \
   nvidia/gpu-operator $HELM_OPTIONS \
-    --version=${version} \
+    --version=v26.3.1 \
     --set toolkit.env[0].name=CONTAINERD_CONFIG \
     --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \
     --set toolkit.env[1].name=CONTAINERD_SOCKET \
@@ -359,7 +400,7 @@ helm install gpu-operator -n gpu-operator --create-namespace \
     --set-string toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 ```
 
-## Step 5: Verification: Running Sample GPU Applications
+## Verification: Running Sample GPU Applications
 
 ### CUDA VectorAdd
 
@@ -425,6 +466,44 @@ You can perform the following steps to deploy Jupyter Notebook in your cluster:
 
 1. Create a file, such as `tf-notebook.yaml`, with contents like the following example:
 
+   ```yaml
+   ---
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: tf-notebook
+     labels:
+       app: tf-notebook
+   spec:
+     type: NodePort
+     ports:
+     - port: 80
+       name: http
+       targetPort: 8888
+       nodePort: 30001
+     selector:
+       app: tf-notebook
+   ---
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: tf-notebook
+     labels:
+       app: tf-notebook
+   spec:
+     securityContext:
+       fsGroup: 0
+     containers:
+     - name: tf-notebook
+       image: tensorflow/tensorflow:latest-gpu-jupyter
+       resources:
+         limits:
+           nvidia.com/gpu: 1
+       ports:
+       - containerPort: 8888
+         name: notebook
+   ```
+
 1. Apply the manifest to deploy the pod and start the service:
 
    ```console
@@ -484,10 +563,10 @@ You can perform the following steps to deploy Jupyter Notebook in your cluster:
 The notebook should now be accessible from your browser at this URL:
 [http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9](http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9).
 
-## Step 6: Installation on Commercially Supported Kubernetes Platforms
+## Installation on Commercially Supported Kubernetes Platforms
 
 | Product | Documentation |
 | --- | --- |
-| Red Hat OpenShift 4 using RHCOS worker nodes | :external+ocpindex |
-| VMware  vSphere Kubernetes Service and NVIDIA AI Enterprise | nvaie-tanzu_ |
-| Google Cloud Anthos | :external+edgeanthos-guide |
+| Red Hat OpenShift 4 using RHCOS worker nodes | [NVIDIA GPU Operator on Red Hat OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html) |
+| VMware vSphere Kubernetes Service and NVIDIA AI Enterprise | [NVIDIA AI Enterprise VMware vSphere Deployment Guide](https://docs.nvidia.com/ai-enterprise/deployment-guide-vmware/0.1.0/index.html) |
+| Google Cloud Anthos | [Google Cloud Anthos guide](https://docs.nvidia.com/datacenter/cloud-native/edge/latest/anthos-guide.html) |
