@@ -107,7 +107,8 @@ disable CDI and use the legacy NVIDIA Container Toolkit stack instead with the f
    > [!TIP]
    > You can run `kubectl get nodes -o wide` and view the `CONTAINER-RUNTIME`
    > column to determine if your nodes use CRI-O.
-   > 1. Disable CDI by modifying the cluster policy:
+
+   1. Disable CDI by modifying the cluster policy:
 
    ```console
    $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \

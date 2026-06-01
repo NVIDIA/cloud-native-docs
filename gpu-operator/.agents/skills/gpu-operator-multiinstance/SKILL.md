@@ -28,7 +28,7 @@ Refer to the [MIG User Guide](https://docs.nvidia.com/datacenter/tesla/mig-user-
 GPU Operator deploys MIG Manager to manage MIG configuration on nodes in your Kubernetes cluster.
 You must enable MIG during installation by choosing a MIG strategy before you can configure MIG.
 
-Refer to the architecture section for more information about how MIG is implemented in the GPU Operator.
+Refer to the [Multi-Instance GPU architecture](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html) for more information about how MIG is implemented in the GPU Operator.
 
 ## Enabling MIG During Installation
 
@@ -56,7 +56,7 @@ Use the following steps to enable MIG and deploy MIG Manager.
 
    MIG Manager supports preinstalled drivers, meaning drivers that are not managed by the GPU Operator and you installed directly on the host.
    If drivers are preinstalled, also specify `--set driver.enabled=false`.
-   Refer to mig-with-preinstalled-drivers for more details.
+   Refer to [MIG with pre-installed drivers](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-mig.html) for more details.
 
    After several minutes, all GPU Operator pods, including the `nvidia-mig-manager` are deployed on nodes that have MIG capable GPUs.
 
@@ -64,7 +64,8 @@ Use the following steps to enable MIG and deploy MIG Manager.
    > MIG Manager requires that no user workloads are running on the GPUs being configured.
    > In some cases, the node might need to be rebooted, such as a CSP, so the node might need to be cordoned
    > before changing the MIG mode or the MIG geometry on the GPUs.
-   > 1. Optional: Display the pods in the Operator namespace:
+
+   1. Optional: Display the pods in the Operator namespace:
 
    ```console
    $ kubectl get pods -n gpu-operator
@@ -304,7 +305,8 @@ In your values.yaml file, set `migManager.config.create` to `true`, set `migMana
 
 > [!NOTE]
 > Custom ConfigMaps must contain a key named "config.yaml"
-> 1. Install or upgrade the GPU Operator with this values file so the chart creates the ConfigMap:
+
+1. Install or upgrade the GPU Operator with this values file so the chart creates the ConfigMap:
 
    ```console
    $ helm upgrade --install gpu-operator -n gpu-operator --create-namespace \
@@ -388,7 +390,8 @@ You can create and apply a ConfigMap yourself if the default profiles do not mee
 
 > [!NOTE]
 > Custom ConfigMaps must contain a key named "config.yaml"
-> 1. Apply the manifest:
+
+1. Apply the manifest:
 
    ```console
    $ kubectl apply -n gpu-operator -f custom-mig-config.yaml

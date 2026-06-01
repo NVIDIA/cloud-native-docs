@@ -160,7 +160,8 @@ The steps create a self-managed node group that uses an Amazon EKS optimized AMI
    > The default volume size for each node is 20 GB.
    > In many cases, containers with frameworks for AI/ML workloads are often very large.
    > The sample YAML file specifies a 100 GB volume to ensure enough local disk space for containers.
-   > 1. Create the Amazon EKS cluster with the node group:
+
+   1. Create the Amazon EKS cluster with the node group:
 
    ```console
    $ eksctl create cluster -f cluster-config.yaml

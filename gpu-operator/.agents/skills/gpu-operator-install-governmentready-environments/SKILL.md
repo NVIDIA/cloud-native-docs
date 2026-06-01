@@ -26,7 +26,7 @@ For more information on NVIDIA's government-ready support, refer to the white pa
 
 ## Supported GPU Operator Components
 
-Refer to the operator-component-matrix for a full list of supported government-ready GPU Operator components.
+Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) for a full list of supported government-ready GPU Operator components.
 
 Artifacts for these components are available from the [NVIDIA NGC Catalog](https://registry.ngc.nvidia.com/orgs/nvstaging/teams/cloud-native/containers/gpu-driver-stig-fips).
 

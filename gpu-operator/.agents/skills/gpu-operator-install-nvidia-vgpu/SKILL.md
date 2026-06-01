@@ -208,7 +208,7 @@ Perform the following steps to build and push a container image that includes th
   ```
 
 The preceding command installs the Operator with the default configuration.
-Refer to gpu-operator-helm-chart-options for information about configuration options.
+Refer to the [GPU Operator Helm chart options](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options) for information about configuration options.
 
 ## Related Skills
 

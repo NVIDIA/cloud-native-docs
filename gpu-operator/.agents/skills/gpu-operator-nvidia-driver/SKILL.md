@@ -332,7 +332,8 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
    > [!TIP]
    > Because the manifest does not include a `nodeSelector` field, the driver custom
    > resource selects all nodes in the cluster that have an NVIDIA GPU.
-   > 1. Apply the manifest:
+
+   1. Apply the manifest:
 
    ```console
    $ kubectl apply -n gpu-operator -f nvd-precompiled-all.yaml
