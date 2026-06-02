@@ -20,282 +20,45 @@ tags:
 
 # Precompiled Driver Containers
 
+Use precompiled NVIDIA driver containers so driver pods do not download kernel
+headers / compiler tooling / OS packages and do not spend compute compiling
+modules at runtime — valuable for air-gapped or resource-constrained sites. This
+skill covers checking image availability, enabling/disabling precompiled
+support, and building a custom precompiled image when no published variant
+matches your kernel.
+
 ## Prerequisites
 
 - A running Kubernetes cluster with NVIDIA GPU worker nodes.
 - The `kubectl` and `helm` CLIs available on a client machine.
 - A supported operating system for which NVIDIA publishes precompiled driver containers. Refer to the [GPU Operator Component Matrix](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/life-cycle-policy.html#gpu-operator-component-matrix) for supported operating systems.
 
-## About Precompiled Driver Containers
-
-Containers with precompiled drivers do not require internet access to download Linux kernel
-header files, GCC compiler tooling, or operating system packages.
-
-Using precompiled drivers also avoids the burst of compute demand that is required
-to compile the kernel drivers with the conventional driver containers.
-
-These two benefits are valuable to most sites, but are especially beneficial to sites
-with restricted internet access or sites with resource-constrained hardware.
-
-### Limitations and Restrictions
-
-* Support for deploying the driver containers with precompiled drivers is limited to
-  hosts with the x86_64 architecture and operating system versions listed in the supported-precompiled-drivers table.
-
-  For information about using precompiled drivers with OpenShift Container Platform,
-  refer to [GPU Operator with precompiled drivers on OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/gpu-operator-with-precompiled-drivers.html).
-
-* NVIDIA supports precompiled driver containers for the most recently released long-term
-  servicing branch (LTSB) driver branch.
-
-* NVIDIA builds images for the `aws`, `azure`, `generic`, `nvidia`, and `oracle` kernel variants.
-  If your hosts run a different kernel variant, you can build a precompiled driver image
-  and use your own container registry.
-
-* Precompiled driver containers do not support NVIDIA vGPU or GPUDirect Storage (GDS).
-
-## Determining if a Precompiled Driver Container is Available
-
-The precompiled driver containers are named according to the following pattern:
-
-   <driver-branch>-<linux-kernel-version>-<os-tag>
-
-For example, `525-5.15.0-69-generic-ubuntu22.04`.
-
-Use one of the following ways to check if a driver container is available for your Linux kernel and driver branch:
-
-* Use a web browser to access the NVIDIA GPU Driver page of the NVIDIA GPU Cloud registry at
-  https://catalog.ngc.nvidia.com/orgs/nvidia/containers/driver/tags.
-  Use the search field to filter the tags by your operating system version.
-
-* Use the [NGC CLI](https://ngc.nvidia.com/setup/installers/cli) tool to list the tags for the driver container:
-
-  ```console
-  $ ngc registry image info nvidia/driver
-  ```
-
-  *Example Output*
-
-  ```output
-  Image Repository Information
-    Name: driver
-    Display Name: NVIDIA GPU Driver
-    Short Description: Provision NVIDIA GPU Driver as a Container.
-    Built By: NVIDIA
-    Publisher: NVIDIA
-    Multinode Support: False
-    Multi-Arch Support: True
-    Logo: https://assets.nvidiagrid.net/ngc/logos/Infrastructure.png
-    Labels: Multi-Arch, NVIDIA AI Enterprise Supported, Infrastructure Software, Kubernetes Infrastructure
-    Public: Yes
-    Last Updated: Apr 20, 2023
-    Latest Image Size: 688.87 MB
-    Latest Tag: 525-5.15.0-69-generic-ubuntu22.04
-    Tags:
-        525-5.15.0-69-generic-ubuntu22.04
-        525-5.15.0-70-generic-ubuntu22.04
-        ...
-  ```
-
-## Enabling Precompiled Driver Container Support During Installation
-
-> [!NOTE]
-> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
-
-Refer to the common instructions for installing the Operator with Helm at install-gpu-operator.
-Specify the `--set driver.usePrecompiled=true` and `--set driver.version=<driver-branch>` arguments like the following example command:
-
-```console
-$ helm install --wait gpu-operator \
-     -n gpu-operator --create-namespace \
-     nvidia/gpu-operator \
-     --version=<gpu-operator-version> \
-     --set driver.usePrecompiled=true \
-     --set driver.version="<driver-branch>"
-```
-
-Specify a value like `525` for `<driver-branch>`.
-Refer to Common Chart Customization Options for information about other installation options.
-
-## Enabling Support After Installation
-
-Perform the following steps to enable support for precompiled driver containers:
-
-1. Enable support by modifying the cluster policy:
-
-   ```shell
-   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-      -p='[
-        {"op":"replace", "path":"/spec/driver/usePrecompiled", "value":true},
-        {"op":"replace", "path":"/spec/driver/version", "value":"<driver-branch>"}
-      ]'
-   ```
-
-   Specify a value like `525` for `<driver-branch>`.
-
-   *Example Output*
-
-   ```output
-   clusterpolicy.nvidia.com/cluster-policy patched
-   ```
-
-1. Optional: Confirm that the driver daemon set pods terminate:
-
-   ```console
-   $ kubectl get pods -n gpu-operator
-   ```
-
-   *Example Output*
-
-1. Confirm that the driver container pods are running:
-
-   ```console
-   $ kubectl get pods -l app=nvidia-driver-daemonset -n gpu-operator
-   ```
-
-   *Example Output*
-
-   Ensure that the pod names include a Linux kernel semantic version number like `5.15.0-69-generic`.
-
-## Disabling Support for Precompiled Driver Containers
-
-Perform the following steps to disable support for precompiled driver containers:
-
-1. Disable support by modifying the cluster policy:
-
-   ```shell
-   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-       -p='[
-         {"op": "replace", "path": "/spec/driver/usePrecompiled", "value":false},
-         {"op": "replace", "path": "/spec/driver/version", "value":"550.90.07"},
-       ]'
-   ```
-
-   *Example Output*
-
-   ```output
-   clusterpolicy.nvidia.com/cluster-policy patched
-   ```
-
-1. Confirm that the conventional driver container pods are running:
-
-   ```console
-   $ kubectl get pods -l app=nvidia-driver-daemonset -n gpu-operator
-   ```
-
-   *Example Output*
-
-   Ensure that the pod names do not include a Linux kernel semantic version number.
-
-## Building a Custom Driver Container Image
-
-If a precompiled driver container for your Linux kernel variant is not available,
-you can perform the following steps to build and run a container image.
-
-> [!NOTE]
-> NVIDIA provides limited support for custom driver container images.
-### Prerequisites
-* You have access to a private container registry, such as NVIDIA NGC Private Registry, and can push container images to the registry.
-* Your build machine has access to the internet to download operating system packages.
-* You know a CUDA version, such as `12.1.0`, that you want to use.
-  The CUDA version only specifies which base image is used to build the driver container.
-  The version does not have any correlation to the version of CUDA that is associated with or supported by the resulting driver container.
-
-  One way to find a supported CUDA version for your operating system is to access the NVIDIA GPU Cloud registry
-  at https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags and view the tags.
-  Use the search field to filter the tags, such as `base-ubuntu22.04`.
-  The filtered results show the CUDA versions, such as `12.1.0`, `12.0.1`, `12.0.0`, and so on.
-* You know the GPU driver branch, such as `525`, that you want to use.
-
-### Procedure
-1. Clone the driver container repository and change directory into the repository:
-
-   ```console
-   $ git clone https://github.com/NVIDIA/gpu-driver-container.git
-   ```
-
-   ```console
-   $ cd gpu-driver-container
-   ```
-
-1. Change directory to the operating system name and version under the driver directory:
-
-   ```console
-   $ cd ubuntu22.04/precompiled
-   ```
-
-1. Set environment variables for building the driver container image.
-
-   -  Specify your private registry URL:
-
-      ```console
-      $ export PRIVATE_REGISTRY=<private-registry-url>
-      ```
-
-   - Specify the `KERNEL_VERSION` environment variable that matches your kernel variant, such as `5.15.0-1033-aws`:
-
-     ```console
-     $ export KERNEL_VERSION=5.15.0-1033-aws
-     ```
-
-   - Specify the version of the CUDA base image to use when building the driver container:
-
-     ```console
-     $ export CUDA_VERSION=12.1.0
-     ```
-
-   - Specify the driver branch, such as `525`:
-
-     ```console
-     $ export DRIVER_BRANCH=525
-     ```
-
-   - Specify the `OS_TAG` environment variable to identify the guest operating system name and version:
-
-     ```console
-     $ export OS_TAG=ubuntu22.04
-     ```
-
-     The value must match the guest operating system version.
-
-1. Build the driver container image:
-
-   ```console
-   $ sudo docker build \
-       --build-arg KERNEL_VERSION=$KERNEL_VERSION \
-       --build-arg CUDA_VERSION=$CUDA_VERSION \
-       --build-arg DRIVER_BRANCH=$DRIVER_BRANCH \
-       -t ${PRIVATE_REGISTRY}/driver:${DRIVER_BRANCH}-${KERNEL_VERSION}-${OS_TAG} .
-   ```
-
-1. Push the driver container image to your private registry.
-
-   - Log in to your private registry:
-
-     ```console
-     $ sudo docker login ${PRIVATE_REGISTRY} --username=<username>
-     ```
-
-     Enter your password when prompted.
-
-   - Push the driver container image to your private registry:
-
-     ```console
-     $ sudo docker push ${PRIVATE_REGISTRY}/driver:${DRIVER_BRANCH}-${KERNEL_VERSION}-${OS_TAG}
-     ```
-
-### Next Steps
-* To use the custom driver container image, follow the steps for enabling support during or after installation.
-
-  If you have not already installed the GPU Operator, in addition to the `--set driver.usePrecompiled=true`
-  and `--set driver.version=${DRIVER_BRANCH}` arguments for Helm, also specify the `--set driver.repository="$PRIVATE_REGISTRY"` argument.
-
-  If the container registry is not public, you need to create an image pull secret in the GPU Operator namespace
-  and specify it in the `--set driver.imagePullSecrets=<pull-secret>` argument.
-
-  If you already installed the GPU Operator, specify the private registry for the driver in the cluster policy:
-
-  ```console
-  $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
-      -p='[{"op": "replace", "path": "/spec/driver/repository", "value":"$PRIVATE_REGISTRY"}]'
-  ```
+## Activation
+
+Do this first: identify which phase the user's request maps to in the Phases
+table below, then **read the corresponding `references/<phase>.md` file before
+acting**. All command sequences, image-tag patterns, Helm `--set` flags,
+cluster-policy patches, and the custom-image build steps live only in those
+reference files — do not improvise commands from this dispatch layer.
+
+## Phases
+
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Concepts | What precompiled driver containers are, their benefits, and the limitations/restrictions (x86_64-only, LTSB branch, supported kernel variants, no vGPU/GDS). | [references/concepts.md](references/concepts.md) |
+| Availability | The `<driver-branch>-<kernel-version>-<os-tag>` naming pattern and how to check (NGC web catalog or `ngc registry image info nvidia/driver`) whether an image exists for your kernel. | [references/availability.md](references/availability.md) |
+| Enable / disable | Enable during install (`driver.usePrecompiled=true` + `driver.version`), enable after install (cluster-policy patch), and disable (cluster-policy patch back to a conventional driver version). | [references/enable-disable.md](references/enable-disable.md) |
+| Build custom image | When no published variant matches: prerequisites, clone `gpu-driver-container`, set build env vars, `docker build`, push to a private registry, and wire it up via `driver.repository` / `driver.imagePullSecrets`. | [references/build-custom.md](references/build-custom.md) |
+
+## Hard rules (apply across all phases)
+
+- Precompiled driver containers are x86_64-only, support the most recent LTSB driver branch, and do not support NVIDIA vGPU or GPUDirect Storage (GDS).
+- NVIDIA publishes images only for the `aws`, `azure`, `generic`, `nvidia`, and `oracle` kernel variants; other variants require a custom build.
+- When precompiled is active, driver pod names include the kernel semantic version (e.g., `5.15.0-69-generic`); when disabled, they do not — use this to verify the mode.
+- Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases). Never hardcode a version.
+
+## Verification
+
+Confirm the driver daemonset pods are `Running` and that their names do (precompiled)
+or do not (conventional) include a Linux kernel semantic version. Exact commands are in
+[references/enable-disable.md](references/enable-disable.md).
