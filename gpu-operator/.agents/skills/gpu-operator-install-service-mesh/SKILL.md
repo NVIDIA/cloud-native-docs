@@ -20,54 +20,41 @@ tags:
 
 # Install GPU Operator with Service Mesh
 
+Run the NVIDIA GPU Operator in a cluster that uses an Istio CNI or Linkerd CNI
+service mesh. The core requirement is that the driver's `k8s-driver-manager`
+init container can reach the Kubernetes API server, which conflicts with
+default sidecar injection.
+
 ## Prerequisites
 
 - A running Kubernetes cluster with NVIDIA GPU worker nodes.
 - A service mesh based on Istio CNI or Linkerd CNI installed in the cluster.
 - The `kubectl` and `helm` CLIs available on a client machine.
 
-## Special Considerations for Service Meshes
+## Activation
 
-You can use NVIDIA GPU Operator in a cluster that uses a service mesh provided by Istio CNI or Linkerd CNI.
+Do this first: identify which phase the user's request maps to in the Phases
+table below, then **read the corresponding `references/<phase>.md` file before
+acting**. All command sequences and verification output live only in those
+reference files — do not improvise commands from this dispatch layer.
 
-The typical consideration for using the Operator with a service mesh is that the `k8s-driver-manager` init container
-for the `driver` container needs network access to the Kubernetes API server of the cluster.
+## Phases
 
-The data plane---implemented by Istio CNI or Linkerd CNI as proxies running as sidecar containers---must be running for any pod networking to work.
-The proxy sidecar containers start only after the init phase of the pod, so init containers are not able to communicate with the API server.
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Considerations | Why service-mesh sidecars break the driver init container's API-server access, and why NVIDIA recommends disabling injection for the Operator namespace. | [references/considerations.md](references/considerations.md) |
+| Disable injection | Label the `gpu-operator` namespace to disable Istio/Linkerd sidecar injection, then install (via the `gpu-operator-install` skill) and verify pods start. | [references/disable-injection.md](references/disable-injection.md) |
 
-To address the connectivity challenge, NVIDIA recommends disabling injection for the GPU Operator namespace.
-Refer to the following documentation for more information:
+## Hard rules (apply across all phases)
 
-- [Controlling the injection policy](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#controlling-the-injection-policy)
-  in the Istio documentation.
-- [Overriding injection](https://linkerd.io/2.14/features/proxy-injection/#overriding-injection)
-  in the Linkerd documentation.
-
-## Label the Namespace to Disable Injection
-
-- Label the Operator namespace to prevent automatic injection:
-
-  ```console
-  $ kubectl label namespace gpu-operator istio-injection=disabled
-  ```
-
-  Or, for Linkerd:
-
-  ```console
-  $ kubectl label namespace gpu-operator linkerd.io/inject=disabled
-  ```
-
-If the GPU Operator is not already installed, use the `gpu-operator-install` skill for information about custom options and common installation scenarios.
+- Disable sidecar injection for the `gpu-operator` namespace specifically; do not disable it cluster-wide.
+- Use the injection-disable label matching your mesh (`istio-injection=disabled` for Istio, `linkerd.io/inject=disabled` for Linkerd).
+- For Operator install options and scenarios, defer to the `gpu-operator-install` skill rather than duplicating install steps here.
 
 ## Verification
 
-After labeling the namespace and installing the Operator, confirm that the GPU Operator pods start successfully despite the service mesh:
-
-1. Confirm the Operator pods are running:
-
-   ```console
-   $ kubectl get pods -n gpu-operator
-   ```
-
-   All operands, including the `nvidia-driver-daemonset` and `nvidia-operator-validator` pods, should report `Running` or `Completed`. If the `k8s-driver-manager` init container is stuck, confirm that sidecar injection is disabled for the `gpu-operator` namespace.
+After labeling and installing, confirm all Operator operands (including
+`nvidia-driver-daemonset` and `nvidia-operator-validator`) report `Running` or
+`Completed`. A stuck `k8s-driver-manager` init container indicates injection is
+still enabled for the namespace. Exact commands are in
+[references/disable-injection.md](references/disable-injection.md).

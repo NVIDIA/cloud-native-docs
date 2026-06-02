@@ -20,93 +20,43 @@ tags:
 
 # Install GPU Operator in Proxy Environments
 
+Deploy the GPU Operator in clusters behind an HTTP proxy. By default the
+Operator needs internet access to pull container images and to let the
+`driver` container download OS packages; this skill configures the `driver`
+container to route that traffic through the proxy. Configuring Kubernetes /
+container-runtime components for the proxy is out of scope (not GPU-Operator-specific).
+
+> [!TIP]
+> Using precompiled drivers removes the need for the `driver` container to download OS packages (use the `gpu-operator-precompiled-drivers` skill).
+
 ## Prerequisites
 
 - A Kubernetes cluster configured with HTTP proxy settings, where the container runtime is enabled with the HTTP proxy.
 - The `kubectl` and `helm` CLIs available on a client machine.
 
-## Introduction
+## Activation
 
-This page describes how to successfully deploy the GPU Operator in clusters behind an HTTP proxy.
-By default, the GPU Operator requires internet access for the following reasons:
+Do this first: choose the phase matching your platform from the Phases table
+below, then **read the corresponding `references/<phase>.md` file before
+acting**. All command sequences, `values.yaml` content, and manifest details
+live only in those reference files — do not improvise commands from this
+dispatch layer.
 
-1. Container images need to be pulled during GPU Operator installation.
-1. The `driver` container needs to download several OS packages prior to driver installation.
+## Phases
 
-   > [!TIP]
-   > Using precompiled drivers removes the need for the `driver` containers to download operating system packages (use the `gpu-operator-precompiled-drivers` skill).
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Openshift | Use the cluster-wide Proxy object; the Operator auto-injects proxy ENV into the `driver` container. Skip the non-Openshift phase. | [references/openshift.md](references/openshift.md) |
+| Configure and deploy (non-Openshift) | Fetch `values.yaml`, set `driver.env` proxy variables (upper- and lowercase HTTP_PROXY/HTTPS_PROXY/NO_PROXY), fetch the chart, and install with the updated values. | [references/configure-and-deploy.md](references/configure-and-deploy.md) |
 
-To address these requirements, all Kubernetes nodes as well as the `driver` container need proper configuration in order to direct traffic through the proxy.
+## Hard rules (apply across all phases)
 
-This document demonstrates how to configure the GPU Operator so that the `driver` container can successfully
-download packages behind a HTTP proxy. Since configuring Kubernetes/container runtime components to use
-a proxy is not specific to the GPU Operator, we do not include those instructions here.
+- On Openshift, do not hand-edit `driver.env`; configure the cluster-wide Proxy object and let the Operator inject the values.
+- Set proxy variables in both uppercase and lowercase forms.
+- Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases). Never hardcode a version.
 
-The instructions for Openshift are different, so skip the **HTTP Proxy Configuration for Openshift** section if you are not running Openshift.
+## Verification
 
-## HTTP Proxy Configuration for Openshift
-
-For Openshift, it is recommended to use the cluster-wide Proxy object to provide proxy information for the cluster.
-Follow the procedure described in [Configuring the cluster-wide proxy](https://docs.openshift.com/container-platform/latest/networking/enable-cluster-wide-proxy.html)
-from Red Hat Openshift public documentation. The GPU Operator will automatically inject proxy related ENV into the `driver` container
-based on information present in the cluster-wide Proxy object.
-
-## HTTP Proxy Configuration
-
-> [!NOTE]
-> Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases).
-
-First, get the `values.yaml` file used for GPU Operator configuration:
-
-```console
-$ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/<gpu-operator-version>/deployments/gpu-operator/values.yaml
-```
-
-Specify `driver.env` in `values.yaml` with appropriate HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables
-(in both uppercase and lowercase).
-
-```yaml
-driver:
-   env:
-   - name: HTTPS_PROXY
-     value: http://<example.proxy.com:port>
-   - name: HTTP_PROXY
-     value: http://<example.proxy.com:port>
-   - name: NO_PROXY
-     value: <example.com>
-   - name: https_proxy
-     value: http://<example.proxy.com:port>
-   - name: http_proxy
-     value: http://<example.proxy.com:port>
-   - name: no_proxy
-     value: <example.com>
-```
-
-> [!NOTE]
-> * Proxy related ENV are automatically injected by GPU Operator into the `driver` container to indicate proxy information used when downloading necessary packages.
-> * If HTTPS Proxy server is setup then change the values of HTTPS_PROXY and https_proxy to use `https` instead.
-
-## Deploy GPU Operator
-
-Download and deploy GPU Operator Helm Chart with the updated `values.yaml`.
-
-Fetch the chart from the NGC repository:
-
-```console
-$ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-<gpu-operator-version>.tgz
-```
-
-Install the GPU Operator with updated `values.yaml`:
-
-```console
-$ helm install --wait gpu-operator \
-     -n gpu-operator --create-namespace \
-     gpu-operator-<gpu-operator-version>.tgz \
-     -f values.yaml
-```
-
-Check the status of the pods to ensure all the containers are running:
-
-```console
-$ kubectl get pods -n gpu-operator
-```
+After install, run `kubectl get pods -n gpu-operator` and confirm all
+containers reach `Running`/`Completed`. Exact commands are in
+[references/configure-and-deploy.md](references/configure-and-deploy.md).
