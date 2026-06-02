@@ -2,7 +2,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 # About the NVIDIA GPU Operator
 
-![](graphics/nvidia-gpu-operator-image.jpg)
+![NVIDIA GPU Operator architecture](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/_images/nvidia-gpu-operator-image.jpg)
+
 Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices
 through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/).
 However, configuring and managing nodes with these hardware resources requires
@@ -16,20 +17,20 @@ automatic node labeling using [GFD](https://github.com/NVIDIA/gpu-feature-discov
 
 Browse through the following documents for getting started, platform support and release notes for the NVIDIA GPU Operator.
 
-**Red Hat OpenShift Container Platform:**
+> [!TIP]
+> For Red Hat OpenShift Container Platform, refer to [NVIDIA GPU Operator on Red Hat OpenShift](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html) for information about installing, managing, and upgrading the Operator.
 
-Refer to :external+ocpindex for information about installing, managing, and upgrading the Operator on Red Hat OpenShift Container Platform.
 ### Getting Started
 
-The operator-install-guide guide includes information on installing the GPU Operator in a Kubernetes cluster.
+For installing the GPU Operator in a Kubernetes cluster, use the `gpu-operator-install` skill.
 
 ### Release Notes
 
-Refer to operator-release-notes for information about releases.
+For information about releases, see the release notes (use the `gpu-operator-references` skill and load `references/release-notes.md`).
 
 ### Platform Support
 
-The operator-platform-support describes the supported platform configurations.
+For the supported platform configurations, see platform support (use the `gpu-operator-references` skill and load `references/platform-support.md`).
 
 ## Licenses and Contributing
 
@@ -40,25 +41,25 @@ more information on how to contribute and the release artifacts.
 The base images used by the software might include software that is licensed under open-source licenses such as GPL.
 The source code for these components is archived on the CUDA opensource [index](https://developer.download.nvidia.com/compute/cuda/opensource/).
 
-The following table identifieis the licenses for the Operator and software components.
+The following table identifies the licenses for the Operator and software components.
 By installing and using the GPU Operator, you accept the terms and conditions of these licenses.
 
 | Component | Artifact Type | Artifact Licenses |
 | --- | --- | --- |
 | NVIDIA GPU Operator | Helm Chart | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) |
-| NVIDIA GPU Operator | Image | pstai_ |
-| NVIDIA GPU Feature Discovery | Image | pstai_ |
-| NVIDIA GPU Driver | Image | [License for Customer Use of NVIDIA Software](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us) pstai_ |
-| NVIDIA Container Toolkit | Image | pstai_ |
-| NVIDIA Kubernetes Device Plugin | Image | pstai_ |
-| NVIDIA MIG Manager for Kubernetes | Image | pstai_ |
-| Validator for NVIDIA GPU Operator | Image | pstai_ |
-| NVIDIA DCGM | Image | pstai_ |
-| NVIDIA DCGM Exporter | Image | pstai_ |
-| NVIDIA Driver Manager for Kubernetes | Image | pstai_ |
-| NVIDIA KubeVirt GPU Device Plugin | Image | pstai_ |
-| NVIDIA vGPU Device Manager | Image | pstai_ |
-| NVIDIA GDS Driver | Image | [License for Customer Use of NVIDIA Software](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us) pstai_ |
-| NVIDIA Confidential Computing Manager for Kubernetes | Image | pstai_ |
-| NVIDIA Kata Manager for Kubernetes | Image | pstai_ |
-| NVIDIA GDRCopy Driver | Image | pstai_ |
+| NVIDIA GPU Operator | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA GPU Feature Discovery | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA GPU Driver | Image | [License for Customer Use of NVIDIA Software](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us)<br>[Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA Container Toolkit | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA Kubernetes Device Plugin | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA MIG Manager for Kubernetes | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| Validator for NVIDIA GPU Operator | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA DCGM | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA DCGM Exporter | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA Driver Manager for Kubernetes | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA KubeVirt GPU Device Plugin | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA vGPU Device Manager | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA GDS Driver | Image | [License for Customer Use of NVIDIA Software](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us)<br>[Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA Confidential Computing Manager for Kubernetes | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA Kata Manager for Kubernetes | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |
+| NVIDIA GDRCopy Driver | Image | [Product-Specific Terms for NVIDIA AI Products](https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-ai-products/) |

@@ -16,9 +16,8 @@ All prior major versions enter end of support and are no longer supported and do
 
 The product life cycle and versioning are subject to change in the future.
 
-**Note:**
-
-Upgrades are only supported within a major release or to the next major release.
+> [!NOTE]
+> Upgrades are only supported within a major release or to the next major release.
 | GPU Operator Version | Status |
 | --- | --- |
 | 26.3.x | Supported |
@@ -31,9 +30,8 @@ The following table shows the operands and default operand versions that corresp
 When post-release testing confirms support for newer versions of operands, these updates are identified as *recommended updates* to a GPU Operator version.
 Refer to Upgrading the NVIDIA GPU Operator for more information.
 
-**Note:**
-
-All the following components are supported as government-ready in the NVIDIA GPU Operator v26.3, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
+> [!NOTE]
+> All the following components are supported as government-ready in the NVIDIA GPU Operator v26.3, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
 **D** = Default driver, **R** = Recommended driver
 
 | 1 Component | 1 GPU Operator Version |  |
@@ -55,10 +53,9 @@ All the following components are supported as government-ready in the NVIDIA GPU
 | NVIDIA Confidential Computing Manager for Kubernetes | [v0.3.0](https://github.com/NVIDIA/k8s-cc-manager/releases) | [v0.4.0](https://github.com/NVIDIA/k8s-cc-manager/releases) |
 | NVIDIA GDRCopy Driver | [v2.5.1](https://github.com/NVIDIA/gdrcopy/releases) | [v2.5.2](https://github.com/NVIDIA/gdrcopy/releases) |
 | NVIDIA Kata Sandbox Device Plugin | [v0.0.2](https://github.com/NVIDIA/sandbox-device-plugin/releases) | [v0.0.3](https://github.com/NVIDIA/sandbox-device-plugin/releases) |
-**Note:**
-
-- Driver version could be different with NVIDIA vGPU, as it depends on the driver
-  version downloaded from the [NVIDIA Licensing Portal](https://ui.licensing.nvidia.com).
-- The GPU Operator is supported on all active NVIDIA data center production drivers.
-  Refer to [Supported Drivers and CUDA Toolkit Versions](https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions)
-  for more information.
+> [!NOTE]
+> - Driver version could be different with NVIDIA vGPU, as it depends on the driver
+>   version downloaded from the [NVIDIA Licensing Portal](https://ui.licensing.nvidia.com).
+> - The GPU Operator is supported on all active NVIDIA data center production drivers.
+>   Refer to [Supported Drivers and CUDA Toolkit Versions](https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions)
+>   for more information.

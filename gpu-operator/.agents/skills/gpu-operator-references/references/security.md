@@ -23,7 +23,7 @@ As a best practice, establish proper security policies and prevent any other use
 ## CVEs
 
 The following is a list of known CVEs in the GPU Operator or its operands.
-To view any published security bulletins for NVIDIA products published security bulletins for NVIDIA products, refer to the NVIDIA product security page at https://www.nvidia.com/en-us/security/.
+To view any published security bulletins for NVIDIA products, refer to the NVIDIA product security page at https://www.nvidia.com/en-us/security/.
 
 | CVE ID | Affected Components | Fixed Version |
 | --- | --- | --- |

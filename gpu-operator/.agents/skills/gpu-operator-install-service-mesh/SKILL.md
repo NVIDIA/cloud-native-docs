@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-install-service-mesh"
-description: "Guides users through GPU Operator service mesh considerations. Use when deploying with Istio or troubleshooting sidecar injection and service mesh interactions. Trigger keywords - NVIDIA GPU Operator, service mesh, Istio, Kubernetes."
+description: "Guides users through GPU Operator service mesh considerations. Use when deploying with Istio or troubleshooting sidecar injection and service mesh interactions."
+triggers:
+  - NVIDIA GPU Operator
+  - service mesh
+  - Istio
+  - Kubernetes
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - service-mesh
+  - istio
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,38 +20,41 @@ description: "Guides users through GPU Operator service mesh considerations. Use
 
 # Install GPU Operator with Service Mesh
 
-## Step 1: Special Considerations for Service Meshes
+Run the NVIDIA GPU Operator in a cluster that uses an Istio CNI or Linkerd CNI
+service mesh. The core requirement is that the driver's `k8s-driver-manager`
+init container can reach the Kubernetes API server, which conflicts with
+default sidecar injection.
 
-You can use NVIDIA GPU Operator in a cluster that uses a service mesh provided by Istio CNI or Linkerd CNI.
+## Prerequisites
 
-The typical consideration for using the Operator with a service mesh is that the `k8s-driver-manager` init container
-for the `driver` container needs network access to the Kubernetes API server of the cluster.
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- A service mesh based on Istio CNI or Linkerd CNI installed in the cluster.
+- The `kubectl` and `helm` CLIs available on a client machine.
 
-The data plane---implemented by Istio CNI or Linkerd CNI as proxies running as sidecar containers---must be running for any pod networking to work.
-The proxy sidecar containers start only after the init phase of the pod, so init containers are not able to communicate with the API server.
+## Activation
 
-To address the connectivity challenge, NVIDIA recommends disabling injection for the GPU Operator namespace.
-Refer to the following documentation for more information:
+Do this first: identify which phase the user's request maps to in the Phases
+table below, then **read the corresponding `references/<phase>.md` file before
+acting**. All command sequences and verification output live only in those
+reference files — do not improvise commands from this dispatch layer.
 
-- [Controlling the injection policy](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#controlling-the-injection-policy)
-  in the Istio documentation.
-- [Overriding injection](https://linkerd.io/2.14/features/proxy-injection/#overriding-injection)
-  in the Linkerd documentation.
+## Phases
 
-## Step 2: Label the Namespace to Disable Injection
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Considerations | Why service-mesh sidecars break the driver init container's API-server access, and why NVIDIA recommends disabling injection for the Operator namespace. | [references/considerations.md](references/considerations.md) |
+| Disable injection | Label the `gpu-operator` namespace to disable Istio/Linkerd sidecar injection, then install (via the `gpu-operator-install` skill) and verify pods start. | [references/disable-injection.md](references/disable-injection.md) |
 
-- Label the Operator namespace to prevent automatic injection:
+## Hard rules (apply across all phases)
 
-  ```console
-  $ kubectl label namespace gpu-operator istio-injection=disabled
-  ```
+- Disable sidecar injection for the `gpu-operator` namespace specifically; do not disable it cluster-wide.
+- Use the injection-disable label matching your mesh (`istio-injection=disabled` for Istio, `linkerd.io/inject=disabled` for Linkerd).
+- For Operator install options and scenarios, defer to the `gpu-operator-install` skill rather than duplicating install steps here.
 
-  Or, for Linkerd:
+## Verification
 
-  ```console
-  $ kubectl label namespace gpu-operator linkerd.io/inject=disabled
-  ```
-
-If the GPU Operator is not already installed, refer to
-getting-started
-for information about custom options and common installation scenarios.
+After labeling and installing, confirm all Operator operands (including
+`nvidia-driver-daemonset` and `nvidia-operator-validator`) report `Running` or
+`Completed`. A stuck `k8s-driver-manager` init container indicates injection is
+still enabled for the namespace. Exact commands are in
+[references/disable-injection.md](references/disable-injection.md).

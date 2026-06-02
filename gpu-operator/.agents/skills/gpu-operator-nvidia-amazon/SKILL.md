@@ -1,6 +1,19 @@
 ---
 name: "gpu-operator-nvidia-amazon"
-description: "Guides users through installing and configuring the NVIDIA GPU Operator on Amazon EKS. Use when deploying GPU workloads on AWS or troubleshooting EKS-specific GPU Operator setup. Trigger keywords - NVIDIA GPU Operator, Amazon EKS, AWS, Kubernetes, installation."
+description: "Guides users through installing and configuring the NVIDIA GPU Operator on Amazon EKS. Use when deploying GPU workloads on AWS or troubleshooting EKS-specific GPU Operator setup."
+triggers:
+  - NVIDIA GPU Operator
+  - Amazon EKS
+  - AWS
+  - Kubernetes
+  - installation
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - aws
+  - eks
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,160 +21,41 @@ description: "Guides users through installing and configuring the NVIDIA GPU Ope
 
 # NVIDIA GPU Operator with Amazon EKS
 
-## Step 1: Approaches for Working with Amazon EKS
+Deploy the NVIDIA GPU Operator on Amazon EKS. The recommended approach is to
+create a GPU node group on an Operator-supported AMI (Ubuntu) so the Operator
+manages the full driver/toolkit/device-plugin lifecycle, rather than relying on
+the default Amazon Linux AMI's preinstalled (lagging) driver.
 
-You can approach running workloads in Amazon EKS with NVIDIA GPUs in at least two ways.
+## Prerequisites
 
-### Default EKS configuration without the GPU Operator
+- An AWS account, plus the AWS CLI and `eksctl` installed and configured (see the per-example prerequisites below for details).
+- The `kubectl` and `helm` CLIs available on a client machine.
+- An Amazon EKS cluster, or the ability to create one, with a GPU-enabled node group that uses an AMI with an operating system that the GPU Operator supports.
 
-By default, you can run Amazon EKS optimized Amazon Linux AMIs on instance types
-that support NVIDIA GPUs.
+## Activation
 
-Using the default configuration has the following limitations:
+Do this first: identify which phase the user's request maps to in the Phases
+table below, then **read the corresponding `references/<phase>.md` file before
+acting**. All `eksctl`/`kubectl` command sequences, the `ClusterConfig` YAML,
+and verification output live only in those reference files — do not improvise
+commands from this dispatch layer.
 
-* The pre-installed NVIDIA GPU driver version and NVIDIA container runtime version
-  lags the release schedule from NVIDIA.
-* You must deploy the NVIDIA device plugin and you assume responsibility for
-  upgrading the plugin.
+## Phases
 
-If these limitations are acceptable to you, refer to
-[Amazon EKS optimized Amazon Linux AMIs](https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html)
-in the Amazon EKS documentation for information about configuring your cluster.
-You do not need to install the NVIDIA GPU Operator.
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Approaches | The two EKS options (default Amazon Linux without the Operator vs a GPU node group with the Operator), node-group/client-application choices (self-managed vs managed; eksctl/Console/Terraform), and the high-level steps + instance-type/AMI selection guidance. | [references/approaches.md](references/approaches.md) |
+| eksctl example | A worked self-managed-node-group example: the `cluster-config.yaml` (`ClusterConfig`), `eksctl create cluster`, and post-install verification that GPU nodes advertise capacity and the validator completes. | [references/eksctl-example.md](references/eksctl-example.md) |
 
-### EKS Node Group with the GPU Operator
+## Hard rules (apply across all phases)
 
-To overcome the limitations with the first approach, you can create a node group for your cluster.
-Configure the node group with instance types that have
-NVIDIA GPUs and use an AMI with an operating system that the GPU Operator supports.
-The Operator does not support a mix of some nodes running Amazon Linux 2 and others
-running a supported operating system in the same cluster.
+- The GPU Operator does not support Amazon Linux 2; use a supported AMI (Ubuntu 20.04/22.04) and do not mix Amazon Linux 2 nodes with supported-OS nodes in the same cluster.
+- Choose an instance type with enough pod IP addresses for your workload (e.g., `g4dn.xlarge` supports 29).
+- AMI values are region- and Kubernetes-version-specific; look them up rather than hardcoding.
+- After the node group exists, install the Operator via the `gpu-operator-install` skill.
 
-In this case, the Operator manages the lifecycle of all the operands, including
-the NVIDIA GPU driver containers.
-This approach enables you to run the most recent NVIDIA GPU drivers and use the
-Operator to manage upgrades of the driver and other software components such as
-the NVIDIA device plugin, NVIDIA Container Toolkit, and NVIDIA MIG Manager.
+## Verification
 
-This approach provides the most up-to-date software and the Operator reduces
-the administrative overhead.
-
-### EKS Node Groups in Brief and Client Applications
-
-When you configure an Amazon EKS node group, you can configure
-[self-managed nodes](https://docs.aws.amazon.com/eks/latest/userguide/worker.html)
-or [managed nodes groups](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html).
-
-Amazon EKS supports many clients for creating a node group.
-
-For self-managed nodes, you can use the `eksctl` CLI or Amazon Management Console.
-Refer to the preceding URL for concepts and procedures.
-
-For managed node groups, you can use the Amazon Management Console.
-The Amazon EKS documentation describes how to use the `eksctl` CLI,
-but the CLI does not support operating systems other than Amazon Linux 2 and
-the Operator does not support that operating system.
-Refer to the preceding URL for concepts and procedures.
-
-Terraform supports creating self-managed and managed node groups.
-Refer to
-[AWS EKS Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest)
-in the Terraform Registry for more information.
-
-## About Using the Operator with Amazon EKS
-
-To use the NVIDIA GPU Operator with Amazon Elastic Kubernetes Service (EKS)
-without any limitations, you perform the following high-level actions:
-
-* Create a self-managed or managed node group with instance types that have NVIDIA GPUs.
-
-  Refer to the following resources in the Amazon EC2 documentation to help you choose
-  the instance type to meet your needs:
-
-  * Table of accelerated computing
-    [instance types](https://aws.amazon.com/ec2/instance-types/accelerated-computing/)
-    for information about GPU model and count, RAM, and storage.
-
-  * [Maximum IP addresses per network interface](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html)
-    for accelerated computing instance types.
-    Make sure the instance type supports enough IP addresses for your workload.
-    For example, the `g4dn.xlarge` instance type supports `29` IP addresses for pods on the node.
-
-* Use an Amazon EKS optimized Amazon Machine Image (AMI) with a supported operating system (use the `gpu-operator-references` skill) on the nodes in the node group.
-
-  AMIs support are specific to an AWS region and Kubernetes version.
-  See https://cloud-images.ubuntu.com/aws-eks/ for the AMI values such as `ami-00687acd80b7a620a`.
-
-* Use your preferred client application to create the node group.
-
-## Step 2: Example: Create a Self-Managed Node Group with eksctl
-
-### Prerequisites
-
-* You have access to the Amazon Management Console or you installed and configured the AWS CLI.
-  Refer to
-  [Installing or updating to the latest version of the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-  and [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
-  in the AWS CLI documentation.
-* You installed the `eksctl` CLI if you prefer it as your client application.
-  The CLI is available from https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html#eksctl-install-update.
-* You have the AMI value from https://cloud-images.ubuntu.com/aws-eks/.
-* You have the EC2 instance type to use for your nodes.
-
-### Procedure
-
-The following steps show how to create an Amazon EKS cluster with the `eksctl` CLI.
-The steps create a self-managed node group that uses an Amazon EKS optimized AMI.
-
-1. Create a file, such as `cluster-config.yaml`, with contents like the following example:
-
-   Replace the values for the cluster name, Kubernetes version, and so on.
-   To resolve the environment variables in the override bootstrap command, you must source the bootstrap helper script.
-
-   **Tip:**
-
-   The default volume size for each node is 20 GB.
-   In many cases, containers with frameworks for AI/ML workloads are often very large.
-   The sample YAML file specifies a 100 GB volume to ensure enough local disk space for containers.
-1. Create the Amazon EKS cluster with the node group:
-
-   ```console
-   $ eksctl create cluster -f cluster-config.yaml
-   ```
-
-   Creating the cluster requires several minutes.
-
-   *Example Output*
-
-   ```output
-   2022-08-19 17:51:04 [i]  eksctl version 0.105.0
-   2022-08-19 17:51:04 [i]  using region us-west-2
-   2022-08-19 17:51:04 [i]  setting availability zones to [us-west-2d us-west-2c us-west-2a]
-   2022-08-19 17:51:04 [i]  subnets for us-west-2d - public:192.168.0.0/19 private:192.168.96.0/19
-   ...
-   [✓]  EKS cluster "demo-cluster" in "us-west-2" region is ready
-   ```
-
-1. Optional: View the cluster name:
-
-   ```console
-   $ eksctl get cluster
-   ```
-
-   *Example Output*
-
-   ```output
-   NAME          REGION     EKSCTL CREATED
-   demo-cluster  us-west-2  True
-   ```
-
-## Step 3: Related Information
-
-* The preceding procedure is derived from
-  [Getting started with Amazon EKS - eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)
-  in the Amazon EKS documentation.
-* If you have an existing Amazon EKS cluster, you can refer to
-  [Launching self-managed Amazon Linux nodes](https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html)
-  in the Amazon EKS documentation to add a self-managed node group to your cluster.
-  However, all nodes in the cluster must run Ubuntu 20.04 or 22.04.
-  This documentation includes steps for using the AWS Management Console.
+Confirm GPU nodes advertise `nvidia.com/gpu` capacity and the
+`nvidia-operator-validator` pod is `Completed`. Exact commands are in
+[references/eksctl-example.md](references/eksctl-example.md).

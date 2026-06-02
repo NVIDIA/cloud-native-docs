@@ -1,6 +1,18 @@
 ---
 name: "gpu-operator-custom-driver"
-description: "Shows how to provide custom NVIDIA driver parameters to GPU Operator driver containers. Use when changing driver module options or customizing driver container behavior. Trigger keywords - NVIDIA GPU Operator, driver parameters, NVIDIA driver, configuration."
+description: "Shows how to provide custom NVIDIA driver parameters to GPU Operator driver containers. Use when changing driver module options or customizing driver container behavior."
+triggers:
+  - NVIDIA GPU Operator
+  - driver parameters
+  - NVIDIA driver
+  - configuration
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - driver
+  - configuration
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
@@ -8,97 +20,42 @@ description: "Shows how to provide custom NVIDIA driver parameters to GPU Operat
 
 # Customizing NVIDIA GPU Driver Parameters during Installation
 
-The NVIDIA Driver kernel modules accept a number of parameters which can be used to customize the behavior of the driver.
-By default, the GPU Operator loads the kernel modules with default values.
-On a machine with the driver already installed, you can list the parameter names and values with the `cat /proc/driver/nvidia/params` command.
-You can pass custom parameters to the kernel modules that get loaded as part of the
-NVIDIA Driver installation (`nvidia`, `nvidia-modeset`, `nvidia-uvm`, and `nvidia-peermem`).
+The NVIDIA Driver kernel modules accept a number of parameters that customize
+driver behavior. By default, the GPU Operator loads the kernel modules
+(`nvidia`, `nvidia-modeset`, `nvidia-uvm`, and `nvidia-peermem`) with default
+values. This skill shows how to supply custom kernel-module parameters through
+a `ConfigMap` referenced at install time.
 
-## Step 1: Configure Custom Driver Parameters
+## Prerequisites
 
-To pass custom parameters, execute the following steps.
+- A running Kubernetes cluster with NVIDIA GPU worker nodes.
+- The NVIDIA GPU Operator installed (use the `gpu-operator-install` skill).
+- The GPU Operator deploys the NVIDIA driver as a container (`driver.enabled=true`, the default). Custom kernel-module parameters do not apply when you use pre-installed host drivers.
 
-1. Create a configuration file named `<module>.conf`, where `<module>` is the name of the kernel module the parameters are for.
-   The file should contain parameters as key-value pairs -- one parameter per line.
+## Activation
 
-   The following example shows the GPU firmware logging parameter being passed to the `nvidia` module.
+Do this first: identify which phase the user's request maps to in the Phases
+table below, then **read the corresponding `references/<phase>.md` file before
+acting**. All command sequences, manifest contents, and verification output
+live only in those reference files — do not improvise commands from this
+dispatch layer.
 
-   ```console
-   $ cat nvidia.conf
-   NVreg_EnableGpuFirmwareLogs=2
-   ```
+## Phases
 
-1. Create a `ConfigMap` for the configuration file.
-   If multiple modules are being configured, pass multiple files when creating the `ConfigMap`.
+| Phase | Summary | Reference |
+|-------|---------|-----------|
+| Configure | Create a `<module>.conf` parameter file, wrap it in a `ConfigMap`, and install the GPU Operator with `driver.kernelModuleConfig.name` pointing at it. | [references/configure.md](references/configure.md) |
+| Example (`nvidia-uvm`) | A worked example that disables Heterogeneous Memory Management (HMM) via `uvm_disable_hmm`, plus how to verify the parameter on the node. | [references/example-nvidia-uvm.md](references/example-nvidia-uvm.md) |
 
-   ```console
-   $ kubectl create configmap kernel-module-params -n gpu-operator --from-file=nvidia.conf=./nvidia.conf
-   ```
+## Hard rules (apply across all phases)
 
-1. Install the GPU Operator and set `driver.kernelModuleConfig.name` to the name of the `ConfigMap`
-   containing the kernel module parameters.
+- The `<module>.conf` filename must match the kernel module the parameters apply to (`nvidia`, `nvidia-modeset`, `nvidia-uvm`, or `nvidia-peermem`).
+- Parameters are key-value pairs, one per line.
+- Replace `<gpu-operator-version>` with your target GPU Operator release; see the [releases page](https://github.com/NVIDIA/gpu-operator/releases). Never hardcode a version.
 
-   ```console
-   $ helm install --wait --generate-name \
-      -n gpu-operator --create-namespace \
-      nvidia/gpu-operator \
-      --version=${version} \
-      --set driver.kernelModuleConfig.name="kernel-module-params"
-   ```
+## Verification
 
-### Example using `nvidia-uvm` module
-
-This example shows the Heterogeneous Memory Management (HMM) being disabled in the `nvidia-uvm` module.
-Refer to [Simplifying GPU Application Development with Heterogeneous Memory Management](https://developer.nvidia.com/blog/simplifying-gpu-application-development-with-heterogeneous-memory-management/) for more information about HMM.
-
-1. Create a configuration file named `nvidia-uvm.conf`:
-
-   ```console
-   $ cat nvidia-uvm.conf
-   uvm_disable_hmm=1
-   ```
-
-1. Create a `ConfigMap` for the configuration file.
-   If multiple modules are being configured, pass multiple files when creating the `ConfigMap`.
-
-   ```console
-   $ kubectl create configmap kernel-module-params -n gpu-operator --from-file=nvidia-uvm.conf=./nvidia-uvm.conf
-   ```
-
-1. Install the GPU Operator and set `driver.kernelModuleConfig.name` to the name of the `ConfigMap`
-   containing the kernel module parameters.
-
-   ```console
-   $ helm install --wait --generate-name \
-      -n gpu-operator --create-namespace \
-      nvidia/gpu-operator \
-      --version=${version} \
-      --set driver.kernelModuleConfig.name="kernel-module-params"
-   ```
-
-1. Verify the parameter has been correctly applied, go to `/sys/module/nvidia_uvm/parameters/` on the node:
-
-   ```console
-   $ ls /sys/module/nvidia_uvm/parameters/
-   ```
-
-   *Example Output*
-
-   ```output
-   ...
-   uvm_disable_hmm                               uvm_perf_access_counter_migration_enable  uvm_perf_prefetch_min_faults
-   uvm_downgrade_force_membar_sys                uvm_perf_access_counter_threshold         uvm_perf_prefetch_threshold
-   ...
-   ```
-
-   Then check the value of the parameter:
-
-   ```console
-   $ cat /sys/module/nvidia_uvm/parameters/uvm_disable_hmm
-   ```
-
-   *Example Output*
-
-   ```output
-   Y
-   ```
+Inspect the applied parameter on a GPU node under
+`/sys/module/<module>/parameters/`. The worked example in
+[references/example-nvidia-uvm.md](references/example-nvidia-uvm.md) shows the
+exact commands and expected output.

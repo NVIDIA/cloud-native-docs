@@ -1,6 +1,22 @@
 ---
 name: "gpu-operator-references"
-description: "Points users to the Confidential Containers reference architecture and deployment documentation. Use when users ask about confidential GPU workloads or Confidential Containers with the GPU Operator. Trigger keywords - NVIDIA GPU Operator, Confidential Containers, sandboxed workloads, Kubernetes, life cycle policy, support, releases, overview, GPU workloads, platform support, operating systems, release notes, component versions, changelog, security, deployment, troubleshooting, diagnostics."
+description: "Loads NVIDIA GPU Operator reference material on demand: overview, security, life-cycle policy, platform support, release notes, troubleshooting, and confidential-containers deployment. Use when users ask conceptual or reference questions about the GPU Operator that are not tied to a specific install or upgrade flow."
+triggers:
+  - GPU Operator overview
+  - platform support
+  - release notes
+  - life cycle policy
+  - security considerations
+  - troubleshooting
+  - Confidential Containers
+tags:
+  - gpu-operator
+  - nvidia
+  - kubernetes
+  - gpu
+  - reference
+  - overview
+  - troubleshooting
 ---
 
 <!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
