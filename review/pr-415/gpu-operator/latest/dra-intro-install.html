@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 28, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 02, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -552,7 +552,7 @@ GPU Allocation</label><div class="sd-tab-content docutils">
 </li>
 <li><p>Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
-<span class="go">  --version=v26.3.1 \</span>
+<span class="go">  --version=v26.3.2 \</span>
 <span class="go">  --create-namespace \</span>
 <span class="go">  --namespace gpu-operator \</span>
 <span class="go">  --set devicePlugin.enabled=false \</span>
@@ -578,7 +578,7 @@ ComputeDomain</label><div class="sd-tab-content docutils">
 <li><p>Install the GPU Operator with the device plugin disabled:</p></li>
 </ol>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm upgrade --install gpu-operator nvidia/gpu-operator \</span>
-<span class="go">  --version=v26.3.1 \</span>
+<span class="go">  --version=v26.3.2 \</span>
 <span class="go">  --create-namespace \</span>
 <span class="go">  --namespace gpu-operator</span>
 </pre></div>
