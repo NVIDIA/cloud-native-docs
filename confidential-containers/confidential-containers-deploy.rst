@@ -28,7 +28,8 @@ These are key pieces of the NVIDIA Confidential Containers Reference Architectur
 
 Before you begin, refer to the :doc:`Confidential Containers Reference Architecture <overview>` for details on the reference architecture and the :doc:`Supported Platforms <supported-platforms>` page for the supported platforms.
 
-This guide assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, and Kubernetes cluster administration.
+This guide is for Kubernetes cluster administrators with host access to worker nodes (for BIOS and kernel configuration) and cluster-admin access to use ``kubectl``.
+It assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, Helm, and Kubernetes cluster administration, and that you know whether your target hardware uses AMD SEV-SNP or Intel TDX.
 Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` and `Kata Containers <https://katacontainers.io/docs/>`_ documentation for more information on these software components.
 Refer to the `Kubernetes documentation <https://kubernetes.io/docs/home/>`_ for more information on Kubernetes cluster administration.
 
@@ -50,10 +51,17 @@ The high-level workflow for configuring Confidential Containers is as follows:
    The GPU Operator uses the node labels to determine what software components to deploy to a node.
 
 After installation, you can :ref:`run a sample GPU workload <coco-run-sample-workload>` in a confidential container.
-You can also configure :doc:`Attestation <attestation>` with the Trustee framework.
-The Trustee attestation service is typically deployed on a separate, trusted environment.
+The sample CUDA workload at the end of this guide returns ``Test PASSED`` when your cluster is correctly configured.
 
-After configuration, you can schedule workloads that request GPU resources and use the ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems or ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems runtime classes for secure deployment.
+When you complete the steps in this guide, your cluster has the following:
+
+* One or more worker nodes labeled with ``nvidia.com/gpu.workload.config=vm-passthrough`` and ``nvidia.com/cc.ready.state=true``.
+* The  ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes installed on the cluster.
+* GPU Operator pods, including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager, running on labeled nodes.
+
+After this baseline is in place, you can schedule workloads that request GPU resources and use the ``kata-qemu-nvidia-gpu-snp`` runtime class for AMD-based systems or the ``kata-qemu-nvidia-gpu-tdx`` runtime class for Intel-based systems.
+To verify the environment and release secrets to those workloads, configure :doc:`Attestation <attestation>` with the Trustee framework.
+The Trustee attestation service is typically deployed on a separate, trusted environment.
 
 .. _coco-prerequisites:
 
@@ -132,9 +140,9 @@ Hardware and BIOS
 
      $ lsmod | grep nvidia
 
-  If the output is empty, no NVIDIA GPU drivers are loaded.
-  If modules such as ``nvidia``, ``nvidia_uvm``, or ``nvidia_modeset`` are listed, NVIDIA GPU drivers are present and must be removed before proceeding.
-  Refer to `Removing the Driver <https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html>`_ in the NVIDIA Driver Installation Guide.
+  If the command produces no output, no NVIDIA GPU drivers are loaded and you can continue to the next step.
+
+  Refer to `Removing the Driver <https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html>`_ in the NVIDIA Driver Installation Guide to remove the drivers.
 
 Kubernetes Cluster
 ------------------
@@ -168,13 +176,13 @@ Kubernetes Cluster
 
 
 * Enable the ``KubeletPodResourcesGet`` and ``RuntimeClassInImageCriApi`` Kubelet feature gates on your cluster.
+  On Kubernetes v1.34 and later, ``KubeletPodResourcesGet`` is already enabled by default and only ``RuntimeClassInImageCriApi`` requires explicit configuration.
+  On earlier Kubernetes versions, enable both gates.
 
-  * ``KubeletPodResourcesGet``: Enabled by default on Kubernetes v1.34 and later.
-    On older versions, you must enable it explicitly.
-    The Kata runtime uses this feature gate to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.
+  * ``KubeletPodResourcesGet``: Used by the Kata runtime to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.
 
-  * ``RuntimeClassInImageCriApi``: Alpha since Kubernetes v1.29 and is not enabled by default.
-    This feature gate is required to support pod deployments that use multiple snapshotters side-by-side.
+  * ``RuntimeClassInImageCriApi``: Alpha since Kubernetes v1.29 and not enabled by default.
+    Required to support pod deployments that use multiple snapshotters side-by-side.
 
   Add both feature gates to your Kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
 
@@ -196,11 +204,12 @@ Kubernetes Cluster
 
 .. _configure-image-pull-timeouts:
 
-* Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images. 
-  Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+* Increase the kubelet image pull timeout to a value that comfortably covers your largest workload image.
+  Kubelet de-allocates a pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+  Actual pull duration varies with image size and network throughput, so this guide uses ``20m`` as a conservative ceiling that accommodates most workload images.
 
-  Increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the Kata shim configurations in Kata Containers.
-  The default timeout is 2 minutes.
+  Set ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to align with the default Kata shim ``image_pull_timeout`` of 1200 seconds.
+  The kubelet default is 2 minutes, which can be too short for GPU workloads.
 
   Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
 
@@ -217,8 +226,8 @@ Kubernetes Cluster
 
      $ sudo systemctl restart kubelet
 
-  If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent's ``image_pull_timeout``, which defaults to 1200s. 
-  This setting also sets the confidential data hub's image pull API timeout in seconds. 
+  If you need a timeout of more than 1200 seconds (20 minutes), also adjust the Kata Agent's ``image_pull_timeout``.
+  This setting also controls the Confidential Data Hub's image pull API timeout in seconds.
   To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params: "..."`` annotation.
 
 .. _installation-and-configuration:
@@ -429,6 +438,12 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
       REVISION: 1
       TEST SUITE: None
 
+   .. note::
+
+      The ``--wait`` flag instructs Helm to wait until the release is deployed before returning.
+      Some GPU Operator pods can take several additional minutes to reach the Running state after the Helm command completes.
+      Use the optional verification step that follows to confirm pod status.
+
    .. tip::
 
       Add ``--set sandboxWorkloads.defaultWorkload=vm-passthrough`` if every worker node should deploy Confidential Containers by default.
@@ -460,8 +475,9 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
    For more details on each of the GPU Operator components, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-components>` section in the architecture overview.
 
    .. note::
-      It can take several minutes for all GPU Operator pods to be in the Running state.
-      If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
+
+      If you are not seeing the expected output, view the logs for the GPU Operator pods:
+
       .. code-block:: console
 
          $ kubectl logs -n gpu-operator <pod-name>
