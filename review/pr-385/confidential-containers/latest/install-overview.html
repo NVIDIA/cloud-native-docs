@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Licensing &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Installation Overview &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'licensing';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'install-overview';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,7 +69,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Release Notes" href="release-notes.html" />
+    <link rel="next" title="Prerequisites" href="prerequisites.html" />
+    <link rel="prev" title="Supported Platforms" href="supported-platforms.html" />
 
 
 
@@ -241,6 +242,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -351,8 +356,8 @@
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
@@ -365,9 +370,9 @@
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Licensing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
 </div>
 </nav></div>
@@ -404,7 +409,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Licensing</li>
+    <li class="breadcrumb-item active" aria-current="page">Installation Overview</li>
   </ul>
 </nav></div>
       
@@ -420,11 +425,49 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="licensing">
-<h1>Licensing<a class="headerlink" href="#licensing" title="Permalink to this headline">#</a></h1>
-<p>While the Confidential Containers (CoCo) Reference Architecture includes some components that are open source, the NVIDIA Confidential Computing capability is a licensed feature for production use cases.
-To use these products, you must have a valid NVIDIA Confidential Computing license.
-Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/agreements/enterprise-software/product-specific-terms-for-confidential-computing/">NVIDIA Product-Specific Terms for NVIDIA Confidential Computing</a> for more information.</p>
+  <section id="installation-overview">
+<span id="coco-install-overview"></span><h1>Installation Overview<a class="headerlink" href="#installation-overview" title="Permalink to this headline">#</a></h1>
+<p>This page describes how to install the components needed to run Confidential Containers on your Kubernetes cluster. It includes details on cluster prereq, configuration, and running a sample workload to confirm the installation.</p>
+<p>This guide is for Kubernetes cluster administrators with host access to worker nodes and cluster-admin access to use <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>.
+It assumes you are familiar with the following:</p>
+<ul class="simple">
+<li><p>Kubernetes cluster administration and deploying components with Helm.
+Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> for more information on Kubernetes cluster administration.</p></li>
+<li><p>Confidential Containers and related components such as the NVIDIA GPU Operator and Kata Containers.
+Refer to the <a class="reference external" href="https://confidentialcontainers.org/">Confidential Containers</a> website, the <a class="reference external" href="https://confidentialcontainers.org/docs/architecture/design-overview/">architecture overview</a>, <a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a> in this documentation, <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a>, and <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers</a> documentation for more information.</p></li>
+<li><p>You are familiar with whether your target hardware uses AMD SEV-SNP or Intel TDX.</p></li>
+</ul>
+<section id="install-workflow">
+<h2>Install workflow<a class="headerlink" href="#install-workflow" title="Permalink to this headline">#</a></h2>
+<p>Follow these pages in order:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> — prepare worker nodes and the Kubernetes cluster.</p></li>
+<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> — label nodes, install Kata Containers, and install the NVIDIA GPU Operator.</p></li>
+<li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> — confirm the deployment with a single-GPU test pod.</p></li>
+</ol>
+<p>On the configure-cluster page you will:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label nodes</span></a> that you want to use with Confidential Containers.</p></li>
+<li><p>Install the <a class="reference internal" href="confidential-containers-deploy.html#coco-install-kata-chart"><span class="std std-ref">latest Kata Containers Helm chart</span></a>.
+This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems) onto the cluster’s worker nodes.</p></li>
+<li><p>Install the <a class="reference internal" href="confidential-containers-deploy.html#coco-install-gpu-operator"><span class="std std-ref">NVIDIA GPU Operator configured for Confidential Containers</span></a>.
+This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
+The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
+</ol>
+</section>
+<section id="success-criteria">
+<h2>Success criteria<a class="headerlink" href="#success-criteria" title="Permalink to this headline">#</a></h2>
+<p>You have finished the <strong>Install</strong> section when the <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> pod logs include <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code>.</p>
+<p>Along the way, <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> walks through optional checks (node labels, Kata runtime classes, GPU Operator pods).
+Use those steps if you want to confirm progress before running the sample.</p>
+</section>
+<section id="what-comes-next">
+<h2>What comes next<a class="headerlink" href="#what-comes-next" title="Permalink to this headline">#</a></h2>
+<p>Attestation is not required to finish installation.
+To verify the environment and release secrets to workloads later, configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework in <strong>Advanced Setup</strong>.
+The Trustee attestation service is typically deployed in a separate, trusted environment.</p>
+<p>For CC mode, workload manifests, and multi-GPU passthrough after verification, see <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> or go directly to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> and <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>.</p>
+</section>
 </section>
 
 
@@ -438,13 +481,22 @@ Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/ag
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="release-notes.html"
+       href="supported-platforms.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Release Notes</p>
+        <p class="prev-next-title">Supported Platforms</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="prerequisites.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Prerequisites</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -453,9 +505,27 @@ Refer to the <a class="reference external" href="https://www.nvidia.com/en-us/ag
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-workflow">Install workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#success-criteria">Success criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-comes-next">What comes next</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

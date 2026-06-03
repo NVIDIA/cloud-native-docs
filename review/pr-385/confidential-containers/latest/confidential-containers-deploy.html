@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Deploy Confidential Containers &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Configure Cluster for Confidential Containers &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'confidential-containers-deploy';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 12, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -213,11 +213,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -318,11 +325,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -336,23 +350,24 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy Confidential Containers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Configure Cluster for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -394,7 +409,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Deploy Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">Configure Cluster for Confidential Containers</li>
   </ul>
 </nav></div>
       
@@ -410,33 +425,16 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="deploy-confidential-containers">
-<span id="confidential-containers-deploy"></span><h1>Deploy Confidential Containers<a class="headerlink" href="#deploy-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p>This page describes deploying Kata Containers and the NVIDIA GPU Operator.
-These are key pieces of the NVIDIA Confidential Containers Reference Architecture used to manage GPU resources on your cluster and deploy workloads into Confidential Containers.</p>
-<p>Before you begin, refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
-<p>This guide assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, and Kubernetes cluster administration.
-Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> and <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers</a> documentation for more information on these software components.
-Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> for more information on Kubernetes cluster administration.</p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>The high-level workflow for configuring Confidential Containers is as follows:</p>
-<ol class="arabic simple">
-<li><p>Configure the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p></li>
-<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes</span></a> that you want to use with Confidential Containers.</p></li>
-<li><p>Install the <a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">latest Kata Containers Helm chart</span></a>.
-This installs the Kata Containers runtime binaries, UVM images and kernels, and TEE-specific shims (such as <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>) onto the cluster’s worker nodes.</p></li>
-<li><p>Install the <a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">NVIDIA GPU Operator configured for Confidential Containers</span></a>.
-This installs the NVIDIA GPU Operator components that are required to deploy GPU passthrough workloads.
-The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
-</ol>
-<p>After installation, you can <a class="reference internal" href="run-sample-workload.html"><span class="doc">run a sample GPU workload</span></a> in a confidential container.
-You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.
-The Trustee attestation service is typically deployed on a separate, trusted environment.</p>
-<p>After configuration, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime classes for secure deployment.</p>
-</section>
+  <section id="configure-cluster-for-confidential-containers">
+<span id="confidential-containers-deploy"></span><h1>Configure Cluster for Confidential Containers<a class="headerlink" href="#configure-cluster-for-confidential-containers" title="Permalink to this headline">#</a></h1>
+<p>This page configures your cluster for confidential containers and deploys Kata Containers and the NVIDIA GPU Operator on your cluster.</p>
+<p>Before starting, you should have completed the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> page and understand the  <a class="reference internal" href="install-overview.html"><span class="doc">Installation Overview</span></a>.</p>
+<p>After completing this page, proceed to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.
+When you finish this page, nodes are labeled for passthrough, Kata runtime classes are available, and GPU Operator operands are running on those nodes.</p>
 <section id="label-nodes">
 <span id="coco-label-nodes"></span><span id="installation-and-configuration"></span><h2>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h2>
+<p>This guide assumes you already have a Kubernetes cluster with GPU worker nodes enrolled.
+These steps do not create nodes or bootstrap a new cluster.</p>
 <ol class="arabic">
 <li><p>Get a list of the nodes in your cluster:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes
@@ -461,6 +459,11 @@ The Trustee attestation service is typically deployed on a separate, trusted env
 <li><p>Label the node for Confidential Containers:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the command prints <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span> <span class="pre">not</span> <span class="pre">labeled</span></code>, the label is already set to
+<code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>. Continue to the verification step below.</p>
 </div>
 <p>The GPU Operator uses this label to determine what software components to deploy to a node.
 The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.</p>
@@ -550,7 +553,9 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 <p>Several runtimes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are used to deploy Confidential Containers workloads.</p>
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems runtime classes are used to deploy Confidential Containers workloads.</p>
+<p>If SNP or TDX runtime classes are missing, wait 2-5 minutes and run the check again.
+A partial list usually means installation is still in progress rather than a failed install.</p>
 </li>
 <li><p>Optional: If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod or are not seeing the expected runtime classes, get the pod name and view the logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
@@ -558,6 +563,13 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod from the first command’s output.</p>
+<p><strong>Success criteria:</strong> The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code> (<code class="docutils literal notranslate"><span class="pre">1/1</span></code> Ready), SNP and TDX runtime classes are listed in the verification step above, and logs end with a successful install message such as:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Install completed</span>
+<span class="go">daemonset mode: waiting for SIGTERM</span>
+</pre></div>
+</div>
+<p>If logs show <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>, repeated errors, or runtime classes never appear after waiting, collect the log output and check for similar reports in the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub repository</a>.
+If no existing issue matches your problem, <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues/new/choose">open a new issue</a> in that repository with your <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> logs, chart version (<code class="docutils literal notranslate"><span class="pre">3.29.0</span></code>), and cluster details.</p>
 </li>
 </ol>
 </section>
@@ -579,7 +591,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 </div>
 </li>
 <li><p>Install the GPU Operator with the following configuration:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --generate-name <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
    --set sandboxWorkloads.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
@@ -597,6 +609,14 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <span class="go">REVISION: 1</span>
 <span class="go">TEST SUITE: None</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag instructs Helm to wait until the release is deployed before returning.
+Some GPU Operator pods can take several additional minutes to reach the Running state after the Helm command completes.
+The first <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code> check may show only the operator and NFD pods.
+Confidential Containers operands (Confidential Computing Manager, VFIO Manager, and Kata device plugin) often appear within 5–10 minutes.
+Use the optional verification step that follows and re-check until all operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code>.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -624,8 +644,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <p>For more details on each of the GPU Operator components, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It can take several minutes for all GPU Operator pods to be in the Running state.
-If you are not seeing the expected output, you can view the logs for the GPU Operator pods:</p>
+<p>If you are not seeing the expected output, view the logs for the GPU Operator pods:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
 </pre></div>
 </div>
@@ -649,7 +668,7 @@ If you are not seeing the expected output, you can view the logs for the GPU Ope
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If you have an issue deploying the GPU Operator, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a> for guidance on troubleshooting and resolving issues.</p>
+<p>If you have an issue deploying the GPU Operator, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.</p>
 </div>
 </li>
 </ol>
@@ -738,13 +757,13 @@ If you want to view the resource types for a different node, you can update the 
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;nvidia.com/GH100_H200_141GB&quot;: &quot;1&quot;</span>
 </pre></div>
 </div>
+<p>You should see the resource type information for the GPUs and NVSwitches on the node.</p>
 </section>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to verify your deployment.</p></li>
-<li><p><a class="reference internal" href="configure.html"><span class="doc">Configure</span></a> additional options for your environment, including attestation, the confidential computing mode, and <a class="reference internal" href="configure-multi-gpu.html#coco-multi-gpu-passthrough"><span class="std std-ref">multi-GPU passthrough</span></a>.</p></li>
 <li><p>To help manage the lifecycle of Kata Containers, install the <a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a>.
 This Argo Workflows-based tool manages Kata Containers upgrades and day-two operations.</p></li>
 </ul>
@@ -800,7 +819,6 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes">Label Nodes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a><ul class="nav section-nav flex-column">
@@ -827,8 +845,8 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
 
 

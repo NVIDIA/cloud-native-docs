@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'run-sample-workload';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.17.1';
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -69,15 +69,15 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Configure Confidential Containers" href="configure.html" />
-    <link rel="prev" title="Deploy Confidential Containers" href="confidential-containers-deploy.html" />
+    <link rel="next" title="Advanced Setup Overview" href="configure.html" />
+    <link rel="prev" title="Configure Cluster for Confidential Containers" href="confidential-containers-deploy.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="May 12, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -213,11 +213,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -318,11 +325,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -336,23 +350,24 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Run a Sample Workload</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configure</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure.html">Configure Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -412,43 +427,66 @@
                   
   <section id="run-a-sample-workload">
 <span id="coco-run-sample-workload"></span><h1>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h1>
-<p>After completing the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">deployment steps</span></a>, verify your
-installation by running a basic single-GPU sample workload inside a Confidential Container.</p>
-<p>This page intentionally uses the simplest possible manifest so that you can confirm the
-deployment end-to-end.
-For the full set of workload configuration options, including runtime class selection,
-resource type naming, and multi-GPU passthrough, refer to
-<a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a>.</p>
+<p>Verify your
+confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.</p>
+<p>This page assumes that you have completed the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> pages.
+Your cluster should have Confidential Containers nodes labeled, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on those nodes.</p>
+<p>This page intentionally uses the simplest possible manifest so that you can confirm the deployment end-to-end.
+It is not a production workload template.
+For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, see <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>.</p>
 <ol class="arabic">
-<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with the following sample manifest:</p>
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with a sample manifest for your system:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="amd-snp" for="sd-tab-item-0">
+AMD-based system (SNP)</label><div class="sd-tab-content docutils">
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
 <span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
 <span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"> </span><span class="c1"># or kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"></span>
 </span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
 <span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
 <span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
 <span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
-<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># for single GPU passthrough</span><span class="w"></span>
 </span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
 </pre></div>
 </div>
-<p>Before applying the manifest, adjust the two highlighted lines for your environment:</p>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="intel-tdx" for="sd-tab-item-1">
+Intel-based system (TDX)</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># for single GPU passthrough</span><span class="w"></span>
+</span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following is a breif list of the options available for the manifest:</p>
 <ul class="simple">
-<li><p><strong>Runtime class.</strong> Use <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> on AMD SEV-SNP nodes or
-<code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> on Intel TDX nodes.</p></li>
-<li><p><strong>GPU resource type.</strong> The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default
-resource name advertised by the NVIDIA Kata sandbox device plugin.
-If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the
-model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
+<li><p>Runtime class: Use <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> on AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> on Intel-based systems.</p></li>
+<li><p>GPU resource type: The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default resource name advertised by the NVIDIA Kata Sandbox Device Plugin.
+If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
 </ul>
-<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for
-guidance on each option.</p>
+<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additionalguidance on each option.</p>
 </li>
 <li><p>Create the pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
@@ -459,7 +497,7 @@ guidance on each option.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Verify the pod is running:</p>
+<li><p>Verify the pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
 </pre></div>
 </div>
@@ -468,18 +506,25 @@ guidance on each option.</p>
 <span class="go">cuda-vectoradd-kata   1/1     Running   0          10s</span>
 </pre></div>
 </div>
+<p>The pod could also say <code class="docutils literal notranslate"><span class="pre">Completed</span></code> if the container already completed successfully.</p>
+<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, see <a class="reference internal" href="#coco-pending-pod"><span class="std std-ref">If the pod stays Pending</span></a>
+before continuing.</p>
 </li>
 <li><p>View the logs from the pod after the container starts:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n default cuda-vectoradd-kata
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
-<span class="go">Copy input data from the host memory to the CUDA device</span>
-<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
-<span class="go">Copy output data from the CUDA device to the host memory</span>
-<span class="go">Test PASSED</span>
-<span class="go">Done</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">  [Vector addition of 50000 elements]</span>
+<span class="go">  Copy input data from the host memory to the CUDA device</span>
+<span class="go">  CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">  Copy output data from the CUDA device to the host memory</span>
+<span class="go">  Test PASSED</span>
+<span class="go">  Done</span>
+
+<span class="go">The output should include ``Test PASSED`` if the container completed successfully.</span>
+
+<span class="go">If you arne&#39;t seeing any log output, make sure the pod is running and the container is started.</span>
 </pre></div>
 </div>
 </li>
@@ -489,15 +534,25 @@ guidance on each option.</p>
 </div>
 </li>
 </ol>
+<section id="if-the-pod-stays-pending">
+<span id="coco-pending-pod"></span><h2>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code><a class="headerlink" href="#if-the-pod-stays-pending" title="Permalink to this headline">#</a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">cuda-vectoradd-kata</span></code> and check <strong>Events</strong> for messages such as
+<code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code>.</p>
+<p>Common causes:</p>
+<ul class="simple">
+<li><p>The node is missing <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> or
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state=true</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero (often after a VFIO or device plugin race).</p></li>
+<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> were not applied, especially Kubelet feature gates.</p></li>
+</ul>
 <section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configure Confidential Container workloads</span></a> for runtime class
 selection, resource type naming, and single- or multi-GPU passthrough patterns.</p></li>
-<li><p>Configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework to enable remote
-verification of your confidential environment.</p></li>
 <li><p>Manage the <a class="reference internal" href="configure-cc-mode.html"><span class="doc">confidential computing mode</span></a> on your GPUs.</p></li>
 </ul>
+</section>
 </section>
 </section>
 
@@ -517,7 +572,7 @@ verification of your confidential environment.</p></li>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Deploy Confidential Containers</p>
+        <p class="prev-next-title">Configure Cluster for Confidential Containers</p>
       </div>
     </a>
     <a class="right-next"
@@ -525,7 +580,7 @@ verification of your confidential environment.</p></li>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configure Confidential Containers</p>
+        <p class="prev-next-title">Advanced Setup Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -550,7 +605,10 @@ verification of your confidential environment.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-pod-stays-pending">If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -569,8 +627,8 @@ verification of your confidential environment.</p></li>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
 
 
