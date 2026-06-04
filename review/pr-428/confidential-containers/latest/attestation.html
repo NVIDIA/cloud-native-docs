@@ -1,0 +1,770 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Attestation &#8212; NVIDIA Confidential Containers Architecture</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'attestation';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Licensing" href="licensing.html" />
+    <link rel="prev" title="Deploy Confidential Containers" href="confidential-containers-deploy.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jun 04, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA Confidential Containers Architecture</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Deploy Confidential Containers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Attestation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Confidential Containers Architecture</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Attestation</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="attestation">
+<span id="attestation-overview"></span><h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
+<p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
+Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
+Attestation is required for any feature that depends on secrets, including:</p>
+<ul class="simple">
+<li><p>Pulling encrypted container images</p></li>
+<li><p>Accessing authenticated container registries</p></li>
+<li><p>Using sealed secrets</p></li>
+<li><p>Requesting secrets directly from workloads</p></li>
+</ul>
+<p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves.
+The evidence is sent to the remote verifier to evaluate the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.</p>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
+<p>The following concepts appear throughout this page:</p>
+<ul class="simple">
+<li><p>Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing.
+CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework.</p></li>
+<li><p>Trusted Execution Environment (TEE): A hardware-isolated environment, such as AMD SEV-SNP, Intel TDX, or an NVIDIA Confidential Computing GPU, that protects code and data in use.</p></li>
+<li><p>Remote attestation: The process of cryptographically proving to a remote party that a TEE is running the expected, untampered software stack before that party releases secrets to it.</p></li>
+<li><p>Trustee: The remote verifier in the Confidential Containers attestation flow. Trustee is composed of three cooperating services:</p>
+<ul>
+<li><p>Key Broker Service (KBS): The HTTP endpoint that clients and confidential guests talk to. KBS orchestrates the attestation exchange and conditionally releases resources when policy allows.</p></li>
+<li><p>Attestation Service (AS): Verifies hardware evidence presented by a guest TEE against reference values.</p></li>
+<li><p>Reference Value Provider Service (RVPS): Holds the known-good reference values that the Attestation Service compares evidence against.</p></li>
+</ul>
+</li>
+<li><p>KBS resource: A secret, for example, a key, credential, or token, that Trustee releases to a guest when attestation succeeds. Most resources are addressed by a three-part path: <code class="docutils literal notranslate"><span class="pre">&lt;repository&gt;/&lt;type&gt;/&lt;tag&gt;</span></code>.</p></li>
+<li><p>Policy: The rule set that Trustee evaluates against verified evidence to decide whether to release a resource. By default, Trustee denies resource requests from clients that have not presented valid TEE evidence.</p></li>
+</ul>
+<p>Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/architecture/design-overview/">Confidential Containers documentation</a> for more details on these concepts and attestation best practices.</p>
+</section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
+<p>This page walks you through standing up a development Trustee instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
+It runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime.</p>
+<p>The goal is to give you a working local attestation backend and a client to interact with it before you wire Trustee into a Confidential Containers workload.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This quickstart is for evaluation only.
+Do not use the Trustee instance you stand up here in production.
+This guide does not deploy a TEE, does not produce real hardware attestation evidence, and does not release any secrets to a workload.
+It only validates that the Trustee components are running and reachable.</p>
+<p>A production attestation workflow depends on your environment and your organization’s security policies.
+Documenting a full attestation workflow is outside the scope of this quickstart.
+To run attestation against real evidence from a confidential workload, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> documentation for more information.</p>
+</div>
+<section id="what-you-ll-build">
+<h3>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h3>
+<p>By the end of this quickstart, you will have:</p>
+<ul class="simple">
+<li><p>A local Trustee instance (KBS, Attestation Service, and Reference Value Provider Service) running in Docker containers on <code class="docutils literal notranslate"><span class="pre">127.0.0.1:8080</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> command-line tool installed and able to reach your Trustee instance.</p></li>
+<li><p>A sample resource request that exercises the end-to-end request path.</p></li>
+</ul>
+<p>You’ll know you’re done when <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
+A denial in this quickstart is the expected, successful outcome: it confirms that the client reached KBS, the Attestation Service evaluated the request, and policy was applied.</p>
+</section>
+<section id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>A Linux host with internet access.
+Trustee runs as a set of containers, so the host does not require confidential-computing hardware or an NVIDIA GPU.</p></li>
+<li><p>Docker Engine with the Compose plugin installed.
+Refer to the <a class="reference external" href="https://docs.docker.com/engine/install/">Docker Engine install guide</a> if Docker is not already installed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span></code>, <code class="docutils literal notranslate"><span class="pre">curl</span></code>, and <code class="docutils literal notranslate"><span class="pre">openssl</span></code> available on the host.</p></li>
+<li><p>ORAS CLI installed and on your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.
+ORAS is used to pull the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> binary from the upstream container registry.
+Refer to the <a class="reference external" href="https://oras.land/docs/installation">ORAS installation guide</a> if ORAS is not already installed.</p></li>
+</ul>
+</section>
+<section id="step-1-install-trustee-with-docker-compose">
+<h3>Step 1: Install Trustee with Docker Compose<a class="headerlink" href="#step-1-install-trustee-with-docker-compose" title="Permalink to this headline">#</a></h3>
+<p>Clone the upstream Trustee repository.
+The repository ships with a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> that wires KBS, the Attestation Service, and the Reference Value Provider Service together.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/confidential-containers/trustee.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> trustee
+</pre></div>
+</div>
+<p>Start the Trustee containers in the background.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker compose up -d
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[+] Running 4/4</span>
+<span class="go"> ✔ Network trustee_default     Created</span>
+<span class="go"> ✔ Container trustee-rvps-1    Started</span>
+<span class="go"> ✔ Container trustee-as-1      Started</span>
+<span class="go"> ✔ Container trustee-kbs-1     Started</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On first run, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> pulls the KBS, AS, and RVPS images before starting them.
+This step can take several minutes. The command returns once the containers are starting. The services may need an additional few seconds to become ready to accept requests.</p>
+</div>
+<p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
+</section>
+<section id="step-2-verify-trustee-is-running">
+<h3>Step 2: Verify Trustee Is Running<a class="headerlink" href="#step-2-verify-trustee-is-running" title="Permalink to this headline">#</a></h3>
+<p>Confirm all three Trustee containers are up.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker compose ps
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME              IMAGE                     STATUS    PORTS</span>
+<span class="go">trustee-as-1      .../attestation-service   Up        -</span>
+<span class="go">trustee-kbs-1     .../kbs                   Up        0.0.0.0:8080-&gt;8080/tcp</span>
+<span class="go">trustee-rvps-1    .../rvps                  Up        -</span>
+</pre></div>
+</div>
+<p>Confirm KBS is listening on port <code class="docutils literal notranslate"><span class="pre">8080</span></code> by sending a POST to the attestation endpoint.
+The request body is intentionally empty. You are checking reachability, not submitting evidence.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -X POST http://127.0.0.1:8080/kbs/v0/attest
+</pre></div>
+</div>
+<p>Any HTTP response from KBS, including an error response that rejects the empty request body, confirms KBS is listening and responding.
+A connection refused or no-route error indicates that the containers are not running or that port <code class="docutils literal notranslate"><span class="pre">8080</span></code> is not exposed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is typically not recommended to curl the KBS endpoints directly unless you are checking connectivity.
+Use the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, installed in the next step, instead.</p>
+</div>
+</section>
+<section id="step-3-install-the-kbs-client-tool">
+<h3>Step 3: Install the KBS Client Tool<a class="headerlink" href="#step-3-install-the-kbs-client-tool" title="Permalink to this headline">#</a></h3>
+<p>The KBS client tool, <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.
+This tool is mainly used for configuring Trustee.</p>
+<p>Pull the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact into the current directory with ORAS.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oras pull ghcr.io/confidential-containers/staged-images/kbs-client:latest
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">✓ Pulled      kbs-client                                    12.3/12.3 MB 100.00%</span>
+<span class="go">✓ Pulled      application/vnd.oci.image.manifest.v1+json    533/533  B  100.00%</span>
+<span class="go">Pulled [registry] ghcr.io/confidential-containers/staged-images/kbs-client:latest</span>
+<span class="go">Digest: sha256:a2a48a7cea6dc5d1bad3baea15f4162835e1262eb74fdf4847a6382d09dc5caa</span>
+</pre></div>
+</div>
+<p>Confirm the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> binary was extracted to the current directory.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls kbs-client
+</pre></div>
+</div>
+<p>Make the binary executable.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>chmod +x kbs-client
+</pre></div>
+</div>
+<p>Confirm the binary runs.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./kbs-client --help
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ORAS-distributed <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> does not support requesting resources from inside a TEE enclave.
+For in-enclave use, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/client-tool/">Client Tool documentation</a>.</p>
+</div>
+</section>
+<section id="step-4-send-a-sample-resource-request">
+<h3>Step 4: Send a Sample Resource Request<a class="headerlink" href="#step-4-send-a-sample-resource-request" title="Permalink to this headline">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> to request a resource from your local Trustee.
+The request below uses a placeholder resource path.
+You do not need to pre-create the resource for this check.
+The <code class="docutils literal notranslate"><span class="pre">get-resource</span></code> endpoint can be used (including inside a TEE), but it will always invoke the sample attester, which generates fake evidence for testing.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./kbs-client --url http://127.0.0.1:8080 get-resource --path my_repo/resource_type/123abc
+</pre></div>
+</div>
+<p>Trustee will deny the request because you are not running inside a TEE, required by the default policy, and you have not presented valid attestation evidence.
+A policy-denied response is the expected, successful outcome of this quickstart.
+It confirms that the client reached KBS, KBS routed the request through the Attestation Service, and the configured policy rejected the request.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">WARN kbs_protocol::client::rcar_client: Authenticating with KBS failed. Perform a new RCAR handshake: ErrorInformation {</span>
+<span class="go">    error_type: &quot;https://github.com/confidential-containers/kbs/errors/PolicyDeny&quot;,</span>
+<span class="go">    detail: &quot;Access denied by policy&quot;,</span>
+<span class="go">}</span>
+<span class="go">Error: request unauthorized</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">PolicyDeny</span></code> warning and the final <code class="docutils literal notranslate"><span class="pre">request</span> <span class="pre">unauthorized</span></code> error confirm that KBS received the request, the Attestation Service evaluated it, and policy rejected it.</p>
+<p>If you instead see a connection error, KBS is not reachable. Revisit Step 2.</p>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<p>You now have a working local Trustee instance and a client that can talk to it. For more details, refer to the upstream Confidential Containers documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> — Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> — the complete set of Confidential Containers features, including how to wire attestation into real workloads.</p></li>
+</ul>
+<p>To shut down the local Trustee instance when you’re finished, run the following command from the <code class="docutils literal notranslate"><span class="pre">trustee</span></code> repository directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker compose down
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="confidential-containers-deploy.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deploy Confidential Containers</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="licensing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Licensing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-trustee-with-docker-compose">Step 1: Install Trustee with Docker Compose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-verify-trustee-is-running">Step 2: Verify Trustee Is Running</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-install-the-kbs-client-tool">Step 3: Install the KBS Client Tool</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-send-a-sample-resource-request">Step 4: Send a Sample Resource Request</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
