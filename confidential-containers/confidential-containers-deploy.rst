@@ -847,7 +847,6 @@ You can set this option when you install NVIDIA GPU Operator or afterward by mod
 When you change the mode, the manager performs the following actions:
 
 * Evicts the other GPU Operator operands from the node.
-
   However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.
 
 * Changes the mode and resets the GPU.
