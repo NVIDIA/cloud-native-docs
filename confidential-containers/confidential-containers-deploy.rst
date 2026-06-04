@@ -74,18 +74,7 @@ Hardware and BIOS
 * Use a supported platform configured for Confidential Computing.
   For more information on machine setup, refer to :doc:`Supported Platforms <supported-platforms>`.
 
-* Enable hardware virtualization and Access Control Services (ACS) in the host BIOS.
-  With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
-  These settings cannot be verified from the operating system after boot; confirm them in the BIOS before continuing.
-  Refer to :doc:`Supported Platforms <supported-platforms>` for platform-specific BIOS guidance.
-
-  After boot, you can confirm that hardware virtualization is active:
-
-  .. code-block:: console
-
-     $ grep -E 'vmx|svm' /proc/cpuinfo | head -1
-
-  If the command returns a line containing ``vmx`` (Intel) or ``svm`` (AMD), hardware virtualization is enabled at the CPU level.
+* Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS). With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER). Enable these features in the host BIOS.
 
 * Configure hosts to support IOMMU.
   You can check if your host is configured for IOMMU by running the following command:
