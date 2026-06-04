@@ -74,7 +74,18 @@ Hardware and BIOS
 * Use a supported platform configured for Confidential Computing.
   For more information on machine setup, refer to :doc:`Supported Platforms <supported-platforms>`.
 
-* Ensure hosts are configured to enable hardware virtualization and Access Control Services (ACS). With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER). Enable these features in the host BIOS.
+* Enable hardware virtualization and Access Control Services (ACS) in the host BIOS.
+  With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
+  These settings cannot be verified from the operating system after boot; confirm them in the BIOS before continuing.
+  Refer to :doc:`Supported Platforms <supported-platforms>` for platform-specific BIOS guidance.
+
+  After boot, you can confirm that hardware virtualization is active:
+
+  .. code-block:: console
+
+     $ grep -E 'vmx|svm' /proc/cpuinfo | head -1
+
+  If the command returns a line containing ``vmx`` (Intel) or ``svm`` (AMD), hardware virtualization is enabled at the CPU level.
 
 * Configure hosts to support IOMMU.
   You can check if your host is configured for IOMMU by running the following command:
@@ -175,7 +186,7 @@ Kubernetes Cluster
             && ./get_helm.sh
 
 
-* Enable the ``KubeletPodResourcesGet`` and ``RuntimeClassInImageCriApi`` Kubelet feature gates on your cluster.
+* Add the ``KubeletPodResourcesGet`` and ``RuntimeClassInImageCriApi`` feature gates to the Kubelet configuration file on each worker node (typically ``/var/lib/kubelet/config.yaml``).
   On Kubernetes v1.34 and later, ``KubeletPodResourcesGet`` is already enabled by default and only ``RuntimeClassInImageCriApi`` requires explicit configuration.
   On earlier Kubernetes versions, enable both gates.
 
@@ -184,7 +195,14 @@ Kubernetes Cluster
   * ``RuntimeClassInImageCriApi``: Alpha since Kubernetes v1.29 and not enabled by default.
     Required to support pod deployments that use multiple snapshotters side-by-side.
 
-  Add both feature gates to your Kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
+  Add the feature gates to your Kubelet configuration.
+  For example, on the worker node:
+
+  .. code-block:: console
+
+     $ sudo nano /var/lib/kubelet/config.yaml
+
+  Add the following to the file:
 
   .. code-block:: yaml
 
@@ -211,7 +229,14 @@ Kubernetes Cluster
   Set ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to align with the default Kata shim ``image_pull_timeout`` of 1200 seconds.
   The kubelet default is 2 minutes, which can be too short for GPU workloads.
 
-  Add or update the ``runtimeRequestTimeout`` field in your kubelet configuration (typically ``/var/lib/kubelet/config.yaml``):
+  Add or update the ``runtimeRequestTimeout`` field in the same Kubelet configuration file (``/var/lib/kubelet/config.yaml``).
+  For example:
+
+  .. code-block:: console
+
+     $ sudo nano /var/lib/kubelet/config.yaml
+
+  Add or update the following in the file:
 
   .. code-block:: yaml
      :emphasize-lines: 3
@@ -234,6 +259,10 @@ Kubernetes Cluster
 
 Installation
 ============
+
+This section installs Kata Containers and the NVIDIA GPU Operator on your existing Kubernetes cluster.
+The worker nodes listed by ``kubectl get nodes`` are the nodes already registered with your cluster when it was provisioned.
+This guide does not create new nodes.
 
 .. _coco-label-nodes:
 
@@ -270,16 +299,10 @@ Label Nodes
 
       $ kubectl label node $NODE_NAME nvidia.com/gpu.workload.config=vm-passthrough
 
-   The GPU Operator uses this label to determine what software components to deploy to a node.
-   The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
+   .. note::
 
-   A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
-   The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
-   For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
-
-   .. tip::
-
-      Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set ``sandboxWorkloads.defaultWorkload=vm-passthrough`` when installing the GPU Operator.
+      If the label is already present, ``kubectl label`` may print ``not labeled`` even though the label is set correctly.
+      Use the verification step below to confirm the label value.
 
 #. Verify the node label was added:
 
@@ -294,6 +317,18 @@ Label Nodes
       nvidia.com/gpu.workload.config: vm-passthrough
 
 After labeling the node, you can continue to the next steps to install Kata Containers and the NVIDIA GPU Operator.
+
+The GPU Operator uses this label to determine what software components to deploy to a node.
+The ``nvidia.com/gpu.workload.config=vm-passthrough`` label specifies that the node should receive the software components to run Confidential Containers.
+
+A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
+The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
+For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
+
+.. tip::
+
+   Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set ``sandboxWorkloads.defaultWorkload=vm-passthrough`` when installing the GPU Operator.
+
 
 .. _coco-install-kata-chart:
 
@@ -349,20 +384,31 @@ The minimum required version is 3.29.0.
       The GPU Operator will deploy and manage NFD in the next step.
 
 
-#. Optional: Verify that the ``kata-deploy`` pod is running:
+#. Verify that the ``kata-deploy`` pod is running:
 
    .. code-block:: console
 
       $ kubectl get pods -n kata-system | grep kata-deploy
 
-   *Example Output:*
+   *Example Output (install in progress):*
+
+   .. code-block:: output
+
+      NAME                    READY   STATUS    RESTARTS      AGE
+      kata-deploy-b2lzs       0/1     Running   0             2m15s
+
+   *Example Output (install complete):*
 
    .. code-block:: output
 
       NAME                    READY   STATUS    RESTARTS      AGE
       kata-deploy-b2lzs       1/1     Running   0             6m37s
 
-#. Optional: Verify that the ``kata-qemu-nvidia-gpu``, ``kata-qemu-nvidia-gpu-snp``, and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
+   The ``kata-deploy`` chart deploys a DaemonSet that installs Kata on each node and then keeps running.
+   Wait until the pod is ``Running`` and ``READY`` is ``1/1`` to confirm the Kata install finished.
+
+#. Verify that the ``kata-qemu-nvidia-gpu``, ``kata-qemu-nvidia-gpu-snp``, and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available.
+   These runtime classes are required to schedule confidential container workloads.
 
    .. code-block:: console
 
@@ -377,11 +423,17 @@ The minimum required version is 3.29.0.
       kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s
       kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s
 
+   If only some runtime classes are listed, the chart is still deploying.
+   Wait 2–5 minutes and run the command again.
+   Missing runtime classes after 5 minutes indicate a Kata installation problem. 
+   Check the ``kata-deploy`` pod logs for more details.
+   Before :ref:`running a sample workload <coco-run-sample-workload>`, all three runtime classes must be present.
+
    Several runtimes are installed by the ``kata-deploy`` chart.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
    The ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime classes are used to deploy Confidential Containers workloads.
 
-#. Optional: If you have an issue deploying the ``kata-deploy`` pod or are not seeing the expected runtime classes, get the pod name and view the logs:
+#. Optional: If the ``kata-deploy`` pod is not ``Running`` and ready, or runtime classes are missing, get the pod name and view the logs:
 
    .. code-block:: console
 
@@ -389,6 +441,18 @@ The minimum required version is 3.29.0.
       $ kubectl logs -n kata-system <pod-name>
 
    Replace ``<pod-name>`` with the name of the ``kata-deploy`` pod from the first command's output.
+
+   *Example Output (successful install):*
+
+   .. code-block:: output
+
+      ...
+      Install completed
+      daemonset mode: waiting for SIGTERM
+
+   If logs indicate a problem, recheck the :ref:`Prerequisites <coco-prerequisites>`.
+   Search the `Kata Containers issue <https://github.com/kata-containers/kata-containers/issues>`_ for similar reports.
+   If the issue persists, file a new issue there with ``kata-deploy`` pod logs and your environment details.
 
 .. _coco-install-gpu-operator:
 
@@ -452,11 +516,17 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 
    Refer to the :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>` for more details on the additional general configuration options you can specify when installing the GPU Operator.
 
-#. Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
+#. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
 
    .. code-block:: console
 
       $ kubectl get pods -n gpu-operator
+
+   .. note::
+
+      The first time you run this command, you might see only a subset of pods while operands are still starting.
+      GPU Operator pods can take 3–5 minutes after the Helm command completes to all reach the Running state.
+      Re-run the command until the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager pods are Running.
 
    *Example Output:*
 
@@ -483,6 +553,27 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
          $ kubectl logs -n gpu-operator <pod-name>
 
       Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get pods -n gpu-operator``.
+      Also refer to the :doc:`NVIDIA GPU Operator troubleshooting guide <gpuop:troubleshooting>` for more details on resolving common issues.
+
+#. Verify that the node advertises GPU passthrough capacity:
+
+   .. code-block:: console
+
+      $ kubectl describe node $NODE_NAME | grep -E "nvidia.com/pgpu"
+
+   *Example Output:*
+
+   .. code-block:: output
+
+        nvidia.com/pgpu:  1
+
+   If capacity is ``0``, a startup race may have occurred between the VFIO Manager and Kata Sandbox Device Plugin.
+   Restart the device plugin and wait for the rollout to finish:
+
+   .. code-block:: console
+
+      $ kubectl rollout restart daemonset/nvidia-kata-sandbox-device-plugin-daemonset -n gpu-operator
+      $ kubectl rollout status daemonset/nvidia-kata-sandbox-device-plugin-daemonset -n gpu-operator
 
 #. Optional: If you have host access to the worker node, you can perform the following validation step:
 
@@ -501,10 +592,6 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
                  Kernel driver in use: vfio-pci
                  Kernel modules: nvidiafb, nouveau
 
-   .. tip::
-
-      If you have an issue deploying the GPU Operator, refer to the :doc:`NVIDIA GPU Operator troubleshooting guide <gpuop:troubleshooting>` for guidance on troubleshooting and resolving issues.
-
 With Kata Containers and the GPU Operator installed, you can start using your cluster to run Confidential Containers workloads.
 To run a sample workload, refer to the :ref:`Run a Sample Workload <coco-run-sample-workload>` section.
 
@@ -518,6 +605,8 @@ For further configuration settings, refer to the following sections:
 
 Run a Sample Workload
 =====================
+
+Before running a workload, confirm that Kata Containers and the GPU Operator are both installed and that the ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available on the cluster.
 
 A pod manifest for a confidential container GPU workload requires that you specify the ``kata-qemu-nvidia-gpu-snp`` runtime class for AMD-based systems or ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems.
 
@@ -617,6 +706,26 @@ A pod manifest for a confidential container GPU workload requires that you speci
 
       NAME                  READY   STATUS    RESTARTS   AGE
       cuda-vectoradd-kata   1/1     Running   0          10s
+
+   .. note::
+
+      ``kubectl apply`` returns immediately and produces no further output while the pod is starting.
+      If the pod does not reach ``Running``, describe it to check events:
+
+      .. code-block:: console
+
+         $ kubectl describe pod cuda-vectoradd-kata
+
+      If you see ``FailedCreatePodSandBox`` with ``GetPodResources failed`` or ``PodResources API Get method disabled``, the ``KubeletPodResourcesGet`` feature gate is not enabled on the worker node.
+      The event looks similar to the following:
+
+      .. code-block:: output
+
+         Warning  FailedCreatePodSandBox  ...  kubelet  Failed to create pod sandbox: ... device cold plug failed: ... GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default): ... PodResources API Get method disabled
+
+      Refer to the Kubernetes Prerequisites section for details on how to enable the feature gate.
+
+      If the pod stays in ``Pending`` with ``Insufficient nvidia.com/pgpu``, confirm the node is labeled with ``nvidia.com/gpu.workload.config=vm-passthrough`` and that ``nvidia.com/pgpu`` capacity is greater than zero.
 
 4. View the logs from the pod after the container starts:
 
@@ -835,6 +944,14 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
    $ kubectl get node $NODE_NAME -o json | \
        jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
 
+To disable Confidential Computing on a node and verify the transition:
+
+.. code-block:: console
+
+   $ kubectl label node $NODE_NAME nvidia.com/cc.mode=off --overwrite
+
+Wait 1-2 minutes and recheck the labels.
+
 *Example Output (CC mode disabled):*
 
 .. code-block:: json
@@ -864,11 +981,15 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
 * The ``nvidia.com/cc.ready.state`` label indicates whether the node is ready to run Confidential Container workloads.
   It is set to ``true`` when ``cc.mode.state`` is ``on`` or ``ppcie``, and ``false`` when ``cc.mode.state`` is ``off``.
 
+  When you disable CC mode, expect ``nvidia.com/cc.ready.state`` to become ``false`` once the transition completes.
+  While a transition is in progress, ``nvidia.com/cc.mode.state`` may temporarily differ from ``nvidia.com/cc.mode``.
+
 .. note::
 
    It can take one to two minutes for GPU state transitions to complete and the labels to be updated.
    A mode change is complete and successful when ``nvidia.com/cc.mode`` and
    ``nvidia.com/cc.mode.state`` have the same value.
+   If labels do not converge, check Confidential Computing Manager pod logs, ensure no user workloads are running on the node, and reapply the ``nvidia.com/cc.mode`` label.
 
 
 .. _coco-configuration-multi-gpu-passthrough:
