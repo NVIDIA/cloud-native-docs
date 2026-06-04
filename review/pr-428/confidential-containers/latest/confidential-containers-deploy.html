@@ -1091,10 +1091,9 @@ If you want to view the resource types for a different node, you can update the 
 The default value of <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code>.
 You can set this option when you install NVIDIA GPU Operator or afterward by modifying the cluster-policy instance of the ClusterPolicy object.</p>
 <p>When you change the mode, the manager performs the following actions:</p>
-<ul>
-<li><p>Evicts the other GPU Operator operands from the node.</p>
-<p>However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.</p>
-</li>
+<ul class="simple">
+<li><p>Evicts the other GPU Operator operands from the node.
+However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.</p></li>
 <li><p>Changes the mode and resets the GPU.</p></li>
 <li><p>Reschedules the other GPU Operator operands.</p></li>
 </ul>
