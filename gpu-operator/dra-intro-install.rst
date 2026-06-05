@@ -51,6 +51,8 @@ For known issues specific to the DRA Driver itself, refer to the `DRA Driver v${
 * There is a known issue where the NVIDIA Driver Manager is not aware of the DRA driver kubelet plugin, and will not correctly evict it on pod restarts.
   You must label the nodes you plan to use with DRA GPU allocation and pass the node label in the GPU Operator Helm command in the ``driver.manager.env`` flag.
   This enables the NVIDIA Driver Manager to evict the GPU kubelet plugin correctly on driver container upgrades.
+* For A100 GPUs, the MIG manager does not automatically evict the DRA kubelet plugin during MIG configuration changes.
+  If the DRA kubelet plugin is deployed before a MIG change, then you must manually restart the DRA kubelet plugin. 
 
 *************
 Prerequisites
