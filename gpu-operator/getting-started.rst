@@ -31,11 +31,6 @@ Installing the NVIDIA GPU Operator
 
    The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
-.. admonition:: Red Hat OpenShift Container Platform Install
-   :class: tip
-
-   For installation on Red Hat OpenShift Container Platform, refer to :external+ocp:doc:`steps-overview`.
-
 *************
 Prerequisites
 *************
@@ -72,7 +67,8 @@ Prerequisites
    By default, NFD master and worker are automatically deployed by the Operator.
    If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.
 
-   One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes:
+   One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes
+   (requires `jq <https://jqlang.org/>`__):
 
    .. code-block:: console
 
@@ -83,6 +79,10 @@ Prerequisites
 *********
 Procedure
 *********
+
+A default installation deploys the NVIDIA GPU driver, NVIDIA Container Toolkit,
+NVIDIA Device Plugin, DCGM Exporter, and MIG Manager as pods on every GPU worker node.
+Use ``--set`` options to customize the deployment for your environment.
 
 .. tip::
 
@@ -119,6 +119,215 @@ Procedure
 
      Refer to the :ref:`gpu-operator-helm-chart-options`
      and :ref:`common deployment scenarios` for more information.
+
+#. After the Operator finishes deploying, :ref:`verify the installation <verify gpu operator install>`.
+
+
+.. _running sample gpu applications:
+.. _verify gpu operator install:
+
+*********************************************
+Verification: Running Sample GPU Applications
+*********************************************
+
+Verifying Operator Health
+=========================
+
+After the Helm install completes, confirm that the GPU Operator is healthy before
+running workloads.
+
+#. Check that all GPU Operator pods are running:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n gpu-operator
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME                                                          READY   STATUS      RESTARTS   AGE
+      gpu-feature-discovery-7nwkb                                       1/1     Running     0          6m30s
+      gpu-operator-1780680501-node-feature-discovery-gc-774b78f8mqg6b   1/1     Running     0          6m47s
+      gpu-operator-1780680501-node-feature-discovery-master-79dctr6tf   1/1     Running     0          6m47s
+      gpu-operator-1780680501-node-feature-discovery-worker-2gb9m       1/1     Running     0          6m47s
+      gpu-operator-69fd4d9858-nvrvc                                     1/1     Running     0          6m47s
+      nvidia-container-toolkit-daemonset-74gtl                          1/1     Running     0          6m30s
+      nvidia-cuda-validator-5m8l6                                       0/1     Completed   0          4m46s
+      nvidia-dcgm-exporter-tt5z5                                        1/1     Running     0          6m30s
+      nvidia-device-plugin-daemonset-t5zfq                              1/1     Running     0          6m30s
+      nvidia-driver-daemonset-nr9td                                     1/1     Running     0          6m37s
+      nvidia-operator-validator-m2h8f                                   1/1     Running     0          6m47s
+
+   All pods should show ``Running`` or ``Completed``.
+   If any pod is in ``CrashLoopBackOff`` or ``Error`` state, refer to the :doc:`troubleshooting` page.
+   The above output is for a default install.
+   If you installed the Operator with custom configuration, you may see different pods.
+
+#. Verify the ``ClusterPolicy`` is in the ``ready`` state:
+
+   .. code-block:: console
+
+      $ kubectl get clusterpolicy 
+
+   *Example Output*
+
+   .. code-block:: output
+
+      cluster-policy   ready    2026-06-05T17:28:22Z
+
+#. Confirm that GPU resources are available on nodes (requires `jq <https://jqlang.org/>`__):
+
+   .. code-block:: console
+
+      $ kubectl get nodes -o json \
+          | jq '.items[] | select(.status.allocatable["nvidia.com/gpu"] != null) | {name: .metadata.name, gpus: .status.allocatable["nvidia.com/gpu"]}'
+
+   *Example Output*
+
+   .. code-block:: output
+
+      {
+        "name": "worker-node-01",
+        "gpus": "4"
+      }
+
+   Each GPU worker node should show a non-null ``gpus`` value matching the number of
+   physical GPUs on that node.
+   The NVIDIA Kubernetes Device Plugin registers each GPU as a Kubernetes
+   `extended resource <https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources>`__
+   named ``nvidia.com/gpu``.
+   This step confirms that GPUs are visible to the scheduler.
+
+CUDA VectorAdd
+==============
+
+In the first example, let's run a simple CUDA sample, which adds two vectors together:
+
+
+#. Create a file, such as ``cuda-vectoradd.yaml``, with contents like the following:
+
+   .. code-block:: yaml
+
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: cuda-vectoradd
+      spec:
+        restartPolicy: OnFailure
+        containers:
+        - name: cuda-vectoradd
+          image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+
+#. Run the pod:
+
+   .. code-block:: console
+
+      $ kubectl apply -f cuda-vectoradd.yaml
+
+   The pod starts, runs the ``vectorAdd`` command, and then exits.
+
+#. View the logs from the container:
+
+   .. code-block:: console
+
+      $ kubectl logs pod/cuda-vectoradd
+
+   *Example Output*
+
+   .. code-block:: output
+
+      [Vector addition of 50000 elements]
+      Copy input data from the host memory to the CUDA device
+      CUDA kernel launch with 196 blocks of 256 threads
+      Copy output data from the CUDA device to the host memory
+      Test PASSED
+      Done
+
+#. Remove the stopped pod:
+
+   .. code-block:: console
+
+      $ kubectl delete -f cuda-vectoradd.yaml
+
+   *Example Output*
+
+   .. code-block:: output
+
+      pod "cuda-vectoradd" deleted
+
+
+Jupyter Notebook
+================
+
+You can perform the following steps to deploy Jupyter Notebook in your cluster:
+
+#. Create a file, such as ``tf-notebook.yaml``, with contents like the following example:
+
+   .. literalinclude:: ./manifests/input/tf-notebook.yaml
+      :language: yaml
+
+#. Apply the manifest to deploy the pod and start the service:
+
+   .. code-block:: console
+
+      $ kubectl apply -f tf-notebook.yaml
+
+#. Check the pod status:
+
+   .. code-block:: console
+
+      $ kubectl get pod tf-notebook
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAMESPACE   NAME          READY   STATUS      RESTARTS   AGE
+      default     tf-notebook   1/1     Running     0          3m45s
+
+#. Because the manifest includes a service, get the external port for the notebook:
+
+   .. code-block:: console
+
+      $ kubectl get svc tf-notebook
+
+   *Example Output*
+
+   .. code-block:: output
+
+      NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)       AGE
+      tf-notebook   NodePort    10.106.229.20   <none>        80:30001/TCP  4m41s
+
+#. Get the token for the Jupyter notebook:
+
+   .. code-block:: console
+
+      $ kubectl logs tf-notebook
+
+   *Example Output*
+
+   .. code-block:: output
+
+      [I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
+      [I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf
+      [I 21:50:23.391 NotebookApp] The Jupyter Notebook is running at:
+      [I 21:50:23.391 NotebookApp] http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+      [I 21:50:23.391 NotebookApp]  or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+      [I 21:50:23.391 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+      [C 21:50:23.394 NotebookApp]
+
+      To access the notebook, open this file in a browser:
+         file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
+      Or copy and paste one of these URLs:
+         http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+      or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
+
+The notebook should now be accessible from your browser at this URL:
+`http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9 <http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9>`_.
 
 
 .. _gpu-operator-helm-chart-options:
@@ -162,7 +371,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Refer to the :doc:`cdi` page for more information.
      - ``false``
 
-   * - ``cdi.default``  Deprecated.
+   * - ``cdi.default`` (Deprecated)
      - This field is deprecated as of v25.10.0 and will be ignored.
        The ``cdi.enabled`` field is set to ``true`` by default in versions 25.10.0 and later.
        When set to ``true``, the container runtime uses CDI to perform device injection by default.
@@ -278,7 +487,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        runs slowly in your cluster.
      - ``60s``
 
-   * - ``driver.useOpenKernelModules`` Deprecated.
+   * - ``driver.useOpenKernelModules`` (Deprecated)
      - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead.
        When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
      - ``false``
@@ -482,7 +691,7 @@ In this scenario, the NVIDIA Container Toolkit is already installed on the worke
 
       $ sudo sed -i 's/^#root/root/' /etc/nvidia-container-runtime/config.toml
 
-1. Install the Operator with the following options (which will provision a driver):
+2. Install the Operator with the following options (which will provision a driver):
 
    .. code-block:: console
 
@@ -504,9 +713,9 @@ you can build a custom driver container image. Follow these steps:
 
   .. code-block:: console
 
-    $ docker build --pull -t \
+    $ docker build --pull \
         --build-arg DRIVER_VERSION=580.126.20 \
-        nvidia/driver:580.126.20-ubuntu22.04 \
+        -t nvidia/driver:580.126.20-ubuntu22.04 \
         --file Dockerfile .
 
   Ensure that the driver container is tagged as shown in the example by using the ``driver:<version>-<os>`` schema.
@@ -572,7 +781,7 @@ These options are defined as follows:
 
 CONTAINERD_CONFIG
   The path on the host to the top-level ``containerd`` config file.
-  By default this will point to ``/etc/containerd/containerd.toml``
+  By default this will point to ``/etc/containerd/config.toml``
   (the default location for ``containerd``). It should be customized if your ``containerd``
   installation is not in the default location.
 
@@ -644,143 +853,6 @@ These options can be passed to GPU Operator during install time as below.
       --set toolkit.env[2].name=RUNTIME_CONFIG_SOURCE \
       --set-string toolkit.env[2].value=file=/var/snap/microk8s/current/args/containerd.toml
 
-.. _running sample gpu applications:
-.. _verify gpu operator install:
-
-*********************************************
-Verification: Running Sample GPU Applications
-*********************************************
-
-CUDA VectorAdd
-==============
-
-In the first example, let's run a simple CUDA sample, which adds two vectors together:
-
-
-#. Create a file, such as ``cuda-vectoradd.yaml``, with contents like the following:
-
-   .. code-block:: yaml
-
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: cuda-vectoradd
-      spec:
-        restartPolicy: OnFailure
-        containers:
-        - name: cuda-vectoradd
-          image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
-          resources:
-            limits:
-              nvidia.com/gpu: 1
-
-#. Run the pod:
-
-   .. code-block:: console
-
-      $ kubectl apply -f cuda-vectoradd.yaml
-
-   The pod starts, runs the ``vectorAdd`` command, and then exits.
-
-#. View the logs from the container:
-
-   .. code-block:: console
-
-      $ kubectl logs pod/cuda-vectoradd
-
-   *Example Output*
-
-   .. code-block:: output
-
-      [Vector addition of 50000 elements]
-      Copy input data from the host memory to the CUDA device
-      CUDA kernel launch with 196 blocks of 256 threads
-      Copy output data from the CUDA device to the host memory
-      Test PASSED
-      Done
-
-#. Remove the stopped pod:
-
-   .. code-block:: console
-
-      $ kubectl delete -f cuda-vectoradd.yaml
-
-   *Example Output*
-
-   .. code-block:: output
-
-      pod "cuda-vectoradd" deleted
-
-
-Jupyter Notebook
-================
-
-You can perform the following steps to deploy Jupyter Notebook in your cluster:
-
-#. Create a file, such as ``tf-notebook.yaml``, with contents like the following example:
-
-   .. literalinclude:: ./manifests/input/tf-notebook.yaml
-      :language: yaml
-
-#. Apply the manifest to deploy the pod and start the service:
-
-   .. code-block:: console
-
-      $ kubectl apply -f tf-notebook.yaml
-
-#. Check the pod status:
-
-   .. code-block:: console
-
-      $ kubectl get pod tf-notebook
-
-   *Example Output*
-
-   .. code-block:: output
-
-      NAMESPACE   NAME          READY   STATUS      RESTARTS   AGE
-      default     tf-notebook   1/1     Running     0          3m45s
-
-#. Because the manifest includes a service, get the external port for the notebook:
-
-   .. code-block:: console
-
-      $ kubectl get svc tf-notebook
-
-   *Example Output*
-
-   .. code-block:: output
-
-      NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)       AGE
-      tf-notebook   NodePort    10.106.229.20   <none>        80:30001/TCP  4m41s
-
-#. Get the token for the Jupyter notebook:
-
-   .. code-block:: console
-
-      $ kubectl logs tf-notebook
-
-   *Example Output*
-
-   .. code-block:: output
-
-      [I 21:50:23.188 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
-      [I 21:50:23.390 NotebookApp] Serving notebooks from local directory: /tf
-      [I 21:50:23.391 NotebookApp] The Jupyter Notebook is running at:
-      [I 21:50:23.391 NotebookApp] http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-      [I 21:50:23.391 NotebookApp]  or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-      [I 21:50:23.391 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-      [C 21:50:23.394 NotebookApp]
-
-      To access the notebook, open this file in a browser:
-         file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
-      Or copy and paste one of these URLs:
-         http://tf-notebook:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-      or http://127.0.0.1:8888/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9
-
-The notebook should now be accessible from your browser at this URL:
-`http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9 <http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9>`_.
-
 ***********************************************************
 Installation on Commercially Supported Kubernetes Platforms
 ***********************************************************
@@ -802,3 +874,16 @@ Installation on Commercially Supported Kubernetes Platforms
 
    * - Google Cloud Anthos
      - :external+edge:doc:`anthos-guide`
+
+**********
+Next Steps
+**********
+
+After verifying the installation, you can configure the GPU Operator for your workloads:
+
+- :doc:`gpu-sharing` — Share a single GPU across multiple pods using time-slicing or MPS.
+- :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
+- :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
+- :doc:`gpu-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
+- :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
+- :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.
