@@ -69,15 +69,15 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation Overview" href="install-overview.html" />
-    <link rel="prev" title="NVIDIA Confidential Containers Reference Architecture" href="overview.html" />
+    <link rel="next" title="Prerequisites" href="prerequisites.html" />
+    <link rel="prev" title="Personas" href="personas.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,14 +352,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -371,6 +373,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
@@ -428,6 +431,12 @@
   <section id="supported-platforms">
 <span id="coco-supported-platforms"></span><h1>Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permalink to this headline">#</a></h1>
 <p>Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.</p>
+<p>This page is relevant to the following users:</p>
+<ul class="simple">
+<li><p>The <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> uses the hardware tables to confirm that the selected CPU and GPU are validated for Confidential Computing before configuring the system.</p></li>
+<li><p>The <a class="reference internal" href="personas.html#coco-persona-host-os-administrator"><span class="std std-ref">Host OS Administrator</span></a> uses the hardware tables to confirm validated host OS and kernel versions.</p></li>
+<li><p>The <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> uses the software component matrix to confirm that the correct versions are in place before beginning cluster installation.</p></li>
+</ul>
 <section id="hardware">
 <h2>Hardware<a class="headerlink" href="#hardware" title="Permalink to this headline">#</a></h2>
 <section id="nvidia-gpus">
@@ -514,8 +523,9 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <li><p>Refer to the <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a> page for more information on the licensing requirements for NVIDIA Confidential Computing capabilities.</p></li>
 </ul>
 </section>
+</section>
 <section id="supported-software-components">
-<span id="coco-supported-software-components"></span><h3>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h3>
+<span id="coco-supported-software-components"></span><h2>Supported Software Components<a class="headerlink" href="#supported-software-components" title="Permalink to this headline">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 50%" />
@@ -565,7 +575,6 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <p>Users may leverage <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> to deploy Confidential Containers, however, Confidential GPU features are currently classified as Technology Preview by the downstream provider.</p>
 </section>
 </section>
-</section>
 
 
                 </article>
@@ -578,20 +587,20 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="overview.html"
+       href="personas.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA Confidential Containers Reference Architecture</p>
+        <p class="prev-next-title">Personas</p>
       </div>
     </a>
     <a class="right-next"
-       href="install-overview.html"
+       href="prerequisites.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation Overview</p>
+        <p class="prev-next-title">Prerequisites</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -619,9 +628,9 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">Hardware</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpus">NVIDIA GPUs</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cpu-platforms">CPU Platforms</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-software-components">Supported Software Components</a></li>
 </ul>
   </nav></div>
 

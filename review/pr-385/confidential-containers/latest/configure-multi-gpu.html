@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,14 +352,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -371,6 +373,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
@@ -427,6 +430,8 @@
                   
   <section id="configuring-confidential-container-workloads">
 <span id="coco-configure-workloads"></span><h1>Configuring Confidential Container Workloads<a class="headerlink" href="#configuring-confidential-container-workloads" title="Permalink to this headline">#</a></h1>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a>, use this page to configure confidential GPU workloads on a prepared cluster.
+For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
 <p>A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
 Compared with a traditional GPU pod, a Confidential Container workload pod manifest differs in
@@ -440,7 +445,7 @@ that all devices reside inside the same Confidential Container virtual machine.<
 </ul>
 <p>This page is part of <strong>Advanced Setup</strong> and is the usual next step after a successful install.</p>
 <p><strong>Before this page:</strong> Complete <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> and verify the cluster with <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> (<code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in pod logs).
-For install steps, see <a class="reference internal" href="install-overview.html"><span class="doc">Installation Overview</span></a>.</p>
+For install steps, see <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
 <p>This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.
 The install sample uses a minimal manifest; use this page for production-style configuration.</p>

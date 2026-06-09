@@ -70,14 +70,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Advanced Setup Overview" href="configure.html" />
-    <link rel="prev" title="Configure Cluster for Confidential Containers" href="confidential-containers-deploy.html" />
+    <link rel="prev" title="Install Guide for Confidential Containers" href="confidential-containers-deploy.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,14 +352,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -371,6 +373,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
@@ -427,13 +430,15 @@
                   
   <section id="run-a-sample-workload">
 <span id="coco-run-sample-workload"></span><h1>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h1>
-<p>Verify your
-confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.</p>
-<p>This page assumes that you have completed the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> pages.
-Your cluster should have Confidential Containers nodes labeled, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on those nodes.</p>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use this page to verify your installation and run a sample workload.
+<a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a> personas can also run the sample workload to confirm the cluster is ready before deploying applications.
+For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+<p>Verify your confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.</p>
+<p>This page assumes that you have completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and either <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> or <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.
+Your cluster should have <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on your nodes.</p>
 <p>This page intentionally uses the simplest possible manifest so that you can confirm the deployment end-to-end.
 It is not a production workload template.
-For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, see <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>.</p>
+For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>.</p>
 <ol class="arabic">
 <li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with a sample manifest for your system:</p>
 <div class="sd-tab-set docutils">
@@ -480,13 +485,13 @@ Intel-based system (TDX)</label><div class="sd-tab-content docutils">
 </div>
 </div>
 </div>
-<p>The following is a breif list of the options available for the manifest:</p>
+<p>The following is a brief list of the options available for the manifest:</p>
 <ul class="simple">
 <li><p>Runtime class: Use <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> on AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> on Intel-based systems.</p></li>
 <li><p>GPU resource type: The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default resource name advertised by the NVIDIA Kata Sandbox Device Plugin.
 If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
 </ul>
-<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additionalguidance on each option.</p>
+<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additional guidance on each option.</p>
 </li>
 <li><p>Create the pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
@@ -507,8 +512,7 @@ If your cluster was installed with the <code class="docutils literal notranslate
 </pre></div>
 </div>
 <p>The pod could also say <code class="docutils literal notranslate"><span class="pre">Completed</span></code> if the container already completed successfully.</p>
-<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, see <a class="reference internal" href="#coco-pending-pod"><span class="std std-ref">If the pod stays Pending</span></a>
-before continuing.</p>
+<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, see <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Workload Deployment Issues</span></a> before continuing.</p>
 </li>
 <li><p>View the logs from the pod after the container starts:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n default cuda-vectoradd-kata
@@ -524,7 +528,7 @@ before continuing.</p>
 
 <span class="go">The output should include ``Test PASSED`` if the container completed successfully.</span>
 
-<span class="go">If you arne&#39;t seeing any log output, make sure the pod is running and the container is started.</span>
+<span class="go">If you aren&#39;t seeing any log output, make sure the pod is running and the container is started.</span>
 </pre></div>
 </div>
 </li>
@@ -534,25 +538,11 @@ before continuing.</p>
 </div>
 </li>
 </ol>
-<section id="if-the-pod-stays-pending">
-<span id="coco-pending-pod"></span><h2>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code><a class="headerlink" href="#if-the-pod-stays-pending" title="Permalink to this headline">#</a></h2>
-<p>Run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">cuda-vectoradd-kata</span></code> and check <strong>Events</strong> for messages such as
-<code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code>.</p>
-<p>Common causes:</p>
-<ul class="simple">
-<li><p>The node is missing <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> or
-<code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state=true</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero (often after a VFIO or device plugin race).</p></li>
-<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> were not applied, especially Kubelet feature gates.</p></li>
-</ul>
 <section id="next-steps">
-<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configure Confidential Container workloads</span></a> for runtime class
-selection, resource type naming, and single- or multi-GPU passthrough patterns.</p></li>
-<li><p>Manage the <a class="reference internal" href="configure-cc-mode.html"><span class="doc">confidential computing mode</span></a> on your GPUs.</p></li>
+<li><p>Refer to the <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> section for more information on managing the Confidential Computing mode and configuring workloads.</p></li>
 </ul>
-</section>
 </section>
 </section>
 
@@ -572,7 +562,7 @@ selection, resource type naming, and single- or multi-GPU passthrough patterns.<
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Configure Cluster for Confidential Containers</p>
+        <p class="prev-next-title">Install Guide for Confidential Containers</p>
       </div>
     </a>
     <a class="right-next"
@@ -605,10 +595,7 @@ selection, resource type naming, and single- or multi-GPU passthrough patterns.<
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-pod-stays-pending">If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 

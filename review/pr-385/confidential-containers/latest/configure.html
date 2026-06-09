@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,14 +352,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Configure Cluster for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -371,6 +373,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
@@ -427,16 +430,17 @@
                   
   <section id="advanced-setup-overview">
 <span id="configure-confidential-containers"></span><h1>Advanced Setup Overview<a class="headerlink" href="#advanced-setup-overview" title="Permalink to this headline">#</a></h1>
-<p>This page is the entry point for the <strong>Advanced Setup</strong> section.</p>
+<p>This page is the entry point for the <strong>Advanced Setup</strong> section.
+For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
 <p><strong>Before this section:</strong> Complete the <strong>Install</strong> section through <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> and confirm <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in the sample pod logs.
-If install is not verified, return to <a class="reference internal" href="install-overview.html"><span class="doc">Installation Overview</span></a>.</p>
+If install is not verified, return to <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and complete the Install section.</p>
 <section id="recommended-order">
 <h2>Recommended order<a class="headerlink" href="#recommended-order" title="Permalink to this headline">#</a></h2>
 <p>Most teams follow this order after a successful install:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a> — runtime classes, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests for real applications.</p></li>
-<li><p><a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> — when you need to change the default CC mode at cluster or node scope.</p></li>
-<li><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> — when workloads need secrets, encrypted images, or registry authentication.
+<li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a> — for <a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a> personas: runtime classes, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests for real applications.</p></li>
+<li><p><a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> — for <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> personas: when you need to change the default CC mode at cluster or node scope.</p></li>
+<li><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> — for <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a> personas: when workloads need secrets, encrypted images, or registry authentication.
 Attestation is not required for the install sample workload.</p></li>
 </ol>
 <p>Use the cards below to open a topic.</p>

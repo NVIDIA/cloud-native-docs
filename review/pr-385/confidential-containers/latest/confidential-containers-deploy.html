@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Configure Cluster for Confidential Containers &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Install Guide for Confidential Containers &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -70,14 +70,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Run a Sample Workload" href="run-sample-workload.html" />
-    <link rel="prev" title="Prerequisites" href="prerequisites.html" />
+    <link rel="prev" title="Quickstart Install" href="install-quickstart.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 03, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,14 +352,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-overview.html">Installation Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Configure Cluster for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Install Guide for Confidential Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -371,6 +373,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
@@ -409,7 +412,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Configure Cluster for Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">Install Guide for Confidential Containers</li>
   </ul>
 </nav></div>
       
@@ -425,16 +428,30 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="configure-cluster-for-confidential-containers">
-<span id="confidential-containers-deploy"></span><h1>Configure Cluster for Confidential Containers<a class="headerlink" href="#configure-cluster-for-confidential-containers" title="Permalink to this headline">#</a></h1>
-<p>This page configures your cluster for confidential containers and deploys Kata Containers and the NVIDIA GPU Operator on your cluster.</p>
-<p>Before starting, you should have completed the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> page and understand the  <a class="reference internal" href="install-overview.html"><span class="doc">Installation Overview</span></a>.</p>
-<p>After completing this page, proceed to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.
+  <section id="install-guide-for-confidential-containers">
+<span id="confidential-containers-deploy"></span><h1>Install Guide for Confidential Containers<a class="headerlink" href="#install-guide-for-confidential-containers" title="Permalink to this headline">#</a></h1>
+<p>This page lists the steps for a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
+For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+<p>Install workflow:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p></li>
+<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label nodes for Confidential Containers components</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">Install Kata Containers</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install NVIDIA GPU Operator</span></a></p></li>
+</ol>
+<p>After completing this page, you can continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.
 When you finish this page, nodes are labeled for passthrough, Kata runtime classes are available, and GPU Operator operands are running on those nodes.</p>
-<section id="label-nodes">
-<span id="coco-label-nodes"></span><span id="installation-and-configuration"></span><h2>Label Nodes<a class="headerlink" href="#label-nodes" title="Permalink to this headline">#</a></h2>
-<p>This guide assumes you already have a Kubernetes cluster with GPU worker nodes enrolled.
-These steps do not create nodes or bootstrap a new cluster.</p>
+<section id="label-nodes-for-confidential-containers-components">
+<span id="coco-label-nodes"></span><span id="installation-and-configuration"></span><h2>Label Nodes for Confidential Containers Components<a class="headerlink" href="#label-nodes-for-confidential-containers-components" title="Permalink to this headline">#</a></h2>
+<p>The GPU Operator uses labels to determine what software components to deploy to a node.
+The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.</p>
+<p>A node can only run one container runtime at a time, so a node labeled with  <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> runs only Confidential Container workloads and cannot run traditional GPU container workloads.
+The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
+For more details on how the GPU Operator deploys components to your cluster, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-cluster-topology"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
+</div>
 <ol class="arabic">
 <li><p>Get a list of the nodes in your cluster:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes
@@ -462,17 +479,8 @@ These steps do not create nodes or bootstrap a new cluster.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If the command prints <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span> <span class="pre">not</span> <span class="pre">labeled</span></code>, the label is already set to
-<code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>. Continue to the verification step below.</p>
-</div>
-<p>The GPU Operator uses this label to determine what software components to deploy to a node.
-The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.</p>
-<p>A node can only run one container runtime at a time, so a labeled node runs only Confidential Container workloads and cannot run traditional GPU container workloads.
-The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
-For more details on how the GPU Operator deploys components to your cluster, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-cluster-topology"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
+<p>If the command prints <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span> <span class="pre">not</span> <span class="pre">labeled</span></code>, the label may already be set.
+Continue to the next step to verify the label was added.</p>
 </div>
 </li>
 <li><p>Verify the node label was added:</p>
@@ -485,7 +493,7 @@ For more details on how the GPU Operator deploys components to your cluster, ref
 </div>
 </li>
 </ol>
-<p>After labeling the node, you can continue to the next steps to install Kata Containers and the NVIDIA GPU Operator.</p>
+<p>After labeling nodes that you want to run Confidential Containers workloads in your cluster, continue to the next steps to install Kata Containers and the NVIDIA GPU Operator.</p>
 </section>
 <section id="install-the-kata-containers-helm-chart">
 <span id="coco-install-kata-chart"></span><h2>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h2>
@@ -507,21 +515,28 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
    --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST DEPLOYED: Wed Apr  1 17:03:00 2026</span>
+<p><em>Example Output immediately after running the command:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0</span>
+<span class="go">Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
+It can take a 2-3 minutes to return output.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
+If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to be in the Running state.</p>
+</div>
+<p><em>Example Output when the release is deployed:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0</span>
+<span class="go">Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933</span>
+<span class="go">LAST DEPLOYED: Wed Apr  1 17:03:00 2026</span>
 <span class="go">NAMESPACE: kata-system</span>
 <span class="go">STATUS: deployed</span>
 <span class="go">REVISION: 1</span>
 <span class="go">DESCRIPTION: Install complete</span>
 <span class="go">TEST SUITE: None</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
-It can take a 2-3 minutes to return output.</p>
-<p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
-If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to be in the Running state.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -557,13 +572,27 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <p>If SNP or TDX runtime classes are missing, wait 2-5 minutes and run the check again.
 A partial list usually means installation is still in progress rather than a failed install.</p>
 </li>
-<li><p>Optional: If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod or are not seeing the expected runtime classes, get the pod name and view the logs:</p>
+</ol>
+<p><strong>Success criteria:</strong> The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code> (<code class="docutils literal notranslate"><span class="pre">1/1</span></code> Ready), SNP and TDX runtime classes are listed in the verification step above.
+Once the installation has succeeded you can continue to the next step to install the NVIDIA GPU Operator.</p>
+<p>If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod or are not seeing the expected runtime classes, use the following steps to view the logs:</p>
+<ol class="arabic">
+<li><p>Get the kata-deploy pod name:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
-<span class="gp">$ </span>kubectl logs -n kata-system &lt;pod-name&gt;
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                       READY   STATUS    RESTARTS      AGE</span>
+<span class="go">kata-deploy-&lt;pod-name&gt;       1/1     Running   0             6m37s</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs for the kata-deploy pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n kata-system kata-deploy-&lt;pod-name&gt;
 </pre></div>
 </div>
 <p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod from the first command’s output.</p>
-<p><strong>Success criteria:</strong> The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code> (<code class="docutils literal notranslate"><span class="pre">1/1</span></code> Ready), SNP and TDX runtime classes are listed in the verification step above, and logs end with a successful install message such as:</p>
+<p><em>Example Output:</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Install completed</span>
 <span class="go">daemonset mode: waiting for SIGTERM</span>
 </pre></div>
@@ -591,6 +620,11 @@ If no existing issue matches your problem, <a class="reference external" href="h
 </div>
 </li>
 <li><p>Install the GPU Operator with the following configuration:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.
+Refer to the <a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> section for more details on this use case.</p>
+</div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
@@ -610,20 +644,13 @@ If no existing issue matches your problem, <a class="reference external" href="h
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag instructs Helm to wait until the release is deployed before returning.
-Some GPU Operator pods can take several additional minutes to reach the Running state after the Helm command completes.
-The first <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code> check may show only the operator and NFD pods.
-Confidential Containers operands (Confidential Computing Manager, VFIO Manager, and Kata device plugin) often appear within 5–10 minutes.
-Use the optional verification step that follows and re-check until all operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code>.</p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.</p>
-</div>
-<p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> section on this page for more details on the configuration options you can specify when installing the GPU Operator.</p>
-<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p>
+It may take 3-5 minutes for the Helm command to complete and for all GPU Operator pods to be in the Running state.</p>
+<p>For additional installation settings,</p>
+<ul class="simple">
+<li><p>Refer to the <a class="reference internal" href="#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> section on this page for more details on the Confidential Containers-specific configuration options you can specify when installing the GPU Operator.</p></li>
+<li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p></li>
+</ul>
 </li>
 <li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -642,14 +669,6 @@ Use the optional verification step that follows and re-check until all operands 
 </pre></div>
 </div>
 <p>For more details on each of the GPU Operator components, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you are not seeing the expected output, view the logs for the GPU Operator pods:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
-</pre></div>
-</div>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
-</div>
 </li>
 <li><p>Optional: If you have host access to the worker node, you can perform the following validation step:</p>
 <ol class="loweralpha">
@@ -666,14 +685,24 @@ Use the optional verification step that follows and re-check until all operands 
 </div>
 </li>
 </ol>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you have an issue deploying the GPU Operator, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.</p>
-</div>
 </li>
 </ol>
+<p><strong>Success criteria:</strong> All GPU Operator pods are <code class="docutils literal notranslate"><span class="pre">Running</span></code> or <code class="docutils literal notranslate"><span class="pre">Completed</span></code>.
+Your cluster is now configured to deploy workloads in Kata Containers.
+Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm everything is working as expected.</p>
+<p>If you are not seeing the expected output, view the logs for the GPU Operator pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For general GPU Operator issues such as driver or toolkit failures, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.
+For Confidential Containers-specific deploy failures, refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Deploy Failures</span></a>.</p>
+</div>
+</section>
 <section id="common-gpu-operator-configuration-settings">
-<span id="coco-configuration-settings"></span><h3>Common GPU Operator Configuration Settings<a class="headerlink" href="#common-gpu-operator-configuration-settings" title="Permalink to this headline">#</a></h3>
+<span id="coco-configuration-settings"></span><h2>Common GPU Operator Configuration Settings<a class="headerlink" href="#common-gpu-operator-configuration-settings" title="Permalink to this headline">#</a></h2>
 <p>The following are the available GPU Operator configuration settings to enable Confidential Containers:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -695,13 +724,14 @@ machine-style workloads and related operands.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code></p></td>
 <td><p>Specifies the default type of workload for the cluster, one of <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>, or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code>.</p>
-<p>Setting <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> or <code class="docutils literal notranslate"><span class="pre">vm-vgpu</span></code> can be helpful if you plan to run all or mostly virtual machines in your cluster.</p>
+<p>Set to <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> if you plan to run all or mostly virtual machines in your cluster.</p>
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode</span></code></p></td>
 <td><p>Specifies the sandbox mode to use when deploying sandbox workloads.
-Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.</p></td>
+Accepted values are <code class="docutils literal notranslate"><span class="pre">kubevirt</span></code> (default) and <code class="docutils literal notranslate"><span class="pre">kata</span></code>.
+Set to <code class="docutils literal notranslate"><span class="pre">kata</span></code> to run Confidential Containers workloads in Kata Containers.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">kubevirt</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kataSandboxDevicePlugin.env</span></code></p></td>
@@ -717,7 +747,7 @@ Refer to the <a class="reference internal" href="#coco-configuration-heterogeneo
 </div>
 </section>
 <section id="configuring-gpu-or-nvswitch-resource-types-name">
-<span id="coco-configuration-heterogeneous-clusters"></span><h3>Configuring GPU or NVSwitch Resource Types Name<a class="headerlink" href="#configuring-gpu-or-nvswitch-resource-types-name" title="Permalink to this headline">#</a></h3>
+<span id="coco-configuration-heterogeneous-clusters"></span><h2>Configuring GPU or NVSwitch Resource Types Name<a class="headerlink" href="#configuring-gpu-or-nvswitch-resource-types-name" title="Permalink to this headline">#</a></h2>
 <p>By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/nvswitch</span></code>.
 You can reference this name in your manifests to request GPU or NVSwitch resources for your workload.
 If you want to use a different name, you can set the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS</span></code> or <code class="docutils literal notranslate"><span class="pre">NVSWITCH_ALIAS</span></code> environment variables in the Kata device plugin to your preferred name.
@@ -759,7 +789,6 @@ If you want to view the resource types for a different node, you can update the 
 </div>
 <p>You should see the resource type information for the GPUs and NVSwitches on the node.</p>
 </section>
-</section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
@@ -781,12 +810,12 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="prerequisites.html"
+       href="install-quickstart.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Prerequisites</p>
+        <p class="prev-next-title">Quickstart Install</p>
       </div>
     </a>
     <a class="right-next"
@@ -819,13 +848,11 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes">Label Nodes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes-for-confidential-containers-components">Label Nodes for Confidential Containers Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-gpu-operator-configuration-settings">Common GPU Operator Configuration Settings</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpu-or-nvswitch-resource-types-name">Configuring GPU or NVSwitch Resource Types Name</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-gpu-operator-configuration-settings">Common GPU Operator Configuration Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpu-or-nvswitch-resource-types-name">Configuring GPU or NVSwitch Resource Types Name</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
