@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -479,7 +479,7 @@ Depending on your role, you may complete several sections or only a subset.</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#coco-persona-container-user"><span class="std std-ref">Container User</span></a></p></td>
 <td><p>Deploys confidential GPU workloads on a prepared cluster.</p></td>
-<td><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a></p></td>
+<td><p><a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -517,7 +517,7 @@ This persona performs the initial deployment and is responsible for day-two oper
 <li><p><a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a>: understand the software components and how they fit together.</p></li>
 <li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>: prepare worker nodes and the Kubernetes cluster.</p></li>
 <li><p><a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a>: minimal steps to install Kata Containers and the GPU Operator.</p></li>
-<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>: install with per-node labeling and additional configuration options.</p></li>
+<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>: install with per-node labeling and additional configuration options.</p></li>
 <li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: confirm the deployment was successful.</p></li>
 <li><p><a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>: change the CC mode on GPUs at the cluster or node level as needed.</p></li>
 <li><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Deploy Failures</span></a>: resolve install and deploy failures.</p></li>
@@ -543,7 +543,7 @@ In this documentation, that means deploying confidential GPU workloads with Kube
 This persona works primarily with Kubernetes workload manifests and does not require host access to worker nodes.</p>
 <p>Relevant pages:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>: runtime class selection, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests.</p></li>
+<li><p><a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a>: runtime class selection, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests.</p></li>
 <li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: run the reference workload to confirm the cluster is ready before deploying your own application.</p></li>
 <li><p><a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a>: choose attestation, CC mode, and workload configuration topics after install.</p></li>
 </ul>

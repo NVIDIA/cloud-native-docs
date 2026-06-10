@@ -69,7 +69,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Install Guide for Confidential Containers" href="confidential-containers-deploy.html" />
+    <link rel="next" title="Detailed Install Guide" href="confidential-containers-deploy.html" />
     <link rel="prev" title="Prerequisites" href="prerequisites.html" />
 
 
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -433,7 +433,7 @@
 <p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use these steps to install Kata Containers and the NVIDIA GPU Operator with minimal steps.
 For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.
 This guide will configure your cluster to deploy all workloads in Kata Containers by default.</p>
-<p>For additional configuration options and install details, refer to the full install guide in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+<p>For additional configuration options and install details, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 <p>Before starting, complete <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.
 After completing this page, continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>.</p>
 <section id="install-the-kata-containers-helm-chart">
@@ -497,7 +497,7 @@ A partial list usually means installation is still in progress.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> flag sets the default cluster workload type for Confidential Containers.
-If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
@@ -546,7 +546,7 @@ Your cluster is now configured to run Confidential Containers workloads on all n
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.</p></li>
-<li><p>For more installation and configuration options, refer to the full install guide in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p></li>
+<li><p>For more installation and configuration options, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p></li>
 <li><p>Continue to the <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> section for more post installation configuration options, including a quickstart  <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.</p></li>
 </ul>
 </section>
@@ -576,7 +576,7 @@ Your cluster is now configured to run Confidential Containers workloads on all n
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Install Guide for Confidential Containers</p>
+        <p class="prev-next-title">Detailed Install Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

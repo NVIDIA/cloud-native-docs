@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -558,7 +558,7 @@ This configuration is done through node labelling and configuration flags set du
 </tbody>
 </table>
 </div>
-<p>This configuration can be controlled through node labelling, as described in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+<p>This configuration can be controlled through node labelling, as described in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </section>
 </section>
 <section id="supported-features-and-deployment-scenarios">
@@ -567,8 +567,8 @@ This configuration is done through node labelling and configuration flags set du
 <ul class="simple">
 <li><p>Support for Confidential Container workloads as</p>
 <ul>
-<li><p><a class="reference internal" href="configure-multi-gpu.html#coco-single-gpu-workload"><span class="std std-ref">Single-GPU passthrough</span></a> (one physical GPU per pod).</p></li>
-<li><p><a class="reference internal" href="configure-multi-gpu.html#coco-multi-gpu-passthrough"><span class="std std-ref">Multi-GPU passthrough</span></a> on NVSwitch (NVLink) based HGX systems.</p></li>
+<li><p><a class="reference internal" href="configure-workloads.html#coco-single-gpu-workload"><span class="std std-ref">Single-GPU passthrough</span></a> (one physical GPU per pod).</p></li>
+<li><p><a class="reference internal" href="configure-workloads.html#coco-multi-gpu-passthrough"><span class="std std-ref">Multi-GPU passthrough</span></a> on NVSwitch (NVLink) based HGX systems.</p></li>
 </ul>
 </li>
 </ul>
@@ -651,10 +651,10 @@ Achieve availability through replication, which is standard practice in Kubernet
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-rocket sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.322.75h1.176a1.75 1.75 0 0 1 1.75 1.749v1.177a10.75 10.75 0 0 1-2.925 7.374l-1.228 1.304a23.699 23.699 0 0 1-1.596 1.542v5.038c0 .615-.323 1.184-.85 1.5l-4.514 2.709a.75.75 0 0 1-1.12-.488l-.963-4.572a1.305 1.305 0 0 1-.14-.129L8.04 15.96l-1.994-1.873a1.305 1.305 0 0 1-.129-.14l-4.571-.963a.75.75 0 0 1-.49-1.12l2.71-4.514c.316-.527.885-.85 1.5-.85h5.037a23.668 23.668 0 0 1 1.542-1.594l1.304-1.23A10.753 10.753 0 0 1 20.321.75Zm-6.344 4.018v-.001l-1.304 1.23a22.275 22.275 0 0 0-3.255 3.851l-2.193 3.29 1.859 1.744a.545.545 0 0 1 .034.034l1.743 1.858 3.288-2.192a22.263 22.263 0 0 0 3.854-3.257l1.228-1.303a9.251 9.251 0 0 0 2.517-6.346V2.5a.25.25 0 0 0-.25-.25h-1.177a9.252 9.252 0 0 0-6.344 2.518ZM6.5 21c-1.209 1.209-3.901 1.445-4.743 1.49a.236.236 0 0 1-.18-.067.236.236 0 0 1-.067-.18c.045-.842.281-3.534 1.49-4.743.9-.9 2.6-.9 3.5 0 .9.9.9 2.6 0 3.5Zm-.592-8.588L8.17 9.017c.23-.346.47-.685.717-1.017H5.066a.25.25 0 0 0-.214.121l-2.167 3.612ZM16 15.112c-.333.248-.672.487-1.018.718l-3.393 2.262.678 3.223 3.612-2.167a.25.25 0 0 0 .121-.214ZM17.5 8a1.5 1.5 0 1 1-3.001-.001A1.5 1.5 0 0 1 17.5 8Z"></path></svg> Configure Cluster for Confidential Containers</div>
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-rocket sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.322.75h1.176a1.75 1.75 0 0 1 1.75 1.749v1.177a10.75 10.75 0 0 1-2.925 7.374l-1.228 1.304a23.699 23.699 0 0 1-1.596 1.542v5.038c0 .615-.323 1.184-.85 1.5l-4.514 2.709a.75.75 0 0 1-1.12-.488l-.963-4.572a1.305 1.305 0 0 1-.14-.129L8.04 15.96l-1.994-1.873a1.305 1.305 0 0 1-.129-.14l-4.571-.963a.75.75 0 0 1-.49-1.12l2.71-4.514c.316-.527.885-.85 1.5-.85h5.037a23.668 23.668 0 0 1 1.542-1.594l1.304-1.23A10.753 10.753 0 0 1 20.321.75Zm-6.344 4.018v-.001l-1.304 1.23a22.275 22.275 0 0 0-3.255 3.851l-2.193 3.29 1.859 1.744a.545.545 0 0 1 .034.034l1.743 1.858 3.288-2.192a22.263 22.263 0 0 0 3.854-3.257l1.228-1.303a9.251 9.251 0 0 0 2.517-6.346V2.5a.25.25 0 0 0-.25-.25h-1.177a9.252 9.252 0 0 0-6.344 2.518ZM6.5 21c-1.209 1.209-3.901 1.445-4.743 1.49a.236.236 0 0 1-.18-.067.236.236 0 0 1-.067-.18c.045-.842.281-3.534 1.49-4.743.9-.9 2.6-.9 3.5 0 .9.9.9 2.6 0 3.5Zm-.592-8.588L8.17 9.017c.23-.346.47-.685.717-1.017H5.066a.25.25 0 0 0-.214.121l-2.167 3.612ZM16 15.112c-.333.248-.672.487-1.018.718l-3.393 2.262.678 3.223 3.612-2.167a.25.25 0 0 0 .121-.214ZM17.5 8a1.5 1.5 0 1 1-3.001-.001A1.5 1.5 0 0 1 17.5 8Z"></path></svg> Detailed Install Guide</div>
 <p class="sd-card-text">Install Kata Containers and the NVIDIA GPU Operator on Kubernetes.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="confidential-containers-deploy.html"><span class="doc">Install Guide for Confidential Containers</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">

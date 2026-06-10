@@ -70,14 +70,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Advanced Setup Overview" href="configure.html" />
-    <link rel="prev" title="Install Guide for Confidential Containers" href="confidential-containers-deploy.html" />
+    <link rel="prev" title="Detailed Install Guide" href="confidential-containers-deploy.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -434,11 +434,11 @@
 <a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a> personas can also run the sample workload to confirm the cluster is ready before deploying applications.
 For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
 <p>Verify your confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.</p>
-<p>This page assumes that you have completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and either <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> or <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.
+<p>This page assumes that you have completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and either <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> or <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.
 Your cluster should have <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on your nodes.</p>
 <p>This page intentionally uses the simplest possible manifest so that you can confirm the deployment end-to-end.
 It is not a production workload template.
-For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Workloads</span></a>.</p>
+For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a>.</p>
 <ol class="arabic">
 <li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with a sample manifest for your system:</p>
 <div class="sd-tab-set docutils">
@@ -491,7 +491,7 @@ Intel-based system (TDX)</label><div class="sd-tab-content docutils">
 <li><p>GPU resource type: The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default resource name advertised by the NVIDIA Kata Sandbox Device Plugin.
 If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
 </ul>
-<p>Refer to <a class="reference internal" href="configure-multi-gpu.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additional guidance on each option.</p>
+<p>Refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additional guidance on each option.</p>
 </li>
 <li><p>Create the pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
@@ -562,7 +562,7 @@ If your cluster was installed with the <code class="docutils literal notranslate
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Install Guide for Confidential Containers</p>
+        <p class="prev-next-title">Detailed Install Guide</p>
       </div>
     </a>
     <a class="right-next"

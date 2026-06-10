@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -591,7 +591,7 @@ Use one of the following configuration paths.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
-<p>Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+<p>Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </li>
 <li><p><strong>Cluster-wide default:</strong> If you skipped per-node labeling, confirm the GPU Operator <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads</span></code> settings apply <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> to all worker nodes:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get clusterpolicies.nvidia.com cluster-policy -o <span class="nv">jsonpath</span><span class="o">=</span><span class="se">\</span>
@@ -605,7 +605,7 @@ Use one of the following configuration paths.</p>
 </pre></div>
 </div>
 <p>If values differ, update the ClusterPolicy or reinstall the GPU Operator with <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled=true</span></code>, <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code>, and <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode=kata</span></code>.
-Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </li>
 <li><p>Wait up to 10 minutes after labeling or policy changes, then verify operands on the node are <code class="docutils literal notranslate"><span class="pre">Running</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span>

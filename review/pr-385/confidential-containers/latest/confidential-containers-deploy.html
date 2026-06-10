@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Install Guide for Confidential Containers &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Detailed Install Guide &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,13 +361,13 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configure-multi-gpu.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
@@ -412,7 +412,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Install Guide for Confidential Containers</li>
+    <li class="breadcrumb-item active" aria-current="page">Detailed Install Guide</li>
   </ul>
 </nav></div>
       
@@ -428,14 +428,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="install-guide-for-confidential-containers">
-<span id="confidential-containers-deploy"></span><h1>Install Guide for Confidential Containers<a class="headerlink" href="#install-guide-for-confidential-containers" title="Permalink to this headline">#</a></h1>
+  <section id="detailed-install-guide">
+<span id="confidential-containers-deploy"></span><h1>Detailed Install Guide<a class="headerlink" href="#detailed-install-guide" title="Permalink to this headline">#</a></h1>
 <p>This page lists the steps for a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
 For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
 <p>Install workflow:</p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p></li>
-<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label nodes for Confidential Containers components</span></a></p></li>
+<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label nodes to deploy Confidential Containers components</span></a>. The GPU Operator reads labels to determine which nodes need to be configured to deploy Confidential Containers components.</p></li>
 <li><p><a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">Install Kata Containers</span></a></p></li>
 <li><p><a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install NVIDIA GPU Operator</span></a></p></li>
 </ol>
@@ -443,11 +443,12 @@ For persona responsibilities and documentation structure, see <a class="referenc
 When you finish this page, nodes are labeled for passthrough, Kata runtime classes are available, and GPU Operator operands are running on those nodes.</p>
 <section id="label-nodes-for-confidential-containers-components">
 <span id="coco-label-nodes"></span><span id="installation-and-configuration"></span><h2>Label Nodes for Confidential Containers Components<a class="headerlink" href="#label-nodes-for-confidential-containers-components" title="Permalink to this headline">#</a></h2>
-<p>The GPU Operator uses labels to determine what software components to deploy to a node.
-The <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label specifies that the node should receive the software components to run Confidential Containers.</p>
-<p>A node can only run one container runtime at a time, so a node labeled with  <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> runs only Confidential Container workloads and cannot run traditional GPU container workloads.
-The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
-For more details on how the GPU Operator deploys components to your cluster, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-cluster-topology"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
+<p>The GPU Operator reads labels to determine what software components to deploy to a node.
+To configure a node for Confidential Container workloads, you label the node with the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label.
+Then, when the GPU Operator is installed in a subsequent step, it will deploy the software components needed to run Confidential Containers to the node.</p>
+<p>A node can only run one container runtime at a time, so a node configured for Confidential Container workloads cannot run traditional GPU container workloads.
+The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.</p>
+<p>For more details on how the GPU Operator deploys components to your cluster, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-cluster-topology"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> when installing the GPU Operator.</p>
@@ -493,7 +494,9 @@ Continue to the next step to verify the label was added.</p>
 </div>
 </li>
 </ol>
-<p>After labeling nodes that you want to run Confidential Containers workloads in your cluster, continue to the next steps to install Kata Containers and the NVIDIA GPU Operator.</p>
+<p><strong>Sucess Criteria:</strong> All nodes labeled for Confidential Container workloads are configured to run Confidential Container workloads.
+By labeling the nodes in your cluster that you want to run Confidental Container workloads, you are signaling to the PGU Operator to deploy the software components needed to run Confidential Containers to the node and configuring the node to only run a Confdential runtime.</p>
+<p>Once all your desired nodes are labeled, you can continue to the next step to install Kata Containers.</p>
 </section>
 <section id="install-the-kata-containers-helm-chart">
 <span id="coco-install-kata-chart"></span><h2>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h2>
@@ -622,7 +625,7 @@ If no existing issue matches your problem, <a class="reference external" href="h
 <li><p>Install the GPU Operator with the following configuration:</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> o configure every worker node for Confidential Containers workloads.
 Refer to the <a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> section for more details on this use case.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>

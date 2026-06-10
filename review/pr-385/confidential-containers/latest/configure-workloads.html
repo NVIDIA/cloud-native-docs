@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'configure-multi-gpu';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'configure-workloads';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 09, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -361,7 +361,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Install Guide for Confidential Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
@@ -444,8 +444,8 @@ Kata sandbox device plugin, which can be either default names or model-specific 
 that all devices reside inside the same Confidential Container virtual machine.</p></li>
 </ul>
 <p>This page is part of <strong>Advanced Setup</strong> and is the usual next step after a successful install.</p>
-<p><strong>Before this page:</strong> Complete <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a> and verify the cluster with <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> (<code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in pod logs).
-For install steps, see <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Configure Cluster for Confidential Containers</span></a>.</p>
+<p><strong>Before this page:</strong> Complete the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a> and verify the cluster with <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> (<code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in pod logs).
+For install steps, see <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 <p>This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.
 The install sample uses a minimal manifest; use this page for production-style configuration.</p>
@@ -544,7 +544,7 @@ independent workloads that do not require NVLink between GPUs.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you configured the Kata sandbox device plugin to use model-specific resource types,
-replace <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> with the appropriate model-specific name, for example
+replace <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> with the appropriate model-specific name, such as
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p>
 </div>
 </li>
