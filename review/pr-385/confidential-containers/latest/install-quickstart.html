@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -431,13 +431,28 @@
   <section id="quickstart-install">
 <span id="coco-install-quickstart"></span><h1>Quickstart Install<a class="headerlink" href="#quickstart-install" title="Permalink to this headline">#</a></h1>
 <p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use these steps to install Kata Containers and the NVIDIA GPU Operator with minimal steps.
-For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.
-This guide will configure your cluster to deploy all workloads in Kata Containers by default.</p>
-<p>For additional configuration options and install details, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
-<p>Before starting, complete <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.
-After completing this page, continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>.</p>
+For additional configuration options and install details, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before starting, make sure your cluster meets the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p>
+</div>
+<section id="what-you-ll-build">
+<h2>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h2>
+<p>By the end of this quickstart, you will have:</p>
+<ul class="simple">
+<li><p>Kata Containers running on your cluster.</p></li>
+<li><p>The NVIDIA GPU Operator installed and configured for Confidential Containers.</p></li>
+<li><p>All cluster nodes configured for Confidential Containers workloads.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This quickstart configures all cluster nodes for Confidential Containers workloads.
+A cluster node can only be configured to run one container runtime at a time, so a node configured for Confidential Containers workloads cannot run traditional GPU container workloads.</p>
+<p>If you need to run traditional GPU container workloads on your cluster, refer to the <a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+</div>
+<p>After completing this page, you can validate the installation by running a sample workload in <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>.</p>
 <section id="install-the-kata-containers-helm-chart">
-<span id="quickstart-install-kata"></span><h2>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h2>
+<span id="quickstart-install-kata"></span><h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Set the chart version and registry path:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.29.0&quot;</span>
@@ -478,7 +493,7 @@ A partial list usually means installation is still in progress.</p>
 <p><strong>Success criteria:</strong> The SNP and TDX runtime classes appear in the output above.</p>
 </section>
 <section id="install-the-nvidia-gpu-operator">
-<span id="quickstart-install-gpu-operator"></span><h2>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h2>
+<span id="quickstart-install-gpu-operator"></span><h3>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>Add and update the NVIDIA Helm repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
@@ -494,11 +509,6 @@ A partial list usually means installation is still in progress.</p>
 </div>
 </li>
 <li><p>Install the GPU Operator configured for Confidential Containers on all nodes:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> flag sets the default cluster workload type for Confidential Containers.
-If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
-</div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
    -n gpu-operator --create-namespace <span class="se">\</span>
    nvidia/gpu-operator <span class="se">\</span>
@@ -520,6 +530,11 @@ If you need to run traditional GPU container workloads on your cluster, refer to
 </pre></div>
 </div>
 <p>It may take 3–5 minutes for all GPU Operator pods to reach the Running state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> flag sets the default cluster workload type for Confidential Containers.
+If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+</div>
 </li>
 <li><p>Verify that all GPU Operator pods are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -543,12 +558,13 @@ If you need to run traditional GPU container workloads on your cluster, refer to
 Your cluster is now configured to run Confidential Containers workloads on all nodes.</p>
 </section>
 <section id="next-steps">
-<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.</p></li>
 <li><p>For more installation and configuration options, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p></li>
 <li><p>Continue to the <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> section for more post installation configuration options, including a quickstart  <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.</p></li>
 </ul>
+</section>
 </section>
 </section>
 
@@ -601,9 +617,12 @@ Your cluster is now configured to run Confidential Containers workloads on all n
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

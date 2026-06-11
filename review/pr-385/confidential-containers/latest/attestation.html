@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -430,10 +430,13 @@
                   
   <section id="attestation">
 <h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>As a <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a>, use this page to configure and verify attestation for confidential workloads.
-For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
-<p>Attestation is not required for the install sample workload.
-Configure attestation when workloads need secrets, encrypted container images, or authenticated registries.</p>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a>, use this page to understan more about attestation and stand up a local attestation backend for testing.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Attestation is not required to configure your cluster to deploy Confidential Containers workloads.
+This page gives and overview of attestation and a quickstart for standing up a local attestation backend for testing.
+You should refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a> for more details on attestation and production deployment.</p>
+</div>
 <p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
 Attestation is required for any feature that depends on secrets, including:</p>
@@ -443,8 +446,7 @@ Attestation is required for any feature that depends on secrets, including:</p>
 <li><p>Using sealed secrets</p></li>
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>When a workload requires a secret, such as a key to decrypt a container image or model, guest components collect hardware evidence from the active CPU and GPU enclaves.
-The evidence is sent to the remote verifier to evaluate the evidence against known-good reference values and configured policies, and conditionally releases the requested resource.</p>
+<p>Configure attestation when workloads requires a secret, to decrypt a container image or model, or guest components collect hardware evidence from the active CPU and GPU enclaves.</p>
 <section id="key-concepts">
 <h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
 <p>The following concepts appear throughout this page:</p>
