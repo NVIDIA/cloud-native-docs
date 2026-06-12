@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -437,33 +437,38 @@
 </div>
 <div class="toctree-wrapper compound">
 </div>
-<p>The NVIDIA Confidential Containers reference architecture extends NVIDIA GPU Confidential Computing functionality to Kubernetes-based workload deployments
-It is a validated reference architecture for running GPU-accelerated AI workloads on Kubernetes inside hardware-enforced Trusted Execution Environments (TEEs).
-Leveraging the CNCF <a class="reference external" href="https://confidentialcontainers.org/">Confidential Containers</a> and Kata Containers with NVIDIA’s GPU Operator, this reference architecture provides a way to protects model intellectual property and sensitive data from untrusted infrastructure—across public cloud, on-premises, and edge deployments.</p>
+<p>NVIDIA Confidential Containers is a validated reference architecture for running GPU-accelerated AI workloads on Kubernetes inside hardware-enforced Trusted Execution Environments (TEEs).
+It extends NVIDIA GPU Confidential Computing to standard Kubernetes deployments using CNCF <a class="reference external" href="https://confidentialcontainers.org/">Confidential Containers</a> and Kata Containers with the NVIDIA GPU Operator.
+Use it to protect model intellectual property and sensitive data from untrusted infrastructure across public cloud, on-premises, and edge deployments.</p>
 <section id="benefits">
 <h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this headline">#</a></h2>
-<p>The reference architecture provides the following benefits:</p>
+<p>Confidential Containers provides the following benefits:</p>
 <ul class="simple">
-<li><p>Offers a way to secure model intellectual property and sensitive data from untrusted infrastructure—across public cloud, on-premises, and edge deployments.</p></li>
-<li><p>Accelerates adoption of generative AI in regulated industries by providing a way to deploy proprietary models on third-party or private infrastructure.</p></li>
+<li><p>Protect model IP and sensitive data on untrusted public cloud, on-premises, or edge infrastructure.</p></li>
+<li><p>Deploy proprietary generative AI models in regulated industries on third-party or private clusters.</p></li>
 <li><p>Isolate GPU workloads in hardware-protected enclaves with encrypted memory and integrity verification.</p></li>
 <li><p>Operate confidential workloads with standard Kubernetes pods, runtime classes, and scheduling.</p></li>
 <li><p>Verify TEE state through remote attestation before releasing secrets or decrypted model weights.</p></li>
 </ul>
-<p>See <a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a> for the full value proposition, trust model, and architecture diagrams.</p>
+<p>Refer to <a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a> for the full value proposition, trust model, and architecture diagrams.</p>
+<section id="use-cases">
+<h3>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h3>
+<p>Common scenarios include protecting proprietary model IP on third-party infrastructure, running frontier models in a sovereign environment, and processing sensitive enterprise data in data clean rooms.
+Refer to <a class="reference internal" href="overview.html#coco-use-cases"><span class="std std-ref">Use Cases</span></a> in the Reference Architecture for workflows and deployment scenarios.</p>
+</section>
 </section>
 <section id="core-concepts">
 <h2>Core Concepts<a class="headerlink" href="#core-concepts" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://confidentialcontainers.org/">Confidential Containers</a> is the cloud-native approach to Confidential Computing on Kubernetes.
-Rather than running pods on the shared host kernel, it uses hardware-isolated virtual machines so workloads are protected from the host and other tenants.
+<p><a class="reference external" href="https://confidentialcontainers.org/">Confidential Containers</a> runs Kubernetes pods in hardware-isolated virtual machines instead of on the shared host kernel, protecting workloads from the host and other tenants.
 On supported hardware (AMD SEV-SNP or Intel TDX), that isolation forms a trusted execution environment (TEE) with encrypted memory and integrity verification.</p>
-<p>Key ideas include attestation, sealed secrets, and encrypted container images.
-See the <a class="reference internal" href="overview.html#confidential-containers-overview"><span class="std std-ref">Background</span></a> section in the Reference Architecture, the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a>, or <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a> for role-based navigation.</p>
+<p>Attestation, sealed secrets, and encrypted container images are core to the model.
+Refer to <a class="reference internal" href="overview.html#confidential-containers-overview"><span class="std std-ref">Background</span></a> in the Reference Architecture.</p>
 </section>
 <section id="core-components">
 <h2>Core Components<a class="headerlink" href="#core-components" title="Permalink to this headline">#</a></h2>
-<p>This documentation focuses on the components you install, configure, and operate to run deploy workloads in confidential runtime on Kubernetes.
-It provides a detailed overview in the <a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a> that describes the full stack, and end-to-end deploymeny guides for configuring Kata Containers and the NVIDIA GPU Operator.</p>
+<p>This documentation focuses on the components you install, configure, and operate to run workloads in a Confidential Containers runtime on Kubernetes.
+The <a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a> describes the full stack.
+The install guides cover Kata Containers and the NVIDIA GPU Operator end to end.</p>
 <ul>
 <li><p>Kata Containers: Runs pods inside TEE-protected virtual machines instead of on the shared host kernel.
 Install Kata Deploy and TEE-specific runtime shims in <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.
@@ -479,15 +484,16 @@ Manage CC mode in <a class="reference internal" href="configure-cc-mode.html"><s
 <li><p>Node Feature Discovery (NFD)</p></li>
 </ul>
 </li>
-<li><p>Trustee and attestation: Verifies TEE state and brokers key release for sealed secrets, encrypted images, and authenticated registries.
-Stand up and validate attestation in <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p></li>
 </ul>
-<p>Other architecture components, such as a guest snapshotter, Confidential Data Hub, Kata Agent security policies, and NVIDIA Runtime Container (NVRC), are described in the <a class="reference internal" href="overview.html#coco-supported-platforms-components"><span class="std std-ref">Software Components for Confidential Containers</span></a> section of the Reference Architecture.</p>
 </section>
-<section id="use-cases">
-<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">#</a></h2>
-<p>Common scenarios include protecting proprietary model IP on third-party infrastructure, running frontier models in a sovereign environment, and processing sensitive enterprise data in data clean rooms.
-See <a class="reference internal" href="overview.html#coco-use-cases"><span class="std std-ref">Use Cases</span></a> in the Reference Architecture for workflows and deployment scenarios.</p>
+<section id="using-this-documentation">
+<h2>Using This Documentation<a class="headerlink" href="#using-this-documentation" title="Permalink to this headline">#</a></h2>
+<p>This documentation describes the NVIDIA reference architecture for Confidential Containers and deployment recommendations for the upstream <a class="reference external" href="https://confidentialcontainers.org/">CNCF Confidential Containers project</a> with NVIDIA GPUs.
+It covers NVIDIA-specific configurations needed to run Confidential Containers workloads on Kubernetes.
+This primarily includes the steps to enable and configure Kata Containers and the NVIDIA GPU Operator on your cluster.</p>
+<p>For advanced Confidential Containers topics and day-two operations, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a>, as the workflows and implementations are not NVIDIA specific.
+For example, an attestation implementation is not specific to NVIDIA GPUs.
+A brief attestation overview and evaluation quickstart is available in <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>, but full production attestation implementation guides are in the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers attestation documentation</a>.</p>
 </section>
 <section id="learn">
 <h2>Learn<a class="headerlink" href="#learn" title="Permalink to this headline">#</a></h2>
@@ -651,10 +657,13 @@ See <a class="reference internal" href="overview.html#coco-use-cases"><span clas
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits">Benefits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits">Benefits</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-concepts">Core Concepts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-components">Core Components</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases">Use Cases</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-this-documentation">Using This Documentation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn">Learn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-setup">Advanced Setup</a></li>

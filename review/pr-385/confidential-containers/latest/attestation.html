@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -430,11 +430,11 @@
                   
   <section id="attestation">
 <h1>Attestation<a class="headerlink" href="#attestation" title="Permalink to this headline">#</a></h1>
-<p>As a <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a>, use this page to understan more about attestation and stand up a local attestation backend for testing.</p>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a>, use this page to understand more about attestation and stand up a local attestation backend for testing.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Attestation is not required to configure your cluster to deploy Confidential Containers workloads.
-This page gives and overview of attestation and a quickstart for standing up a local attestation backend for testing.
+This page gives an overview of attestation and a quickstart for standing up a local attestation backend for testing.
 You should refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a> for more details on attestation and production deployment.</p>
 </div>
 <p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
@@ -446,7 +446,7 @@ Attestation is required for any feature that depends on secrets, including:</p>
 <li><p>Using sealed secrets</p></li>
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>Configure attestation when workloads requires a secret, to decrypt a container image or model, or guest components collect hardware evidence from the active CPU and GPU enclaves.</p>
+<p>Configure attestation when workloads require a secret, to decrypt a container image or model, or guest components collect hardware evidence from the active CPU and GPU enclaves.</p>
 <section id="key-concepts">
 <h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
 <p>The following concepts appear throughout this page:</p>
@@ -482,15 +482,15 @@ It only validates that the Trustee components are running and reachable.</p>
 Documenting a full attestation workflow is outside the scope of this quickstart.
 To run attestation against real evidence from a confidential workload, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> and <a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> documentation for more information.</p>
 </div>
-<section id="what-you-ll-build">
-<h3>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h3>
+<section id="what-you-will-build">
+<h3>What You Will Build<a class="headerlink" href="#what-you-will-build" title="Permalink to this headline">#</a></h3>
 <p>By the end of this quickstart, you will have:</p>
 <ul class="simple">
 <li><p>A local Trustee instance (KBS, Attestation Service, and Reference Value Provider Service) running in Docker containers on <code class="docutils literal notranslate"><span class="pre">127.0.0.1:8080</span></code>.</p></li>
 <li><p>The <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> command-line tool installed and able to reach your Trustee instance.</p></li>
 <li><p>A sample resource request that exercises the end-to-end request path.</p></li>
 </ul>
-<p>You’ll know you’re done when <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
+<p>You will know you are done when <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
 A denial in this quickstart is the expected, successful outcome: it confirms that the client reached KBS, the Attestation Service evaluated the request, and policy was applied.</p>
 </section>
 <section id="prerequisites">
@@ -529,7 +529,7 @@ The repository ships with a <code class="docutils literal notranslate"><span cla
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>On first run, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> pulls the KBS, AS, and RVPS images before starting them.
-This step can take several minutes. The command returns once the containers are starting. The services may need an additional few seconds to become ready to accept requests.</p>
+This step can take several minutes. The command returns after the containers start. The services may need an additional few seconds to become ready to accept requests.</p>
 </div>
 <p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 </section>
@@ -620,10 +620,10 @@ It confirms that the client reached KBS, KBS routed the request through the Atte
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <p>You now have a working local Trustee instance and a client that can talk to it. For more details, refer to the upstream Confidential Containers documentation:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a> — Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.</p></li>
-<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a> — the complete set of Confidential Containers features, including how to wire attestation into real workloads.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Attestation</a>: Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.</p></li>
+<li><p><a class="reference external" href="https://confidentialcontainers.org/docs/features">Features</a>: the complete set of Confidential Containers features, including how to wire attestation into real workloads.</p></li>
 </ul>
-<p>To shut down the local Trustee instance when you’re finished, run the following command from the <code class="docutils literal notranslate"><span class="pre">trustee</span></code> repository directory:</p>
+<p>To shut down the local Trustee instance when you are finished, run the following command from the <code class="docutils literal notranslate"><span class="pre">trustee</span></code> repository directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker compose down
 </pre></div>
 </div>
@@ -681,7 +681,7 @@ It confirms that the client reached KBS, KBS routed the request through the Atte
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key Concepts</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickstart">Quickstart</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-will-build">What You Will Build</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-install-trustee-with-docker-compose">Step 1: Install Trustee with Docker Compose</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-verify-trustee-is-running">Step 2: Verify Trustee Is Running</a></li>

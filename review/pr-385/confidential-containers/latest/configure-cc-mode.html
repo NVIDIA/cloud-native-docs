@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -437,13 +437,6 @@ You can set a cluster-wide default Confidential Computing mode, and you can set 
 The default value of <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code>.
 Set a node-level mode by applying the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=&lt;on|off|ppcie&gt;</span></code> label on the node.
 If you set a specific mode on a node, it has higher precedence than the cluster-wide default mode.</p>
-<p>When you change the mode, the manager performs the following actions:</p>
-<ul class="simple">
-<li><p>Evicts the other GPU Operator operands from the node.
-However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.</p></li>
-<li><p>Changes the mode and resets the GPU.</p></li>
-<li><p>Reschedules the other GPU Operator operands.</p></li>
-</ul>
 <p>The supported modes are:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -467,23 +460,32 @@ However, the manager does not drain user workloads. You must make sure that no u
 <td><p>cluster-wide default, node-level override</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ppcie</span></code></p></td>
-<td><p>Enable Confidential Computing on NVIDIA Hopper GPUs.</p>
-<p>On the NVIDIA Hopper architecture <a class="reference internal" href="configure-workloads.html#coco-multi-gpu-passthrough"><span class="std std-ref">multi-GPU passthrough</span></a>
-uses protected PCIe (PPCIE) which claims exclusive use of the NVSwitches for a single
+<td><p>Enable Confidential Computing on NVIDIA Hopper GPUs.
+On the NVIDIA Hopper architecture, <a class="reference internal" href="configure-workloads.html#coco-multi-gpu-passthrough"><span class="std std-ref">multi-GPU passthrough</span></a>
+uses protected PCIe (PPCIE), which claims exclusive use of the NVSwitches for a single
 Confidential Container virtual machine.
-If you are using NVIDIA Hopper GPUs for multi-GPU passthrough,
-set the GPU mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode.</p>
-<p>The NVIDIA Blackwell architecture uses NVLink
-encryption which places the switches outside of the Trusted Computing Base (TCB),
-meaning the <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode is not required. Use <code class="docutils literal notranslate"><span class="pre">on</span></code> mode in this case.</p>
-</td>
+If you use NVIDIA Hopper GPUs for multi-GPU passthrough, set the mode to <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>.
+The NVIDIA Blackwell architecture uses NVLink encryption, which places the switches outside
+of the Trusted Computing Base (TCB), so <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode is not required.
+Use <code class="docutils literal notranslate"><span class="pre">on</span></code> mode for Blackwell.</p></td>
 <td><p>node-level override</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>When you change the mode, the manager performs the following actions:</p>
+<ul class="simple">
+<li><p>Evicts the other GPU Operator operands from the node.
+However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.</p></li>
+<li><p>Changes the mode and resets the GPU.</p></li>
+<li><p>Reschedules the other GPU Operator operands.</p></li>
+</ul>
 <section id="setting-a-cluster-wide-default-mode">
 <h2>Setting a Cluster-Wide Default Mode<a class="headerlink" href="#setting-a-cluster-wide-default-mode" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before changing the mode, make sure that no user workloads are running on the node.</p>
+</div>
 <p>To set a cluster-wide mode, specify the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode</span></code> field like the following example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
       --type<span class="o">=</span>merge <span class="se">\</span>
@@ -536,21 +538,15 @@ meaning the <code class="docutils literal notranslate"><span class="pre">ppcie</
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<p><em>Example Output (CC mode disabled):</em></p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
 <p>When you disable CC mode after enabling it, wait one to two minutes for
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state</span></code> to match the desired <code class="docutils literal notranslate"><span class="pre">off</span></code> state.
 A mode change is complete and successful when <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code> and
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> have the same value.</p>
-<p>If labels do not match expected values, refer to <a class="reference internal" href="troubleshooting.html#coco-cc-mode-troubleshoot"><span class="std std-ref">CC Node Labels</span></a> in the troubleshooting guide.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code>, refer to <a class="reference internal" href="troubleshooting.html#coco-cc-mode-troubleshoot"><span class="std std-ref">nvidia.com/cc.mode.state Not Matching nvidia.com/cc.mode</span></a> in the troubleshooting guide.
+If <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code>, refer to <a class="reference internal" href="troubleshooting.html#coco-cc-mode-failed"><span class="std std-ref">nvidia.com/cc.mode.state is failed</span></a>.</p>
+</section>
 <section id="understanding-confidential-computing-mode-labels">
-<h3>Understanding Confidential Computing Mode Labels<a class="headerlink" href="#understanding-confidential-computing-mode-labels" title="Permalink to this headline">#</a></h3>
+<h2>Understanding Confidential Computing Mode Labels<a class="headerlink" href="#understanding-confidential-computing-mode-labels" title="Permalink to this headline">#</a></h2>
 <p>The following labels are used to manage the Confidential Computing mode on a node.
 You only need to update the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code> label, the other labels are managed by the Confidential Computing Manager to represent the current state of the Confidential Computing mode on the node.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
@@ -587,9 +583,8 @@ Set to <code class="docutils literal notranslate"><span class="pre">true</span><
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>the <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode is only supported on NVIDIA Hopper GPUs.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> mode is only supported on NVIDIA Hopper GPUs.</p>
 </div>
-</section>
 </section>
 </section>
 
@@ -644,10 +639,8 @@ Set to <code class="docutils literal notranslate"><span class="pre">true</span><
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-cluster-wide-default-mode">Setting a Cluster-Wide Default Mode</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-a-node-level-mode">Setting a Node-Level Mode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-confidential-computing-mode-labels">Understanding Confidential Computing Mode Labels</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-a-mode-change">Verifying a Mode Change</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-confidential-computing-mode-labels">Understanding Confidential Computing Mode Labels</a></li>
 </ul>
   </nav></div>
 

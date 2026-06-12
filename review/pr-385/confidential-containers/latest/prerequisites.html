@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -433,7 +433,7 @@
 <p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, prepare hosts and the Kubernetes cluster before you install Kata Containers and the NVIDIA GPU Operator.
 You perform most steps in this section.
 If you do not have access to host firmware, coordinate with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> or <a class="reference internal" href="personas.html#coco-persona-host-os-administrator"><span class="std std-ref">Host OS Administrator</span></a> to confirm or implement hardware prerequisites.</p>
-<p>For validated hardware and software versions, see <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.
+<p>For validated hardware and software versions, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.
 Use the checklists below for an at-a-glance summary, then follow each linked section for verification steps.</p>
 <p><strong>Hardware prerequisites</strong></p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
@@ -454,7 +454,7 @@ Use the checklists below for an at-a-glance summary, then follow each linked sec
 <td><p>Hardware virtualization and ACS enabled in host BIOS</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-iommu"><span class="std std-ref">IOMMU enabled</span></a></p></td>
-<td><p>IOMMU enabled on each worker host via kernel command line (<code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code>)</p></td>
+<td><p>IOMMU enabled on each host through the kernel command line (<code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-no-host-drivers"><span class="std std-ref">No host NVIDIA GPU drivers</span></a></p></td>
 <td><p>No NVIDIA GPU drivers installed or loaded on worker hosts.</p></td>
@@ -475,7 +475,7 @@ Use the checklists below for an at-a-glance summary, then follow each linked sec
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-cluster-admin"><span class="std std-ref">A Kubernetes cluster and cluster administrator access</span></a></p></td>
-<td><p>Cluster administrator access to a Kubernetes cluster running a supported version (see <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a>)</p></td>
+<td><p>Cluster administrator access to a Kubernetes cluster running a supported version (refer to <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-containerd"><span class="std std-ref">containerd 2.2.2 installed</span></a></p></td>
 <td><p>containerd 2.2.2 installed on each GPU worker node</p></td>
@@ -624,12 +624,18 @@ Refer to the <a class="reference internal" href="supported-platforms.html#coco-s
 <p>On Kubernetes v1.34 and later, <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled by default.
 On versions before v1.34, enable it explicitly.
 <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> must be enabled explicitly on all supported versions.</p>
-<p>Increase the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> from the 2 minute default to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to avoid timeouts when pulling large GPU workload images.
+<p>Increase the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> from the 2-minute default to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to avoid timeouts when pulling large GPU workload images.
 If a pull exceeds the timeout before the container is running, the kubelet de-allocates the pod.
 Actual pull duration varies with image size and network throughput, so this guide uses 20 minutes as a conservative ceiling that accommodates most workload images.</p>
 <p>Apply these settings as follows:</p>
 <ol class="arabic">
-<li><p>Add the required settings to <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> (or your kubelet configuration path).
+<li><p>Open the kubelet configuration file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nano /var/lib/kubelet/config.yaml
+</pre></div>
+</div>
+<p>This is typically located at <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>, but your configuration file may be in a different location.</p>
+</li>
+<li><p>Add the required settings to the kubelet configuration file.
 Select the tab that matches your Kubernetes version:</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">

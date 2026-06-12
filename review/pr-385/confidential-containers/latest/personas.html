@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -443,6 +443,9 @@ Start there if you are new to Confidential Computing on Kubernetes.</p></li>
 Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> if you need a foundation.</p></li>
 <li><p>Confidential Computing hardware, familiarity with AMD SEV-SNP or Intel TDX, and an understanding of which technology your target hardware uses.</p></li>
 </ul>
+<p>The documentation on this site is specific for deploying Confidential Containers on NVIDIA GPUs with Kata Containers and the NVIDIA GPU Operator.
+It covers the steps you take to enable and configure these components on your cluster to align with the NVIDIA Reference Architecture for Confidential Containers.
+For more advanced Confidential Containers topics, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a>.</p>
 </section>
 <section id="id1">
 <h2>Personas<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
@@ -520,7 +523,7 @@ This persona performs the initial deployment and is responsible for day-two oper
 <li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>: install with per-node labeling and additional configuration options.</p></li>
 <li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: confirm the deployment was successful.</p></li>
 <li><p><a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>: change the CC mode on GPUs at the cluster or node level as needed.</p></li>
-<li><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Deploy Failures</span></a>: resolve install and deploy failures.</p></li>
+<li><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>: resolve install and deploy failures (for example <a class="reference internal" href="troubleshooting.html#coco-pending-pod"><span class="std std-ref">Insufficient nvidia.com/pgpu</span></a>).</p></li>
 </ul>
 </section>
 <section id="security-engineer">

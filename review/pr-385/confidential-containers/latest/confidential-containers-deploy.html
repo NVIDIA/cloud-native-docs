@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -431,16 +431,22 @@
   <section id="detailed-install-guide">
 <span id="confidential-containers-deploy"></span><h1>Detailed Install Guide<a class="headerlink" href="#detailed-install-guide" title="Permalink to this headline">#</a></h1>
 <p>This page lists the steps for a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
-For persona responsibilities and documentation structure, see <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+For persona responsibilities and documentation structure, refer to <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+<section id="install-overview">
+<span id="overview"></span><h2>Install Overview<a class="headerlink" href="#install-overview" title="Permalink to this headline">#</a></h2>
+<p>This guide assumes you completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> on an existing Kubernetes cluster with GPU worker nodes.</p>
 <p>Install workflow:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p></li>
-<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label nodes to deploy Confidential Containers components</span></a>. The GPU Operator reads labels to determine which nodes need to be configured to deploy Confidential Containers components.</p></li>
-<li><p><a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">Install Kata Containers</span></a></p></li>
-<li><p><a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install NVIDIA GPU Operator</span></a></p></li>
+<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>: prepare worker hosts and cluster software.</p></li>
+<li><p><a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label nodes to deploy Confidential Containers components</span></a>: select GPU workers for Confidential Containers workloads.</p></li>
+<li><p><a class="reference internal" href="#coco-install-kata-chart"><span class="std std-ref">Install Kata Containers</span></a>: install runtime classes and node-level Kata components.</p></li>
+<li><p><a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>: deploy Confidential Containers operands on target nodes.</p></li>
+<li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: confirm the deployment end to end.</p></li>
 </ol>
-<p>After completing this page, you can continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.
-When you finish this page, nodes are labeled for passthrough, Kata runtime classes are available, and GPU Operator operands are running on those nodes.</p>
+<p><strong>Success criteria:</strong> Helm releases report <code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code>, SNP and TDX runtime classes are available, GPU Operator operands are healthy on target nodes, and the sample workload logs include <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code>.</p>
+<p>When you finish this page, nodes are labeled for Confidential Container component deployment, Kata runtime classes are available, and GPU Operator operands are running on those nodes.
+Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> if you have not run it yet.</p>
+</section>
 <section id="label-nodes-for-confidential-containers-components">
 <span id="coco-label-nodes"></span><span id="installation-and-configuration"></span><h2>Label Nodes for Confidential Containers Components<a class="headerlink" href="#label-nodes-for-confidential-containers-components" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator reads labels to determine what software components to deploy to a node.
@@ -494,9 +500,9 @@ Continue to the next step to verify the label was added.</p>
 </div>
 </li>
 </ol>
-<p><strong>Sucess Criteria:</strong> All nodes labeled for Confidential Container workloads are configured to run Confidential Container workloads.
-By labeling the nodes in your cluster that you want to run Confidental Container workloads, you are signaling to the PGU Operator to deploy the software components needed to run Confidential Containers to the node and configuring the node to only run a Confdential runtime.</p>
-<p>Once all your desired nodes are labeled, you can continue to the next step to install Kata Containers.</p>
+<p><strong>Success criteria:</strong> All nodes labeled for Confidential Container workloads are configured to run Confidential Container workloads.
+By labeling the nodes in your cluster that you want to run Confidential Container workloads, you are signaling to the GPU Operator to deploy the software components needed to run Confidential Containers to the node and configuring the node to only run a Confidential runtime.</p>
+<p>After all your desired nodes are labeled, you can continue to the next step to install Kata Containers.</p>
 </section>
 <section id="install-the-kata-containers-helm-chart">
 <span id="coco-install-kata-chart"></span><h2>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h2>
@@ -548,17 +554,18 @@ The install command includes <code class="docutils literal notranslate"><span cl
 The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 </li>
-<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
+<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                    READY   STATUS    RESTARTS      AGE</span>
-<span class="go">kata-deploy-b2lzs       1/1     Running   0             6m37s</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kata-deploy-b2lzs       1/1     Running   0             6m37s</span>
 </pre></div>
 </div>
 </li>
-<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code>, and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
+<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code> completes with <code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart has created the Kata <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> resources on the cluster.
+This check is the required checkpoint before you continue to <a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
 </pre></div>
 </div>
@@ -570,14 +577,18 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 </pre></div>
 </div>
 <p>Several runtimes are installed by the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata Containers, in a non-Confidential Containers scenario.
-The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems runtime classes are used to deploy Confidential Containers workloads.</p>
-<p>If SNP or TDX runtime classes are missing, wait 2-5 minutes and run the check again.
-A partial list usually means installation is still in progress rather than a failed install.</p>
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class is used with Kata
+Containers, in a non-Confidential Containers scenario.
+The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or
+<code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems runtime
+classes are used to deploy Confidential Containers workloads.</p>
+<p>If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+On a single-node cluster, retry after a few minutes only if Helm returned before the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code> (refer to the note above).
+Otherwise, refer to the log steps below.</p>
 </li>
 </ol>
-<p><strong>Success criteria:</strong> The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code> (<code class="docutils literal notranslate"><span class="pre">1/1</span></code> Ready), SNP and TDX runtime classes are listed in the verification step above.
-Once the installation has succeeded you can continue to the next step to install the NVIDIA GPU Operator.</p>
+<p><strong>Success criteria:</strong> Helm reports <code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is <code class="docutils literal notranslate"><span class="pre">Running</span></code>, and both <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> are available on the cluster.
+After all checks pass, continue to <a class="reference internal" href="#coco-install-gpu-operator"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
 <p>If you have an issue deploying the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod or are not seeing the expected runtime classes, use the following steps to view the logs:</p>
 <ol class="arabic">
 <li><p>Get the kata-deploy pod name:</p>
@@ -600,7 +611,7 @@ Once the installation has succeeded you can continue to the next step to install
 <span class="go">daemonset mode: waiting for SIGTERM</span>
 </pre></div>
 </div>
-<p>If logs show <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>, repeated errors, or runtime classes never appear after waiting, collect the log output and check for similar reports in the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub repository</a>.
+<p>If logs show <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>, repeated errors, or runtime classes are missing after a successful Helm deploy, collect the log output and check for similar reports in the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub repository</a>.
 If no existing issue matches your problem, <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues/new/choose">open a new issue</a> in that repository with your <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> logs, chart version (<code class="docutils literal notranslate"><span class="pre">3.29.0</span></code>), and cluster details.</p>
 </li>
 </ol>
@@ -625,7 +636,7 @@ If no existing issue matches your problem, <a class="reference external" href="h
 <li><p>Install the GPU Operator with the following configuration:</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> o configure every worker node for Confidential Containers workloads.
+<p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> to configure every worker node for Confidential Containers workloads.
 Refer to the <a class="reference internal" href="#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> section for more details on this use case.</p>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --timeout 10m --generate-name <span class="se">\</span>
@@ -693,7 +704,7 @@ It may take 3-5 minutes for the Helm command to complete and for all GPU Operato
 <p><strong>Success criteria:</strong> All GPU Operator pods are <code class="docutils literal notranslate"><span class="pre">Running</span></code> or <code class="docutils literal notranslate"><span class="pre">Completed</span></code>.
 Your cluster is now configured to deploy workloads in Kata Containers.
 Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm everything is working as expected.</p>
-<p>If you are not seeing the expected output, view the logs for the GPU Operator pods:</p>
+<p>If you are not seeing the expected output, view the logs for the GPU Operator pods or refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
 </pre></div>
 </div>
@@ -701,7 +712,8 @@ Continue to <a class="reference internal" href="run-sample-workload.html"><span 
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>For general GPU Operator issues such as driver or toolkit failures, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.
-For Confidential Containers-specific deploy failures, refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting Deploy Failures</span></a>.</p>
+For Confidential Containers-specific deploy failures, refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.
+Common symptoms include <a class="reference internal" href="troubleshooting.html#coco-pending-pod"><span class="std std-ref">Insufficient nvidia.com/pgpu</span></a> and <a class="reference internal" href="troubleshooting.html#coco-container-creating-cold-plug"><span class="std std-ref">device cold plug failed</span></a>.</p>
 </div>
 </section>
 <section id="common-gpu-operator-configuration-settings">
@@ -851,6 +863,7 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-overview">Install Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#label-nodes-for-confidential-containers-components">Label Nodes for Confidential Containers Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>

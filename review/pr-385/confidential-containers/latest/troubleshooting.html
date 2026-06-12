@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -432,11 +432,10 @@
 <span id="coco-deploy-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h1>
 <p>Use this page when Confidential Containers installation or workload deployment steps fail.</p>
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a> for general operator issues such as driver daemonsets, the container toolkit, and validator pods.
-The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, VFIO binding, and host prerequisites.</p>
-<p>Refer to the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub issues</a> for additional troubleshooting help if you do not find your exact issue below.
-Consider filing an issue with your environment details, Kata versions, and logs to get additional support.</p>
+The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, and host prerequisites.</p>
+<p>If these steps do not resolve your issue, refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a>.</p>
 <section id="view-gpu-operator-logs">
-<h2>View GPU Operator Logs<a class="headerlink" href="#view-gpu-operator-logs" title="Permalink to this headline">#</a></h2>
+<span id="coco-gpu-operator-logs"></span><h2>View GPU Operator Logs<a class="headerlink" href="#view-gpu-operator-logs" title="Permalink to this headline">#</a></h2>
 <ol class="arabic">
 <li><p>Get the list of GPU Operator pods:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -480,33 +479,30 @@ Consider filing an issue with your environment details, Kata versions, and logs 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n kata-system &lt;pod-name&gt;
 </pre></div>
 </div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the Kata Containers pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">kata-system</span></code>.</p>
 </li>
 </ol>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the Kata Containers pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">kata-system</span></code>.</p>
 </section>
-<section id="confidential-computing-mode-issues">
-<span id="coco-cc-mode-troubleshoot"></span><h2>Confidential Computing Mode Issues<a class="headerlink" href="#confidential-computing-mode-issues" title="Permalink to this headline">#</a></h2>
-<section id="nvidia-com-cc-mode-state-does-not-match-nvidia-com-cc-mode">
-<h3><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Does Not Match <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-does-not-match-nvidia-com-cc-mode" title="Permalink to this headline">#</a></h3>
-<p>If the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match the desired CC mode (<code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>), it means the Confidential Computing update is still ongoing.
+<section id="nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode">
+<span id="coco-cc-mode-troubleshoot"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Not Matching <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode" title="Permalink to this headline">#</a></h2>
+<p>When changing the Confidential Computing mode (refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>), the Confidential Computing Manager updates the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label to reflect the current state of the Confidential Computing mode.
+If the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match the desired CC mode (<code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>), it means the Confidential Computing update is still ongoing.
 Wait a few more minutes, then check the labels again.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
       jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
-
-<span class="go">*Example Output:*</span>
-
-<span class="go">.. code-block:: json</span>
-
-<span class="go">   {</span>
-<span class="go">      &quot;nvidia.com/cc.mode&quot;: &quot;on&quot;,</span>
-<span class="go">      &quot;nvidia.com/cc.mode.state&quot;: &quot;on&quot;,</span>
-<span class="go">      &quot;nvidia.com/cc.ready.state&quot;: &quot;true&quot;</span>
-<span class="go">   }</span>
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="nvidia-com-cc-mode-state-is-failed">
-<h3><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-is-failed" title="Permalink to this headline">#</a></h3>
+<span id="coco-cc-mode-failed"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-is-failed" title="Permalink to this headline">#</a></h2>
 <p>When the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code>, it means there was a problem updating the Confidential Computing mode on the GPU.</p>
 <p><strong>Checks:</strong></p>
 <ol class="arabic">
@@ -522,65 +518,60 @@ List pods scheduled on the node:</p>
 Delete or reschedule any other <code class="docutils literal notranslate"><span class="pre">Running</span></code> pods (especially GPU workloads) before changing CC mode.</p>
 </li>
 <li><p>View <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code> pod logs:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-cc-manager
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator nvidia-cc-manager-&lt;pod-name&gt;
 </pre></div>
 </div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code> pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
 </li>
 <li><p>Confirm hardware virtualization and ACS are enabled in the host BIOS.
 One way to do this is to check for <code class="docutils literal notranslate"><span class="pre">vmx</span></code> (Intel) or <code class="docutils literal notranslate"><span class="pre">svm</span></code> (AMD) in <code class="docutils literal notranslate"><span class="pre">/proc/cpuinfo</span></code>.
 For ACS, coordinate with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> if needed.</p></li>
-<li><p>Confirm no host NVIDIA GPU drivers are loaded:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep nvidia
-</pre></div>
-</div>
-<p>Remove drivers as described in <a class="reference internal" href="prerequisites.html#coco-prereq-no-host-drivers"><span class="std std-ref">Ensure No Host NVIDIA GPU Drivers Are Present</span></a>.</p>
-</li>
 <li><p>Re-apply the desired mode label to retry the transition:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/cc.mode<span class="o">=</span>on --overwrite
 </pre></div>
 </div>
 </li>
 </ol>
-<p>For mode configuration options, see <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
+<p>For mode configuration options, refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
 </section>
-<section id="kubelet-and-runtime-configuration">
-<span id="coco-deploy-troubleshoot-kubelet"></span><h3>Kubelet and Runtime Configuration<a class="headerlink" href="#kubelet-and-runtime-configuration" title="Permalink to this headline">#</a></h3>
-<section id="missing-or-incorrect-kubelet-feature-gates">
-<h4>Missing or Incorrect Kubelet Feature Gates<a class="headerlink" href="#missing-or-incorrect-kubelet-feature-gates" title="Permalink to this headline">#</a></h4>
-<p><strong>Symptoms:</strong> Kata runtime classes are installed, operand pods are <code class="docutils literal notranslate"><span class="pre">Running</span></code>, but <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero or sample pods stay <code class="docutils literal notranslate"><span class="pre">Pending</span></code> with no clear CC label error.</p>
-<p><strong>Checks:</strong></p>
-<ol class="arabic">
-<li><p>On the worker host, confirm both feature gates are enabled in <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code> (or your kubelet config path):</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">KubeletPodResourcesGet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">RuntimeClassInImageCriApi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<section id="pod-stuck-in-containercreating-with-device-cold-plug-failed-error">
+<span id="coco-container-creating-cold-plug"></span><h2>Pod Stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> with <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">cold</span> <span class="pre">plug</span> <span class="pre">failed</span></code> error<a class="headerlink" href="#pod-stuck-in-containercreating-with-device-cold-plug-failed-error" title="Permalink to this headline">#</a></h2>
+<p>If you see the following error when <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">&lt;pod-name&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;namespace&gt;</span></code> and the pod is stuck in the <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> state, it means the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate is not enabled on the worker node.
+Refer to the Kubelet Configuration section in <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for more information on setting the feature gate.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Events:</span>
+<span class="go">  Type     Reason                  Age                 From     Message</span>
+<span class="go">  ----     ------                  ----                ----     -------</span>
+<span class="go">   Warning  FailedCreatePodSandBox  19s (x16 over 34s)  kubelet            (combined from similar events): Failed to create pod sandbox: rpc error: code = Unknown desc = failed to start sandbox &quot;d0a43b5d3c6c433f011efbfacb6de3f7ac448f3d09a272cef8d43249712b12b1&quot;: failed to create containerd task: failed to create shim task: device cold plug failed: cold plug: GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default): rpc error: code = Unknown desc = PodResources API Get method disabled</span>
 </pre></div>
 </div>
-<p>A common mistake is a misspelled gate name (for example <code class="docutils literal notranslate"><span class="pre">KubeletPodResourceGet</span></code> without the trailing <code class="docutils literal notranslate"><span class="pre">s</span></code>) or enabling only one of the two gates.</p>
-</li>
-<li><p>Restart the kubelet after any change:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
-</pre></div>
-</div>
-</li>
-</ol>
-<p>Refer to the <strong>Kubelet Configured</strong> section on <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for version-specific YAML examples.</p>
-<p><strong>Logs:</strong> <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code> pod logs and kubelet journal entries on the worker.</p>
 </section>
-<section id="confidential-container-operands-not-running-on-the-node">
-<h4>Confidential Container Operands Not Running on the Node<a class="headerlink" href="#confidential-container-operands-not-running-on-the-node" title="Permalink to this headline">#</a></h4>
-<p><strong>Symptoms:</strong> <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, or <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code> pods are missing or not <code class="docutils literal notranslate"><span class="pre">Running</span></code> on a GPU worker node.</p>
-<p>The GPU Operator deploys Confidential Container operands only to nodes configured for passthrough sandbox workloads.
-Use one of the following configuration paths.</p>
-<p><strong>Checks:</strong></p>
-<ol class="arabic">
-<li><p>Set the node name:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+<section id="pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error">
+<span id="coco-pending-pod"></span><h2>Pod Stuck in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> State with <code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code> Error<a class="headerlink" href="#pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error" title="Permalink to this headline">#</a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">&lt;pod-name&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;namespace&gt;</span></code> shows the pod stuck in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state, the scheduler cannot place the pod on a node with available passthrough GPU capacity.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Events:</span>
+<span class="go">  Type     Reason   Age   From      Message</span>
+<span class="go">  ----     ------   ---   ----      -------</span>
+<span class="go">  Warning  FailedScheduling  ...  default-scheduler   0/1 nodes are available: 1 Insufficient nvidia.com/pgpu.</span>
 </pre></div>
 </div>
+<p><strong>Common causes:</strong></p>
+<ul class="simple">
+<li><p>The worker node is not configured for Confidential Containers workloads.</p></li>
+<li><p>GPU Operator Confidential Containers operands are missing or not <code class="docutils literal notranslate"><span class="pre">Running</span></code> on the worker node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero because GPUs are not bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> on the host.</p></li>
+<li><p>All passthrough GPUs on eligible nodes are already allocated to other pods.</p></li>
+</ul>
+<p><strong>Resolution:</strong></p>
+<ol class="arabic">
+<li><p>Confirm GPU Operator operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code> on the worker node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span>&lt;node-name&gt;
+</pre></div>
+</div>
+<p>Expected Confidential Containers operands include <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>.
+If an operand is not <code class="docutils literal notranslate"><span class="pre">Running</span></code>, refer to <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.</p>
 </li>
-<li><p><strong>Per-node labeling:</strong> Confirm the node has the Confidential Containers workload label:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node <span class="nv">$NODE_NAME</span> <span class="p">|</span> grep nvidia.com/gpu.workload.config
+<li><p>Confirm the node is configured for Confidential Containers workloads:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt; <span class="p">|</span> grep nvidia.com/gpu.workload.config
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
@@ -588,59 +579,78 @@ Use one of the following configuration paths.</p>
 </pre></div>
 </div>
 <p>If the label is missing, add it:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
-<p>Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<p>If you set the cluster-wide default during installation instead of per-node labeling, confirm <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code> is <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>.
+Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </li>
-<li><p><strong>Cluster-wide default:</strong> If you skipped per-node labeling, confirm the GPU Operator <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads</span></code> settings apply <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> to all worker nodes:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get clusterpolicies.nvidia.com cluster-policy -o <span class="nv">jsonpath</span><span class="o">=</span><span class="se">\</span>
-<span class="s1">&#39;{.spec.sandboxWorkloads.enabled}{&quot;\n&quot;}{.spec.sandboxWorkloads.defaultWorkload}{&quot;\n&quot;}{.spec.sandboxWorkloads.mode}{&quot;\n&quot;}&#39;</span>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt; <span class="p">|</span> grep nvidia.com/pgpu
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">true</span>
-<span class="go">vm-passthrough</span>
-<span class="go">kata</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/pgpu:  8</span>
+<span class="go">nvidia.com/pgpu:  8</span>
 </pre></div>
 </div>
-<p>If values differ, update the ClusterPolicy or reinstall the GPU Operator with <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.enabled=true</span></code>, <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code>, and <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.mode=kata</span></code>.
-Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<p>If capacity and allocatable are zero, GPUs are not available for scheduling.
+On the worker host, confirm VFIO binding:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
+</pre></div>
+</div>
+<p><em>Example Output (expected):</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:xxxx] (rev a1)</span>
+<span class="go">        Kernel driver in use: vfio-pci</span>
+</pre></div>
+</div>
+<p>If the output shows <code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">driver</span> <span class="pre">in</span> <span class="pre">use:</span> <span class="pre">nvidia</span></code> or <code class="docutils literal notranslate"><span class="pre">nouveau</span></code>, remove host drivers as described in <a class="reference internal" href="prerequisites.html#coco-prereq-no-host-drivers"><span class="std std-ref">Ensure No Host NVIDIA GPU Drivers Are Present</span></a>.
+Confirm IOMMU is enabled:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls /sys/kernel/iommu_groups
+</pre></div>
+</div>
+<p>If the directory is empty or missing, configure IOMMU as described in <a class="reference internal" href="prerequisites.html#coco-prerequisites"><span class="std std-ref">Prerequisites</span></a>, then reboot the host.
+Review <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code> pod logs on the affected node in <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.
+After fixing host prerequisites, wait for operand pods to reconcile and confirm <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is non-zero.</p>
 </li>
-<li><p>Wait up to 10 minutes after labeling or policy changes, then verify operands on the node are <code class="docutils literal notranslate"><span class="pre">Running</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span>
+<li><p>If the node shows non-zero <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity but the pod is still <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, all GPUs may be in use.
+Check allocatable capacity and running workloads on the node.</p></li>
+</ol>
+<p>Refer to the optional VFIO validation step in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+</section>
+<section id="getting-help">
+<span id="coco-getting-help"></span><h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">#</a></h2>
+<p>If the steps on this page do not resolve your issue, use the resources below based on which component is failing.</p>
+<section id="nvidia-gpu-operator-and-confidential-computing-operands">
+<h3>NVIDIA GPU Operator and Confidential Computing Operands<a class="headerlink" href="#nvidia-gpu-operator-and-confidential-computing-operands" title="Permalink to this headline">#</a></h3>
+<p>For issues with GPU Operator pods or Confidential Containers operands (<code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>):</p>
+<ol class="arabic">
+<li><p>Review the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.</p></li>
+<li><p>If the issue is not documented there, run the GPU Operator <code class="docutils literal notranslate"><span class="pre">must-gather</span></code> utility to collect cluster diagnostics:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -o must-gather.sh -L https://raw.githubusercontent.com/NVIDIA/gpu-operator/main/hack/must-gather.sh
+<span class="gp">$ </span>chmod +x must-gather.sh
+<span class="gp">$ </span>./must-gather.sh
 </pre></div>
 </div>
-<p>Expected Confidential Containers operands include <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>.</p>
+<p>The utility produces an archive with manifests and logs from GPU Operator-managed components.</p>
+</li>
+<li><p>Prepare a bug report and file an issue in the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues">NVIDIA GPU Operator GitHub repository</a>.</p></li>
+</ol>
+</section>
+<section id="kata-containers">
+<h3>Kata Containers<a class="headerlink" href="#kata-containers" title="Permalink to this headline">#</a></h3>
+<p>For issues with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>, missing runtime classes, or Kata runtime failures:</p>
+<ol class="arabic">
+<li><p>Search the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub issues</a> for similar reports.</p></li>
+<li><p>If no existing issue matches your problem, <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues/new/choose">open a new issue</a> in that repository.</p>
+<p>Include your environment details, Kata chart version, <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod logs, and cluster configuration.</p>
 </li>
 </ol>
 </section>
-</section>
-</section>
-<section id="workload-deployment-issues">
-<h2>Workload Deployment Issues<a class="headerlink" href="#workload-deployment-issues" title="Permalink to this headline">#</a></h2>
-<section id="if-the-pod-stays-pending">
-<span id="coco-pending-pod"></span><h3>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code><a class="headerlink" href="#if-the-pod-stays-pending" title="Permalink to this headline">#</a></h3>
-<p>Run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">cuda-vectoradd-kata</span></code> and check <strong>Events</strong> for messages such as
-<code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code>.</p>
-<p>Common causes:</p>
-<ul class="simple">
-<li><p>The node is missing <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> label or
-<code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state=true</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero.</p></li>
-<li><p>Confirm that all <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> are met.</p></li>
-</ul>
-</section>
-<section id="if-the-pod-is-stuck-in-containercreating">
-<h3>If the pod is stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code><a class="headerlink" href="#if-the-pod-is-stuck-in-containercreating" title="Permalink to this headline">#</a></h3>
-<p>Run <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">cuda-vectoradd-kata</span></code> and check <strong>Events</strong> for a message like:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Warning  FailedCreatePodSandBox  kubelet  Failed to create pod sandbox: ...</span>
-<span class="go">GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default):</span>
-<span class="go">rpc error: code = Unknown desc = PodResources API Get method disabled</span>
-</pre></div>
-</div>
-<p>This error means the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate is not enabled on the worker node.
-Enable it as described in the <a class="reference internal" href="prerequisites.html#coco-prereq-kubelet"><span class="std std-ref">Kubelet Configured</span></a> section of <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>, then restart the kubelet.</p>
+<section id="attestation-and-upstream-confidential-containers">
+<h3>Attestation and Upstream Confidential Containers<a class="headerlink" href="#attestation-and-upstream-confidential-containers" title="Permalink to this headline">#</a></h3>
+<p>For attestation, Trustee, sealed secrets, or other upstream Confidential Containers features, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a> and the <a class="reference external" href="https://github.com/confidential-containers">Confidential Containers GitHub repository</a>.</p>
+<p>For NVIDIA Confidential Computing licensing requirements, refer to <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a>.</p>
 </section>
 </section>
 </section>
@@ -696,19 +706,14 @@ Enable it as described in the <a class="reference internal" href="prerequisites.
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-gpu-operator-logs">View GPU Operator Logs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-kata-containers-logs">View Kata Containers Logs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confidential-computing-mode-issues">Confidential Computing Mode Issues</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-does-not-match-nvidia-com-cc-mode"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Does Not Match <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-is-failed"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubelet-and-runtime-configuration">Kubelet and Runtime Configuration</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-or-incorrect-kubelet-feature-gates">Missing or Incorrect Kubelet Feature Gates</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#confidential-container-operands-not-running-on-the-node">Confidential Container Operands Not Running on the Node</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workload-deployment-issues">Workload Deployment Issues</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-pod-stays-pending">If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-pod-is-stuck-in-containercreating">If the pod is stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Not Matching <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-is-failed"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-stuck-in-containercreating-with-device-cold-plug-failed-error">Pod Stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> with <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">cold</span> <span class="pre">plug</span> <span class="pre">failed</span></code> error</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error">Pod Stuck in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> State with <code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code> Error</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-operator-and-confidential-computing-operands">NVIDIA GPU Operator and Confidential Computing Operands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kata-containers">Kata Containers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attestation-and-upstream-confidential-containers">Attestation and Upstream Confidential Containers</a></li>
 </ul>
 </li>
 </ul>

@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 11, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -436,8 +436,8 @@ For additional configuration options and install details, refer to the <a class=
 <p class="admonition-title">Note</p>
 <p>Before starting, make sure your cluster meets the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p>
 </div>
-<section id="what-you-ll-build">
-<h2>What You’ll Build<a class="headerlink" href="#what-you-ll-build" title="Permalink to this headline">#</a></h2>
+<section id="what-you-will-build">
+<h2>What You Will Build<a class="headerlink" href="#what-you-will-build" title="Permalink to this headline">#</a></h2>
 <p>By the end of this quickstart, you will have:</p>
 <ul class="simple">
 <li><p>Kata Containers running on your cluster.</p></li>
@@ -476,6 +476,8 @@ If you are deploying to a single-node cluster, wait a few additional minutes aft
 </div>
 </li>
 <li><p>Verify the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
+<p>After <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code> completes, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart creates the Kata <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> resources on the cluster.
+Confirm SNP and TDX classes are present before you continue to <a class="reference internal" href="#quickstart-install-gpu-operator"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
 </pre></div>
 </div>
@@ -486,11 +488,12 @@ If you are deploying to a single-node cluster, wait a few additional minutes aft
 <span class="go">kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s</span>
 </pre></div>
 </div>
-<p>If SNP or TDX runtime classes are missing, wait 2–5 minutes and run the check again.
-A partial list usually means installation is still in progress.</p>
+<p>If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+On a single-node cluster, retry after a few minutes only if Helm returned before the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code> (refer to the note above).
+Otherwise, refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.</p>
 </li>
 </ol>
-<p><strong>Success criteria:</strong> The SNP and TDX runtime classes appear in the output above.</p>
+<p><strong>Success criteria:</strong> Helm reports <code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code> and both SNP and TDX runtime classes appear in the output above.</p>
 </section>
 <section id="install-the-nvidia-gpu-operator">
 <span id="quickstart-install-gpu-operator"></span><h3>Install the NVIDIA GPU Operator<a class="headerlink" href="#install-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h3>
@@ -562,7 +565,7 @@ Your cluster is now configured to run Confidential Containers workloads on all n
 <ul class="simple">
 <li><p>Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.</p></li>
 <li><p>For more installation and configuration options, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p></li>
-<li><p>Continue to the <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> section for more post installation configuration options, including a quickstart  <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.</p></li>
+<li><p>Continue to the <a class="reference internal" href="configure.html"><span class="doc">Advanced Setup Overview</span></a> section for more post installation configuration options.</p></li>
 </ul>
 </section>
 </section>
@@ -617,7 +620,7 @@ Your cluster is now configured to run Confidential Containers workloads on all n
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-ll-build">What You’ll Build</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-will-build">What You Will Build</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-kata-containers-helm-chart">Install the Kata Containers Helm Chart</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-nvidia-gpu-operator">Install the NVIDIA GPU Operator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
