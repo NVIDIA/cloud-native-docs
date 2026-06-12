@@ -33,13 +33,6 @@ The default value of ``ccManager.defaultMode`` is ``on``.
 Set a node-level mode by applying the ``nvidia.com/cc.mode=<on|off|ppcie>`` label on the node.
 If you set a specific mode on a node, it has higher precedence than the cluster-wide default mode.
 
-When you change the mode, the manager performs the following actions:
-
-* Evicts the other GPU Operator operands from the node.
-  However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.
-* Changes the mode and resets the GPU.
-* Reschedules the other GPU Operator operands.
-
 The supported modes are:
 
 .. list-table::
@@ -66,9 +59,20 @@ The supported modes are:
        Use ``on`` mode for Blackwell.
      - node-level override
 
+When you change the mode, the manager performs the following actions:
+
+* Evicts the other GPU Operator operands from the node.
+  However, the manager does not drain user workloads. You must make sure that no user workloads are running on the node before you change the mode.
+* Changes the mode and resets the GPU.
+* Reschedules the other GPU Operator operands.
+
 ***********************************
 Setting a Cluster-Wide Default Mode
 ***********************************
+
+.. note::
+
+  Before changing the mode, make sure that no user workloads are running on the node.
 
 To set a cluster-wide mode, specify the ``ccManager.defaultMode`` field like the following example:
 
@@ -145,8 +149,10 @@ When you disable CC mode after enabling it, wait one to two minutes for
 A mode change is complete and successful when ``nvidia.com/cc.mode`` and
 ``nvidia.com/cc.mode.state`` have the same value.
 
-If labels do not match expected values, refer to :ref:`CC Node Labels <coco-cc-mode-troubleshoot>` in the troubleshooting guide.
+If ``nvidia.com/cc.mode.state`` does not match ``nvidia.com/cc.mode``, refer to :ref:`nvidia.com/cc.mode.state Not Matching nvidia.com/cc.mode <coco-cc-mode-troubleshoot>` in the troubleshooting guide.
+If ``nvidia.com/cc.mode.state`` is ``failed``, refer to :ref:`nvidia.com/cc.mode.state is failed <coco-cc-mode-failed>`.
 
+************************************************
 Understanding Confidential Computing Mode Labels
 ************************************************
 

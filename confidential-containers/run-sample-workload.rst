@@ -25,9 +25,9 @@ Run a Sample Workload
 
 As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>`, use this page to verify your installation and run a sample workload.
 :ref:`Container User <coco-persona-container-user>` personas can also run the sample workload to confirm the cluster is ready before deploying applications.
-For persona responsibilities and documentation structure, see :doc:`Personas <personas>`.
+For persona responsibilities and documentation structure, refer to :doc:`Personas <personas>`.
 
-Verify your confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.
+Verify your Confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.
 
 This page assumes that you have completed :doc:`Prerequisites <prerequisites>` and either :doc:`Quickstart Install <install-quickstart>` or :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 Your cluster should have ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on your nodes.
@@ -119,7 +119,7 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
 
    The pod could also say ``Completed`` if the container already completed successfully.
    
-   If the pod stays ``Pending`` for more than a few minutes, see :doc:`Troubleshooting Workload Deployment Issues <troubleshooting>` before continuing.
+   If the pod stays ``Pending`` for more than a few minutes, refer to :ref:`Pod Stuck in Pending State with Insufficient nvidia.com/pgpu Error <coco-pending-pod>` in :doc:`Troubleshooting <troubleshooting>` before continuing.
 
 #. View the logs from the pod after the container starts:
 
@@ -140,7 +140,7 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
 
     The output should include ``Test PASSED`` if the container completed successfully.
 
-    If you aren't seeing any log output, make sure the pod is running and the container is started.
+    If you do not see any log output, make sure the pod is running and the container is started.
 
 #. Delete the pod:
 

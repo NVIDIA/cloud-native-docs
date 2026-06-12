@@ -24,7 +24,7 @@ Configuring Confidential Container Workloads
 ############################################
 
 As a :ref:`Container User <coco-persona-container-user>`, use this page to configure confidential GPU workloads on a prepared cluster.
-For persona responsibilities and documentation structure, see :doc:`Personas <personas>`.
+For persona responsibilities and documentation structure, refer to :doc:`Personas <personas>`.
 
 A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
@@ -40,7 +40,7 @@ three ways:
 This page is part of **Advanced Setup** and is the usual next step after a successful install.
 
 **Before this page:** Complete the :doc:`Detailed Install Guide <confidential-containers-deploy>` and verify the cluster with :doc:`Run a Sample Workload <run-sample-workload>` (``Test PASSED`` in pod logs).
-For install steps, see :doc:`Prerequisites <prerequisites>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+For install steps, refer to :doc:`Prerequisites <prerequisites>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.

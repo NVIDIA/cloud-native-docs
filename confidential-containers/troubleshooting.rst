@@ -1,3 +1,21 @@
+.. license-header
+  SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+  SPDX-License-Identifier: Apache-2.0
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+.. headings # #, * *, =, -, ^, "
+
 .. _coco-deploy-troubleshooting:
 
 ###############
@@ -7,9 +25,11 @@ Troubleshooting
 Use this page when Confidential Containers installation or workload deployment steps fail.
 
 Refer to the :doc:`NVIDIA GPU Operator troubleshooting guide <gpuop:troubleshooting>` for general operator issues such as driver daemonsets, the container toolkit, and validator pods.
-The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, VFIO binding, and host prerequisites.
+The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, and host prerequisites.
 
-If these steps do not resolve your issue, see :ref:`Getting Help <coco-getting-help>`.
+If these steps do not resolve your issue, refer to :ref:`Getting Help <coco-getting-help>`.
+
+.. _coco-gpu-operator-logs:
 
 **********************
 View GPU Operator Logs
@@ -67,19 +87,16 @@ View Kata Containers Logs
 
       $ kubectl logs -n kata-system <pod-name>
 
-Replace ``<pod-name>`` with the name of the Kata Containers pod from ``kubectl get pods -n kata-system``.
+   Replace ``<pod-name>`` with the name of the Kata Containers pod from ``kubectl get pods -n kata-system``.
 
 
 .. _coco-cc-mode-troubleshoot:
 
-**********************************
-Confidential Computing Mode Issues
-**********************************
+******************************************************************
+``nvidia.com/cc.mode.state`` Not Matching ``nvidia.com/cc.mode`` 
+******************************************************************
 
-``nvidia.com/cc.mode.state`` Does Not Match ``nvidia.com/cc.mode`` 
-==================================================================
-
-
+When changing the Confidential Computing mode (refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`), the Confidential Computing Manager updates the ``nvidia.com/cc.mode.state`` label to reflect the current state of the Confidential Computing mode.
 If the ``nvidia.com/cc.mode.state`` does not match the desired CC mode (``on``, ``off``, or ``ppcie``), it means the Confidential Computing update is still ongoing.
 Wait a few more minutes, then check the labels again.
 
@@ -88,19 +105,21 @@ Wait a few more minutes, then check the labels again.
    $ kubectl get node $NODE_NAME -o json | \
          jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
 
-   *Example Output:*
+*Example Output:*
 
-   .. code-block:: json
+.. code-block:: json
 
-      {
-         "nvidia.com/cc.mode": "on",
-         "nvidia.com/cc.mode.state": "on",
-         "nvidia.com/cc.ready.state": "true"
-      }
+   {
+      "nvidia.com/cc.mode": "on",
+      "nvidia.com/cc.mode.state": "on",
+      "nvidia.com/cc.ready.state": "true"
+   }
 
+.. _coco-cc-mode-failed:
 
+******************************************
 ``nvidia.com/cc.mode.state`` is ``failed`` 
-==========================================
+******************************************
 
 When the ``nvidia.com/cc.mode.state`` is ``failed``, it means there was a problem updating the Confidential Computing mode on the GPU.
 
@@ -123,102 +142,76 @@ When the ``nvidia.com/cc.mode.state`` is ``failed``, it means there was a proble
 
    .. code-block:: console
 
-      $ kubectl logs -n gpu-operator -l app=nvidia-cc-manager
+      $ kubectl logs -n gpu-operator nvidia-cc-manager-<pod-name>
+
+   Replace ``<pod-name>`` with the name of the ``nvidia-cc-manager`` pod from ``kubectl get pods -n gpu-operator``.
 
 #. Confirm hardware virtualization and ACS are enabled in the host BIOS.
    One way to do this is to check for ``vmx`` (Intel) or ``svm`` (AMD) in ``/proc/cpuinfo``.
    For ACS, coordinate with your :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` if needed.
-#. Confirm no host NVIDIA GPU drivers are loaded:
 
-   .. code-block:: console
-
-      $ lsmod | grep nvidia
-
-   Remove drivers as described in :ref:`Ensure No Host NVIDIA GPU Drivers Are Present <coco-prereq-no-host-drivers>`.
 #. Re-apply the desired mode label to retry the transition:
 
    .. code-block:: console
 
       $ kubectl label node $NODE_NAME nvidia.com/cc.mode=on --overwrite
 
-For mode configuration options, see :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
+For mode configuration options, refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
 
+.. _coco-container-creating-cold-plug:
 
-**************************
-Workload Deployment Issues
-**************************
+*************************************************************************
+Pod Stuck in ``ContainerCreating`` with ``device cold plug failed`` error
+*************************************************************************
 
-Use this section when a confidential GPU workload fails to schedule or start.
+If you see the following error when ``kubectl describe pod <pod-name> -n <namespace>`` and the pod is stuck in the ``ContainerCreating`` state, it means the ``KubeletPodResourcesGet`` feature gate is not enabled on the worker node.
+Refer to the Kubelet Configuration section in :doc:`Prerequisites <prerequisites>` for more information on setting the feature gate.
+
+.. code-block:: output
+
+   Events:
+     Type     Reason                  Age                 From     Message
+     ----     ------                  ----                ----     -------
+      Warning  FailedCreatePodSandBox  19s (x16 over 34s)  kubelet            (combined from similar events): Failed to create pod sandbox: rpc error: code = Unknown desc = failed to start sandbox "d0a43b5d3c6c433f011efbfacb6de3f7ac448f3d09a272cef8d43249712b12b1": failed to create containerd task: failed to create shim task: device cold plug failed: cold plug: GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default): rpc error: code = Unknown desc = PodResources API Get method disabled
 
 .. _coco-pending-pod:
 
-The pod stays ``Pending``
-=========================
+**************************************************************************
+Pod Stuck in ``Pending`` State with ``Insufficient nvidia.com/pgpu`` Error
+**************************************************************************
 
-Your workload pod does not schedule and remains in the ``Pending`` state.
-
-The event message shows:
-
-.. code-block:: output
-
-   0/1 nodes are available: 1 Insufficient nvidia.com/pgpu.
-
-Run ``kubectl describe pod <pod-name>`` and check **Events** for ``Insufficient nvidia.com/pgpu``.
-
-This message means the scheduler cannot place the pod on a node with available passthrough GPU capacity.
-Common causes:
-
-* No worker nodes are configured for Confidential Containers workloads.
-* ``nvidia.com/pgpu`` capacity on the cluster is zero, or there are no available GPUs on the worker nodes.
-* A prerequisite from :doc:`Prerequisites <prerequisites>` is not met.
-
-If the node lacks Confidential Containers configuration, see :ref:`Insufficient nvidia.com/pgpu and the node is not configured for Confidential Containers <coco-operands-not-running>`.
-If operand pods are ``Running`` but the node still shows zero ``nvidia.com/pgpu`` capacity, see :ref:`PodResources API Get method disabled or nvidia.com/pgpu capacity is zero <coco-deploy-troubleshoot-kubelet>`.
-Check the GPUs in your cluster to make sure they are healthy and available.
-
-
-The pod is stuck in ``ContainerCreating``
-=========================================
-
-Your workload pod remains in the ``ContainerCreating`` state and does not start.
-
-**Event message:**
+If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the ``Pending`` state, the scheduler cannot place the pod on a node with available passthrough GPU capacity.
 
 .. code-block:: output
 
-   Warning  FailedCreatePodSandBox  kubelet  Failed to create pod sandbox: ...
-   GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default):
-   rpc error: code = Unknown desc = PodResources API Get method disabled
+   Events:
+     Type     Reason   Age   From      Message
+     ----     ------   ---   ----      -------
+     Warning  FailedScheduling  ...  default-scheduler   0/1 nodes are available: 1 Insufficient nvidia.com/pgpu.
 
-This error means the ``KubeletPodResourcesGet`` feature gate is not enabled on the worker node.
-Follow the steps in :ref:`Missing or Incorrect Kubelet Feature Gates <coco-deploy-troubleshoot-kubelet>`.
+**Common causes:**
 
+* The worker node is not configured for Confidential Containers workloads.
+* GPU Operator Confidential Containers operands are missing or not ``Running`` on the worker node.
+* ``nvidia.com/pgpu`` capacity on the node is zero because GPUs are not bound to ``vfio-pci`` on the host.
+* All passthrough GPUs on eligible nodes are already allocated to other pods.
 
-.. _coco-operands-not-running:
+**Resolution:**
 
-Insufficient ``nvidia.com/pgpu`` and the node is not configured for Confidential Containers
--------------------------------------------------------------------------------------------
-
-**What you see:** ``kubectl describe pod <pod-name>`` shows ``Insufficient nvidia.com/pgpu`` in **Events**, and one or more of the following is true:
-
-* ``kubectl describe node <node-name>`` does not show ``nvidia.com/gpu.workload.config=vm-passthrough``.
-* ``nvidia.com/cc.ready.state`` is not ``true`` on the node.
-* ``nvidia-cc-manager``, ``nvidia-vfio-manager``, ``nvidia-kata-sandbox-device-plugin``, or ``nvidia-sandbox-validator`` pods are missing or not ``Running`` on the GPU worker node.
-
-The GPU Operator deploys Confidential Container operands only to nodes configured for passthrough sandbox workloads.
-Use one of the following configuration paths.
-
-#. Set the node name:
+#. Confirm GPU Operator operands are ``Running`` on the worker node:
 
    .. code-block:: console
 
-      $ export NODE_NAME="<node-name>"
+      $ kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName=<node-name>
 
-#. **Per-node labeling:** Confirm the node has the Confidential Containers workload label:
+   Expected Confidential Containers operands include ``nvidia-cc-manager``, ``nvidia-vfio-manager``, ``nvidia-kata-sandbox-device-plugin``, and ``nvidia-sandbox-validator``.
+   If an operand is not ``Running``, refer to :ref:`View GPU Operator Logs <coco-gpu-operator-logs>`.
+
+#. Confirm the node is configured for Confidential Containers workloads:
 
    .. code-block:: console
 
-      $ kubectl describe node $NODE_NAME | grep nvidia.com/gpu.workload.config
+      $ kubectl describe node <node-name> | grep nvidia.com/gpu.workload.config
 
    *Example Output:*
 
@@ -230,67 +223,53 @@ Use one of the following configuration paths.
 
    .. code-block:: console
 
-      $ kubectl label node $NODE_NAME nvidia.com/gpu.workload.config=vm-passthrough
+      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
 
-   Refer to :ref:`Label Nodes for Confidential Containers Components <coco-label-nodes>` in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+   If you set the cluster-wide default during installation instead of per-node labeling, confirm ``sandboxWorkloads.defaultWorkload`` is ``vm-passthrough``.
+   Refer to :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
-#. **Cluster-wide default:** If you skipped per-node labeling, confirm the GPU Operator ``sandboxWorkloads`` settings apply ``vm-passthrough`` to all worker nodes:
+#. Check ``nvidia.com/pgpu`` capacity on the node:
 
    .. code-block:: console
 
-      $ kubectl get clusterpolicies.nvidia.com cluster-policy -o jsonpath=\
-      '{.spec.sandboxWorkloads.enabled}{"\n"}{.spec.sandboxWorkloads.defaultWorkload}{"\n"}{.spec.sandboxWorkloads.mode}{"\n"}'
+      $ kubectl describe node <node-name> | grep nvidia.com/pgpu
 
    *Example Output:*
 
    .. code-block:: output
 
-      true
-      vm-passthrough
-      kata
+      nvidia.com/pgpu:  8
+      nvidia.com/pgpu:  8
 
-   If values differ, update the ClusterPolicy or reinstall the GPU Operator with ``sandboxWorkloads.enabled=true``, ``sandboxWorkloads.defaultWorkload=vm-passthrough``, and ``sandboxWorkloads.mode=kata``.
-   Refer to :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
-
-#. Wait up to 10 minutes after labeling or policy changes, then verify operands on the node are ``Running``:
+   If capacity and allocatable are zero, GPUs are not available for scheduling.
+   On the worker host, confirm VFIO binding:
 
    .. code-block:: console
 
-      $ kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName=$NODE_NAME
+      $ lspci -nnk -d 10de:
 
-   Expected Confidential Containers operands include ``nvidia-cc-manager``, ``nvidia-vfio-manager``, ``nvidia-kata-sandbox-device-plugin``, and ``nvidia-sandbox-validator``.
+   *Example Output (expected):*
 
+   .. code-block:: output
 
-.. _coco-deploy-troubleshoot-kubelet:
+      65:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:xxxx] (rev a1)
+              Kernel driver in use: vfio-pci
 
-``PodResources API Get method disabled`` or ``nvidia.com/pgpu`` capacity is zero
---------------------------------------------------------------------------------
-
-**What you see:** Either of the following:
-
-* ``kubectl describe pod <pod-name>`` shows ``PodResources API Get method disabled`` in **Events** and the pod is stuck in ``ContainerCreating``.
-* Kata runtime classes are installed, Confidential Containers operand pods are ``Running``, but ``kubectl describe node <node-name>`` shows zero ``nvidia.com/pgpu`` capacity and pods stay ``Pending`` with ``Insufficient nvidia.com/pgpu``.
-
-These symptoms usually mean required kubelet feature gates are missing or misspelled on the worker host.
-
-#. On the worker host, confirm both feature gates are enabled in ``/var/lib/kubelet/config.yaml`` (or your kubelet config path):
-
-   .. code-block:: yaml
-
-      featureGates:
-        KubeletPodResourcesGet: true
-        RuntimeClassInImageCriApi: true
-
-   A common mistake is a misspelled gate name (for example ``KubeletPodResourceGet`` without the trailing ``s``) or enabling only one of the two gates.
-#. Restart the kubelet after any change:
+   If the output shows ``Kernel driver in use: nvidia`` or ``nouveau``, remove host drivers as described in :ref:`Ensure No Host NVIDIA GPU Drivers Are Present <coco-prereq-no-host-drivers>`.
+   Confirm IOMMU is enabled:
 
    .. code-block:: console
 
-      $ sudo systemctl restart kubelet
+      $ ls /sys/kernel/iommu_groups
 
-Refer to the **Kubelet Configured** section on :doc:`Prerequisites <prerequisites>` for version-specific YAML examples.
+   If the directory is empty or missing, configure IOMMU as described in :ref:`Prerequisites <coco-prerequisites>`, then reboot the host.
+   Review ``nvidia-vfio-manager`` pod logs on the affected node in :ref:`View GPU Operator Logs <coco-gpu-operator-logs>`.
+   After fixing host prerequisites, wait for operand pods to reconcile and confirm ``nvidia.com/pgpu`` is non-zero.
 
-**Logs:** ``nvidia-kata-sandbox-device-plugin`` pod logs and kubelet journal entries on the worker.
+#. If the node shows non-zero ``nvidia.com/pgpu`` capacity but the pod is still ``Pending``, all GPUs may be in use.
+   Check allocatable capacity and running workloads on the node.
+
+Refer to the optional VFIO validation step in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 
 .. _coco-getting-help:
@@ -334,4 +313,4 @@ Attestation and Upstream Confidential Containers
 
 For attestation, Trustee, sealed secrets, or other upstream Confidential Containers features, refer to the `Confidential Containers documentation <https://confidentialcontainers.org/docs/>`__ and the `Confidential Containers GitHub repository <https://github.com/confidential-containers>`_.
 
-For NVIDIA Confidential Computing licensing requirements, see :doc:`Licensing <licensing>`.
+For NVIDIA Confidential Computing licensing requirements, refer to :doc:`Licensing <licensing>`.

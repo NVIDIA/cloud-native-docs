@@ -30,8 +30,8 @@ For additional configuration options and install details, refer to the :doc:`Det
 
    Before starting, make sure your cluster meets the :doc:`Prerequisites <prerequisites>`.
 
-What You'll Build
------------------
+What You Will Build
+-------------------
 
 By the end of this quickstart, you will have:
 
@@ -97,8 +97,8 @@ Install the Kata Containers Helm Chart
       kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s
 
    If SNP or TDX runtime classes are not listed, the install did not complete correctly.
-   On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (see the note above).
-   Otherwise, see :doc:`Troubleshooting <troubleshooting>`.
+   On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (refer to the note above).
+   Otherwise, refer to :doc:`Troubleshooting <troubleshooting>`.
 
 **Success criteria:** Helm reports ``STATUS: deployed`` and both SNP and TDX runtime classes appear in the output above.
 

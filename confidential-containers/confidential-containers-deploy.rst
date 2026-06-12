@@ -24,7 +24,7 @@ Detailed Install Guide
 ######################
 
 This page lists the steps for a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>` to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
-For persona responsibilities and documentation structure, see :doc:`Personas <personas>`.
+For persona responsibilities and documentation structure, refer to :doc:`Personas <personas>`.
 
 .. _overview:
 
@@ -37,10 +37,10 @@ This guide assumes you completed :doc:`Prerequisites <prerequisites>` on an exis
 Install workflow:
 
 #. :doc:`Prerequisites <prerequisites>`: prepare worker hosts and cluster software.
-#. :ref:`Label nodes to deploy Confidential Containers components <coco-label-nodes>`:select GPU workers for Confidential Containers workloads.
-#. :ref:`Install Kata Containers <coco-install-kata-chart>`:install runtime classes and node-level Kata components.
-#. :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`:deploy Confidential Containers operands on target nodes.
-#. :doc:`Run a Sample Workload <run-sample-workload>`:confirm the deployment end to end.
+#. :ref:`Label nodes to deploy Confidential Containers components <coco-label-nodes>`: select GPU workers for Confidential Containers workloads.
+#. :ref:`Install Kata Containers <coco-install-kata-chart>`: install runtime classes and node-level Kata components.
+#. :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`: deploy Confidential Containers operands on target nodes.
+#. :doc:`Run a Sample Workload <run-sample-workload>`: confirm the deployment end to end.
 
 **Success criteria:** Helm releases report ``STATUS: deployed``, the ``kata-deploy`` pod is ``Running``, SNP and TDX runtime classes are available, GPU Operator operands are healthy on target nodes, and the sample workload logs include ``Test PASSED``.
 
@@ -118,7 +118,7 @@ For more details on how the GPU Operator deploys components to your cluster, ref
 **Success criteria:** All nodes labeled for Confidential Container workloads are configured to run Confidential Container workloads.
 By labeling the nodes in your cluster that you want to run Confidential Container workloads, you are signaling to the GPU Operator to deploy the software components needed to run Confidential Containers to the node and configuring the node to only run a Confidential runtime.
 
-Once all your desired nodes are labeled, you can continue to the next step to install Kata Containers.
+After all your desired nodes are labeled, you can continue to the next step to install Kata Containers.
 
 
 .. _coco-install-kata-chart:
@@ -224,11 +224,11 @@ The minimum required version is 3.29.0.
    classes are used to deploy Confidential Containers workloads.
 
    If SNP or TDX runtime classes are not listed, the install did not complete correctly.
-   On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (see the note above).
-   Otherwise, see the log steps below.
+   On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (refer to the note above).
+   Otherwise, refer to the log steps below.
 
 **Success criteria:** Helm reports ``STATUS: deployed``, the ``kata-deploy`` pod is ``Running``, and both ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` are available on the cluster.
-Once all checks pass, continue to :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`.
+After all checks pass, continue to :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`.
 
 If you have an issue deploying the ``kata-deploy`` pod or are not seeing the expected runtime classes, use the following steps to view the logs:
 
@@ -368,7 +368,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Confidential Containe
 Your cluster is now configured to deploy workloads in Kata Containers.
 Continue to :doc:`Run a Sample Workload <run-sample-workload>` to confirm everything is working as expected.
 
-If you are not seeing the expected output, view the logs for the GPU Operator pods:
+If you are not seeing the expected output, view the logs for the GPU Operator pods or refer to :doc:`Troubleshooting <troubleshooting>`.
 
 .. code-block:: console
 
@@ -379,7 +379,8 @@ Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get 
 .. tip::
 
    For general GPU Operator issues such as driver or toolkit failures, refer to the :doc:`NVIDIA GPU Operator troubleshooting guide <gpuop:troubleshooting>`.
-   For Confidential Containers-specific deploy failures, refer to :doc:`Troubleshooting Deploy Failures <troubleshooting>`.
+   For Confidential Containers-specific deploy failures, refer to :doc:`Troubleshooting <troubleshooting>`.
+   Common symptoms include :ref:`Insufficient nvidia.com/pgpu <coco-pending-pod>` and :ref:`device cold plug failed <coco-container-creating-cold-plug>`.
 
 .. _coco-configuration-settings:
 

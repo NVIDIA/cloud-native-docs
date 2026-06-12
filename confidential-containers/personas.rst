@@ -39,6 +39,10 @@ Before using this documentation, you should be familiar with:
   Refer to the `Kubernetes documentation <https://kubernetes.io/docs/home/>`_ if you need a foundation.
 * Confidential Computing hardware, familiarity with AMD SEV-SNP or Intel TDX, and an understanding of which technology your target hardware uses.
 
+The documentation on this site is specific for deploying Confidential Containers on NVIDIA GPUs with Kata Containers and the NVIDIA GPU Operator.
+It covers the steps you take to enable and configure these components on your cluster to align with the NVIDIA Reference Architecture for Confidential Containers.
+For more advanced Confidential Containers topics, refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/>`__.
+
 ********
 Personas
 ********
@@ -119,7 +123,7 @@ Relevant pages:
 * :doc:`Detailed Install Guide <confidential-containers-deploy>`: install with per-node labeling and additional configuration options.
 * :doc:`Run a Sample Workload <run-sample-workload>`: confirm the deployment was successful.
 * :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`: change the CC mode on GPUs at the cluster or node level as needed.
-* :doc:`Troubleshooting Deploy Failures <troubleshooting>`: resolve install and deploy failures.
+* :doc:`Troubleshooting <troubleshooting>`: resolve install and deploy failures (for example :ref:`Insufficient nvidia.com/pgpu <coco-pending-pod>`).
 
 .. _coco-persona-security-engineer:
 

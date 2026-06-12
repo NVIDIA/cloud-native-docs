@@ -79,8 +79,8 @@ The goal is to give you a working local attestation backend and a client to inte
    To run attestation against real evidence from a confidential workload, refer to the upstream `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ and `Features <https://confidentialcontainers.org/docs/features>`_ documentation for more information.
 
 
-What You'll Build
------------------
+What You Will Build
+-------------------
 
 By the end of this quickstart, you will have:
 
@@ -88,7 +88,7 @@ By the end of this quickstart, you will have:
 * The ``kbs-client`` command-line tool installed and able to reach your Trustee instance.
 * A sample resource request that exercises the end-to-end request path.
 
-You'll know you're done when ``kbs-client`` can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
+You will know you are done when ``kbs-client`` can send a request to KBS and receive a response from the Trustee policy engine, even if that response is a policy denial.
 A denial in this quickstart is the expected, successful outcome: it confirms that the client reached KBS, the Attestation Service evaluated the request, and policy was applied.
 
 
@@ -135,7 +135,7 @@ Start the Trustee containers in the background.
 .. note::
 
    On first run, ``docker compose up -d`` pulls the KBS, AS, and RVPS images before starting them.
-   This step can take several minutes. The command returns once the containers are starting. The services may need an additional few seconds to become ready to accept requests.
+   This step can take several minutes. The command returns after the containers start. The services may need an additional few seconds to become ready to accept requests.
 
 For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream `Install Trustee in Docker <https://confidentialcontainers.org/docs/attestation/installation/docker/>`_ guide.
 
@@ -255,10 +255,10 @@ Next Steps
 
 You now have a working local Trustee instance and a client that can talk to it. For more details, refer to the upstream Confidential Containers documentation:
 
-* `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ — Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.
-* `Features <https://confidentialcontainers.org/docs/features>`_ — the complete set of Confidential Containers features, including how to wire attestation into real workloads.
+* `Attestation <https://confidentialcontainers.org/docs/attestation/>`_: Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.
+* `Features <https://confidentialcontainers.org/docs/features>`_: the complete set of Confidential Containers features, including how to wire attestation into real workloads.
 
-To shut down the local Trustee instance when you're finished, run the following command from the ``trustee`` repository directory:
+To shut down the local Trustee instance when you are finished, run the following command from the ``trustee`` repository directory:
 
 .. code-block:: console
 

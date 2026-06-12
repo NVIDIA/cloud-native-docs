@@ -59,40 +59,44 @@ NVIDIA Confidential Containers
    Release Notes <release-notes.rst>
    Licensing <licensing.rst>
 
-The NVIDIA Confidential Containers reference architecture extends NVIDIA GPU Confidential Computing functionality to Kubernetes-based workload deployments
-It is a validated reference architecture for running GPU-accelerated AI workloads on Kubernetes inside hardware-enforced Trusted Execution Environments (TEEs).
-Leveraging the CNCF `Confidential Containers <https://confidentialcontainers.org/>`__ and Kata Containers with NVIDIA's GPU Operator, this reference architecture provides a way to protect model intellectual property and sensitive data from untrusted infrastructure across public cloud, on-premises, and edge deployments.
- 
+NVIDIA Confidential Containers is a validated reference architecture for running GPU-accelerated AI workloads on Kubernetes inside hardware-enforced Trusted Execution Environments (TEEs).
+It extends NVIDIA GPU Confidential Computing to standard Kubernetes deployments using CNCF `Confidential Containers <https://confidentialcontainers.org/>`__ and Kata Containers with the NVIDIA GPU Operator.
+Use it to protect model intellectual property and sensitive data from untrusted infrastructure across public cloud, on-premises, and edge deployments.
 
 Benefits
 ========
 
-The reference architecture provides the following benefits:
+Confidential Containers provides the following benefits:
 
-
-* Offers a way to secure model intellectual property and sensitive data from untrusted infrastructure—across public cloud, on-premises, and edge deployments.
-* Accelerates adoption of generative AI in regulated industries by providing a way to deploy proprietary models on third-party or private infrastructure.
+* Protect model IP and sensitive data on untrusted public cloud, on-premises, or edge infrastructure.
+* Deploy proprietary generative AI models in regulated industries on third-party or private clusters.
 * Isolate GPU workloads in hardware-protected enclaves with encrypted memory and integrity verification.
 * Operate confidential workloads with standard Kubernetes pods, runtime classes, and scheduling.
 * Verify TEE state through remote attestation before releasing secrets or decrypted model weights.
 
-See :doc:`Reference Architecture <overview>` for the full value proposition, trust model, and architecture diagrams.
+Refer to :doc:`Reference Architecture <overview>` for the full value proposition, trust model, and architecture diagrams.
+
+Use Cases
+---------
+
+Common scenarios include protecting proprietary model IP on third-party infrastructure, running frontier models in a sovereign environment, and processing sensitive enterprise data in data clean rooms.
+Refer to :ref:`Use Cases <coco-use-cases>` in the Reference Architecture for workflows and deployment scenarios.
 
 Core Concepts
 =============
 
-`Confidential Containers <https://confidentialcontainers.org/>`__ is the cloud-native approach to Confidential Computing on Kubernetes.
-Rather than running pods on the shared host kernel, it uses hardware-isolated virtual machines so workloads are protected from the host and other tenants.
+`Confidential Containers <https://confidentialcontainers.org/>`__ runs Kubernetes pods in hardware-isolated virtual machines instead of on the shared host kernel, protecting workloads from the host and other tenants.
 On supported hardware (AMD SEV-SNP or Intel TDX), that isolation forms a trusted execution environment (TEE) with encrypted memory and integrity verification.
 
-Key ideas include attestation, sealed secrets, and encrypted container images.
-See the :ref:`Background <confidential-containers-overview>` section in the Reference Architecture, the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/>`__, or :doc:`Personas <personas>` for role-based navigation.
+Attestation, sealed secrets, and encrypted container images are core to the model.
+Refer to :ref:`Background <confidential-containers-overview>` in the Reference Architecture.
 
 Core Components
 ===============
 
-This documentation focuses on the components you install, configure, and operate to deploy workloads in a confidential runtime on Kubernetes.
-It provides a detailed overview in the :doc:`Reference Architecture <overview>` that describes the full stack, and end-to-end deployment guides for configuring Kata Containers and the NVIDIA GPU Operator.
+This documentation focuses on the components you install, configure, and operate to run workloads in a Confidential Containers runtime on Kubernetes.
+The :doc:`Reference Architecture <overview>` describes the full stack. 
+The install guides cover Kata Containers and the NVIDIA GPU Operator end to end.
 
 * Kata Containers: Runs pods inside TEE-protected virtual machines instead of on the shared host kernel.
   Install Kata Deploy and TEE-specific runtime shims in :doc:`Quickstart Install <install-quickstart>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
@@ -109,16 +113,16 @@ It provides a detailed overview in the :doc:`Reference Architecture <overview>` 
   * NVIDIA VFIO Manager
   * Node Feature Discovery (NFD)
 
-* Trustee and attestation: Verifies TEE state and brokers key release for sealed secrets, encrypted images, and authenticated registries.
-  Stand up and validate attestation in :doc:`Attestation <attestation>`.
+Using This Documentation
+========================
 
-Other architecture components, such as a guest snapshotter, Confidential Data Hub, Kata Agent security policies, and NVIDIA Runtime Container (NVRC), are described in the :ref:`Software Components for Confidential Containers <coco-supported-platforms-components>` section of the Reference Architecture.
+This documentation describes the NVIDIA reference architecture for Confidential Containers and deployment recommendations for the upstream `CNCF Confidential Containers project <https://confidentialcontainers.org/>`_ with NVIDIA GPUs.
+It covers NVIDIA-specific configurations needed to run Confidential Containers workloads on Kubernetes.
+This primarily includes the steps to enable and configure Kata Containers and the NVIDIA GPU Operator on your cluster.
 
-Use Cases
-=========
-
-Common scenarios include protecting proprietary model IP on third-party infrastructure, running frontier models in a sovereign environment, and processing sensitive enterprise data in data clean rooms.
-See :ref:`Use Cases <coco-use-cases>` in the Reference Architecture for workflows and deployment scenarios.
+For advanced Confidential Containers topics and day-two operations, refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/>`__, as the workflows and implementations are not NVIDIA specific.
+For example, an attestation implementation is not specific to NVIDIA GPUs.
+A brief attestation overview and evaluation quickstart is available in :doc:`Attestation <attestation>`, but full production attestation implementation guides are in the upstream `Confidential Containers attestation documentation <https://confidentialcontainers.org/docs/attestation/>`__.
 
 
 Learn

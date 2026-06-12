@@ -27,7 +27,7 @@ As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-adm
 You perform most steps in this section.
 If you do not have access to host firmware, coordinate with your :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` or :ref:`Host OS Administrator <coco-persona-host-os-administrator>` to confirm or implement hardware prerequisites.
 
-For validated hardware and software versions, see :doc:`Supported Platforms <supported-platforms>`.
+For validated hardware and software versions, refer to :doc:`Supported Platforms <supported-platforms>`.
 Use the checklists below for an at-a-glance summary, then follow each linked section for verification steps.
 
 **Hardware prerequisites**
@@ -43,7 +43,7 @@ Use the checklists below for an at-a-glance summary, then follow each linked sec
    * - :ref:`Hardware virtualization and ACS enabled <coco-prereq-hw-virtualization>`
      - Hardware virtualization and ACS enabled in host BIOS
    * - :ref:`IOMMU enabled <coco-prereq-iommu>`
-     - IOMMU enabled on each host via kernel command line (``amd_iommu=on`` or ``intel_iommu=on``)
+     - IOMMU enabled on each host through the kernel command line (``amd_iommu=on`` or ``intel_iommu=on``)
    * - :ref:`No host NVIDIA GPU drivers <coco-prereq-no-host-drivers>`
      - No NVIDIA GPU drivers installed or loaded on worker hosts.
 
@@ -56,7 +56,7 @@ Use the checklists below for an at-a-glance summary, then follow each linked sec
    * - Prerequisite
      - Details
    * - :ref:`A Kubernetes cluster and cluster administrator access <coco-prereq-cluster-admin>`
-     - Cluster administrator access to a Kubernetes cluster running a supported version (see :ref:`Supported Software Components <coco-supported-software-components>`)
+     - Cluster administrator access to a Kubernetes cluster running a supported version (refer to :ref:`Supported Software Components <coco-supported-software-components>`)
    * - :ref:`containerd 2.2.2 installed <coco-prereq-containerd>`
      - containerd 2.2.2 installed on each GPU worker node
    * - :ref:`Helm installed <coco-prereq-helm>`
@@ -246,7 +246,7 @@ On Kubernetes v1.34 and later, ``KubeletPodResourcesGet`` is enabled by default.
 On versions before v1.34, enable it explicitly.
 ``RuntimeClassInImageCriApi`` must be enabled explicitly on all supported versions.
 
-Increase the ``runtimeRequestTimeout`` from the 2 minute default to ``20m`` to avoid timeouts when pulling large GPU workload images.
+Increase the ``runtimeRequestTimeout`` from the 2-minute default to ``20m`` to avoid timeouts when pulling large GPU workload images.
 If a pull exceeds the timeout before the container is running, the kubelet de-allocates the pod.
 Actual pull duration varies with image size and network throughput, so this guide uses 20 minutes as a conservative ceiling that accommodates most workload images.
 
@@ -255,6 +255,7 @@ Apply these settings as follows:
 #. Open the kubelet configuration file:
 
    .. code-block:: console
+      
       $ sudo nano /var/lib/kubelet/config.yaml
 
    This is typically located at ``/var/lib/kubelet/config.yaml``, but your configuration file may be in a different location.

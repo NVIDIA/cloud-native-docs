@@ -24,24 +24,9 @@ Advanced Setup Overview
 #######################
 
 This page is the entry point for the **Advanced Setup** section.
-For persona responsibilities and documentation structure, see :doc:`Personas <personas>`.
+For persona responsibilities and documentation structure, refer to :doc:`Personas <personas>`.
 
-**Before this section:** Complete the **Install** section through :doc:`Run a Sample Workload <run-sample-workload>` and confirm ``Test PASSED`` in the sample pod logs.
-If install is not verified, return to :doc:`Prerequisites <prerequisites>` and complete the Install section.
-
-Recommended order
-=================
-
-Most teams follow this order after a successful install:
-
-#. :doc:`Configuring Workloads <configure-workloads>` — for :ref:`Container User <coco-persona-container-user>` personas: runtime classes, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests for real applications.
-
-#. :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` — for :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>` personas: when you need to change the default CC mode at cluster or node scope.
-
-#. :doc:`Attestation <attestation>` — for :ref:`Security Engineer <coco-persona-security-engineer>` personas: when workloads need secrets, encrypted images, or registry authentication.
-   Attestation is not required for the install sample workload.
-
-Use the cards below to open a topic.
+Before doing any of the topics, ensure you have completed the **Install** section.
 
 
 .. grid:: 2
