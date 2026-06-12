@@ -432,6 +432,10 @@
 <span id="coco-install-quickstart"></span><h1>Quickstart Install<a class="headerlink" href="#quickstart-install" title="Permalink to this headline">#</a></h1>
 <p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use these steps to install Kata Containers and the NVIDIA GPU Operator with minimal steps.
 For additional configuration options and install details, refer to the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<p>Use this quickstart if you want every node in your cluster to run Confidential Containers.
+This is the fastest path and is ideal for evaluation or dedicated Confidential Containers clusters.
+If you need to run Confidential Containers on only some nodes while keeping traditional GPU workloads on others, or you want more control over the installation, use the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a> instead.</p>
+<p>This quickstart takes approximately 10 minutes to complete, assuming your cluster already meets the prerequisites.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Before starting, make sure your cluster meets the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>.</p>
@@ -450,7 +454,6 @@ For additional configuration options and install details, refer to the <a class=
 A cluster node can only be configured to run one container runtime at a time, so a node configured for Confidential Containers workloads cannot run traditional GPU container workloads.</p>
 <p>If you need to run traditional GPU container workloads on your cluster, refer to the <a class="reference internal" href="confidential-containers-deploy.html#coco-label-nodes"><span class="std std-ref">Label Nodes for Confidential Containers Components</span></a> section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </div>
-<p>After completing this page, you can validate the installation by running a sample workload in <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>.</p>
 <section id="install-the-kata-containers-helm-chart">
 <span id="quickstart-install-kata"></span><h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
@@ -468,7 +471,18 @@ A cluster node can only be configured to run one container runtime at a time, so
    --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>It can take 2–3 minutes for the command to return.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0</span>
+<span class="go">Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933</span>
+<span class="go">LAST DEPLOYED: Wed Apr  1 17:03:00 2026</span>
+<span class="go">NAMESPACE: kata-system</span>
+<span class="go">STATUS: deployed</span>
+<span class="go">REVISION: 1</span>
+<span class="go">DESCRIPTION: Install complete</span>
+<span class="go">TEST SUITE: None</span>
+</pre></div>
+</div>
+<p>It can take 2 to 3 minutes for the command to return and all output to be printed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single-node clusters that may result in the Helm command finishing before all pods are done initializing.
@@ -532,11 +546,10 @@ Otherwise, refer to <a class="reference internal" href="troubleshooting.html"><s
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
-<p>It may take 3–5 minutes for all GPU Operator pods to reach the Running state.</p>
+<p>It may take 3 to 5 minutes for all GPU Operator pods to reach the Running state.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> flag sets the default cluster workload type for Confidential Containers.
-If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> flag sets the default cluster workload type for Confidential Containers.</p>
 </div>
 </li>
 <li><p>Verify that all GPU Operator pods are running:</p>

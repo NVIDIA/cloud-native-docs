@@ -432,6 +432,8 @@
 <span id="confidential-containers-deploy"></span><h1>Detailed Install Guide<a class="headerlink" href="#detailed-install-guide" title="Permalink to this headline">#</a></h1>
 <p>This page lists the steps for a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a> to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
 For persona responsibilities and documentation structure, refer to <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+<p>If you want the fastest path and intend to run Confidential Containers on every node in your cluster, use the <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> instead.
+Use this guide when you need per-node control, such as running Confidential Containers on some nodes and traditional GPU workloads on others, or when you want additional configuration options.</p>
 <section id="install-overview">
 <span id="overview"></span><h2>Install Overview<a class="headerlink" href="#install-overview" title="Permalink to this headline">#</a></h2>
 <p>This guide assumes you completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> on an existing Kubernetes cluster with GPU worker nodes.</p>
@@ -470,6 +472,7 @@ The labeling approach is useful if you want to run Confidential Containers workl
 <span class="go">node-02       Ready    &lt;none&gt;          10d   v1.34.0</span>
 </pre></div>
 </div>
+<p>Identify the GPU worker node or nodes you want to configure for Confidential Containers and use its name in the next step.</p>
 </li>
 <li><p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the name of the node you want to configure:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
@@ -484,6 +487,11 @@ The labeling approach is useful if you want to run Confidential Containers workl
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">node/&lt;node-name&gt; labeled</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">node/&lt;node-name&gt;</span> <span class="pre">labeled</span></code> message confirms the label was applied.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the command prints <code class="docutils literal notranslate"><span class="pre">&lt;node-name&gt;</span> <span class="pre">not</span> <span class="pre">labeled</span></code>, the label may already be set.
@@ -500,7 +508,7 @@ Continue to the next step to verify the label was added.</p>
 </div>
 </li>
 </ol>
-<p><strong>Success criteria:</strong> All nodes labeled for Confidential Container workloads are configured to run Confidential Container workloads.
+<p><strong>Success criteria:</strong> All nodes you intend to use for Confidential Container workloads have the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config:</span> <span class="pre">vm-passthrough</span></code> label.
 By labeling the nodes in your cluster that you want to run Confidential Container workloads, you are signaling to the GPU Operator to deploy the software components needed to run Confidential Containers to the node and configuring the node to only run a Confidential runtime.</p>
 <p>After all your desired nodes are labeled, you can continue to the next step to install Kata Containers.</p>
 </section>
@@ -530,7 +538,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
-It can take a 2-3 minutes to return output.</p>
+It can take a 2-3 minutes to return more output.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
@@ -547,6 +555,8 @@ If you are deploying to a single node cluster, you may need to wait for an addit
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code> confirms the Helm release succeeded and the chart resources were applied.
+This does not yet confirm the Kata components are healthy, so continue to the verification steps below before you install the GPU Operator.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator deploy Node Feature Discovery (NFD) by default.
@@ -562,6 +572,9 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kata-deploy-b2lzs       1/1     Running   0             6m37s</span>
 </pre></div>
 </div>
+<p>A <code class="docutils literal notranslate"><span class="pre">READY</span></code> value of <code class="docutils literal notranslate"><span class="pre">1/1</span></code> and a <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> of <code class="docutils literal notranslate"><span class="pre">Running</span></code> mean the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod installed the Kata components on the node successfully.
+If the pod is <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code>, or <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>, wait a minute and re-run the command.
+If it does not reach <code class="docutils literal notranslate"><span class="pre">Running</span></code>, refer to the log steps below.</p>
 </li>
 <li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
 <p>After <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code> completes with <code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code>, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart has created the Kata <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> resources on the cluster.
@@ -658,7 +671,8 @@ Refer to the <a class="reference internal" href="#coco-label-nodes"><span class=
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag instructs Helm to wait until the release is deployed before returning.
+<p><code class="docutils literal notranslate"><span class="pre">STATUS:</span> <span class="pre">deployed</span></code> confirms the Helm release succeeded.
+The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag instructs Helm to wait until the release is deployed before returning.
 It may take 3-5 minutes for the Helm command to complete and for all GPU Operator pods to be in the Running state.</p>
 <p>For additional installation settings,</p>
 <ul class="simple">
@@ -666,7 +680,7 @@ It may take 3-5 minutes for the Helm command to complete and for all GPU Operato
 <li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#gpu-operator-helm-chart-options" title="(in NVIDIA GPU Operator)"><span class="xref std std-ref">Common chart customization options</span></a> in <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">Installing the NVIDIA GPU Operator</span></a> for more details on the additional general configuration options you can specify when installing the GPU Operator.</p></li>
 </ul>
 </li>
-<li><p>Optional: Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:</p>
+<li><p>Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
@@ -682,6 +696,10 @@ It may take 3-5 minutes for the Helm command to complete and for all GPU Operato
 <span class="go">nvidia-vfio-manager-h229x                                         1/1     Running   0          62s</span>
 </pre></div>
 </div>
+<p>Each pod should report a <code class="docutils literal notranslate"><span class="pre">READY</span></code> value of <code class="docutils literal notranslate"><span class="pre">1/1</span></code> and a <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> of <code class="docutils literal notranslate"><span class="pre">Running</span></code> or <code class="docutils literal notranslate"><span class="pre">Completed</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin-daemonset</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code> operands are specific to Confidential Containers and must be present on labeled nodes.
+Pods may briefly show <code class="docutils literal notranslate"><span class="pre">Pending</span></code> or <code class="docutils literal notranslate"><span class="pre">Init</span></code> while they start, which is expected.
+When all operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code> or <code class="docutils literal notranslate"><span class="pre">Completed</span></code>, the GPU Operator components are deployed and you can continue.</p>
 <p>For more details on each of the GPU Operator components, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
 </li>
 <li><p>Optional: If you have host access to the worker node, you can perform the following validation step:</p>
@@ -697,6 +715,9 @@ It may take 3-5 minutes for the Helm command to complete and for all GPU Operato
 <span class="go">        Kernel modules: nvidiafb, nouveau</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">driver</span> <span class="pre">in</span> <span class="pre">use:</span> <span class="pre">vfio-pci</span></code> confirms the GPU is bound for VFIO passthrough into the confidential virtual machine.
+If the driver in use is <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> or <code class="docutils literal notranslate"><span class="pre">nouveau</span></code> instead, the GPU is not ready for passthrough.
+Confirm your node meets the <a class="reference internal" href="prerequisites.html#coco-prerequisites"><span class="std std-ref">Prerequisites</span></a> section, including removing any NVIDIA GPU drivers on the host.</p>
 </li>
 </ol>
 </li>
