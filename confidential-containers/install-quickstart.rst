@@ -26,6 +26,12 @@ Quickstart Install
 As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>`, use these steps to install Kata Containers and the NVIDIA GPU Operator with minimal steps.
 For additional configuration options and install details, refer to the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
+Use this quickstart if you want every node in your cluster to run Confidential Containers.
+This is the fastest path and is ideal for evaluation or dedicated Confidential Containers clusters.
+If you need to run Confidential Containers on only some nodes while keeping traditional GPU workloads on others, or you want more control over the installation, use the :doc:`Detailed Install Guide <confidential-containers-deploy>` instead.
+
+This quickstart takes approximately 10 minutes to complete, assuming your cluster already meets the prerequisites.
+
 .. note::
 
    Before starting, make sure your cluster meets the :doc:`Prerequisites <prerequisites>`.
@@ -45,8 +51,6 @@ By the end of this quickstart, you will have:
    A cluster node can only be configured to run one container runtime at a time, so a node configured for Confidential Containers workloads cannot run traditional GPU container workloads.
 
    If you need to run traditional GPU container workloads on your cluster, refer to the :ref:`Label Nodes for Confidential Containers Components <coco-label-nodes>` section in the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
-
-After completing this page, you can validate the installation by running a sample workload in :doc:`Run a Sample Workload <run-sample-workload>`.
 
 .. _quickstart-install-kata:
 
@@ -71,7 +75,20 @@ Install the Kata Containers Helm Chart
          --wait --timeout 10m \
          --version "${VERSION}"
 
-   It can take 2–3 minutes for the command to return.
+   *Example Output:*
+
+   .. code-block:: output
+
+      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0
+      Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
+      LAST DEPLOYED: Wed Apr  1 17:03:00 2026
+      NAMESPACE: kata-system
+      STATUS: deployed
+      REVISION: 1
+      DESCRIPTION: Install complete
+      TEST SUITE: None
+
+   It can take 2 to 3 minutes for the command to return and all output to be printed.
 
    .. note::
 
@@ -149,11 +166,10 @@ Install the NVIDIA GPU Operator
       REVISION: 1
       TEST SUITE: None
 
-   It may take 3–5 minutes for all GPU Operator pods to reach the Running state.
+   It may take 3 to 5 minutes for all GPU Operator pods to reach the Running state.
 
    .. note::
       The ``sandboxWorkloads.defaultWorkload=vm-passthrough`` flag sets the default cluster workload type for Confidential Containers.
-      If you need to run traditional GPU container workloads on your cluster, refer to the Label Nodes for Confidential Containers Components section in the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 #. Verify that all GPU Operator pods are running:
 
