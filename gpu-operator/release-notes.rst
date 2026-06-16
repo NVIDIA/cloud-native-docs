@@ -33,6 +33,30 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.3.3:
+
+26.3.3
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Kubernetes Device Plugin v0.19.3
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.19.3
+
+Fixed Issues
+------------
+
+* Fixed a regression where feature flags such as ``MOFED_ENABLED`` and ``GDS_ENABLED`` were enabled by default for the device plugin operand.
+  This caused all ``ibverbs`` device nodes on a node to be injected into GPU workload containers, disrupting RDMA and NCCL workloads by exposing network interfaces that were not intended for the workload.
+  The GPU Operator now infers these feature flags dynamically from the kernel modules that are loaded on each node, rather than enabling them unconditionally.
+  (`PR #2525 <https://github.com/NVIDIA/gpu-operator/pull/2525>`__, `k8s-device-plugin PR #1837 <https://github.com/NVIDIA/k8s-device-plugin/pull/1837>`__)
+
+
+----
+
 .. _v26.3.2:
 
 26.3.2

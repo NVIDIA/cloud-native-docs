@@ -127,11 +127,11 @@ Always update the openshift docset when there is a new gpu-operator docset versi
       {
         "preferred": "true",
    +    "url": "../1.17.4",
-   +    "version": "1.17.4"
+   +    "version": "1.17.4/"
    +  },
    +  {
         "url": "../1.17.3",
-        "version": "1.17.3"
+        "version": "1.17.3/"
       },
    ```
 
