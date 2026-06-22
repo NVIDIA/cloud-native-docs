@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'configure-workloads';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -70,14 +70,14 @@
 
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Managing the Confidential Computing Mode" href="configure-cc-mode.html" />
-    <link rel="prev" title="Advanced Setup Overview" href="configure.html" />
+    <link rel="prev" title="Run a Sample Workload" href="run-sample-workload.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -364,9 +364,8 @@
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
@@ -430,8 +429,7 @@
                   
   <section id="configuring-confidential-container-workloads">
 <span id="coco-configure-workloads"></span><h1>Configuring Confidential Container Workloads<a class="headerlink" href="#configuring-confidential-container-workloads" title="Permalink to this headline">#</a></h1>
-<p>As a <a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a>, use this page to configure confidential GPU workloads on a prepared cluster.
-For persona responsibilities and documentation structure, refer to <a class="reference internal" href="personas.html"><span class="doc">Personas</span></a>.</p>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a>, use this page to configure confidential GPU workloads on a prepared cluster.</p>
 <p>A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
 Compared with a traditional GPU pod, a Confidential Container workload pod manifest differs in
@@ -443,12 +441,11 @@ Kata sandbox device plugin, which can be either default names or model-specific 
 <li><p>For NVSwitch-based HGX systems, it requests every GPU and NVSwitch on the node together so
 that all devices reside inside the same Confidential Container virtual machine.</p></li>
 </ul>
-<p>This page is part of <strong>Advanced Setup</strong> and is the usual next step after a successful install.</p>
 <p><strong>Before this page:</strong> Complete the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a> and verify the cluster with <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> (<code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in pod logs).
 For install steps, refer to <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 <p>This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.
-The install sample uses a minimal manifest; use this page for production-style configuration.</p>
+The install sample uses a minimal manifest.</p>
 <section id="select-a-container-runtime-class">
 <h2>Select a Container Runtime Class<a class="headerlink" href="#select-a-container-runtime-class" title="Permalink to this headline">#</a></h2>
 <p>A Confidential Container workload must set <code class="docutils literal notranslate"><span class="pre">spec.runtimeClassName</span></code> to a TEE-aware Kata
@@ -479,8 +476,7 @@ Select the runtime class based on the CPU TEE on the target worker node:</p>
 </table>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart also installs a <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu</span></code> runtime class.
-That class is intended for non-confidential Kata workloads. You should not use it for Confidential
-Container workloads because it does not start the GPU in CC mode.</p>
+That class is intended for non-confidential Kata workloads.</p>
 </section>
 <section id="reference-gpu-and-nvswitch-resource-types">
 <span id="coco-resource-types"></span><h2>Reference GPU and NVSwitch Resource Types<a class="headerlink" href="#reference-gpu-and-nvswitch-resource-types" title="Permalink to this headline">#</a></h2>
@@ -696,12 +692,12 @@ for details.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="configure.html"
+       href="run-sample-workload.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Advanced Setup Overview</p>
+        <p class="prev-next-title">Run a Sample Workload</p>
       </div>
     </a>
     <a class="right-next"
@@ -760,8 +756,8 @@ for details.</p>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
 

@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'troubleshooting';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 12, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -364,9 +364,8 @@
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Setup</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="configure.html">Advanced Setup Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
@@ -434,8 +433,41 @@
 <p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a> for general operator issues such as driver daemonsets, the container toolkit, and validator pods.
 The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, and host prerequisites.</p>
 <p>If these steps do not resolve your issue, refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a>.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 35%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symptom</p></th>
+<th class="head"><p>Cause</p></th>
+<th class="head"><p>Fix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-pending-pod"><span class="std std-ref">Pod stuck in Pending with Insufficient nvidia.com/pgpu</span></a></p></td>
+<td><p>Node not labeled for Confidential Containers, GPUs not bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>, or all GPUs already allocated.</p></td>
+<td><p>Check operands running, verify <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> label, confirm <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> binding.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-container-creating-cold-plug"><span class="std std-ref">Pod stuck in ContainerCreating with device cold plug failed</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate not enabled on worker node.</p></td>
+<td><p>Enable feature gate per <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-cc-mode-troubleshoot"><span class="std std-ref">nvidia.com/cc.mode.state not matching nvidia.com/cc.mode</span></a></p></td>
+<td><p>Mode transition still in progress, or blocked by a workload using a GPU on the node.</p></td>
+<td><p>Wait 1-2 minutes, check cc.mode labels. If GPU Operator pods, specifically the vfio-manager are stuck in terminating, make sure that no user workloads are running on the node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-cc-mode-failed"><span class="std std-ref">nvidia.com/cc.mode.state is failed</span></a></p></td>
+<td><p>Workload running during mode change, or BIOS/ACS misconfigured.</p></td>
+<td><p>Drain workloads, re-apply mode label, confirm ACS enabled in BIOS.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="view-gpu-operator-logs">
 <span id="coco-gpu-operator-logs"></span><h2>View GPU Operator Logs<a class="headerlink" href="#view-gpu-operator-logs" title="Permalink to this headline">#</a></h2>
+<p>Use this section to collect GPU Operator pod logs when an operand is not running or reporting errors.</p>
 <ol class="arabic">
 <li><p>Get the list of GPU Operator pods:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
@@ -463,9 +495,17 @@ The sections below cover Confidential Containers-specific deploy failures: CC no
 </ol>
 </section>
 <section id="view-kata-containers-logs">
-<h2>View Kata Containers Logs<a class="headerlink" href="#view-kata-containers-logs" title="Permalink to this headline">#</a></h2>
+<span id="coco-view-kata-logs"></span><h2>View Kata Containers Logs<a class="headerlink" href="#view-kata-containers-logs" title="Permalink to this headline">#</a></h2>
+<p>Use this section to collect Kata Containers logs and confirm runtime classes are installed.</p>
 <ol class="arabic">
-<li><p>Get the list of Kata Containers pods:</p>
+<li><p>Confirm the expected runtime classes are registered:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
+</pre></div>
+</div>
+<p>After a successful Kata Containers deployment, you should see <code class="docutils literal notranslate"><span class="pre">kata-qemu-snp</span></code> (AMD SEV-SNP) and <code class="docutils literal notranslate"><span class="pre">kata-qemu-tdx</span></code> (Intel TDX) in the output.
+If these are missing, continue to the next steps.</p>
+</li>
+<li><p>Get the list of Kata Containers pod:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system
 </pre></div>
 </div>
@@ -479,16 +519,38 @@ The sections below cover Confidential Containers-specific deploy failures: CC no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n kata-system &lt;pod-name&gt;
 </pre></div>
 </div>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the Kata Containers pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">kata-system</span></code>.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the Kata Containers pod.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Install completed</span>
+<span class="go">daemonset mode: waiting for SIGTERM</span>
+</pre></div>
+</div>
 </li>
 </ol>
+<p>If the logs show errors or runtime classes are still missing after a successful Helm deploy, collect the log output and refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a> for Kata-specific troubleshooting resources.</p>
 </section>
 <section id="nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode">
 <span id="coco-cc-mode-troubleshoot"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Not Matching <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode" title="Permalink to this headline">#</a></h2>
 <p>When changing the Confidential Computing mode (refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>), the Confidential Computing Manager updates the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label to reflect the current state of the Confidential Computing mode.
-If the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match the desired CC mode (<code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>), it means the Confidential Computing update is still ongoing.
-Wait a few more minutes, then check the labels again.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+If the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match the desired CC mode (<code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>), it could mean the following:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The GPU is still updating to the Confidential Computing mode.</dt><dd><p>Wait a few more minutes, then check the labels again.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The transition is blocked by a user workload with a resource claim for a GPU on the node.</dt><dd><p>This is usually accompanied by the VFIO manager stuck in Terminating state or CC Manager logs showing the mode transition is still in progress.
+Remove the workload to unblock the mode transition.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Checks:</strong></p>
+<ol class="arabic">
+<li><p>Check the cc.mode labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+<span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
       jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
 </pre></div>
 </div>
@@ -496,14 +558,87 @@ Wait a few more minutes, then check the labels again.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
+</li>
+<li><p>Get the list of GPU Operator pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS        RESTARTS      AGE</span>
+<span class="go">gpu-operator-6474ddf79d-s4gcb                                 1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running       0             10m</span>
+<span class="go">nvidia-cc-manager-tqdc6                                       1/1     Running       0             10m</span>
+<span class="go">nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running       0             10m</span>
+<span class="go">nvidia-vfio-manager-b7jtv                                     0/1     Terminating   0             10m</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the logs for the nvidia-cc-manager pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator nvidia-cc-manager-&lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the nvidia-cc-manager pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting 2 GPU(s) to apply CC mode</span>
+<span class="go">2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting GPU 0000:0d:00.0</span>
+<span class="go">2026-06-18 19:47:26,475 - k8s-cc-manager - INFO - Resetting GPU 0000:b5:00.0</span>
+</pre></div>
+</div>
+<p>If the CC Manager logs show the mode transition is still in progress, it means the GPU is still updating to the Confidential Computing mode.
+CC Manager logs show <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">set</span> <span class="pre">CC</span> <span class="pre">mode</span> <span class="pre">to</span> <span class="pre">'&lt;off|on|ppcie&gt;'</span> <span class="pre">on</span> <span class="pre">all</span> <span class="pre">GPUs</span></code> when the mode transition is complete.</p>
+</li>
+<li><p>Check which pods have a passthrough GPU allocated on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+    jq -r <span class="s1">&#39;.items[] | select(any(.spec.containers[]; .resources.requests[&quot;nvidia.com/pgpu&quot;] // empty)) | &quot;\(.metadata.namespace)/\(.metadata.name)&quot;&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">default/cuda-vectoradd-kata</span>
+</pre></div>
+</div>
+<p>Any pods returned have a passthrough GPU allocated and are blocking the mode transition.</p>
+</li>
+<li><p>Delete the pod(s) to unblock the mode transition.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete pod &lt;pod-name&gt; -n &lt;namespace&gt;
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;&lt;pod-name&gt;&quot; deleted</span>
+</pre></div>
+</div>
+<p>Repeat this step for each pod that is blocking the mode transition.
+Once all user pods are deleted, the mode transition will resume automatically.</p>
+</li>
+<li><p>Confirm the mode transition is complete:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">gpu-operator-6474ddf79d-s4gcb                                 1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running   0             10m</span>
+<span class="go">nvidia-cc-manager-tqdc6                                       1/1     Running   0             10m</span>
+<span class="go">nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running   0             10m</span>
+<span class="go">nvidia-vfio-manager-b7jtv                                     1/1     Running   0              1m</span>
+</pre></div>
+</div>
+</li>
+</ol>
 </section>
 <section id="nvidia-com-cc-mode-state-is-failed">
 <span id="coco-cc-mode-failed"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-is-failed" title="Permalink to this headline">#</a></h2>
-<p>When the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code>, it means there was a problem updating the Confidential Computing mode on the GPU.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code>, it means there was a problem updating the Confidential Computing mode on the GPU.
+This typicall indicates that your GPU does not support Confidential Computing mode or there is a hardware error.
+You may need to contact your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> to confirm the GPU is supported and the hardware is functioning correctly.
+Refer to the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for more information on required hardware.</p>
 <p><strong>Checks:</strong></p>
 <ol class="arabic">
 <li><p>Confirm no user workloads are running on the node before changing CC mode.
@@ -530,6 +665,14 @@ For ACS, coordinate with your <a class="reference internal" href="personas.html#
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/cc.mode<span class="o">=</span>on --overwrite
 </pre></div>
 </div>
+</li>
+<li><p>Confirm the mode transition is complete by checking the CC mode labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+      jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label should match the desired mode when the transition is complete.
+If the state is still <code class="docutils literal notranslate"><span class="pre">failed</span></code>, refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a>.</p>
 </li>
 </ol>
 <p>For mode configuration options, refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
@@ -595,7 +738,7 @@ Refer to <a class="reference internal" href="confidential-containers-deploy.html
 </pre></div>
 </div>
 <p>If capacity and allocatable are zero, GPUs are not available for scheduling.
-On the worker host, confirm VFIO binding:</p>
+On the worker host, confirm VFIO binding (<code class="docutils literal notranslate"><span class="pre">10de</span></code> is the NVIDIA PCI vendor ID):</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
 </pre></div>
 </div>
@@ -613,8 +756,14 @@ Confirm IOMMU is enabled:</p>
 Review <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code> pod logs on the affected node in <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.
 After fixing host prerequisites, wait for operand pods to reconcile and confirm <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is non-zero.</p>
 </li>
-<li><p>If the node shows non-zero <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity but the pod is still <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, all GPUs may be in use.
-Check allocatable capacity and running workloads on the node.</p></li>
+<li><p>If the node shows non-zero <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity but the pod is still <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, all passthrough GPUs on eligible nodes may be allocated to other pods.
+Check which pods currently have a passthrough GPU allocated:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span>&lt;node-name&gt; -o json <span class="p">|</span> <span class="se">\</span>
+    jq -r <span class="s1">&#39;.items[] | select(any(.spec.containers[]; .resources.requests[&quot;nvidia.com/pgpu&quot;] // empty)) | &quot;\(.metadata.namespace)/\(.metadata.name)&quot;&#39;</span>
+</pre></div>
+</div>
+<p>Wait for a workload to complete or free capacity before retrying.</p>
+</li>
 </ol>
 <p>Refer to the optional VFIO validation step in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </section>
@@ -734,8 +883,8 @@ Check allocatable capacity and running workloads on the node.</p></li>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
 
