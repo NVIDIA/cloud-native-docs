@@ -29,11 +29,33 @@ The sections below cover Confidential Containers-specific deploy failures: CC no
 
 If these steps do not resolve your issue, refer to :ref:`Getting Help <coco-getting-help>`.
 
+.. list-table::
+   :header-rows: 1
+   :widths: 38 35 27
+
+   * - Symptom
+     - Cause
+     - Fix
+   * - :ref:`Pod stuck in Pending with Insufficient nvidia.com/pgpu <coco-pending-pod>`
+     - Node not labeled for Confidential Containers, GPUs not bound to ``vfio-pci``, or all GPUs already allocated.
+     - Check operands running, verify ``vm-passthrough`` label, confirm ``vfio-pci`` binding.
+   * - :ref:`Pod stuck in ContainerCreating with device cold plug failed <coco-container-creating-cold-plug>`
+     - ``KubeletPodResourcesGet`` feature gate not enabled on worker node.
+     - Enable feature gate per :doc:`Prerequisites <prerequisites>`
+   * - :ref:`nvidia.com/cc.mode.state not matching nvidia.com/cc.mode <coco-cc-mode-troubleshoot>`
+     - Mode transition still in progress, or blocked by a workload using a GPU on the node.
+     - Wait 1-2 minutes, check cc.mode labels. If GPU Operator pods, specifically the vfio-manager are stuck in terminating, make sure that no user workloads are running on the node.
+   * - :ref:`nvidia.com/cc.mode.state is failed <coco-cc-mode-failed>`
+     - Workload running during mode change, or BIOS/ACS misconfigured.
+     - Drain workloads, re-apply mode label, confirm ACS enabled in BIOS.
+
 .. _coco-gpu-operator-logs:
 
 **********************
 View GPU Operator Logs
 **********************
+
+Use this section to collect GPU Operator pod logs when an operand is not running or reporting errors.
 
 #. Get the list of GPU Operator pods:
 
@@ -64,11 +86,24 @@ View GPU Operator Logs
    Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get pods -n gpu-operator``.
 
 
+.. _coco-view-kata-logs:
+
 *************************
 View Kata Containers Logs
 *************************
 
-#. Get the list of Kata Containers pods:
+Use this section to collect Kata Containers logs and confirm runtime classes are installed.
+
+#. Confirm the expected runtime classes are registered:
+
+   .. code-block:: console
+
+      $ kubectl get runtimeclass
+
+   After a successful Kata Containers deployment, you should see ``kata-qemu-snp`` (AMD SEV-SNP) and ``kata-qemu-tdx`` (Intel TDX) in the output.
+   If these are missing, continue to the next steps.
+
+#. Get the list of Kata Containers pod:
 
    .. code-block:: console
 
@@ -87,7 +122,16 @@ View Kata Containers Logs
 
       $ kubectl logs -n kata-system <pod-name>
 
-   Replace ``<pod-name>`` with the name of the Kata Containers pod from ``kubectl get pods -n kata-system``.
+   Replace ``<pod-name>`` with the name of the Kata Containers pod.
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      Install completed
+      daemonset mode: waiting for SIGTERM
+
+If the logs show errors or runtime classes are still missing after a successful Helm deploy, collect the log output and refer to :ref:`Getting Help <coco-getting-help>` for Kata-specific troubleshooting resources.
 
 
 .. _coco-cc-mode-troubleshoot:
@@ -97,23 +141,122 @@ View Kata Containers Logs
 ******************************************************************
 
 When changing the Confidential Computing mode (refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`), the Confidential Computing Manager updates the ``nvidia.com/cc.mode.state`` label to reflect the current state of the Confidential Computing mode.
-If the ``nvidia.com/cc.mode.state`` does not match the desired CC mode (``on``, ``off``, or ``ppcie``), it means the Confidential Computing update is still ongoing.
-Wait a few more minutes, then check the labels again.
+If the ``nvidia.com/cc.mode.state`` does not match the desired CC mode (``on``, ``off``, or ``ppcie``), it could mean the following:
 
-.. code-block:: console
+* The GPU is still updating to the Confidential Computing mode.
+   Wait a few more minutes, then check the labels again.
+* The transition is blocked by a user workload with a resource claim for a GPU on the node.
+   This is usually accompanied by the VFIO manager stuck in Terminating state or CC Manager logs showing the mode transition is still in progress.
+   Remove the workload to unblock the mode transition.
 
-   $ kubectl get node $NODE_NAME -o json | \
-         jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
+**Checks:**
 
-*Example Output:*
+#. Check the cc.mode labels:
 
-.. code-block:: json
+   .. code-block:: console
 
-   {
-      "nvidia.com/cc.mode": "on",
-      "nvidia.com/cc.mode.state": "on",
-      "nvidia.com/cc.ready.state": "true"
-   }
+      $ export NODE_NAME="<node-name>"
+      $ kubectl get node $NODE_NAME -o json | \
+            jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
+
+   *Example Output:*
+
+   .. code-block:: json
+
+      {
+         "nvidia.com/cc.mode": "on",
+         "nvidia.com/cc.mode.state": "on",
+         "nvidia.com/cc.ready.state": "false"
+      }
+
+#. Get the list of GPU Operator pods:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n gpu-operator
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      NAME                                                          READY   STATUS        RESTARTS      AGE
+      gpu-operator-6474ddf79d-s4gcb                                 1/1     Running       0             10m
+      gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running       0             10m
+      gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running       0             10m
+      gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running       0             10m
+      nvidia-cc-manager-tqdc6                                       1/1     Running       0             10m
+      nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running       0             10m
+      nvidia-vfio-manager-b7jtv                                     0/1     Terminating   0             10m
+
+#. Get the logs for the nvidia-cc-manager pod:
+
+   .. code-block:: console
+
+      $ kubectl logs -n gpu-operator nvidia-cc-manager-<pod-name>
+
+   Replace ``<pod-name>`` with the name of the nvidia-cc-manager pod from ``kubectl get pods -n gpu-operator``.
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting 2 GPU(s) to apply CC mode
+      2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting GPU 0000:0d:00.0
+      2026-06-18 19:47:26,475 - k8s-cc-manager - INFO - Resetting GPU 0000:b5:00.0
+
+   If the CC Manager logs show the mode transition is still in progress, it means the GPU is still updating to the Confidential Computing mode.
+   CC Manager logs show ``Successfully set CC mode to '<off|on|ppcie>' on all GPUs`` when the mode transition is complete.
+
+#. Check which pods have a passthrough GPU allocated on the node:
+
+   .. code-block:: console
+
+      $ kubectl get pods -A --field-selector spec.nodeName=$NODE_NAME -o json | \
+          jq -r '.items[] | select(any(.spec.containers[]; .resources.requests["nvidia.com/pgpu"] // empty)) | "\(.metadata.namespace)/\(.metadata.name)"'
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      default/cuda-vectoradd-kata
+
+   Any pods returned have a passthrough GPU allocated and are blocking the mode transition.
+
+#. Delete the pod(s) to unblock the mode transition.
+
+   .. code-block:: console
+
+      $ kubectl delete pod <pod-name> -n <namespace>
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      pod "<pod-name>" deleted
+   
+   Repeat this step for each pod that is blocking the mode transition.
+   Once all user pods are deleted, the mode transition will resume automatically.
+
+#. Confirm the mode transition is complete:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n gpu-operator 
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      NAME                                                          READY   STATUS    RESTARTS   AGE
+      gpu-operator-6474ddf79d-s4gcb                                 1/1     Running   0             10m
+      gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running   0             10m
+      gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running   0             10m
+      gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running   0             10m
+      nvidia-cc-manager-tqdc6                                       1/1     Running   0             10m
+      nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running   0             10m
+      nvidia-vfio-manager-b7jtv                                     1/1     Running   0              1m
+
+
 
 .. _coco-cc-mode-failed:
 
@@ -122,6 +265,9 @@ Wait a few more minutes, then check the labels again.
 ******************************************
 
 When the ``nvidia.com/cc.mode.state`` is ``failed``, it means there was a problem updating the Confidential Computing mode on the GPU.
+This typicall indicates that your GPU does not support Confidential Computing mode or there is a hardware error.
+You may need to contact your :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` to confirm the GPU is supported and the hardware is functioning correctly.
+Refer to the :doc:`Prerequisites <prerequisites>` for more information on required hardware.
 
 **Checks:**
 
@@ -155,6 +301,16 @@ When the ``nvidia.com/cc.mode.state`` is ``failed``, it means there was a proble
    .. code-block:: console
 
       $ kubectl label node $NODE_NAME nvidia.com/cc.mode=on --overwrite
+
+#. Confirm the mode transition is complete by checking the CC mode labels:
+
+   .. code-block:: console
+
+      $ kubectl get node $NODE_NAME -o json | \
+            jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
+
+   The ``nvidia.com/cc.mode.state`` label should match the desired mode when the transition is complete.
+   If the state is still ``failed``, refer to :ref:`Getting Help <coco-getting-help>`.
 
 For mode configuration options, refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
 
@@ -242,7 +398,7 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
       nvidia.com/pgpu:  8
 
    If capacity and allocatable are zero, GPUs are not available for scheduling.
-   On the worker host, confirm VFIO binding:
+   On the worker host, confirm VFIO binding (``10de`` is the NVIDIA PCI vendor ID):
 
    .. code-block:: console
 
@@ -266,8 +422,15 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
    Review ``nvidia-vfio-manager`` pod logs on the affected node in :ref:`View GPU Operator Logs <coco-gpu-operator-logs>`.
    After fixing host prerequisites, wait for operand pods to reconcile and confirm ``nvidia.com/pgpu`` is non-zero.
 
-#. If the node shows non-zero ``nvidia.com/pgpu`` capacity but the pod is still ``Pending``, all GPUs may be in use.
-   Check allocatable capacity and running workloads on the node.
+#. If the node shows non-zero ``nvidia.com/pgpu`` capacity but the pod is still ``Pending``, all passthrough GPUs on eligible nodes may be allocated to other pods.
+   Check which pods currently have a passthrough GPU allocated:
+
+   .. code-block:: console
+
+      $ kubectl get pods -A --field-selector spec.nodeName=<node-name> -o json | \
+          jq -r '.items[] | select(any(.spec.containers[]; .resources.requests["nvidia.com/pgpu"] // empty)) | "\(.metadata.namespace)/\(.metadata.name)"'
+
+   Wait for a workload to complete or free capacity before retrying.
 
 Refer to the optional VFIO validation step in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 

@@ -305,5 +305,5 @@ To deploy on your cluster, start with the **Install** section:
 
       Verify the deployment; success is ``Test PASSED`` in pod logs.
 
-After installation, refer to :doc:`Advanced Setup Overview <configure>` for attestation, CC mode, and workload configuration.
+After installation, refer to the **Configuration** section for workload configuration, CC mode management, and attestation.
 

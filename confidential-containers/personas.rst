@@ -157,4 +157,3 @@ Relevant pages:
 
 * :doc:`Configuring Workloads <configure-workloads>`: runtime class selection, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests.
 * :doc:`Run a Sample Workload <run-sample-workload>`: run the reference workload to confirm the cluster is ready before deploying your own application.
-* :doc:`Advanced Setup Overview <configure>`: choose attestation, CC mode, and workload configuration topics after install.

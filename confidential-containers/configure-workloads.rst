@@ -24,7 +24,6 @@ Configuring Confidential Container Workloads
 ############################################
 
 As a :ref:`Container User <coco-persona-container-user>`, use this page to configure confidential GPU workloads on a prepared cluster.
-For persona responsibilities and documentation structure, refer to :doc:`Personas <personas>`.
 
 A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
@@ -37,14 +36,12 @@ three ways:
 * For NVSwitch-based HGX systems, it requests every GPU and NVSwitch on the node together so
   that all devices reside inside the same Confidential Container virtual machine.
 
-This page is part of **Advanced Setup** and is the usual next step after a successful install.
-
 **Before this page:** Complete the :doc:`Detailed Install Guide <confidential-containers-deploy>` and verify the cluster with :doc:`Run a Sample Workload <run-sample-workload>` (``Test PASSED`` in pod logs).
 For install steps, refer to :doc:`Prerequisites <prerequisites>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.
-The install sample uses a minimal manifest; use this page for production-style configuration.
+The install sample uses a minimal manifest.
 
 ********************************
 Select a Container Runtime Class
@@ -69,8 +66,7 @@ Select the runtime class based on the CPU TEE on the target worker node:
      - Intel Xeon (Sapphire Rapids or newer)
 
 The ``kata-deploy`` chart also installs a ``kata-qemu-nvidia-gpu`` runtime class.
-That class is intended for non-confidential Kata workloads. You should not use it for Confidential
-Container workloads because it does not start the GPU in CC mode.
+That class is intended for non-confidential Kata workloads. 
 
 .. _coco-resource-types:
 

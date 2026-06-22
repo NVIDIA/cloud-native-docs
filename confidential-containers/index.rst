@@ -41,11 +41,10 @@ NVIDIA Confidential Containers
    Run a Sample Workload <run-sample-workload.rst>
 
 .. toctree::
-   :caption: Advanced Setup
+   :caption: Configuration
    :hidden:
    :titlesonly:
 
-   Advanced Setup Overview <configure.rst>
    Configuring Workloads <configure-workloads.rst>
    Managing the Confidential Computing Mode <configure-cc-mode.rst>
    Attestation <attestation.rst>
@@ -74,7 +73,7 @@ Confidential Containers provides the following benefits:
 * Operate confidential workloads with standard Kubernetes pods, runtime classes, and scheduling.
 * Verify TEE state through remote attestation before releasing secrets or decrypted model weights.
 
-Refer to :doc:`Reference Architecture <overview>` for the full value proposition, trust model, and architecture diagrams.
+Refer to :doc:`Reference Architecture <overview>` for background, use cases, and architecture diagrams.
 
 Use Cases
 ---------
@@ -89,7 +88,7 @@ Core Concepts
 On supported hardware (AMD SEV-SNP or Intel TDX), that isolation forms a trusted execution environment (TEE) with encrypted memory and integrity verification.
 
 Attestation, sealed secrets, and encrypted container images are core to the model.
-Refer to :ref:`Background <confidential-containers-overview>` in the Reference Architecture.
+Refer to :ref:`Software Components for Confidential Containers <coco-supported-platforms-components>` in the Reference Architecture.
 
 Core Components
 ===============
@@ -135,7 +134,7 @@ Learn
       :link: overview
       :link-type: doc
 
-      Use cases, software components, and cluster topology.
+      Use cases, software components, cluster topology, limitations, and security considerations.
 
    .. grid-item-card:: :octicon:`info;1.5em;sd-mr-1` Personas
       :link: personas
@@ -180,17 +179,11 @@ Install
 
       Run a sample GPU workload; success is ``Test PASSED`` in the pod logs.
 
-Advanced Setup
-==============
+Configuration
+=============
 
 .. grid:: 2
    :gutter: 3
-
-   .. grid-item-card:: :octicon:`list-unordered;1.5em;sd-mr-1` Advanced Setup Overview
-      :link: configure
-      :link-type: doc
-
-      Choose attestation, CC mode, and workload configuration after install.
 
    .. grid-item-card:: :octicon:`cpu;1.5em;sd-mr-1` Configuring Workloads
       :link: configure-workloads
@@ -208,4 +201,4 @@ Advanced Setup
       :link: attestation
       :link-type: doc
 
-      Trustee quickstart and connectivity checks (not required for the install sample).
+      Attestation concepts and a Trustee quickstart for connectivity testing.

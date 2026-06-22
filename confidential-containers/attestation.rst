@@ -21,13 +21,13 @@
 Attestation
 ***********
 
-As a :ref:`Security Engineer <coco-persona-security-engineer>`, use this page to understand more about attestation and stand up a local attestation backend for testing.
+As a :ref:`Security Engineer <coco-persona-security-engineer>`, use this page to understand attestation concepts and stand up a local Trustee instance for testing.
 
 .. note::
 
-   Attestation is not required to configure your cluster to deploy Confidential Containers workloads.
    This page gives an overview of attestation and a quickstart for standing up a local attestation backend for testing.
    You should refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/attestation/>`__ for more details on attestation and production deployment.
+   For a full end-to-end attestation workflow, refer to the `NVIDIA NIM Confidential GPU Attestation <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`_ example.
 
 In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.
@@ -38,15 +38,13 @@ Attestation is required for any feature that depends on secrets, including:
 * Using sealed secrets
 * Requesting secrets directly from workloads
 
-Configure attestation when workloads require a secret, to decrypt a container image or model, or guest components collect hardware evidence from the active CPU and GPU enclaves. 
-
 Key Concepts
 ============
 
 The following concepts appear throughout this page:
 
-* Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing. 
-  CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework. 
+* Confidential Containers (CoCo): The open-source project that implements the cloud-native approach to Confidential Computing.
+  CoCo uses Kata Containers as the sandbox and Trustee as the attestation framework.
 * Trusted Execution Environment (TEE): A hardware-isolated environment, such as AMD SEV-SNP, Intel TDX, or an NVIDIA Confidential Computing GPU, that protects code and data in use.
 * Remote attestation: The process of cryptographically proving to a remote party that a TEE is running the expected, untampered software stack before that party releases secrets to it.
 * Trustee: The remote verifier in the Confidential Containers attestation flow. Trustee is composed of three cooperating services:
@@ -69,14 +67,13 @@ The goal is to give you a working local attestation backend and a client to inte
 
 .. note::
 
-   This quickstart is for evaluation only. 
+   This quickstart is for evaluation only.
    Do not use the Trustee instance you stand up here in production.
-   This guide does not deploy a TEE, does not produce real hardware attestation evidence, and does not release any secrets to a workload. 
+   This guide does not deploy a TEE, does not produce real hardware attestation evidence, and does not release any secrets to a workload.
    It only validates that the Trustee components are running and reachable.
 
-   A production attestation workflow depends on your environment and your organization's security policies.
-   Documenting a full attestation workflow is outside the scope of this quickstart.
-   To run attestation against real evidence from a confidential workload, refer to the upstream `Attestation <https://confidentialcontainers.org/docs/attestation/>`_ and `Features <https://confidentialcontainers.org/docs/features>`_ documentation for more information.
+   A full end-to-end attestation workflow depends on your environment and your organization's security requirements.
+   For complete deployment guidance, refer to the upstream `Confidential Containers attestation documentation <https://confidentialcontainers.org/docs/attestation/>`_ and the `NVIDIA NIM Confidential GPU Attestation <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`_ example.
 
 
 What You Will Build
@@ -170,7 +167,7 @@ A connection refused or no-route error indicates that the containers are not run
 
 .. note::
 
-   It is typically not recommended to curl the KBS endpoints directly unless you are checking connectivity. 
+   It is typically not recommended to curl the KBS endpoints directly unless you are checking connectivity.
    Use the ``kbs-client``, installed in the next step, instead.
 
 
@@ -223,7 +220,7 @@ Step 4: Send a Sample Resource Request
 --------------------------------------
 
 Use ``kbs-client`` to request a resource from your local Trustee.
-The request below uses a placeholder resource path. 
+The request below uses a placeholder resource path.
 You do not need to pre-create the resource for this check.
 The ``get-resource`` endpoint can be used (including inside a TEE), but it will always invoke the sample attester, which generates fake evidence for testing.
 
@@ -253,10 +250,11 @@ If you instead see a connection error, KBS is not reachable. Revisit Step 2.
 Next Steps
 ==========
 
-You now have a working local Trustee instance and a client that can talk to it. For more details, refer to the upstream Confidential Containers documentation:
+You now have a working local Trustee instance and a client that can talk to it. For end-to-end deployment guidance, refer to the upstream Confidential Containers documentation:
 
+* `NVIDIA NIM Confidential GPU Attestation <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`_: A complete example deploying Trustee, configuring attestation policies, and running a confidential NVIDIA NIM workload with GPU attestation.
 * `Attestation <https://confidentialcontainers.org/docs/attestation/>`_: Trustee architecture, configuration, resources, policies, the client tool, and guidance for production deployment topology, network configuration, and hardening.
-* `Features <https://confidentialcontainers.org/docs/features>`_: the complete set of Confidential Containers features, including how to wire attestation into real workloads.
+* `Features <https://confidentialcontainers.org/docs/features>`_: The complete set of Confidential Containers features, including how to wire attestation into real workloads.
 
 To shut down the local Trustee instance when you are finished, run the following command from the ``trustee`` repository directory:
 

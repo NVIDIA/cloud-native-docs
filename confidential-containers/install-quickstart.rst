@@ -26,11 +26,11 @@ Quickstart Install
 As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>`, use these steps to install Kata Containers and the NVIDIA GPU Operator with minimal steps.
 For additional configuration options and install details, refer to the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
-Use this quickstart if you want every node in your cluster to run Confidential Containers.
-This is the fastest path and is ideal for evaluation or dedicated Confidential Containers clusters.
-If you need to run Confidential Containers on only some nodes while keeping traditional GPU workloads on others, or you want more control over the installation, use the :doc:`Detailed Install Guide <confidential-containers-deploy>` instead.
+This quickstart will configure every node in your cluster for Confidential Containers workloads.
+This is ideal for evaluation or dedicated Confidential Containers clusters.
+If you need to run Confidential Containers on only some nodes while keeping traditional GPU workloads on others, or you want more control over the installation, use the :ref:`Label Nodes for Confidential Containers Components <coco-label-nodes>` section in the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
-This quickstart takes approximately 10 minutes to complete, assuming your cluster already meets the prerequisites.
+This quickstart takes approximately 10 minutes to complete.
 
 .. note::
 
@@ -44,13 +44,6 @@ By the end of this quickstart, you will have:
 * Kata Containers running on your cluster.
 * The NVIDIA GPU Operator installed and configured for Confidential Containers.
 * All cluster nodes configured for Confidential Containers workloads.
-
-.. note::
-
-   This quickstart configures all cluster nodes for Confidential Containers workloads.
-   A cluster node can only be configured to run one container runtime at a time, so a node configured for Confidential Containers workloads cannot run traditional GPU container workloads.
-
-   If you need to run traditional GPU container workloads on your cluster, refer to the :ref:`Label Nodes for Confidential Containers Components <coco-label-nodes>` section in the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 .. _quickstart-install-kata:
 
@@ -166,10 +159,9 @@ Install the NVIDIA GPU Operator
       REVISION: 1
       TEST SUITE: None
 
-   It may take 3 to 5 minutes for all GPU Operator pods to reach the Running state.
+   It may take 3 to 5 minutes for the Helm release to complete and for all GPU Operator pods to reach the Running state.
 
-   .. note::
-      The ``sandboxWorkloads.defaultWorkload=vm-passthrough`` flag sets the default cluster workload type for Confidential Containers.
+   The ``sandboxWorkloads.defaultWorkload=vm-passthrough`` flag in the Helm install command sets the default cluster workload type for Confidential Containers.
 
 #. Verify that all GPU Operator pods are running:
 
@@ -200,7 +192,4 @@ Next Steps
 
 * Continue to :doc:`Run a Sample Workload <run-sample-workload>` to confirm the deployment.
 
-* For more installation and configuration options, refer to the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
-
-* Continue to the :doc:`Advanced Setup Overview <configure>` section for more post installation configuration options.
 
