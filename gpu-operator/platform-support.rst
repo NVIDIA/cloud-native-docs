@@ -341,7 +341,7 @@ The GPU Operator has been validated in the following scenarios:
 
        * - Red Hat Core OS
          -
-         - | 4.17---4.21
+         - | 4.17---4.22
          -
          -
          -
@@ -526,7 +526,7 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 ================    ===========   =============   =========    =============    ===========
 Ubuntu 24.04 LTS    1.32---1.36   0.36+           
 Ubuntu 22.04 LTS    1.32---1.36   0.36+           0.59.1+
-Red Hat Core OS                                                4.17---4.21      4.17---4.21
+Red Hat Core OS                                                4.17---4.22      4.17---4.22
 ================    ===========   =============   =========    =============    ===========
 
 You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use

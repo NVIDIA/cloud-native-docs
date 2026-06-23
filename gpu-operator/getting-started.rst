@@ -616,23 +616,19 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 Installation on Red Hat Enterprise Linux
 ========================================
 
-In this scenario, use the NVIDIA Container Toolkit image that is built on UBI 8:
+When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
+
+Network restricted environments are not supported.
+
+You can use the standard install comamnd to install the GPU Operator on RHEL.
 
 .. code-block:: console
 
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --version=${version} \
-        --set toolkit.version=v1.16.1-ubi8
-
-Replace the ``v1.16.1`` value in the preceding command with the version that is supported
-with the NVIDIA GPU Operator.
-Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
-
-When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
-Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
-Network restricted environments are not supported.
+        --version=${version} 
 
 
 Pre-Installed NVIDIA GPU Drivers
