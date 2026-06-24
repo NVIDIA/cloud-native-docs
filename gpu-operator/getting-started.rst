@@ -154,17 +154,20 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``cdi.enabled``
-     - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
-       injecting GPUs into workload containers. 
-       The Operator will no longer configure the ``nvidia`` runtime class as the default runtime handler. 
-       Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
-       Refer to the :doc:`cdi` page for more information.
+     - When set to ``true`` (default), the Operator uses the Container Device Interface (CDI) to inject GPUs into workload containers. 
+       The Operator no longer configures the ``nvidia`` runtime class as the default runtime handler. 
+       Instead, container runtimes such as containerd or CRI-O use native CDI support to inject GPUs into workload containers.
+
+       At startup, the Operator starts the ``nvidia-cdi-refresh`` systemd service to generate the CDI specification for all available devices based on the default configuration and any overrides in the environment file.
+       Refer to the :external+ctk:ref:`automatic-cdi-specification-generation` section in the Container Toolkit documentation for more information on automatic CDI specification generation.
+       
+       Refer to the :doc:`cdi` page for more information on using CDI with GPU Operator.
      - ``true``
 
    * - ``cdi.nriPluginEnabled``
-     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers.
+     - When set to ``true``, the Operator uses the Node Resource Interface (NRI) Plugin to inject GPUs into workload containers.
 
-       In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config.
+       In NRI Plugin mode, the NVIDIA Container Toolkit no longer modifies the runtime config.
        This feature requires containerd v1.7.30, v2.1.x, or v2.2.x.
        Refer to the :doc:`cdi` page for more information.
      - ``false``
@@ -195,7 +198,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``Cluster``
 
    * - ``dcgmExporter.hostNetwork``
-     - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
+     - When set to ``true``, the DCGM Exporter exposes a metric port on the host's network namespace.
      - ``false``
 
    * - ``devicePlugin.config``
@@ -313,7 +316,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``operator.labels``
-     - Map of custom labels that will be added to all GPU Operator managed pods.
+     - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
 
    * - ``psp.enabled``
@@ -406,8 +409,8 @@ Replace the ``v1.16.1`` value in the preceding command with the version that is 
 with the NVIDIA GPU Operator.
 Refer to the :ref:`GPU Operator Component Matrix` on the platform support page.
 
-When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
-Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
+When using RHEL 8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, when using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
 Network restricted environments are not supported.
 
 
@@ -484,7 +487,7 @@ If you want to use custom driver container images, such as version 580.126.20, t
 you can build a custom driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
-  reference, the driver container Dockerfiles are available on the Git repository at https://github.com/NVIDIA/gpu-driver-container/.
+  reference, the `driver container Dockerfiles <https://github.com/NVIDIA/gpu-driver-container/>`__ are available on GitHub.
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
@@ -517,15 +520,7 @@ support for such custom configurations.
 Specifying Configuration Options for containerd
 ***********************************************
 
-.. note::
-
- When you enable the NRI Plugin, you do not need to specify the ``toolkit.env`` options and injecting GPUs into workload containers is handled by the NRI Plugin.
- You can enable the NRI Plugin to configure the container runtime by setting ``cdi.nriPluginEnabled=true``. 
- The NRI Plugin is available for use on RKE2.
- Refer to the :ref:`NRI Plugin <nri-plugin>` documentation, for more information.
-
-When you use containerd as the container runtime, the following configuration
-options are used with the container-toolkit deployed with GPU Operator:
+When you use containerd as the container runtime, and the NRI Plugin is not enabled, the following configuration options are used with the container-toolkit deployed with GPU Operator:
 
 .. code-block:: yaml
 
@@ -538,8 +533,12 @@ options are used with the container-toolkit deployed with GPU Operator:
       - name: RUNTIME_CONFIG_SOURCE
         value: "command,file"
 
+When you enable the NRI Plugin with CDI, you do not need to specify the ``toolkit.env`` options and injecting GPUs into workload containers is handled by the NRI Plugin.
+You can enable the NRI Plugin to configure the container runtime by setting ``cdi.nriPluginEnabled=true`` in your install command.
+The NRI Plugin is available for use on RKE2.
+Refer to the :ref:`NRI Plugin <nri-plugin>` documentation, for more information.
 
-If you need to specify custom values, refer to the following sample command for the syntax:
+If you need to specify custom values for ``toolkit.env``, refer to the following sample command for the syntax:
 
 
 .. code-block:: console
@@ -558,23 +557,23 @@ These options are defined as follows:
 
 CONTAINERD_CONFIG
   The path on the host to the top-level ``containerd`` config file.
-  By default this will point to ``/etc/containerd/containerd.toml``
-  (the default location for ``containerd``). It should be customized if your ``containerd``
+  By default this points to ``/etc/containerd/containerd.toml``
+  (the default location for ``containerd``). Customize it if your ``containerd``
   installation is not in the default location.
 
 CONTAINERD_SOCKET
   The path on the host to the socket file used to
-  communicate with ``containerd``. The operator will use this to send a
+  communicate with ``containerd``. The Operator uses this to send a
   ``SIGHUP`` signal to the ``containerd`` daemon to reload its config. By
-  default this will point to ``/run/containerd/containerd.sock``
-  (the default location for ``containerd``). It should be customized if
+  default this points to ``/run/containerd/containerd.sock``
+  (the default location for ``containerd``). Customize it if
   your ``containerd`` installation is not in the default location.
 
 RUNTIME_CONFIG_SOURCE
   The config source(s) that the container-toolkit uses when fetching
   the current containerd configuration. A valid value for this setting is any
-  combination of [command | file]. By default this will be configured as
-  "command,file" which means the container-toolkit will attempt to fetch
+  combination of [command | file]. By default this is configured as
+  "command,file", which means the container-toolkit attempts to fetch
   the configuration using the containerd CLI before falling back to reading the
   config from the top-level ``containerd`` config file (configured using
   CONTAINERD_CONFIG). When ``file`` is specified, the absolute path to the file
@@ -582,7 +581,7 @@ RUNTIME_CONFIG_SOURCE
 
 RUNTIME_DROP_IN_CONFIG
   The path on the host where the NVIDIA-specific drop-in config file
-  will be created. By default this will point to ``/etc/containerd/conf.d/99-nvidia.toml``.
+  is created. By default this points to ``/etc/containerd/conf.d/99-nvidia.toml``.
 
 
 Rancher Kubernetes Engine 2
@@ -592,7 +591,8 @@ For Rancher Kubernetes Engine 2 (RKE2), refer to
 `Deploy NVIDIA Operator <https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator>`__
 in the RKE2 documentation.
 
-With CDI (the default) and the NRI Plugin both enabled, you do not need to set ``runtimeClassName: nvidia`` in your pod specification, and you do not need to configure the ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` environment variables.
+With CDI enabled (the default) you do not need to set ``runtimeClassName: nvidia`` in your pod specification.
+If you also enable the NRI Plugin (disabled by default), you do not need to configure the ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` environment variables.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
 

@@ -43,6 +43,9 @@ Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.
 
+CDI support and configuration is enabled through the NVIDIA Container Toolkit.
+Refer to the :external+ctk:doc:`cdi-support` page for more information on using CDI.
+
 
 CDI and GPU Management Containers
 *********************************
