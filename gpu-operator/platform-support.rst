@@ -290,6 +290,8 @@ Supported Operating Systems and Kubernetes Platforms
 .. |fn2| replace:: :sup:`2`
 .. _fn3: #rhel-9
 .. |fn3| replace:: :sup:`3`
+.. _fn4: #partner-validated
+.. |fn4| replace:: :sup:`4`
 
 The GPU Operator has been validated in the following scenarios:
 
@@ -310,10 +312,10 @@ The GPU Operator has been validated in the following scenarios:
            | OpenShift
          - | VMware vSphere 
            | Kubernetes Service (VKS)
-         - | Rancher Kubernetes
-           | Engine 2 
+         - | Rancher Kubernetes 
+           | Engine 2 |fn4|_
          - | K3s
-         - | Mirantis k0s 
+         - | Mirantis k0s |fn4|_
          - | Canonical
            | MicroK8s 
          - | Nutanix
@@ -441,6 +443,11 @@ The GPU Operator has been validated in the following scenarios:
     .. note::
 
       |ocp_csp_support|
+
+    .. _partner-validated:
+
+    :sup:`4`
+    Refer to the `Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>`__ documentation for more information on these configurations
 
   .. tab-item:: Cloud Service Providers
     :sync: cloud-service-providers
