@@ -31,6 +31,11 @@ Installing the NVIDIA GPU Operator
 
    The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
+.. admonition:: Red Hat OpenShift Container Platform Install
+   :class: tip
+
+   For installation on Red Hat OpenShift Container Platform, refer to :external+ocp:doc:`steps-overview`.
+
 *************
 Prerequisites
 *************
@@ -202,7 +207,7 @@ running workloads.
 CUDA VectorAdd
 ==============
 
-In the first example, let's run a simple CUDA sample, which adds two vectors together:
+In the first example, run a simple CUDA sample that adds two vectors together:
 
 
 #. Create a file, such as ``cuda-vectoradd.yaml``, with contents like the following:
@@ -397,7 +402,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``Cluster``
 
    * - ``dcgmExporter.hostNetwork``
-     - When set to ``true``, the DCGM Exporter will expose a metric port on the host's network namespace.
+     - When set to ``true``, the DCGM Exporter exposes a metric port on the host's network namespace.
      - ``false``
 
    * - ``dcgmExporter.annotations``
@@ -537,7 +542,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``operator.labels``
-     - Map of custom labels that will be added to all GPU Operator managed pods.
+     - Map of custom labels to add to all GPU Operator managed pods.
      - ``{}``
 
    * - ``psp.enabled``
@@ -616,8 +621,8 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 Installation on Red Hat Enterprise Linux
 ========================================
 
-When using RHEL8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
-Additionally, when using RHEL8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
+When using RHEL 8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
+Additionally, when using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the ``enable_selinux=true`` configuration option.
 
 Network restricted environments are not supported.
 
@@ -704,7 +709,7 @@ If you want to use custom driver container images, such as version 580.126.20, t
 you can build a custom driver container image. Follow these steps:
 
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
-  reference, the driver container Dockerfiles are available on the Git repository at https://github.com/NVIDIA/gpu-driver-container/.
+  reference, the `driver container Dockerfiles <https://github.com/NVIDIA/gpu-driver-container/>`__ are available on GitHub.
 - Build the container using the appropriate Dockerfile. For example:
 
   .. code-block:: console
