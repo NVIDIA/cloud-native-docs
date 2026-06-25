@@ -128,6 +128,7 @@ Use ``--set`` options to customize the deployment for your environment.
 #. After the Operator finishes deploying, :ref:`verify the installation <verify gpu operator install>`.
 
 
+
 .. _running sample gpu applications:
 .. _verify gpu operator install:
 
@@ -370,7 +371,8 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``true``
 
    * - ``cdi.nriPluginEnabled``
-     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers. 
+     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers.
+
        In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
        This feature requires containerd v1.7.30, v2.1.x, or v2.2.x, or cri-o v1.34 or later.
        Refer to the :doc:`cdi` page for more information.
@@ -816,8 +818,12 @@ For Rancher Kubernetes Engine 2 (RKE2), refer to
 `Deploy NVIDIA Operator <https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator>`__
 in the RKE2 documentation.
 
-It's recommended that you enable CDI (default) and the NRI Plugin on RKE. 
-With both features enabled, you do not need to set ``runtimeClassName: nvidia`` in your pod spec.
+The NRI Plugin is available for use on RKE2. With CDI (the default) and the NRI Plugin both enabled, you do not need to set ``runtimeClassName: nvidia`` in your pod specification, and you do not need to configure the ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` environment variables.
+
+.. note::
+
+   The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
+   Refer to the `containerd NRI repository <https://github.com/containerd/nri#api-stability>`_ for details on project details.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
 
