@@ -823,7 +823,6 @@ The NRI Plugin is available for use on RKE2. With CDI (the default) and the NRI 
 .. note::
 
    The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
-   The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
    Refer to the `containerd NRI repository <https://github.com/containerd/nri#api-stability>`_ for details on project details.
 
 Refer to the :ref:`v24.9.0-known-limitations`.
