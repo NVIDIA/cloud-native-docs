@@ -92,11 +92,16 @@ Before proceeding to the next sections, get the ``values.yaml`` file used for GP
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+  $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+      && helm repo update
+
+.. code-block:: console
+
+  $ helm show values nvidia/gpu-operator --version=${version} > values.yaml
 
 .. note::
 
-   Replace ``v1.7.0`` in the above command with the version you want to use.
+   Replace ``${version}`` in the above command with the GPU Operator chart version you want to use.
 
 
 ********************
@@ -161,77 +166,65 @@ Finally, push the images to the local registry:
    $ docker push <local-registry>/<local-path>/gpu-operator:${version}
    $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu22.04
 
-Update ``values.yaml`` with local registry information in the repository field.
+Update ``values.yaml`` with local registry information in the repository field for each image that you mirror.
+The image names and versions change between GPU Operator releases, so start with the ``values.yaml`` file for your chart
+version and keep the image and version values from that file.
 
 .. note::
 
    Replace <repo.example.com:port> below with your local image registry URL and port.
 
-Sample of ``values.yaml`` for GPU Operator v1.9.0:
+Sample ``values.yaml`` override pattern:
 
 .. code-block:: yaml
 
    operator:
      repository: <repo.example.com:port>
      image: gpu-operator
-     version: 1.9.0
+     version: ${version}
      imagePullSecrets: []
-     initContainer:
-       image: cuda
-       repository: <repo.example.com:port>
-       version: 11.4.2-base-ubi8
 
     validator:
       image: gpu-operator-validator
       repository: <repo.example.com:port>
-      version: 1.9.0
+      version: ${version}
       imagePullSecrets: []
 
     driver:
-      repository: <repo.example.com:port>
-      image: driver
-      version: "470.82.01"
+     repository: <repo.example.com:port>
+     image: driver
+      version: <driver-version>
       imagePullSecrets: []
-      manager:
-        image: k8s-driver-manager
-        repository: <repo.example.com:port>
-        version: v0.2.0
 
     toolkit:
-      repository: <repo.example.com:port>
-      image: container-toolkit
-      version: 1.7.2-ubuntu18.04
+     repository: <repo.example.com:port>
+     image: container-toolkit
+      version: <toolkit-version>
       imagePullSecrets: []
 
     devicePlugin:
-      repository: <repo.example.com:port>
-      image: k8s-device-plugin
-      version: v0.10.0-ubi8
+     repository: <repo.example.com:port>
+     image: k8s-device-plugin
+      version: <device-plugin-version>
       imagePullSecrets: []
 
     dcgmExporter:
-      repository: <repo.example.com:port>
-      image: dcgm-exporter
-      version: 2.3.1-2.6.0-ubuntu20.04
+     repository: <repo.example.com:port>
+     image: dcgm-exporter
+      version: <dcgm-exporter-version>
       imagePullSecrets: []
 
     gfd:
-      repository: <repo.example.com:port>
-      image: gpu-feature-discovery
-      version: v0.4.1
+     repository: <repo.example.com:port>
+     image: gpu-feature-discovery
+      version: <gfd-version>
       imagePullSecrets: []
-
-    nodeStatusExporter:
-      enabled: false
-      repository: <repo.example.com:port>
-      image: gpu-operator-validator
-      version: "1.9.0"
 
     migManager:
       enabled: true
       repository: <repo.example.com:port>
       image: k8s-mig-manager
-      version: v0.2.0-ubuntu20.04
+      version: <mig-manager-version>
 
     node-feature-discovery:
       image:
