@@ -18,17 +18,24 @@
 
 .. _coco-supported-platforms:
 
-*******************
+###################
 Supported Platforms
-*******************
+###################
 
 Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.
 
-Supported Hardware Platform
-===========================
+This page is relevant to the following users:
+
+* The :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` uses the hardware tables to confirm that the selected CPU and GPU are validated for Confidential Computing before configuring the system.
+* The :ref:`Host OS Administrator <coco-persona-host-os-administrator>` uses the hardware tables to confirm validated host OS and kernel versions.
+* The :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>` uses the software component matrix to confirm that the correct versions are in place before beginning cluster installation.
+
+********
+Hardware
+********
 
 NVIDIA GPUs
------------
+===========
 
 .. list-table::
    :header-rows: 1
@@ -57,8 +64,8 @@ NVIDIA GPUs
 
 .. note::
 
-    Multi-GPU passthrough on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
-    Refer to :ref:`Managing the Confidential Computing Mode <managing-confidential-computing-mode>` in the deployment guide for details.
+    :ref:`Multi-GPU passthrough <coco-multi-gpu-passthrough>` on NVIDIA Hopper HGX systems requires that you set the Confidential Computing mode to ``ppcie`` mode.
+    Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` for details.
 
 .. note::
 
@@ -66,7 +73,7 @@ NVIDIA GPUs
     Configuring only some GPUs on a node for Confidential Computing is not supported.
 
 CPU Platforms
--------------
+=============
 
 .. flat-table::
    :header-rows: 1
@@ -97,8 +104,10 @@ For additional resources on machine setup:
 
 .. _coco-supported-software-components:
 
+
+*****************************
 Supported Software Components
------------------------------
+*****************************
 
 .. flat-table::
    :header-rows: 1
