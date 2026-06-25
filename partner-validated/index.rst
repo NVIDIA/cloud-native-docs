@@ -30,6 +30,7 @@ About Partner-Validated Configurations
    k0rdent.rst
    mirantis-mke.rst
    suse-rke2.rst
+   NVIDIA GPU Operator Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>
 
 Partner-validated configurations help end users who want to use
 NVIDIA GPUs with a Kubernetes-based software stack that is not supported by NVIDIA.

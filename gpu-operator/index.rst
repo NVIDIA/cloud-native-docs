@@ -83,6 +83,7 @@
    Azure AKS <microsoft-aks.rst>
    Google GKE <google-gke.rst>
    NVIDIA GPU Operator on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
+   Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>
 
 
 .. include:: overview.rst
