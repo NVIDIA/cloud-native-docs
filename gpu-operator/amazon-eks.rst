@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA GPU Operator with Amazon EKS
+   :description: Install and configure the NVIDIA GPU Operator on Amazon Elastic Kubernetes Service.
+   :description-agent: Guides users through installing and configuring the NVIDIA GPU Operator on Amazon EKS. Use when deploying GPU workloads on AWS or troubleshooting EKS-specific GPU Operator setup.
+   :keywords: NVIDIA GPU Operator, Amazon EKS, AWS, Kubernetes, installation
+   :tags: gpu-operator, nvidia, kubernetes, gpu, aws, eks
+   :content.type: how_to
+   :skill.priority: 40
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 ###################################

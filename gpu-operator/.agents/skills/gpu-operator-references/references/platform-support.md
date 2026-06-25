@@ -1,0 +1,398 @@
+<!-- SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved. -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+# Platform Support
+
+## Supported NVIDIA Data Center GPUs and Systems
+
+The following NVIDIA data center GPUs are supported on x86 based platforms:
+
+### GH-series Products
+
+| Product | Architecture | Notes |
+| --- | --- | --- |
+| NVIDIA GH200 open-kern-module_ | NVIDIA Grace Hopper - |  |
+1
+NVIDIA GH200 systems require the NVIDIA Open GPU Kernel module driver.
+You can install the open kernel modules by specifying the `driver.useOpenKernelModules=true`
+argument to the `helm` command.
+Refer to Common Chart Customization Options for more information.
+### A, H and L-series Products
+
++-------------------------+---------------------------+-------+
+ Product                  Architecture               Notes
++=========================+===========================+=======+
+ NVIDIA H800              NVIDIA Hopper
++-------------------------+---------------------------+-------+
+  NVIDIA H200,           NVIDIA Hopper                    |
+  NVIDIA H200 NVL                                         |
++-------------------------+---------------------------+-------+
+ NVIDIA DGX H100          NVIDIA Hopper and
+                          NVSwitch
++-------------------------+---------------------------+-------+
+ NVIDIA DGX H200          NVIDIA Hopper and
+                          NVSwitch
++-------------------------+---------------------------+-------+
+ NVIDIA HGX H100          NVIDIA Hopper and
+                          NVSwitch
++-------------------------+---------------------------+-------+
+ NVIDIA HGX H200          NVIDIA Hopper and
+                          NVSwitch
++-------------------------+---------------------------+-------+
+  NVIDIA H100,           NVIDIA Hopper                    |
+  NVIDIA H100 NVL                                         |
++-------------------------+---------------------------+-------+
+ NVIDIA H20               NVIDIA Hopper
++-------------------------+---------------------------+-------+
+ NVIDIA L20               NVIDIA Ada
++-------------------------+---------------------------+-------+
+  NVIDIA L40,            NVIDIA Ada                       |
+  NVIDIA L40S                                             |
++-------------------------+---------------------------+-------+
+ NVIDIA L4                NVIDIA Ada
++-------------------------+---------------------------+-------+
+ NVIDIA DGX A100          A100 and NVSwitch
++-------------------------+---------------------------+-------+
+ NVIDIA HGX A100          A100 and NVSwitch
++-------------------------+---------------------------+-------+
+ NVIDIA A800              NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A100              NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A100X             NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A40               NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A30               NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A30X              NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A16               NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A10               NVIDIA Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A2                NVIDIA Ampere
++-------------------------+---------------------------+-------+
+
+**Note:**
+
+* The GPU Operator supports DGX A100 with DGX OS 5.1+ and Red Hat OpenShift using Red Hat Core OS.
+  For installation instructions, see preinstalled-drivers-and-toolkit for DGX OS 5.1+ and openshift-introduction for Red Hat OpenShift.
+### D,T and V-series Products
+
++-----------------------+------------------------+-------+
+ Product                Architecture            Notes
++=======================+========================+=======+
+ NVIDIA T4              Turing
++-----------------------+------------------------+-------+
+ NVIDIA V100            Volta
++-----------------------+------------------------+-------+
+ NVIDIA P100            Pascal
++-----------------------+------------------------+-------+
+ NVIDIA P40             Pascal
++-----------------------+------------------------+-------+
+ NVIDIA P4              Pascal
++-----------------------+------------------------+-------+
+### RTX / T-series Products
+
++-------------------------+------------------------+-------+
+ Product                  Architecture            Notes
++=========================+========================+=======+
+ NVIDIA RTX PRO 6000      NVIDIA Blackwell
+ Blackwell Server Edition
++-------------------------+------------------------+-------+
+ NVIDIA RTX PRO 6000D     NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA RTX Pro 4500      NVIDIA Blackwell
+ Blackwell Server Edition
++-------------------------+------------------------+-------+
+ NVIDIA RTX A6000         NVIDIA Ampere /Ada
++-------------------------+------------------------+-------+
+ NVIDIA RTX A5000         NVIDIA Ampere
++-------------------------+------------------------+-------+
+ NVIDIA RTX A4500         NVIDIA Ampere
++-------------------------+------------------------+-------+
+ NVIDIA RTX A4000         NVIDIA Ampere
++-------------------------+------------------------+-------+
+ NVIDIA Quadro RTX 8000   Turing
++-------------------------+------------------------+-------+
+ NVIDIA Quadro RTX 6000   Turing
++-------------------------+------------------------+-------+
+ NVIDIA Quadro RTX 5000   Turing
++-------------------------+------------------------+-------+
+ NVIDIA Quadro RTX 4000   Turing
++-------------------------+------------------------+-------+
+ NVIDIA T1000             Turing
++-------------------------+------------------------+-------+
+ NVIDIA T600              Turing
++-------------------------+------------------------+-------+
+ NVIDIA T400              Turing
++-------------------------+------------------------+-------+
+
+**Note:**
+
+NVIDIA RTX PRO 6000 Blackwell Server Edition notes:
+
+* Driver versions 575.57.08 or later is required.
+* MIG is not supported on the 575.57.08 driver release.
+* In cases where CUDA init fails, you may need to disable Heterogeneous Memory Management (HMM) in UVM by Customizing NVIDIA GPU Driver Parameters during Installation.
+### B-series Products
+
++-------------------------+------------------------+-------+
+ Product                  Architecture            Notes
++=========================+========================+=======+
+ NVIDIA DGX B300          NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA DGX B200          NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA DGX Spark         NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA HGX B200          NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA HGX B300          NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA HGX GB200 NVL72   NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA HGX GB200 NVL4    NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA HGX GB300 NVL72   NVIDIA Blackwell
++-------------------------+------------------------+-------+
+ NVIDIA DGX Station       NVIDIA Blackwell
++-------------------------+------------------------+-------+
+
+**Note:**
+
+* HGX B200 requires a driver container version of 570.133.20 or later.
+## Supported ARM Based Platforms
+
+The following NVIDIA data center GPUs are supported:
+
++-------------------------+---------------------------+-------+
+ Product                  Architecture               Notes
++=========================+===========================+=======+
+ NVIDIA A100X             Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA A30X              Ampere
++-------------------------+---------------------------+-------+
+ NVIDIA IGX Orin          Ampere
++-------------------------+---------------------------+-------+
+ AWS EC2 G5g instances    Turing
++-------------------------+---------------------------+-------+
+ NVIDIA DGX Spark         Blackwell
++-------------------------+---------------------------+-------+
+ NVIDIA HGX GB200 NVL72   Blackwell
++-------------------------+---------------------------+-------+
+ NVIDIA HGX GB300 NVL72   Blackwell
++-------------------------+---------------------------+-------+
+
+In addition to the products specified in the preceding table, any ARM based
+system that meets the following requirements is supported:
+
+- NVIDIA GPUs connected to the PCI bus.
+- A supported operating system
+  such as Ubuntu or Red Hat Enterprise Linux.
+
+**Note:**
+
+The GPU Operator only supports platforms using discrete GPUs.
+NVIDIA Jetson, or other embedded products with integrated GPUs, are not supported.
+
+NVIDIA IGX Orin, a platform with an integrated GPU, is supported as long as the discrete GPU is the device being used.
+## Supported Deployment Options
+
+The GPU Operator has been validated in the following scenarios:
+
++-----------------------------------------------------+
+ Deployment Options
++=====================================================+
+ Bare Metal
++-----------------------------------------------------+
+ Virtual machines with GPU Passthrough
++-----------------------------------------------------+
+ Virtual machines with NVIDIA vGPU based products
++-----------------------------------------------------+
+
+**Note:**
+
+GPU Operator is supported with NVIDIA vGPU 12.0+.
+## Supported Operating Systems and Kubernetes Platforms
+
+The GPU Operator has been validated in the following scenarios:
+
+### Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
+
+| Operating System | Kubernetes fn1_ | Red Hat OpenShift | VMware vSphere Kubernetes Service (VKS) | Rancher Kubernetes Engine 2 | K3s | Mirantis k0s | Canonical MicroK8s | Nutanix NKP |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ubuntu 20.04 LTS fn2_ | 1.32---1.35 - | 1.32---1.35 | 1.32---1.35 - - - - |  |  |  |  |  |
+| Ubuntu 22.04 LTS fn2_ | 1.32---1.35 - | 1.32---1.35 | 1.32---1.35 | 1.32---1.35 | 1.32---1.35 | 1.33---1.35 | 2.15 2.16 2.17 |  |
+| Ubuntu 24.04 LTS | 1.32---1.35 - - | 1.32---1.35 | 1.32---1.35 | 1.32---1.35 | 1.33---1.35 | 2.17 |  |  |
+| Red Hat Core OS - | 4.17---4.21 - - - - - - |  |  |  |  |  |  |  |
+| Red Hat Enterprise Linux 10.0, 10.1 | 1.32---1.35 - - | 1.32---1.35 - - - - |  |  |  |  |  |  |
+| Red Hat Enterprise  Linux 9.2, 9.4, 9.6, 9.7 fn3|_ | 1.32---1.35 - - | 1.32---1.35 - - - | 2.17 |  |  |  |  |  |
+| Red Hat Enterprise Linux 8.8, 8.10 | 1.32---1.35 - - | 1.32---1.35 - - - | 2.15, 2.16, 2.17 |  |  |  |  |  |
+| Rocky Linux 9.7 | 1.32---1.35 - - - - - - - |  |  |  |  |  |  |  |
+1
+The Kubernetes community only supports the last three minor [releases](https://kubernetes.io/releases/).
+Older releases may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
+
+2
+For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
+For Ubuntu 20.04 LTS, kernel versions 5.4 and 5.15 are LTS ESM kernels.
+The GPU Driver containers support these Linux kernels.
+Refer to the Kernel release schedule on Canonical's
+[Ubuntu kernel lifecycle and enablement stack](https://ubuntu.com/kernel/lifecycle) page for more information.
+NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
+by the `unattended-upgrades` package to prevent an upgrade to an unsupported kernel version.
+
+3
+Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, and 9.7 versions are available for x86 based platforms only.
+They are not available for ARM based systems.
+
+**Note:**
+
+ocp_csp_support
+### Cloud Service Providers
+
+| Operating System | Amazon EKS Kubernetes | Google GKE Kubernetes |
+| --- | --- | --- |
+| Ubuntu 20.04 LTS | 1.32---1.35 | 1.32---1.35 |
+| Ubuntu 22.04 LTS | 1.32---1.35 | 1.32---1.35 |
+| Ubuntu 24.04 LTS | 1.32---1.35 | 1.32---1.35 |
+## Supported Precompiled Drivers
+
+The GPU Operator has been validated with the following precompiled drivers.
+See the precompiled-drivers page for more information about using precompiled drivers.
+
++----------------------------+------------------------+----------------+---------------------+
+ Operating System            Kernel Flavor           Kernel Version  CUDA Driver Branch  |
++============================+========================+================+=====================+
+ Ubuntu 22.04                Generic, NVIDIA, Azure   5.15            R535, R570, R580   |
+                             AWS, Oracle                                                 |
++----------------------------+------------------------+----------------+---------------------+
+ Ubuntu 22.04                Generic, NVIDIA, Azure   6.8             R535, R570, R580   |
+                             AWS, Oracle                                                 |
++----------------------------+------------------------+----------------+---------------------+
+ Ubuntu 24.04                Generic, NVIDIA, Azure   6.8             R570, R580         |
+                             AWS, Oracle                                                 |
++----------------------------+------------------------+----------------+---------------------+
+
+## Supported Container Runtimes
+
+The GPU Operator has been validated for the following container runtimes:
+
++----------------------------+------------------------+----------------+
+ Operating System            Containerd 1.7 - 2.2    CRI-O
++============================+========================+================+
+ Ubuntu 20.04 LTS            Yes                     Yes
++----------------------------+------------------------+----------------+
+ Ubuntu 22.04 LTS            Yes                     Yes
++----------------------------+------------------------+----------------+
+ Ubuntu 24.04 LTS            Yes                     Yes
++----------------------------+------------------------+----------------+
+ Red Hat Core OS (RHCOS)     No                      Yes
++----------------------------+------------------------+----------------+
+ Red Hat Enterprise Linux 8  Yes                     Yes
++----------------------------+------------------------+----------------+
+ Red Hat Enterprise Linux 9  Yes                     Yes
++----------------------------+------------------------+----------------+
+
+**Note:**
+
+If you are planning to use the NRI Plugin, you must use containerd version v1.7.30+, v2.1.x and v2.2.x.
+The NRI Plugin is not supported with CRI-O.
+## Support for KubeVirt and OpenShift Virtualization
+
+Red Hat OpenShift Virtualization is based on KubeVirt.
+
+================    ===========   =============   =========    =============    ===========
+Operating System    Kubernetes           KubeVirt              OpenShift Virtualization
+----------------    -----------   -------------------------    ----------------------------
+\                   \              GPU           vGPU          GPU            vGPU
+                                   Passthrough                 Passthrough
+================    ===========   =============   =========    =============    ===========
+Ubuntu 24.04 LTS    1.32---1.35   0.36+
+Ubuntu 22.04 LTS    1.32---1.35   0.36+           0.59.1+
+Ubuntu 20.04 LTS    1.32---1.35   0.36+           0.59.1+
+Red Hat Core OS                                                4.17---4.21      4.17---4.21
+================    ===========   =============   =========    =============    ===========
+
+You can run GPU passthrough and NVIDIA vGPU in the same cluster as long as you use
+a software version that meets both requirements.
+
+NVIDIA vGPU is incompatible with KubeVirt v0.58.0, v0.58.1, and v0.59.0, as well
+as OpenShift Virtualization 4.12.0---4.12.2.
+Starting with KubeVirt v0.58.2 and v0.59.1, and OpenShift Virtualization 4.12.3 and 4.13,
+you must set the `DisableMDEVConfiguration` feature gate.
+Refer to GPU Operator with KubeVirt or NVIDIA GPU Operator with OpenShift Virtualization.
+
+KubeVirt and OpenShift Virtualization with NVIDIA vGPU is supported on the following devices:
+
+- RTX Pro 6000 Blackwell Server Edition
+
+- H200NVL
+
+- H100
+
+- GA10x: A100, A40, RTX A6000, RTX A5500, RTX A5000, A30, A16, A10, A2.
+
+  The A10G and A10M GPUs are excluded.
+
+- AD10x: L40, RTX 6000 Ada, L4.
+
+  The L40G GPU is excluded.
+
+-  NVIDIA HGX GB200 NVL72, GB300 NVL72 on Ubuntu 24.04 LTS.
+
+**Note:**
+
+KubeVirt with NVIDIA vGPU is supported on `nodes` with Linux kernel < 6.0, such as Ubuntu 22.04 `LTS`.
+## Support for GPUDirect RDMA
+
+Supported operating systems and NVIDIA GPU Drivers with GPUDirect RDMA.
+
+- Ubuntu 24.04 and 22.04 LTS with Network Operator 26.1.0
+- Red Hat Enterprise Linux 10.0 and 8.10 with Network Operator 26.1.0
+- Red Hat Enterprise Linux 8.10 with Network Operator 25.10.0
+- Ubuntu 22.04 LTS with Network Operator 25.10.0
+- RHEL 8 with Network Operator 25.7.0.
+- Ubuntu 24.04 LTS with Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.
+- Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.
+- Ubuntu 24.04 LTS with Network Operator 25.10.0
+
+For information about configuring GPUDirect RDMA, refer to gpu-operator-rdma.
+
+## Support for GPUDirect Storage
+
+Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
+
+- Ubuntu 24.04 LTS Network Operator 25.7.0.
+- Ubuntu 20.04 and 22.04 LTS with Network Operator 25.7.0.
+- Red Hat OpenShift Container Platform 4.17 and higher.
+
+**Note:**
+
+Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, `nvidia-fs`,
+requires the NVIDIA Open GPU Kernel module driver.
+You can install the open kernel modules by specifying the `driver.kernelModuleType=auto` if you are using driver container version 570.86.15, 570.124.06 or later.
+Or use `driver.kernelModuleType=open` if you are using a different driver version or branch.
+argument to the `helm` command.
+Refer to Common Chart Customization Options for more information.
+
+Not supported with secure boot.
+Supported storage types are local NVMe and remote NFS.
+## Additional Supported Tools and Integrations
+
+Container management tools:
+
+* [Helm v3](https://helm.sh/)
+* [Red Hat Operator Lifecycle Manager (OLM)](https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/operators/understanding-operators#operator-lifecycle-manager-olm)
+
+Orchestration & resource scheduling:
+
+* [NVIDIA Run:ai](https://run-ai-docs.nvidia.com/)
+
+**Note:**
+
+Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
+Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai [cluster requirements documentation](https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator) for more information.

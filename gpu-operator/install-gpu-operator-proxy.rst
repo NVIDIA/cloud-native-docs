@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Install with an HTTP Proxy
+   :description: Install the NVIDIA GPU Operator in an HTTP proxy environment.
+   :description-agent: Guides users through installing the GPU Operator with HTTP proxy settings. Use when clusters require proxy configuration for image pulls or network access.
+   :keywords: NVIDIA GPU Operator, HTTP proxy, installation, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, proxy, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. headings # #, * *, =, -, ^, "
 
 .. Date: Sep 16 2021

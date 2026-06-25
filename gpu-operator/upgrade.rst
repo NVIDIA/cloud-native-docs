@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Upgrading the NVIDIA GPU Operator
+   :description: Upgrade the NVIDIA GPU Operator in a Kubernetes cluster.
+   :description-agent: Guides users through upgrading the NVIDIA GPU Operator with Helm and handling CRD updates. Use when planning or performing a GPU Operator upgrade.
+   :keywords: NVIDIA GPU Operator, upgrade, Helm, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, upgrade, helm
+   :content.type: how_to
+   :skill.priority: 20
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _operator-upgrades:

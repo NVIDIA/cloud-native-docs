@@ -1,6 +1,15 @@
 .. Date: Jun 22 2022
 .. Author: cdesiniotis
 
+.. meta::
+   :title: KubeVirt
+   :description: Configure the NVIDIA GPU Operator for GPU workloads with KubeVirt.
+   :description-agent: Guides users through configuring the GPU Operator for KubeVirt virtual machine workloads. Use when deploying GPU-enabled VMs or troubleshooting KubeVirt GPU passthrough.
+   :keywords: NVIDIA GPU Operator, KubeVirt, virtual machines, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, kubevirt, virtual-machines
+   :content.type: how_to
+   :skill.priority: 70
+
 .. headings (h1/h2/h3/h4/h5/h6) are # * = - ^ "
 
 .. _gpu-operator-kubevirt:

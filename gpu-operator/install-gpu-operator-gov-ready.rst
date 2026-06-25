@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Install in Government-Ready Environments
+   :description: Install the NVIDIA GPU Operator in environments that require government-ready configuration.
+   :description-agent: Guides users through government-ready GPU Operator installation considerations. Use when deploying in hardened or regulated Kubernetes environments.
+   :keywords: NVIDIA GPU Operator, government-ready, installation, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, government-ready, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. headings # #, * *, =, -, ^, "
 
 

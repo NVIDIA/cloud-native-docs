@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Platform Support
+   :description: Review supported platforms, operating systems, and configurations for the NVIDIA GPU Operator.
+   :description-agent: Lists supported Kubernetes platforms, operating systems, container runtimes, and GPU Operator configurations. Use when checking compatibility before installation or upgrade.
+   :keywords: NVIDIA GPU Operator, platform support, operating systems, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, platform-support, compatibility
+   :content.type: reference
+
 .. headings # #, * *, =, -, ^, "
 
 .. Date: July 30 2020

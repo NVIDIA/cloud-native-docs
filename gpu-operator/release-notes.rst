@@ -1,3 +1,13 @@
+
+
+.. meta::
+   :title: Release Notes
+   :description: Review release notes, component versions, and changes for the NVIDIA GPU Operator.
+   :description-agent: Includes release notes and component version information for the NVIDIA GPU Operator. Use when users ask what changed, which component versions are included, or whether a release contains a fix.
+   :keywords: NVIDIA GPU Operator, release notes, component versions, changelog
+   :tags: gpu-operator, nvidia, kubernetes, gpu, release-notes, changelog
+   :content.type: reference
+
 .. license-header
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0

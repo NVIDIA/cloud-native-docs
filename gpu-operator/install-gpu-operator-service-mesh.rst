@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Install with a Service Mesh
+   :description: Install and configure the NVIDIA GPU Operator with a service mesh.
+   :description-agent: Guides users through GPU Operator service mesh considerations. Use when deploying with Istio or troubleshooting sidecar injection and service mesh interactions.
+   :keywords: NVIDIA GPU Operator, service mesh, Istio, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, service-mesh, istio
+   :content.type: how_to
+   :skill.priority: 50
+
 .. headings # #, * *, =, -, ^, "
 
 ######################################

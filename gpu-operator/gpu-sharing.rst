@@ -1,6 +1,15 @@
 .. Date: Jun 21 2022
 .. Author: smerla
 
+.. meta::
+   :title: Time-Slicing GPUs
+   :description: Configure GPU time-slicing and sharing with the NVIDIA GPU Operator.
+   :description-agent: Explains GPU sharing and time-slicing configuration. Use when users need multiple workloads to share GPUs or need to configure time-sliced GPU resources.
+   :keywords: NVIDIA GPU Operator, GPU sharing, time-slicing, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, gpu-sharing, time-slicing
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _gpu-sharing:

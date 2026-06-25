@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Kata Containers
+   :description: Deploy GPU workloads with Kata Containers and the NVIDIA GPU Operator.
+   :description-agent: Guides users through configuring Kata Containers for GPU workloads with the GPU Operator. Use when deploying sandboxed GPU workloads with Kata Containers.
+   :keywords: NVIDIA GPU Operator, Kata Containers, sandboxed workloads, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, kata-containers, sandboxed-workloads
+   :content.type: how_to
+   :skill.priority: 70
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 ..

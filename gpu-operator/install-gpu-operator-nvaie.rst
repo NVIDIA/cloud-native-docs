@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Install with NVIDIA AI Enterprise
+   :description: Install the NVIDIA GPU Operator with NVIDIA AI Enterprise.
+   :description-agent: Guides users through installing the GPU Operator with NVIDIA AI Enterprise. Use when deploying licensed NVIDIA AI Enterprise GPU software on Kubernetes.
+   :keywords: NVIDIA GPU Operator, NVIDIA AI Enterprise, installation, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, nvidia-ai-enterprise, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. headings # #, * *, =, -, ^, "
 
 .. |ellipses-img| image:: https://brand-assets.cne.ngc.nvidia.com/assets/icons/2.2.2/fill/common-more-horiz.svg

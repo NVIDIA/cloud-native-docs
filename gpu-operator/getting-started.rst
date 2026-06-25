@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Installing the NVIDIA GPU Operator
+   :description: Install the NVIDIA GPU Operator in a Kubernetes cluster.
+   :description-agent: Installs the NVIDIA GPU Operator in a Kubernetes cluster with Helm. Use when users are getting started, installing the Operator for the first time, or checking installation prerequisites.
+   :keywords: NVIDIA GPU Operator, installation, Helm, Kubernetes, getting started
+   :tags: gpu-operator, nvidia, kubernetes, gpu, installation, helm, getting-started
+   :content.type: get_started
+   :skill.priority: 10
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _nvaie-tanzu: https://docs.nvidia.com/ai-enterprise/deployment-guide-vmware/0.1.0/index.html

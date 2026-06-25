@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Install in Air-Gapped Environments
+   :description: Install the NVIDIA GPU Operator in air-gapped and restricted network environments.
+   :description-agent: Guides users through installing the GPU Operator in air-gapped or restricted network environments. Use when users need mirrored images, private registries, or offline installation steps.
+   :keywords: NVIDIA GPU Operator, air-gapped, restricted network, installation
+   :tags: gpu-operator, nvidia, kubernetes, gpu, air-gapped, private-registry, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. headings # #, * *, =, -, ^, "
 
 .. Date: Dec 11 2020

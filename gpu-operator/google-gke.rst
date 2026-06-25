@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA GPU Operator with Google Kubernetes Engine
+   :description: Install and configure the NVIDIA GPU Operator on Google Kubernetes Engine.
+   :description-agent: Guides users through installing and configuring the NVIDIA GPU Operator on Google GKE. Use when deploying GPU workloads on GKE or troubleshooting GKE-specific GPU Operator setup.
+   :keywords: NVIDIA GPU Operator, Google GKE, Kubernetes, installation
+   :tags: gpu-operator, nvidia, kubernetes, gpu, google-cloud, gke
+   :content.type: how_to
+   :skill.priority: 40
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 ###################################

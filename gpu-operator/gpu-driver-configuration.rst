@@ -15,6 +15,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: NVIDIA GPU Driver Custom Resource Definition
+   :description: Configure GPU driver management with the NVIDIA GPU Driver custom resource.
+   :description-agent: Explains how to configure NVIDIA GPU Driver custom resources for driver lifecycle management. Use when users need custom driver configuration or mixed operating system support.
+   :keywords: NVIDIA GPU Operator, GPU driver, custom resource, driver configuration
+   :tags: gpu-operator, nvidia, kubernetes, gpu, driver, custom-resource
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 ############################################

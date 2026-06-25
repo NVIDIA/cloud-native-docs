@@ -1,6 +1,15 @@
 .. Date: Aug 4 2021
 .. Author: pramarao
 
+.. meta::
+   :title: GPUDirect RDMA and GPUDirect Storage
+   :description: Configure GPUDirect RDMA and GPUDirect Storage with the NVIDIA GPU Operator.
+   :description-agent: Guides users through GPUDirect RDMA and GPUDirect Storage configuration. Use when enabling high-performance networking or storage access for GPU workloads.
+   :keywords: NVIDIA GPU Operator, GPUDirect RDMA, GPUDirect Storage, networking
+   :tags: gpu-operator, nvidia, kubernetes, gpu, gpudirect, rdma, storage, networking
+   :content.type: how_to
+   :skill.priority: 70
+
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _net-op: https://docs.nvidia.com/networking/display/cokan10/network+operator

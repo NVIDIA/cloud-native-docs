@@ -17,6 +17,15 @@
 .. Date: Jan 30 2023
 .. Author: cdesiniotis
 
+.. meta::
+   :title: GPU Driver Upgrades
+   :description: Understand how the NVIDIA GPU Operator manages GPU driver upgrades.
+   :description-agent: Explains GPU driver upgrade behavior and configuration. Use when planning driver upgrades or troubleshooting driver upgrade workflows managed by the GPU Operator.
+   :keywords: NVIDIA GPU Operator, GPU driver, driver upgrades, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, driver, upgrades
+   :content.type: how_to
+   :skill.priority: 60
+
 .. headings # #, * *, =, -, ^, "
 
 .. _gpu-driver-upgrades:

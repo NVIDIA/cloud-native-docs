@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+.. meta::
+   :title: Container Device Interface Support in the NVIDIA GPU Operator
+   :description: Configure Container Device Interface and Node Resource Interface support with the NVIDIA GPU Operator.
+   :description-agent: Explains how to configure CDI and NRI support for GPU workloads. Use when enabling CDI, configuring containerd, or troubleshooting CDI-based GPU injection.
+   :keywords: NVIDIA GPU Operator, CDI, NRI, containerd, Kubernetes
+   :tags: gpu-operator, nvidia, kubernetes, gpu, cdi, nri, containerd
+   :content.type: how_to
+   :skill.priority: 70
+
 .. headings # #, * *, =, -, ^, "
 
 #################################################################################

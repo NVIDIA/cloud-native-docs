@@ -1,3 +1,14 @@
+
+
+.. meta::
+   :title: Install with Outdated Kernels
+   :description: Install the NVIDIA GPU Operator on nodes that run outdated Linux kernels.
+   :description-agent: Explains how to install the GPU Operator when nodes run outdated kernels. Use when driver containers fail because kernel versions are older than supported defaults.
+   :keywords: NVIDIA GPU Operator, outdated kernels, driver containers, installation
+   :tags: gpu-operator, nvidia, kubernetes, gpu, kernels, driver, installation
+   :content.type: how_to
+   :skill.priority: 50
+
 .. Date: Aug 2 2021
 .. Author: cdesiniotis
 
