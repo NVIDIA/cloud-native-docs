@@ -447,7 +447,7 @@ The GPU Operator has been validated in the following scenarios:
     .. _partner-validated:
 
     :sup:`4`
-    Refer to the `Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>`__ documentation for more information on these configurations
+    Refer to the `Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>`__ documentation for information on other operating systems support.
 
   .. tab-item:: Cloud Service Providers
     :sync: cloud-service-providers
