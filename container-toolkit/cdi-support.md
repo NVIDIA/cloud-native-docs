@@ -30,6 +30,8 @@ CDI also improves the compatibility of the NVIDIA container stack with certain f
 
 - You installed an NVIDIA GPU Driver.
 
+(automatic-cdi-specification-generation)=
+
 ### Automatic CDI Specification Generation
 
 As of NVIDIA Container Toolkit `v1.18.0`, the CDI specification is automatically generated and updated by a systemd service called `nvidia-cdi-refresh`. This service:
