@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 24, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 30, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -561,14 +561,14 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
 </pre></div>
 </div>
 <p>To use DMA-BUF and network device drivers that are installed on the host:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
      --set driver.rdma.useHostMofed<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
@@ -887,7 +887,7 @@ Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.3.2 <span class="se">\</span>
+     --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
