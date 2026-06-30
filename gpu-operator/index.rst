@@ -40,7 +40,7 @@
    :titlesonly:
    :hidden:
 
-   NVIDIA DRA Driver for GPUs <dra-intro-install.rst>
+   DRA Driver for NVIDIA GPUs <dra-intro-install.rst>
    Multi-Instance GPU (MIG) <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
    gpu-operator-rdma.rst
