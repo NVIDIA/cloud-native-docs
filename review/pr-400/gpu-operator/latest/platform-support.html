@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'platform-support';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 05, 2026"/>
+    <meta name="docbuild:last-update" content="Jun 30, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -369,7 +369,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
@@ -467,8 +467,8 @@ All prior major versions enter end of support and are no longer supported and do
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id27">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id27" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id38">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id38" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -505,18 +505,20 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <p><strong>D</strong> = Default driver, <strong>R</strong> = Recommended driver</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head" rowspan="2"><p> Component</p></th>
-<th class="head" colspan="3"><p> GPU Operator Version</p></th>
+<th class="head" colspan="4"><p> GPU Operator Version</p></th>
 </tr>
 <tr class="row-even"><th class="head"><p>v26.3.0</p></th>
 <th class="head"><p>v26.3.1</p></th>
 <th class="head"><p>v26.3.2</p></th>
+<th class="head"><p>v26.3.3</p></th>
 </tr>
 </thead>
 <tbody>
@@ -525,7 +527,8 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html">595.71.05</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html">595.58.03</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html">590.48.01</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html">580.159.03</a> (<strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-04/index.html">580.159.04</a> (<strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html">580.159.03</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html">580.126.20</a> (<strong>D</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html">570.211.01</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html">535.309.01</a></div>
@@ -536,7 +539,20 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html">595.71.05</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html">595.58.03</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html">590.48.01</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html">580.159.03</a> (<strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-04/index.html">580.159.04</a> (<strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html">580.159.03</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html">580.126.20</a> (<strong>D</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html">570.211.01</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html">535.309.01</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html">535.288.01</a></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html">595.71.05</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html">595.58.03</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html">590.48.01</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-04/index.html">580.159.04</a> (<strong>R</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html">580.159.03</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-20/index.html">580.126.20</a> (<strong>D</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html">570.211.01</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html">535.309.01</a></div>
@@ -558,22 +574,23 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </tr>
 <tr class="row-even"><td><p>NVIDIA Driver Manager for Kubernetes</p></td>
 <td colspan="2"><p> <a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.10.0</a></p></td>
-<td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.11.0</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.11.0</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Container Toolkit</p></td>
 <td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.19.0</a></p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.19.1</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.19.1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Kubernetes Device Plugin</p></td>
 <td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.2</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.3</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DCGM Exporter</p></td>
 <td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">v4.5.1-4.8.0</a></p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">v4.5.3-4.8.2</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">v4.5.3-4.8.2</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Node Feature Discovery</p></td>
-<td colspan="3"><p> <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.18.3</a></p></td>
+<td colspan="4"><p> <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.18.3</a></p></td>
 </tr>
 <tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA GPU Feature Discovery</div>
@@ -582,27 +599,29 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </td>
 <td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.0</a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.2</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.3</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
 <td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.14.0</a></p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.14.2</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.14.2</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DCGM</p></td>
-<td colspan="3"><p> <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.5.2-1</a></p></td>
+<td colspan="4"><p> <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.5.2-1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Validator for NVIDIA GPU Operator</p></td>
 <td><p>v26.3.0</p></td>
 <td><p>v26.3.1</p></td>
 <td><p>v26.3.2</p></td>
+<td><p>v26.3.3</p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
-<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.5.0</a></p></td>
+<td colspan="4"><p> <a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.5.0</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA vGPU Device Manager</p></td>
-<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.4.2</a></p></td>
+<td colspan="4"><p> <a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.4.2</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
-<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.27.3</a></p></td>
+<td colspan="4"><p> <a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.27.3</a></p></td>
 </tr>
 <tr class="row-even"><td><div class="line-block">
 <div class="line">NVIDIA Confidential Computing</div>
@@ -610,15 +629,15 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </div>
 </td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.3.0</a></p></td>
-<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.0</a></p></td>
+<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.0</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GDRCopy Driver</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.1</a></p></td>
-<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.2</a></p></td>
+<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.5.2</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Kata Sandbox Device Plugin</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.2</a></p></td>
-<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.3</a></p></td>
+<td colspan="3"><p> <a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.3</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -1174,7 +1193,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-even"><th class="stub"><p>Red Hat Core OS</p></th>
 <td></td>
 <td><div class="line-block">
-<div class="line">4.17—4.21</div>
+<div class="line">4.18—4.22</div>
 </div>
 </td>
 <td></td>
@@ -1187,7 +1206,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-odd"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
-<div class="line">Linux 10.0, 10.1</div>
+<div class="line">Linux 10.0, 10.1, 10.2</div>
 </div>
 </th>
 <td><p>1.32—1.36</p></td>
@@ -1202,7 +1221,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</label><div c
 <tr class="row-even"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
-<div class="line">Linux 9.2, 9.4, 9.6, 9.7 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
+<div class="line">Linux 9.2, 9.4, 9.6, 9.7, 9.8 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
 </div>
 </th>
 <td><p>1.32—1.36</p></td>
@@ -1274,7 +1293,7 @@ Refer to the Kernel release schedule on Canonical’s
 NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
 by the <code class="docutils literal notranslate"><span class="pre">unattended-upgrades</span></code> package to prevent an upgrade to an unsupported kernel version.</p>
 <p id="rhel-9"><sup>3</sup>
-Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, and 9.7 versions are available for x86 based platforms only.
+Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, 9.7, and 9.8 versions are available for x86 based platforms only.
 They are not available for ARM based systems.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1324,7 +1343,7 @@ Cloud Service Providers</label><div class="sd-tab-content docutils">
 </div>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id26"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
+<span id="id37"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1461,8 +1480,8 @@ AWS, Oracle</p></td>
 <td></td>
 <td></td>
 <td></td>
-<td><p>4.17—4.21</p></td>
-<td><p>4.17—4.21</p></td>
+<td><p>4.18—4.22</p></td>
+<td><p>4.18—4.22</p></td>
 </tr>
 </tbody>
 </table>
@@ -1536,7 +1555,7 @@ This page includes additional limitations and restrictions for using Kata Contai
 <li><p>Ubuntu 24.04 LTS with Network Operator 25.7.0.</p></li>
 <li><p>Ubuntu 22.04 LTS with Network Operator 25.7.0.</p></li>
 <li><p>Red Hat Enterprise Linux 9.2, 9.4, and 9.6 with Network Operator 25.7.0.</p></li>
-<li><p>Red Hat OpenShift 4.17 and higher with Network Operator 25.7.0.</p></li>
+<li><p>Red Hat OpenShift 4.18 and higher with Network Operator 25.7.0.</p></li>
 <li><p>Ubuntu 24.04 LTS with Network Operator 25.10.0</p></li>
 </ul>
 <p>For information about configuring GPUDirect RDMA, refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a>.</p>
@@ -1547,7 +1566,7 @@ This page includes additional limitations and restrictions for using Kata Contai
 <ul class="simple">
 <li><p>Ubuntu 24.04 LTS Network Operator 25.7.0.</p></li>
 <li><p>Ubuntu 22.04 LTS with Network Operator 25.7.0.</p></li>
-<li><p>Red Hat OpenShift Container Platform 4.17 and higher.</p></li>
+<li><p>Red Hat OpenShift Container Platform 4.18 and higher.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1663,8 +1682,8 @@ Running the GPU Operator with Container Device Interface (CDI) enabled (default 
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
 
