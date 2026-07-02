@@ -10,7 +10,7 @@
 
 ### Prerequisites
 
-1. Read [this section](./supported-platforms.md) about platform support.
+1. Review the [platform support documentation](./supported-platforms.md).
 
 2. Install the NVIDIA GPU driver for your Linux distribution.
 NVIDIA recommends installing the driver by using the package manager for your distribution.
@@ -168,7 +168,7 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
    $ sudo systemctl restart docker
    ```
 
-#### Rootless mode
+#### Rootless Mode
 
 To configure the container runtime for Docker running in [Rootless mode](https://docs.docker.com/engine/security/rootless/),
 follow these steps:
@@ -213,7 +213,7 @@ follow these steps:
 ### Configuring containerd (for nerdctl)
 
 No additional configuration is needed.
-You can just run `nerdctl run --gpus=all`, with root or without root.
+You can run `nerdctl run --gpus=all`, with or without root.
 You do not need to run the `nvidia-ctk` command mentioned above for Kubernetes.
 
 Refer to the [nerdctl documentation](https://github.com/containerd/nerdctl/blob/main/docs/gpu.md) for more information.

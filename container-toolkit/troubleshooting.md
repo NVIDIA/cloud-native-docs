@@ -11,7 +11,7 @@
 ### Generating Debugging Logs
 
 For most common issues, you can generate debugging logs to help identify the root cause of the problem.
-To generate debug logs :
+To generate debug logs:
 
 - Edit your runtime configuration under `/etc/nvidia-container-runtime/config.toml` and uncomment the `debug=...` line.
 - Run your container again to reproduce the issue and generate the logs.
@@ -20,12 +20,12 @@ To generate debug logs :
 
 In the event of a critical failure, core dumps can be automatically generated and can help troubleshoot issues.
 Refer to [core(5)](http://man7.org/linux/man-pages/man5/core.5.html) to generate these.
-In particular make check the following items:
+In particular, check the following items:
 
 - `/proc/sys/kernel/core_pattern` is correctly set and points somewhere with write access.
 - `ulimit -c` is set to a sensible default.
 
-In case the `nvidia-container-cli` process becomes unresponsive, [gcore(1)](http://man7.org/linux/man-pages/man1/gcore.1.html) can also be used.
+If the `nvidia-container-cli` process becomes unresponsive, you can also use [gcore(1)](http://man7.org/linux/man-pages/man1/gcore.1.html).
 
 ### Sharing Your Debugging Information
 
@@ -36,7 +36,7 @@ into the comment section.
 
 ## Conflicting values set for option Signed-By error when running apt update
 
-When following the installation instructions on Ubuntu or Debian-based systems and updating the package repository, the following error could be triggered:
+When following the installation instructions on Ubuntu or Debian-based systems and updating the package repository, you might see the following error:
 
 ```console
 $ sudo apt-get update
@@ -49,7 +49,7 @@ This is caused by the combination of two things:
 1. A recent update to the installation instructions to create a repo list file `/etc/apt/sources.list.d/nvidia-container-toolkit.list`
 2. The deprecation of `apt-key` meaning that the `signed-by` directive is included in the repo list file
 
-If this error is triggered it means that another reference to the same repository exists that does not specify the `signed-by` directive.
+If this error is triggered, it means that another reference to the same repository exists that does not specify the `signed-by` directive.
 The most likely candidates would be one or more of the files `libnvidia-container.list`, `nvidia-docker.list`, or `nvidia-container-runtime.list` in the
 folder `/etc/apt/sources.list.d/`.
 
@@ -69,8 +69,8 @@ Deleting the listed files should resolve the original error.
 
 ## Permission denied error when running the nvidia-docker wrapper under SELinux
 
-When running the `nvidia-docker` wrapper (provided by the `nvidia-docker2` package) on SELinux environments
-one may see the following error
+When running the `nvidia-docker` wrapper (provided by the `nvidia-docker2` package) on SELinux environments,
+you might see the following error:
 
 ```console
 $ sudo nvidia-docker run --gpus=all --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
@@ -97,13 +97,13 @@ allow this access for now by executing:
 
 This occurs because `nvidia-docker` forwards the command line arguments with minor modifications to the `docker` executable.
 
-To address this, specify the NVIDIA runtime in the the `docker` command:
+To address this, specify the NVIDIA runtime in the `docker` command:
 
 ```console
 $ sudo docker run --gpus=all --runtime=nvidia --rm nvcr.io/nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 ```
 
-Alternatively a local SELinux policy can be generated as suggested:
+Alternatively, you can generate a local SELinux policy as suggested:
 
 ```console
 $ ausearch -c 'nvidia-docker' --raw | audit2allow -M my-nvidiadocker
@@ -114,10 +114,10 @@ $ semodule -X 300 -i my-nvidiadocker.pp
 
 Depending on how your Red Hat Enterprise Linux system is configured with SELinux, you might have to
 specify ``--security-opt=label=disable`` on the Docker or Podman command line to share parts of the
-host OS that can not be relabeled.
+host OS that cannot be relabeled.
 Without this option, you might observe this error when running GPU containers:
 ``Failed to initialize NVML: Insufficient Permissions``.
-However, using this option disables SELinux separation in the container and the container is executed
+However, using this option disables SELinux separation in the container, and the container runs
 in an unconfined type.
 Review the SELinux policies on your system.
 
@@ -127,32 +127,32 @@ Review the SELinux policies on your system.
 When using the NVIDIA Container Runtime Hook (that is, the Docker `--gpus` flag or
 the NVIDIA Container Runtime in `legacy` mode) to inject requested GPUs and driver
 libraries into a container, the hook makes modifications, including setting up cgroup access, to the container without the low-level runtime (such as `runc`) being aware of these changes.
-The result is that updates to the container may remove access to the requested GPUs.
+The result is that updates to the container can remove access to the requested GPUs.
 
-When the container loses access to the GPU, you will see the following error message from the console output:
+When the container loses access to the GPU, you see the following error message from the console output:
 
 ```console
 Failed to initialize NVML: Unknown Error
 ```
 
-The message may differ depending on the type of application that is running in
+The message can differ depending on the type of application that is running in
 the container.
 
-The container needs to be deleted once the issue occurs.
-When it is restarted, manually or automatically depending if you are using a container orchestration platform, it will regain access to the GPU.
+You need to delete the container after the issue occurs.
+When it is restarted, either manually or automatically depending on whether you use a container orchestration platform, it regains access to the GPU.
 
-### Affected environments
+### Affected Environments
 
-On certain systems this behavior is not limited to *explicit* container updates
-such as adjusting CPU and Memory limits for a container.
+On certain systems, this behavior is not limited to *explicit* container updates
+such as adjusting CPU and memory limits for a container.
 On systems where `systemd` is used to manage the cgroups of the container, reloading the `systemd` unit files (`systemctl daemon-reload`) is sufficient to trigger container updates and cause a loss of GPU access.
 
-### Mitigations and  Workarounds
+### Mitigations and Workarounds
 
 ```{warning}
 Certain `runc` versions show similar behavior with the `systemd` cgroup driver when `/dev/char` symlinks for the required devices are missing on the system.
-Refer to [GitHub disccusion #1133](https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133) for more details around this issue.
-It should be noted that the behavior persisted even if device nodes were requested on the command line.
+Refer to [GitHub discussion #1133](https://github.com/NVIDIA/nvidia-container-toolkit/discussions/1133) for more details around this issue.
+The behavior persisted even if device nodes were requested on the command line.
 Newer `runc` versions do not show this behavior and newer NVIDIA driver versions ensure that the required symlinks are present, reducing the likelihood of the specific issue occurring for affected `runc` versions.
 ```
 
@@ -165,11 +165,11 @@ Use the following workarounds to prevent containers from losing access to reques
   }
   ```
   and restart docker by running `systemctl restart docker`.
-  This will ensure that the container will not lose access to devices when `systemctl daemon-reload` is run.
-  This approach does not change the behavior for explicit container updates and a container will still lose access to devices in this case.
+  This ensures that the container does not lose access to devices when `systemctl daemon-reload` is run.
+  This approach does not change the behavior for explicit container updates, and a container still loses access to devices in this case.
 * Explicitly request the device nodes associated with the requested GPU(s) and any control device nodes when starting the container.
   For the Docker CLI, this is done by adding the relevant `--device` flags.
-  In the case of the NVIDIA Kubernetes Device Plugin the `compatWithCPUManager= true` [Helm option](https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values) will ensure the same thing.
+  In the case of the NVIDIA Kubernetes Device Plugin, the `compatWithCPUManager= true` [Helm option](https://github.com/NVIDIA/k8s-device-plugin?tab=readme-ov-file#setting-other-helm-chart-values) ensures the same result.
 * Use the Container Device Interface (CDI) to inject devices into a container.
   When CDI is used to inject devices into a container, the required device nodes are included in the modifications made to the container config.
-  This means that even if the container is updated it will still have access to the required devices.
+  This means that even if the container is updated, it still has access to the required devices.

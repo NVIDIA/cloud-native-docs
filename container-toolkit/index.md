@@ -23,7 +23,7 @@ Container Device Interface <cdi-support.md>
 docker-specialized.md
 ```
 
-The NVIDIA Container Toolkit is a collection of libraries and utilities enabling users to build and run GPU-accelerated containers. It currently includes:
+The NVIDIA Container Toolkit is a collection of libraries and utilities that enable you to build and run GPU-accelerated containers. It currently includes:
 
 * The NVIDIA Container Runtime (`nvidia-container-runtime`)
 * The NVIDIA Container Toolkit CLI (`nvidia-ctk`)

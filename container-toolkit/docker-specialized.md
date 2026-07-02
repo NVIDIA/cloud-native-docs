@@ -4,17 +4,17 @@
 
 # Specialized Configurations with Docker
 
-## Environment variables (OCI spec)
+## Environment Variables (OCI Spec)
 
-Users can control the behavior of the NVIDIA container runtime using environment variables - especially for
+You can control the behavior of the NVIDIA Container Runtime using environment variables, especially for
 enumerating the GPUs and the capabilities of the driver.
-Each environment variable maps to an command-line argument for `nvidia-container-cli` from [libnvidia-container](https://github.com/NVIDIA/libnvidia-container).
-These variables are already set in the NVIDIA provided base [CUDA images](https://ngc.nvidia.com/catalog/containers/nvidia:cuda).
+Each environment variable maps to a command-line argument for `nvidia-container-cli` from [libnvidia-container](https://github.com/NVIDIA/libnvidia-container).
+These variables are already set in the NVIDIA-provided base [CUDA images](https://ngc.nvidia.com/catalog/containers/nvidia:cuda).
 
 ### GPU Enumeration
 
-GPUs can be specified to the Docker CLI using either the `--gpus` option starting with Docker `19.03` or using the environment variable
-`NVIDIA_VISIBLE_DEVICES`. This variable controls which GPUs will be made accessible inside the container.
+You can specify GPUs to the Docker CLI using either the `--gpus` option starting with Docker `19.03` or the environment variable
+`NVIDIA_VISIBLE_DEVICES`. This variable controls which GPUs are accessible inside the container.
 
 The possible values of the `NVIDIA_VISIBLE_DEVICES` variable are:
 
@@ -30,45 +30,45 @@ The possible values of the `NVIDIA_VISIBLE_DEVICES` variable are:
       - a comma-separated list of GPU UUID(s) or index(es).
 
     * - ``all``
-      - all GPUs will be accessible, this is the default value in base CUDA container images.
+      - All GPUs are accessible. This is the default value in base CUDA container images.
 
     * - ``none``
-      - no GPU will be accessible, but driver capabilities will be enabled.
+      - No GPU is accessible, but driver capabilities are enabled.
 
     * - ``void`` or `empty` or `unset`
-      - ``nvidia-container-runtime`` will have the same behavior as ``runc`` (i.e. neither GPUs nor capabilities are exposed)
+      - ``nvidia-container-runtime`` has the same behavior as ``runc`` (that is, neither GPUs nor capabilities are exposed).
 ```
 
 :::{note}
-When using the `--gpus` option to specify the GPUs, the `device` parameter should be used. This is shown in the examples below.
-The format of the `device` parameter should be encapsulated within single quotes, followed by double quotes for the devices you
-want enumerated to the container. For example: `'"device=2,3"'` will enumerate GPUs 2 and 3 to the container.
+When using the `--gpus` option to specify the GPUs, use the `device` parameter, as shown in the following examples.
+Encapsulate the format of the `device` parameter within single quotes, followed by double quotes for the devices you
+want enumerated to the container. For example, `'"device=2,3"'` enumerates GPUs 2 and 3 to the container.
 
-When using the NVIDIA_VISIBLE_DEVICES variable, you may need to set `--runtime` to `nvidia` unless already set as default.
+When using the NVIDIA_VISIBLE_DEVICES variable, you might need to set `--runtime` to `nvidia` unless it is already set as the default.
 :::
 
-Some examples of the usage are shown below:
+The following examples show common usage:
 
-1. Starting a GPU enabled CUDA container; using `--gpus`
+1. Start a GPU-enabled CUDA container using `--gpus`:
 
    ```console
    $ docker run --rm --gpus all nvidia/cuda nvidia-smi
    ```
 
-2. Using `NVIDIA_VISIBLE_DEVICES` and specify the nvidia runtime
+2. Use `NVIDIA_VISIBLE_DEVICES` and specify the NVIDIA runtime:
 
    ```console
    $ docker run --rm --runtime=nvidia \
        -e NVIDIA_VISIBLE_DEVICES=all nvidia/cuda nvidia-smi
    ```
 
-3. Start a GPU enabled container on two GPUs
+3. Start a GPU-enabled container on two GPUs:
 
    ```console
    $ docker run --rm --gpus 2 nvidia/cuda nvidia-smi
    ```
 
-4. Starting a GPU enabled container on specific GPUs
+4. Start a GPU-enabled container on specific GPUs:
 
    ```console
    $ docker run --gpus '"device=1,2"' \
@@ -81,7 +81,7 @@ Some examples of the usage are shown below:
    GPU-16a23983-e73e-0945-2095-cdeb50696982
    ```
 
-5. Alternatively, you can also use `NVIDIA_VISIBLE_DEVICES`
+5. Alternatively, use `NVIDIA_VISIBLE_DEVICES`:
 
    ```console
    $ docker run --rm --runtime=nvidia \
@@ -95,7 +95,7 @@ Some examples of the usage are shown below:
    GPU-16a23983-e73e-0945-2095-cdeb50696982
    ```
 
-6. Query the GPU UUID using `nvidia-smi` and then specify that to the container
+6. Query the GPU UUID using `nvidia-smi`, then specify it to the container:
 
    ```console
    $ nvidia-smi -i 3 --query-gpu=uuid --format=csv
@@ -113,7 +113,7 @@ Some examples of the usage are shown below:
 
 ### Driver Capabilities
 
-The `NVIDIA_DRIVER_CAPABILITIES` controls which driver libraries/binaries will be mounted inside the container.
+The `NVIDIA_DRIVER_CAPABILITIES` variable controls which driver libraries and binaries are mounted inside the container.
 
 The possible values of the `NVIDIA_DRIVER_CAPABILITIES` variable are:
 
@@ -135,7 +135,7 @@ The possible values of the `NVIDIA_DRIVER_CAPABILITIES` variable are:
       - use default driver capability: ``utility``, ``compute``
 ```
 
-The supported driver capabilities are provided below:
+The following table describes the supported driver capabilities:
 
 ```{eval-rst}
 .. list-table::
@@ -164,7 +164,7 @@ The supported driver capabilities are provided below:
       - required for leveraging X11 display.
 ```
 
-For example, specify the `compute` and `utility` capabilities, allowing usage of CUDA and NVML
+For example, to allow usage of CUDA and NVML, specify the `compute` and `utility` capabilities:
 
 > ```console
 > $ docker run --rm --runtime=nvidia \
@@ -180,13 +180,13 @@ For example, specify the `compute` and `utility` capabilities, allowing usage of
 
 ### Constraints
 
-The NVIDIA runtime also provides the ability to define constraints on the configurations supported by the container.
+The NVIDIA runtime also lets you define constraints on the configurations that the container supports.
 
 #### NVIDIA_REQUIRE_* Constraints
 
 This variable is a logical expression to define constraints on the software versions or GPU architectures on the container.
 
-The supported constraints are provided below:
+The following table describes the supported constraints:
 
 ```{eval-rst}
 .. list-table::
@@ -225,23 +225,23 @@ NVIDIA_REQUIRE_CUDA "cuda>=11.0 driver>=450"
 Single switch to disable all the constraints of the form `NVIDIA_REQUIRE_*`.
 
 :::{note}
-If you are running CUDA-base images older than CUDA 11.7 (and unable to update to the new base images with updated constraints),
-CUDA compatibility checks can be disabled by setting `NVIDIA_DISABLE_REQUIRE` to `true`.
+If you are running CUDA base images older than CUDA 11.7 and cannot update to the new base images with updated constraints,
+you can disable CUDA compatibility checks by setting `NVIDIA_DISABLE_REQUIRE` to `true`.
 :::
 
 #### NVIDIA_REQUIRE_CUDA Constraint
 
 The version of the CUDA toolkit used by the container. It is an instance of the
 generic `NVIDIA_REQUIRE_*` case and it is set by official CUDA images. If the version of the NVIDIA driver
-is insufficient to run this version of CUDA, the container will not be started. This variable
-can be specified in the form `major.minor`
+is insufficient to run this version of CUDA, the container does not start. This variable
+can be specified in the form `major.minor`.
 
-The possible values for this variable: `cuda>=7.5`, `cuda>=8.0`, `cuda>=9.0` and so on.
+The possible values for this variable are `cuda>=7.5`, `cuda>=8.0`, `cuda>=9.0`, and so on.
 
 ### Dockerfiles
 
-Capabilities and GPU enumeration can be set in images via environment variables. If the environment variables are
-set inside the Dockerfile, you don't need to set them on the `docker run` command-line.
+You can set capabilities and GPU enumeration in images using environment variables. If you
+set the environment variables inside the Dockerfile, you do not need to set them on the `docker run` command line.
 
 For instance, if you are creating your own custom CUDA container, you should use the following:
 
@@ -250,4 +250,4 @@ ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 ```
 
-These environment variables are already set in the NVIDIA provided CUDA images.
+These environment variables are already set in the NVIDIA-provided CUDA images.

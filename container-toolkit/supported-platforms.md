@@ -4,7 +4,7 @@
 
 (supported-platforms)=
 
-# Platform support
+# Platform Support
 
 Recent NVIDIA Container Toolkit releases are tested and expected to work on these Linux distributions:
 
@@ -23,17 +23,17 @@ Recent NVIDIA Container Toolkit releases are tested and expected to work on thes
 | Rocky Linux 9.7          | X              | X       | X                        |
 
 
-## Report issues
+## Report Issues
 
-Our qualification-testing procedures are constantly evolving and we might miss
-certain problems. [Report](https://github.com/NVIDIA/nvidia-container-toolkit/issues) issues in
-particular as they occur on a platform listed above.
+NVIDIA qualification-testing procedures are continually evolving and might miss
+some problems. [Report issues on GitHub](https://github.com/NVIDIA/nvidia-container-toolkit/issues),
+in particular those that occur on a platform listed in the table.
 
 
-## Other Linux distributions
+## Other Linux Distributions
 
-Releases may work on more platforms than indicated in the table above (such as on distribution versions older and newer than listed).
-Give things a try and we invite you to [report](https://github.com/NVIDIA/nvidia-container-toolkit/issues) any issue observed even if your Linux distribution is not listed.
+Releases can work on more platforms than indicated in the table above, such as distribution versions older and newer than those listed.
+You can still try them and [report any issue](https://github.com/NVIDIA/nvidia-container-toolkit/issues) you observe, even if your Linux distribution is not listed.
 
 ----
 
