@@ -291,8 +291,8 @@ The ``gpu.nvidia.com`` and ``mig.nvidia.com`` DeviceClasses are installed when G
 
 Additional validation steps are available in the upstream DRA Driver documentation:
 
-* `Validate setup for ComputeDomain allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
-* `Validate setup for GPU allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-GPU-allocation>`_
+* `Validate setup for ComputeDomain allocation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-computedomain-workload>`_
+* `Validate setup for GPU allocation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-gpu-allocation-workload>`_
 
 .. _upgrade:
 
