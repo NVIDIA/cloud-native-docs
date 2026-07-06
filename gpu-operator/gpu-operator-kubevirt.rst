@@ -8,6 +8,9 @@
 GPU Operator with KubeVirt
 **************************
 
+.. tip::
+   For information about using the GPU Operator with Red Hat OpenShift Virtualization, refer to the :ref:`NVIDIA GPU Operator with OpenShift Virtualization <nvidia-gpu-operator-openshift-virtualization-vgpu-enablement>` page.
+
 .. _gpu-operator-kubevirt-introduction:
 
 About the Operator with KubeVirt
@@ -551,18 +554,16 @@ Open a terminal and clone the driver container image repository.
 
       $ cp <local-driver-download-directory>/*-vgpu-kvm.run vgpu-manager/ubuntu22.04/
 
-.. note::
-
-   For Red Hat OpenShift, use a directory that includes ``rhel`` in the directory name. For example, ``vgpu-manager/rhel8``.
-
 | Set the following environment variables:
-| ``PRIVATE_REGISTRY`` - name of private registry used to store driver image
-| ``VGPU_HOST_DRIVER_VERSION`` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal
-| ``OS_TAG`` - this must match the Guest OS version. In the following example ``ubuntu22.04`` is used. For Red Hat OpenShift this should be set to ``rhcos4.x`` where x is the supported minor OCP version.
+
+| * ``PRIVATE_REGISTRY`` - name of private registry used to store driver image
+| * ``VGPU_HOST_DRIVER_VERSION`` - NVIDIA vGPU Manager version downloaded from NVIDIA Software Portal
+| * ``OS_TAG`` - this must match the Guest OS version. In the following example ``ubuntu22.04`` is used. 
 
 .. code-block:: console
 
    $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=ubuntu22.04
+
 
 Build the NVIDIA vGPU Manager image.
 
