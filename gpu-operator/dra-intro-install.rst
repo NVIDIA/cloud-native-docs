@@ -291,8 +291,8 @@ The ``gpu.nvidia.com`` and ``mig.nvidia.com`` DeviceClasses are installed when G
 
 Additional validation steps are available in the upstream DRA Driver documentation:
 
-* `Validate setup for ComputeDomain allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-ComputeDomain-allocation>`_
-* `Validate setup for GPU allocation <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/wiki/Validate-setup-for-GPU-allocation>`_
+* `Validate setup for ComputeDomain allocation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-computedomain-workload>`_
+* `Validate setup for GPU allocation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-gpu-allocation-workload>`_
 
 .. _upgrade:
 
@@ -309,8 +309,8 @@ Without ``--set nameOverride=nvidia-dra-driver-gpu``, the upgrade creates new da
 .. important::
    After upgrading to v0.4.0, downgrading to v25.x is not supported.
 
-Upgrade from v25.x to v0.4.0
-****************************
+Upgrade from v25.x to v0.4.0 or later
+**************************************
 
 1. Apply the v${dra_version} CRDs for ComputeDomains and ComputeDomainsCliques before upgrading the Helm chart.
    Refer to the `v${dra_version} release page <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__ for the CRD manifests.
