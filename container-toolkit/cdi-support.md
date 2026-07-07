@@ -11,7 +11,7 @@
 
 ## About the Container Device Interface
 
-As of the `v1.12.0` release the NVIDIA Container Toolkit includes support for generating Container Device Interface (CDI) specifications.
+As of the `v1.12.0` release, the NVIDIA Container Toolkit includes support for generating Container Device Interface (CDI) specifications.
 
 CDI is an open specification for container runtimes that abstracts what *access* to a device, such as an NVIDIA GPU, means, and standardizes access across container runtimes.
 Popular container runtimes can read and process the specification to ensure that a device is available in a container.
@@ -19,7 +19,7 @@ CDI simplifies adding support for devices such as NVIDIA GPUs because the specif
 
 CDI also improves the compatibility of the NVIDIA container stack with certain features such as rootless containers.
 
-## Generating a CDI specification
+## Generating a CDI Specification
 
 ### Prerequisites
 
@@ -42,15 +42,15 @@ As of NVIDIA Container Toolkit `v1.18.0`, the CDI specification is automatically
   - The system is rebooted
 
 This ensures that the CDI specifications are up to date for the current driver
-and device configuration and that CDI Devices defined in these speciciations are
+and device configuration and that CDI Devices defined in these specifications are
 available when using native CDI support in container engines such as Docker or Podman.
 
-Running the following command will give a list of availble CDI Devices:
+Run the following command to list the available CDI Devices:
 ```console
 nvidia-ctk cdi list
 ```
 
-#### Known limitations
+#### Known Limitations
 The `nvidia-cdi-refresh` service does not currently handle the following situations:
 
 - The removal of NVIDIA GPU drivers
@@ -59,21 +59,21 @@ The `nvidia-cdi-refresh` service does not currently handle the following situati
 For these scenarios, the regeneration of CDI specifications must be [manually triggered](#manual-cdi-specification-generation).
 
 #### Customizing the Automatic CDI Refresh Service
-The behavior of the `nvidia-cdi-refresh` service can be customized by adding
-environment variables to `/etc/nvidia-container-toolkit/cdi-refresh.env` to
-affect the behavior of the `nvidia-ctk cdi generate` command.
+To customize the behavior of the `nvidia-cdi-refresh` service, add
+environment variables to `/etc/nvidia-container-toolkit/nvidia-cdi-refresh.env`. These
+variables affect the behavior of the `nvidia-ctk cdi generate` command.
 
-As an example, to enable debug logging the configuration file should be updated
+For example, to enable debug logging, update the configuration file
 as follows:
 ```bash
-# /etc/nvidia-container-toolkit/cdi-refresh.env
+# /etc/nvidia-container-toolkit/nvidia-cdi-refresh.env
 NVIDIA_CTK_DEBUG=1
 ```
 
-For a complete list of available environment variables, run `nvidia-ctk cdi generate --help` to see the command's documentation.
+For a complete list of available environment variables, run `nvidia-ctk cdi generate --help` to view the command's documentation.
 
 ```{important}
-Modifications to the environment file required a systemd reload and restarting the
+Modifications to the environment file require a systemd reload and restarting the
 service to take effect
 ```
 
@@ -92,8 +92,8 @@ The `nvidia-cdi-refresh` service consists of two systemd units:
 
 These services can be managed using standard systemd commands.
 
-When working as expected, the `nvidia-cdi-refresh.path` service will be enabled and active, and the
-`nvidia-cdi-refresh.service` will be enabled and have run at least once. For example:
+When working as expected, the `nvidia-cdi-refresh.path` service is enabled and active, and the
+`nvidia-cdi-refresh.service` is enabled and has run at least once. For example:
 
 ```console
 $ sudo systemctl status nvidia-cdi-refresh.path
@@ -115,7 +115,7 @@ TriggeredBy: ● nvidia-cdi-refresh.path
 ...
 ```
 
-If these are not enabled as expected, they can be enabled by running:
+If these are not enabled as expected, enable them by running:
 
 ```console
 $ sudo systemctl enable --now nvidia-cdi-refresh.path
@@ -124,9 +124,8 @@ $ sudo systemctl enable --now nvidia-cdi-refresh.service
 
 #### Troubleshooting CDI Specification Generation and Resolution
 
-If CDI specifications for available devices are not generated / updated as expected, it is
-recommended that the logs for the `nvidia-cdi-refresh.service` be checked. This can be
-done by running:
+If CDI specifications for available devices are not generated or updated as expected,
+check the logs for the `nvidia-cdi-refresh.service` by running:
 
 ```console
 $ sudo journalctl -u nvidia-cdi-refresh.service
@@ -144,19 +143,19 @@ Running:
 ```console
 $ nvidia-ctk --debug cdi list
 ```
-will show a list of available CDI Devices as well as any errors that may have
-occurred when loading CDI Specifications from `/etc/cdi` or `/var/run/cdi`.
+Shows a list of available CDI Devices and any errors that occurred when loading CDI
+Specifications from `/etc/cdi` or `/var/run/cdi`.
 
 ### Manual CDI Specification Generation
 
-As of the NVIDIA Container Toolkit `v1.18.0` the recommended mechanism to regenerate CDI specifications is to restart the `nvidia-cdi-refresh.service`:
+As of the NVIDIA Container Toolkit `v1.18.0`, the recommended mechanism to regenerate CDI specifications is to restart the `nvidia-cdi-refresh.service`:
 
 ```console
 $ sudo systemctl restart nvidia-cdi-refresh.service
 ```
 
-If this does not work, or more flexibility is required, the `nvidia-ctk cdi generate` command
-can be used directly:
+If this does not work, or you need more flexibility, use the `nvidia-ctk cdi generate` command
+directly:
 
 ```console
 $ sudo nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml
@@ -168,9 +167,9 @@ Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container 
 This means that if a `/usr/share/containers/oci/hooks.d/oci-nvidia-hook.json` file exists, delete it
 or ensure that you do not run containers with the `NVIDIA_VISIBLE_DEVICES` environment variable set.
 
-The use of the CDI specification is dependent on the CDI-enabled container engine or CLI that you use.
+The use of the CDI specification depends on the CDI-enabled container engine or CLI that you use.
 In the case of `podman`, for example, releases as of `v4.1.0` include support for specifying CDI devices in the `--device` argument.
-Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs would require the following command:
+Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs requires the following command:
 
 ```console
 $ podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L

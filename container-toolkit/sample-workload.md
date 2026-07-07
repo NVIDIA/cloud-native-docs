@@ -11,7 +11,7 @@ you can verify your installation by running a sample workload.
    sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi
    ```
 
-   Your output should resemble the following output:
+   Your output should resemble the following:
 
    ```{literalinclude} ./output/nvidia-smi.txt
    ---
@@ -32,7 +32,7 @@ you can verify your installation by running a sample workload.
       ubuntu nvidia-smi
    ```
 
-   Your output should resemble the following output:
+   Your output should resemble the following:
 
    ```{literalinclude} ./output/nvidia-smi.txt
    ---
