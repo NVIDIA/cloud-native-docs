@@ -181,58 +181,119 @@ Sample ``values.yaml`` override pattern:
    operator:
      repository: <repo.example.com:port>
      image: gpu-operator
-     version: ${version}
      imagePullSecrets: []
 
-    validator:
-      image: gpu-operator-validator
-      repository: <repo.example.com:port>
-      version: ${version}
-      imagePullSecrets: []
+   validator:
+     repository: <repo.example.com:port>
+     image: gpu-operator
+     imagePullSecrets: []
 
-    driver:
+   driver:
      repository: <repo.example.com:port>
      image: driver
-      version: <driver-version>
-      imagePullSecrets: []
+     version: <driver-version>
+     imagePullSecrets: []
 
-    toolkit:
+   toolkit:
      repository: <repo.example.com:port>
      image: container-toolkit
-      version: <toolkit-version>
-      imagePullSecrets: []
+     version: <toolkit-version>
+     imagePullSecrets: []
 
-    devicePlugin:
+   devicePlugin:
      repository: <repo.example.com:port>
      image: k8s-device-plugin
-      version: <device-plugin-version>
-      imagePullSecrets: []
+     version: <device-plugin-version>
+     imagePullSecrets: []
 
-    dcgmExporter:
+   dcgm:
+     repository: <repo.example.com:port>
+     image: dcgm
+     version: <dcgm-version>
+
+   dcgmExporter:
      repository: <repo.example.com:port>
      image: dcgm-exporter
-      version: <dcgm-exporter-version>
-      imagePullSecrets: []
+     version: <dcgm-exporter-version>
 
-    gfd:
+   gfd:
      repository: <repo.example.com:port>
-     image: gpu-feature-discovery
-      version: <gfd-version>
-      imagePullSecrets: []
+     image: k8s-device-plugin
+     version: <gfd-version>
+     imagePullSecrets: []
 
-    migManager:
-      enabled: true
-      repository: <repo.example.com:port>
-      image: k8s-mig-manager
-      version: <mig-manager-version>
+   migManager:
+     repository: <repo.example.com:port>
+     image: k8s-mig-manager
+     version: <mig-manager-version>
+     imagePullSecrets: []
 
-    node-feature-discovery:
-      image:
-        repository: <repo.example.com:port>
-        pullPolicy: IfNotPresent
-        # tag, if defined will use the given image tag, else Chart.AppVersion will be used
-        # tag:
-      imagePullSecrets: []
+   nodeStatusExporter:
+     repository: <repo.example.com:port>
+     image: gpu-operator
+     imagePullSecrets: []
+
+   gds:
+     repository: <repo.example.com:port>
+     image: nvidia-fs
+     version: <gds-version>
+     imagePullSecrets: []
+
+   gdrcopy:
+     repository: <repo.example.com:port>
+     image: gdrdrv
+     version: <gdrcopy-version>
+     imagePullSecrets: []
+
+   vgpuManager:
+     repository: <repo.example.com:port>
+     image: vgpu-manager
+     version: <vgpu-manager-version>
+     imagePullSecrets: []
+     driverManager:
+       repository: <repo.example.com:port>
+       image: k8s-driver-manager
+       version: <driver-manager-version>
+
+   vgpuDeviceManager:
+     repository: <repo.example.com:port>
+     image: vgpu-device-manager
+     version: <vgpu-device-manager-version>
+     imagePullSecrets: []
+
+   vfioManager:
+     repository: <repo.example.com:port>
+     image: k8s-driver-manager
+     version: <driver-manager-version>
+     imagePullSecrets: []
+     driverManager:
+       repository: <repo.example.com:port>
+       image: k8s-driver-manager
+       version: <driver-manager-version>
+
+   sandboxDevicePlugin:
+     repository: <repo.example.com:port>
+     image: kubevirt-gpu-device-plugin
+     version: <sandbox-device-plugin-version>
+     imagePullSecrets: []
+
+   kataSandboxDevicePlugin:
+     repository: <repo.example.com:port>
+     image: nvidia-sandbox-device-plugin
+     version: <kata-sandbox-device-plugin-version>
+     imagePullSecrets: []
+
+   ccManager:
+     repository: <repo.example.com:port>
+     image: k8s-cc-manager
+     version: <cc-manager-version>
+     imagePullSecrets: []
+
+   node-feature-discovery:
+     image:
+       repository: <repo.example.com:port>
+       pullPolicy: IfNotPresent
+     imagePullSecrets: []
 
 
 ************************
