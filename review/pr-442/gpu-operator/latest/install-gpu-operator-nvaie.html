@@ -464,7 +464,7 @@
 <li><p><a class="reference internal" href="#updating-nls-client-license-token" id="id7">Updating NLS Client License Token</a></p>
 <ul>
 <li><p><a class="reference internal" href="#updating-nls-client-license-token-in-secret" id="id8">Updating NLS Client License Token in Secret</a></p></li>
-<li><p><a class="reference internal" href="#updating-nls-client-license-token-in-configmap" id="id9">Updating NLS Client License Token in ConfigMap</a></p></li>
+<li><p><a class="reference internal" href="#updating-nls-client-license-token-in-configmap-deprecated" id="id9">Updating NLS Client License Token in ConfigMap (deprecated)</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#installing-gpu-operator-using-the-data-center-driver" id="id10">Installing GPU Operator Using the Data Center Driver</a></p></li>
@@ -552,7 +552,7 @@ Kubernetes resource type that your <code class="docutils literal notranslate"><s
 <a class="reference internal" href="#updating-nls-secret-based"><span class="std std-ref">Updating NLS Client License Token in Secret</span></a>. Secret-based licensing is supported starting with
 GPU Operator v25.10.0 and is recommended for all new deployments.</p></li>
 <li><p>If your deployment uses a ConfigMap for the licensing configuration, follow
-<a class="reference internal" href="#updating-nls-configmap-based"><span class="std std-ref">Updating NLS Client License Token in ConfigMap</span></a>.</p></li>
+<a class="reference internal" href="#updating-nls-configmap-based"><span class="std std-ref">Updating NLS Client License Token in ConfigMap (deprecated)</span></a>.</p></li>
 </ul>
 <section id="updating-nls-client-license-token-in-secret">
 <span id="updating-nls-secret-based"></span><h3>Updating NLS Client License Token in Secret<a class="headerlink" href="#updating-nls-client-license-token-in-secret" title="Permalink to this headline">#</a></h3>
@@ -597,14 +597,13 @@ configuration file and the NLS client license token are added to this Secret:</p
 </li>
 </ol>
 </section>
-<section id="updating-nls-client-license-token-in-configmap">
-<span id="updating-nls-configmap-based"></span><h3>Updating NLS Client License Token in ConfigMap<a class="headerlink" href="#updating-nls-client-license-token-in-configmap" title="Permalink to this headline">#</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<section id="updating-nls-client-license-token-in-configmap-deprecated">
+<span id="updating-nls-configmap-based"></span><h3>Updating NLS Client License Token in ConfigMap (deprecated)<a class="headerlink" href="#updating-nls-client-license-token-in-configmap-deprecated" title="Permalink to this headline">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">configMap</span></code> (<code class="docutils literal notranslate"><span class="pre">configMapName</span></code>) is <strong>deprecated</strong> and will be removed in a future release.
-Use this procedure only if your existing deployment already uses a ConfigMap for the
-licensing configuration. When you are ready to migrate to a Secret, follow
-<a class="reference internal" href="#updating-nls-secret-based"><span class="std std-ref">Updating NLS Client License Token in Secret</span></a> instead.</p>
+It is strongly recommended that you migrate to the Secret configuration option for license management.
+Follow <a class="reference internal" href="#updating-nls-secret-based"><span class="std std-ref">Updating NLS Client License Token in Secret</span></a> for migration details.</p>
 </div>
 <p>Use the following procedure for deployments that use a ConfigMap for the <code class="docutils literal notranslate"><span class="pre">licensing-config</span></code>:</p>
 <ol class="arabic">
@@ -744,7 +743,7 @@ Use the <code class="docutils literal notranslate"><span class="pre">--version=&
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-nls-client-license-token">Updating NLS Client License Token</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-nls-client-license-token-in-secret">Updating NLS Client License Token in Secret</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-nls-client-license-token-in-configmap">Updating NLS Client License Token in ConfigMap</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#updating-nls-client-license-token-in-configmap-deprecated">Updating NLS Client License Token in ConfigMap (deprecated)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-gpu-operator-using-the-data-center-driver">Installing GPU Operator Using the Data Center Driver</a></li>
