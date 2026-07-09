@@ -198,6 +198,12 @@ The GPU Operator also supports dynamic updates to the ``ClusterPolicy`` CustomRe
 
 After the edits are complete, Kubernetes will automatically apply the updates to cluster.
 
+.. note::
+
+   For NVIDIA AI Enterprise vGPU deployments, the ``configMap`` (``configMapName``) for the NLS
+   licensing configuration is **deprecated** and will be removed in a future release. It is recommended to migrate to use Secret based licensing when you upgrade to GPU Operator v25.10.0 or later.
+   Refer to :ref:`updating-nls-secret-based` in the NVIDIA AI Enterprise install guide for details on migrating.
+
 ***************************************
 Additional Controls for Driver Upgrades
 ***************************************
