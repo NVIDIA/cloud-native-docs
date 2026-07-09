@@ -180,15 +180,14 @@ new deployments. Use the following procedure for deployments that use a Secret f
 
 .. _updating-nls-configmap-based:
 
-Updating NLS Client License Token in ConfigMap
-==============================================
+Updating NLS Client License Token in ConfigMap (deprecated)
+===========================================================
 
-.. note::
+.. warning::
 
    The ``configMap`` (``configMapName``) is **deprecated** and will be removed in a future release.
-   Use this procedure only if your existing deployment already uses a ConfigMap for the
-   licensing configuration. When you are ready to migrate to a Secret, follow
-   :ref:`updating-nls-secret-based` instead.
+   It is strongly recommended that you migrate to the Secret configuration option for license management. 
+   Follow :ref:`updating-nls-secret-based` for migration details.
 
 Use the following procedure for deployments that use a ConfigMap for the ``licensing-config``:
 
