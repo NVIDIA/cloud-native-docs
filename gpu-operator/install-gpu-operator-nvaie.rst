@@ -186,7 +186,7 @@ Updating NLS Client License Token in ConfigMap (deprecated)
 .. warning::
 
    The ``configMap`` (``configMapName``) is **deprecated** and will be removed in a future release.
-   It is strongly recommended that you migrate to the Secret configuration option for license management. 
+   It is strongly recommended that you migrate to use Secret-based licensing. 
    Follow :ref:`updating-nls-secret-based` for migration details.
 
 Use the following procedure for deployments that use a ConfigMap for the ``licensing-config``:
