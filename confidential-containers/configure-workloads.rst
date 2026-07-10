@@ -57,13 +57,10 @@ Select the runtime class based on the CPU TEE on the target worker node:
 
    * - Node TEE
      - Runtime class
-     - Typical CPU vendor
    * - AMD SEV-SNP
      - ``kata-qemu-nvidia-gpu-snp``
-     - AMD EPYC (Genoa or newer)
    * - Intel TDX
      - ``kata-qemu-nvidia-gpu-tdx``
-     - Intel Xeon (Sapphire Rapids or newer)
 
 The ``kata-deploy`` chart also installs a ``kata-qemu-nvidia-gpu`` runtime class.
 That class is intended for non-confidential Kata workloads. 
