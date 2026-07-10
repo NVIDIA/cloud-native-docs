@@ -33,6 +33,41 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.0:
+
+26.7.0
+=======
+
+.. This 26.7.0 entry is in progress. Only changes confirmed against merged code are listed.
+   Pending items (NVIDIADriver CR migration, CDI/NRI default change, image hardening,
+   Ubuntu 26.04, new hardware, component versions) are added as they are verified on the
+   release branch.
+
+New Features
+------------
+
+* Added an ``upgradePolicy`` field to the NVIDIA driver custom resource definition (CRD).
+  You can now define a driver upgrade policy per NVIDIADriver custom resource.
+  When the field is unset, the driver-upgrade controller falls back to the default upgrade policy that is defined in the Helm chart values.
+  (`PR #2582 <https://github.com/NVIDIA/gpu-operator/pull/2582>`__)
+
+* Added the ``hostPaths.kubeletRootDir`` Helm value to configure a custom kubelet root directory.
+  When left empty, the GPU Operator uses ``/var/lib/kubelet`` as the default path.
+  (`PR #1384 <https://github.com/NVIDIA/gpu-operator/pull/1384>`__)
+
+* Added the ``dcgmExporter.serviceMonitor.scrapeTimeout`` Helm value to configure the scrape timeout for the DCGM Exporter ``ServiceMonitor``.
+  (`PR #2404 <https://github.com/NVIDIA/gpu-operator/pull/2404>`__)
+
+Fixed Issues
+------------
+
+* Fixed an issue where custom NVIDIADriver custom resources could remain stuck and fail to reconcile after a conflicting default NVIDIADriver custom resource was deleted.
+  The GPU Operator now re-evaluates all NVIDIADriver custom resources whenever any NVIDIADriver custom resource changes.
+  (`PR #2258 <https://github.com/NVIDIA/gpu-operator/pull/2258>`__)
+
+
+----
+
 .. _v26.3.3:
 
 26.3.3
