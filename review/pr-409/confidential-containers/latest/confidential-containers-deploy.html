@@ -29,8 +29,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
@@ -39,10 +39,10 @@
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
@@ -56,7 +56,7 @@
     <script src="_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'confidential-containers-deploy';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 05, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -415,7 +415,8 @@
 <p>This page describes deploying Kata Containers and the NVIDIA GPU Operator.
 These are key pieces of the NVIDIA Confidential Containers Reference Architecture used to manage GPU resources on your cluster and deploy workloads into Confidential Containers.</p>
 <p>Before you begin, refer to the <a class="reference internal" href="overview.html"><span class="doc">Confidential Containers Reference Architecture</span></a> for details on the reference architecture and the <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> page for the supported platforms.</p>
-<p>This guide assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, and Kubernetes cluster administration.
+<p>This guide is for Kubernetes cluster administrators with host access to worker nodes (for BIOS and kernel configuration) and cluster-admin access to use <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>.
+It assumes you are familiar with the NVIDIA GPU Operator, Kata Containers, Helm, and Kubernetes cluster administration, and that you know whether your target hardware uses AMD SEV-SNP or Intel TDX.
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator</span></a> and <a class="reference external" href="https://katacontainers.io/docs/">Kata Containers</a> documentation for more information on these software components.
 Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> for more information on Kubernetes cluster administration.</p>
 <section id="overview">
@@ -431,9 +432,16 @@ This installs the NVIDIA GPU Operator components that are required to deploy GPU
 The GPU Operator uses the node labels to determine what software components to deploy to a node.</p></li>
 </ol>
 <p>After installation, you can <a class="reference internal" href="#coco-run-sample-workload"><span class="std std-ref">run a sample GPU workload</span></a> in a confidential container.
-You can also configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.
+The sample CUDA workload at the end of this guide returns <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> when your cluster is correctly configured.</p>
+<p>When you complete the steps in this guide, your cluster has the following:</p>
+<ul class="simple">
+<li><p>One or more worker nodes labeled with <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state=true</span></code>.</p></li>
+<li><p>The  <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed on the cluster.</p></li>
+<li><p>GPU Operator pods, including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager, running on labeled nodes.</p></li>
+</ul>
+<p>After this baseline is in place, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> runtime class for AMD-based systems or the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime class for Intel-based systems.
+To verify the environment and release secrets to those workloads, configure <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> with the Trustee framework.
 The Trustee attestation service is typically deployed on a separate, trusted environment.</p>
-<p>After configuration, you can schedule workloads that request GPU resources and use the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems runtime classes for secure deployment.</p>
 </section>
 <section id="prerequisites">
 <span id="coco-prerequisites"></span><h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
@@ -496,9 +504,8 @@ Confidential Containers uses VFIO to pass GPUs directly to the confidential VM, 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep nvidia
 </pre></div>
 </div>
-<p>If the output is empty, no NVIDIA GPU drivers are loaded.
-If modules such as <code class="docutils literal notranslate"><span class="pre">nvidia</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia_uvm</span></code>, or <code class="docutils literal notranslate"><span class="pre">nvidia_modeset</span></code> are listed, NVIDIA GPU drivers are present and must be removed before proceeding.
-Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html">Removing the Driver</a> in the NVIDIA Driver Installation Guide.</p>
+<p>If the command produces no output, no NVIDIA GPU drivers are loaded and you can continue to the next step.</p>
+<p>Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html">Removing the Driver</a> in the NVIDIA Driver Installation Guide to remove the drivers.</p>
 </li>
 </ul>
 </section>
@@ -526,13 +533,13 @@ Use the command below to install Helm or refer to the <a class="reference extern
 </pre></div>
 </div>
 </li>
-<li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> Kubelet feature gates on your cluster.</p>
+<li><p>Enable the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> Kubelet feature gates on your cluster.
+On Kubernetes v1.34 and later, <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is already enabled by default and only <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> requires explicit configuration.
+On earlier Kubernetes versions, enable both gates.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code>: Enabled by default on Kubernetes v1.34 and later.
-On older versions, you must enable it explicitly.
-The Kata runtime uses this feature gate to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code>: Alpha since Kubernetes v1.29 and is not enabled by default.
-This feature gate is required to support pod deployments that use multiple snapshotters side-by-side.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code>: Used by the Kata runtime to query the Kubelet Pod Resources API and discover allocated GPU devices during sandbox creation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code>: Alpha since Kubernetes v1.29 and not enabled by default.
+Required to support pod deployments that use multiple snapshotters side-by-side.</p></li>
 </ul>
 <p>Add both feature gates to your Kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
@@ -550,10 +557,11 @@ This feature gate is required to support pod deployments that use multiple snaps
 </li>
 </ul>
 <ul id="configure-image-pull-timeouts">
-<li><p>Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images.
-Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.</p>
-<p>Increase <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to match the default values for the Kata shim configurations in Kata Containers.
-The default timeout is 2 minutes.</p>
+<li><p>Increase the kubelet image pull timeout to a value that comfortably covers your largest workload image.
+Kubelet de-allocates a pod if the image pull exceeds the configured timeout before the container transitions to the running state.
+Actual pull duration varies with image size and network throughput, so this guide uses <code class="docutils literal notranslate"><span class="pre">20m</span></code> as a conservative ceiling that accommodates most workload images.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> in your <a class="reference external" href="https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/">kubelet configuration</a> to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to align with the default Kata shim <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code> of 1200 seconds.
+The kubelet default is 2 minutes, which can be too short for GPU workloads.</p>
 <p>Add or update the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> field in your kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>):</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
@@ -564,8 +572,8 @@ The default timeout is 2 minutes.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
-<p>If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>, which defaults to 1200s.
-This setting also sets the confidential data hub’s image pull API timeout in seconds.
+<p>If you need a timeout of more than 1200 seconds (20 minutes), also adjust the Kata Agent’s <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.
+This setting also controls the Confidential Data Hub’s image pull API timeout in seconds.
 To do this, add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params:</span> <span class="pre">&quot;...&quot;</span></code> annotation.</p>
 </li>
 </ul>
@@ -736,6 +744,12 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <span class="go">TEST SUITE: None</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag instructs Helm to wait until the release is deployed before returning.
+Some GPU Operator pods can take several additional minutes to reach the Running state after the Helm command completes.
+Use the optional verification step that follows to confirm pod status.</p>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code> if every worker node should deploy Confidential Containers by default.</p>
@@ -762,12 +776,10 @@ The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidi
 <p>For more details on each of the GPU Operator components, refer to the <a class="reference internal" href="overview.html#coco-gpu-operator-components"><span class="std std-ref">GPU Operator Cluster Topology Considerations</span></a> section in the architecture overview.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It can take several minutes for all GPU Operator pods to be in the Running state.
-If you are not seeing the expected output, you can view the logs for the GPU Operator pods:
-.. code-block:: console</p>
-<blockquote>
-<div><p>$ kubectl logs -n gpu-operator &lt;pod-name&gt;</p>
-</div></blockquote>
+<p>If you are not seeing the expected output, view the logs for the GPU Operator pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
+</pre></div>
+</div>
 <p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
 </div>
 </li>
@@ -1239,8 +1251,8 @@ This Argo Workflows-based tool manages Kata Containers upgrades and day-two oper
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
 
