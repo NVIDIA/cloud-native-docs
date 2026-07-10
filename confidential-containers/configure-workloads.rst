@@ -53,7 +53,7 @@ Select the runtime class based on the CPU TEE on the target worker node:
 
 .. list-table::
    :header-rows: 1
-   :widths: 30 40 30
+   :widths: 50 50
 
    * - Node TEE
      - Runtime class
