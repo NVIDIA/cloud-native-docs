@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -372,7 +372,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
@@ -400,6 +400,7 @@
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
 </ul>
 </div>
 </nav></div>
@@ -492,7 +493,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <p>With this procedure, all existing GPU Operator resources are updated inline and the cluster policy resource is patched with updates from <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.2
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.3
 </pre></div>
 </div>
 </li>
@@ -560,7 +561,7 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <p>Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.2
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.3
 </pre></div>
 </div>
 </li>

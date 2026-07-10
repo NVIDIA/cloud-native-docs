@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -532,6 +532,40 @@ If your cluster was installed with the <code class="docutils literal notranslate
 </pre></div>
 </div>
 </li>
+<li><p>Confirm the workload ran confidentially.</p>
+<p>While the pod is still <code class="docutils literal notranslate"><span class="pre">Running</span></code>, query the GPU’s Confidential Computing state from
+inside the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> cuda-vectoradd-kata -- nvidia-smi conf-compute -q
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">CC status: ON</span>
+<span class="go">CC Environment: PRODUCTION</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">CC</span> <span class="pre">status:</span> <span class="pre">ON</span></code> confirms that the GPU passed through to the workload is operating in
+Confidential Computing mode.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The vector-add sample exits quickly, so run this command while the pod is still
+<code class="docutils literal notranslate"><span class="pre">Running</span></code>; you cannot <code class="docutils literal notranslate"><span class="pre">exec</span></code> into a <code class="docutils literal notranslate"><span class="pre">Completed</span></code> pod.
+If the pod has already completed, re-create it and re-run the command promptly, or use
+a longer-running workload.
+You can also confirm the node independently by checking that
+<code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code> (or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>); refer to
+<a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> and <code class="docutils literal notranslate"><span class="pre">CC</span> <span class="pre">status:</span> <span class="pre">ON</span></code> confirm functional, hardware-isolated GPU
+execution.
+They do <strong>not</strong> by themselves cryptographically prove the environment to a remote
+party.
+Confidentiality is <em>established</em> by attestation, which verifies the TEE and releases
+secrets only to a proven-good environment.
+Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p>
+</div>
+</li>
 <li><p>Optionally, you can verify the sample app was running the Kata container runtime by checking the pod details:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe pod cuda-vectoradd-kata
 </pre></div>
@@ -563,6 +597,15 @@ If your cluster was installed with the <code class="docutils literal notranslate
 </ol>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You have verified that a GPU workload runs on the confidential runtime. This is the end of the
+deployment path covered by this guide.</p>
+<p>Attestation is what cryptographically verifies the TEE and releases secrets to a
+production workload. For attestation concepts and a local
+connectivity test, see the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart. For production attestation
+deployment, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">Confidential Containers NVIDIA attestation guide</a>.</p>
+</div>
 <p>If you’d like to continue to learn about Confidential Container configuraion, review the following pages:</p>
 <ul class="simple">
 <li><p>Refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a> for runtime class selection, resource types, and multi-GPU passthrough manifests.</p></li>

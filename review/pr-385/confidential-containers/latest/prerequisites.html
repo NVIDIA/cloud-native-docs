@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -596,7 +596,8 @@ Refer to the <a class="reference internal" href="supported-platforms.html#coco-s
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">containerd containerd.io 2.2.2 ...</span>
 </pre></div>
 </div>
-<p>If you are running a different version on any worker node, refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
+<p>The reported version must be <code class="docutils literal notranslate"><span class="pre">2.2.2</span></code>.
+If you are running a different version on any worker node, refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
 </section>
 <section id="helm">
 <span id="coco-prereq-helm"></span><h3>Helm<a class="headerlink" href="#helm" title="Permalink to this headline">#</a></h3>
@@ -667,6 +668,17 @@ Kubernetes earlier than v1.34</label><div class="sd-tab-content docutils">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
 </pre></div>
 </div>
+</li>
+<li><p>Confirm the kubelet restarted cleanly with the new configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl is-active kubelet
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">active</span>
+</pre></div>
+</div>
+<p>A result of <code class="docutils literal notranslate"><span class="pre">active</span></code> confirms the kubelet restarted successfully.
+If it reports <code class="docutils literal notranslate"><span class="pre">activating</span></code> or <code class="docutils literal notranslate"><span class="pre">failed</span></code>, inspect <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">status</span> <span class="pre">kubelet</span></code> and <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">journalctl</span> <span class="pre">-u</span> <span class="pre">kubelet</span></code> for configuration errors before continuing.</p>
 </li>
 </ol>
 <div class="admonition note">

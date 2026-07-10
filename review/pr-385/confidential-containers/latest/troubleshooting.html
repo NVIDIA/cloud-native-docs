@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -502,7 +502,7 @@ The sections below cover Confidential Containers-specific deploy failures: CC no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
 </pre></div>
 </div>
-<p>After a successful Kata Containers deployment, you should see <code class="docutils literal notranslate"><span class="pre">kata-qemu-snp</span></code> (AMD SEV-SNP) and <code class="docutils literal notranslate"><span class="pre">kata-qemu-tdx</span></code> (Intel TDX) in the output.
+<p>After a successful Kata Containers deployment, you should see <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> (AMD SEV-SNP) and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> (Intel TDX) in the output.
 If these are missing, continue to the next steps.</p>
 </li>
 <li><p>Get the list of Kata Containers pod:</p>
@@ -547,17 +547,20 @@ Remove the workload to unblock the mode transition.</p>
 </li>
 </ul>
 <p><strong>Checks:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the node you want to check:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
 <ol class="arabic">
 <li><p>Check the cc.mode labels:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
-<span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
       jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">   </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
@@ -640,11 +643,14 @@ This typicall indicates that your GPU does not support Confidential Computing mo
 You may need to contact your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> to confirm the GPU is supported and the hardware is functioning correctly.
 Refer to the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for more information on required hardware.</p>
 <p><strong>Checks:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the node you want to check:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
 <ol class="arabic">
 <li><p>Confirm no user workloads are running on the node before changing CC mode.
 List pods scheduled on the node:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
-<span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o wide
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o wide
 </pre></div>
 </div>
 <p>This lists pods on <code class="docutils literal notranslate"><span class="pre">$NODE_NAME</span></code>.
@@ -705,16 +711,20 @@ Refer to the Kubelet Configuration section in <a class="reference internal" href
 <li><p>All passthrough GPUs on eligible nodes are already allocated to other pods.</p></li>
 </ul>
 <p><strong>Resolution:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the affected node so you can copy-paste the commands below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
 <ol class="arabic">
 <li><p>Confirm GPU Operator operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code> on the worker node:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span>&lt;node-name&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span>
 </pre></div>
 </div>
 <p>Expected Confidential Containers operands include <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>.
 If an operand is not <code class="docutils literal notranslate"><span class="pre">Running</span></code>, refer to <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.</p>
 </li>
 <li><p>Confirm the node is configured for Confidential Containers workloads:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt; <span class="p">|</span> grep nvidia.com/gpu.workload.config
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node <span class="nv">$NODE_NAME</span> <span class="p">|</span> grep nvidia.com/gpu.workload.config
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
@@ -722,14 +732,14 @@ If an operand is not <code class="docutils literal notranslate"><span class="pre
 </pre></div>
 </div>
 <p>If the label is missing, add it:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
 </pre></div>
 </div>
 <p>If you set the cluster-wide default during installation instead of per-node labeling, confirm <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code> is <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>.
 Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
 </li>
 <li><p>Check <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node &lt;node-name&gt; <span class="p">|</span> grep nvidia.com/pgpu
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node <span class="nv">$NODE_NAME</span> <span class="p">|</span> grep nvidia.com/pgpu
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
@@ -758,7 +768,7 @@ After fixing host prerequisites, wait for operand pods to reconcile and confirm 
 </li>
 <li><p>If the node shows non-zero <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity but the pod is still <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, all passthrough GPUs on eligible nodes may be allocated to other pods.
 Check which pods currently have a passthrough GPU allocated:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span>&lt;node-name&gt; -o json <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
     jq -r <span class="s1">&#39;.items[] | select(any(.spec.containers[]; .resources.requests[&quot;nvidia.com/pgpu&quot;] // empty)) | &quot;\(.metadata.namespace)/\(.metadata.name)&quot;&#39;</span>
 </pre></div>
 </div>

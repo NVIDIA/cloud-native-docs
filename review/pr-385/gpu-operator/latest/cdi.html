@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -369,7 +369,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">NVIDIA DRA Driver for GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
@@ -397,6 +397,7 @@
 <li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
 </ul>
 </div>
 </nav></div>
@@ -467,6 +468,8 @@ For workloads that already have <code class="docutils literal notranslate"><span
 <p>Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.</p>
+<p>CDI support and configuration is enabled through the NVIDIA Container Toolkit.
+Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html" title="(in NVIDIA Container Toolkit)"><span>Support for Container Device Interface</span></a> page for more information on using CDI.</p>
 <section id="cdi-and-gpu-management-containers">
 <h3>CDI and GPU Management Containers<a class="headerlink" href="#cdi-and-gpu-management-containers" title="Permalink to this headline">#</a></h3>
 <p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
@@ -565,6 +568,11 @@ column to determine if your nodes use CRI-O.</p>
 </section>
 <section id="about-the-node-resource-interface-nri-plugin">
 <span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
+Refer to the <a class="reference external" href="https://github.com/containerd/nri#api-stability">containerd NRI repository</a> for details on project details.</p>
+</div>
 <p>Node Resource Interface (NRI) is a standardized interface for plugging in extensions, called NRI Plugins, to OCI-compatible container runtimes like containerd.
 NRI Plugins serve as hooks which intercept pod and container lifecycle events and perform functions including injecting devices to a container, topology aware placement strategies, and more. For more details on NRI, refer to the <a class="reference external" href="https://github.com/containerd/nri/tree/main?tab=readme-ov-file#background">NRI overview</a> in the containerd repository.</p>
 <p>When enabled in the GPU Operator, the NVIDIA Container Toolkit daemonset will run an NRI Plugin on every GPU node.

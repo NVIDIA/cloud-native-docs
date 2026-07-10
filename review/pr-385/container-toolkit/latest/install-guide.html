@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -355,7 +355,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Installing the Toolkit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
@@ -423,7 +423,7 @@
 <section id="prerequisites">
 <span id="pre-requisites"></span><h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h3>
 <ol class="arabic simple">
-<li><p>Read <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">this section</span></a> about platform support.</p></li>
+<li><p>Review the <a class="reference internal" href="supported-platforms.html"><span class="doc std std-doc">platform support documentation</span></a>.</p></li>
 <li><p>Install the NVIDIA GPU driver for your Linux distribution.
 NVIDIA recommends installing the driver by using the package manager for your distribution.
 For information about installing the driver with a package manager, refer to
@@ -571,7 +571,7 @@ The file is updated so that Docker can use the NVIDIA Container Runtime.</p>
 </li>
 </ol>
 <section id="rootless-mode">
-<h4>Rootless mode<a class="headerlink" href="#rootless-mode" title="Permalink to this headline">#</a></h4>
+<h4>Rootless Mode<a class="headerlink" href="#rootless-mode" title="Permalink to this headline">#</a></h4>
 <p>To configure the container runtime for Docker running in <a class="reference external" href="https://docs.docker.com/engine/security/rootless/">Rootless mode</a>,
 follow these steps:</p>
 <ol class="arabic">
@@ -615,7 +615,7 @@ ensures that containerd can use the NVIDIA Container Runtime.</p>
 <section id="configuring-containerd-for-nerdctl">
 <h3>Configuring containerd (for nerdctl)<a class="headerlink" href="#configuring-containerd-for-nerdctl" title="Permalink to this headline">#</a></h3>
 <p>No additional configuration is needed.
-You can just run <code class="docutils literal notranslate"><span class="pre">nerdctl</span> <span class="pre">run</span> <span class="pre">--gpus=all</span></code>, with root or without root.
+You can run <code class="docutils literal notranslate"><span class="pre">nerdctl</span> <span class="pre">run</span> <span class="pre">--gpus=all</span></code>, with or without root.
 You do not need to run the <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span></code> command mentioned above for Kubernetes.</p>
 <p>Refer to the <a class="reference external" href="https://github.com/containerd/nerdctl/blob/main/docs/gpu.md">nerdctl documentation</a> for more information.</p>
 </section>
@@ -712,7 +712,7 @@ TODO:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-docker">Configuring Docker</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rootless-mode">Rootless mode</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rootless-mode">Rootless Mode</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-containerd-for-kubernetes">Configuring containerd (for Kubernetes)</a></li>

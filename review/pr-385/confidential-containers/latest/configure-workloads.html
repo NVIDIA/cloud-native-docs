@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -503,6 +503,10 @@ for the GPU Operator install flags that enable this behavior.</p>
 <span class="w">    </span><span class="nt">nvidia.com/GH100_H200_141GB</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"></span>
 </pre></div>
 </div>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the node you want to check:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
 <p>To list the GPU and NVSwitch resource types advertised on a node, run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> grep nvidia.com
 </pre></div>
@@ -679,6 +683,13 @@ for details.</p>
 </ol>
 </section>
 </section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> to change the CC mode on GPUs at the cluster or node level.</p></li>
+<li><p>Refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> if a workload does not schedule or the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code>.</p></li>
+</ul>
+</section>
 </section>
 
 
@@ -738,6 +749,7 @@ for details.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-multi-gpu-workload">Run a Multi-GPU Workload</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 

@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -592,7 +592,11 @@ Containers, in a non-Confidential Containers scenario.
 The <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> for AMD-based systems or
 <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> for Intel-based systems runtime
 classes are used to deploy Confidential Containers workloads.</p>
-<p>If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+<p>The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart typically creates these runtime classes within 1-2 minutes after the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code>.
+If the SNP and TDX runtime classes are not listed immediately, the chart may still be initializing rather than failing.
+Wait 1-2 minutes and re-run the command.
+If they are still missing after the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reports <code class="docutils literal notranslate"><span class="pre">Running</span></code>, the install did not complete correctly.
+Refer to <a class="reference internal" href="troubleshooting.html#coco-view-kata-logs"><span class="std std-ref">View Kata Containers Logs</span></a> in <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> for help diagnosing the issue.
 On a single-node cluster, retry after a few minutes only if Helm returned before the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code> (refer to the note above).
 Otherwise, refer to the log steps below.</p>
 </li>
@@ -786,6 +790,14 @@ If you want to view the resource types for a different node, you can update the 
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You now have a working Confidential Containers runtime.</p>
+<p>Attestation is what cryptographically verifies the TEE and releases secrets to a
+production workload. For attestation concepts and a local
+connectivity test, see the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart. For production attestation
+deployment, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">Confidential Containers NVIDIA attestation guide</a>.</p>
+</div>
 <ul class="simple">
 <li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to verify your deployment.</p></li>
 <li><p>To help manage the lifecycle of Kata Containers, install the <a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a>.

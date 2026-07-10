@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -432,9 +432,9 @@
 <p>As a <a class="reference internal" href="personas.html#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a>, use this page to understand attestation concepts and stand up a local Trustee instance for testing.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This page gives an overview of attestation and a quickstart for standing up a local attestation backend for testing.
-You should refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a> for more details on attestation and production deployment.
-For a full end-to-end attestation workflow, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">NVIDIA NIM Confidential GPU Attestation</a> example.</p>
+<p>This page covers attestation concepts and a local connectivity test only.
+Deploying a production attestation service is out of scope for this documentation: the workflow is not NVIDIA-specific and is owned by the upstream Confidential Containers project.
+For production attestation deployment, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers documentation</a> and the end-to-end <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">NVIDIA NIM Confidential GPU Attestation</a> example.</p>
 </div>
 <p>In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.

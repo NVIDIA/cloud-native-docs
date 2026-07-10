@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -354,7 +354,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-guide.html">Installing the Toolkit</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sample-workload.html">Running a Sample Workload</a></li>
-<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Platform Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 </ul>
@@ -418,15 +418,15 @@
   <section class="tex2jax_ignore mathjax_ignore" id="specialized-configurations-with-docker">
 <h1>Specialized Configurations with Docker<a class="headerlink" href="#specialized-configurations-with-docker" title="Permalink to this headline">#</a></h1>
 <section id="environment-variables-oci-spec">
-<h2>Environment variables (OCI spec)<a class="headerlink" href="#environment-variables-oci-spec" title="Permalink to this headline">#</a></h2>
-<p>Users can control the behavior of the NVIDIA container runtime using environment variables - especially for
+<h2>Environment Variables (OCI Spec)<a class="headerlink" href="#environment-variables-oci-spec" title="Permalink to this headline">#</a></h2>
+<p>You can control the behavior of the NVIDIA Container Runtime using environment variables, especially for
 enumerating the GPUs and the capabilities of the driver.
-Each environment variable maps to an command-line argument for <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> from <a class="reference external" href="https://github.com/NVIDIA/libnvidia-container">libnvidia-container</a>.
-These variables are already set in the NVIDIA provided base <a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cuda">CUDA images</a>.</p>
+Each environment variable maps to a command-line argument for <code class="docutils literal notranslate"><span class="pre">nvidia-container-cli</span></code> from <a class="reference external" href="https://github.com/NVIDIA/libnvidia-container">libnvidia-container</a>.
+These variables are already set in the NVIDIA-provided base <a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cuda">CUDA images</a>.</p>
 <section id="gpu-enumeration">
 <h3>GPU Enumeration<a class="headerlink" href="#gpu-enumeration" title="Permalink to this headline">#</a></h3>
-<p>GPUs can be specified to the Docker CLI using either the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> option starting with Docker <code class="docutils literal notranslate"><span class="pre">19.03</span></code> or using the environment variable
-<code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code>. This variable controls which GPUs will be made accessible inside the container.</p>
+<p>You can specify GPUs to the Docker CLI using either the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> option starting with Docker <code class="docutils literal notranslate"><span class="pre">19.03</span></code> or the environment variable
+<code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code>. This variable controls which GPUs are accessible inside the container.</p>
 <p>The possible values of the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> variable are:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -443,43 +443,43 @@ These variables are already set in the NVIDIA provided base <a class="reference 
 <td><p>a comma-separated list of GPU UUID(s) or index(es).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">all</span></code></p></td>
-<td><p>all GPUs will be accessible, this is the default value in base CUDA container images.</p></td>
+<td><p>All GPUs are accessible. This is the default value in base CUDA container images.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
-<td><p>no GPU will be accessible, but driver capabilities will be enabled.</p></td>
+<td><p>No GPU is accessible, but driver capabilities are enabled.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">void</span></code> or <cite>empty</cite> or <cite>unset</cite></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> will have the same behavior as <code class="docutils literal notranslate"><span class="pre">runc</span></code> (i.e. neither GPUs nor capabilities are exposed)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime</span></code> has the same behavior as <code class="docutils literal notranslate"><span class="pre">runc</span></code> (that is, neither GPUs nor capabilities are exposed).</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When using the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> option to specify the GPUs, the <code class="docutils literal notranslate"><span class="pre">device</span></code> parameter should be used. This is shown in the examples below.
-The format of the <code class="docutils literal notranslate"><span class="pre">device</span></code> parameter should be encapsulated within single quotes, followed by double quotes for the devices you
-want enumerated to the container. For example: <code class="docutils literal notranslate"><span class="pre">'&quot;device=2,3&quot;'</span></code> will enumerate GPUs 2 and 3 to the container.</p>
-<p>When using the NVIDIA_VISIBLE_DEVICES variable, you may need to set <code class="docutils literal notranslate"><span class="pre">--runtime</span></code> to <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> unless already set as default.</p>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">--gpus</span></code> option to specify the GPUs, use the <code class="docutils literal notranslate"><span class="pre">device</span></code> parameter, as shown in the following examples.
+Encapsulate the format of the <code class="docutils literal notranslate"><span class="pre">device</span></code> parameter within single quotes, followed by double quotes for the devices you
+want enumerated to the container. For example, <code class="docutils literal notranslate"><span class="pre">'&quot;device=2,3&quot;'</span></code> enumerates GPUs 2 and 3 to the container.</p>
+<p>When using the NVIDIA_VISIBLE_DEVICES variable, you might need to set <code class="docutils literal notranslate"><span class="pre">--runtime</span></code> to <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> unless it is already set as the default.</p>
 </div>
-<p>Some examples of the usage are shown below:</p>
+<p>The following examples show common usage:</p>
 <ol class="arabic">
-<li><p>Starting a GPU enabled CUDA container; using <code class="docutils literal notranslate"><span class="pre">--gpus</span></code></p>
+<li><p>Start a GPU-enabled CUDA container using <code class="docutils literal notranslate"><span class="pre">--gpus</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --gpus all nvidia/cuda nvidia-smi
 </pre></div>
 </div>
 </li>
-<li><p>Using <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> and specify the nvidia runtime</p>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> and specify the NVIDIA runtime:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia <span class="se">\</span>
     -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all nvidia/cuda nvidia-smi
 </pre></div>
 </div>
 </li>
-<li><p>Start a GPU enabled container on two GPUs</p>
+<li><p>Start a GPU-enabled container on two GPUs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --gpus <span class="m">2</span> nvidia/cuda nvidia-smi
 </pre></div>
 </div>
 </li>
-<li><p>Starting a GPU enabled container on specific GPUs</p>
+<li><p>Start a GPU-enabled container on specific GPUs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --gpus <span class="s1">&#39;&quot;device=1,2&quot;&#39;</span> <span class="se">\</span>
     nvidia/cuda nvidia-smi --query-gpu<span class="o">=</span>uuid --format<span class="o">=</span>csv
 </pre></div>
@@ -490,7 +490,7 @@ want enumerated to the container. For example: <code class="docutils literal not
 </pre></div>
 </div>
 </li>
-<li><p>Alternatively, you can also use <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code></p>
+<li><p>Alternatively, use <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia <span class="se">\</span>
     -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">1</span>,2 <span class="se">\</span>
     nvidia/cuda nvidia-smi --query-gpu<span class="o">=</span>uuid --format<span class="o">=</span>csv
@@ -502,7 +502,7 @@ want enumerated to the container. For example: <code class="docutils literal not
 </pre></div>
 </div>
 </li>
-<li><p>Query the GPU UUID using <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> and then specify that to the container</p>
+<li><p>Query the GPU UUID using <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>, then specify it to the container:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -i <span class="m">3</span> --query-gpu<span class="o">=</span>uuid --format<span class="o">=</span>csv
 </pre></div>
 </div>
@@ -519,7 +519,7 @@ want enumerated to the container. For example: <code class="docutils literal not
 </section>
 <section id="driver-capabilities">
 <h3>Driver Capabilities<a class="headerlink" href="#driver-capabilities" title="Permalink to this headline">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> controls which driver libraries/binaries will be mounted inside the container.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> variable controls which driver libraries and binaries are mounted inside the container.</p>
 <p>The possible values of the <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> variable are:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -544,7 +544,7 @@ want enumerated to the container. For example: <code class="docutils literal not
 </tbody>
 </table>
 </div>
-<p>The supported driver capabilities are provided below:</p>
+<p>The following table describes the supported driver capabilities:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
 <col style="width: 20%" />
@@ -577,7 +577,7 @@ want enumerated to the container. For example: <code class="docutils literal not
 </tbody>
 </table>
 </div>
-<p>For example, specify the <code class="docutils literal notranslate"><span class="pre">compute</span></code> and <code class="docutils literal notranslate"><span class="pre">utility</span></code> capabilities, allowing usage of CUDA and NVML</p>
+<p>For example, to allow usage of CUDA and NVML, specify the <code class="docutils literal notranslate"><span class="pre">compute</span></code> and <code class="docutils literal notranslate"><span class="pre">utility</span></code> capabilities:</p>
 <blockquote>
 <div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia <span class="se">\</span>
     -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">2</span>,3 <span class="se">\</span>
@@ -593,11 +593,11 @@ want enumerated to the container. For example: <code class="docutils literal not
 </section>
 <section id="constraints">
 <h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
-<p>The NVIDIA runtime also provides the ability to define constraints on the configurations supported by the container.</p>
+<p>The NVIDIA runtime also lets you define constraints on the configurations that the container supports.</p>
 <section id="nvidia-require-constraints">
 <h4>NVIDIA_REQUIRE_* Constraints<a class="headerlink" href="#nvidia-require-constraints" title="Permalink to this headline">#</a></h4>
 <p>This variable is a logical expression to define constraints on the software versions or GPU architectures on the container.</p>
-<p>The supported constraints are provided below:</p>
+<p>The following table describes the supported constraints:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
 <col style="width: 20%" />
@@ -638,29 +638,29 @@ driver versions:</p>
 <p>Single switch to disable all the constraints of the form <code class="docutils literal notranslate"><span class="pre">NVIDIA_REQUIRE_*</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you are running CUDA-base images older than CUDA 11.7 (and unable to update to the new base images with updated constraints),
-CUDA compatibility checks can be disabled by setting <code class="docutils literal notranslate"><span class="pre">NVIDIA_DISABLE_REQUIRE</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<p>If you are running CUDA base images older than CUDA 11.7 and cannot update to the new base images with updated constraints,
+you can disable CUDA compatibility checks by setting <code class="docutils literal notranslate"><span class="pre">NVIDIA_DISABLE_REQUIRE</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 </div>
 </section>
 <section id="nvidia-require-cuda-constraint">
 <h4>NVIDIA_REQUIRE_CUDA Constraint<a class="headerlink" href="#nvidia-require-cuda-constraint" title="Permalink to this headline">#</a></h4>
 <p>The version of the CUDA toolkit used by the container. It is an instance of the
 generic <code class="docutils literal notranslate"><span class="pre">NVIDIA_REQUIRE_*</span></code> case and it is set by official CUDA images. If the version of the NVIDIA driver
-is insufficient to run this version of CUDA, the container will not be started. This variable
-can be specified in the form <code class="docutils literal notranslate"><span class="pre">major.minor</span></code></p>
-<p>The possible values for this variable: <code class="docutils literal notranslate"><span class="pre">cuda&gt;=7.5</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda&gt;=8.0</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda&gt;=9.0</span></code> and so on.</p>
+is insufficient to run this version of CUDA, the container does not start. This variable
+can be specified in the form <code class="docutils literal notranslate"><span class="pre">major.minor</span></code>.</p>
+<p>The possible values for this variable are <code class="docutils literal notranslate"><span class="pre">cuda&gt;=7.5</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda&gt;=8.0</span></code>, <code class="docutils literal notranslate"><span class="pre">cuda&gt;=9.0</span></code>, and so on.</p>
 </section>
 </section>
 <section id="dockerfiles">
 <h3>Dockerfiles<a class="headerlink" href="#dockerfiles" title="Permalink to this headline">#</a></h3>
-<p>Capabilities and GPU enumeration can be set in images via environment variables. If the environment variables are
-set inside the Dockerfile, you don’t need to set them on the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command-line.</p>
+<p>You can set capabilities and GPU enumeration in images using environment variables. If you
+set the environment variables inside the Dockerfile, you do not need to set them on the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command line.</p>
 <p>For instance, if you are creating your own custom CUDA container, you should use the following:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ENV NVIDIA_VISIBLE_DEVICES all</span>
 <span class="go">ENV NVIDIA_DRIVER_CAPABILITIES compute,utility</span>
 </pre></div>
 </div>
-<p>These environment variables are already set in the NVIDIA provided CUDA images.</p>
+<p>These environment variables are already set in the NVIDIA-provided CUDA images.</p>
 </section>
 </section>
 </section>
@@ -705,7 +705,7 @@ set inside the Dockerfile, you don’t need to set them on the <code class="docu
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables-oci-spec">Environment variables (OCI spec)</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables-oci-spec">Environment Variables (OCI Spec)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-enumeration">GPU Enumeration</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-capabilities">Driver Capabilities</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints">Constraints</a><ul class="nav section-nav flex-column">

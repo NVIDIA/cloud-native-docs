@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -482,8 +482,20 @@ If you need to run Confidential Containers on only some nodes while keeping trad
 If you are deploying to a single-node cluster, wait a few additional minutes after the command completes.</p>
 </div>
 </li>
+<li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">kata-deploy-b2lzs       1/1     Running   0             6m37s</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">READY</span></code> value of <code class="docutils literal notranslate"><span class="pre">1/1</span></code> and a <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> of <code class="docutils literal notranslate"><span class="pre">Running</span></code> mean the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod installed the Kata components on the node.
+If the pod does not reach <code class="docutils literal notranslate"><span class="pre">Running</span></code>, refer to <a class="reference internal" href="troubleshooting.html#coco-view-kata-logs"><span class="std std-ref">View Kata Containers Logs</span></a> in <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.</p>
+</li>
 <li><p>Verify the <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes are available:</p>
 <p>After <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">install</span></code> completes, the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart creates the Kata <code class="docutils literal notranslate"><span class="pre">RuntimeClass</span></code> resources on the cluster.
+This usually happens within 1-2 minutes after the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code>.
 Confirm SNP and TDX classes are present before you continue to <a class="reference internal" href="#quickstart-install-gpu-operator"><span class="std std-ref">Install the NVIDIA GPU Operator</span></a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass <span class="p">|</span> grep kata-qemu-nvidia-gpu
 </pre></div>
@@ -495,7 +507,9 @@ Confirm SNP and TDX classes are present before you continue to <a class="referen
 <span class="go">kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s</span>
 </pre></div>
 </div>
-<p>If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+<p>If the SNP and TDX runtime classes are not listed immediately, the chart may still be initializing rather than failing.
+Wait 1-2 minutes and re-run the command.
+If they are still missing after the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reports <code class="docutils literal notranslate"><span class="pre">Running</span></code>, the install did not complete correctly.
 On a single-node cluster, retry after a few minutes only if Helm returned before the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod reaches <code class="docutils literal notranslate"><span class="pre">Running</span></code> (refer to the note above).
 Otherwise, refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>.</p>
 </li>
@@ -565,6 +579,14 @@ Your cluster is now configured to run Confidential Containers workloads on all n
 </section>
 <section id="next-steps">
 <h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You now have a working Confidential Containers runtime.</p>
+<p>Attestation is what cryptographically verifies the TEE and releases secrets to a
+production workload. For attestation concepts and a local
+connectivity test, see the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart. For production attestation
+deployment, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">Confidential Containers NVIDIA attestation guide</a>.</p>
+</div>
 <ul class="simple">
 <li><p>Continue to <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> to confirm the deployment.</p></li>
 </ul>

@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jun 22, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -432,6 +432,13 @@
 <p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use this page to configure the confidential computing mode of NVIDIA GPUs in your cluster.</p>
 <p>After installing the NVIDIA GPU Operator, you can use the GPU Operator to configure the confidential computing mode of the NVIDIA GPUs in your cluster.
 You can set a cluster-wide default Confidential Computing mode, and you can set the mode on individual nodes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Enabling Confidential Computing mode configures the GPU hardware boundary.
+It does not by itself cryptographically verify the confidential environment or release secrets to a workload.
+Confidentiality is established by attestation.
+Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p>
+</div>
 <p>Set the cluster-wide default mode using the <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode=&lt;on|off&gt;</span></code> option.
 The default value of <code class="docutils literal notranslate"><span class="pre">ccManager.defaultMode</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code>.
 Set a node-level mode by applying the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode=&lt;on|off|ppcie&gt;</span></code> label on the node.
@@ -511,6 +518,14 @@ However, the manager does not drain user workloads. You must make sure that no u
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/cc.mode<span class="o">=</span>on --overwrite
 </pre></div>
 </div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">node/&lt;node-name&gt; labeled</span>
+</pre></div>
+</div>
+<p>For NVIDIA Hopper GPUs used in <a class="reference internal" href="configure-workloads.html#coco-multi-gpu-passthrough"><span class="std std-ref">multi-GPU passthrough</span></a>, set <code class="docutils literal notranslate"><span class="pre">ppcie</span></code> instead of <code class="docutils literal notranslate"><span class="pre">on</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/cc.mode<span class="o">=</span>ppcie --overwrite
+</pre></div>
+</div>
 <p>The mode that you set on a node has higher precedence than the cluster-wide default mode.</p>
 </section>
 <section id="verifying-a-mode-change">
@@ -537,6 +552,17 @@ However, the manager does not drain user workloads. You must make sure that no u
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
+<p>To wait for an enable transition (<code class="docutils literal notranslate"><span class="pre">on</span></code> or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>) to finish instead of polling the labels by hand, block until the node reports ready:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="k">until</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="k">$(</span>kubectl get node <span class="nv">$NODE_NAME</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.labels.nvidia\.com/cc\.ready\.state}&#39;</span><span class="k">)</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span> <span class="nb">echo</span> <span class="s2">&quot;waiting for CC mode to converge...&quot;</span><span class="p">;</span> sleep <span class="m">5</span><span class="p">;</span> <span class="k">done</span><span class="p">;</span> <span class="nb">echo</span> <span class="s2">&quot;Node </span><span class="nv">$NODE_NAME</span><span class="s2"> is ready for Confidential Containers&quot;</span>
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">waiting for CC mode to converge...</span>
+<span class="go">waiting for CC mode to converge...</span>
+<span class="go">Node &lt;node-name&gt; is ready for Confidential Containers</span>
+</pre></div>
+</div>
+<p>The loop exits when <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state</span></code> becomes <code class="docutils literal notranslate"><span class="pre">true</span></code>, which the Confidential Computing Manager sets after the mode transition completes for <code class="docutils literal notranslate"><span class="pre">on</span></code> or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>.</p>
 <p>When you disable CC mode after enabling it, wait one to two minutes for
 <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.ready.state</span></code> to match the desired <code class="docutils literal notranslate"><span class="pre">off</span></code> state.
 A mode change is complete and successful when <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code> and
