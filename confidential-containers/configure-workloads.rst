@@ -105,6 +105,13 @@ Use the model-specific resource name in workloads that must target a specific ac
      limits:
        nvidia.com/GH100_H200_141GB: "1"
 
+ 
+Set the ``NODE_NAME`` environment variable to the node you want to check:
+ 
+.. code-block:: console
+
+   $ export NODE_NAME="<node-name>"
+
 To list the GPU and NVSwitch resource types advertised on a node, run:
 
 .. code-block:: console
@@ -310,3 +317,10 @@ Run a Multi-GPU Workload
    .. code-block:: console
 
       $ kubectl delete -f multi-gpu-kata.yaml
+
+**********
+Next Steps
+**********
+
+* Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` to change the CC mode on GPUs at the cluster or node level.
+* Refer to :doc:`Troubleshooting <troubleshooting>` if a workload does not schedule or the pod stays ``Pending``.

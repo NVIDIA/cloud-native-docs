@@ -100,7 +100,7 @@ Use this section to collect Kata Containers logs and confirm runtime classes are
 
       $ kubectl get runtimeclass
 
-   After a successful Kata Containers deployment, you should see ``kata-qemu-snp`` (AMD SEV-SNP) and ``kata-qemu-tdx`` (Intel TDX) in the output.
+   After a successful Kata Containers deployment, you should see ``kata-qemu-nvidia-gpu-snp`` (AMD SEV-SNP) and ``kata-qemu-nvidia-gpu-tdx`` (Intel TDX) in the output.
    If these are missing, continue to the next steps.
 
 #. Get the list of Kata Containers pod:
@@ -151,11 +151,16 @@ If the ``nvidia.com/cc.mode.state`` does not match the desired CC mode (``on``, 
 
 **Checks:**
 
+Set the ``NODE_NAME`` environment variable to the node you want to check:
+
+.. code-block:: console
+
+   $ export NODE_NAME="<node-name>"
+
 #. Check the cc.mode labels:
 
    .. code-block:: console
 
-      $ export NODE_NAME="<node-name>"
       $ kubectl get node $NODE_NAME -o json | \
             jq '.metadata.labels | with_entries(select(.key | startswith("nvidia.com/cc")))'
 
@@ -165,9 +170,9 @@ If the ``nvidia.com/cc.mode.state`` does not match the desired CC mode (``on``, 
 
       {
          "nvidia.com/cc.mode": "on",
-         "nvidia.com/cc.mode.state": "on",
+         "nvidia.com/cc.mode.state": "off",
          "nvidia.com/cc.ready.state": "false"
-      }
+      } 
 
 #. Get the list of GPU Operator pods:
 
@@ -271,12 +276,17 @@ Refer to the :doc:`Prerequisites <prerequisites>` for more information on requir
 
 **Checks:**
 
+Set the ``NODE_NAME`` environment variable to the node you want to check:
+
+.. code-block:: console
+
+   $ export NODE_NAME="<node-name>"
+
 #. Confirm no user workloads are running on the node before changing CC mode.
    List pods scheduled on the node:
 
    .. code-block:: console
 
-      $ export NODE_NAME="<node-name>"
       $ kubectl get pods -A --field-selector spec.nodeName=$NODE_NAME -o wide
 
    This lists pods on ``$NODE_NAME``.
@@ -354,11 +364,17 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
 
 **Resolution:**
 
+Set the ``NODE_NAME`` environment variable to the affected node so you can copy-paste the commands below:
+
+.. code-block:: console
+
+   $ export NODE_NAME="<node-name>"
+
 #. Confirm GPU Operator operands are ``Running`` on the worker node:
 
    .. code-block:: console
 
-      $ kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName=<node-name>
+      $ kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName=$NODE_NAME
 
    Expected Confidential Containers operands include ``nvidia-cc-manager``, ``nvidia-vfio-manager``, ``nvidia-kata-sandbox-device-plugin``, and ``nvidia-sandbox-validator``.
    If an operand is not ``Running``, refer to :ref:`View GPU Operator Logs <coco-gpu-operator-logs>`.
@@ -367,7 +383,7 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
 
    .. code-block:: console
 
-      $ kubectl describe node <node-name> | grep nvidia.com/gpu.workload.config
+      $ kubectl describe node $NODE_NAME | grep nvidia.com/gpu.workload.config
 
    *Example Output:*
 
@@ -379,7 +395,7 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
 
    .. code-block:: console
 
-      $ kubectl label node <node-name> nvidia.com/gpu.workload.config=vm-passthrough
+      $ kubectl label node $NODE_NAME nvidia.com/gpu.workload.config=vm-passthrough
 
    If you set the cluster-wide default during installation instead of per-node labeling, confirm ``sandboxWorkloads.defaultWorkload`` is ``vm-passthrough``.
    Refer to :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
@@ -388,7 +404,7 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
 
    .. code-block:: console
 
-      $ kubectl describe node <node-name> | grep nvidia.com/pgpu
+      $ kubectl describe node $NODE_NAME | grep nvidia.com/pgpu
 
    *Example Output:*
 
@@ -427,7 +443,7 @@ If ``kubectl describe pod <pod-name> -n <namespace>`` shows the pod stuck in the
 
    .. code-block:: console
 
-      $ kubectl get pods -A --field-selector spec.nodeName=<node-name> -o json | \
+      $ kubectl get pods -A --field-selector spec.nodeName=$NODE_NAME -o json | \
           jq -r '.items[] | select(any(.spec.containers[]; .resources.requests["nvidia.com/pgpu"] // empty)) | "\(.metadata.namespace)/\(.metadata.name)"'
 
    Wait for a workload to complete or free capacity before retrying.

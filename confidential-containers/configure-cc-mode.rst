@@ -28,6 +28,13 @@ As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-adm
 After installing the NVIDIA GPU Operator, you can use the GPU Operator to configure the confidential computing mode of the NVIDIA GPUs in your cluster.
 You can set a cluster-wide default Confidential Computing mode, and you can set the mode on individual nodes.
 
+.. note::
+
+   Enabling Confidential Computing mode configures the GPU hardware boundary.
+   It does not by itself cryptographically verify the confidential environment or release secrets to a workload.
+   Confidentiality is established by attestation.
+   Refer to :doc:`Attestation <attestation>`.
+
 Set the cluster-wide default mode using the ``ccManager.defaultMode=<on|off>`` option.
 The default value of ``ccManager.defaultMode`` is ``on``.
 Set a node-level mode by applying the ``nvidia.com/cc.mode=<on|off|ppcie>`` label on the node.
@@ -110,6 +117,18 @@ Then apply the label:
 
    $ kubectl label node $NODE_NAME nvidia.com/cc.mode=on --overwrite
 
+*Example Output:*
+
+.. code-block:: output
+
+   node/<node-name> labeled
+
+For NVIDIA Hopper GPUs used in :ref:`multi-GPU passthrough <coco-multi-gpu-passthrough>`, set ``ppcie`` instead of ``on``:
+
+.. code-block:: console
+
+   $ kubectl label node $NODE_NAME nvidia.com/cc.mode=ppcie --overwrite
+
 The mode that you set on a node has higher precedence than the cluster-wide default mode.
 
 ***********************
@@ -143,6 +162,22 @@ To verify that a mode change was successful, view the ``nvidia.com/cc.mode``,
      "nvidia.com/cc.mode.state": "on",
      "nvidia.com/cc.ready.state": "true"
    }
+
+To wait for an enable transition (``on`` or ``ppcie``) to finish instead of polling the labels by hand, block until the node reports ready:
+
+.. code-block:: console
+
+   $ until [ "$(kubectl get node $NODE_NAME -o jsonpath='{.metadata.labels.nvidia\.com/cc\.ready\.state}')" = "true" ]; do echo "waiting for CC mode to converge..."; sleep 5; done; echo "Node $NODE_NAME is ready for Confidential Containers"
+
+*Example Output:*
+
+.. code-block:: output
+
+   waiting for CC mode to converge...
+   waiting for CC mode to converge...
+   Node <node-name> is ready for Confidential Containers
+
+The loop exits when ``nvidia.com/cc.ready.state`` becomes ``true``, which the Confidential Computing Manager sets after the mode transition completes for ``on`` or ``ppcie``.
 
 When you disable CC mode after enabling it, wait one to two minutes for
 ``nvidia.com/cc.mode.state`` and ``nvidia.com/cc.ready.state`` to match the desired ``off`` state.

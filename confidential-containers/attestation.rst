@@ -25,9 +25,9 @@ As a :ref:`Security Engineer <coco-persona-security-engineer>`, use this page to
 
 .. note::
 
-   This page gives an overview of attestation and a quickstart for standing up a local attestation backend for testing.
-   You should refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/attestation/>`__ for more details on attestation and production deployment.
-   For a full end-to-end attestation workflow, refer to the `NVIDIA NIM Confidential GPU Attestation <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`_ example.
+   This page covers attestation concepts and a local connectivity test only.
+   Deploying a production attestation service is out of scope for this documentation: the workflow is not NVIDIA-specific and is owned by the upstream Confidential Containers project.
+   For production attestation deployment, refer to the upstream `Confidential Containers documentation <https://confidentialcontainers.org/docs/attestation/>`__ and the end-to-end `NVIDIA NIM Confidential GPU Attestation <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`_ example.
 
 In Confidential Containers, a Trusted Execution Environment (TEE) isolates a workload from the host.
 Attestation is a process that cryptographically proves the state of the guest TEE, including both the CPU and the GPU, to a remote verifier before any secret or sensitive resource is released to the workload.

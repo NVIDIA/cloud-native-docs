@@ -88,9 +88,25 @@ Install the Kata Containers Helm Chart
       There is a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ on single-node clusters that may result in the Helm command finishing before all pods are done initializing.
       If you are deploying to a single-node cluster, wait a few additional minutes after the command completes.
 
+#. Verify that the ``kata-deploy`` pod is running:
+
+   .. code-block:: console
+
+      $ kubectl get pods -n kata-system | grep kata-deploy
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      kata-deploy-b2lzs       1/1     Running   0             6m37s
+
+   A ``READY`` value of ``1/1`` and a ``STATUS`` of ``Running`` mean the ``kata-deploy`` pod installed the Kata components on the node.
+   If the pod does not reach ``Running``, refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>` in :doc:`Troubleshooting <troubleshooting>`.
+
 #. Verify the ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
 
    After ``helm install`` completes, the ``kata-deploy`` chart creates the Kata ``RuntimeClass`` resources on the cluster.
+   This usually happens within 1-2 minutes after the ``kata-deploy`` pod reaches ``Running``.
    Confirm SNP and TDX classes are present before you continue to :ref:`Install the NVIDIA GPU Operator <quickstart-install-gpu-operator>`.
 
    .. code-block:: console
@@ -106,7 +122,9 @@ Install the Kata Containers Helm Chart
       kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s
       kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s
 
-   If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+   If the SNP and TDX runtime classes are not listed immediately, the chart may still be initializing rather than failing.
+   Wait 1-2 minutes and re-run the command.
+   If they are still missing after the ``kata-deploy`` pod reports ``Running``, the install did not complete correctly.
    On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (refer to the note above).
    Otherwise, refer to :doc:`Troubleshooting <troubleshooting>`.
 
@@ -189,6 +207,16 @@ Your cluster is now configured to run Confidential Containers workloads on all n
 **********
 Next Steps
 **********
+
+.. note::
+
+   You now have a working Confidential Containers runtime. 
+
+   Attestation is what cryptographically verifies the TEE and releases secrets to a
+   production workload. For attestation concepts and a local
+   connectivity test, see the :doc:`Attestation <attestation>` quickstart. For production attestation
+   deployment, refer to the upstream `Confidential Containers NVIDIA attestation guide
+   <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`__.
 
 * Continue to :doc:`Run a Sample Workload <run-sample-workload>` to confirm the deployment.
 

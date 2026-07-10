@@ -240,7 +240,11 @@ The minimum required version is 3.29.0.
    ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime 
    classes are used to deploy Confidential Containers workloads.
 
-   If SNP or TDX runtime classes are not listed, the install did not complete correctly.
+   The ``kata-deploy`` chart typically creates these runtime classes within 1-2 minutes after the ``kata-deploy`` pod reaches ``Running``.
+   If the SNP and TDX runtime classes are not listed immediately, the chart may still be initializing rather than failing.
+   Wait 1-2 minutes and re-run the command.
+   If they are still missing after the ``kata-deploy`` pod reports ``Running``, the install did not complete correctly.
+   Refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>` in :doc:`Troubleshooting <troubleshooting>` for help diagnosing the issue.
    On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (refer to the note above).
    Otherwise, refer to the log steps below.
 
@@ -467,6 +471,16 @@ You should see the resource type information for the GPUs and NVSwitches on the 
 **********
 Next Steps
 **********
+
+.. note::
+
+   You now have a working Confidential Containers runtime. 
+
+   Attestation is what cryptographically verifies the TEE and releases secrets to a
+   production workload. For attestation concepts and a local
+   connectivity test, see the :doc:`Attestation <attestation>` quickstart. For production attestation
+   deployment, refer to the upstream `Confidential Containers NVIDIA attestation guide
+   <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`__.
 
 * :doc:`Run a Sample Workload <run-sample-workload>` to verify your deployment.
 * To help manage the lifecycle of Kata Containers, install the `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`_.

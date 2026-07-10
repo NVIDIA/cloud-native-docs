@@ -143,6 +143,45 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
     If you do not see any log output, the pod may still be running.
     Use the command in the previous step to check the pod status.
 
+#. Confirm the workload ran confidentially.
+
+   While the pod is still ``Running``, query the GPU's Confidential Computing state from
+   inside the container:
+
+   .. code-block:: console
+
+      $ kubectl exec cuda-vectoradd-kata -- nvidia-smi conf-compute -q
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      CC status: ON
+      CC Environment: PRODUCTION
+
+   ``CC status: ON`` confirms that the GPU passed through to the workload is operating in
+   Confidential Computing mode.
+
+   .. note::
+
+      The vector-add sample exits quickly, so run this command while the pod is still
+      ``Running``; you cannot ``exec`` into a ``Completed`` pod.
+      If the pod has already completed, re-create it and re-run the command promptly, or use
+      a longer-running workload.
+      You can also confirm the node independently by checking that
+      ``nvidia.com/cc.mode.state`` is ``on`` (or ``ppcie``); refer to
+      :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
+
+   .. important::
+
+      ``Test PASSED`` and ``CC status: ON`` confirm functional, hardware-isolated GPU
+      execution.
+      They do **not** by themselves cryptographically prove the environment to a remote
+      party.
+      Confidentiality is *established* by attestation, which verifies the TEE and releases
+      secrets only to a proven-good environment.
+      Refer to :doc:`Attestation <attestation>`.
+
 #. Optionally, you can verify the sample app was running the Kata container runtime by checking the pod details:
 
    .. code-block:: console
@@ -181,6 +220,17 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
 **********
 Next Steps
 **********
+
+.. note::
+
+   You have verified that a GPU workload runs on the confidential runtime. This is the end of the
+   deployment path covered by this guide.
+
+   Attestation is what cryptographically verifies the TEE and releases secrets to a
+   production workload. For attestation concepts and a local
+   connectivity test, see the :doc:`Attestation <attestation>` quickstart. For production attestation
+   deployment, refer to the upstream `Confidential Containers NVIDIA attestation guide
+   <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`__.
 
 If you'd like to continue to learn about Confidential Container configuraion, review the following pages:
 

@@ -79,12 +79,15 @@ CPU Platforms
    :header-rows: 1
 
    * - Category
+     - TEE
      - Operating System
      - Kernel Version
    * - AMD Genoa / Milan
+     - AMD SEV-SNP
      - Ubuntu 25.10
      - 6.17+
    * - Intel Emerald Rapids (ER) /  Granite Rapids (GR)
+     - Intel TDX
      - Ubuntu 25.10
      - 6.17+
 

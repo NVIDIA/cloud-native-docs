@@ -203,6 +203,7 @@ Verify the installed version on each GPU worker node:
 
   containerd containerd.io 2.2.2 ...
 
+The reported version must be ``2.2.2``.
 If you are running a different version on any worker node, refer to the `containerd Getting Started guide <https://containerd.io/docs/2.2/getting-started/>`_ for installation instructions.
 
 .. _coco-prereq-helm:
@@ -295,6 +296,21 @@ Apply these settings as follows:
    .. code-block:: console
 
       $ sudo systemctl restart kubelet
+
+#. Confirm the kubelet restarted cleanly with the new configuration:
+
+   .. code-block:: console
+
+      $ systemctl is-active kubelet
+
+   *Example Output:*
+
+   .. code-block:: output
+
+      active
+
+   A result of ``active`` confirms the kubelet restarted successfully.
+   If it reports ``activating`` or ``failed``, inspect ``sudo systemctl status kubelet`` and ``sudo journalctl -u kubelet`` for configuration errors before continuing.
 
 .. note::
 

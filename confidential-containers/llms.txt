@@ -1,0 +1,45 @@
+# NVIDIA Confidential Containers
+
+> A reference implementation, built from open-source components (Kubernetes, Kata
+> Containers, QEMU/OVMF, NVIDIA GPU Operator, Node Feature Discovery, and Trustee
+> for attestation), that extends CPU + GPU confidential computing to Kubernetes
+> workloads. It protects data-in-use and model IP for regulated/enterprise AI by
+> running GPU workloads inside hardware-based Trusted Execution Environments (TEEs:
+> AMD SEV-SNP or Intel TDX) with GPU passthrough.
+
+Scope notes for agents and readers:
+- This is a REFERENCE IMPLEMENTATION with example component choices, not a locked
+  spec or turnkey product. Trustee and the NVIDIA Remote Attestation Service are
+  EXAMPLE attestation implementations.
+- The installation guide sets up CoCo on a node that ALREADY meets the stated
+  Prerequisites (hardware/TEE, host OS + kernel, Kubernetes, containerd, BIOS). It
+  is not a from-bare-metal tutorial and the attestation section shows primary setup,
+  not a complete end-to-end attestation workflow.
+- Canonical source of truth: docs.nvidia.com. Upstream confidentialcontainers.org
+  and github.com/confidential-containers are referenced only for advanced/optional
+  detail.
+
+## Learn
+- [Reference Architecture](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/overview.html): What CoCo is, the trust boundary (TEE vs untrusted privileged infrastructure), the CPU+GPU-CC-to-Kubernetes value proposition, and limitations.
+- [Personas](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/personas.html): Target roles — hardware IT admin, host OS admin, Kubernetes cluster admin, security engineer, container user (plus application-owner and enterprise/compliance stakeholders).
+
+## Prerequisites & platforms
+- [Supported Platforms](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html): Validated versions — OS/kernel, containerd, Kubernetes, Kata, GPU Operator — and supported CPUs (AMD Genoa/Milan, Intel ER/GR) and GPUs (H100/H200/B200/RTX Pro 6000, single- and multi-GPU PPCIe).
+- [Prerequisites](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/prerequisites.html): Required starting state — Kubernetes cluster, containerd, BIOS (hardware virtualization, ACS, IOMMU), host OS/kernel, and feature gates (e.g. KubeletPodResourcesGet) — before installing Kata and the GPU Operator.
+
+## Install
+- [Quickstart Install](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/install-quickstart.html): Minimal Helm steps to install Kata Containers and the NVIDIA GPU Operator and create the CC RuntimeClasses.
+- [Detailed Install Guide](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/confidential-containers-deploy.html): Full install with per-node configuration, labeling, and verification.
+
+## Run & configure
+- [Run a Sample Workload](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/run-sample-workload.html): Deploy cuda-vectoradd-kata.yaml on the CC RuntimeClass; success = `Test PASSED` in the pod logs.
+- [Configuring Workloads](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/configure-workloads.html): Workload spec options for confidential GPU pods.
+- [Managing Confidential Computing Mode](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/configure-cc-mode.html): Turning GPU CC mode on/off and verifying cc.mode.state.
+
+## Attestation
+- [Attestation](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/attestation.html): Attestation as a requirement for secret release, with Trustee as the example verifier. Quickstart success signal: a policy-denied response confirms end-to-end connectivity.
+
+## Reference
+- [Troubleshooting](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/troubleshooting.html): Symptom → Cause → Fix for common CoCo failures.
+- [Release Notes](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/release-notes.html): Version history and known issues.
+- [Licensing](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/licensing.html): License information.
