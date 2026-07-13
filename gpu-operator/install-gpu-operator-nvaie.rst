@@ -117,56 +117,122 @@ Procedure
 Updating NLS Client License Token
 *********************************
 
-In case the NLS client license token needs to be updated, use the following procedure:
+When the NLS client license token needs to be updated, use the procedure that matches the
+Kubernetes resource type that your ``licensing-config`` deployment uses:
 
-Create an empty vGPU license configuration file:
+- If your deployment uses a Secret for the licensing configuration, follow
+  :ref:`updating-nls-secret-based`. Secret-based licensing is supported starting with
+  GPU Operator v25.10.0 and is recommended for all new deployments.
+- If your deployment uses a ConfigMap for the licensing configuration, follow
+  :ref:`updating-nls-configmap-based`.
 
-.. code-block:: console
+.. _updating-nls-secret-based:
 
-  $ sudo touch gridd.conf
+Updating NLS Client License Token in Secret
+===========================================
 
-Generate and download a new NLS client license token. Refer to Section 4.6 of the `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_ for instructions.
+Secret-based licensing is supported starting with GPU Operator v25.10.0 and is recommended for all
+new deployments. Use the following procedure for deployments that use a Secret for the
+``licensing-config``:
 
-Rename the NLS client license token that you downloaded to ``client_configuration_token.tok``.
+#. Create an empty vGPU license configuration file:
+
+   .. code-block:: console
+
+      $ sudo touch gridd.conf
+
+#. Generate and download a new NLS client license token, then rename the downloaded file to
+   ``client_configuration_token.tok``. For instructions, refer to Section 4.6 of the
+   `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_.
+
+#. Create a new ``licensing-config-new`` Secret object in the ``gpu-operator`` namespace (make sure
+   the name of the Secret is not already used in the Kubernetes cluster). Both the vGPU license
+   configuration file and the NLS client license token are added to this Secret:
+
+   .. code-block:: console
+
+      $ kubectl create secret generic licensing-config-new \
+          -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
+
+#. Edit the ClusterPolicy resource:
+
+   .. code-block:: console
+
+      $ kubectl edit clusterpolicies.nvidia.com
+
+#. In the ``driver`` section, replace:
+
+   .. code-block:: yaml
+
+      licensingConfig:
+          secretName: licensing-config
+
+   with
+
+   .. code-block:: yaml
+
+      licensingConfig:
+          secretName: licensing-config-new
+
+#. Save your changes and exit the editor (for example, ``:wq`` in ``vi``).
+
+   After you save, the GPU Operator sequentially redeploys all the driver pods with the new licensing information.
+
+.. _updating-nls-configmap-based:
+
+Updating NLS Client License Token in ConfigMap (deprecated)
+===========================================================
 
 .. warning::
 
-   The ``configMap(configMapName)`` is  **deprecated** and will be removed in a future release.
-   Use ``secrets(secretName)`` instead.
+   The ``configMap`` (``configMapName``) is **deprecated** and will be removed in a future release.
+   It is strongly recommended that you migrate to use Secret-based licensing. 
+   Follow :ref:`updating-nls-secret-based` for migration details.
 
-Create a new ``licensing-config-new`` Secret object in the ``gpu-operator`` namespace (make sure the name of the secret is not already used in the kubernetes cluster). Both the vGPU license configuration file and the NLS client license token will be added to this Secret:
+Use the following procedure for deployments that use a ConfigMap for the ``licensing-config``:
 
+#. Create an empty vGPU license configuration file:
 
-.. code-block:: console
+   .. code-block:: console
 
-    $ kubectl create secret generic licensing-config-new \
-        -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
+      $ sudo touch gridd.conf
 
+#. Generate and download a new NLS client license token, then rename the downloaded file to
+   ``client_configuration_token.tok``. For instructions, refer to Section 4.6 of the
+   `NLS User Guide <https://docs.nvidia.com/license-system/latest/pdf/nvidia-license-system-user-guide.pdf>`_.
 
-Edit the clusterpolicies by using the command:
+#. Create a new ``licensing-config-new`` ConfigMap object in the ``gpu-operator`` namespace (make
+   sure the name of the ConfigMap is not already used in the Kubernetes cluster). Both the vGPU
+   license configuration file and the NLS client license token are added to this ConfigMap:
 
-.. code-block:: console
+   .. code-block:: console
 
-    $ kubectl edit clusterpolicies.nvidia.com
+      $ kubectl create configmap licensing-config-new \
+          -n gpu-operator --from-file=gridd.conf --from-file=<path>/client_configuration_token.tok
 
+#. Edit the ClusterPolicy resource:
 
-Go to the driver section and replace the following argument:
+   .. code-block:: console
 
-.. code-block:: console
+      $ kubectl edit clusterpolicies.nvidia.com
 
-  licensingConfig:
-      secretName: licensing-config
+#. In the ``driver`` section, replace:
 
-with
+   .. code-block:: yaml
 
-.. code-block:: console
+      licensingConfig:
+          configMapName: licensing-config
 
-  licensingConfig:
-      secretName: licensing-config-new
+   with
 
-Write and exit from the kubectl edit session (you can use :qw for instance if vi utility is used)
+   .. code-block:: yaml
 
-GPU Operator sequentially redeploys all the driver pods with this new licensing information.
+      licensingConfig:
+          configMapName: licensing-config-new
+
+#. Save your changes and exit the editor (for example, ``:wq`` in ``vi``).
+
+   After you save, the GPU Operator sequentially redeploys all the driver pods with the new licensing information.
 
 ****************************************************
 Installing GPU Operator Using the Data Center Driver
