@@ -118,7 +118,7 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
 
    The pod could also say ``Completed`` if the container already completed successfully.
    
-   If the pod stays ``Pending`` for more than a few minutes, refer to :ref:`Pod Stuck in Pending State with Insufficient nvidia.com/pgpu Error <coco-pending-pod>` in :doc:`Troubleshooting <troubleshooting>` before continuing.
+   If the pod stays ``Pending`` for more than a few minutes, use the :doc:`Troubleshooting <troubleshooting>` guide for more details on viewing logs and potential causes for the pod being stuck.
 
 #. View the logs from the pod after the container starts:
 
@@ -137,50 +137,11 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
       Test PASSED
       Done
 
-    The output should include ``Test PASSED`` if the container completed successfully.
-    This means that your cluster is configured to deploy containers in the Kata container runtime on nodes configured for Confidential Computing.
+   The output should include ``Test PASSED`` if the container completed successfully.
+   This means that your cluster is configured to deploy GPU workloads in the Kata container runtime on nodes configured for Confidential Computing.
 
-    If you do not see any log output, the pod may still be running.
-    Use the command in the previous step to check the pod status.
-
-#. Confirm the workload ran confidentially.
-
-   While the pod is still ``Running``, query the GPU's Confidential Computing state from
-   inside the container:
-
-   .. code-block:: console
-
-      $ kubectl exec cuda-vectoradd-kata -- nvidia-smi conf-compute -q
-
-   *Example Output:*
-
-   .. code-block:: output
-
-      CC status: ON
-      CC Environment: PRODUCTION
-
-   ``CC status: ON`` confirms that the GPU passed through to the workload is operating in
-   Confidential Computing mode.
-
-   .. note::
-
-      The vector-add sample exits quickly, so run this command while the pod is still
-      ``Running``; you cannot ``exec`` into a ``Completed`` pod.
-      If the pod has already completed, re-create it and re-run the command promptly, or use
-      a longer-running workload.
-      You can also confirm the node independently by checking that
-      ``nvidia.com/cc.mode.state`` is ``on`` (or ``ppcie``); refer to
-      :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
-
-   .. important::
-
-      ``Test PASSED`` and ``CC status: ON`` confirm functional, hardware-isolated GPU
-      execution.
-      They do **not** by themselves cryptographically prove the environment to a remote
-      party.
-      Confidentiality is *established* by attestation, which verifies the TEE and releases
-      secrets only to a proven-good environment.
-      Refer to :doc:`Attestation <attestation>`.
+   If you do not see any log output, the pod may still be running.
+   Use the command in the previous step to check the pod status.
 
 #. Optionally, you can verify the sample app was running the Kata container runtime by checking the pod details:
 
@@ -207,9 +168,11 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
       Normal  Created    71s   kubelet            Created container: cuda-vectoradd
       Normal  Started    68s   kubelet            Started container cuda-vectoradd
 
-   The ``Runtime Class Name`` should match the runtime class used to create the pod and you will see that the pod ran successfully.
+   The ``Runtime Class Name`` should match the runtime class used to create the pod and you will see that the pod ran successfully. 
+   The example output shows ``Runtime Class Name:  kata-qemu-nvidia-gpu-tdx``.
 
-#. Delete the pod:
+
+To clean up, delete the pod:
 
    .. code-block:: console
 

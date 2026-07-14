@@ -203,7 +203,7 @@ Verify the installed version on each GPU worker node:
 
   containerd containerd.io 2.2.2 ...
 
-The reported version must be ``2.2.2``.
+Your actual output may vary, but the reported version must be ``2.2.2``.
 If you are running a different version on any worker node, refer to the `containerd Getting Started guide <https://containerd.io/docs/2.2/getting-started/>`_ for installation instructions.
 
 .. _coco-prereq-helm:
@@ -314,7 +314,7 @@ Apply these settings as follows:
 
 .. note::
 
-   If you need a timeout longer than 1200 seconds (20 minutes), also adjust the Kata Agent ``image_pull_timeout``.
+   If you need a timeout longer than 1200 seconds (20 minutes), consider also adjust the Kata Agent ``image_pull_timeout``.
    This setting controls the Confidential Data Hub image pull API timeout in seconds.
    Add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass a value in the pod annotation ``io.katacontainers.config.hypervisor.kernel_params``.
 

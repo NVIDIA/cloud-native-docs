@@ -202,21 +202,12 @@ Install the NVIDIA GPU Operator
       nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
 
 **Success criteria:** All GPU Operator pods are ``Running`` or ``Completed``.
-Your cluster is now configured to run Confidential Containers workloads on all nodes.
+
+Your cluster is now configured to deploy GPU workloads into the SNP and TDX runtime classes on all nodes.
 
 **********
 Next Steps
 **********
-
-.. note::
-
-   You now have a working Confidential Containers runtime. 
-
-   Attestation is what cryptographically verifies the TEE and releases secrets to a
-   production workload. For attestation concepts and a local
-   connectivity test, see the :doc:`Attestation <attestation>` quickstart. For production attestation
-   deployment, refer to the upstream `Confidential Containers NVIDIA attestation guide
-   <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`__.
 
 * Continue to :doc:`Run a Sample Workload <run-sample-workload>` to confirm the deployment.
 

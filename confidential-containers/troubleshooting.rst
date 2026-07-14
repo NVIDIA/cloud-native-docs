@@ -84,6 +84,7 @@ Use this section to collect GPU Operator pod logs when an operand is not running
       $ kubectl logs -n gpu-operator <pod-name>
 
    Replace ``<pod-name>`` with the name of the GPU Operator pod from ``kubectl get pods -n gpu-operator``.
+   Logs for ``nvidia-kata-sandbox-device-plugin-daemonset-<pod-name>``, ``nvidia-cc-manager-<pod-name>``, and ``nvidia-vfio-manager-<pod-name>`` can be most useful for troubleshooting Confidential Containers issues.
 
 
 .. _coco-view-kata-logs:
