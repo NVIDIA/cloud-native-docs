@@ -244,6 +244,98 @@ Disable the NRI Plugin by modifying the cluster policy:
 After disabling the NRI Plugin, the ``nvidia`` runtime class will be created.
 
 
+.. _nri-cdi-devices:
+
+******************************************
+Requesting CDI Devices with the NRI Plugin
+******************************************
+
+When the NRI Plugin is enabled, a pod can request that the NRI Plugin inject specific CDI devices into one of its containers.
+Add an annotation of the following form to the pod specification:
+
+.. code-block:: yaml
+
+   metadata:
+     annotations:
+       nvidia.cdi.k8s.io/container.<container-name>: "<cdi-device>"
+
+Replace ``<container-name>`` with the name of the container in the pod that the device is injected into, and replace ``<cdi-device>`` with the CDI device to request.
+The NRI Plugin supports two kinds of CDI devices: non-management devices and management devices.
+
+Requesting a Non-Management CDI Device
+**************************************
+
+A non-management CDI device injects a single GPU, identified by its GPU UUID, into a container.
+Pods can request a non-management CDI device from **any** namespace.
+
+Retrieve the GPU UUID from the ``/var/run/cdi/k8s.device-plugin.nvidia.com-gpu.json`` file on the GPU node.
+
+Request the device with an annotation of the form ``k8s.device-plugin.nvidia.com/gpu=<GPU-UUID>``.
+The following pod specification requests a specific GPU for the ``ubuntu`` container:
+
+.. code-block:: yaml
+
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: ubuntu
+     labels:
+       app: ubuntu
+     annotations:
+       nvidia.cdi.k8s.io/container.ubuntu: "k8s.device-plugin.nvidia.com/gpu=GPU-1d7f7c5b-b2f6-148d-ff9a-d8bc4941885c"
+   spec:
+     containers:
+     - image: ubuntu
+       name: ubuntu
+       command:
+         - "sleep"
+         - "604800"
+       imagePullPolicy: IfNotPresent
+     restartPolicy: Always
+
+Requesting a Management CDI Device
+**********************************
+
+A management CDI device provides management-level access to all GPUs on the node, bypassing GPU allocation through the Device Plugin or DRA Driver for GPUs.
+This is the access that a GPU Management Container requires.
+Request a management device with the ``management.nvidia.com/gpu=all`` annotation value.
+
+By default, only pods in the namespace where the GPU Operator is installed, which is the namespace where the NVIDIA Container Toolkit runs, are permitted to request management CDI devices.
+To permit pods in other namespaces to request management CDI devices, add those namespaces to the ``NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES`` environment variable on the NVIDIA Container Toolkit.
+The value is a comma-separated list of namespaces.
+
+Set the environment variable through the ``toolkit.env`` Helm value at installation time, or by modifying the cluster policy on an existing installation:
+
+.. code-block:: console
+
+   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type='json' \
+       -p='[{"op": "replace", "path": "/spec/toolkit/env", "value": [{"name": "NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES", "value": "test-namespace"}]}]'
+
+The following pod specification, in ``test-namespace``, requests a management CDI device for the ``ctr`` container.
+For this pod to start, ``test-namespace`` must be included in the ``NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES`` environment variable.
+
+.. code-block:: yaml
+
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: cdi-nri-test
+     namespace: test-namespace
+     labels:
+       app: cdi-nri-test
+     annotations:
+       nvidia.cdi.k8s.io/container.ctr: "management.nvidia.com/gpu=all"
+   spec:
+     containers:
+     - name: ctr
+       image: ubuntu
+       imagePullPolicy: IfNotPresent
+       command:
+         - bash
+         - -c
+         - sleep infinity
+
+
 ************
 Known Issues
 ************
