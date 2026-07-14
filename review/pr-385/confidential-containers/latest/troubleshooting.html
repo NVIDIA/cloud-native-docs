@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -490,7 +490,8 @@ The sections below cover Confidential Containers-specific deploy failures: CC no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
 </pre></div>
 </div>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.
+Logs for <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin-daemonset-&lt;pod-name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager-&lt;pod-name&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager-&lt;pod-name&gt;</span></code> can be most useful for troubleshooting Confidential Containers issues.</p>
 </li>
 </ol>
 </section>

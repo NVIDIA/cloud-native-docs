@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -596,7 +596,7 @@ Refer to the <a class="reference internal" href="supported-platforms.html#coco-s
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">containerd containerd.io 2.2.2 ...</span>
 </pre></div>
 </div>
-<p>The reported version must be <code class="docutils literal notranslate"><span class="pre">2.2.2</span></code>.
+<p>Your actual output may vary, but the reported version must be <code class="docutils literal notranslate"><span class="pre">2.2.2</span></code>.
 If you are running a different version on any worker node, refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
 </section>
 <section id="helm">
@@ -683,7 +683,7 @@ If it reports <code class="docutils literal notranslate"><span class="pre">activ
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you need a timeout longer than 1200 seconds (20 minutes), also adjust the Kata Agent <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.
+<p>If you need a timeout longer than 1200 seconds (20 minutes), consider also adjust the Kata Agent <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.
 This setting controls the Confidential Data Hub image pull API timeout in seconds.
 Add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass a value in the pod annotation <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params</span></code>.</p>
 </div>

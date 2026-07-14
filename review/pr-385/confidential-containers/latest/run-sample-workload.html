@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -510,61 +510,25 @@ If your cluster was installed with the <code class="docutils literal notranslate
 </pre></div>
 </div>
 <p>The pod could also say <code class="docutils literal notranslate"><span class="pre">Completed</span></code> if the container already completed successfully.</p>
-<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, refer to <a class="reference internal" href="troubleshooting.html#coco-pending-pod"><span class="std std-ref">Pod Stuck in Pending State with Insufficient nvidia.com/pgpu Error</span></a> in <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> before continuing.</p>
+<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, use the <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> guide for more details on viewing logs and potential causes for the pod being stuck.</p>
 </li>
 <li><p>View the logs from the pod after the container starts:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n default cuda-vectoradd-kata
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">  [Vector addition of 50000 elements]</span>
-<span class="go">  Copy input data from the host memory to the CUDA device</span>
-<span class="go">  CUDA kernel launch with 196 blocks of 256 threads</span>
-<span class="go">  Copy output data from the CUDA device to the host memory</span>
-<span class="go">  Test PASSED</span>
-<span class="go">  Done</span>
-
-<span class="go">The output should include ``Test PASSED`` if the container completed successfully.</span>
-<span class="go">This means that your cluster is configured to deploy containers in the Kata container runtime on nodes configured for Confidential Computing.</span>
-
-<span class="go">If you do not see any log output, the pod may still be running.</span>
-<span class="go">Use the command in the previous step to check the pod status.</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
 </pre></div>
 </div>
-</li>
-<li><p>Confirm the workload ran confidentially.</p>
-<p>While the pod is still <code class="docutils literal notranslate"><span class="pre">Running</span></code>, query the GPU’s Confidential Computing state from
-inside the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> cuda-vectoradd-kata -- nvidia-smi conf-compute -q
-</pre></div>
-</div>
-<p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">CC status: ON</span>
-<span class="go">CC Environment: PRODUCTION</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">CC</span> <span class="pre">status:</span> <span class="pre">ON</span></code> confirms that the GPU passed through to the workload is operating in
-Confidential Computing mode.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The vector-add sample exits quickly, so run this command while the pod is still
-<code class="docutils literal notranslate"><span class="pre">Running</span></code>; you cannot <code class="docutils literal notranslate"><span class="pre">exec</span></code> into a <code class="docutils literal notranslate"><span class="pre">Completed</span></code> pod.
-If the pod has already completed, re-create it and re-run the command promptly, or use
-a longer-running workload.
-You can also confirm the node independently by checking that
-<code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">on</span></code> (or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>); refer to
-<a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p><code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> and <code class="docutils literal notranslate"><span class="pre">CC</span> <span class="pre">status:</span> <span class="pre">ON</span></code> confirm functional, hardware-isolated GPU
-execution.
-They do <strong>not</strong> by themselves cryptographically prove the environment to a remote
-party.
-Confidentiality is <em>established</em> by attestation, which verifies the TEE and releases
-secrets only to a proven-good environment.
-Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a>.</p>
-</div>
+<p>The output should include <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> if the container completed successfully.
+This means that your cluster is configured to deploy GPU workloads in the Kata container runtime on nodes configured for Confidential Computing.</p>
+<p>If you do not see any log output, the pod may still be running.
+Use the command in the previous step to check the pod status.</p>
 </li>
 <li><p>Optionally, you can verify the sample app was running the Kata container runtime by checking the pod details:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe pod cuda-vectoradd-kata
@@ -587,14 +551,16 @@ Refer to <a class="reference internal" href="attestation.html"><span class="doc"
 <span class="go">Normal  Started    68s   kubelet            Started container cuda-vectoradd</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Class</span> <span class="pre">Name</span></code> should match the runtime class used to create the pod and you will see that the pod ran successfully.</p>
-</li>
-<li><p>Delete the pod:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd-kata.yaml
-</pre></div>
-</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Class</span> <span class="pre">Name</span></code> should match the runtime class used to create the pod and you will see that the pod ran successfully.
+The example output shows <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Class</span> <span class="pre">Name:</span>&#160; <span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>.</p>
 </li>
 </ol>
+<p>To clean up, delete the pod:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd-kata.yaml
+</pre></div>
+</div>
+</div></blockquote>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <div class="admonition note">

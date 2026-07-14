@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 10, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -607,6 +607,12 @@ In this case, chart needs to be deleted using <code class="docutils literal notr
 </pre></div>
 </div>
 <p>After the edits are complete, Kubernetes will automatically apply the updates to cluster.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For NVIDIA AI Enterprise vGPU deployments, the <code class="docutils literal notranslate"><span class="pre">configMap</span></code> (<code class="docutils literal notranslate"><span class="pre">configMapName</span></code>) for the NLS
+licensing configuration is <strong>deprecated</strong> and will be removed in a future release. It is recommended to migrate to use Secret based licensing when you upgrade to GPU Operator v25.10.0 or later.
+Refer to <a class="reference internal" href="install-gpu-operator-nvaie.html#updating-nls-secret-based"><span class="std std-ref">Updating NLS Client License Token in Secret</span></a> in the NVIDIA AI Enterprise install guide for details on migrating.</p>
+</div>
 </section>
 <section id="additional-controls-for-driver-upgrades">
 <h2>Additional Controls for Driver Upgrades<a class="headerlink" href="#additional-controls-for-driver-upgrades" title="Permalink to this headline">#</a></h2>
