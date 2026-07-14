@@ -38,13 +38,27 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 26.7.0
 =======
 
-.. This 26.7.0 entry is in progress. Only changes confirmed against merged code are listed.
-   Pending items (NVIDIADriver CR migration, CDI/NRI default change, image hardening,
-   Ubuntu 26.04, new hardware, component versions) are added as they are verified on the
-   release branch.
-
 New Features
 ------------
+
+* Updated software component versions:
+
+  - NVIDIA GPU Driver 595.71.05
+  - NVIDIA Container Toolkit v1.20.0
+  - NVIDIA DCGM 4.6.0-1
+  - NVIDIA MIG Manager for Kubernetes v0.14.3
+  - NVIDIA GDRCopy Driver v2.6
+  - Node Feature Discovery v0.19.0
+
+* Added a ``nvidia.com/gpu.deploy.client`` node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
+  Advanced users who run their own GPU client workloads that hold GPU device handles (for example, a standalone NVIDIA DRA driver) can add ``nvidia.com/gpu.deploy.client=true`` to the ``nodeSelector`` of the workload's DaemonSet, Deployment, StatefulSet, or Job.
+  The GPU Operator then automatically restarts these pods during a driver upgrade or a MIG configuration change, so the operation can proceed without manual pod eviction.
+  (`PR #2607 <https://github.com/NVIDIA/gpu-operator/pull/2607>`__)
+
+* Added support for restarting driver pods in place during patch upgrades when the driver configuration is unchanged.
+  Previously, a chart upgrade that changed only cosmetic pod-template metadata, such as the ``helm.sh/chart`` label, evicted running GPU workloads and drained the node.
+  The driver-upgrade controller now compares the driver configuration digest between the running pod and the desired DaemonSet, and when they match, it cordons the node and restarts the driver pod in place without evicting workloads or draining the node.
+  (`PR #2527 <https://github.com/NVIDIA/gpu-operator/pull/2527>`__)
 
 * Added an ``upgradePolicy`` field to the NVIDIA driver custom resource definition (CRD).
   You can now define a driver upgrade policy per NVIDIADriver custom resource.
@@ -58,12 +72,33 @@ New Features
 * Added the ``dcgmExporter.serviceMonitor.scrapeTimeout`` Helm value to configure the scrape timeout for the DCGM Exporter ``ServiceMonitor``.
   (`PR #2404 <https://github.com/NVIDIA/gpu-operator/pull/2404>`__)
 
+* Added support for configuring the namespace that the GPU Operator uses for its leader election ``Lease`` object.
+  When unset, the operator continues to use the namespace that it runs in.
+  (`PR #1333 <https://github.com/NVIDIA/gpu-operator/pull/1333>`__)
+
+* Changed the RHEL-specific driver container image tags to use only the major RHEL version instead of the full ``major.minor`` version.
+  (`PR #2497 <https://github.com/NVIDIA/gpu-operator/pull/2497>`__)
+
+* Added the ``NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES`` environment variable for the NVIDIA Container Toolkit.
+  When the NRI Plugin is enabled, this variable holds the list of namespaces whose pods are permitted to request management CDI devices.
+  By default, only pods in the namespace where the GPU Operator is installed can request management CDI devices.
+  Set the variable through the ``toolkit.env`` Helm value or the ClusterPolicy custom resource.
+  Refer to :ref:`Requesting CDI Devices with the NRI Plugin <nri-cdi-devices>` for more information.
+
 Fixed Issues
 ------------
 
 * Fixed an issue where custom NVIDIADriver custom resources could remain stuck and fail to reconcile after a conflicting default NVIDIADriver custom resource was deleted.
   The GPU Operator now re-evaluates all NVIDIADriver custom resources whenever any NVIDIADriver custom resource changes.
   (`PR #2258 <https://github.com/NVIDIA/gpu-operator/pull/2258>`__)
+
+* Fixed an issue where the ``ClusterPolicy`` status could briefly report ``Ready`` during a driver upgrade before all driver pods were upgraded.
+  (`PR #2510 <https://github.com/NVIDIA/gpu-operator/pull/2510>`__, `Issue #1567 <https://github.com/NVIDIA/gpu-operator/issues/1567>`__)
+
+* Fixed an issue where the driver container's containerd configuration mounts were set up even when the NRI plugin was enabled.
+  On immutable hosts with read-only containerd paths, this prevented the NRI plugin pod from starting.
+  The GPU Operator no longer configures these mounts when NRI is enabled.
+  (`PR #2514 <https://github.com/NVIDIA/gpu-operator/pull/2514>`__)
 
 
 ----

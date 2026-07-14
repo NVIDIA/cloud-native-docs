@@ -172,7 +172,7 @@ docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "26.7"  # Update repo_docs.projects.openshift.version to match latest patch version maj.min.patch
-source_substitutions = { minor_version = "26.7", version = "v26.7.0", recommended = "580.167.08", dra_version = "0.4.1" }
+source_substitutions = { minor_version = "26.7", version = "v26.7.0", recommended = "595.71.05", dra_version = "0.4.1" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
