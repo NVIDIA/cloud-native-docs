@@ -297,7 +297,7 @@ The GPU Operator has been validated in the following scenarios:
 
 * :ref:`bare-metal`
 * :ref:`cloud-service-providers`
-* :ref:`partner-validated`
+* :ref:`partner-validated-table`
 
 .. _bare-metal:
 
@@ -477,7 +477,7 @@ Cloud Service Providers
       - 1.32---1.36
       - 1.32---1.36
 
-.. _partner-validated:
+.. _partner-validated-table:
 
 Partner Validated Operating Systems and Driver Container
 ********************************************************
