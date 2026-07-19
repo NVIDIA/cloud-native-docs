@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 15, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 19, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -1115,11 +1115,10 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 </section>
 <section id="supported-operating-systems-and-kubernetes-platforms">
 <span id="container-platforms"></span><h2>Supported Operating Systems and Kubernetes Platforms<a class="headerlink" href="#supported-operating-systems-and-kubernetes-platforms" title="Permalink to this headline">#</a></h2>
-<p>The GPU Operator has been validated in the following scenarios:</p>
+<p>The GPU Operator has been validated with the following operating systems and Kubernetes platforms:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#bare-metal"><span class="std std-ref">Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</span></a></p></li>
 <li><p><a class="reference internal" href="#cloud-service-providers"><span class="std std-ref">Cloud Service Providers</span></a></p></li>
-<li><p><a class="reference internal" href="#partner-validated-table"><span class="std std-ref">Partner Validated Operating Systems and Driver Container</span></a></p></li>
 </ul>
 <section id="bare-metal-virtual-machines-with-gpu-passthrough-and-nvidia-vgpu">
 <span id="bare-metal"></span><h3>Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU<a class="headerlink" href="#bare-metal-virtual-machines-with-gpu-passthrough-and-nvidia-vgpu" title="Permalink to this headline">#</a></h3>
@@ -1349,53 +1348,6 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </table>
 </div>
 </section>
-<section id="partner-validated-operating-systems-and-driver-container">
-<span id="partner-validated-table"></span><h3>Partner Validated Operating Systems and Driver Container<a class="headerlink" href="#partner-validated-operating-systems-and-driver-container" title="Permalink to this headline">#</a></h3>
-<p>Partners have validated the GPU Operator with the following configurations.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><div class="line-block">
-<div class="line">Partner</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">Operating System</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">Custom Artifacts</div>
-</div>
-</th>
-<th class="head"><div class="line-block">
-<div class="line">Documentation</div>
-</div>
-</th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>SUSE</p></td>
-<td><p>SUSE Linux Enterprise Server 15, 16</p></td>
-<td><p>Signed and precompiled driver container by SUSE</p></td>
-<td><div class="line-block">
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/suse-rke2.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</span></a></div>
-<div class="line"><br /></div>
-<div class="line"><a class="reference external" href="https://www.suse.com/products/suse-ai-factory/with-nvidia/">SUSE AI Factory with NVIDIA</a></div>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Support for these configurations is provided by the corresponding partner.
-To report an issue with the GPU Operator on one of these configurations, open a GitHub issue directly with the partner’s support channel or GitHub repository.</p>
-<p>For more details about partners and their supported configurations, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>About Partner-Validated Configurations</span></a> page.</p>
-</section>
 </section>
 <section id="supported-precompiled-drivers">
 <span id="id42"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
@@ -1437,6 +1389,62 @@ AWS, Oracle</p></td>
 </tbody>
 </table>
 </div>
+</section>
+<section id="partner-validated-configurations">
+<h2>Partner Validated Configurations<a class="headerlink" href="#partner-validated-configurations" title="Permalink to this headline">#</a></h2>
+<p id="partner-validated-table">Partners have validated the GPU Operator with the following configurations:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><div class="line-block">
+<div class="line">Partner</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Operating System</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Custom Artifacts</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Documentation</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Support Channel</div>
+</div>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SUSE</p></td>
+<td><p>SUSE Linux Enterprise Server 15, 16</p></td>
+<td><p>Signed and precompiled driver container</p></td>
+<td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/suse-rke2.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</span></a></div>
+<div class="line"><br /></div>
+<div class="line"><a class="reference external" href="https://www.suse.com/products/suse-ai-factory/with-nvidia/">SUSE AI Factory with NVIDIA</a></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><a class="reference external" href="https://github.com/rancher/rke2">RKE2 GitHub repository</a></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Support for these configurations is provided by the corresponding partner.
+To report an issue with the GPU Operator on one of these configurations, open an issue in the partner’s support channel.</p>
+<p>For more details about partners and their supported configurations, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>About Partner-Validated Configurations</span></a> page.</p>
 </section>
 <section id="supported-container-runtimes">
 <h2>Supported Container Runtimes<a class="headerlink" href="#supported-container-runtimes" title="Permalink to this headline">#</a></h2>
@@ -1714,10 +1722,10 @@ Running the GPU Operator with Container Device Interface (CDI) enabled (default 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-operating-systems-and-kubernetes-platforms">Supported Operating Systems and Kubernetes Platforms</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bare-metal-virtual-machines-with-gpu-passthrough-and-nvidia-vgpu">Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-service-providers">Cloud Service Providers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partner-validated-operating-systems-and-driver-container">Partner Validated Operating Systems and Driver Container</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-precompiled-drivers">Supported Precompiled Drivers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#partner-validated-configurations">Partner Validated Configurations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-container-runtimes">Supported Container Runtimes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kubevirt-and-openshift-virtualization">Support for KubeVirt and OpenShift Virtualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#support-for-kata-containers-confidential-containers-and-openshift-sandboxed-containers">Support for Kata Containers, Confidential Containers, and OpenShift Sandboxed Containers</a></li>
