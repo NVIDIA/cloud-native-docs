@@ -293,11 +293,10 @@ Supported Operating Systems and Kubernetes Platforms
 .. _fn4: #partner-validated
 .. |fn4| replace:: :sup:`4`
 
-The GPU Operator has been validated in the following scenarios:
+The GPU Operator has been validated with the following operating systems and Kubernetes platforms:
 
 * :ref:`bare-metal`
 * :ref:`cloud-service-providers`
-* :ref:`partner-validated-table`
 
 .. _bare-metal:
 
@@ -477,31 +476,6 @@ Cloud Service Providers
       - 1.32---1.36
       - 1.32---1.36
 
-.. _partner-validated-table:
-
-Partner Validated Operating Systems and Driver Container
-********************************************************
-Partners have validated the GPU Operator with the following configurations.
-
-.. list-table::
-    :header-rows: 1
-
-    * - | Partner
-      - | Operating System
-      - | Custom Artifacts
-      - | Documentation
-
-    * - SUSE
-      - SUSE Linux Enterprise Server 15, 16
-      - Signed and precompiled driver container by SUSE
-      - | :external+pv:doc:`suse-rke2`
-        |
-        | `SUSE AI Factory with NVIDIA <https://www.suse.com/products/suse-ai-factory/with-nvidia/>`_
-
-Support for these configurations is provided by the corresponding partner.
-To report an issue with the GPU Operator on one of these configurations, open a GitHub issue directly with the partner's support channel or GitHub repository.
-
-For more details about partners and their supported configurations, refer to the :external+pv:doc:`index` page.
 
 .. _supported-precompiled-drivers:
 
@@ -525,6 +499,35 @@ See the :doc:`precompiled-drivers` page for more information about using precomp
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
 
+********************************
+Partner Validated Configurations
+********************************
+.. _partner-validated-table:
+
+Partners have validated the GPU Operator with the following configurations:
+
+.. list-table::
+    :header-rows: 1
+
+    * - | Partner
+      - | Operating System
+      - | Custom Artifacts
+      - | Documentation
+      - | Support Channel
+
+    * - SUSE
+      - SUSE Linux Enterprise Server 15, 16
+      - Signed and precompiled driver container
+      - | :external+pv:doc:`suse-rke2`
+        |
+        | `SUSE AI Factory with NVIDIA <https://www.suse.com/products/suse-ai-factory/with-nvidia/>`_
+      - | `RKE2 GitHub repository <https://github.com/rancher/rke2>`_
+
+
+Support for these configurations is provided by the corresponding partner.
+To report an issue with the GPU Operator on one of these configurations, open an issue in the partner's support channel.
+
+For more details about partners and their supported configurations, refer to the :external+pv:doc:`index` page.
 
 ****************************
 Supported Container Runtimes
