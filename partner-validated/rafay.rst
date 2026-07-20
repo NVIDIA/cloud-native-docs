@@ -34,7 +34,7 @@ The |prod-name-long| provides the software foundation for operating and governin
 infrastructure, including bare-metal provisioning, infrastructure lifecycle management, Kubernetes,
 virtual machines, AI workbenches, and token factories. Together these capabilities help operators
 increase infrastructure utilization and monetize AI services. Platform capabilities include
-centralized fleet lifecycle management, cluster blueprints and add-on management, zero-trust kubectl
+centralized fleet lifecycle management, cluster blueprints and Add-On management, zero-trust kubectl
 access, RBAC/SSO, per-tenant cost allocation, and centralized audit logging.
 
 The |prod-name-long| includes a Managed Kubernetes Service (Rafay MKS), a CNCF-conformant Kubernetes
@@ -42,11 +42,11 @@ distribution that provisions and manages the full lifecycle of upstream Kubernet
 metal and virtual machines. Using the NVIDIA GPU Operator with Rafay MKS gives customers a validated,
 repeatable way to deliver GPU-accelerated Kubernetes infrastructure for AI/ML workloads:
 
-* **Standardized GPU cluster provisioning.** Platform teams can package the GPU Operator as an add-on
+* **Standardized GPU cluster provisioning.** Platform teams can package the GPU Operator as an Add-On
   in a Rafay cluster blueprint so every MKS cluster comes up with a consistent, version-pinned NVIDIA
   software stack (driver, container toolkit, device plugin, DCGM, and so on).
 
-* **Fleet-wide lifecycle management.** The Rafay controller manages Kubernetes, CNI, CSI, and add-on
+* **Fleet-wide lifecycle management.** The Rafay controller manages Kubernetes, CNI, CSI, and Add-On
   lifecycle across many clusters, which simplifies keeping GPU Operator versions, Kubernetes versions,
   and container runtimes in a known-good, validated combination.
 
@@ -235,7 +235,7 @@ Blueprint applied to your GPU-enabled MKS clusters.
           version: "580.159.04"
 
 #. Reference the GPU Operator Add-On from a **Cluster Blueprint** in the same Rafay Project. The
-   Blueprint can include other add-ons the target clusters require (CNI, storage, observability, and
+   Blueprint can include other Add-Ons the target clusters require (CNI, storage, observability, and
    so on).
 
 #. Deploy the Cluster Blueprint to the target GPU-enabled MKS cluster(s). The Rafay control plane
