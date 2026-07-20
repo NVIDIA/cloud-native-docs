@@ -1,3 +1,14 @@
+---
+title: "Installing the Node Feature Discovery Operator on OpenShift"
+description: "Install the Node Feature Discovery Operator, a prerequisite for the NVIDIA GPU Operator on OpenShift."
+content:
+  type: how_to
+skill:
+  priority: 2
+keywords: [NFD, Node Feature Discovery, OpenShift, install, GPU Operator prerequisite]
+skill-group: install-upgrade
+---
+
 .. Date: Nov 15 2021
 .. Author: kquinn
 

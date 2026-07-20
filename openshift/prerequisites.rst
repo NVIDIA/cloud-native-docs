@@ -1,3 +1,12 @@
+---
+title: "Prerequisites for GPU Operator on OpenShift"
+description: "Requirements to meet before installing the NVIDIA GPU Operator on OpenShift."
+content:
+  type: reference
+keywords: [GPU Operator, OpenShift, prerequisites, requirements, OCP, cluster-admin]
+skill-group: install-upgrade
+---
+
 .. Date: November 26 2021
 .. Author: kquinn
 

@@ -1,0 +1,187 @@
+---
+name: "ocp-install-upgrade"
+description: "Installs and upgrade the NVIDIA GPU Operator on OpenShift. Use when deploying the GPU Operator on an OCP cluster for the first time or upgrading to a new version. Trigger keywords - GPU Operator, OpenShift, install, upgrade, OCP, ClusterPolicy, Driver Toolkit, DTK, NFD, Node Feature Discovery, GPU Operator prerequisite, CLI, web console, OperatorHub, prerequisites, requirements, cluster-admin."
+license: "Apache-2.0"
+---
+
+# Installing and Upgrading the NVIDIA GPU Operator on OpenShift
+
+## Gotchas
+
+- Do not use or upgrade to OpenShift `4.18.22` or `4.18.23`.
+
+<a id="steps-overview"></a>
+
+# Installation and Upgrade Overview on OpenShift
+
+**Warning:**
+
+Do not use or upgrade to OpenShift `4.18.22` or `4.18.23`.
+There was a breaking change to `crun` in those versions that causes a known issue with all versions of the GPU Operator.
+Update your OCP cluster to version `4.18.24` or later, which includes a fix for the issue.
+Refer to [NVIDIA GPU Operator Validator Pod Error](https://access.redhat.com/solutions/7131271) in the Red Hat Knowledgebase for more information.
+
+**Note:**
+
+The driver container image tag for OpenShift has changed after the OCP 4.19 release.
+
+- Before OCP 4.19: The driver image tag is formed with the suffix `-rhcos4.17` (such as with OCP 4.17).
+- Starting OCP 4.19 and later: The driver image tag is formed with the suffix `-rhel9.6` (such as with OCP 4.19).
+
+Refer to [OpenShift Container Platform 4.19 Release Notes section 1.4.5](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes),
+[RHEL Versions Utilized by RHEL CoreOS and OCP](https://access.redhat.com/articles/6907891),
+and [Split RHCOS into layers: /etc/os-release](https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release)
+for more information.
+
+## High-Level Steps
+
+Follow these high-level steps to install an entitlement-free supported version of the NVIDIA GPU Operator:
+
+1. {ref}`install-nfd`.
+2. {ref}`install-nvidiagpu`.
+3. {ref}`running-sample-app`.
+
+:::{important}
+The installation process for NVIDIA AI Enterprise customers is documented separately.
+Refer to {doc}`nvaie-with-ocp`.
+:::
+
+## Preparing to Install the Operator
+
+You can deploy the Operator on a a newly deployed cluster that was not upgraded without entitlement on the following versions:
+
+- OpenShift 4.9.9 and above z-streams
+
+### Special Considerations for OpenShift 4.15
+
+In OpenShift 4.15, secrets are no longer automatically generated when the integrated OpenShift image registry is disabled.
+For more information, refer to the [OpenShift 4.15 Release Notes](https://docs.openshift.com/container-platform/4.15/release_notes/ocp-4-15-release-notes.html#ocp-4-15-auth-generated-secrets).
+
+This change affects the installation of NVIDIA GPU Operator.
+During installation, the Driver Toolkit daemon set checks for the existence of a `build-dockercfg` secret for the Driver Toolkit service account.
+When the secret does not exist, the installation stalls.
+
+You can run the following command to determine if your cluster is affected.
+
+```console
+$ oc get configs.imageregistry.operator.openshift.io cluster -o jsonpath='{.spec.storage}{"\n"}'
+```
+
+If the output from the preceding command is empty, `{}`, then your cluster is affected and you must configure your registry to use storage.
+Refer to [Configuring the registry for bare metal](https://docs.openshift.com/container-platform/latest/registry/configuring_registry_storage/configuring-registry-storage-baremetal.html)
+for information about configuring the registry with a PVC.
+For platforms other than bare metal, refer to the additional resources section of the [Image Registry Operator in OpenShift Container Platform](https://docs.openshift.com/container-platform/latest/registry/configuring-registry-operator.html) page.
+
+If the output from the preceding command is any value other than empty, your cluster is not affected.
+
+## Preparing to Install the Operator
+
+- Verify your cluster has the OpenShift Driver toolkit:
+
+  ```console
+  $ oc get -n openshift is/driver-toolkit
+  ```
+
+  *Example Output*
+
+  ```output
+  NAME             IMAGE REPOSITORY                                                            TAGS                           UPDATED
+  driver-toolkit   image-registry.openshift-image-registry.svc:5000/openshift/driver-toolkit   410.84.202203290245-0,latest   47 minutes ago
+  ```
+
+## Preparing to Upgrade the Operator
+
+After an upgrade a bug in OpenShift Cluster Version Operator ([BZ#2014071](https://bugzilla.redhat.com/show_bug.cgi?id=2014071)) prevents the proper upgrade of the Driver Toolkit image stream.
+A fix for this issue has been merged in the following releases:
+
+- OpenShift 4.8.21 and above z-streams
+- OpenShift 4.9.5 and above z-streams
+
+1. Verify your cluster is affected by this bug, search for a tag with an empty name:
+
+   ```console
+   $ oc get -n openshift is/driver-toolkit '-ojsonpath={.spec.tags[?(@.name=="")]}'
+   ```
+
+   *Example Output*
+
+   ```json
+   {{"annotations":null,"from":{"kind":"DockerImage","name":"[quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:71207482fa6fcef0e3ca283d0cafebed4d5ac78c62312fd6e19ac5ca2294d296](http://quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:71207482fa6fcef0e3ca283d0cafebed4d5ac78c62312fd6e19ac5ca2294d296)"},"generation":5,"importPolicy":{"scheduled":true},"name":"","referencePolicy":{"type":"Source"}}
+   ```
+
+2. As a workaround, delete the broken image stream and the Cluster Version Operator recreates it:
+
+   ```console
+   $ oc delete -n openshift is/driver-toolkit
+   ```
+
+   *Example Output*
+
+   ```output
+   imagestream.image.openshift.io "driver-toolkit" deleted
+   ```
+
+<a id="broken-dtk"></a>
+
+## About the Broken Driver Toolkit
+
+:::{important}
+**Entitled NVIDIA driver builds are deprecated and not supported.**
+:::
+
+OpenShift 4.8.19, 4.8.21, 4.9.8 are known to have a broken Driver Toolkit image. However, on newer OpenShift versions the driver builds rely on Driver Toolkit (DTK). With these versions, entitled builds are not supported and might not work.
+
+When the DTK image is broken, the following messages are recorded in the driver pod containers. Follow the guidance in {ref}`broken-dtk-troubleshooting` to troubleshoot the underlying issue.
+
+If you need to force entitled builds, disable the use of Driver Toolkit image by editing the cluster policy instance and setting `operator.use_ocp_driver_toolkit` option to `false`.
+
+1. View the logs from the OpenShift Driver Toolkit container:
+
+   ```console
+   $ oc logs nvidia-driver-daemonset-49.84.202111111343-0-6mpw4 -c openshift-driver-toolkit-ctr
+   ```
+
+   *Example Output*
+
+   ```output
+   + '[' -f /mnt/shared-nvidia-driver-toolkit/dir_prepared ']'
+   Waiting for nvidia-driver-ctr container to prepare the shared directory ...
+   + echo Waiting for nvidia-driver-ctr container to prepare the shared directory ...
+   + sleep 10
+   + '[' -f /mnt/shared-nvidia-driver-toolkit/dir_prepared ']'
+   + exec /mnt/shared-nvidia-driver-toolkit/ocp_dtk_entrypoint dtk-build-driver
+   Running dtk-build-driver
+   WARNING: broken Driver Toolkit image detected:
+   - Node kernel:    4.18.0-305.25.1.el8_4.x86_64
+   - Kernel package: 4.18.0-305.28.1.el8_4.x86_64
+   INFO: informing nvidia-driver-ctr to fallback on entitled-build.
+   INFO: nothing else to do in openshift-driver-toolkit-ctr container, sleeping forever.
+   ```
+
+2. View the logs from the NVIDIA Driver container:
+
+   ```console
+   $ oc logs nvidia-driver-daemonset-49.84.202111111343-0-6mpw4 -c nvidia-driver-ctr
+   ```
+
+   *Example Output*
+
+   ```output
+   Running nv-ctr-run-with-dtk
+   + [[ '' == \t\r\u\e ]]
+   + [[ ! -f /mnt/shared-nvidia-driver-toolkit/dir_prepared ]]
+   + cp -r /tmp/install.sh /usr/local/bin/ocp_dtk_entrypoint /usr/local/bin/nvidia-driver /usr/local/bin/extract-vmlinux /usr/bin/kubectl /usr/local/bin/vgpu-util /drivers /licenses /mnt/shared-nvidia-driver-toolkit/
+   + env
+   + sed 's/=/="/'
+   + sed 's/$/"/'
+   + touch /mnt/shared-nvidia-driver-toolkit/dir_prepared
+   + set +x
+   Wed Nov 24 13:36:31 UTC 2021 Waiting for openshift-driver-toolkit-ctr container to start ...
+   WARNING: broken driver toolkit detected, using entitlement-based fallback
+   ```
+
+## References
+
+- **[references/install-nfd.md](references/install-nfd.md)** — Install the Node Feature Discovery Operator, a prerequisite for the NVIDIA GPU Operator on OpenShift.
+- **[references/install-gpu-ocp.md](references/install-gpu-ocp.md)** — Install the NVIDIA GPU Operator on OpenShift using the web console or CLI. Covers namespace creation, OperatorGroup, Subscription, and ClusterPolicy setup.
+- **[references/prerequisites.md](references/prerequisites.md)** — Requirements to meet before installing the NVIDIA GPU Operator on OpenShift.

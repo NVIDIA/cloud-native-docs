@@ -1,3 +1,11 @@
+---
+title: "Time-slicing NVIDIA GPUs in OpenShift"
+description: "Configure GPU time-slicing to share NVIDIA GPUs among multiple workloads on OpenShift."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, time-slicing, GPU sharing, OCP]
+skill-group: configure
+---
 .. Date: June 27 2022
 .. Author: stesmith
 

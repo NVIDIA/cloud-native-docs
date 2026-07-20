@@ -1,3 +1,14 @@
+---
+title: "Installing and Upgrading the NVIDIA GPU Operator on OpenShift"
+description: "Install and upgrade the NVIDIA GPU Operator on OpenShift. Use when deploying the GPU Operator on an OCP cluster for the first time or upgrading to a new version."
+content:
+  type: how_to
+skill:
+  priority: 1
+keywords: [GPU Operator, OpenShift, install, upgrade, OCP, ClusterPolicy, Driver Toolkit, DTK]
+skill-group: install-upgrade
+---
+
 .. Date: Aug 22 2022
 .. Author: kquinn
 

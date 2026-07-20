@@ -1,3 +1,11 @@
+---
+title: "Appendix"
+description: "Supplemental reference material for GPU Operator on OpenShift."
+content:
+  type: reference
+keywords: [GPU Operator, OpenShift, appendix, reference]
+skill-group: troubleshoot
+---
 .. Date: November 17 2021
 .. Author: kquinn
 

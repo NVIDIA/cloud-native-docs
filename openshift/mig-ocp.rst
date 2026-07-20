@@ -1,3 +1,11 @@
+---
+title: "MIG Support in OpenShift Container Platform"
+description: "Configure Multi-Instance GPU (MIG) partitioning for NVIDIA GPUs on OpenShift."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, MIG, Multi-Instance GPU, A100, H100, partitioning]
+skill-group: configure
+---
 .. Date: November 16 2021
 .. Author: kquinn
 

@@ -1,3 +1,11 @@
+---
+title: "Enabling the GPU Monitoring Dashboard"
+description: "Enable the GPU monitoring dashboard in OpenShift to visualize GPU performance metrics."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, monitoring, dashboard, Grafana, DCGM, metrics]
+skill-group: monitor
+---
 .. Date: August 27 2023
 .. Author: empovit
 

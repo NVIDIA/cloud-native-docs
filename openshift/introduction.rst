@@ -1,3 +1,11 @@
+---
+title: "Introduction to NVIDIA GPU Operator on OpenShift"
+description: "Overview of the NVIDIA GPU Operator on Red Hat OpenShift Container Platform."
+content:
+  type: get_started
+keywords: [GPU Operator, OpenShift, introduction, overview, OCP]
+skill-group: get-started
+---
 .. Date: Oct 24 2022
 .. Author: kquinn
 

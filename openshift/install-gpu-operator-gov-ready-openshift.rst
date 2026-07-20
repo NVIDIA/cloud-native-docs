@@ -1,3 +1,13 @@
+---
+title: "NVIDIA GPU Operator Government Ready on OpenShift"
+description: "Install the NVIDIA GPU Operator government-ready components on Red Hat OpenShift for FedRAMP High or equivalent use cases."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, government, FedRAMP, NVIDIA AI Enterprise, security]
+skill-group: disconnected
+skill:
+  priority: 2
+---
 .. license-header
   SPDX-FileCopyrightText: Copyright (c) 2023 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
   SPDX-License-Identifier: Apache-2.0

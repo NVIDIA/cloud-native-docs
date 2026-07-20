@@ -1,3 +1,11 @@
+---
+title: "Precompiled Drivers for the NVIDIA GPU Operator for RHCOS"
+description: "Configure the NVIDIA GPU Operator to use precompiled drivers on Red Hat CoreOS."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, precompiled drivers, RHCOS, DTK]
+skill-group: configure
+---
 .. Date: Apr192023
 .. Author: stesmith
 

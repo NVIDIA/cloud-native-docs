@@ -1,3 +1,11 @@
+---
+title: "Entitled Driver Builds No Longer Supported"
+description: "Information about the deprecation of entitled NVIDIA driver builds on OpenShift."
+content:
+  type: reference
+keywords: [GPU Operator, OpenShift, entitlement, driver build, deprecated]
+skill-group: get-started
+---
 .. Date: Sept 07 2021
 .. Author: kquinn
 

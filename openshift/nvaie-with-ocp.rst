@@ -1,3 +1,11 @@
+---
+title: "NVIDIA AI Enterprise with OpenShift"
+description: "Install and configure NVIDIA AI Enterprise on Red Hat OpenShift Container Platform."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, NVIDIA AI Enterprise, NVAIE, OCP]
+skill-group: configure
+---
 .. Date: March 21 2022
 .. Author: stephenjamessmith
 

@@ -1,3 +1,13 @@
+---
+title: "Troubleshooting GPU Operator on OpenShift"
+description: "Diagnose and resolve common issues with the NVIDIA GPU Operator on OpenShift."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, troubleshooting, debug, DTK, Driver Toolkit]
+skill-group: troubleshoot
+skill:
+  priority: 1
+---
 .. Date: November 16 2021
 .. Author: kquinn
 

@@ -1,3 +1,14 @@
+---
+title: "Installing the NVIDIA GPU Operator on OpenShift"
+description: "Install the NVIDIA GPU Operator on OpenShift using the web console or CLI. Covers namespace creation, OperatorGroup, Subscription, and ClusterPolicy setup."
+content:
+  type: how_to
+skill:
+  priority: 3
+keywords: [GPU Operator, OpenShift, install, CLI, web console, ClusterPolicy, OperatorHub, OCP]
+skill-group: install-upgrade
+---
+
 .. Date: Sept 28 2022
 .. Author: kquinn
 

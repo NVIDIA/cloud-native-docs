@@ -1,3 +1,13 @@
+---
+title: "Deploy GPU Operators in a Disconnected or Airgapped Environment"
+description: "Mirror GPU Operator images and deploy in a disconnected or airgapped OpenShift cluster."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, disconnected, airgapped, mirror, OCP]
+skill-group: disconnected
+skill:
+  priority: 1
+---
 .. Date: Jan232023
 .. Author: stesmith
 

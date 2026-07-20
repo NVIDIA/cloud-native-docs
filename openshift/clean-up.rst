@@ -1,3 +1,13 @@
+---
+title: "Cleanup"
+description: "Remove the NVIDIA GPU Operator and related resources from an OpenShift cluster."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, cleanup, uninstall, remove]
+skill-group: troubleshoot
+skill:
+  priority: 2
+---
 .. Date: September 01 2021
 .. Author: kquinn
 

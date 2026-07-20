@@ -1,3 +1,11 @@
+---
+title: "NVIDIA GPU Operator with OpenShift Virtualization"
+description: "Enable GPU passthrough and vGPU support with the NVIDIA GPU Operator and OpenShift Virtualization."
+content:
+  type: how_to
+keywords: [GPU Operator, OpenShift, Virtualization, vGPU, GPU passthrough, KubeVirt]
+skill-group: configure
+---
 .. Date: Sept 28 2022
 .. Author: kquinn
 
