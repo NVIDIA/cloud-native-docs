@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 16, 2026"/>
+    <meta name="docbuild:last-update" content="Jul 20, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -452,18 +452,19 @@ tenants (HPC jobs on SLURM, VM-based training pipelines) without a second orches
 <p>Rafay self-validated the NVIDIA GPU Operator with the following configuration:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Product name</p></th>
+<tr class="row-odd"><th class="head"><p>Product Name</p></th>
 <th class="head"><div class="line-block">
 <div class="line">NVIDIA</div>
 <div class="line">GPU</div>
@@ -472,35 +473,36 @@ tenants (HPC jobs on SLURM, VM-based training pipelines) without a second orches
 </th>
 <th class="head"><div class="line-block">
 <div class="line">Operating</div>
-<div class="line">system</div>
+<div class="line">System</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
 <div class="line">Container</div>
-<div class="line">runtime</div>
+<div class="line">Runtime</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
 <div class="line">Kubernetes</div>
-<div class="line">version</div>
+<div class="line">Version</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
 <div class="line">Helm</div>
-<div class="line">version</div>
+<div class="line">Version</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
 <div class="line">NVIDIA</div>
-<div class="line">GPU model</div>
+<div class="line">GPU Model</div>
 </div>
 </th>
 <th class="head"><div class="line-block">
 <div class="line">NVIDIA</div>
-<div class="line">GPU driver</div>
+<div class="line">GPU Driver</div>
 </div>
 </th>
-<th class="head"><p>Hardware model</p></th>
+<th class="head"><p>Hardware Model</p></th>
+<th class="head"><p>Date Validated</p></th>
 </tr>
 </thead>
 <tbody>
@@ -518,6 +520,7 @@ tenants (HPC jobs on SLURM, VM-based training pipelines) without a second orches
 <div class="line">1 TB RAM</div>
 </div>
 </td>
+<td><p>June 2026</p></td>
 </tr>
 </tbody>
 </table>
@@ -565,7 +568,7 @@ mks-gpu-01   Ready    worker          7d    v1.34.3   ...   containerd://2.0.4
 </section>
 <section id="configuring-rafay-mks-with-the-gpu-operator">
 <h2>Configuring Rafay MKS with the GPU Operator<a class="headerlink" href="#configuring-rafay-mks-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
-<p>On Rafay MKS, the NVIDIA GPU Operator is installed as an add-on (a versioned Helm chart managed by
+<p>On Rafay MKS, the NVIDIA GPU Operator is installed as an <a class="reference external" href="https://docs.rafay.co/blueprints/addons/">Add-On</a> (a versioned Helm chart managed by
 the Rafay controller) that is part of a Rafay Cluster Blueprint. This is the recommended fleet-native
 approach and lets every GPU-enabled MKS cluster in the fleet install the same NVIDIA stack from a
 single source of truth in the Rafay Platform.</p>
