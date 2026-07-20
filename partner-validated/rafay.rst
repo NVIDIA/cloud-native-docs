@@ -80,23 +80,24 @@ Rafay self-validated the NVIDIA GPU Operator with the following configuration:
 .. list-table::
    :header-rows: 1
 
-   * - Product name
+   * - Product Name
      - | NVIDIA
        | GPU
        | Operator
      - | Operating
-       | system
+       | System
      - | Container
-       | runtime
+       | Runtime
      - | Kubernetes
-       | version
+       | Version
      - | Helm
-       | version
+       | Version
      - | NVIDIA
-       | GPU model
+       | GPU Model
      - | NVIDIA
-       | GPU driver
-     - Hardware model
+       | GPU Driver
+     - Hardware Model
+     - Date Validated
 
    * - Rafay MKS 3.1
      - v26.3.1
@@ -109,6 +110,7 @@ Rafay self-validated the NVIDIA GPU Operator with the following configuration:
      - | Supermicro SYS-221GE-NR
        | Intel Xeon Gold 6548Y+ (32 cores/socket, 2 sockets)
        | 1 TB RAM
+     - June 2026
 
 
 *************
@@ -174,7 +176,7 @@ Confirm Helm 3.x is installed on the workstation:
 Configuring Rafay MKS with the GPU Operator
 *******************************************
 
-On Rafay MKS, the NVIDIA GPU Operator is installed as an add-on (a versioned Helm chart managed by
+On Rafay MKS, the NVIDIA GPU Operator is installed as an `Add-On <https://docs.rafay.co/blueprints/addons/>`_ (a versioned Helm chart managed by
 the Rafay controller) that is part of a Rafay Cluster Blueprint. This is the recommended fleet-native
 approach and lets every GPU-enabled MKS cluster in the fleet install the same NVIDIA stack from a
 single source of truth in the |prod-name-long|.
