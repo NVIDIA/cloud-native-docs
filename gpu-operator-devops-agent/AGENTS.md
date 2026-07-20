@@ -121,6 +121,7 @@ helm get values gpu-operator -n gpu-operator -o yaml
 | Fresh install or install plan | `skills/gpu-operator-install/SKILL.md` |
 | Health, workload validation, drift check | `skills/gpu-operator-operate/SKILL.md` |
 | Upgrade, rollback, driver/MIG/config maintenance | `skills/gpu-operator-maintain/SKILL.md` |
+| Remove the product — uninstall the Helm release, clean up CRDs, unload host driver modules | `skills/gpu-operator-uninstall/SKILL.md` |
 | Failed install, missing GPU, runtime errors, Xid, stuck upgrade | `skills/gpu-operator-troubleshoot/SKILL.md` |
 | Support/debug handoff | `skills/gpu-operator-evidence-bundle/SKILL.md` |
 | Record a reusable lesson, anti-pattern, discovered resource, operating parameter, or upstream issue draft | `skills/gpu-operator-improve/SKILL.md` |
