@@ -10,7 +10,7 @@ SPDX-License-Identifier: Apache-2.0
 A prototype **DevOps agent package** for the NVIDIA GPU Operator: a curated
 `AGENTS.md` front door + skills + references that let an AI coding/ops agent
 (Claude, Cursor, etc.) help an operator **install / operate / maintain /
-troubleshoot** the GPU Operator by reading and reasoning over the **public**
+uninstall / troubleshoot** the GPU Operator by reading and reasoning over the **public**
 GPU Operator docs and source — instead of a fresh agent guessing from an
 unstructured search.
 
@@ -23,7 +23,7 @@ routable operating charter with an explicit safety model.
 | Path | What it is |
 |---|---|
 | `AGENTS.md` | Agent front door / operating charter — supported scope, source precedence, bootstrap policy, safety policy, skill routing, operating invariants, stop/escalation conditions |
-| `skills/` | Six operator SOPs: `gpu-operator-install`, `-operate`, `-maintain`, `-troubleshoot`, `-evidence-bundle`, `-improve` |
+| `skills/` | Seven operator SOPs: `gpu-operator-install`, `-operate`, `-maintain`, `-uninstall`, `-troubleshoot`, `-evidence-bundle`, `-improve` |
 | `references/` | The reasoning substrate — `models.md` (the layered success ladder), `branch-matrix.md` (staged branch decisions), `command-cards.md` (validated recipes), `field-scenario-cards.md` + `failure-signatures.md` (troubleshooting), `environment-inventory.md`, `supported-scope.md`, `claim-ledger.md`, others |
 | `scripts/` | Read-only inventory + a few guarded mutation helpers (host-driver K3s install, CUDA VectorAdd validation, time-slicing) |
 | `runtime-memory/` | Seed files the agent appends to as it learns (insights, anti-patterns, discovered resources, operating parameters) |
@@ -97,7 +97,7 @@ operational guidance, **not** a substitute for change approval.
 - **Layered model** — does `references/models.md` match how the GPU Operator
   actually fails and recovers (NFD → driver → toolkit → device-plugin →
   validator → workload)?
-- **Skill coverage** — are install / operate / maintain / troubleshoot /
+- **Skill coverage** — are install / operate / maintain / uninstall / troubleshoot /
   evidence-bundle / improve the right operator buckets? What's missing?
 
 ## Provenance

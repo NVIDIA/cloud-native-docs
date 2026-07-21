@@ -1,7 +1,7 @@
 # NVIDIA GPU Operator DevOps Agent Package
 
-Purpose: help an AI DevOps agent install, operate, maintain, and troubleshoot
-NVIDIA GPU Operator from public docs/source and live environment evidence. This
+Purpose: help an AI DevOps agent install, operate, maintain, uninstall, and
+troubleshoot NVIDIA GPU Operator from public docs/source and live environment evidence. This
 package is operational guidance, not a substitute for change approval.
 
 ## Supported Scope
