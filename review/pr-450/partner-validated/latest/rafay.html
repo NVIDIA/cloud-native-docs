@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Mirantis Kubernetes Engine with the NVIDIA GPU Operator &#8212; Partner Validated Configurations with NVIDIA GPU Operator</title>
+    <title>Rafay Platform with the NVIDIA GPU Operator &#8212; Partner Validated Configurations with NVIDIA GPU Operator</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'mirantis-mke';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'rafay';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,8 +69,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator" href="suse-rke2.html" />
-    <link rel="prev" title="Mirantis k0rdent with the NVIDIA GPU Operator" href="k0rdent.html" />
+    <link rel="prev" title="SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator" href="suse-rke2.html" />
 
 
 
@@ -354,9 +353,9 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">About Partner-Validated Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="k0rdent.html">Mirantis k0rdent with the NVIDIA GPU Operator</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Mirantis Kubernetes Engine with the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirantis-mke.html">Mirantis Kubernetes Engine with the NVIDIA GPU Operator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="suse-rke2.html">SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rafay.html">Rafay Platform with the NVIDIA GPU Operator</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Rafay Platform with the NVIDIA GPU Operator</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html">NVIDIA GPU Operator Documentation</a></li>
 </ul>
 </div>
@@ -394,7 +393,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">Partner Validated Configurations with NVIDIA GPU Operator</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Mirantis Kubernetes Engine with the NVIDIA GPU Operator</li>
+    <li class="breadcrumb-item active" aria-current="page">Rafay Platform with the NVIDIA GPU Operator</li>
   </ul>
 </nav></div>
       
@@ -411,33 +410,61 @@
                 <article class="bd-article">
                   
   <section id="prod-name-long-with-the-nvidia-gpu-operator">
-<h1>Mirantis Kubernetes Engine with the NVIDIA GPU Operator<a class="headerlink" href="#prod-name-long-with-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
-<section id="about-prod-name-short-with-the-gpu-operator">
-<h2>About MKE with the GPU Operator<a class="headerlink" href="#about-prod-name-short-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
-<p>Mirantis Kubernetes Engine (MKE) gives you the power to build, run, and scale cloud-native
-applications—the way that works for you.
-Increase developer efficiency and release frequency while reducing cost.</p>
-<p>The NVIDIA GPU Operator uses the operator framework within Kubernetes to automate
-both the deployment and management of all NVIDIA software components needed to provision NVIDIA GPUs.
-These components include the NVIDIA GPU drivers to enable CUDA, Kubernetes device plugin for GPUs,
-the NVIDIA Container Toolkit, automatic node labeling using GFD, DCGM based monitoring and others.</p>
+<h1>Rafay Platform with the NVIDIA GPU Operator<a class="headerlink" href="#prod-name-long-with-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
+<section id="about-prod-name-long-with-the-gpu-operator">
+<h2>About Rafay Platform with the GPU Operator<a class="headerlink" href="#about-prod-name-long-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>The Rafay Platform provides the software foundation for operating and governing modern AI
+infrastructure, including bare-metal provisioning, infrastructure lifecycle management, Kubernetes,
+virtual machines, AI workbenches, and token factories. Together these capabilities help operators
+increase infrastructure utilization and monetize AI services. Platform capabilities include
+centralized fleet lifecycle management, cluster blueprints and Add-On management, zero-trust kubectl
+access, RBAC/SSO, per-tenant cost allocation, and centralized audit logging.</p>
+<p>The Rafay Platform includes a Managed Kubernetes Service (Rafay MKS), a CNCF-conformant Kubernetes
+distribution that provisions and manages the full lifecycle of upstream Kubernetes clusters on bare
+metal and virtual machines. Using the NVIDIA GPU Operator with Rafay MKS gives customers a validated,
+repeatable way to deliver GPU-accelerated Kubernetes infrastructure for AI/ML workloads:</p>
+<ul class="simple">
+<li><p><strong>Standardized GPU cluster provisioning.</strong> Platform teams can package the GPU Operator as an Add-On
+in a Rafay cluster blueprint so every MKS cluster comes up with a consistent, version-pinned NVIDIA
+software stack (driver, container toolkit, device plugin, DCGM, and so on).</p></li>
+<li><p><strong>Fleet-wide lifecycle management.</strong> The Rafay controller manages Kubernetes, CNI, CSI, and Add-On
+lifecycle across many clusters, which simplifies keeping GPU Operator versions, Kubernetes versions,
+and container runtimes in a known-good, validated combination.</p></li>
+<li><p><strong>Secure day-2 operations.</strong> Operators can validate GPU health remotely (for example, running
+<code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> in a GPU Operator pod through Rafay’s zero-trust kubectl) without bastion hosts or
+shared kubeconfigs.</p></li>
+<li><p><strong>Multi-tenant, self-service GPU consumption.</strong> On top of MKS, the Rafay Platform lets platform
+teams publish Jupyter Notebooks, LLM inference endpoints, AI/ML jobs, and custom services as SKUs in
+a tenant-facing catalog. End users provision them on demand via a self-service portal, with RBAC,
+quotas, and per-tenant metering and cost allocation applied automatically. Rafay’s <strong>Token Factory</strong>
+extends the model to token-metered LLM endpoints for delivering GenAI-as-a-service, and the <strong>App
+Marketplace</strong> supports packaged applications including NVIDIA NIM microservices.</p></li>
+<li><p><strong>Full-stack automation.</strong> The same Rafay Platform that manages the Rafay MKS distribution-based
+Kubernetes cluster also automates the provisioning of bare-metal servers and VMs the cluster sits
+on and manages the wider data-center inventory: virtual machines, storage, network switches, and
+InfiniBand fabrics. From one control plane, GPU capacity can serve both K8s tenants and non-K8s
+tenants (HPC jobs on SLURM, VM-based training pipelines) without a second orchestration layer.</p></li>
+</ul>
+<p>For more information about Rafay MKS, refer to the <a class="reference external" href="https://docs.rafay.co/learn/mks/">Rafay product documentation</a>.</p>
 </section>
 <section id="validated-configuration-matrix">
 <h2>Validated Configuration Matrix<a class="headerlink" href="#validated-configuration-matrix" title="Permalink to this headline">#</a></h2>
-<p>Mirantis Kubernetes Engine has self-validated with the following components and versions:</p>
+<p>Rafay self-validated the NVIDIA GPU Operator with the following configuration:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
-<col style="width: 13%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Version</p></th>
+<tr class="row-odd"><th class="head"><p>Product Name</p></th>
 <th class="head"><div class="line-block">
 <div class="line">NVIDIA</div>
 <div class="line">GPU</div>
@@ -454,75 +481,46 @@ the NVIDIA Container Toolkit, automatic node labeling using GFD, DCGM based moni
 <div class="line">Runtime</div>
 </div>
 </th>
-<th class="head"><p>Kubernetes</p></th>
-<th class="head"><p>Helm</p></th>
-<th class="head"><p>NVIDIA GPU</p></th>
+<th class="head"><div class="line-block">
+<div class="line">Kubernetes</div>
+<div class="line">Version</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Helm</div>
+<div class="line">Version</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">NVIDIA</div>
+<div class="line">GPU Model</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">NVIDIA</div>
+<div class="line">GPU Driver</div>
+</div>
+</th>
 <th class="head"><p>Hardware Model</p></th>
+<th class="head"><p>Date Validated</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>MKE 3.8</p></td>
-<td><p>v24.9.2</p></td>
+<tr class="row-even"><td><p>Rafay MKS 3.1</p></td>
+<td><p>v26.3.1</p></td>
+<td><p>Ubuntu 24.04.3 LTS</p></td>
+<td><p>containerd 2.0.4</p></td>
+<td><p>v1.34.3</p></td>
+<td><p>v3.14.4</p></td>
+<td><p>NVIDIA H100 NVL</p></td>
+<td><p>580.159.04</p></td>
 <td><div class="line-block">
-<div class="line">Ubuntu 22.04</div>
+<div class="line">Supermicro SYS-221GE-NR</div>
+<div class="line">Intel Xeon Gold 6548Y+ (32 cores/socket, 2 sockets)</div>
+<div class="line">1 TB RAM</div>
 </div>
 </td>
-<td><p>Mirantis Container Runtime (MCR) 25.0.1</p></td>
-<td><p>1.31.5</p></td>
-<td><p>Helm v3</p></td>
-<td><div class="line-block">
-<div class="line">NVIDIA T4 Tensor Core</div>
-</div>
-</td>
-<td><div class="line-block">
-<div class="line">AWS EC2 g4dn.2xlarge (8vcpus/32GB)</div>
-</div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>MKE 3.6.2+ and 3.5.7+</p></td>
-<td><p>v23.3.1</p></td>
-<td><div class="line-block">
-<div class="line">RHEL 8.7</div>
-<div class="line">Ubuntu 20.04, 18.04</div>
-</div>
-</td>
-<td><p>Mirantis Container Runtime (MCR) 20.10.15+ and 23.0.3+</p></td>
-<td><p>1.21.12+ and 1.24.6+</p></td>
-<td><p>Helm v3</p></td>
-<td><div class="line-block">
-<div class="line">NVIDIA HGX H100</div>
-<div class="line">NVIDIA H100</div>
-<div class="line">NVIDIA A100</div>
-</div>
-</td>
-<td><div class="line-block">
-<div class="line">Dell PowerEdge R720</div>
-</div>
-<div class="line-block">
-<div class="line">Dell CN-QVWT90-70163-2BJ-00LV-A02</div>
-</div>
-<div class="line-block">
-<div class="line">2x Intel Xeon E5-2690</div>
-</div>
-<div class="line-block">
-<div class="line">24x RAM 8GB</div>
-</div>
-<div class="line-block">
-<div class="line">1x SSD 480GB Micron 5300 PRO</div>
-</div>
-<div class="line-block">
-<div class="line">1x SSD 960GB Micron 5300 PRO</div>
-</div>
-<div class="line-block">
-<div class="line">1x GPU NVIDIA P1001B A100 PCIe AMPERE 40GB</div>
-</div>
-<div class="line-block">
-<div class="line">1x RAID Controller PERC H710</div>
-</div>
-<div class="line-block">
-<div class="line">1x Network card FM487</div>
-</div>
-</td>
+<td><p>June 2026</p></td>
 </tr>
 </tbody>
 </table>
@@ -530,117 +528,145 @@ the NVIDIA Container Toolkit, automatic node labeling using GFD, DCGM based moni
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>A running MKE cluster with at least one control plane node and two worker nodes.
-The recommended configuration is at least three control plane nodes and at least two worker nodes.</p></li>
-<li><p>At least one worker node with an NVIDIA GPU physically installed.
-The GPU Operator can locate the GPU and label the node accordingly.</p></li>
-<li><p>A seed node to connect to the MKE instance, with Helm 3.x installed on the seed node.</p></li>
-<li><p>The kubeconfig file for the MKE cluster on the seed node.
-You can get the file from the MKE web interface by downloading a client bundle.
-The configuration is in the <code class="docutils literal notranslate"><span class="pre">kube.yml</span></code> file.</p>
-<p>Alternatively, if the MKE cluster is a managed cluster of a Mirantis Container Cloud (MCC) instance,
-you can use the MCC management console to get the kubeconfig file.
-In this case, the MKE web interface can be accessed from the MCC web interface.
-You can get the kubeconfig file for the managed cluster directly from the MCC web interface.</p>
-</li>
-<li><p>You have an MKE administrator user name and password, and you have the MKE host URL.</p></li>
+<p>Before installing the NVIDIA GPU Operator on a Rafay MKS cluster, verify the following:</p>
+<ul class="simple">
+<li><p>A running Rafay MKS cluster on Kubernetes v1.34.3 (or a Kubernetes version listed in the validated
+configuration matrix), provisioned via the Rafay Console, Rafay CLI, API, or Terraform Provider.
+Refer to the <a class="reference external" href="https://docs.rafay.co/clusters/upstream/baremetal_vm/overview/">Rafay MKS provisioning documentation</a>.</p></li>
+<li><p>At least one worker node with a supported NVIDIA GPU (validated with NVIDIA H100 NVL) physically
+installed.</p></li>
+<li><p>Nodes running Ubuntu 24.04 LTS with containerd 2.0.x as the container runtime.</p></li>
+<li><p>Cluster admin access via a kubeconfig downloaded from the Rafay Console, or zero-trust kubectl
+access through the Rafay Platform.</p></li>
+<li><p>Helm v3 installed on the workstation used to install the GPU Operator Certification Helm chart.</p></li>
+<li><p>Outbound access from the cluster to the NVIDIA NGC registry (nvcr.io) and the NVIDIA Helm
+repository (<a class="reference external" href="https://helm.ngc.nvidia.com/nvidia">https://helm.ngc.nvidia.com/nvidia</a>).</p></li>
 </ul>
+<p>Verify readiness with the following commands.</p>
+<p>Confirm all nodes are <code class="docutils literal notranslate"><span class="pre">Ready</span></code> and report the expected Kubernetes version and container runtime:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -o wide
+</pre></div>
+</div>
+<p><em>Example output:</em></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NAME         STATUS   ROLES           AGE   VERSION   ...   CONTAINER-RUNTIME
+mks-cp-01    Ready    control-plane   7d    v1.34.3   ...   containerd://2.0.4
+mks-gpu-01   Ready    worker          7d    v1.34.3   ...   containerd://2.0.4
+</pre></div>
+</div>
+<p>Confirm the NVIDIA GPU is visible on the worker node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci <span class="p">|</span> grep -i nvidia
+</pre></div>
+</div>
+<p><em>Example output:</em></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>17:00.0 3D controller: NVIDIA Corporation H100 NVL (rev a1)
+</pre></div>
+</div>
+<p>Confirm Helm 3.x is installed on the workstation:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm version --short
+</pre></div>
+</div>
 </section>
-<section id="procedure">
-<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h2>
-<p>Perform the following steps to prepare the MKE cluster:</p>
+<section id="configuring-rafay-mks-with-the-gpu-operator">
+<h2>Configuring Rafay MKS with the GPU Operator<a class="headerlink" href="#configuring-rafay-mks-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>On Rafay MKS, the NVIDIA GPU Operator is installed as an <a class="reference external" href="https://docs.rafay.co/blueprints/addons/">Add-On</a> (a versioned Helm chart managed by
+the Rafay controller) that is part of a Rafay Cluster Blueprint. This is the recommended fleet-native
+approach and lets every GPU-enabled MKS cluster in the fleet install the same NVIDIA stack from a
+single source of truth in the Rafay Platform.</p>
+<section id="provisioning-the-mks-cluster">
+<h3>Provisioning the MKS cluster<a class="headerlink" href="#provisioning-the-mks-cluster" title="Permalink to this headline">#</a></h3>
+<p>Provision the Rafay MKS cluster with at least one GPU-enabled worker node using the Rafay Console,
+RCTL CLI, API, or Terraform. Refer to the <a class="reference external" href="https://docs.rafay.co/clusters/upstream/baremetal_vm/overview/">Rafay MKS documentation for bare metal and VMs</a>.</p>
+<p>Download the kubeconfig from the Rafay Console and confirm cluster access:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes
+</pre></div>
+</div>
+<p><em>Example output:</em></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NAME         STATUS   ROLES           AGE   VERSION
+mks-cp-01    Ready    control-plane   7d    v1.34.3
+mks-gpu-01   Ready    worker          7d    v1.34.3
+</pre></div>
+</div>
+</section>
+<section id="preparing-the-cluster-for-the-gpu-operator">
+<h3>Preparing the cluster for the GPU Operator<a class="headerlink" href="#preparing-the-cluster-for-the-gpu-operator" title="Permalink to this headline">#</a></h3>
+<p>Because Rafay MKS provisions upstream Kubernetes, no MKS-specific privilege or configuration changes
+are expected to be required before installing the GPU Operator.</p>
+</section>
+<section id="installing-the-gpu-operator-as-a-rafay-add-on">
+<h3>Installing the GPU Operator as a Rafay Add-On<a class="headerlink" href="#installing-the-gpu-operator-as-a-rafay-add-on" title="Permalink to this headline">#</a></h3>
+<p>Install the GPU Operator by defining it as a Rafay Add-On and referencing that Add-On from a Cluster
+Blueprint applied to your GPU-enabled MKS clusters.</p>
 <ol class="arabic">
-<li><p>MKE does not apply a label to worker nodes.
-Ensure that the worker nodes are labeled:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; node-role.kubernetes.io/worker<span class="o">=</span><span class="s1">&#39;&#39;</span>
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">node/demo-node labeled</span>
-</pre></div>
-</div>
-</li>
-<li><p>Create the namespace for the GPU Operator:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create ns gpu-operator
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">namespace/gpu-operator created</span>
+<li><p>In the Rafay Console, create a new Add-On for the NVIDIA GPU Operator with the following
+configuration:</p>
+<ul>
+<li><p>Source: <a class="reference external" href="https://helm.ngc.nvidia.com/nvidia">https://helm.ngc.nvidia.com/nvidia</a></p></li>
+<li><p>Version: v26.3.1</p></li>
+<li><p>Namespace: <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> (created by the Add-On if it does not exist).</p></li>
+<li><p>Values: the certification pinned the NVIDIA driver version explicitly. Here is the
+<code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> for the Add-On:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;580.159.04&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
-<li><p>Store the credentials and connection information in environment variables:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">MKE_USERNAME</span><span class="o">=</span>&lt;mke-username&gt; <span class="se">\</span>
-    <span class="nv">MKE_PASSWORD</span><span class="o">=</span>&lt;mke-password&gt; <span class="se">\</span>
-    <span class="nv">MKE_HOST</span><span class="o">=</span>&lt;mke-fqdn-or-ip-address&gt;
-</pre></div>
-</div>
+</ul>
 </li>
-<li><p>Get an API key from MKE so that you can make API calls later:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">AUTHTOKEN</span><span class="o">=</span><span class="k">$(</span>curl --silent --insecure --data <span class="se">\</span>
-    <span class="s1">&#39;{&quot;username&quot;:&quot;&#39;</span><span class="nv">$MKE_USERNAME</span><span class="s1">&#39;&quot;,&quot;password&quot;:&quot;&#39;</span><span class="nv">$MKE_PASSWORD</span><span class="s1">&#39;&quot;}&#39;</span> <span class="se">\</span>
-    https://<span class="nv">$MKE_HOST</span>/auth/login <span class="p">|</span> jq --raw-output .auth_token<span class="k">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Download the MKE configuration file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl --silent --insecure -X GET <span class="s2">&quot;https://</span><span class="nv">$MKE_HOST</span><span class="s2">/api/ucp/config-toml&quot;</span> <span class="se">\</span>
-    -H <span class="s2">&quot;accept: application/toml&quot;</span> -H <span class="s2">&quot;Authorization: Bearer </span><span class="nv">$AUTHTOKEN</span><span class="s2">&quot;</span>  <span class="se">\</span>
-    &gt; mke-config-gpu.toml
-</pre></div>
-</div>
-</li>
-<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">mke-config-gpu.toml</span></code> file and update the values like the following example:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">priv_attributes_allowed_for_user_accounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;hostbindmounts&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;privileged&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hostPID&quot;</span><span class="p">]</span><span class="w"></span>
-<span class="w">     </span><span class="n">priv_attributes_user_accounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;gpu-operator:gpu-operator&quot;</span><span class="p">]</span><span class="w"></span>
-<span class="n">priv_attributes_allowed_for_service_accounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;hostbindmounts&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;privileged&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s">&quot;hostIPC&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hostPID&quot;</span><span class="p">]</span><span class="w"></span>
-<span class="n">priv_attributes_service_accounts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;gpu-operator:nvidia-gpu-feature-discovery&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s">&quot;gpu-operator:nvidia-driver&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpu-operator:nvidia-container-toolkit&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s">&quot;gpu-operator:nvidia-operator-validator&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpu-operator:nvidia-device-plugin&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s">&quot;gpu-operator:nvidia-dcgm-exporter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gpu-operator:nvidia-mig-manager&quot;</span><span class="p">]</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>Upload the edited MKE configuration file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl --silent --insecure -X PUT -H <span class="s2">&quot;accept: application/toml&quot;</span> <span class="se">\</span>
-    -H <span class="s2">&quot;Authorization: Bearer </span><span class="nv">$AUTHTOKEN</span><span class="s2">&quot;</span> --upload-file <span class="s1">&#39;mke-config-gpu.toml&#39;</span> <span class="se">\</span>
-    https://<span class="nv">$MKE_HOST</span>/api/ucp/config-toml
+<li><p>Reference the GPU Operator Add-On from a <strong>Cluster Blueprint</strong> in the same Rafay Project. The
+Blueprint can include other Add-Ons the target clusters require (CNI, storage, observability, and
+so on).</p></li>
+<li><p>Deploy the Cluster Blueprint to the target GPU-enabled MKS cluster(s). The Rafay control plane
+reconciles the cluster to the Blueprint and installs the GPU Operator via Helm.</p></li>
+<li><p>Wait for all GPU Operator pods to reach <code class="docutils literal notranslate"><span class="pre">Running</span></code> or <code class="docutils literal notranslate"><span class="pre">Completed</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
 </li>
 </ol>
-<p>The MKE cluster is ready for you to install the GPU Operator with Helm.
-Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#install-gpu-operator" title="(in NVIDIA GPU Operator)"><span>Installing the NVIDIA GPU Operator</span></a> for more information.</p>
 </section>
-<section id="verifying-prod-name-short-with-the-gpu-operator">
-<h2>Verifying MKE with the GPU Operator<a class="headerlink" href="#verifying-prod-name-short-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
-<ul>
-<li><p>View the nodes and number of NVIDIA GPUs on each node:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes <span class="s2">&quot;-o=custom-columns=NAME:.metadata.name,GPUs:.metadata.labels.nvidia\.com/gpu\.count&quot;</span>
+</section>
+<section id="verifying-rafay-mks-with-the-gpu-operator">
+<h2>Verifying Rafay MKS with the GPU Operator<a class="headerlink" href="#verifying-rafay-mks-with-the-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>View the nodes and the number of NVIDIA GPUs on each node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes <span class="se">\</span>
+    -o<span class="o">=</span>custom-columns<span class="o">=</span>NAME:.metadata.name,GPUs:.metadata.labels.nvidia<span class="se">\.</span>com/gpu<span class="se">\.</span>count
 </pre></div>
 </div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME        GPUs</span>
-<span class="go">demo-node   4</span>
-<span class="go">...</span>
+<p><em>Example output:</em></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NAME         GPUs
+mks-gpu-01   1
 </pre></div>
 </div>
-<p>A response like the preceding example indicates that the GPU Operator and
-operands are running correctly.</p>
-</li>
-</ul>
-<p>Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#running-sample-gpu-applications" title="(in NVIDIA GPU Operator)"><span>Verification: Running Sample GPU Applications</span></a> to verify the installation.</p>
+<p>Run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> through the driver daemonset. Rafay customers can run this command from the Rafay
+Console using the zero-trust kubectl web shell:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> -n gpu-operator -it <span class="se">\</span>
+<span class="gp">    $</span><span class="o">(</span>kubectl get pods -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-driver-daemonset -o name <span class="p">|</span> head -1<span class="o">)</span> <span class="se">\</span>
+    -- nvidia-smi
+</pre></div>
+</div>
+<p>The output shows the NVIDIA H100 NVL GPU, the driver version, and the CUDA version.</p>
+<p>Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#running-sample-gpu-applications">Running Sample GPU Applications</a>
+in the NVIDIA GPU Operator documentation for additional verification workloads.</p>
 </section>
 <section id="getting-support">
 <h2>Getting Support<a class="headerlink" href="#getting-support" title="Permalink to this headline">#</a></h2>
-<p>Refer to the MKE product documentation for information about working with MKE.</p>
+<ul class="simple">
+<li><p>Rafay product documentation: <a class="reference external" href="https://docs.rafay.co">https://docs.rafay.co</a></p></li>
+<li><p>Rafay product support: <a class="reference external" href="mailto:support&#37;&#52;&#48;rafay&#46;co">support<span>&#64;</span>rafay<span>&#46;</span>co</a></p></li>
+</ul>
 </section>
 <section id="related-information">
-<h2>Related information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.mirantis.com/mke/3.6/overview.html">https://docs.mirantis.com/mke/3.6/overview.html</a></p></li>
+<li><p>Rafay MKS documentation: <a class="reference external" href="https://docs.rafay.co/learn/mks/">https://docs.rafay.co/learn/mks/</a></p></li>
+<li><p>Rafay MKS on bare metal and VMs: <a class="reference external" href="https://docs.rafay.co/clusters/upstream/baremetal_vm/overview/">https://docs.rafay.co/clusters/upstream/baremetal_vm/overview/</a></p></li>
+<li><p>NVIDIA GPU Operator documentation:
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html">https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html</a></p></li>
+<li><p>NVIDIA GPU Operator platform support:
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html">https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/platform-support.html</a></p></li>
 </ul>
 </section>
 </section>
@@ -656,22 +682,13 @@ operands are running correctly.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="k0rdent.html"
+       href="suse-rke2.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Mirantis k0rdent with the NVIDIA GPU Operator</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="suse-rke2.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator</p>
       </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -694,13 +711,18 @@ operands are running correctly.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-prod-name-short-with-the-gpu-operator">About MKE with the GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-prod-name-long-with-the-gpu-operator">About Rafay Platform with the GPU Operator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validated-configuration-matrix">Validated Configuration Matrix</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-prod-name-short-with-the-gpu-operator">Verifying MKE with the GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-rafay-mks-with-the-gpu-operator">Configuring Rafay MKS with the GPU Operator</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#provisioning-the-mks-cluster">Provisioning the MKS cluster</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-the-cluster-for-the-gpu-operator">Preparing the cluster for the GPU Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-gpu-operator-as-a-rafay-add-on">Installing the GPU Operator as a Rafay Add-On</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-rafay-mks-with-the-gpu-operator">Verifying Rafay MKS with the GPU Operator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-support">Getting Support</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-information">Related information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-information">Related Information</a></li>
 </ul>
   </nav></div>
 
