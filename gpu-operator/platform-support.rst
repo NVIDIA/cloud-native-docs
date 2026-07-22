@@ -519,8 +519,6 @@ Partners have validated the GPU Operator with the following configurations:
       - SUSE Linux Enterprise Server 15, 16
       - Signed and precompiled driver container
       - | :external+pv:doc:`suse-rke2`
-        |
-        | `SUSE AI Factory with NVIDIA <https://www.suse.com/products/suse-ai-factory/with-nvidia/>`_
       - | `RKE2 GitHub repository <https://github.com/rancher/rke2>`_
 
 
