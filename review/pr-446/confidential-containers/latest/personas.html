@@ -1,7 +1,6 @@
 
 
 
-
 <!DOCTYPE html>
 
 
@@ -9,7 +8,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Search - NVIDIA Confidential Containers Architecture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Personas &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -45,7 +46,6 @@
 
 
 
-
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'search';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'personas';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -66,17 +66,11 @@
     <script src="_static/version.js"></script>
     <script src="_static/social-media.js"></script>
 
-
-<script src="_static/searchtools.js"></script>
-
-<script src="_static/language_data.js"></script>
-
-<script src="searchindex.js"></script>
-
-
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Supported Platforms" href="supported-platforms.html" />
+    <link rel="prev" title="NVIDIA Confidential Containers Reference Architecture" href="overview.html" />
 
 
 
@@ -86,6 +80,9 @@
     <meta name="docbuild:last-update" content="Jul 23, 2026"/>
   
     
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
   
 
 
@@ -115,7 +112,7 @@
   <dialog id="pst-search-dialog">
     
 <form class="bd-search d-flex align-items-center"
-      action="#"
+      action="search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -245,6 +242,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -350,10 +351,10 @@
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Personas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
@@ -410,7 +411,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"></li>
+    <li class="breadcrumb-item active" aria-current="page">Personas</li>
   </ul>
 </nav></div>
       
@@ -421,42 +422,138 @@
 </div>
               
               
-  <div class="bd-search-container">
-    <h1>Search</h1>
-    <noscript>
-      <div class="admonition error">
-        <p class="admonition-title">Error</p>
-        <p>Please activate JavaScript to enable the search functionality.</p>
-      </div>
-    </noscript>
-    
-<form class="bd-search d-flex align-items-center"
-      action="#"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         placeholder="Search the docs ..."
-         aria-label="Search the docs ..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    <div id="search-results"></div>
-  </div>
-  <script>
-    // Activate the search field on page load
-    let searchInput = document.querySelector("form.bd-search input");
-    if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-        console.log("[PST]: Set focus on search field.");
-    }
-  </script>
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="personas">
+<span id="coco-using-this-guide"></span><h1>Personas<a class="headerlink" href="#personas" title="Permalink to this headline">#</a></h1>
+<p>This page provides an overview of the prior knowledge recommended before implementing the architecture, the personas who own each part of the deployment, and how to navigate this documentation.</p>
+<section id="before-you-begin">
+<h2>Before You Begin<a class="headerlink" href="#before-you-begin" title="Permalink to this headline">#</a></h2>
+<p>This documentation describes NVIDIA’s reference architecture and deployment recommendations for the upstream <a class="reference external" href="https://confidentialcontainers.org/">CNCF Confidential Containers project</a> with NVIDIA GPUs.
+Understanding the upstream project’s goals, architecture, and threat model will give you the context needed to understand architecture decisions described in this documentation.</p>
+<p>Before using this documentation, you should be familiar with:</p>
+<ul class="simple">
+<li><p>Confidential Containers concepts outlined in the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a>, including the trust model, attestation flow, and key features such as sealed secrets and encrypted container images.
+Start there if you are new to Confidential Computing on Kubernetes.</p></li>
+<li><p>Kubernetes administration and deployment experience, including deploying workloads, using <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>, and installing components with Helm.
+Refer to the <a class="reference external" href="https://kubernetes.io/docs/home/">Kubernetes documentation</a> if you need a foundation.</p></li>
+<li><p>Confidential Computing hardware, familiarity with AMD SEV-SNP or Intel TDX, and an understanding of which technology your target hardware uses.</p></li>
+</ul>
+<p>The documentation on this site is specific for deploying Confidential Containers on NVIDIA GPUs with Kata Containers and the NVIDIA GPU Operator.
+It covers the steps you take to enable and configure these components on your cluster to align with the NVIDIA Reference Architecture for Confidential Containers.
+For more advanced Confidential Containers topics, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a>.</p>
+</section>
+<section id="id1">
+<h2>Personas<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>The personas used throughout this documentation describe who is responsible for each stage of enabling and managing Confidential Computing, from hardware selection through workload deployment.
+Depending on your role, you may complete several sections or only a subset.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 42%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Persona</p></th>
+<th class="head"><p>Responsibilities</p></th>
+<th class="head"><p>Start here</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a></p></td>
+<td><p>Selects Confidential Computing-capable CPU and GPU hardware and configures BIOS/UEFI settings.</p></td>
+<td><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-persona-host-os-administrator"><span class="std std-ref">Host OS Administrator</span></a></p></td>
+<td><p>Prepares the host operating system after hardware and BIOS configuration are complete.</p></td>
+<td><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a></p></td>
+<td><p>Installs and manages the Kubernetes cluster and the Confidential Containers software stack.</p></td>
+<td><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-persona-security-engineer"><span class="std std-ref">Security Engineer</span></a></p></td>
+<td><p>Validates Confidential Computing configuration, attestation policy, and secret release for workloads.</p></td>
+<td><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation Quickstart</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-persona-container-user"><span class="std std-ref">Container User</span></a></p></td>
+<td><p>Deploys confidential GPU workloads on a prepared cluster.</p></td>
+<td><p><a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="hardware-it-administrator">
+<span id="coco-persona-hardware-it-administrator"></span><h2>Hardware IT Administrator<a class="headerlink" href="#hardware-it-administrator" title="Permalink to this headline">#</a></h2>
+<p>The Hardware IT Administrator is near the beginning of the Confidential Computing workflow.
+This persona selects the correct CPU and GPU part numbers and configures BIOS/UEFI settings for subsequent steps.
+Typical roles include system architect and IT administrator.</p>
+<p>Relevant pages in this documentation:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>: validated CPU, GPU, OS, and component version combinations that NVIDIA has tested with Confidential Containers.</p></li>
+</ul>
+<p>For BIOS configuration and hardware setup, refer to the <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-tdx-snp.pdf">NVIDIA Confidential Computing Deployment Guide</a> <em>Hardware IT Administrator</em> section.</p>
+</section>
+<section id="host-os-administrator">
+<span id="coco-persona-host-os-administrator"></span><h2>Host OS Administrator<a class="headerlink" href="#host-os-administrator" title="Permalink to this headline">#</a></h2>
+<p>The Host OS Administrator receives a system with BIOS/UEFI configured for Confidential Computing and prepares the host operating system.
+This persona is responsible for host OS selection, initial configuration, and validation before confidential workloads can run.
+Typical roles include system architect, cloud administrator, or advanced on-premises user.</p>
+<p>Relevant pages in this documentation:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>: validated host OS and kernel versions.</p></li>
+</ul>
+<p>For host OS setup, refer to the <a class="reference external" href="https://docs.nvidia.com/cc-deployment-guide-tdx-snp.pdf">NVIDIA Confidential Computing Deployment Guide</a> <em>Host OS Administrator</em> section.</p>
+</section>
+<section id="kubernetes-cluster-administrator">
+<span id="coco-persona-kubernetes-cluster-administrator"></span><h2>Kubernetes Cluster Administrator<a class="headerlink" href="#kubernetes-cluster-administrator" title="Permalink to this headline">#</a></h2>
+<p>The Kubernetes Cluster Administrator is responsible for installing and managing the Kubernetes cluster and the Confidential Containers software stack.
+This persona could be a platform engineer with cluster-admin access to the API, host access to worker nodes, and familiarity with Helm and <code class="docutils literal notranslate"><span class="pre">kubectl</span></code>.
+This persona performs the initial deployment and is responsible for day-two operations such as upgrades and Confidential Computing mode changes.</p>
+<p>Relevant pages:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a>: understand the software components and how they fit together.</p></li>
+<li><p><a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a>: prepare worker nodes and the Kubernetes cluster.</p></li>
+<li><p><a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a>: minimal steps to install Kata Containers and the GPU Operator.</p></li>
+<li><p><a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>: install with per-node labeling and additional configuration options.</p></li>
+<li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: confirm the deployment was successful.</p></li>
+<li><p><a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>: change the CC mode on GPUs at the cluster or node level as needed.</p></li>
+<li><p><a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a>: resolve install and deploy failures (for example <a class="reference internal" href="troubleshooting.html#coco-pending-pod"><span class="std std-ref">Insufficient nvidia.com/pgpu</span></a>).</p></li>
+</ul>
+</section>
+<section id="security-engineer">
+<span id="coco-persona-security-engineer"></span><h2>Security Engineer<a class="headerlink" href="#security-engineer" title="Permalink to this headline">#</a></h2>
+<p>The Security Engineer might or might not be the Kubernetes Cluster Administrator.
+Their work may cover attestation services, reference values, policies, and secret release for confidential workloads.
+Typical roles include security engineer, platform security, or DevSecOps.</p>
+<p>Relevant pages:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Reference Architecture</span></a>: understand the use cases, trust model, and how workloads are isolated from the infrastructure.</p></li>
+<li><p><a class="reference internal" href="attestation.html"><span class="doc">Attestation Quickstart</span></a>: stand up a local Trustee instance and verify connectivity.
+Attestation is required for workloads that use secrets, encrypted container images, or authenticated registries.</p></li>
+</ul>
+<p>For production attestation workflows, secret management, and policy configuration, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Confidential Containers attestation documentation</a>.</p>
+</section>
+<section id="container-user">
+<span id="coco-persona-container-user"></span><h2>Container User<a class="headerlink" href="#container-user" title="Permalink to this headline">#</a></h2>
+<p>The Container User deploys confidential applications on a system that is already configured for Confidential Computing.
+In this documentation, that means deploying confidential GPU workloads with Kubernetes manifests on a cluster that the Kubernetes Cluster Administrator has prepared.
+This persona works primarily with Kubernetes workload manifests and does not require host access to worker nodes.</p>
+<p>Relevant pages:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a>: runtime class selection, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests.</p></li>
+<li><p><a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a>: run the reference workload to confirm the cluster is ready before deploying your own application.</p></li>
+</ul>
+</section>
+</section>
 
+
+                </article>
+              
               
               
               
@@ -464,6 +561,24 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NVIDIA Confidential Containers Reference Architecture</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="supported-platforms.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Supported Platforms</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -471,9 +586,31 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-begin">Before You Begin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Personas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware-it-administrator">Hardware IT Administrator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host-os-administrator">Host OS Administrator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-cluster-administrator">Kubernetes Cluster Administrator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-engineer">Security Engineer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#container-user">Container User</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

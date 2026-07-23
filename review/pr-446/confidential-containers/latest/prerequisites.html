@@ -1,0 +1,864 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Prerequisites &#8212; NVIDIA Confidential Containers Architecture</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'prerequisites';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quickstart Install" href="install-quickstart.html" />
+    <link rel="prev" title="Supported Platforms" href="supported-platforms.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jul 23, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Confidential Containers Architecture</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Prerequisites</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="prerequisites">
+<span id="coco-prerequisites"></span><h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h1>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, prepare hosts and the Kubernetes cluster before you install Kata Containers and the NVIDIA GPU Operator.
+You perform most steps in this section.
+If you do not have access to host firmware, coordinate with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> or <a class="reference internal" href="personas.html#coco-persona-host-os-administrator"><span class="std std-ref">Host OS Administrator</span></a> to confirm or implement hardware prerequisites.</p>
+<p>For validated hardware and software versions, refer to <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.
+Use the checklists below for an at-a-glance summary, then follow each linked section for verification steps.</p>
+<p><strong>Hardware prerequisites</strong></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prerequisite</p></th>
+<th class="head"><p>Details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-supported-platform"><span class="std std-ref">Use a supported platform</span></a></p></td>
+<td><p>CPU, GPU, and host OS match <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-hw-virtualization"><span class="std std-ref">Hardware virtualization and ACS enabled</span></a></p></td>
+<td><p>Hardware virtualization and ACS enabled in host BIOS</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-iommu"><span class="std std-ref">IOMMU enabled</span></a></p></td>
+<td><p>IOMMU enabled on each host through the kernel command line (<code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-no-host-drivers"><span class="std std-ref">No host NVIDIA GPU drivers</span></a></p></td>
+<td><p>No NVIDIA GPU drivers installed or loaded on worker hosts.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Cluster prerequisites</strong></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Prerequisite</p></th>
+<th class="head"><p>Details</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-cluster-admin"><span class="std std-ref">A Kubernetes cluster and cluster administrator access</span></a></p></td>
+<td><p>Cluster administrator access to a Kubernetes cluster running a supported version (refer to <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-containerd"><span class="std std-ref">containerd 2.2.2 installed</span></a></p></td>
+<td><p>containerd 2.2.2 installed on each GPU worker node</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-prereq-helm"><span class="std std-ref">Helm installed</span></a></p></td>
+<td><p>Helm installed on your cluster administration system</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-prereq-kubelet"><span class="std std-ref">Kubelet configured</span></a></p></td>
+<td><p>Enable <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> (required before Kubernetes v1.34) and <code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> feature gates; set <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout:</span> <span class="pre">20m</span></code> on GPU worker nodes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="hardware-and-bios">
+<h2>Hardware and BIOS<a class="headerlink" href="#hardware-and-bios" title="Permalink to this headline">#</a></h2>
+<section id="supported-platform">
+<span id="coco-prereq-supported-platform"></span><h3>Supported Platform<a class="headerlink" href="#supported-platform" title="Permalink to this headline">#</a></h3>
+<p>Your hosts must use a platform validated for Confidential Computing in <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a>.
+Confirm with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> and <a class="reference internal" href="personas.html#coco-persona-host-os-administrator"><span class="std std-ref">Host OS Administrator</span></a> that any platform-specific BIOS, firmware, or OS steps are in place before continuing.</p>
+</section>
+<section id="hardware-virtualization-and-acs-enabled">
+<span id="coco-prereq-hw-virtualization"></span><h3>Hardware Virtualization and ACS Enabled<a class="headerlink" href="#hardware-virtualization-and-acs-enabled" title="Permalink to this headline">#</a></h3>
+<p>Confirm with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> that your hosts are configured to enable hardware virtualization and Access Control Services (ACS).
+With some AMD CPUs and BIOSes, ACS might be grouped under Advanced Error Reporting (AER).
+Enable these features in the host BIOS if they are not already enabled.</p>
+</section>
+<section id="iommu-enabled">
+<span id="coco-prereq-iommu"></span><h3>IOMMU Enabled<a class="headerlink" href="#iommu-enabled" title="Permalink to this headline">#</a></h3>
+<p>IOMMU must be enabled on all hosts that will run Confidential Containers workloads.</p>
+<ol class="arabic">
+<li><p>Check whether IOMMU is already enabled:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls /sys/kernel/iommu_groups
+</pre></div>
+</div>
+<p>If the output lists numbered groups (<code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, and so on), IOMMU is enabled.</p>
+<p>If the output is empty or the directory is missing, IOMMU is not enabled.</p>
+</li>
+<li><p>If IOMMU is not enabled, add the appropriate kernel command-line argument to <code class="docutils literal notranslate"><span class="pre">/etc/default/grub</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code> for AMD CPUs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> for Intel CPUs</p></li>
+</ul>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="amd-snp" for="sd-tab-item-0">
+AMD-based system (SNP)</label><div class="sd-tab-content docutils">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet amd_iommu=on modprobe.blacklist=nouveau&quot;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="intel-tdx" for="sd-tab-item-1">
+Intel-based system (TDX)</label><div class="sd-tab-content docutils">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet intel_iommu=on modprobe.blacklist=nouveau&quot;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</li>
+<li><p>Update the bootloader configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo update-grub
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Sourcing file `/etc/default/grub&#39;</span>
+<span class="go">Generating grub configuration file ...</span>
+<span class="go">Found linux image: /boot/vmlinuz-5.15.0-generic</span>
+<span class="go">Found initrd image: /boot/initrd.img-5.15.0-generic</span>
+<span class="go">done</span>
+</pre></div>
+</div>
+</li>
+<li><p>Reboot the host.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After configuring IOMMU, you might see QEMU warnings about PCI P2P DMA when running GPU workloads.
+These are expected and can be safely ignored.
+Refer to <a class="reference internal" href="overview.html#coco-limitations"><span class="std std-ref">Limitations and Restrictions</span></a> for details.</p>
+</div>
+</section>
+<section id="ensure-no-host-nvidia-gpu-drivers-are-present">
+<span id="coco-prereq-no-host-drivers"></span><h3>Ensure No Host NVIDIA GPU Drivers Are Present<a class="headerlink" href="#ensure-no-host-nvidia-gpu-drivers-are-present" title="Permalink to this headline">#</a></h3>
+<p>Confidential Containers pass GPUs to the confidential virtual machine through VFIO.
+Host-installed NVIDIA drivers prevent VFIO from binding the devices and must not be present on those hosts.
+In this architecture, the NVIDIA GPU Operator handles GPU driver installation and lifecycle management when you follow the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+<ol class="arabic">
+<li><p>On each host, check whether NVIDIA GPU drivers are loaded:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lsmod <span class="p">|</span> grep nvidia
+</pre></div>
+</div>
+<p>If the command produces no output, no NVIDIA GPU drivers are loaded.</p>
+</li>
+<li><p>If drivers are installed or loaded on any host, remove them.</p>
+<p>Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html">Removing the Driver</a> in the NVIDIA Driver Installation Guide.</p>
+</li>
+</ol>
+</section>
+</section>
+<section id="kubernetes-cluster">
+<h2>Kubernetes Cluster<a class="headerlink" href="#kubernetes-cluster" title="Permalink to this headline">#</a></h2>
+<p>The following sections describe requirements for worker nodes and for the system you use for cluster administration.</p>
+<section id="kubernetes-cluster-and-cluster-administrator-access">
+<span id="coco-prereq-cluster-admin"></span><h3>Kubernetes Cluster and Cluster Administrator Access<a class="headerlink" href="#kubernetes-cluster-and-cluster-administrator-access" title="Permalink to this headline">#</a></h3>
+<p>You must have cluster administrator access to a Kubernetes cluster running a supported Kubernetes version.
+Refer to the <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> section in <a class="reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a> for supported Kubernetes and component versions.</p>
+</section>
+<section id="containerd-2-2-2">
+<span id="coco-prereq-containerd"></span><h3>containerd 2.2.2<a class="headerlink" href="#containerd-2-2-2" title="Permalink to this headline">#</a></h3>
+<p>Verify the installed version on each GPU worker node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>containerd --version
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">containerd containerd.io 2.2.2 ...</span>
+</pre></div>
+</div>
+<p>Your actual output may vary, but the reported version must be <code class="docutils literal notranslate"><span class="pre">2.2.2</span></code>.
+If you are running a different version on any worker node, refer to the <a class="reference external" href="https://containerd.io/docs/2.2/getting-started/">containerd Getting Started guide</a> for installation instructions.</p>
+</section>
+<section id="helm">
+<span id="coco-prereq-helm"></span><h3>Helm<a class="headerlink" href="#helm" title="Permalink to this headline">#</a></h3>
+<p>Helm is used to install the NVIDIA GPU Operator and Kata Containers.</p>
+<p>Verify that Helm is installed on the system you use for cluster administration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm version
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">version.BuildInfo{Version:&quot;v3.14.0&quot;, GitCommit:&quot;...&quot;, GitTreeState:&quot;clean&quot;, GoVersion:&quot;go1.21.6&quot;}</span>
+</pre></div>
+</div>
+<p>Your exact version details may vary.</p>
+<p>If Helm is not installed or the command is not found, refer to the <a class="reference external" href="https://helm.sh/docs/intro/install/">Helm documentation</a> for installation instructions.</p>
+</section>
+<section id="kubelet-configured">
+<span id="configure-image-pull-timeouts"></span><span id="coco-prereq-kubelet"></span><h3>Kubelet Configured<a class="headerlink" href="#kubelet-configured" title="Permalink to this headline">#</a></h3>
+<p>On GPU worker nodes, the kubelet configuration (typically <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>) must include the required feature gates and an extended image pull timeout.</p>
+<p>Confidential Containers require these kubelet feature gates:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code>: Allows the Kata runtime to query the kubelet Pod Resources API and discover GPUs allocated to a sandbox.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code>: Alpha since Kubernetes v1.29; required for pods that use multiple snapshotters side by side.</p></li>
+</ul>
+<p>On Kubernetes v1.34 and later, <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> is enabled by default.
+On versions before v1.34, enable it explicitly.
+<code class="docutils literal notranslate"><span class="pre">RuntimeClassInImageCriApi</span></code> must be enabled explicitly on all supported versions.</p>
+<p>Increase the <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code> from the 2-minute default to <code class="docutils literal notranslate"><span class="pre">20m</span></code> to avoid timeouts when pulling large GPU workload images.
+If a pull exceeds the timeout before the container is running, the kubelet de-allocates the pod.
+Actual pull duration varies with image size and network throughput, so this guide uses 20 minutes as a conservative ceiling that accommodates most workload images.</p>
+<p>Apply these settings as follows:</p>
+<ol class="arabic">
+<li><p>Open the kubelet configuration file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nano /var/lib/kubelet/config.yaml
+</pre></div>
+</div>
+<p>This is typically located at <code class="docutils literal notranslate"><span class="pre">/var/lib/kubelet/config.yaml</span></code>, but your configuration file may be in a different location.</p>
+</li>
+<li><p>Add the required settings to the kubelet configuration file.
+Select the tab that matches your Kubernetes version:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="k8s-1-34-plus" for="sd-tab-item-2">
+Kubernetes v1.34 and later</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">RuntimeClassInImageCriApi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">runtimeRequestTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20m</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="k8s-pre-1-34" for="sd-tab-item-3">
+Kubernetes earlier than v1.34</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubelet.config.k8s.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeletConfiguration</span><span class="w"></span>
+<span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">KubeletPodResourcesGet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">RuntimeClassInImageCriApi</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">runtimeRequestTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20m</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If your kubelet configuration already defines <code class="docutils literal notranslate"><span class="pre">featureGates</span></code> or <code class="docutils literal notranslate"><span class="pre">runtimeRequestTimeout</span></code>, merge these settings into the existing file instead of replacing it.</p>
+</li>
+<li><p>Restart the kubelet service:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl restart kubelet
+</pre></div>
+</div>
+</li>
+<li><p>Confirm the kubelet restarted cleanly with the new configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>systemctl is-active kubelet
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">active</span>
+</pre></div>
+</div>
+<p>A result of <code class="docutils literal notranslate"><span class="pre">active</span></code> confirms the kubelet restarted successfully.
+If it reports <code class="docutils literal notranslate"><span class="pre">activating</span></code> or <code class="docutils literal notranslate"><span class="pre">failed</span></code>, inspect <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">status</span> <span class="pre">kubelet</span></code> and <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">journalctl</span> <span class="pre">-u</span> <span class="pre">kubelet</span></code> for configuration errors before continuing.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need a timeout longer than 1200 seconds (20 minutes), consider also adjust the Kata Agent <code class="docutils literal notranslate"><span class="pre">image_pull_timeout</span></code>.
+This setting controls the Confidential Data Hub image pull API timeout in seconds.
+Add the <code class="docutils literal notranslate"><span class="pre">agent.image_pull_timeout</span></code> kernel parameter to your shim configuration, or pass a value in the pod annotation <code class="docutils literal notranslate"><span class="pre">io.katacontainers.config.hypervisor.kernel_params</span></code>.</p>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<p>After completing the prerequisites, proceed to <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> for a minimal install, or <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a> for full configuration details.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="supported-platforms.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Supported Platforms</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="install-quickstart.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quickstart Install</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware-and-bios">Hardware and BIOS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-platform">Supported Platform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware-virtualization-and-acs-enabled">Hardware Virtualization and ACS Enabled</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iommu-enabled">IOMMU Enabled</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensure-no-host-nvidia-gpu-drivers-are-present">Ensure No Host NVIDIA GPU Drivers Are Present</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-cluster">Kubernetes Cluster</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubernetes-cluster-and-cluster-administrator-access">Kubernetes Cluster and Cluster Administrator Access</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#containerd-2-2-2">containerd 2.2.2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#helm">Helm</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubelet-configured">Kubelet Configured</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>

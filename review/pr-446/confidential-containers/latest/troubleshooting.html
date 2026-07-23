@@ -1,0 +1,981 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Troubleshooting &#8212; NVIDIA Confidential Containers Architecture</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'troubleshooting';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release Notes" href="release-notes.html" />
+    <link rel="prev" title="Attestation" href="attestation.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Jul 23, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA Confidential Containers Architecture - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA Confidential Containers Architecture - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA Confidential Containers Architecture</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Learn</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Reference Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personas.html">Personas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="configure-workloads.html">Configuring Workloads</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure-cc-mode.html">Managing the Confidential Computing Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA Confidential Containers Architecture</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Troubleshooting</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="troubleshooting">
+<span id="coco-deploy-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h1>
+<p>Use this page when Confidential Containers installation or workload deployment steps fail.</p>
+<p>Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a> for general operator issues such as driver daemonsets, the container toolkit, and validator pods.
+The sections below cover Confidential Containers-specific deploy failures: CC node labels, Kata runtime installation, and host prerequisites.</p>
+<p>If these steps do not resolve your issue, refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a>.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 35%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symptom</p></th>
+<th class="head"><p>Cause</p></th>
+<th class="head"><p>Fix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-pending-pod"><span class="std std-ref">Pod stuck in Pending with Insufficient nvidia.com/pgpu</span></a></p></td>
+<td><p>Node not labeled for Confidential Containers, GPUs not bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>, or all GPUs already allocated.</p></td>
+<td><p>Check operands running, verify <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> label, confirm <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> binding.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-container-creating-cold-plug"><span class="std std-ref">Pod stuck in ContainerCreating with device cold plug failed</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate not enabled on worker node.</p></td>
+<td><p>Enable feature gate per <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coco-cc-mode-troubleshoot"><span class="std std-ref">nvidia.com/cc.mode.state not matching nvidia.com/cc.mode</span></a></p></td>
+<td><p>Mode transition still in progress, or blocked by a workload using a GPU on the node.</p></td>
+<td><p>Wait 1-2 minutes, check cc.mode labels. If GPU Operator pods, specifically the vfio-manager are stuck in terminating, make sure that no user workloads are running on the node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coco-cc-mode-failed"><span class="std std-ref">nvidia.com/cc.mode.state is failed</span></a></p></td>
+<td><p>Workload running during mode change, or BIOS/ACS misconfigured.</p></td>
+<td><p>Drain workloads, re-apply mode label, confirm ACS enabled in BIOS.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="view-gpu-operator-logs">
+<span id="coco-gpu-operator-logs"></span><h2>View GPU Operator Logs<a class="headerlink" href="#view-gpu-operator-logs" title="Permalink to this headline">#</a></h2>
+<p>Use this section to collect GPU Operator pod logs when an operand is not running or reporting errors.</p>
+<ol class="arabic">
+<li><p>Get the list of GPU Operator pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                              READY   STATUS    RESTARTS   AGE</span>
+<span class="go">gpu-operator-1766001809-node-feature-discovery-gc-75776475sxzkp   1/1     Running   0          86s</span>
+<span class="go">gpu-operator-1766001809-node-feature-discovery-master-6869lxq2g   1/1     Running   0          86s</span>
+<span class="go">gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s</span>
+<span class="go">gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s</span>
+<span class="go">nvidia-cc-manager-7z74t                                           1/1     Running   0          61s</span>
+<span class="go">nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                 1/1     Running   0          30s</span>
+<span class="go">nvidia-sandbox-validator-6xnzc                                    1/1     Running   0          30s</span>
+<span class="go">nvidia-vfio-manager-h229x                                         1/1     Running   0          62s</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get specific logs for a pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator &lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the GPU Operator pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.
+Logs for <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin-daemonset-&lt;pod-name&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager-&lt;pod-name&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager-&lt;pod-name&gt;</span></code> can be most useful for troubleshooting Confidential Containers issues.</p>
+</li>
+</ol>
+</section>
+<section id="view-kata-containers-logs">
+<span id="coco-view-kata-logs"></span><h2>View Kata Containers Logs<a class="headerlink" href="#view-kata-containers-logs" title="Permalink to this headline">#</a></h2>
+<p>Use this section to collect Kata Containers logs and confirm runtime classes are installed.</p>
+<ol class="arabic">
+<li><p>Confirm the expected runtime classes are registered:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get runtimeclass
+</pre></div>
+</div>
+<p>After a successful Kata Containers deployment, you should see <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> (AMD SEV-SNP) and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> (Intel TDX) in the output.
+If these are missing, continue to the next steps.</p>
+</li>
+<li><p>Get the list of Kata Containers pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                       READY   STATUS    RESTARTS   AGE</span>
+<span class="go">kata-deploy-&lt;pod-name&gt;       1/1     Running   0          6m37s</span>
+</pre></div>
+</div>
+</li>
+<li><p>View the logs for the Kata Containers pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n kata-system &lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the Kata Containers pod.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Install completed</span>
+<span class="go">daemonset mode: waiting for SIGTERM</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>If the logs show errors or runtime classes are still missing after a successful Helm deploy, collect the log output and refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a> for Kata-specific troubleshooting resources.</p>
+</section>
+<section id="nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode">
+<span id="coco-cc-mode-troubleshoot"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Not Matching <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode" title="Permalink to this headline">#</a></h2>
+<p>When changing the Confidential Computing mode (refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>), the Confidential Computing Manager updates the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label to reflect the current state of the Confidential Computing mode.
+If the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> does not match the desired CC mode (<code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, or <code class="docutils literal notranslate"><span class="pre">ppcie</span></code>), it could mean the following:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>The GPU is still updating to the Confidential Computing mode.</dt><dd><p>Wait a few more minutes, then check the labels again.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The transition is blocked by a user workload with a resource claim for a GPU on the node.</dt><dd><p>This is usually accompanied by the VFIO manager stuck in Terminating state or CC Manager logs showing the mode transition is still in progress.
+Remove the workload to unblock the mode transition.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Checks:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the node you want to check:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Check the cc.mode labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+      jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;on&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.mode.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;off&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">   </span><span class="nt">&quot;nvidia.com/cc.ready.state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the list of GPU Operator pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS        RESTARTS      AGE</span>
+<span class="go">gpu-operator-6474ddf79d-s4gcb                                 1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running       0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running       0             10m</span>
+<span class="go">nvidia-cc-manager-tqdc6                                       1/1     Running       0             10m</span>
+<span class="go">nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running       0             10m</span>
+<span class="go">nvidia-vfio-manager-b7jtv                                     0/1     Terminating   0             10m</span>
+</pre></div>
+</div>
+</li>
+<li><p>Get the logs for the nvidia-cc-manager pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator nvidia-cc-manager-&lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the nvidia-cc-manager pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting 2 GPU(s) to apply CC mode</span>
+<span class="go">2026-06-18 19:47:26,095 - k8s-cc-manager - INFO - Resetting GPU 0000:0d:00.0</span>
+<span class="go">2026-06-18 19:47:26,475 - k8s-cc-manager - INFO - Resetting GPU 0000:b5:00.0</span>
+</pre></div>
+</div>
+<p>If the CC Manager logs show the mode transition is still in progress, it means the GPU is still updating to the Confidential Computing mode.
+CC Manager logs show <code class="docutils literal notranslate"><span class="pre">Successfully</span> <span class="pre">set</span> <span class="pre">CC</span> <span class="pre">mode</span> <span class="pre">to</span> <span class="pre">'&lt;off|on|ppcie&gt;'</span> <span class="pre">on</span> <span class="pre">all</span> <span class="pre">GPUs</span></code> when the mode transition is complete.</p>
+</li>
+<li><p>Check which pods have a passthrough GPU allocated on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+    jq -r <span class="s1">&#39;.items[] | select(any(.spec.containers[]; .resources.requests[&quot;nvidia.com/pgpu&quot;] // empty)) | &quot;\(.metadata.namespace)/\(.metadata.name)&quot;&#39;</span>
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">default/cuda-vectoradd-kata</span>
+</pre></div>
+</div>
+<p>Any pods returned have a passthrough GPU allocated and are blocking the mode transition.</p>
+</li>
+<li><p>Delete the pod(s) to unblock the mode transition.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete pod &lt;pod-name&gt; -n &lt;namespace&gt;
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod &quot;&lt;pod-name&gt;&quot; deleted</span>
+</pre></div>
+</div>
+<p>Repeat this step for each pod that is blocking the mode transition.
+Once all user pods are deleted, the mode transition will resume automatically.</p>
+</li>
+<li><p>Confirm the mode transition is complete:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                                          READY   STATUS    RESTARTS   AGE</span>
+<span class="go">gpu-operator-6474ddf79d-s4gcb                                 1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-gc-8fb8d5d8d-mvvfz        1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-master-5bbc6d887b-66wrs   1/1     Running   0             10m</span>
+<span class="go">gpu-operator-node-feature-discovery-worker-9xbb8              1/1     Running   0             10m</span>
+<span class="go">nvidia-cc-manager-tqdc6                                       1/1     Running   0             10m</span>
+<span class="go">nvidia-kata-sandbox-device-plugin-daemonset-b5tp7             1/1     Running   0             10m</span>
+<span class="go">nvidia-vfio-manager-b7jtv                                     1/1     Running   0              1m</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="nvidia-com-cc-mode-state-is-failed">
+<span id="coco-cc-mode-failed"></span><h2><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code><a class="headerlink" href="#nvidia-com-cc-mode-state-is-failed" title="Permalink to this headline">#</a></h2>
+<p>When the <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code>, it means there was a problem updating the Confidential Computing mode on the GPU.
+This typicall indicates that your GPU does not support Confidential Computing mode or there is a hardware error.
+You may need to contact your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> to confirm the GPU is supported and the hardware is functioning correctly.
+Refer to the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for more information on required hardware.</p>
+<p><strong>Checks:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the node you want to check:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Confirm no user workloads are running on the node before changing CC mode.
+List pods scheduled on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o wide
+</pre></div>
+</div>
+<p>This lists pods on <code class="docutils literal notranslate"><span class="pre">$NODE_NAME</span></code>.
+<code class="docutils literal notranslate"><span class="pre">kube-system</span></code> DaemonSets (for example CNI or <code class="docutils literal notranslate"><span class="pre">kube-proxy</span></code>) are expected on every worker node.
+<code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-system</span></code> pods are expected only if this node is configured for Confidential Containers (labeled <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.workload.config=vm-passthrough</span></code> or cluster-wide <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload=vm-passthrough</span></code>).
+Delete or reschedule any other <code class="docutils literal notranslate"><span class="pre">Running</span></code> pods (especially GPU workloads) before changing CC mode.</p>
+</li>
+<li><p>View <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code> pod logs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator nvidia-cc-manager-&lt;pod-name&gt;
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;pod-name&gt;</span></code> with the name of the <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code> pod from <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">pods</span> <span class="pre">-n</span> <span class="pre">gpu-operator</span></code>.</p>
+</li>
+<li><p>Confirm hardware virtualization and ACS are enabled in the host BIOS.
+One way to do this is to check for <code class="docutils literal notranslate"><span class="pre">vmx</span></code> (Intel) or <code class="docutils literal notranslate"><span class="pre">svm</span></code> (AMD) in <code class="docutils literal notranslate"><span class="pre">/proc/cpuinfo</span></code>.
+For ACS, coordinate with your <a class="reference internal" href="personas.html#coco-persona-hardware-it-administrator"><span class="std std-ref">Hardware IT Administrator</span></a> if needed.</p></li>
+<li><p>Re-apply the desired mode label to retry the transition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/cc.mode<span class="o">=</span>on --overwrite
+</pre></div>
+</div>
+</li>
+<li><p>Confirm the mode transition is complete by checking the CC mode labels:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get node <span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+      jq <span class="s1">&#39;.metadata.labels | with_entries(select(.key | startswith(&quot;nvidia.com/cc&quot;)))&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> label should match the desired mode when the transition is complete.
+If the state is still <code class="docutils literal notranslate"><span class="pre">failed</span></code>, refer to <a class="reference internal" href="#coco-getting-help"><span class="std std-ref">Getting Help</span></a>.</p>
+</li>
+</ol>
+<p>For mode configuration options, refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a>.</p>
+</section>
+<section id="pod-stuck-in-containercreating-with-device-cold-plug-failed-error">
+<span id="coco-container-creating-cold-plug"></span><h2>Pod Stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> with <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">cold</span> <span class="pre">plug</span> <span class="pre">failed</span></code> error<a class="headerlink" href="#pod-stuck-in-containercreating-with-device-cold-plug-failed-error" title="Permalink to this headline">#</a></h2>
+<p>If you see the following error when <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">&lt;pod-name&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;namespace&gt;</span></code> and the pod is stuck in the <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> state, it means the <code class="docutils literal notranslate"><span class="pre">KubeletPodResourcesGet</span></code> feature gate is not enabled on the worker node.
+Refer to the Kubelet Configuration section in <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> for more information on setting the feature gate.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Events:</span>
+<span class="go">  Type     Reason                  Age                 From     Message</span>
+<span class="go">  ----     ------                  ----                ----     -------</span>
+<span class="go">   Warning  FailedCreatePodSandBox  19s (x16 over 34s)  kubelet            (combined from similar events): Failed to create pod sandbox: rpc error: code = Unknown desc = failed to start sandbox &quot;d0a43b5d3c6c433f011efbfacb6de3f7ac448f3d09a272cef8d43249712b12b1&quot;: failed to create containerd task: failed to create shim task: device cold plug failed: cold plug: GetPodResources failed for pod(cuda-vectoradd-kata) in namespace(default): rpc error: code = Unknown desc = PodResources API Get method disabled</span>
+</pre></div>
+</div>
+</section>
+<section id="pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error">
+<span id="coco-pending-pod"></span><h2>Pod Stuck in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> State with <code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code> Error<a class="headerlink" href="#pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error" title="Permalink to this headline">#</a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">describe</span> <span class="pre">pod</span> <span class="pre">&lt;pod-name&gt;</span> <span class="pre">-n</span> <span class="pre">&lt;namespace&gt;</span></code> shows the pod stuck in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state, the scheduler cannot place the pod on a node with available passthrough GPU capacity.</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Events:</span>
+<span class="go">  Type     Reason   Age   From      Message</span>
+<span class="go">  ----     ------   ---   ----      -------</span>
+<span class="go">  Warning  FailedScheduling  ...  default-scheduler   0/1 nodes are available: 1 Insufficient nvidia.com/pgpu.</span>
+</pre></div>
+</div>
+<p><strong>Common causes:</strong></p>
+<ul class="simple">
+<li><p>The worker node is not configured for Confidential Containers workloads.</p></li>
+<li><p>GPU Operator Confidential Containers operands are missing or not <code class="docutils literal notranslate"><span class="pre">Running</span></code> on the worker node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node is zero because GPUs are not bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> on the host.</p></li>
+<li><p>All passthrough GPUs on eligible nodes are already allocated to other pods.</p></li>
+</ul>
+<p><strong>Resolution:</strong></p>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">NODE_NAME</span></code> environment variable to the affected node so you can copy-paste the commands below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NODE_NAME</span><span class="o">=</span><span class="s2">&quot;&lt;node-name&gt;&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>Confirm GPU Operator operands are <code class="docutils literal notranslate"><span class="pre">Running</span></code> on the worker node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span>
+</pre></div>
+</div>
+<p>Expected Confidential Containers operands include <code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>.
+If an operand is not <code class="docutils literal notranslate"><span class="pre">Running</span></code>, refer to <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.</p>
+</li>
+<li><p>Confirm the node is configured for Confidential Containers workloads:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node <span class="nv">$NODE_NAME</span> <span class="p">|</span> grep nvidia.com/gpu.workload.config
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/gpu.workload.config: vm-passthrough</span>
+</pre></div>
+</div>
+<p>If the label is missing, add it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node <span class="nv">$NODE_NAME</span> nvidia.com/gpu.workload.config<span class="o">=</span>vm-passthrough
+</pre></div>
+</div>
+<p>If you set the cluster-wide default during installation instead of per-node labeling, confirm <code class="docutils literal notranslate"><span class="pre">sandboxWorkloads.defaultWorkload</span></code> is <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code>.
+Refer to <a class="reference internal" href="confidential-containers-deploy.html#coco-configuration-settings"><span class="std std-ref">Common GPU Operator Configuration Settings</span></a> in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+</li>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity on the node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe node <span class="nv">$NODE_NAME</span> <span class="p">|</span> grep nvidia.com/pgpu
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">nvidia.com/pgpu:  8</span>
+<span class="go">nvidia.com/pgpu:  8</span>
+</pre></div>
+</div>
+<p>If capacity and allocatable are zero, GPUs are not available for scheduling.
+On the worker host, confirm VFIO binding (<code class="docutils literal notranslate"><span class="pre">10de</span></code> is the NVIDIA PCI vendor ID):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lspci -nnk -d 10de:
+</pre></div>
+</div>
+<p><em>Example Output (expected):</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">65:00.0 3D controller [0302]: NVIDIA Corporation Device [10de:xxxx] (rev a1)</span>
+<span class="go">        Kernel driver in use: vfio-pci</span>
+</pre></div>
+</div>
+<p>If the output shows <code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">driver</span> <span class="pre">in</span> <span class="pre">use:</span> <span class="pre">nvidia</span></code> or <code class="docutils literal notranslate"><span class="pre">nouveau</span></code>, remove host drivers as described in <a class="reference internal" href="prerequisites.html#coco-prereq-no-host-drivers"><span class="std std-ref">Ensure No Host NVIDIA GPU Drivers Are Present</span></a>.
+Confirm IOMMU is enabled:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls /sys/kernel/iommu_groups
+</pre></div>
+</div>
+<p>If the directory is empty or missing, configure IOMMU as described in <a class="reference internal" href="prerequisites.html#coco-prerequisites"><span class="std std-ref">Prerequisites</span></a>, then reboot the host.
+Review <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code> pod logs on the affected node in <a class="reference internal" href="#coco-gpu-operator-logs"><span class="std std-ref">View GPU Operator Logs</span></a>.
+After fixing host prerequisites, wait for operand pods to reconcile and confirm <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> is non-zero.</p>
+</li>
+<li><p>If the node shows non-zero <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code> capacity but the pod is still <code class="docutils literal notranslate"><span class="pre">Pending</span></code>, all passthrough GPUs on eligible nodes may be allocated to other pods.
+Check which pods currently have a passthrough GPU allocated:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -A --field-selector spec.nodeName<span class="o">=</span><span class="nv">$NODE_NAME</span> -o json <span class="p">|</span> <span class="se">\</span>
+    jq -r <span class="s1">&#39;.items[] | select(any(.spec.containers[]; .resources.requests[&quot;nvidia.com/pgpu&quot;] // empty)) | &quot;\(.metadata.namespace)/\(.metadata.name)&quot;&#39;</span>
+</pre></div>
+</div>
+<p>Wait for a workload to complete or free capacity before retrying.</p>
+</li>
+</ol>
+<p>Refer to the optional VFIO validation step in <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.</p>
+</section>
+<section id="getting-help">
+<span id="coco-getting-help"></span><h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">#</a></h2>
+<p>If the steps on this page do not resolve your issue, use the resources below based on which component is failing.</p>
+<section id="nvidia-gpu-operator-and-confidential-computing-operands">
+<h3>NVIDIA GPU Operator and Confidential Computing Operands<a class="headerlink" href="#nvidia-gpu-operator-and-confidential-computing-operands" title="Permalink to this headline">#</a></h3>
+<p>For issues with GPU Operator pods or Confidential Containers operands (<code class="docutils literal notranslate"><span class="pre">nvidia-cc-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-vfio-manager</span></code>, <code class="docutils literal notranslate"><span class="pre">nvidia-kata-sandbox-device-plugin</span></code>, and <code class="docutils literal notranslate"><span class="pre">nvidia-sandbox-validator</span></code>):</p>
+<ol class="arabic">
+<li><p>Review the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/troubleshooting.html" title="(in NVIDIA GPU Operator)"><span class="xref std std-doc">NVIDIA GPU Operator troubleshooting guide</span></a>.</p></li>
+<li><p>If the issue is not documented there, run the GPU Operator <code class="docutils literal notranslate"><span class="pre">must-gather</span></code> utility to collect cluster diagnostics:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -o must-gather.sh -L https://raw.githubusercontent.com/NVIDIA/gpu-operator/main/hack/must-gather.sh
+<span class="gp">$ </span>chmod +x must-gather.sh
+<span class="gp">$ </span>./must-gather.sh
+</pre></div>
+</div>
+<p>The utility produces an archive with manifests and logs from GPU Operator-managed components.</p>
+</li>
+<li><p>Prepare a bug report and file an issue in the <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues">NVIDIA GPU Operator GitHub repository</a>.</p></li>
+</ol>
+</section>
+<section id="kata-containers">
+<h3>Kata Containers<a class="headerlink" href="#kata-containers" title="Permalink to this headline">#</a></h3>
+<p>For issues with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>, missing runtime classes, or Kata runtime failures:</p>
+<ol class="arabic">
+<li><p>Search the <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues">Kata Containers GitHub issues</a> for similar reports.</p></li>
+<li><p>If no existing issue matches your problem, <a class="reference external" href="https://github.com/kata-containers/kata-containers/issues/new/choose">open a new issue</a> in that repository.</p>
+<p>Include your environment details, Kata chart version, <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod logs, and cluster configuration.</p>
+</li>
+</ol>
+</section>
+<section id="attestation-and-upstream-confidential-containers">
+<h3>Attestation and Upstream Confidential Containers<a class="headerlink" href="#attestation-and-upstream-confidential-containers" title="Permalink to this headline">#</a></h3>
+<p>For attestation, Trustee, sealed secrets, or other upstream Confidential Containers features, refer to the <a class="reference external" href="https://confidentialcontainers.org/docs/">Confidential Containers documentation</a> and the <a class="reference external" href="https://github.com/confidential-containers">Confidential Containers GitHub repository</a>.</p>
+<p>For NVIDIA Confidential Computing licensing requirements, refer to <a class="reference internal" href="licensing.html"><span class="doc">Licensing</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="attestation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Attestation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="release-notes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Release Notes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-gpu-operator-logs">View GPU Operator Logs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-kata-containers-logs">View Kata Containers Logs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-not-matching-nvidia-com-cc-mode"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> Not Matching <code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-com-cc-mode-state-is-failed"><code class="docutils literal notranslate"><span class="pre">nvidia.com/cc.mode.state</span></code> is <code class="docutils literal notranslate"><span class="pre">failed</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-stuck-in-containercreating-with-device-cold-plug-failed-error">Pod Stuck in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code> with <code class="docutils literal notranslate"><span class="pre">device</span> <span class="pre">cold</span> <span class="pre">plug</span> <span class="pre">failed</span></code> error</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-stuck-in-pending-state-with-insufficient-nvidia-com-pgpu-error">Pod Stuck in <code class="docutils literal notranslate"><span class="pre">Pending</span></code> State with <code class="docutils literal notranslate"><span class="pre">Insufficient</span> <span class="pre">nvidia.com/pgpu</span></code> Error</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-gpu-operator-and-confidential-computing-operands">NVIDIA GPU Operator and Confidential Computing Operands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kata-containers">Kata Containers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attestation-and-upstream-confidential-containers">Attestation and Upstream Confidential Containers</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>

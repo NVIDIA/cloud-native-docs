@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Release Notes &#8212; NVIDIA Confidential Containers Architecture</title>
+    <title>Run a Sample Workload &#8212; NVIDIA Confidential Containers Architecture</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'release-notes';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'run-sample-workload';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,8 +69,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Licensing" href="licensing.html" />
-    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="Configuring Confidential Container Workloads" href="configure-workloads.html" />
+    <link rel="prev" title="Detailed Install Guide" href="confidential-containers-deploy.html" />
 
 
 
@@ -358,11 +358,11 @@
 <li class="toctree-l1"><a class="reference internal" href="supported-platforms.html">Supported Platforms</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Install</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-quickstart.html">Quickstart Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">Detailed Install Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-sample-workload.html">Run a Sample Workload</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Run a Sample Workload</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Configuration</span></p>
 <ul class="nav bd-sidenav">
@@ -371,9 +371,9 @@
 <li class="toctree-l1"><a class="reference internal" href="attestation.html">Attestation</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="licensing.html">Licensing</a></li>
 </ul>
 </div>
@@ -411,7 +411,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA Confidential Containers Architecture</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Release Notes</li>
+    <li class="breadcrumb-item active" aria-current="page">Run a Sample Workload</li>
   </ul>
 </nav></div>
       
@@ -427,55 +427,156 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="release-notes">
-<span id="coco-release-notes"></span><h1>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">#</a></h1>
-<p>This document describes the new features and known issues for the NVIDIA Confidential Containers Reference Architecture.</p>
-<hr class="docutils" />
-<section id="coco-v1-0-0">
-<span id="id1"></span><h2>1.0.0<a class="headerlink" href="#coco-v1-0-0" title="Permalink to this headline">#</a></h2>
-<p>This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
-It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.</p>
-<p>The architecture combines NVIDIA GPU Confidential Computing, Kata Containers, and the NVIDIA GPU Operator to provide a secure, attestable, Kubernetes-native platform for confidential AI workloads.</p>
-<section id="key-features">
-<h3>Key Features<a class="headerlink" href="#key-features" title="Permalink to this headline">#</a></h3>
+  <section id="run-a-sample-workload">
+<span id="coco-run-sample-workload"></span><h1>Run a Sample Workload<a class="headerlink" href="#run-a-sample-workload" title="Permalink to this headline">#</a></h1>
+<p>As a <a class="reference internal" href="personas.html#coco-persona-kubernetes-cluster-administrator"><span class="std std-ref">Kubernetes Cluster Administrator</span></a>, use this page to verify your installation and run a sample workload.
+<a class="reference internal" href="personas.html#coco-persona-container-user"><span class="std std-ref">Container User</span></a> personas can also run the sample workload to confirm the cluster is ready before deploying applications.</p>
+<p>Verify your Confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.</p>
+<p>This page assumes that you have completed <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites</span></a> and either <a class="reference internal" href="install-quickstart.html"><span class="doc">Quickstart Install</span></a> or <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a>.
+Your cluster should have <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> and <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on your nodes.</p>
+<p>This page intentionally uses the simplest possible manifest so that you can confirm the deployment end-to-end.
+It is not a production workload template.
+For runtime class selection, resource type naming, multi-GPU passthrough, and additional manifest patterns, refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a>.</p>
+<ol class="arabic">
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">cuda-vectoradd-kata.yaml</span></code> with a sample manifest for your system:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="amd-snp" for="sd-tab-item-0">
+AMD-based system (SNP)</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-snp</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># for single GPU passthrough</span><span class="w"></span>
+</span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="intel-tdx" for="sd-tab-item-1">
+Intel-based system (TDX)</label><div class="sd-tab-content docutils">
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd-kata</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">runtimeClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kata-qemu-nvidia-gpu-tdx</span><span class="w"></span>
+</span><span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cuda-vectoradd</span><span class="w"></span>
+<span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<span class="hll"><span class="w">          </span><span class="nt">nvidia.com/pgpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1&quot;</span><span class="w"> </span><span class="c1"># for single GPU passthrough</span><span class="w"></span>
+</span><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16Gi</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following is a brief list of the options available for the manifest:</p>
 <ul class="simple">
-<li><p>This release supports HGX platforms with:</p>
-<ul>
-<li><p>NVIDIA H100 (single-GPU passthrough)</p></li>
-<li><p>NVIDIA H200 (single-GPU passthrough)</p></li>
-<li><p>NVIDIA H100 Protected PCIe (multi-GPU passthrough)</p></li>
-<li><p>NVIDIA H200 Protected PCIe (multi-GPU passthrough)</p></li>
-<li><p>NVIDIA B200 (single-GPU and multi-GPU passthrough)</p></li>
-<li><p>NVIDIA RTX Pro 6000 BSE (single-GPU passthrough)</p></li>
-<li><p>AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP</p></li>
-<li><p>Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+) for TDX</p></li>
+<li><p>Runtime class: Use <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-snp</span></code> on AMD-based systems or <code class="docutils literal notranslate"><span class="pre">kata-qemu-nvidia-gpu-tdx</span></code> on Intel-based systems.</p></li>
+<li><p>GPU resource type: The sample requests <code class="docutils literal notranslate"><span class="pre">nvidia.com/pgpu</span></code>, which is the default resource name advertised by the NVIDIA Kata Sandbox Device Plugin.
+If your cluster was installed with the <code class="docutils literal notranslate"><span class="pre">P_GPU_ALIAS=&quot;&quot;</span></code> setting, replace it with the model-specific name advertised on your node, for example <code class="docutils literal notranslate"><span class="pre">nvidia.com/GH100_H200_141GB</span></code>.</p></li>
 </ul>
+<p>Refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Confidential Container Workloads</span></a> for additional guidance on each option.</p>
 </li>
-<li><p>This release supports the following software components:</p>
-<ul>
-<li><p>NVIDIA GPU Operator v26.3.1</p></li>
-<li><p>Kata Containers 3.29 (installed with the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></li>
-<li><p>Kata Lifecycle Manager 0.1.4</p></li>
-<li><p>Key Broker Service (KBS) protocol 0.4.0</p></li>
-<li><p>QEMU 10.1 + Patches</p></li>
-<li><p>OVMF edk2-stable202511</p></li>
-<li><p>Containerd 2.2.2</p></li>
-<li><p>Kubernetes 1.32+</p></li>
-<li><p>Ubuntu 25.10 (host OS)</p></li>
-</ul>
+<li><p>Create the pod:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f cuda-vectoradd-kata.yaml
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">pod/cuda-vectoradd-kata created</span>
+</pre></div>
+</div>
 </li>
-<li><p>This release has Technology Preview support for Red Hat OpenShift Sandboxed Containers 1.12.</p></li>
-</ul>
-</section>
-<section id="limitations-and-restrictions">
-<h3>Limitations and Restrictions<a class="headerlink" href="#limitations-and-restrictions" title="Permalink to this headline">#</a></h3>
+<li><p>Verify the pod is running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pod cuda-vectoradd-kata
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                  READY   STATUS    RESTARTS   AGE</span>
+<span class="go">cuda-vectoradd-kata   1/1     Running   0          10s</span>
+</pre></div>
+</div>
+<p>The pod could also say <code class="docutils literal notranslate"><span class="pre">Completed</span></code> if the container already completed successfully.</p>
+<p>If the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code> for more than a few minutes, use the <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> guide for more details on viewing logs and potential causes for the pod being stuck.</p>
+</li>
+<li><p>View the logs from the pod after the container starts:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n default cuda-vectoradd-kata
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[Vector addition of 50000 elements]</span>
+<span class="go">Copy input data from the host memory to the CUDA device</span>
+<span class="go">CUDA kernel launch with 196 blocks of 256 threads</span>
+<span class="go">Copy output data from the CUDA device to the host memory</span>
+<span class="go">Test PASSED</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+<p>The output should include <code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> if the container completed successfully.
+This means that your cluster is configured to deploy GPU workloads in the Kata container runtime on nodes configured for Confidential Computing.</p>
+<p>If you do not see any log output, the pod may still be running.
+Use the command in the previous step to check the pod status.</p>
+</li>
+<li><p>Optionally, you can verify the sample app was running the Kata container runtime by checking the pod details:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl describe pod cuda-vectoradd-kata
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Name:                cuda-vectoradd-kata</span>
+<span class="go">Namespace:           default</span>
+<span class="go">Priority:            0</span>
+<span class="go">Runtime Class Name:  kata-qemu-nvidia-gpu-tdx</span>
+
+<span class="go">...</span>
+
+<span class="go">Events:</span>
+<span class="go">Type    Reason     Age   From               Message</span>
+<span class="go">----    ------     ----  ----               -------</span>
+<span class="go">Normal  Scheduled  95s   default-scheduler  Successfully assigned default/cuda-vectoradd-kata to dellr760tdx</span>
+<span class="go">Normal  Pulled     71s   kubelet            Container image &quot;nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04&quot; already present on machine</span>
+<span class="go">Normal  Created    71s   kubelet            Created container: cuda-vectoradd</span>
+<span class="go">Normal  Started    68s   kubelet            Started container cuda-vectoradd</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Class</span> <span class="pre">Name</span></code> should match the runtime class used to create the pod and you will see that the pod ran successfully.
+The example output shows <code class="docutils literal notranslate"><span class="pre">Runtime</span> <span class="pre">Class</span> <span class="pre">Name:</span>&#160; <span class="pre">kata-qemu-nvidia-gpu-tdx</span></code>.</p>
+</li>
+</ol>
+<p>To clean up, delete the pod:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete -f cuda-vectoradd-kata.yaml
+</pre></div>
+</div>
+</div></blockquote>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You have verified that a GPU workload runs on the confidential runtime. This is the end of the
+deployment path covered by this guide.</p>
+<p>Attestation is what cryptographically verifies the TEE and releases secrets to a
+production workload. For attestation concepts and a local
+connectivity test, see the <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart. For production attestation
+deployment, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/">Confidential Containers NVIDIA attestation guide</a>.</p>
+</div>
+<p>If you’d like to continue to learn about Confidential Container configuraion, review the following pages:</p>
 <ul class="simple">
-<li><p>NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.</p></li>
-<li><p>All GPUs on the host must be configured for Confidential Computing.
-Configuring only a subset of GPUs on a node is not supported.
-For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.</p></li>
+<li><p>Refer to <a class="reference internal" href="configure-workloads.html"><span class="doc">Configuring Workloads</span></a> for runtime class selection, resource types, and multi-GPU passthrough manifests.</p></li>
+<li><p>Refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> to change the CC mode on GPUs at the cluster or node level.</p></li>
 </ul>
-</section>
 </section>
 </section>
 
@@ -490,20 +591,20 @@ For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="troubleshooting.html"
+       href="confidential-containers-deploy.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Troubleshooting</p>
+        <p class="prev-next-title">Detailed Install Guide</p>
       </div>
     </a>
     <a class="right-next"
-       href="licensing.html"
+       href="configure-workloads.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Licensing</p>
+        <p class="prev-next-title">Configuring Confidential Container Workloads</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -528,11 +629,7 @@ For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-0-0">1.0.0</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-restrictions">Limitations and Restrictions</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
 </ul>
   </nav></div>
 
