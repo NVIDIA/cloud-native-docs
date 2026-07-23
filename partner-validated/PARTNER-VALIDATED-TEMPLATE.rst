@@ -45,6 +45,7 @@ the Operator.
      - Helm
      - NVIDIA GPU
      - Hardware Model
+     - Date Validated
 
   * - |prod-name-long|
     - v23.3.1
@@ -59,6 +60,7 @@ the Operator.
     - | Dell PowerEdge R740
       | 2 $\times$ Intel Xeon Silver 2.2 GHz
       | 64GB RAM, 1TB NVMe
+    - Month YYYY
 
 Include at least the following pieces of information:
 

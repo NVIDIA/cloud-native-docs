@@ -293,183 +293,189 @@ Supported Operating Systems and Kubernetes Platforms
 .. _fn4: #partner-validated
 .. |fn4| replace:: :sup:`4`
 
-The GPU Operator has been validated in the following scenarios:
+The GPU Operator has been validated with the following operating systems and Kubernetes platforms:
 
-.. tab-set::
-  :sync-group: container-platforms
+* :ref:`bare-metal`
+* :ref:`cloud-service-providers`
 
-  .. tab-item:: Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
-    :sync: bare-metal
+.. _bare-metal:
 
-    .. list-table::
-       :header-rows: 1
-       :stub-columns: 1
+Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
+******************************************************************
 
-       * - | Operating
-           | System
-         - Kubernetes |fn1|_
-         - | Red Hat
-           | OpenShift
-         - | VMware vSphere 
-           | Kubernetes Service (VKS)
-         - | Rancher Kubernetes 
-           | Engine 2 |fn4|_
-         - | K3s
-         - | Mirantis k0s |fn4|_
-         - | Canonical
-           | MicroK8s 
-         - | Nutanix
-           | NKP
 
-       * - Ubuntu 22.04 LTS |fn2|_
-         - 1.32---1.36 
-         -
-         - 1.32---1.36
-         - 1.32---1.36 
-         - 1.32---1.36
-         - 1.32---1.36 
-         - 1.33---1.35
-         - 2.15 2.16 2.17
+.. list-table::
+    :header-rows: 1
+    :stub-columns: 1
 
-       * - Ubuntu 24.04 LTS
-         - 1.32---1.36
-         -
-         -
-         - 1.32---1.36
-         - 1.32---1.36
-         - 1.32---1.36
-         - 1.33---1.35
-         - 2.17
+    * - | Operating
+        | System
+      - Kubernetes |fn1|_
+      - | Red Hat
+        | OpenShift
+      - | VMware vSphere 
+        | Kubernetes Service (VKS)
+      - | Rancher Kubernetes 
+        | Engine 2 |fn4|_
+      - | K3s
+      - | Mirantis k0s |fn4|_
+      - | Canonical
+        | MicroK8s 
+      - | Nutanix
+        | NKP
 
-       * - Red Hat Core OS
-         -
-         - | 4.18---4.22
-         -
-         -
-         -
-         -
-         -
-         -
+    * - Ubuntu 22.04 LTS |fn2|_
+      - 1.32---1.36 
+      -
+      - 1.32---1.36
+      - 1.32---1.36 
+      - 1.32---1.36
+      - 1.32---1.36 
+      - 1.33---1.35
+      - 2.15 2.16 2.17
 
-       * - | Red Hat
-           | Enterprise
-           | Linux 10.0, 10.1, 10.2 
-         - 1.32---1.36
-         -
-         -
-         - 1.32---1.36
-         -
-         -
-         -
-         -
+    * - Ubuntu 24.04 LTS
+      - 1.32---1.36
+      -
+      -
+      - 1.32---1.36
+      - 1.32---1.36
+      - 1.32---1.36
+      - 1.33---1.35
+      - 2.17
 
-       * - | Red Hat
-           | Enterprise
-           | Linux 9.2, 9.4, 9.6, 9.7, 9.8 |fn3|_
-         - 1.32---1.36
-         -
-         -
-         - 1.32---1.36
-         -
-         -
-         -
-         - 2.17
+    * - Red Hat Core OS
+      -
+      - | 4.18---4.22
+      -
+      -
+      -
+      -
+      -
+      -
 
-       * - | Red Hat
-           | Enterprise
-           | Linux 8.8,
-           | 8.10
-         - 1.32---1.36
-         -
-         -
-         - 1.32---1.36
-         -
-         -
-         -
-         - 2.15, 2.16, 2.17
+    * - | Red Hat
+        | Enterprise
+        | Linux 10.0, 10.1, 10.2 
+      - 1.32---1.36
+      -
+      -
+      - 1.32---1.36
+      -
+      -
+      -
+      -
 
-       * - Rocky Linux 10.1
-         - 1.32---1.36
-         -
-         -
-         -
-         -
-         -
-         -
-         -
+    * - | Red Hat
+        | Enterprise
+        | Linux 9.2, 9.4, 9.6, 9.7, 9.8 |fn3|_
+      - 1.32---1.36
+      -
+      -
+      - 1.32---1.36
+      -
+      -
+      -
+      - 2.17
 
-       * - Rocky Linux 9.7
-         - 1.32---1.36
-         -
-         -
-         -
-         -
-         -
-         -
-         -
+    * - | Red Hat
+        | Enterprise
+        | Linux 8.8,
+        | 8.10
+      - 1.32---1.36
+      -
+      -
+      - 1.32---1.36
+      -
+      -
+      -
+      - 2.15, 2.16, 2.17
 
-       * - Rocky Linux 8.10
-         - 1.32---1.36
-         -
-         -
-         -
-         -
-         -
-         -
-         -
+    * - Rocky Linux 10.1
+      - 1.32---1.36
+      -
+      -
+      -
+      -
+      -
+      -
+      -
 
-    .. _kubernetes-version:
+    * - Rocky Linux 9.7
+      - 1.32---1.36
+      -
+      -
+      -
+      -
+      -
+      -
+      -
 
-    :sup:`1`
-    The Kubernetes community only supports the last three minor `releases <https://kubernetes.io/releases/>`_.
-    Older releases may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
+    * - Rocky Linux 8.10
+      - 1.32---1.36
+      -
+      -
+      -
+      -
+      -
+      -
+      -
 
-    .. _ubuntu-kernel:
+.. _kubernetes-version:
 
-    :sup:`2`
-    For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
-    The GPU Driver containers support these Linux kernels.
-    Refer to the Kernel release schedule on Canonical's
-    `Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
-    NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
-    by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
+:sup:`1`
+The Kubernetes community only supports the last three minor `releases <https://kubernetes.io/releases/>`_.
+Older releases may be supported through enterprise distributions of Kubernetes such as Red Hat OpenShift.
 
-    .. _rhel-9:
+.. _ubuntu-kernel:
 
-    :sup:`3`
-    Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, 9.7, and 9.8 versions are available for x86 based platforms only.
-    They are not available for ARM based systems.
+:sup:`2`
+For Ubuntu 22.04 LTS, kernel versions 6.8 (non-precompiled driver containers only) 6.5 and 5.15 are LTS ESM kernels.
+The GPU Driver containers support these Linux kernels.
+Refer to the Kernel release schedule on Canonical's
+`Ubuntu kernel lifecycle and enablement stack <https://ubuntu.com/kernel/lifecycle>`_ page for more information.
+NVIDIA recommends disabling automatic updates for the Linux kernel that are performed
+by the ``unattended-upgrades`` package to prevent an upgrade to an unsupported kernel version.
 
-    .. note::
+.. _rhel-9:
 
-      |ocp_csp_support|
+:sup:`3`
+Non-precompiled driver containers for Red Hat Enterprise Linux 9.2, 9.4, 9.6, 9.7, and 9.8 versions are available for x86 based platforms only.
+They are not available for ARM based systems.
 
-    .. _partner-validated:
+.. note::
 
-    :sup:`4`
-    Refer to the `Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>`__ documentation for information on other operating systems support.
+  |ocp_csp_support|
 
-  .. tab-item:: Cloud Service Providers
-    :sync: cloud-service-providers
+.. _partner-validated:
 
-    .. list-table::
-       :header-rows: 1
-       :stub-columns: 1
+:sup:`4`
+Refer to the `Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>`__ documentation for information on other operating systems support.
 
-       * - | Operating
-           | System
-         - | Amazon EKS
-           | Kubernetes 
-         - | Google GKE
-           | Kubernetes
+.. _cloud-service-providers:
 
-       * - Ubuntu 22.04 LTS
-         - 1.32---1.36
-         - 1.32---1.36
+Cloud Service Providers
+***********************
 
-       * - Ubuntu 24.04 LTS
-         - 1.32---1.36
-         - 1.32---1.36
+.. list-table::
+    :header-rows: 1
+    :stub-columns: 1
+
+    * - | Operating
+        | System
+      - | Amazon EKS
+        | Kubernetes 
+      - | Google GKE
+        | Kubernetes
+
+    * - Ubuntu 22.04 LTS
+      - 1.32---1.36
+      - 1.32---1.36
+
+    * - Ubuntu 24.04 LTS
+      - 1.32---1.36
+      - 1.32---1.36
+
 
 .. _supported-precompiled-drivers:
 
@@ -493,6 +499,33 @@ See the :doc:`precompiled-drivers` page for more information about using precomp
 |                            | AWS, Oracle            |                |                     |
 +----------------------------+------------------------+----------------+---------------------+
 
+********************************
+Partner Validated Configurations
+********************************
+.. _partner-validated-table:
+
+Partners have validated the GPU Operator with the following configurations:
+
+.. list-table::
+    :header-rows: 1
+
+    * - | Partner
+      - | Operating System
+      - | Custom Artifacts
+      - | Documentation
+      - | Support Channel
+
+    * - SUSE
+      - SUSE Linux Enterprise Server 15, 16
+      - Signed and precompiled driver container
+      - | :external+pv:doc:`suse-rke2`
+      - | `SUSE Customer Center <https://scc.suse.com/>`_
+
+
+Support for these configurations is provided by the corresponding partner.
+To report an issue with the GPU Operator on one of these configurations, open an issue in the partner's support channel.
+
+For more details about partners and their supported configurations, refer to the :external+pv:doc:`index` page.
 
 ****************************
 Supported Container Runtimes
