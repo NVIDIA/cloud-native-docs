@@ -519,7 +519,7 @@ Partners have validated the GPU Operator with the following configurations:
       - SUSE Linux Enterprise Server 15, 16
       - Signed and precompiled driver container
       - | :external+pv:doc:`suse-rke2`
-      - | `RKE2 GitHub repository <https://github.com/rancher/rke2>`_
+      - | `SUSE Customer Center <https://scc.suse.com/>`_
 
 
 Support for these configurations is provided by the corresponding partner.
