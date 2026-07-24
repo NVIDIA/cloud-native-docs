@@ -527,6 +527,8 @@ To report an issue with the GPU Operator on one of these configurations, open an
 
 For more details about partners and their supported configurations, refer to the :external+pv:doc:`index` page.
 
+.. _supported-container-runtimes:
+
 ****************************
 Supported Container Runtimes
 ****************************

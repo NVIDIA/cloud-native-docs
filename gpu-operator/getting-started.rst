@@ -31,68 +31,20 @@ Installing the NVIDIA GPU Operator
 
    The current patch release of this version of the NVIDIA GPU Operator is ``${version}``.
 
-.. admonition:: Red Hat OpenShift Container Platform Install
-   :class: tip
+Before installing the GPU Operator, refer to the :doc:`prerequisites` page to make sure your cluster is configured correctly.
 
-   For installation on Red Hat OpenShift Container Platform, refer to :external+ocp:doc:`steps-overview`.
+.. seealso::
 
-*************
-Prerequisites
-*************
+   Not sure which install guide fits your environment? Refer to :ref:`install-paths`.
 
-#. You have the ``kubectl`` and ``helm`` CLIs available on a client machine.
-
-   You can run the following commands to install the Helm CLI:
-
-   .. code-block:: console
-
-      $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
-          && chmod 700 get_helm.sh \
-          && ./get_helm.sh
-
-#. If you are planning to use ClusterPolicy for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
-   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-
-   For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
-   the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
-
-   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
-
-#. Nodes must be configured with a container engine such as CRI-O or containerd.
-
-#. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
-   label the namespace for the Operator to set the enforcement policy to privileged:
-
-   .. code-block:: console
-
-      $ kubectl create ns gpu-operator
-      $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
-
-#. Node Feature Discovery (NFD) is a dependency for the Operator on each node.
-   By default, NFD master and worker are automatically deployed by the Operator.
-   If NFD is already running in the cluster, then you must disable deploying NFD when you install the Operator.
-
-   One way to determine if NFD is already running in the cluster is to check for an NFD label on your nodes
-   (requires `jq <https://jqlang.org/>`__):
-
-   .. code-block:: console
-
-      $ kubectl get nodes -o json | jq '.items[].metadata.labels | keys | any(startswith("feature.node.kubernetes.io"))'
-
-   If the command output is ``true``, then NFD is already running in the cluster.
-
-*********
-Procedure
-*********
+**********
+QuickStart
+**********
 
 A default installation deploys the NVIDIA GPU driver, NVIDIA Container Toolkit,
 NVIDIA Device Plugin, DCGM Exporter, and MIG Manager as pods on every GPU worker node.
 Use ``--set`` options to customize the deployment for your environment.
 
-.. tip::
-
-   For installation on Red Hat OpenShift Container Platform,
-   refer to :external+ocp:doc:`steps-overview`.
 
 #. Add the NVIDIA Helm repository:
 
@@ -336,249 +288,43 @@ The notebook should now be accessible from your browser at this URL:
 `http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9 <http://your-machine-ip:30001/?token=3660c9ee9b225458faaf853200bc512ff2206f635ab2b1d9>`_.
 
 
-.. _gpu-operator-helm-chart-options:
-.. _chart-customization-options:
-.. _chart customization options:
-
-**********************************
-Common Chart Customization Options
-**********************************
-
-The following options are available when using the Helm chart.
-These options can be used with ``--set`` when installing with Helm.
-
-The following table identifies the most frequently used options.
-To view all the options, run ``helm show values nvidia/gpu-operator``.
-
-.. list-table::
-   :widths: 20 50 30
-   :header-rows: 1
-
-   * - Parameter
-     - Description
-     - Default
-
-   * - ``ccManager.enabled``
-     - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
-     - ``false``
-
-   * - ``cdi.enabled``
-     - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
-       injecting GPUs into workload containers. 
-       The Operator will no longer configure the ``nvidia`` runtime class as the default runtime handler. 
-       Instead, native-CDI support in container runtimes like containerd or cri-o will be leveraged for injecting GPUs into workload containers.
-       Refer to the :doc:`cdi` page for more information.
-     - ``true``
-
-   * - ``cdi.nriPluginEnabled``
-     - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers.
-
-       In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
-       This feature requires containerd v1.7.30, v2.1.x, or v2.2.x, or cri-o v1.34 or later.
-       Refer to the :doc:`cdi` page for more information.
-     - ``false``
-
-   * - ``cdi.default`` (Deprecated)
-     - This field is deprecated as of v25.10.0 and will be ignored.
-       The ``cdi.enabled`` field is set to ``true`` by default in versions 25.10.0 and later.
-       When set to ``true``, the container runtime uses CDI to perform device injection by default.
-     - ``false``
-
-   * - ``daemonsets.annotations``
-     - Map of custom annotations to add to all GPU Operator managed pods.
-     - ``{}``
-
-   * - ``daemonsets.labels``
-     - Map of custom labels to add to all GPU Operator managed pods.
-     - ``{}``
-  
-   * - ``dcgmExporter.enabled``
-     - By default, the Operator gathers GPU telemetry in Kubernetes using `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
-       Set this value to ``false`` to disable it.
-       Available values are ``true`` (default) or ``false``.
-     - ``true``
-
-   * - ``dcgmExporter.service.internalTrafficPolicy``
-     - Specifies the `internalTrafficPolicy <https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies>`_ for the DCGM Exporter service.
-       Available values are ``Cluster`` (default) or ``Local``.
-     - ``Cluster``
-
-   * - ``dcgmExporter.hostNetwork``
-     - When set to ``true``, the DCGM Exporter exposes a metric port on the host's network namespace.
-     - ``false``
-
-   * - ``dcgmExporter.annotations``
-     - Map of custom annotations to add to the DCGM Exporter DaemonSet.
-     - ``{}``
-
-   * - ``dcgmExporter.enablePodLabels``
-     - When set to ``true``, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
-       Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
-       (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods.
-       Use ``dcgmExporter.podLabelAllowlistRegex`` to limit which labels are emitted.
-     - ``false``
-
-   * - ``dcgmExporter.enablePodUID``
-     - When set to ``true``, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
-       Like ``dcgmExporter.enablePodLabels``, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
-       service account ``get``, ``list``, and ``watch`` access to pods.
-     - ``false``
-
-   * - ``dcgmExporter.podLabelAllowlistRegex``
-     - List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when ``dcgmExporter.enablePodLabels`` is ``true``.
-       NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.
-     - ``none``
-
-   * - ``devicePlugin.config``
-     - Specifies the configuration for the NVIDIA Device Plugin as a config map.
-
-       In most cases, this field is configured after installing the Operator, such as
-       to configure :doc:`gpu-sharing`.
-     - ``{}``
-
-   * - ``driver.enabled``
-     - By default, the Operator deploys NVIDIA drivers as a container on the system.
-       Set this value to ``false`` when using the Operator on systems with pre-installed drivers.
-     - ``true``
-
-   * - ``driver.image``
-     - Name of the NVIDIA Driver Container image to use.
-     - ``driver``
-
-   * - ``driver.imagePullSecrets``
-     - List of the image pull secret used for pulling the driver container image from the registry.
-     - None
-
-   * - ``driver.kernelModuleType``
-     - Specifies the type of the NVIDIA GPU Kernel modules to use.
-       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
-       
-       ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-       The ``auto`` option is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
-       550 and 535 branch drivers do not yet support this mode.
-       ``Open`` means the open kernel module is used.
-       ``Proprietary`` means the proprietary module is used.
-     - ``auto``
-
-   * - ``driver.nvidiaDriverCRD.enabled``
-     - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
-       Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
-     - ``false``
-
-   * - ``driver.repository``
-     - The images are downloaded from NGC. Specify another image repository when using
-       custom driver images.
-     - ``nvcr.io/nvidia``
-
-   * - ``driver.rdma.enabled``
-     - Controls whether the driver daemon set builds and loads the legacy ``nvidia-peermem`` kernel module.
-
-       You might be able to use GPUDirect RDMA without enabling this option.
-       Refer to :doc:`gpu-operator-rdma` for information about whether you can use DMA-BUF or
-       you need to use legacy ``nvidia-peermem``.
-     - ``false``
-
-   * - ``driver.rdma.useHostMofed``
-     - Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.
-     - ``false``
-
-   * - ``driver.secretEnv``
-     - The name of the secret to the driver container. 
-       A common use case is to use this field to pass your Ubuntu Pro token secret if you are deploying the GPU Operator with government-ready components. Refer to :doc:`install-gpu-operator-gov-ready` for more information.
-     - None
-
-   * - ``driver.startupProbe``
-     - By default, the driver container has an initial delay of ``60s`` before starting liveness probes.
-       The probe runs the ``nvidia-smi`` command with a timeout duration of ``60s``.
-       You can increase the ``timeoutSeconds`` duration if the ``nvidia-smi`` command
-       runs slowly in your cluster.
-     - ``60s``
-
-   * - ``driver.useOpenKernelModules`` (Deprecated)
-     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead.
-       When set to ``true``, the driver containers install the NVIDIA Open GPU Kernel module driver.
-     - ``false``
-
-   * - ``driver.usePrecompiled``
-     - When set to ``true``, the Operator attempts to deploy driver containers that have
-       precompiled kernel drivers.
-       Refer to the :doc:`precompiled driver containers <precompiled-drivers>` page for the supported operating systems.
-     - ``false``
-
-   * - ``driver.version``
-     - Version of the NVIDIA datacenter driver supported by the Operator.
-
-       If you set ``driver.usePrecompiled`` to ``true``, then set this field to
-       a driver branch, such as ``525``.
-     - Depends on the version of the Operator. Refer to the :ref:`GPU Operator Component Matrix`
-       for more information on supported drivers.
-
-   * - ``gdrcopy.enabled``
-     - Enables support for GDRCopy.
-       When set to ``true``, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
-       For information about GDRCopy, refer to the `gdrcopy <https://developer.nvidia.com/gdrcopy>`__ page.
-
-       You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
-     - ``false``
-
-
-   * - ``mig.strategy``
-     - Controls the strategy to be used with MIG on supported NVIDIA GPUs. Options
-       are either ``mixed`` or ``single``.
-     - ``single``
-
-   * - ``migManager.enabled``
-     - The MIG manager watches for changes to the MIG geometry and applies reconfiguration as needed. By
-       default, the MIG manager only runs on nodes with GPUs that support MIG (such as the A100).
-     - ``true``
-
-   * - ``nfd.enabled``
-     - Deploys Node Feature Discovery plugin as a daemonset.
-       Set this variable to ``false`` if NFD is already running in the cluster.
-     - ``true``
-
-   * - ``nfd.nodefeaturerules``
-     - Installs node feature rules that are related to confidential computing.
-       NFD uses the rules to detect security features in CPUs and NVIDIA GPUs.
-       Set this variable to ``true`` when you configure the Operator for Confidential Containers.
-     - ``false``
-
-   * - ``operator.labels``
-     - Map of custom labels to add to all GPU Operator managed pods.
-     - ``{}``
-
-   * - ``psp.enabled``
-     - The GPU Operator deploys ``PodSecurityPolicies`` if enabled.
-     - ``false``
-
-   * - ``sandboxWorkloads.enabled``
-     - Specifies if sandbox containers are enabled.
-     - ``false``
-
-   * - ``sandboxWorkloads.defaultWorkload``
-     - Specifies the default type of workload for the cluster, one of ``container``, ``vm-passthrough``, or ``vm-vgpu``.
-
-       Setting ``vm-passthrough`` or ``vm-vgpu`` can be helpful if you plan to run all or mostly virtual machines in your cluster.
-       Refer to :doc:`KubeVirt <gpu-operator-kubevirt>`, :doc:`Kata Containers <deploy-kata-containers>` for more details on deploying different workload containers. 
-     - ``container``
-  
-   * - ``sandboxWorkloads.mode``
-     - Specifies the sandbox mode to use when deploying sandbox workloads.
-       Accepted values are ``kubevirt`` (default) and ``kata``.
-       Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` or the :doc:`Kata Containers <deploy-kata-containers>` pages for more information on using KubeVirt or Kata based workloads.
-     - ``kubevirt``
-   * - ``toolkit.enabled``
-     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
-       as a container on the system. Set this value to ``false`` when using the Operator on systems
-       with pre-installed NVIDIA runtimes.
-     - ``true``
-
 ***************************
 Common Deployment Scenarios
 ***************************
 
 The following common deployment scenarios and sample commands apply best to
 bare metal hosts or virtual machines with GPU passthrough.
+
+Installing with DRA Driver for NVIDIA GPUs
+==========================================
+
+.. note::
+
+   Deploying and managing the DRA Driver for NVIDIA GPUs through the ``GPUCluster`` custom resource is in Technology
+   Preview and is supported only for greenfield (new) deployments.
+   Configuration options may change in future releases.
+   Migrating an existing ``ClusterPolicy`` deployment to ``GPUCluster`` in place is not supported.
+   Do not use ``ClusterPolicy`` and ``GPUCluster`` as GPU resource management models in the same cluster.
+
+If you want to use Kubernetes Dynamic Resource Allocation (DRA) to manage GPU resource allocation in your cluster,
+install the GPU Operator with the ``GPUCluster`` custom resource enabled and ``DEFAULT_GPU_ALLOCATION_MODE`` set to
+``dra``.
+This deploys the GPU Operator with the components necessary for DRA, including the DRA Driver for NVIDIA GPUs.
+
+.. code-block:: console
+
+  $ helm upgrade --install gpu-operator nvidia/gpu-operator \
+      --version=${version} \
+      --create-namespace \
+      --namespace gpu-operator \
+      --set gpuCluster.enabled=true \
+      --set driver.nvidiaDriverCRD.enabled=true \
+      --set operator.env[0].name=DEFAULT_GPU_ALLOCATION_MODE \
+      --set operator.env[0].value=dra
+
+The ``gpuCluster.enabled=true`` flag creates the default ``GPUCluster`` resource.
+The ``driver.nvidiaDriverCRD.enabled=true`` flag creates the ``NVIDIADriver`` custom resource to manage the NVIDIA GPU driver. If you are planning to use pre-installed drivers, set this flag to ``false`` and include the ``driver.enabled=false`` flag.
+Setting the ``DEFAULT_GPU_ALLOCATION_MODE`` environment variable to ``dra`` ensures that GPU nodes are labeled for DRA components.
 
 Specifying the Operator Namespace
 =================================

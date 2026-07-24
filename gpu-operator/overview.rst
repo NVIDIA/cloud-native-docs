@@ -47,7 +47,14 @@ Browse through the following documents for getting started, platform support and
 Getting Started
 ---------------
 
-The :ref:`operator-install-guide` guide includes information on installing the GPU Operator in a Kubernetes cluster.
+Use :ref:`install-paths` to choose the install guide for your platform, license, and GPU resource management model.
+The :ref:`operator-install-guide` guide covers the default Helm install for generic Kubernetes clusters.
+
+Architecture
+------------
+
+Refer to :ref:`gpu-operator-architecture` to learn how the GPU Operator manages components through ``ClusterPolicy``,
+``GPUCluster``, and ``NVIDIADriver`` custom resources.
 
 Release Notes
 ---------------

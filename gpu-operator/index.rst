@@ -17,29 +17,44 @@
 .. headings # #, * *, =, -, ^, "
 
 .. toctree::
-   :caption: NVIDIA GPU Operator
+   :caption: Overview
    :titlesonly:
    :hidden:
 
    About the Operator <overview.rst>
-   Install <getting-started.rst>
-   Upgrade <upgrade.rst>
-   Uninstall <uninstall.rst>
+   Architecture <architecture.rst>
+   Control Plane Architecture <control-plane-architecture.rst>
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
-   Troubleshooting <troubleshooting.rst>
+
+.. toctree::
+   :caption: Getting Started
+   :titlesonly:
+   :hidden:
+   
+   Install Overview <install-paths.rst>
+   Prerequisites <prerequisites.rst>
+   Install with Helm <getting-started.rst>
+   Install on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
+   Upgrade <upgrade.rst>
    gpu-driver-upgrades.rst
-   install-gpu-operator-vgpu.rst
-   install-gpu-operator-nvaie.rst
-   Security Considerations <security.rst>
+   Uninstall <uninstall.rst>
 
-
+.. toctree::
+   :caption: Liscensed Installs
+   :titlesonly:
+   :hidden:
+   
+   Install with NVIDIA vGPU <install-gpu-operator-vgpu.rst>
+   Install with NVIDIA AI Enterprise <install-gpu-operator-nvaie.rst>
+   Install Government Ready Components <install-gpu-operator-gov-ready.rst>
 
 .. toctree::
    :caption: Advanced Operator Configuration
    :titlesonly:
    :hidden:
 
+   Deploying with DRA Support <gpu-operator-dra.rst>
    DRA Driver for NVIDIA GPUs <dra-intro-install.rst>
    Multi-Instance GPU (MIG) <gpu-operator-mig.rst>
    Time-Slicing GPUs <gpu-sharing.rst>
@@ -69,12 +84,6 @@
    Service Mesh <install-gpu-operator-service-mesh.rst>
 
 .. toctree::
-   :titlesonly:
-   :hidden:
-
-
-
-.. toctree::
    :caption: Platform-Specific Configurations
    :titlesonly:
    :hidden:
@@ -85,5 +94,15 @@
    NVIDIA GPU Operator on Red Hat OpenShift Container Platform <https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html>
    Partner Validated <https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html>
 
+.. toctree::
+   :caption: Reference
+   :titlesonly:
+   :hidden:
+
+   ClusterPolicy Reference <clusterpolicy-reference.rst>
+   GPUCluster Reference <gpucluster-reference.rst>
+   NVIDIA GPU Driver Reference <gpu-driver-reference.rst>
+   Troubleshooting <troubleshooting.rst>
+   Security Considerations <security.rst>  
 
 .. include:: overview.rst
