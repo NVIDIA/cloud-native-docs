@@ -22,7 +22,10 @@ labels=$(grep -ohr --include \*.rst ".. _[^:]*" ${ARCHIVE} | cut -c 5- | xargs -
 # For each label, append a version suffix and update any references to the label.
 for label in $labels; do
 	echo "Updating all references to label: $label"
-	find $ARCHIVE -name "*.rst" -exec sed -i '' "s/.. _${label}/&-${VERSION}/g" {} \;
-	find $ARCHIVE -name "*.rst" -exec sed -i '' "s/:ref:\`.*${label}/&-${VERSION}/g" {} \;
+	find $ARCHIVE -name "*.rst" -exec sed -i.bak -e "s/.. _${label}/&-${VERSION}/g" {} \;
+	find $ARCHIVE -name "*.rst" -exec sed -i.bak -e "s/:ref:\`.*${label}/&-${VERSION}/g" {} \;
 done
+
+# Remove the backup files created by the portable `sed -i.bak` form above.
+find $ARCHIVE -name "*.bak" -delete
 
