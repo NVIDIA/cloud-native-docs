@@ -32,7 +32,7 @@ Deploy with Kata Containers
 About the Operator with Kata Containers
 ***************************************
 
-`Kata Containers <https://katacontainers.io/>`_ is an open source project that creates lightweight Virtual Machines (VMs) that feel and perform like traditional containers such as a Docker container. 
+`Kata Containers <https://katacontainers.io/>`_ is an open source project that creates lightweight Virtual Machines (VMs) that feel and perform like traditional containers such as a Docker container.
 A traditional container packages software for user-space isolation from the host,
 but the container runs on the host and shares the operating system kernel with the host.
 Sharing the operating system kernel is a potential vulnerability.
@@ -129,9 +129,9 @@ To enable Kata Containers for GPUs on your cluster, you do the following:
 
 #. Make sure your cluster meets the prerequisites.
 #. Label the nodes you want to use for Kata Containers.
-#. Install the upstream ``kata-deploy`` Helm chart, which deploys all Kata runtime classes, including NVIDIA-specific runtime classes. 
+#. Install the upstream ``kata-deploy`` Helm chart, which deploys all Kata runtime classes, including NVIDIA-specific runtime classes.
    The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata Containers.
-#. Install the NVIDIA GPU Operator with Kata sandbox mode enabled. 
+#. Install the NVIDIA GPU Operator with Kata sandbox mode enabled.
 
 After installation, you can run a sample workload that uses the Kata runtime class.
 
@@ -225,7 +225,7 @@ Kubernetes Cluster
 
   Refer to the `Kata Containers documentation <https://github.com/kata-containers/kata-containers/blob/main/docs/use-cases/NVIDIA-GPU-passthrough-and-Kata-QEMU.md#kata-runtime>`_ for more details on the Kata runtime and VFIO cold-plug.
 
-* Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images. 
+* Increase kubelet image pull timeouts configuration to 20 minutes to avoid timeouts when pulling large images.
   Kubelet can de-allocate your pod if the image pull exceeds the configured timeout before the container transitions to the running state.
 
   Increase ``runtimeRequestTimeout`` in your `kubelet configuration <https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/>`_ to ``20m`` to match the default values for the Kata shim configurations in Kata Containers.
@@ -246,8 +246,8 @@ Kubernetes Cluster
 
      $ sudo systemctl restart kubelet
 
-  If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent's ``image_pull_timeout``, which defaults to 1200s. 
-  This setting also sets the confidential data hub's image pull API timeout in seconds. 
+  If you need a timeout of more than 1200 seconds (20 minutes), you will also need to adjust the Kata Agent's ``image_pull_timeout``, which defaults to 1200s.
+  This setting also sets the confidential data hub's image pull API timeout in seconds.
   To do this, add the ``agent.image_pull_timeout`` kernel parameter to your shim configuration, or pass an explicit value in a pod annotation in the ``io.katacontainers.config.hypervisor.kernel_params: "..."`` annotation.
 
 .. _label-nodes-kata-containers:
@@ -322,7 +322,11 @@ The minimum required version is ${kata_version}.
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
          --set nfd.enabled=false \
+         -f kata-nvidia-gpu-values.yaml \
          --version "${VERSION}"
+
+   The sample `kata-nvidia-gpu-values.yaml` file is included in the GitHub repository at
+   https://github.com/NVIDIA/cloud-native-docs/blob/main/confidential-containers/samples/kata-nvidia-gpu-values.yaml.
 
    *Example Output:*
 
@@ -660,8 +664,8 @@ If the sample workload does not run, confirm that you labeled nodes to run virtu
 .. code-block:: output
 
    NAME               STATUS   ROLES    AGE   VERSION
-   kata-worker-1      Ready    <none>   10d   v1.35.3 
-   kata-worker-2      Ready    <none>   10d   v1.35.3 
+   kata-worker-1      Ready    <none>   10d   v1.35.3
+   kata-worker-2      Ready    <none>   10d   v1.35.3
    kata-worker-3      Ready    <none>   10d   v1.35.3
 
 You might have configured ``vm-passthrough`` as the default sandbox workload in the ClusterPolicy resource.
@@ -680,4 +684,3 @@ Also confirm in the ClusterPolicy that ``sandboxWorkloads`` is configured for Ka
      enabled: true
      defaultWorkload: vm-passthrough
      mode: kata
-
