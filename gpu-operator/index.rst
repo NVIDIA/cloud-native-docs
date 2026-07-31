@@ -23,7 +23,7 @@
 
    About the Operator <overview.rst>
    Architecture <architecture.rst>
-   Control Plane Architecture <control-plane-architecture.rst>
+   Control Plane Architecture <architecture.rst>
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
 
@@ -101,7 +101,7 @@
 
    ClusterPolicy Reference <clusterpolicy-reference.rst>
    GPUCluster Reference <gpucluster-reference.rst>
-   NVIDIA GPU Driver Reference <gpu-driver-reference.rst>
+   NVIDIA GPU Driver Reference <gpu-driver-configuration.rst>
    Troubleshooting <troubleshooting.rst>
    Security Considerations <security.rst>  
 
