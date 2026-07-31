@@ -149,6 +149,49 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
 * You installed a supported container engine (Docker, Containerd, CRI-O, Podman).
 * You installed the NVIDIA Container Toolkit.
 
+### Managing `config.toml`
+
+The `nvidia-ctk config` command reads
+`/etc/nvidia-container-runtime/config.toml` by default. Without `--in-place` or
+`--output`, the command writes the updated configuration to standard output and
+does not change the source file.
+
+Preview a change before you write it to the host:
+
+```console
+$ sudo nvidia-ctk config \
+    --set nvidia-container-runtime.log-level=debug
+```
+
+Review the output. Then, add `--in-place` to update the source file:
+
+```console
+$ sudo nvidia-ctk config --in-place \
+    --set nvidia-container-runtime.log-level=debug
+```
+
+You can specify `--set` more than once. The following command configures a log
+level and a log file in one update:
+
+```console
+$ sudo nvidia-ctk config --in-place \
+    --set nvidia-container-runtime.log-level=debug \
+    --set nvidia-container-runtime.debug=/var/log/nvidia-container-runtime.log
+```
+
+For a list setting, separate elements with a colon. The following command makes
+`crun` the first low-level runtime candidate and retains `runc` as a fallback:
+
+```console
+$ sudo nvidia-ctk config --in-place \
+    --set nvidia-container-runtime.runtimes=crun:runc
+```
+
+When the same key appears more than once, the last value takes effect. The
+command preserves existing settings when you change a different setting. Review
+the preview before every production update, especially when you use a custom
+file with `--config-file`.
+
 (setting-up-docker)=
 
 ### Configuring Docker
