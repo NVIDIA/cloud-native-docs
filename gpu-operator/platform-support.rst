@@ -496,6 +496,21 @@ Cloud Service Providers
       - 1.33---1.36
       - 1.33---1.36
 
+Starting with version 26.7.0, the Operator can render driver workloads for nodes when Node Feature Discovery
+reports ``feature.node.kubernetes.io/system-os_release.ID=ol``.
+The Operator combines ``ol`` with the major component of the ``VERSION_ID`` label to form the operating system tag.
+For example, ``VERSION_ID=9.7`` produces ``ol9``.
+For tag-based driver images, the Operator appends the operating system tag to the configured driver
+version, so a version such as ``580.126.20`` resolves to an image tag that ends in ``580.126.20-ol9``.
+The Operator also mounts custom yum repository configuration in ``/etc/yum.repos.d`` and custom certificate
+configuration in ``/etc/pki/ca-trust/extracted/pem`` on these nodes.
+
+This behavior provides operating system tag selection and manifest rendering only.
+The change does not add an NVIDIA-published Oracle Linux driver container image or qualify Oracle Linux for the validated operating
+system and container runtime support matrices on this page.
+You are responsible for building, validating, publishing, and maintaining a custom driver image with the tag that the Operator constructs.
+NVIDIA provides limited support for custom driver container images.
+
 .. _supported-precompiled-drivers:
 
 *****************************
