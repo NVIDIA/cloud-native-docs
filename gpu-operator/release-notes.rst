@@ -88,6 +88,37 @@ New Features
 Fixed Issues
 ------------
 
+* Fixed an issue where host driver validation could incorrectly report that ``nvidia-smi`` was missing when ``/usr/bin`` was an absolute symlink.                 The validator now resolves the symlink within the mounted host file system.                                                                                     (`PR #2464 <https://github.com/NVIDIA/gpu-operator/pull/2464>`__, `Issue #1357 <https://github.com/NVIDIA/gpu-operator/issues/1357>`__)                                                                                                                                                                                       * Fixed host driver and vGPU Manager validation so that the validator finds ``nvidia-smi`` in additional host locations, including ``/usr/sbin``, ``/opt/bin``, and the Windows Subsystem for Linux driver path.
+  Symlinks are resolved within the mounted host file system.
+  (`PR #2611 <https://github.com/NVIDIA/gpu-operator/pull/2611>`__, `Issue #2506 <https://github.com/NVIDIA/gpu-operator/issues/2506>`__)
+
+* Fixed an issue where vGPU Manager validation on non-SR-IOV GPUs could wait for unavailable SR-IOV virtual functions and time out.
+  The validator now waits for mediated-device parents on non-SR-IOV GPUs and for virtual functions on SR-IOV GPUs.
+  (`PR #2502 <https://github.com/NVIDIA/gpu-operator/pull/2502>`__, `Issue #2365 <https://github.com/NVIDIA/gpu-operator/issues/2365>`__)
+
+* Fixed an issue where the driver pod failed to start on kernels without ``CONFIG_MEMORY_HOTPLUG`` because the ``/sys/devices/system/memory/auto_online_blocks`` file was unavailable.
+  The driver pod now mounts the stable ``/sys/devices/system`` parent directory.
+  (`PR #2517 <https://github.com/NVIDIA/gpu-operator/pull/2517>`__, `Issue #2463 <https://github.com/NVIDIA/gpu-operator/issues/2463>`__)
+
+* Fixed an issue where the NVIDIA vGPU Device Manager did not start when the vGPU Manager driver was preinstalled on the host and ``driver.enabled=false``.
+  The readiness gate now accepts the status file from either a container-managed or host-installed vGPU Manager.
+  (`PR #2599 <https://github.com/NVIDIA/gpu-operator/pull/2599>`__)
+
+* Fixed an issue where setting ``devicePlugin.config.create=true`` with empty configuration data could leave device plugin pods referencing a missing ConfigMap.
+  The Helm chart now rejects the configuration when ``devicePlugin.config.name`` or ``devicePlugin.config.data`` is empty.
+  (`PR #2642 <https://github.com/NVIDIA/gpu-operator/pull/2642>`__, `Issue #2641 <https://github.com/NVIDIA/gpu-operator/issues/2641>`__)
+
+* Fixed an issue where the ``ClusterPolicy`` status could fluctuate during an NVIDIADriver rolling upgrade.
+  The status now remains ``notReady`` while an NVIDIADriver-owned node has a pending, in-progress, or failed upgrade.
+  (`PR #2665 <https://github.com/NVIDIA/gpu-operator/pull/2665>`__)
+
+* Fixed an issue where multiple NVIDIADriver custom resources with ``spec.default=true`` could incorrectly report a ``ready`` status.
+  The conflicting resources now report ``notReady`` with a ``ReconcileFailed`` condition until the conflict is resolved.
+  (`PR #2678 <https://github.com/NVIDIA/gpu-operator/pull/2678>`__)
+
+* Updated the bundled vGPU Device Manager configuration for vGPU 20.0 so that PCI device ID ``0x318210DE`` maps to the ``B300X-269C`` profile.
+  (`PR #2625 <https://github.com/NVIDIA/gpu-operator/pull/2625>`__, `Issue #2231 <https://github.com/NVIDIA/gpu-operator/issues/2231>`__)
+
 * Fixed an issue where custom NVIDIADriver custom resources could remain stuck and fail to reconcile after a conflicting default NVIDIADriver custom resource was deleted.
   The GPU Operator now re-evaluates all NVIDIADriver custom resources whenever any NVIDIADriver custom resource changes.
   (`PR #2258 <https://github.com/NVIDIA/gpu-operator/pull/2258>`__)
