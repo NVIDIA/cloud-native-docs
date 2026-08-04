@@ -86,8 +86,8 @@ sphinx_conf_py_extra = """
 project_build_order = [
   "driver-containers",
   "gpu-telemetry",
-  "openshift",
   "gpu-operator",
+  "openshift",
   "confidential-containers",
   "edge",
   "kubernetes",

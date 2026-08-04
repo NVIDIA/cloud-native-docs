@@ -22,7 +22,6 @@
    :hidden:
 
    About the Operator <overview.rst>
-   Architecture <architecture.rst>
    Control Plane Architecture <architecture.rst>
    Platform Support <platform-support.rst>
    Release Notes <release-notes.rst>
@@ -99,6 +98,7 @@
    :titlesonly:
    :hidden:
 
+   Helm Chart Reference <helm-values-reference>
    ClusterPolicy Reference <clusterpolicy-reference.rst>
    GPUCluster Reference <gpucluster-reference.rst>
    NVIDIA GPU Driver Reference <gpu-driver-configuration.rst>

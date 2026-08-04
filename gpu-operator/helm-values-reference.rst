@@ -17,6 +17,7 @@
 .. headings (h1/h2/h3/h4/h5) are # * = - ^
 
 .. _helm-values-reference:
+.. _gpu-operator-helm-chart-options:
 
 ###########################
 Helm Chart Values Reference

@@ -79,7 +79,7 @@ more information on how to contribute and the release artifacts.
 The base images used by the software might include software that is licensed under open-source licenses such as GPL.
 The source code for these components is archived on the CUDA opensource `index <https://developer.download.nvidia.com/compute/cuda/opensource/>`_.
 
-The following table identifieis the licenses for the Operator and software components.
+The following table identifies the licenses for the Operator and software components.
 By installing and using the GPU Operator, you accept the terms and conditions of these licenses.
 
 .. list-table::

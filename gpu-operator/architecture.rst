@@ -17,6 +17,7 @@
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
 .. _gpu-operator-control-plane-architecture:
+.. _gpu-operator-architecture:
 
 #######################################
 GPU Operator Control Plane Architecture
@@ -32,9 +33,6 @@ and the path from GPU discovery to workload allocation.
    This page describes the device-plugin-based control path implemented on the GPU Operator
    ``main`` branch at the source baseline recorded at the end of this file.
    DRA-based resource allocation uses a different architecture and is outside this page's scope.
-
-.. image:: graphics/gpu-operator-architecture.svg
-   :alt: GPU Operator control plane and operand architecture
 
 The GPU Operator manager watches custom resources and Nodes through the Kubernetes API.
 It labels eligible nodes, creates or updates operand resources in a fixed order, and reports
@@ -54,7 +52,6 @@ default with the container workload configuration, and what it does.
    :widths: 24 46
 
    * - Component
-     - Default
      - Description
    * - GPU Operator controller
      - Runs the reconcilers that watch the custom resources and Nodes and manage every operand.
@@ -97,9 +94,6 @@ default with the container workload configuration, and what it does.
      - Validates the sandboxed and virtualized workload stack.
    * - Confidential Computing Manager
      - Sets confidential computing mode on GPUs for Kata Containers and Confidential Containers.
-
-.. [#mig] MIG Manager is deployed on MIG-capable nodes that use the container workload
-   configuration.
 
 The remaining sections describe how these components are organized into layers, the order in which
 they are reconciled, and the topologies in which they are deployed.
