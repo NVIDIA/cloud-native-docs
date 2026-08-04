@@ -47,7 +47,14 @@ Browse through the following documents for getting started, platform support and
 Getting Started
 ---------------
 
-The :ref:`operator-install-guide` guide includes information on installing the GPU Operator in a Kubernetes cluster.
+Use :ref:`install-paths` to choose the install guide for your platform, license, and GPU resource management model.
+The :ref:`operator-install-guide` guide covers the default Helm install for generic Kubernetes clusters.
+
+Architecture
+------------
+
+Refer to :ref:`gpu-operator-architecture` to learn how the GPU Operator manages components through ``ClusterPolicy``,
+``GPUCluster``, and ``NVIDIADriver`` custom resources.
 
 Release Notes
 ---------------
@@ -72,7 +79,7 @@ more information on how to contribute and the release artifacts.
 The base images used by the software might include software that is licensed under open-source licenses such as GPL.
 The source code for these components is archived on the CUDA opensource `index <https://developer.download.nvidia.com/compute/cuda/opensource/>`_.
 
-The following table identifieis the licenses for the Operator and software components.
+The following table identifies the licenses for the Operator and software components.
 By installing and using the GPU Operator, you accept the terms and conditions of these licenses.
 
 .. list-table::

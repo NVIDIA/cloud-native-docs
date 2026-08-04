@@ -33,6 +33,107 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.0:
+
+26.7.0
+=======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA GPU Driver 595.71.05
+  - NVIDIA Container Toolkit v1.20.0
+  - NVIDIA DCGM 4.6.0-1
+  - NVIDIA MIG Manager for Kubernetes v0.14.3
+  - NVIDIA GDRCopy Driver v2.6
+  - Node Feature Discovery v0.19.0
+
+* Added a ``nvidia.com/gpu.deploy.client`` node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
+  Advanced users who run their own GPU client workloads that hold GPU device handles (for example, a standalone NVIDIA DRA driver) can add ``nvidia.com/gpu.deploy.client=true`` to the ``nodeSelector`` of the workload's DaemonSet, Deployment, StatefulSet, or Job.
+  The GPU Operator then automatically restarts these pods during a driver upgrade or a MIG configuration change, so the operation can proceed without manual pod eviction.
+  (`PR #2607 <https://github.com/NVIDIA/gpu-operator/pull/2607>`__)
+
+* Added support for restarting driver pods in place during patch upgrades when the driver configuration is unchanged.
+  Previously, a chart upgrade that changed only cosmetic pod-template metadata, such as the ``helm.sh/chart`` label, evicted running GPU workloads and drained the node.
+  The driver-upgrade controller now compares the driver configuration digest between the running pod and the desired DaemonSet, and when they match, it cordons the node and restarts the driver pod in place without evicting workloads or draining the node.
+  (`PR #2527 <https://github.com/NVIDIA/gpu-operator/pull/2527>`__)
+
+* Added an ``upgradePolicy`` field to the NVIDIA driver custom resource definition (CRD).
+  You can now define a driver upgrade policy per NVIDIADriver custom resource.
+  When the field is unset, the driver-upgrade controller falls back to the default upgrade policy that is defined in the Helm chart values.
+  (`PR #2582 <https://github.com/NVIDIA/gpu-operator/pull/2582>`__)
+
+* Added the ``hostPaths.kubeletRootDir`` Helm value to configure a custom kubelet root directory.
+  When left empty, the GPU Operator uses ``/var/lib/kubelet`` as the default path.
+  (`PR #1384 <https://github.com/NVIDIA/gpu-operator/pull/1384>`__)
+
+* Added the ``dcgmExporter.serviceMonitor.scrapeTimeout`` Helm value to configure the scrape timeout for the DCGM Exporter ``ServiceMonitor``.
+  (`PR #2404 <https://github.com/NVIDIA/gpu-operator/pull/2404>`__)
+
+* Added support for configuring the namespace that the GPU Operator uses for its leader election ``Lease`` object.
+  When unset, the operator continues to use the namespace that it runs in.
+  (`PR #1333 <https://github.com/NVIDIA/gpu-operator/pull/1333>`__)
+
+* Changed the RHEL-specific driver container image tags to use only the major RHEL version instead of the full ``major.minor`` version.
+  (`PR #2497 <https://github.com/NVIDIA/gpu-operator/pull/2497>`__)
+
+* Added the ``NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES`` environment variable for the NVIDIA Container Toolkit.
+  When the NRI Plugin is enabled, this variable holds the list of namespaces whose pods are permitted to request management CDI devices.
+  By default, only pods in the namespace where the GPU Operator is installed can request management CDI devices.
+  Set the variable through the ``toolkit.env`` Helm value or the ClusterPolicy custom resource.
+  Refer to :ref:`Requesting CDI Devices with the NRI Plugin <nri-cdi-devices>` for more information.
+
+Fixed Issues
+------------
+
+* Fixed an issue where host driver validation could incorrectly report that ``nvidia-smi`` was missing when ``/usr/bin`` was an absolute symlink.                 The validator now resolves the symlink within the mounted host file system.                                                                                     (`PR #2464 <https://github.com/NVIDIA/gpu-operator/pull/2464>`__, `Issue #1357 <https://github.com/NVIDIA/gpu-operator/issues/1357>`__)                                                                                                                                                                                       * Fixed host driver and vGPU Manager validation so that the validator finds ``nvidia-smi`` in additional host locations, including ``/usr/sbin``, ``/opt/bin``, and the Windows Subsystem for Linux driver path.
+  Symlinks are resolved within the mounted host file system.
+  (`PR #2611 <https://github.com/NVIDIA/gpu-operator/pull/2611>`__, `Issue #2506 <https://github.com/NVIDIA/gpu-operator/issues/2506>`__)
+
+* Fixed an issue where vGPU Manager validation on non-SR-IOV GPUs could wait for unavailable SR-IOV virtual functions and time out.
+  The validator now waits for mediated-device parents on non-SR-IOV GPUs and for virtual functions on SR-IOV GPUs.
+  (`PR #2502 <https://github.com/NVIDIA/gpu-operator/pull/2502>`__, `Issue #2365 <https://github.com/NVIDIA/gpu-operator/issues/2365>`__)
+
+* Fixed an issue where the driver pod failed to start on kernels without ``CONFIG_MEMORY_HOTPLUG`` because the ``/sys/devices/system/memory/auto_online_blocks`` file was unavailable.
+  The driver pod now mounts the stable ``/sys/devices/system`` parent directory.
+  (`PR #2517 <https://github.com/NVIDIA/gpu-operator/pull/2517>`__, `Issue #2463 <https://github.com/NVIDIA/gpu-operator/issues/2463>`__)
+
+* Fixed an issue where the NVIDIA vGPU Device Manager did not start when the vGPU Manager driver was preinstalled on the host and ``driver.enabled=false``.
+  The readiness gate now accepts the status file from either a container-managed or host-installed vGPU Manager.
+  (`PR #2599 <https://github.com/NVIDIA/gpu-operator/pull/2599>`__)
+
+* Fixed an issue where setting ``devicePlugin.config.create=true`` with empty configuration data could leave device plugin pods referencing a missing ConfigMap.
+  The Helm chart now rejects the configuration when ``devicePlugin.config.name`` or ``devicePlugin.config.data`` is empty.
+  (`PR #2642 <https://github.com/NVIDIA/gpu-operator/pull/2642>`__, `Issue #2641 <https://github.com/NVIDIA/gpu-operator/issues/2641>`__)
+
+* Fixed an issue where the ``ClusterPolicy`` status could fluctuate during an NVIDIADriver rolling upgrade.
+  The status now remains ``notReady`` while an NVIDIADriver-owned node has a pending, in-progress, or failed upgrade.
+  (`PR #2665 <https://github.com/NVIDIA/gpu-operator/pull/2665>`__)
+
+* Fixed an issue where multiple NVIDIADriver custom resources with ``spec.default=true`` could incorrectly report a ``ready`` status.
+  The conflicting resources now report ``notReady`` with a ``ReconcileFailed`` condition until the conflict is resolved.
+  (`PR #2678 <https://github.com/NVIDIA/gpu-operator/pull/2678>`__)
+
+* Updated the bundled vGPU Device Manager configuration for vGPU 20.0 so that PCI device ID ``0x318210DE`` maps to the ``B300X-269C`` profile.
+  (`PR #2625 <https://github.com/NVIDIA/gpu-operator/pull/2625>`__, `Issue #2231 <https://github.com/NVIDIA/gpu-operator/issues/2231>`__)
+
+* Fixed an issue where custom NVIDIADriver custom resources could remain stuck and fail to reconcile after a conflicting default NVIDIADriver custom resource was deleted.
+  The GPU Operator now re-evaluates all NVIDIADriver custom resources whenever any NVIDIADriver custom resource changes.
+  (`PR #2258 <https://github.com/NVIDIA/gpu-operator/pull/2258>`__)
+
+* Fixed an issue where the ``ClusterPolicy`` status could briefly report ``Ready`` during a driver upgrade before all driver pods were upgraded.
+  (`PR #2510 <https://github.com/NVIDIA/gpu-operator/pull/2510>`__, `Issue #1567 <https://github.com/NVIDIA/gpu-operator/issues/1567>`__)
+
+* Fixed an issue where the driver container's containerd configuration mounts were set up even when the NRI plugin was enabled.
+  On immutable hosts with read-only containerd paths, this prevented the NRI plugin pod from starting.
+  The GPU Operator no longer configures these mounts when NRI is enabled.
+  (`PR #2514 <https://github.com/NVIDIA/gpu-operator/pull/2514>`__)
+
+
+----
+
 .. _v26.3.3:
 
 26.3.3
@@ -345,24 +446,6 @@ Known Issues
   Refer to the :doc:`MIG Manager documentation <gpu-operator-mig>` for more information on MIG configuration.
 
   Refer to the MIG Controller issue `#329 <https://github.com/NVIDIA/mig-parted/issues/329>`_ for more information.
-
-* After you delete the default NVIDIADriver custom resource, any custom NVIDIADriver
-  custom resources that you created might not become active automatically.
-  The custom resources remain in a pending state because the Operator controller
-  does not re-evaluate them after the conflicting default custom resource is removed.
-
-  To work around this issue, restart the GPU Operator controller by deleting
-  the controller pod:
-
-  .. code-block:: console
-
-    $ kubectl delete pod -n gpu-operator -l app=gpu-operator
-
-  Restarting the controller pod does not disrupt running GPU workloads or
-  driver pods on nodes.
-
-  Refer to issue `#2259 <https://github.com/NVIDIA/gpu-operator/issues/2259>`_
-  for more information.
 
 Removals and Deprecations
 -------------------------

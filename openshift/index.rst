@@ -10,6 +10,7 @@ NVIDIA GPU Operator on Red Hat OpenShift Container Platform
    Installation and Upgrade Overview <steps-overview.rst>
    NFD Operator Installation <install-nfd.rst>
    GPU Operator Installation <install-gpu-ocp.rst>
+   Operator-Managed DRA <gpu-operator-dra.rst>
    nvaie-with-ocp.rst
    mig-ocp.rst
    clean-up.rst
