@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 04, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -349,25 +349,32 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Control Plane Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-paths.html">Install Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install with Helm</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">Install on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Liscensed Installs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Install with NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">Install with NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Install Government Ready Components</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-dra.html">Deploying with DRA Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
@@ -397,6 +404,15 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="helm-values-reference.html">Helm Chart Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clusterpolicy-reference.html">ClusterPolicy Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpucluster-reference.html">GPUCluster Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">NVIDIA GPU Driver Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 </div>
 </nav></div>
@@ -461,6 +477,10 @@
 </div>
 <div class="toctree-wrapper compound">
 </div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 <section id="about-the-nvidia-gpu-operator">
 <h1>About the NVIDIA GPU Operator<a class="headerlink" href="#about-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
 <a class="reference internal image-reference" href="_images/nvidia-gpu-operator-image.jpg"><img alt="_images/nvidia-gpu-operator-image.jpg" src="_images/nvidia-gpu-operator-image.jpg" style="width: 600px;" /></a>
@@ -481,7 +501,13 @@ automatic node labeling using <a class="reference external" href="https://github
 </div>
 <section id="getting-started">
 <h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h3>
-<p>The <a class="reference internal" href="getting-started.html#operator-install-guide"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> guide includes information on installing the GPU Operator in a Kubernetes cluster.</p>
+<p>Use <a class="reference internal" href="install-paths.html#install-paths"><span class="std std-ref">Install Overview</span></a> to choose the install guide for your platform, license, and GPU resource management model.
+The <a class="reference internal" href="getting-started.html#operator-install-guide"><span class="std std-ref">Installing the NVIDIA GPU Operator</span></a> guide covers the default Helm install for generic Kubernetes clusters.</p>
+</section>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">#</a></h3>
+<p>Refer to <a class="reference internal" href="architecture.html#gpu-operator-architecture"><span class="std std-ref">GPU Operator Control Plane Architecture</span></a> to learn how the GPU Operator manages components through <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code>, and <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> custom resources.</p>
 </section>
 <section id="release-notes">
 <h3>Release Notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">#</a></h3>
@@ -499,7 +525,7 @@ contributions are accepted with a DCO. Refer to the <a class="reference external
 more information on how to contribute and the release artifacts.</p>
 <p>The base images used by the software might include software that is licensed under open-source licenses such as GPL.
 The source code for these components is archived on the CUDA opensource <a class="reference external" href="https://developer.download.nvidia.com/compute/cuda/opensource/">index</a>.</p>
-<p>The following table identifieis the licenses for the Operator and software components.
+<p>The following table identifies the licenses for the Operator and software components.
 By installing and using the GPU Operator, you accept the terms and conditions of these licenses.</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
@@ -635,6 +661,7 @@ Manager for Kubernetes</p></td>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-this-documentation">About This Documentation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#release-notes">Release Notes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-support">Platform Support</a></li>
 </ul>

@@ -71,7 +71,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Troubleshooting the NVIDIA GPU Operator" href="troubleshooting.html" />
+    <link rel="next" title="Install Overview" href="install-paths.html" />
     <link rel="prev" title="Platform Support" href="platform-support.html" />
 
 
@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 14, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 04, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -352,25 +352,32 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Overview</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Control Plane Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-paths.html">Install Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install with Helm</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">Install on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
-</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
-</details></li>
-<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Liscensed Installs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Install with NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">Install with NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Install Government Ready Components</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-dra.html">Deploying with DRA Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
@@ -400,6 +407,15 @@
 <li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="helm-values-reference.html">Helm Chart Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clusterpolicy-reference.html">ClusterPolicy Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpucluster-reference.html">GPUCluster Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">NVIDIA GPU Driver Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
 </ul>
 </div>
 </nav></div>
@@ -508,6 +524,29 @@ Refer to <a class="reference internal" href="cdi.html#nri-cdi-devices"><span cla
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
+<li><p>Fixed an issue where host driver validation could incorrectly report that <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> was missing when <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code> was an absolute symlink.                 The validator now resolves the symlink within the mounted host file system.                                                                                     (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2464">PR #2464</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/1357">Issue #1357</a>)                                                                                                                                                                                       * Fixed host driver and vGPU Manager validation so that the validator finds <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> in additional host locations, including <code class="docutils literal notranslate"><span class="pre">/usr/sbin</span></code>, <code class="docutils literal notranslate"><span class="pre">/opt/bin</span></code>, and the Windows Subsystem for Linux driver path.
+Symlinks are resolved within the mounted host file system.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2611">PR #2611</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2506">Issue #2506</a>)</p></li>
+<li><p>Fixed an issue where vGPU Manager validation on non-SR-IOV GPUs could wait for unavailable SR-IOV virtual functions and time out.
+The validator now waits for mediated-device parents on non-SR-IOV GPUs and for virtual functions on SR-IOV GPUs.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2502">PR #2502</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2365">Issue #2365</a>)</p></li>
+<li><p>Fixed an issue where the driver pod failed to start on kernels without <code class="docutils literal notranslate"><span class="pre">CONFIG_MEMORY_HOTPLUG</span></code> because the <code class="docutils literal notranslate"><span class="pre">/sys/devices/system/memory/auto_online_blocks</span></code> file was unavailable.
+The driver pod now mounts the stable <code class="docutils literal notranslate"><span class="pre">/sys/devices/system</span></code> parent directory.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2517">PR #2517</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2463">Issue #2463</a>)</p></li>
+<li><p>Fixed an issue where the NVIDIA vGPU Device Manager did not start when the vGPU Manager driver was preinstalled on the host and <code class="docutils literal notranslate"><span class="pre">driver.enabled=false</span></code>.
+The readiness gate now accepts the status file from either a container-managed or host-installed vGPU Manager.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2599">PR #2599</a>)</p></li>
+<li><p>Fixed an issue where setting <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.create=true</span></code> with empty configuration data could leave device plugin pods referencing a missing ConfigMap.
+The Helm chart now rejects the configuration when <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.name</span></code> or <code class="docutils literal notranslate"><span class="pre">devicePlugin.config.data</span></code> is empty.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2642">PR #2642</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2641">Issue #2641</a>)</p></li>
+<li><p>Fixed an issue where the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> status could fluctuate during an NVIDIADriver rolling upgrade.
+The status now remains <code class="docutils literal notranslate"><span class="pre">notReady</span></code> while an NVIDIADriver-owned node has a pending, in-progress, or failed upgrade.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2665">PR #2665</a>)</p></li>
+<li><p>Fixed an issue where multiple NVIDIADriver custom resources with <code class="docutils literal notranslate"><span class="pre">spec.default=true</span></code> could incorrectly report a <code class="docutils literal notranslate"><span class="pre">ready</span></code> status.
+The conflicting resources now report <code class="docutils literal notranslate"><span class="pre">notReady</span></code> with a <code class="docutils literal notranslate"><span class="pre">ReconcileFailed</span></code> condition until the conflict is resolved.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2678">PR #2678</a>)</p></li>
+<li><p>Updated the bundled vGPU Device Manager configuration for vGPU 20.0 so that PCI device ID <code class="docutils literal notranslate"><span class="pre">0x318210DE</span></code> maps to the <code class="docutils literal notranslate"><span class="pre">B300X-269C</span></code> profile.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2625">PR #2625</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2231">Issue #2231</a>)</p></li>
 <li><p>Fixed an issue where custom NVIDIADriver custom resources could remain stuck and fail to reconcile after a conflicting default NVIDIADriver custom resource was deleted.
 The GPU Operator now re-evaluates all NVIDIADriver custom resources whenever any NVIDIADriver custom resource changes.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2258">PR #2258</a>)</p></li>
@@ -1656,7 +1695,7 @@ Additionally, network-restricted environments are not supported.</p></li>
 as a sidecar container in the GPU driver pod.
 The sidecar container compiles and installs the gdrdrv Linux kernel module.
 This feature is supported on Ubuntu 22.04 and RHCOS operating systems and on X86_64 and ARM64 architectures.</p>
-<p>Refer to <a class="reference internal" href="getting-started.html#id1"><span class="std std-ref">Common Chart Customization Options</span></a> for more information about the <code class="docutils literal notranslate"><span class="pre">driver.gdrcopy</span></code> field.</p>
+<p>Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#id1" title="(in NVIDIA GPU Operator)"><span>Common Chart Customization Options</span></a> for more information about the <code class="docutils literal notranslate"><span class="pre">driver.gdrcopy</span></code> field.</p>
 </li>
 <li><p>Added support for the NVIDIA Data Center GPU Driver version 550.54.15.
 Refer to the <a class="reference internal" href="platform-support.html#gpu-operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>
@@ -1912,7 +1951,7 @@ the NVIDIA GPUDirect Storage kernel driver version v2.17.5, are only supported
 with the open kernel modules.</p>
 <p>NVIDIA GH200 Grace Hopper Superchip systems are only supported with the open kernel modules.</p>
 <ul class="simple">
-<li><p>Refer to <a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Common Chart Customization Options</span></a> for information about setting
+<li><p>Refer to <a class="reference internal" href="helm-values-reference.html#gpu-operator-helm-chart-options"><span class="std std-ref">Helm Chart Values Reference</span></a> for information about setting
 <code class="docutils literal notranslate"><span class="pre">useOpenKernelModules</span></code> if you manage the driver containers with the NVIDIA cluster policy custom resource definition.</p></li>
 <li><p>Refer to <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> for information about setting <code class="docutils literal notranslate"><span class="pre">spec.useOpenKernelModules</span></code>
 if you manage the driver containers with the technology preview NVIDIA driver custom resource.</p></li>
@@ -2319,7 +2358,7 @@ Previously, the timeout duration for the startup probe was <code class="docutils
 In this release, the default duration is <code class="docutils literal notranslate"><span class="pre">60s</span></code>.
 This change reduces the frequency of container restarts when <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code>
 runs slowly.
-Refer to <a class="reference internal" href="getting-started.html#id1"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p></li>
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#id1" title="(in NVIDIA GPU Operator)"><span>Common Chart Customization Options</span></a> for more information.</p></li>
 </ul>
 </section>
 <section id="id90">
@@ -2397,7 +2436,7 @@ You must configure the cluster with custom nodes that run a supported operating
 system, such as Ubuntu 22.04.</p></li>
 <li><p>Added support for the Container Device Interface (CDI) that is implemented by the
 NVIDIA Container Toolkit v1.13.0.
-Refer to <a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Common Chart Customization Options</span></a> for information about the <code class="docutils literal notranslate"><span class="pre">cdi.enable</span></code> and
+Refer to <a class="reference internal" href="helm-values-reference.html#gpu-operator-helm-chart-options"><span class="std std-ref">Helm Chart Values Reference</span></a> for information about the <code class="docutils literal notranslate"><span class="pre">cdi.enable</span></code> and
 <code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> options to enable CDI during installation
 or <a class="reference internal" href="cdi.html"><span class="doc">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</span></a> for post-installation configuration information.</p></li>
 <li><p>[Technology Preview] Added support for precompiled driver containers for select operating systems.
@@ -2553,7 +2592,7 @@ Refer to <a class="reference internal" href="platform-support.html"><span class=
 <li><p>Added a new controller that is responsible for managing NVIDIA driver upgrades.
 Refer to <a class="reference internal" href="gpu-driver-upgrades.html"><span class="doc">GPU Driver Upgrades</span></a> for more details.</p></li>
 <li><p>Added the ability to apply custom labels and annotations for all of the GPU Operator pods.
-Refer to <a class="reference internal" href="getting-started.html#gpu-operator-helm-chart-options"><span class="std std-ref">Common Chart Customization Options</span></a> for how to configure custom labels and annotations.</p></li>
+Refer to <a class="reference internal" href="helm-values-reference.html#gpu-operator-helm-chart-options"><span class="std std-ref">Helm Chart Values Reference</span></a> for how to configure custom labels and annotations.</p></li>
 <li><p>Added support for NVIDIA vGPU 15.1.
 Refer to the <a class="reference external" href="https://docs.nvidia.com/grid/15.0/index.html">NVIDIA Virtual GPU Software Documentation</a>.</p></li>
 <li><p>Added support for the NVIDIA HGX H100 System in the <a class="reference internal" href="platform-support.html#supported-nvidia-gpus-and-systems"><span class="std std-ref">Supported NVIDIA Data Center GPUs and Systems</span></a> table on the Platform Support page.</p></li>
@@ -3434,11 +3473,11 @@ would not be available after reboot.</p></li>
       </div>
     </a>
     <a class="right-next"
-       href="troubleshooting.html"
+       href="install-paths.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Troubleshooting the NVIDIA GPU Operator</p>
+        <p class="prev-next-title">Install Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

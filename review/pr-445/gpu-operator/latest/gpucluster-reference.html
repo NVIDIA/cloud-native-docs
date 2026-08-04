@@ -1,0 +1,944 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GPUCluster Custom Resource Reference &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gpucluster-reference';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Troubleshooting the NVIDIA GPU Operator" href="troubleshooting.html" />
+    <link rel="prev" title="ClusterPolicy Custom Resource Reference" href="clusterpolicy-reference.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Aug 04, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Control Plane Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-paths.html">Install Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install with Helm</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">Install on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Liscensed Installs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Install with NVIDIA vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-nvaie.html">Install with NVIDIA AI Enterprise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Install Government Ready Components</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-dra.html">Deploying with DRA Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="helm-values-reference.html">Helm Chart Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clusterpolicy-reference.html">ClusterPolicy Reference</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPUCluster Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">NVIDIA GPU Driver Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">GPUCluster Custom Resource Reference</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="gpucluster-custom-resource-reference">
+<span id="gpucluster-reference"></span><h1>GPUCluster Custom Resource Reference<a class="headerlink" href="#gpucluster-custom-resource-reference" title="Permalink to this headline">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource definition (CRD) configures the Dynamic Resource Allocation (DRA) GPU resource
+management model that the NVIDIA GPU Operator manages.
+A single <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> instance in the cluster describes the desired state of the DRA operands—the
+<a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/">DRA Driver for NVIDIA GPUs</a>, DCGM, and DCGM Exporter—including
+which container images to use and how each component is configured.</p>
+<p>The GPU Operator watches the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> object and reconciles the managed DaemonSets and Deployments to match the
+desired state.</p>
+<p>Unlike <a class="reference internal" href="clusterpolicy-reference.html"><span class="doc">ClusterPolicy</span></a>, <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> does not manage the NVIDIA GPU driver or the
+NVIDIA Kubernetes Device Plugin.
+The GPU driver must be pre-installed on the host or managed by an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> custom resource, and GPUs are
+surfaced to workloads through DRA rather than through extended resources.
+For a conceptual overview of the DRA stack, installation steps, and deployment scenarios, refer to
+<a class="reference internal" href="gpu-operator-dra.html"><span class="doc">Deploying the GPU Operator with DRA Support</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Deploying and managing the DRA Driver for NVIDIA GPUs through the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource is in Technology
+Preview. The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> API is served under <code class="docutils literal notranslate"><span class="pre">nvidia.com/v1alpha1</span></code> and is subject to change in future releases.
+<code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is supported only for greenfield (new) deployments.
+Migrating an existing <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> deployment to <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> in place is not supported.
+Do not use <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> and <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> as GPU resource management models in the same cluster.</p>
+</div>
+<section id="singleton-behavior">
+<h2>Singleton Behavior<a class="headerlink" href="#singleton-behavior" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is a <em>singleton</em> resource: the GPU Operator reconciles only one instance in the cluster.
+The GPU Operator Helm chart creates a default instance named <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> when DRA support is enabled
+(<code class="docutils literal notranslate"><span class="pre">gpuCluster.enabled=true</span></code>).</p>
+<p>The first <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> object that the controller observes becomes the active instance (“first-wins”).
+Any additional <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> objects are not reconciled and are marked with the <code class="docutils literal notranslate"><span class="pre">ignored</span></code> state in their status.
+To change the configuration, edit the active instance rather than creating a second one.</p>
+</section>
+<section id="gpucluster-resource-structure">
+<h2>GPUCluster Resource Structure<a class="headerlink" href="#gpucluster-resource-structure" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is a cluster-scoped resource in the <code class="docutils literal notranslate"><span class="pre">nvidia.com/v1alpha1</span></code> API group.
+Its short name is <code class="docutils literal notranslate"><span class="pre">gc</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPUCluster</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-cluster</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">draDriver</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">dcgm</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">dcgmExporter</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hostPaths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">daemonsets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>Top-Level Spec Fields</strong></p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Required</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">draDriver</span></code></p></td>
+<td><p>Configuration for the DRA Driver for NVIDIA GPUs, including the GPU allocation (<code class="docutils literal notranslate"><span class="pre">gpus</span></code>) and ComputeDomains
+capabilities.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgm</span></code></p></td>
+<td><p>Configuration for the standalone NVIDIA DCGM hostengine. Disabled by default. When disabled, DCGM Exporter uses
+its embedded <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span></code>.</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter</span></code></p></td>
+<td><p>Configuration for the NVIDIA DCGM Exporter (GPU telemetry). Enabled by default.</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hostPaths</span></code></p></td>
+<td><p>Custom host filesystem paths used by the deployed components.</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets</span></code></p></td>
+<td><p>Common settings applied to all DaemonSets managed by the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> controller.</p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="spec-dradriver">
+<h2>spec.draDriver<a class="headerlink" href="#spec-dradriver" title="Permalink to this headline">#</a></h2>
+<p>Configures the DRA Driver for NVIDIA GPUs.
+There is no top-level <code class="docutils literal notranslate"><span class="pre">enabled</span></code> toggle: the GPU allocation (<code class="docutils literal notranslate"><span class="pre">gpus</span></code>) capability is always deployed, and the
+ComputeDomains capability has its own <code class="docutils literal notranslate"><span class="pre">enabled</span></code> field.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">repository</span></code></p></td>
+<td><p>Container registry and path for the DRA driver image.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">registry.k8s.io/dra-driver-nvidia</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">image</span></code></p></td>
+<td><p>DRA driver image name (without tag).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dra-driver-nvidia-gpu</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p>DRA driver image tag or version string.</p></td>
+<td><p>Defined by the Operator release. Refer to the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imagePullPolicy</span></code></p></td>
+<td><p>Kubernetes <a class="reference external" href="https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy">image pull policy</a>.
+Accepted values: <code class="docutils literal notranslate"><span class="pre">Always</span></code>, <code class="docutils literal notranslate"><span class="pre">IfNotPresent</span></code>, <code class="docutils literal notranslate"><span class="pre">Never</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">IfNotPresent</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imagePullSecrets</span></code></p></td>
+<td><p>List of Kubernetes Secret names that contain credentials for pulling the DRA driver image from a private
+registry.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">featureGates</span></code></p></td>
+<td><p>Map of DRA driver feature gate names to booleans. Rendered as the <code class="docutils literal notranslate"><span class="pre">FEATURE_GATES</span></code> environment variable on the
+DRA driver containers, for example <code class="docutils literal notranslate"><span class="pre">{MPSSupport:</span> <span class="pre">true}</span></code>.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gpus</span></code></p></td>
+<td><p>Configuration for the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> (GPU allocation) capability. See <a class="reference internal" href="#gpucluster-dradriver-gpus"><span class="std std-ref">spec.draDriver.gpus</span></a>.</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">computeDomains</span></code></p></td>
+<td><p>Configuration for the ComputeDomains (Multi-Node NVLink) capability. See
+<a class="reference internal" href="#gpucluster-dradriver-computedomains"><span class="std std-ref">spec.draDriver.computeDomains</span></a>.</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="spec-dradriver-gpus">
+<span id="gpucluster-dradriver-gpus"></span><h3>spec.draDriver.gpus<a class="headerlink" href="#spec-dradriver-gpus" title="Permalink to this headline">#</a></h3>
+<p>Configures the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> capability, which maps onto the <code class="docutils literal notranslate"><span class="pre">gpus</span></code> container of the kubelet-plugin DaemonSet.
+This capability is always deployed.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kubeletPlugin</span></code></p></td>
+<td><p>Configuration for the <code class="docutils literal notranslate"><span class="pre">gpus</span></code> kubelet-plugin container. See <a class="reference internal" href="#gpucluster-dradriver-kubeletplugin"><span class="std std-ref">kubelet-plugin fields</span></a>.</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="spec-dradriver-computedomains">
+<span id="gpucluster-dradriver-computedomains"></span><h3>spec.draDriver.computeDomains<a class="headerlink" href="#spec-dradriver-computedomains" title="Permalink to this headline">#</a></h3>
+<p>Configures the ComputeDomains capability, an abstraction for secure <a class="reference external" href="https://docs.nvidia.com/multi-node-nvlink-systems/index.html">Multi-Node NVLink (MNNVL)</a> on NVIDIA GB200 and similar systems.
+The <code class="docutils literal notranslate"><span class="pre">kubeletPlugin</span></code> maps onto the <code class="docutils literal notranslate"><span class="pre">compute-domains</span></code> container of the kubelet-plugin DaemonSet, and the
+<code class="docutils literal notranslate"><span class="pre">controller</span></code> is a separate Deployment.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">enabled</span></code></p></td>
+<td><p>Whether the ComputeDomains capability is deployed. When enabled, the DRA driver deploys the
+<code class="docutils literal notranslate"><span class="pre">compute-domains</span></code> kubelet-plugin container and the compute-domain controller Deployment.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">controller</span></code></p></td>
+<td><p>Overrides for the compute-domain controller Deployment. Accepts <code class="docutils literal notranslate"><span class="pre">env</span></code> and <code class="docutils literal notranslate"><span class="pre">resources</span></code>.</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kubeletPlugin</span></code></p></td>
+<td><p>Configuration for the <code class="docutils literal notranslate"><span class="pre">compute-domains</span></code> kubelet-plugin container. See
+<a class="reference internal" href="#gpucluster-dradriver-kubeletplugin"><span class="std std-ref">kubelet-plugin fields</span></a>.</p></td>
+<td><p>N/A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="kubelet-plugin-fields">
+<span id="gpucluster-dradriver-kubeletplugin"></span><h3>kubelet-plugin fields<a class="headerlink" href="#kubelet-plugin-fields" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">gpus.kubeletPlugin</span></code> and <code class="docutils literal notranslate"><span class="pre">computeDomains.kubeletPlugin</span></code> blocks map onto the two containers of a single
+kubelet-plugin DaemonSet and accept the following fields.
+Scheduling is opinionated and is not configurable.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 55%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">env</span></code></p></td>
+<td><p>List of environment variables (<code class="docutils literal notranslate"><span class="pre">name</span></code>/<code class="docutils literal notranslate"><span class="pre">value</span></code> pairs) to set in the container.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resources</span></code></p></td>
+<td><p>CPU and memory resource requests and limits for the container. Follows the standard Kubernetes
+<code class="docutils literal notranslate"><span class="pre">ResourceRequirements</span></code> structure.</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">healthcheckPort</span></code></p></td>
+<td><p>Port for a gRPC health service checked by a liveness probe. Set to a negative value to disable the service and
+the probe.</p></td>
+<td><p>Component default</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">computeDomains.controller</span></code> Deployment accepts <code class="docutils literal notranslate"><span class="pre">env</span></code> and <code class="docutils literal notranslate"><span class="pre">resources</span></code> with the same meanings.</p>
+</section>
+</section>
+<section id="spec-dcgm">
+<h2>spec.dcgm<a class="headerlink" href="#spec-dcgm" title="Permalink to this headline">#</a></h2>
+<p>Configures the standalone NVIDIA DCGM hostengine.
+This component is <strong>disabled by default</strong>; when it is disabled, DCGM Exporter uses its embedded <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> section uses the same fields as the <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> section of <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.
+Refer to <code class="docutils literal notranslate"><span class="pre">spec.dcgm</span></code> in the <a class="reference internal" href="clusterpolicy-reference.html"><span class="doc">ClusterPolicy Custom Resource Reference</span></a> for the full
+list of fields.</p>
+</section>
+<section id="spec-dcgmexporter">
+<h2>spec.dcgmExporter<a class="headerlink" href="#spec-dcgmexporter" title="Permalink to this headline">#</a></h2>
+<p>Configures the NVIDIA DCGM Exporter for GPU telemetry.
+This component is <strong>enabled by default</strong>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dcgmExporter</span></code> section uses the same fields as the <code class="docutils literal notranslate"><span class="pre">dcgmExporter</span></code> section of <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.
+Refer to <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter</span></code> in the <a class="reference internal" href="clusterpolicy-reference.html"><span class="doc">ClusterPolicy Custom Resource Reference</span></a> for the
+full list of fields.</p>
+</section>
+<section id="spec-hostpaths">
+<h2>spec.hostPaths<a class="headerlink" href="#spec-hostpaths" title="Permalink to this headline">#</a></h2>
+<p>Configures custom host filesystem paths used by the deployed components, such as the root filesystem, the driver
+install directory, and the kubelet root directory.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">hostPaths</span></code> section uses the same fields as the <code class="docutils literal notranslate"><span class="pre">hostPaths</span></code> section of <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.
+Refer to <code class="docutils literal notranslate"><span class="pre">spec.hostPaths</span></code> in the <a class="reference internal" href="clusterpolicy-reference.html"><span class="doc">ClusterPolicy Custom Resource Reference</span></a> for the
+full list of fields.</p>
+</section>
+<section id="spec-daemonsets">
+<h2>spec.daemonsets<a class="headerlink" href="#spec-daemonsets" title="Permalink to this headline">#</a></h2>
+<p>Applies common settings—such as labels, annotations, priority class, tolerations, and update strategy—to all
+DaemonSets that the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> controller manages.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">daemonsets</span></code> section uses the same fields as the <code class="docutils literal notranslate"><span class="pre">daemonsets</span></code> section of <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.
+Refer to <code class="docutils literal notranslate"><span class="pre">spec.daemonsets</span></code> in the <a class="reference internal" href="clusterpolicy-reference.html"><span class="doc">ClusterPolicy Custom Resource Reference</span></a> for the
+full list of fields.</p>
+</section>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Permalink to this headline">#</a></h2>
+<p>The GPU Operator reports the observed state of the active <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> instance in its <code class="docutils literal notranslate"><span class="pre">status</span></code> field.
+The <code class="docutils literal notranslate"><span class="pre">status.state</span></code> value is shown in the <code class="docutils literal notranslate"><span class="pre">Status</span></code> column of <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">get</span> <span class="pre">gpucluster</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>State</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ready</span></code></p></td>
+<td><p>All enabled operands are deployed and healthy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">notReady</span></code></p></td>
+<td><p>One or more operands are not yet deployed or are not healthy.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">disabled</span></code></p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> instance is present but its operands are disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ignored</span></code></p></td>
+<td><p>A duplicate <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> instance that the singleton controller does not reconcile.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">status</span></code> field also reports the <code class="docutils literal notranslate"><span class="pre">namespace</span></code> in which the operator and operands are installed and a list of
+<code class="docutils literal notranslate"><span class="pre">conditions</span></code> that represent the current state of the resource.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="clusterpolicy-reference.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ClusterPolicy Custom Resource Reference</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Troubleshooting the NVIDIA GPU Operator</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#singleton-behavior">Singleton Behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpucluster-resource-structure">GPUCluster Resource Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-dradriver">spec.draDriver</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-dradriver-gpus">spec.draDriver.gpus</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-dradriver-computedomains">spec.draDriver.computeDomains</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kubelet-plugin-fields">kubelet-plugin fields</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-dcgm">spec.dcgm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-dcgmexporter">spec.dcgmExporter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-hostpaths">spec.hostPaths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spec-daemonsets">spec.daemonsets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#status">Status</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
