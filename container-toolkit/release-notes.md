@@ -37,6 +37,15 @@ This release of the NVIDIA Container Toolkit `v1.20.0` is a feature release.
 - CDI generation no longer adds an `update-ldcache` hook when it discovers no driver libraries.
   This fix prevents containers from running an unnecessary hook and avoids failures on systems or modes that do not inject libraries.
   For more information, refer to [issue #373](https://github.com/NVIDIA/nvidia-container-toolkit/issues/373) and [PR #1894](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1894).
+- Fixed an issue where NVIDIA runtime handlers in a generated containerd
+  drop-in configuration could omit `runtime_type` when the base configuration
+  did not define it.
+  The affected containers failed to start with a
+  `container.Runtime.Name must be set` error.
+  The toolkit now sets the default runtime type when the field is missing or empty.
+  For more information, refer to
+  [issue #1956](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1956)
+  and [PR #1969](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1969).
 
 ### Packaging Changes
 
