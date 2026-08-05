@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 31, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -363,7 +363,6 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="arch-overview.html">Architecture Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi-support.html">Container Device Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nri-support.html">Node Resource Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docker-specialized.html">Specialized Configurations with Docker</a></li>
 </ul>
 </div>
@@ -427,35 +426,35 @@
 <h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>CDI specifications can now include an application-profile hook that limits EGL and Vulkan visibility to the GPUs assigned to the container.
-Graphics applications no longer see unassigned host GPUs through these APIs.</p></li>
+Graphics applications no longer see unassigned host GPUs through these APIs.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1899">issue #1899</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1939">PR #1939</a>.</p></li>
 <li><p>CUDA compatibility handling now uses <code class="docutils literal notranslate"><span class="pre">libcuda.so</span></code> ELF metadata whenever it is available.
 This improves CUDA minor-version compatibility by selecting the container’s compatibility libraries only when they are appropriate for the installed driver.</p></li>
 <li><p>Driver file discovery now supports libraries spread across multiple directories, as occurs on distributions such as Debian, and matches graphics libraries against the exact installed driver version.
-This fix avoids both missing required libraries and injecting libraries from another installed driver version.</p></li>
+This fix avoids both missing required libraries and injecting libraries from another installed driver version.
+For information about multiple-directory discovery, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1559">issue #1559</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1820">PR #1820</a>. For information about exact-version matching, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1948">PR #1948</a>.</p></li>
 <li><p>CDI specifications now include the NVIDIA OpenCL ICD file and the legacy <code class="docutils literal notranslate"><span class="pre">libnvidia-nvvm70.so</span></code> library when present.
-OpenCL loaders can locate the NVIDIA implementation, and workloads that depend on the legacy NVVM library receive it automatically.</p></li>
+OpenCL loaders can locate the NVIDIA implementation, and workloads that depend on the legacy NVVM library receive it automatically.
+For information about OpenCL support, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/682">issue #682</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1893">PR #1893</a>. For information about legacy NVVM support, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1875">issue #1875</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1876">PR #1876</a>.</p></li>
 <li><p>On WSL2, CDI discovery now includes additional <code class="docutils literal notranslate"><span class="pre">.so</span></code>, <code class="docutils literal notranslate"><span class="pre">.bin</span></code>, and <code class="docutils literal notranslate"><span class="pre">.dll</span></code> files from the NVIDIA driver store instead of relying only on a fixed file list.
-This fix enables containers to receive driver components introduced by newer Windows driver releases without waiting for a toolkit-specific allowlist update.</p></li>
+This fix enables containers to receive driver components introduced by newer Windows driver releases without waiting for a toolkit-specific allowlist update.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1864">issue #1864</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1890">PR #1890</a>.</p></li>
 <li><p>IMEX channel requests in CDI and JIT-CDI mode are now validated for both the supported ID range and the presence of the corresponding host device.
-Invalid requests fail with a clear error.</p></li>
+Invalid requests fail with a clear error.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1309">issue #1309</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1913">PR #1913</a>.</p></li>
 <li><p>JIT-CDI mode now honors the <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.modes.jit-cdi.nvcdi-disable-hooks</span></code> configuration option.
 You can disable individual CDI hooks for environments where a generated hook is unnecessary or incompatible.</p></li>
-<li><p>The NRI plugin can inject ordinary workload CDI devices outside the toolkit namespace.
-For management devices, you can authorize additional namespaces with the <code class="docutils literal notranslate"><span class="pre">--nri-management-cdi-device-namespaces</span></code> option or the <code class="docutils literal notranslate"><span class="pre">NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES</span></code> environment variable, enabling centralized management workloads without granting access cluster-wide.</p></li>
 <li><p>Updating <code class="docutils literal notranslate"><span class="pre">config.toml</span></code> no longer reverts previously modified options to their defaults.</p></li>
 <li><p>CDI generation no longer adds an <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook when it discovers no driver libraries.
-This fix prevents containers from running an unnecessary hook and avoids failures on systems or modes that do not inject libraries.</p></li>
-<li><p>The toolkit installer now installs <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-hook</span></code> instead of wrapping it with a shell script.
-NRI-based deployments can invoke the hook on hosts that do not provide a shell.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-refresh</span></code> systemd units are now installed and enabled using distribution-native package mechanisms, including migration of stale RPM enablement links during upgrades.
-Automatic CDI specification refresh remains available more reliably after package installation and upgrades.</p></li>
+This fix prevents containers from running an unnecessary hook and avoids failures on systems or modes that do not inject libraries.
+For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/373">issue #373</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1894">PR #1894</a>.</p></li>
 </ul>
 </section>
 <section id="packaging-changes">
 <h3>Packaging Changes<a class="headerlink" href="#packaging-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>RPMs rebuilt by the toolkit packaging image now use XZ payload compression instead of zstd.
-The resulting packages can be installed on Amazon Linux 2.</p></li>
+The resulting packages can be installed on older Linux distributions that do not support zstd compression, such as Amazon Linux 2.</p></li>
 <li><p>Source package builds can use Podman by setting <code class="docutils literal notranslate"><span class="pre">DOCKER=podman</span></code>.
 The build handles Podman’s local image naming, SELinux volume labeling, and artifact-directory creation automatically.</p></li>
 </ul>
@@ -464,6 +463,10 @@ The build handles Podman’s local image naming, SELinux volume labeling, and ar
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">container-toolkit</span></code> image now uses the non-development distroless base and includes a static BusyBox shell.
 Init-container wrappers and lifecycle hooks retain the shell commands they need without depending on the development image.</p></li>
+<li><p>The NRI plugin can inject ordinary workload CDI devices outside the toolkit namespace.
+For management devices, you can authorize additional namespaces with the <code class="docutils literal notranslate"><span class="pre">--nri-management-cdi-device-namespaces</span></code> option or the <code class="docutils literal notranslate"><span class="pre">NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES</span></code> environment variable, enabling centralized management workloads without granting access cluster-wide.</p></li>
+<li><p>The toolkit installer now installs <code class="docutils literal notranslate"><span class="pre">nvidia-cdi-hook</span></code> instead of wrapping it with a shell script.
+NRI-based deployments can invoke the hook on hosts that do not provide a shell.</p></li>
 </ul>
 </section>
 </section>

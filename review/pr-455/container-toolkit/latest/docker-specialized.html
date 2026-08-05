@@ -69,14 +69,14 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Support for Node Resource Interface" href="nri-support.html" />
+    <link rel="prev" title="Support for Container Device Interface" href="cdi-support.html" />
 
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Jul 31, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -362,7 +362,6 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="arch-overview.html">Architecture Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi-support.html">Container Device Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nri-support.html">Node Resource Interface</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Specialized Configurations with Docker</a></li>
 </ul>
 </div>
@@ -624,10 +623,13 @@ utility driver components available to the container:</p>
     &lt;image&gt; &lt;command&gt;
 </pre></div>
 </div>
-<p>When CDI or JIT-CDI injects the GPU, the toolkit also limits EGL and Vulkan
-visibility to the physical GPUs assigned to the container. For more information
-and exceptional compatibility settings, refer to
-<a class="reference internal" href="cdi-support.html#graphics-and-opencl-workloads"><span class="std std-doc">Graphics and OpenCL Workloads</span></a>.</p>
+<p>Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
+a container when the <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> driver capability is enabled.
+The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
+<code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code> hook. This change provides feature parity across
+the modes.</p>
+<p>If the application-profile hook conflicts with an application, refer to
+<a class="reference internal" href="cdi-support.html#disabling-hooks-in-jit-cdi-mode"><span class="std std-doc">Disabling Hooks in JIT-CDI Mode</span></a>.</p>
 </section>
 <section id="constraints">
 <h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
@@ -714,12 +716,12 @@ set the environment variables inside the Dockerfile, you do not need to set them
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="nri-support.html"
+       href="cdi-support.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Support for Node Resource Interface</p>
+        <p class="prev-next-title">Support for Container Device Interface</p>
       </div>
     </a>
 </div>
