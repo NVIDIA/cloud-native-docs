@@ -176,11 +176,11 @@ persistent specifications described in
 
 ### Disabling Hooks in JIT-CDI Mode
 
-You can prevent JIT-CDI mode from adding specific hooks to an in-memory
-specification. The supported hook names are `chmod`, `create-symlinks`,
+You can prevent JIT-CDI mode from adding specific hooks to an in-memory specification.
+The supported hook names are `create-symlinks`,
 `disable-device-node-modification`, `enable-cuda-compat`,
-`update-application-profile`, and `update-ldcache`. The deprecated `chmod` hook
-is disabled by default. Use `all` to disable every hook.
+`update-application-profile`, and `update-ldcache`.
+Use `all` to disable every hook.
 
 The following command disables the application-profile and dynamic-linker cache
 hooks. Separate multiple values with a colon:
@@ -243,25 +243,6 @@ $ podman run --rm \
 
 The preceding sample command requests the full GPU with index 0 and the first MIG device on GPU 1.
 The output should show only the UUIDs of the requested devices.
-
-### Graphics and OpenCL Workloads
-
-CDI specifications include the driver libraries and configuration files that
-graphics and OpenCL applications require. When the NVIDIA OpenCL installable
-client driver (ICD) file is present on the host, the specification mounts it at
-`/etc/OpenCL/vendors/nvidia.icd` in the container.
-
-CDI specifications also include the `update-application-profile` hook. At
-container creation, this hook writes
-`/etc/nvidia/nvidia-application-profiles-rc.d/10-container.conf`. The profile
-limits EGL and Vulkan visibility to the physical GPUs that are available in the
-container. As a result, applications do not enumerate unassigned physical GPUs.
-
-If the application-profile hook conflicts with an application, disable it only
-for that workload or environment. For JIT-CDI mode, refer to
-[Disabling Hooks in JIT-CDI Mode](#disabling-hooks-in-jit-cdi-mode). For a
-persistent specification, use the `--disable-hook update-application-profile`
-option described in [Manual CDI Specification Generation](#manual-cdi-specification-generation).
 
 ### IMEX Channels
 

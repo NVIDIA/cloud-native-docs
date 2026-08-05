@@ -218,10 +218,14 @@ $ docker run --rm --runtime=nvidia \
     <image> <command>
 ```
 
-When CDI or JIT-CDI injects the GPU, the toolkit also limits EGL and Vulkan
-visibility to the physical GPUs assigned to the container. For more information
-and exceptional compatibility settings, refer to
-[Graphics and OpenCL Workloads](cdi-support.md#graphics-and-opencl-workloads).
+Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
+a container when the `graphics` or `display` driver capability is enabled.
+The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
+`update-application-profile` hook. This change provides feature parity across
+the modes.
+
+If the application-profile hook conflicts with an application, refer to
+[Disabling Hooks in JIT-CDI Mode](cdi-support.md#disabling-hooks-in-jit-cdi-mode).
 
 ### Constraints
 

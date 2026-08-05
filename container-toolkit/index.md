@@ -20,7 +20,6 @@ release-notes.md
 
 arch-overview.md
 Container Device Interface <cdi-support.md>
-Node Resource Interface <nri-support.md>
 docker-specialized.md
 ```
 
