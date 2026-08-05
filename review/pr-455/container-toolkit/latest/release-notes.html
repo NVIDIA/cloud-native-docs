@@ -448,6 +448,15 @@ You can disable individual CDI hooks for environments where a generated hook is 
 <li><p>CDI generation no longer adds an <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code> hook when it discovers no driver libraries.
 This fix prevents containers from running an unnecessary hook and avoids failures on systems or modes that do not inject libraries.
 For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/373">issue #373</a> and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1894">PR #1894</a>.</p></li>
+<li><p>Fixed an issue where NVIDIA runtime handlers in a generated containerd
+drop-in configuration could omit <code class="docutils literal notranslate"><span class="pre">runtime_type</span></code> when the base configuration
+did not define it.
+The affected containers failed to start with a
+<code class="docutils literal notranslate"><span class="pre">container.Runtime.Name</span> <span class="pre">must</span> <span class="pre">be</span> <span class="pre">set</span></code> error.
+The toolkit now sets the default runtime type when the field is missing or empty.
+For more information, refer to
+<a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1956">issue #1956</a>
+and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1969">PR #1969</a>.</p></li>
 </ul>
 </section>
 <section id="packaging-changes">
