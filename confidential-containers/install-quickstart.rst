@@ -55,7 +55,7 @@ Install the Kata Containers Helm Chart
 
    .. code-block:: console
 
-      $ export VERSION="3.29.0"
+      $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
 #. Install the ``kata-deploy`` Helm chart:
@@ -72,7 +72,7 @@ Install the Kata Containers Helm Chart
 
    .. code-block:: output
 
-      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0
+      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:${kata_version}
       Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
       LAST DEPLOYED: Wed Apr  1 17:03:00 2026
       NAMESPACE: kata-system

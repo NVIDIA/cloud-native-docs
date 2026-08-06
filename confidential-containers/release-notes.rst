@@ -42,7 +42,7 @@ New Features
 
 * Added support for the following software components:
 
-  * Kata Containers 3.31.0 
+  * Kata Containers ${kata_version}
   * containerd 2.3.x
 
 
@@ -56,7 +56,7 @@ Changes include:
 
 * Includes a new sample values file, :file:`samples/kata-nvidia-gpu-values.yaml`, that configures the ``kata-deploy`` Helm chart for the NVIDIA Confidential Containers reference architecture (NVIDIA GPU shims only, NFD disabled, ``nydus`` snapshotter, and per-shim runtime class node selectors).
 
-* Adds a readiness verification step using ``kubectl rollout status ds/kata-deploy``. This step relies on the readiness reporting added in Kata Containers 3.31.0 and lets you confirm that ``kata-deploy`` has finished extracting artifacts and restarting containerd on every node before continuing.
+* Adds a readiness verification step using ``kubectl rollout status ds/kata-deploy``. This step relies on the readiness reporting in Kata Containers and lets you confirm that ``kata-deploy`` has finished extracting artifacts and restarting containerd on every node before continuing.
 
 ----
 
@@ -82,7 +82,7 @@ Key Features
   - NVIDIA H200 Protected PCIe (multi-GPU passthrough)
   - NVIDIA B200 (single-GPU and multi-GPU passthrough)
   - NVIDIA RTX Pro 6000 BSE (single-GPU passthrough)
-  - AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP 
+  - AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP
   - Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+) for TDX
 
 * This release supports the following software components:

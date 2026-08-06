@@ -171,7 +171,7 @@ The minimum required version is ${kata_version}.
 
    .. code-block:: output
 
-      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0
+      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:${kata_version}
       Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
 
    The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
@@ -181,7 +181,7 @@ The minimum required version is ${kata_version}.
 
    .. code-block:: output
 
-      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:3.29.0
+      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:${kata_version}
       Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
       LAST DEPLOYED: Wed Apr  1 17:03:00 2026
       NAMESPACE: kata-system
