@@ -89,7 +89,7 @@ Key Features
 
   - NVIDIA GPU Operator v26.3.1
   - Kata Containers 3.29 (installed with the ``kata-deploy`` Helm chart)
-  - Kata Lifecycle Manager 0.1.4
+  - Kata Lifecycle Manager 0.1.8
   - Key Broker Service (KBS) protocol 0.4.0
   - QEMU 10.1 + Patches
   - OVMF edk2-stable202511

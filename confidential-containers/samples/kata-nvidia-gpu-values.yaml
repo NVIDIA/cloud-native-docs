@@ -1,8 +1,10 @@
 # Example values file to enable NVIDIA GPU shims for the NVIDIA
-# Confidential Containers Reference Architecture. 
+# Confidential Containers Reference Architecture.
 
 # Set to true for verbose kata-deploy and Kata runtime logging.
 debug: false
+
+deploymentMode: daemonset
 
 # Disable Node Feature Discovery (NFD) deployment by kata-deploy.
 # Both kata-deploy and the GPU Operator deploy NFD by default. This
@@ -39,7 +41,7 @@ shims:
     containerd:
       snapshotter: ""
     runtimeClass:
-      # This label is automatically added by the GPU Operator. 
+      # This label is automatically added by the GPU Operator.
       nodeSelector:
         nvidia.com/cc.ready.state: "false"
 
