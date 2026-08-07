@@ -88,7 +88,11 @@ New Features
 Fixed Issues
 ------------
 
-* Fixed an issue where host driver validation could incorrectly report that ``nvidia-smi`` was missing when ``/usr/bin`` was an absolute symlink.                 The validator now resolves the symlink within the mounted host file system.                                                                                     (`PR #2464 <https://github.com/NVIDIA/gpu-operator/pull/2464>`__, `Issue #1357 <https://github.com/NVIDIA/gpu-operator/issues/1357>`__)                                                                                                                                                                                       * Fixed host driver and vGPU Manager validation so that the validator finds ``nvidia-smi`` in additional host locations, including ``/usr/sbin``, ``/opt/bin``, and the Windows Subsystem for Linux driver path.
+* Fixed an issue where host driver validation could incorrectly report that ``nvidia-smi`` was missing when ``/usr/bin`` was an absolute symlink.
+  The validator now resolves the symlink within the mounted host file system.
+  (`PR #2464 <https://github.com/NVIDIA/gpu-operator/pull/2464>`__, `Issue #1357 <https://github.com/NVIDIA/gpu-operator/issues/1357>`__)
+
+* Fixed host driver and vGPU Manager validation so that the validator finds ``nvidia-smi`` in additional host locations, including ``/usr/sbin``, ``/opt/bin``, and the Windows Subsystem for Linux driver path.
   Symlinks are resolved within the mounted host file system.
   (`PR #2611 <https://github.com/NVIDIA/gpu-operator/pull/2611>`__, `Issue #2506 <https://github.com/NVIDIA/gpu-operator/issues/2506>`__)
 
