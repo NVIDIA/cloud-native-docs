@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 06, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 07, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -525,10 +525,12 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </li>
 <li><p>Create a values file, such as <code class="docutils literal notranslate"><span class="pre">kata-nvidia-gpu-values.yaml</span></code>, to configure the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart for NVIDIA Confidential Containers:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example values file to enable NVIDIA GPU shims for the NVIDIA</span><span class="w"></span>
-<span class="c1"># Confidential Containers Reference Architecture. </span><span class="w"></span>
+<span class="c1"># Confidential Containers Reference Architecture.</span><span class="w"></span>
 
 <span class="c1"># Set to true for verbose kata-deploy and Kata runtime logging.</span><span class="w"></span>
 <span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+
+<span class="nt">deploymentMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daemonset</span><span class="w"></span>
 
 <span class="c1"># Disable Node Feature Discovery (NFD) deployment by kata-deploy.</span><span class="w"></span>
 <span class="c1"># Both kata-deploy and the GPU Operator deploy NFD by default. This</span><span class="w"></span>
@@ -565,7 +567,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="w">    </span><span class="nt">containerd</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">snapshotter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="nt">runtimeClass</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="c1"># This label is automatically added by the GPU Operator. </span><span class="w"></span>
+<span class="w">      </span><span class="c1"># This label is automatically added by the GPU Operator.</span><span class="w"></span>
 <span class="w">      </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">nvidia.com/cc.ready.state</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
 
