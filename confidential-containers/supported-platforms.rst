@@ -143,4 +143,4 @@ Supported Software Components
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.8
 
-Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13>`__ to deploy Confidential Containers, however, Confidential GPU features are currently classified as Technology Preview by the downstream provider.
+Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13>`__ to deploy Confidential Containers.

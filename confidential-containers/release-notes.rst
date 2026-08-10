@@ -45,6 +45,9 @@ New Features
   * Kata Containers ${kata_version}
   * containerd 2.3.x
 
+* This release has General Availability support for most platforms running Red Hat OpenShift Sandboxed Containers 1.13.
+  Refer to `Confidential containers: feature availability by OpenShift Container Platform version <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13/html/deploying_confidential_containers_on_bare-metal_servers/cc-discover_metal-cc#idm140411685844384>`__.
+
 
 Docs Changelog
 --------------
