@@ -30,6 +30,10 @@ You can create one or more instances of an NVIDIA driver (``NVIDIADriver``) cust
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.
 
+The technology preview ``GPUCluster`` enablement stack uses ``NVIDIADriver`` resources for an Operator-managed driver.
+``GPUCluster`` manages the DRA operands and waits for the matching NVIDIA driver deployment to become ready.
+Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for the complete ``GPUCluster`` installation procedure.
+
 
 Driver Management Modes
 =======================
@@ -405,6 +409,12 @@ Installing the NVIDIA GPU Operator
 **********************************
 
 Perform the following steps to install the GPU Operator and use the NVIDIA driver custom resources.
+
+.. note::
+
+   To use an ``NVIDIADriver`` resource with the ``GPUCluster`` DRA stack,
+   follow the installation procedure in :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>`.
+   That procedure configures the chart to create ``GPUCluster`` instead of ``ClusterPolicy``.
 
 #. Optional: If you want to run more than one driver type or version in the cluster,
    label the worker nodes to identify the driver type and version to install on each node:

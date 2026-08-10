@@ -237,6 +237,29 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
       imagePullSecrets: []
 
 
+DRA Driver Image
+================
+
+If you deploy the technology preview ``GPUCluster`` custom resource definition, mirror the DRA Driver for NVIDIA GPUs image in addition to the other GPU Operator images:
+
+.. code-block:: console
+
+   $ docker pull registry.k8s.io/dra-driver-nvidia/dra-driver-nvidia-gpu:v${dra_version}
+
+Tag and push this image to the local registry, then configure its location in ``values.yaml``:
+
+.. code-block:: yaml
+
+   draDriver:
+     repository: <repo.example.com:port>/<local-path>
+     image: dra-driver-nvidia-gpu
+     version: v${dra_version}
+     imagePullSecrets: []
+
+Use the remaining ``GPUCluster`` installation settings from :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>`.
+The ``GPUCluster`` and ComputeDomain custom resource definitions are packaged in the GPU Operator chart and do not require a separate download during installation.
+
+
 ************************
 Local Package Repository
 ************************
