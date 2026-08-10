@@ -1085,32 +1085,10 @@ resource selects all nodes in the cluster that have an NVIDIA GPU.</p>
 </section>
 <section id="upgrading-the-nvidia-gpu-driver">
 <span id="nvd-upgrade"></span><h2>Upgrading the NVIDIA GPU Driver<a class="headerlink" href="#upgrading-the-nvidia-gpu-driver" title="Permalink to this headline">#</a></h2>
-<p>You can upgrade the driver version by editing or patching the NVIDIA driver custom resource.</p>
-<p>When you update the custom resource, the upgrade controller applies <code class="docutils literal notranslate"><span class="pre">spec.upgradePolicy</span></code> to the nodes
-owned by that resource.
-For all upgrade policy fields, the state machine, and monitoring guidance, refer to
+<p>To upgrade a driver managed by an NVIDIA driver custom resource, update the <code class="docutils literal notranslate"><span class="pre">spec.version</span></code> field.
+The upgrade controller applies the resource’s <code class="docutils literal notranslate"><span class="pre">spec.upgradePolicy</span></code> to the nodes that it manages.
+For the upgrade procedure, configuration options, and monitoring guidance, refer to
 <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver-upgrades"><span class="std std-ref">GPU Driver Upgrades</span></a>.</p>
-<ol class="arabic">
-<li><p>Update the <code class="docutils literal notranslate"><span class="pre">spec.version</span></code> field in the driver custom resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch nvidiadriver/demo-silver --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
-    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/version&quot;, &quot;value&quot;: &quot;525.125.06&quot;}]&#39;</span>
-</pre></div>
-</div>
-</li>
-<li><p>Optional: Monitor the progress:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -l app.kubernetes.io/component<span class="o">=</span>nvidia-driver
-</pre></div>
-</div>
-<p><em>Example Output</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                             READY   STATUS        RESTARTS   AGE</span>
-<span class="go">nvidia-gpu-driver-ubuntu24.04-788484b9bb-6zhd9   1/1     Running       0          5m1s</span>
-<span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-7s68q    1/1     Terminating   0          37m</span>
-<span class="go">nvidia-gpu-driver-ubuntu22.04-8896c4bf7-jm74l    1/1     Running       0          37m</span>
-</pre></div>
-</div>
-</li>
-</ol>
-<p>Eventually, the Operator replaces the pods that used the previous driver version with pods that use the updated driver version.</p>
 </section>
 <section id="troubleshooting">
 <span id="nvd-troubleshooting"></span><h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
