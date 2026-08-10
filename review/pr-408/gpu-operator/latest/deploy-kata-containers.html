@@ -699,10 +699,10 @@ Refer to the <a class="reference internal" href="#kata-containers-cluster-topolo
 <h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
 <p>Install Kata Containers using the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Kata Containers.</p>
-<p>The minimum required version is 3.31.0.</p>
+<p>The minimum required version is 4.0.0.</p>
 <ol class="arabic">
 <li><p>Set the chart version and registry path:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.31.0&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;4.0.0&quot;</span>
 <span class="gp">$ </span><span class="nb">export</span> <span class="nv">CHART</span><span class="o">=</span><span class="s2">&quot;oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy&quot;</span>
 </pre></div>
 </div>
@@ -734,8 +734,7 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Helm install command returns as soon as the Kubernetes resources are created.
-The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
+<p>The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
 You can use either of the optional verification steps below to confirm readiness before continuing.</p>
 </div>
 </li>
