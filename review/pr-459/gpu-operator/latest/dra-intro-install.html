@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -520,7 +520,7 @@ For example:</p>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Installing GPU Operator v26.3.3 configures some additional DRA Driver for NVIDIA GPUs prerequisites for you:</p>
+<p>Installing GPU Operator v26.7.0 configures some additional DRA Driver for NVIDIA GPUs prerequisites for you:</p>
 <ul class="simple">
 <li><p>Container Device Interface (CDI) enabled in the underlying container runtime (such as containerd or CRI-O)</p></li>
 <li><p>NVIDIA Driver version 580 or later.</p></li>
@@ -557,7 +557,7 @@ GPU Allocation</label><div class="sd-tab-content docutils">
 </li>
 <li><p>Install the GPU Operator with the NVIDIA Kubernetes Device Plugin disabled:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
     --create-namespace <span class="se">\</span>
     --namespace gpu-operator <span class="se">\</span>
     --set devicePlugin.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
@@ -626,7 +626,7 @@ ComputeDomain</label><div class="sd-tab-content docutils">
 </li>
 <li><p>Install the GPU Operator:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
     --create-namespace <span class="se">\</span>
     --namespace gpu-operator
 </pre></div>
