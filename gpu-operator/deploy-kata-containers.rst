@@ -347,7 +347,6 @@ The minimum required version is ${kata_version}.
 
    .. note::
 
-      The Helm install command returns as soon as the Kubernetes resources are created.
       The ``kata-deploy`` DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
       You can use either of the optional verification steps below to confirm readiness before continuing.
 
