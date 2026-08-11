@@ -295,7 +295,7 @@ The GPU Operator has been validated in the following scenarios:
          - Kubernetes |fn1|_, |fn4|_
          - | Red Hat
            | OpenShift
-         - | VMware vSphere 
+         - | VMware vSphere
            | Kubernetes Service (VKS)
          - | Rancher Kubernetes
            | Engine 2 |fn4|_
@@ -312,14 +312,14 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.35
          -
          -
-         - 
+         -
 
        * - Ubuntu 22.04 LTS |fn2|_
-         - 1.30---1.35 
+         - 1.30---1.35
          -
          - 1.30---1.35
-         - 1.30---1.35 
-         - 1.30---1.35 
+         - 1.30---1.35
+         - 1.30---1.35
          - 1.33---1.35
          - 2.15, 2.16, 2.17
 
@@ -405,7 +405,7 @@ The GPU Operator has been validated in the following scenarios:
        * - | Operating
            | System
          - | Amazon EKS
-           | Kubernetes 
+           | Kubernetes
          - | Google GKE
            | Kubernetes
          - | Microsoft Azure
@@ -426,7 +426,7 @@ The GPU Operator has been validated in the following scenarios:
          - 1.30---1.35
          - 1.30---1.35
 
-    
+
     Kubernetes v1.35 support was added in v25.10.1 and later.
 
 
@@ -459,7 +459,7 @@ Supported Container Runtimes
 The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.7 - 2.1   | CRI-O          |
+| Operating System           | Containerd 1.7 - 2.2   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 20.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -574,5 +574,5 @@ Orchestration & resource scheduling:
 
 .. note::
 
-   Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings. 
+   Run:ai requires the GPU Operator as a prerequisite and works with default GPU Operator settings.
    Running the GPU Operator with Container Device Interface (CDI) enabled (default in v25.10.0 and later) requires Run:ai v2.24.38 and later, or v2.23.35 and later. Refer to the Run:ai `cluster requirements documentation <https://run-ai-docs.nvidia.com/self-hosted/getting-started/installation/install-using-helm/system-requirements#nvidia-gpu-operator>`_ for more information.
