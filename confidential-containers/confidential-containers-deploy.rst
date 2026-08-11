@@ -18,171 +18,99 @@
 
 
 .. _confidential-containers-deploy:
+.. _coco-install-quickstart:
 
-######################
-Detailed Install Guide
-######################
+###############################
+Install Confidential Containers
+###############################
 
-As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>`, use these steps to deploy Kata Containers and the NVIDIA GPU Operator to your cluster and configure it for Confidential Containers.
+As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>`, install Kata Containers and the NVIDIA GPU Operator to configure Kubernetes worker nodes for Confidential Containers.
 
-If you want the fastest path and intend to run Confidential Containers on every node in your cluster, use the :doc:`Quickstart Install <install-quickstart>` instead.
-Use this guide when you need per-node control, such as running Confidential Containers on some nodes and traditional GPU workloads on others, or when you want to use additional configuration options when installing the GPU Operator.
+The recommended steps configure all GPU worker nodes for Confidential Containers.
+Alternatively, you can select individual GPU worker nodes if the cluster must also run traditional GPU container workloads.
 
-.. _overview:
+*************
+Prerequisites
+*************
 
-****************
-Install Overview
-****************
+Complete :doc:`Prerequisites <prerequisites>` before you begin.
+You need an existing Kubernetes cluster with supported GPU worker nodes, cluster administrator access, and the Helm CLI.
 
-This guide assumes you completed :doc:`Prerequisites <prerequisites>` on an existing Kubernetes cluster with GPU worker nodes.
+*********
+Procedure
+*********
 
-Install workflow:
+#. Label the target nodes.
+   Decide whether to configure all GPU worker nodes or only specific nodes to run Confidential Containers.
 
-#. :doc:`Prerequisites <prerequisites>`: prepare worker hosts and cluster software.
-#. :ref:`Label nodes to deploy Confidential Containers components <coco-label-nodes>`: select GPU workers for Confidential Containers workloads.
-#. :ref:`Install Kata Containers <coco-install-kata-chart>`: install runtime classes and node-level Kata components.
-#. :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`: deploy Confidential Containers operands on target nodes.
+   .. tab-set::
 
-**Success criteria:** Helm releases report ``STATUS: deployed``, the ``kata-deploy`` pod is ``Running``, SNP and TDX runtime classes are available, and all GPU Operator operands are healthy on target nodes.
+      .. tab-item:: All GPU worker nodes
+         :sync: all-gpu-workers
 
-After completing the installation, you can :doc:`Run a Sample Workload <run-sample-workload>` to verify the deployment.
+         NVIDIA recommendeds this option for evaluation, dedicated Confidential Containers clusters, and simplicity.
 
-.. _installation-and-configuration:
+         This option requires no action.
+         You do not label nodes at all.
 
-.. _coco-label-nodes:
+         The GPU Operator installation in step 4 sets ``vm-passthrough`` as the default workload for every GPU worker node.
 
-**************************************************
-Label Nodes for Confidential Containers Components
-**************************************************
+      .. tab-item:: Selected GPU worker nodes
+         :sync: selected-gpu-workers
 
-The GPU Operator reads labels to determine what software components to deploy to a node.
-To configure a node for Confidential Container workloads, you label the node with the ``nvidia.com/gpu.workload.config=vm-passthrough`` label.
-Then, when the GPU Operator is installed in a subsequent step, it will deploy the software components needed to run Confidential Containers to the node.
+         Use this option to run Confidential Containers on some nodes and traditional GPU container workloads on other nodes.
+         A node configured for Confidential Containers cannot also run traditional GPU container workloads.
 
-A node can only run one container runtime at a time, so a node configured for Confidential Container workloads cannot run traditional GPU container workloads.
-The labeling approach is useful if you want to run Confidential Containers workloads on some nodes and traditional GPU container workloads on other nodes in your cluster.
+         Get the node names:
 
-For more details on how the GPU Operator deploys components to your cluster, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-cluster-topology>` section in the architecture overview.
+         .. code-block:: console
 
-.. tip::
+            $ kubectl get nodes
 
-   Skip this section if you plan to use all nodes in your cluster to run Confidential Containers and instead set ``sandboxWorkloads.defaultWorkload=vm-passthrough`` when installing the GPU Operator.
+         Label one or more worker nodes to run Confidential Containers:
 
-#. Get a list of the nodes in your cluster:
+         .. code-block:: console
 
-   .. code-block:: console
+            $ kubectl label node <node-01> <node-02> nvidia.com/gpu.workload.config=vm-passthrough
 
-      $ kubectl get nodes
+#. Install Kata Containers.
 
-   *Example Output:*
-
-   .. code-block:: output
-
-      NAME          STATUS   ROLES           AGE   VERSION
-      node-01       Ready    <none>          10d   v1.34.0
-      node-02       Ready    <none>          10d   v1.34.0
-
-   Identify the GPU worker node or nodes you want to configure for Confidential Containers and use its name in the next step.
-
-#. Set the ``NODE_NAME`` environment variable to the name of the node you want to configure:
-
-   .. code-block:: console
-
-      $ export NODE_NAME="<node-name>"
-
-   .. note::
-
-      Commands in this guide use the ``$NODE_NAME`` environment variable to reference this node.
-
-#. Label the node for Confidential Containers:
-
-   .. code-block:: console
-
-      $ kubectl label node $NODE_NAME nvidia.com/gpu.workload.config=vm-passthrough
-
-   *Example Output:*
-
-   .. code-block:: output
-
-      node/<node-name> labeled
-
-   If you see ``<node-name> not labeled``, the label may already be set.
-   Continue to the next step to verify if the label was added.
-
-   .. note::
-
-      To label multiple nodes at once, pass additional node names to the same command:
-
-      .. code-block:: console
-
-         $ kubectl label node <node-01> <node-02> nvidia.com/gpu.workload.config=vm-passthrough
-
-#. Verify all target nodes have the label by listing all nodes with the label:
-
-   .. code-block:: console
-
-      $ kubectl get nodes -l nvidia.com/gpu.workload.config=vm-passthrough
-
-   *Example Output:*
-
-   .. code-block:: output
-
-      NAME      STATUS   ROLES    AGE   VERSION
-      node-01   Ready    <none>   10d   v1.34.0
-
-**Success criteria:** All nodes you intend to use for Confidential Container workloads appear in the output above.
-
-After all your desired nodes are labeled, you can continue to the next step to install Kata Containers.
-
-
-.. _coco-install-kata-chart:
-
-**************************************
-Install the Kata Containers Helm Chart
-**************************************
-
-Install Kata Containers using the ``kata-deploy`` Helm chart.
-The ``kata-deploy`` chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Confidential Containers and native Kata containers.
-
-The minimum required version is ${kata_version}.
-
-#. Set the chart version and registry path:
+   Set the chart version and registry path:
 
    .. code-block:: console
 
       $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
-#. Create a values file, such as ``kata-nvidia-gpu-values.yaml``, to configure the ``kata-deploy`` chart for NVIDIA Confidential Containers:
+   Download the sample :download:`kata-nvidia-gpu-values <samples/kata-nvidia-gpu-values.yaml>` file.
 
-   .. literalinclude:: ./samples/kata-nvidia-gpu-values.yaml
-      :language: yaml
+   .. dropdown:: View the values file
 
-#. Install the kata-deploy Helm chart with the values file:
+      .. literalinclude:: ./samples/kata-nvidia-gpu-values.yaml
+         :language: yaml
+
+   Install the ``kata-deploy`` Helm chart:
 
    .. code-block:: console
 
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
          -f kata-nvidia-gpu-values.yaml \
+         --wait --timeout 10m \
          --version "${VERSION}"
 
-   *Example Output immediately after running the command:*
+   *Example Output:*
 
    .. code-block:: output
 
       Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:${kata_version}
       Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
 
-   The ``--wait`` flag in the install command instructs Helm to wait until the release is deployed before returning.
+   The ``--wait`` argument instructs Helm to wait until the release is deployed before returning.
    It can take a 2-3 minutes to return more output.
 
-   *Example Output when the release is deployed:*
-
    .. code-block:: output
 
-      Pulled: ghcr.io/kata-containers/kata-deploy-charts/kata-deploy:${kata_version}
-      Digest: sha256:aea41018779716ce2e0bf406d701637d10fb5a0792db51a08dfd3f76701eb933
       LAST DEPLOYED: Wed Apr  1 17:03:00 2026
       NAMESPACE: kata-system
       STATUS: deployed
@@ -192,23 +120,16 @@ The minimum required version is ${kata_version}.
 
    .. note::
 
-      There is a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
-      If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the ``kata-deploy`` pod to be in the Running state.
+      On a single-node cluster, a `known Helm issue <https://github.com/helm/helm/issues/8660>`_ can cause Helm to return before all pods finish initializing.
+      Wait a few additional minutes if the ``kata-deploy`` pod is not yet running.
 
-   ``STATUS: deployed`` confirms the Helm release succeeded and the chart resources were applied.
-   The following steps confirm the Kata components are healthy.
+#. Verify that Kata is installed and runtime classes are available.
 
-   .. note::
-
-      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
-      The GPU Operator will deploy and manage NFD in the next step.
-
-#. Verify that the ``kata-deploy`` pod is running:
+   Verify that the ``kata-deploy`` pod is running:
 
    .. code-block:: console
 
-      $ kubectl -n kata-system | grep kata-deploy
+      $ kubectl get pods -n kata-system | grep kata-deploy
 
    *Example Output:*
 
@@ -216,11 +137,7 @@ The minimum required version is ${kata_version}.
 
       kata-deploy-b2lzs       1/1     Running   0             6m37s
 
-   A ``READY`` value of ``1/1`` and a ``STATUS`` of ``Running`` mean the ``kata-deploy`` pod installed the Kata components on the node successfully.
-   If the pod is ``Pending``, ``ContainerCreating``, or ``CrashLoopBackOff``, wait a minute and re-run the command.
-   If the ``kata-deploy`` pod does not reach ``Running``, refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>` in :doc:`Troubleshooting <troubleshooting>`.
-
-#. Verify that the ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes are available:
+   Verify that the NVIDIA GPU, SNP, and TDX runtime classes are available:
 
    .. code-block:: console
 
@@ -235,74 +152,54 @@ The minimum required version is ${kata_version}.
       kata-qemu-nvidia-gpu-snp   kata-qemu-nvidia-gpu-snp   40s
       kata-qemu-nvidia-gpu-tdx   kata-qemu-nvidia-gpu-tdx   40s
 
-   Several runtimes are installed by the ``kata-deploy`` chart.
-   The ``kata-qemu-nvidia-gpu`` runtime class is used with Kata
-   Containers, in a non-Confidential Containers scenario.
-   The ``kata-qemu-nvidia-gpu-snp`` for AMD-based systems or
-   ``kata-qemu-nvidia-gpu-tdx`` for Intel-based systems runtime
-   classes are used to deploy Confidential Containers workloads.
+   Runtime classes typically appear within 1 to 2 minutes after the ``kata-deploy`` pod reaches ``Running``.
+   If the pod does not reach ``Running`` or the runtime classes remain unavailable, refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>`.
 
-   The ``kata-deploy`` chart typically creates these runtime classes within 1-2 minutes after the ``kata-deploy`` pod reaches ``Running``.
-   If the SNP and TDX runtime classes are not listed immediately, the chart may still be initializing rather than failing.
-   Wait 1-2 minutes and re-run the command.
-   If they are still missing after the ``kata-deploy`` pod reports ``Running``, the install did not complete correctly.
-   Refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>` in :doc:`Troubleshooting <troubleshooting>` for help diagnosing the issue.
-   On a single-node cluster, retry after a few minutes only if Helm returned before the ``kata-deploy`` pod reaches ``Running`` (refer to the note above).
-   Otherwise, refer to the log steps below.
+#. Install the NVIDIA GPU Operator.
 
-**Success criteria:** Helm reports ``STATUS: deployed``, the ``kata-deploy`` pod is ``Running``, and both ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` are available on the cluster.
-After all checks pass, continue to :ref:`Install the NVIDIA GPU Operator <coco-install-gpu-operator>`.
-
-If the ``kata-deploy`` pod does not reach ``Running`` or the SNP and TDX runtime classes are missing, refer to :ref:`View Kata Containers Logs <coco-view-kata-logs>` in :doc:`Troubleshooting <troubleshooting>`.
-
-.. _coco-install-gpu-operator:
-
-*******************************
-Install the NVIDIA GPU Operator
-*******************************
-
-Install the NVIDIA GPU Operator and configure it to deploy Confidential Container components.
-For more details on each of the GPU Operator components, refer to the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-components>` section in the architecture overview.
-
-#. Add and update the NVIDIA Helm repository:
+   Add and update the NVIDIA Helm repository:
 
    .. code-block:: console
 
       $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
          && helm repo update
 
-   *Example Output:*
+   Select the same node configuration option that you selected in step 1:
 
-   .. code-block:: output
+   .. tab-set::
 
-      "nvidia" has been added to your repositories
-      Hang tight while we grab the latest from your chart repositories...
-      ...Successfully got an update from the "nvidia" chart repository
-      Update Complete. ⎈Happy Helming!⎈
+      .. tab-item:: All GPU worker nodes
+         :sync: all-gpu-workers
 
-#. Install the GPU Operator with the following configuration:
+         Install the GPU Operator and set ``vm-passthrough`` as the default workload for all GPU worker nodes:
 
-   .. tip::
+         .. code-block:: console
 
-      Add ``--set sandboxWorkloads.defaultWorkload=vm-passthrough`` to configure every worker node for Confidential Containers workloads.
-      Refer to the :ref:`Label Nodes for Confidential Containers Components <coco-label-nodes>` section for more details on this use case.
+            $ helm install --wait --timeout 10m --generate-name \
+               -n gpu-operator --create-namespace \
+               nvidia/gpu-operator \
+               --set sandboxWorkloads.enabled=true \
+               --set sandboxWorkloads.defaultWorkload=vm-passthrough \
+               --set sandboxWorkloads.mode=kata \
+               --set nfd.enabled=true \
+               --set nfd.nodefeaturerules=true \
+               --version="${gpu_operator_version}"
 
-   To customize the installation beyond the command below:
+      .. tab-item:: Selected GPU worker nodes
+         :sync: selected-gpu-workers
 
-   * Refer to the :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` section on this page for the Confidential Containers-specific configuration options you can specify when installing the GPU Operator.
+         Install the GPU Operator without changing the default workload for unlabeled nodes:
 
-   * Refer to the :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>` for the additional general configuration options you can specify when installing the GPU Operator.
+         .. code-block:: console
 
-   .. code-block:: console
-
-      $ helm install --wait --timeout 10m --generate-name \
-         -n gpu-operator --create-namespace \
-         nvidia/gpu-operator \
-         --set sandboxWorkloads.enabled=true \
-         --set sandboxWorkloads.mode=kata \
-         --set nfd.enabled=true \
-         --set nfd.nodefeaturerules=true \
-         --version=${gpu_operator_version}
+            $ helm install --wait --timeout 10m --generate-name \
+               -n gpu-operator --create-namespace \
+               nvidia/gpu-operator \
+               --set sandboxWorkloads.enabled=true \
+               --set sandboxWorkloads.mode=kata \
+               --set nfd.enabled=true \
+               --set nfd.nodefeaturerules=true \
+               --version="${gpu_operator_version}"
 
    *Example Output:*
 
@@ -315,67 +212,60 @@ For more details on each of the GPU Operator components, refer to the :ref:`GPU 
       REVISION: 1
       TEST SUITE: None
 
-   ``STATUS: deployed`` confirms the Helm release succeeded.
-   The ``--wait`` flag instructs Helm to wait until the release is deployed before returning.
-   It may take 3-5 minutes for the Helm command to complete.
+   It can take 3 to 5 minutes for the Helm command to complete.
 
-   Use the following steps to confirm the GPU Operator components are deployed and configured correctly.
-
-#. Verify that all GPU Operator pods, especially the Confidential Computing Manager, Kata Device Plugin and VFIO Manager operands, are running:
+#. Verify the GPU Operator pods:
 
    .. code-block:: console
 
       $ kubectl get pods -n gpu-operator
 
-   *Example Output:*
+   Every pod must report ``Running`` or ``Completed``.
+   On target nodes, verify that the output includes these Confidential Containers operands:
 
-   .. code-block:: output
+   * ``nvidia-cc-manager``
+   * ``nvidia-kata-sandbox-device-plugin-daemonset``
+   * ``nvidia-sandbox-validator``
+   * ``nvidia-vfio-manager``
 
-      NAME                                                              READY   STATUS    RESTARTS   AGE
-      gpu-operator-1766001809-node-feature-discovery-gc-75776475sxzkp   1/1     Running   0          86s
-      gpu-operator-1766001809-node-feature-discovery-master-6869lxq2g   1/1     Running   0          86s
-      gpu-operator-1766001809-node-feature-discovery-worker-mh4cv       1/1     Running   0          86s
-      gpu-operator-f48fd66b-vtfrl                                       1/1     Running   0          86s
-      nvidia-cc-manager-7z74t                                           1/1     Running   0          61s
-      nvidia-kata-sandbox-device-plugin-daemonset-d5rvg                 1/1     Running   0          30s
-      nvidia-sandbox-validator-6xnzc                                    1/1     Running   0          30s
-      nvidia-vfio-manager-h229x                                         1/1     Running   0          62s
+   Pods can briefly report ``Pending`` or ``Init`` while they start.
+   If they do not become healthy, refer to :doc:`Troubleshooting <troubleshooting>`.
 
-   Each pod should report a ``READY`` value of ``1/1`` and a ``STATUS`` of ``Running`` or ``Completed``.
-   The ``nvidia-cc-manager``, ``nvidia-kata-sandbox-device-plugin-daemonset``, and ``nvidia-vfio-manager`` operands are specific to Confidential Containers and must be present on labeled nodes.
-   Pods may briefly show ``Pending`` or ``Init`` while they start, which is expected.
-   When all operands are ``Running`` or ``Completed``, the GPU Operator components are deployed.
+   .. dropdown:: Optional: Verify VFIO binding on a worker host
 
-#. If you have host access to the worker node, you can perform the following validation step to confirm that the host uses the vfio-pci device driver for GPUs:
+      If you have access to a target worker host, confirm that its GPUs use the ``vfio-pci`` driver:
 
-   .. code-block:: console
+      .. code-block:: console
 
-      $ lspci -nnk -d 10de:
+         $ lspci -nnk -d 10de:
 
-   *Example Output:*
+      *Example Output:*
 
-   .. code-block:: output
+      .. code-block:: output
 
-      65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)
-               Subsystem: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx]
-               Kernel driver in use: vfio-pci
-               Kernel modules: nvidiafb, nouveau
+         65:00.0 3D controller [0302]: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx] (rev xx)
+                  Subsystem: NVIDIA Corporation xxxxxxx [xxx] [10de:xxxx]
+                  Kernel driver in use: vfio-pci
+                  Kernel modules: nvidiafb, nouveau
 
-   The ``Kernel driver in use: vfio-pci`` line in the output confirms the GPU is bound for VFIO passthrough into the confidential virtual machine.
-   If the driver in use is ``nvidia`` or ``nouveau`` instead, the GPU is not ready for passthrough.
-   Confirm your node meets the :ref:`Prerequisites <coco-prerequisites>` section, including removing any NVIDIA GPU drivers on the host.
+      ``Kernel driver in use: vfio-pci`` confirms that the GPU is ready for passthrough into a confidential virtual machine.
+      If the driver is ``nvidia`` or ``nouveau``, confirm that the node meets :doc:`Prerequisites <prerequisites>`.
 
-**Success criteria:** All GPU Operator pods are ``Running`` or ``Completed``.
-Your cluster is now configured to deploy workloads in Kata Containers.
-Continue to :doc:`Run a Sample Workload <run-sample-workload>` to confirm everything is working as expected.
+   **Success criteria:** Both Helm releases report ``STATUS: deployed``, the Kata pod and GPU Operator pods are healthy, and the SNP and TDX runtime classes are available.
 
-If you are not seeing the expected output, view the logs for the GPU Operator pods or refer to :doc:`Troubleshooting <troubleshooting>`.
+The cluster is now ready to run Confidential Containers on the target GPU worker nodes.
+
+**********************
+Advanced Configuration
+**********************
+
+The preceding procedure uses the recommended settings for Confidential Containers.
+For general GPU Operator chart options, refer to :ref:`Common chart customization options <gpuop:gpu-operator-helm-chart-options>` in :doc:`Installing the NVIDIA GPU Operator <gpuop:getting-started>`.
 
 .. _coco-configuration-settings:
 
-******************************************
 Common GPU Operator Configuration Settings
-******************************************
+==========================================
 
 The following are the available GPU Operator configuration settings to enable Confidential Containers:
 
@@ -414,9 +304,8 @@ The following are the available GPU Operator configuration settings to enable Co
 
 .. _coco-configuration-heterogeneous-clusters:
 
-***********************************************
 Configuring GPU or NVSwitch Resource Types Name
-***********************************************
+===============================================
 
 By default, the NVIDIA GPU Operator creates a resource type for GPUs and NVSwitches, ``nvidia.com/pgpu`` and ``nvidia.com/nvswitch``.
 You can reference this name in your manifests to request GPU or NVSwitch resources for your workload.
@@ -433,33 +322,20 @@ Use the exposed device resource types in pod specs by specifying respective reso
 
 Similarly, you can set ``NVSWITCH_ALIAS`` to ``""`` to advertise model-specific NVSwitch resource types.
 
-The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``NVSWITCH_ALIAS`` configured:
+To configure both ``P_GPU_ALIAS`` and ``NVSWITCH_ALIAS``, add the following arguments to the GPU Operator command in step 4:
 
 .. code-block:: console
 
-   $ helm install --wait --timeout 10m --generate-name \
-      -n gpu-operator --create-namespace \
-      nvidia/gpu-operator \
-      --set sandboxWorkloads.enabled=true \
-      --set sandboxWorkloads.mode=kata \
-      --set nfd.enabled=true \
-      --set nfd.nodefeaturerules=true \
-      --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
-      --set kataSandboxDevicePlugin.env[0].value="" \
-      --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
-      --set kataSandboxDevicePlugin.env[1].value="" \
-      --version=${gpu_operator_version}
+   --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
+   --set kataSandboxDevicePlugin.env[0].value="" \
+   --set kataSandboxDevicePlugin.env[1].name=NVSWITCH_ALIAS \
+   --set kataSandboxDevicePlugin.env[1].value=""
 
 After installing the GPU Operator, you can view the GPU or NVSwitch resource types available on a node by running the following command:
 
 .. code-block:: console
 
-   $ kubectl get node $NODE_NAME -o json | grep nvidia.com
-
-.. note::
-
-   The ``NODE_NAME`` environment variable was set in the :ref:`Label Nodes <coco-label-nodes>` section.
-   If you want to view the resource types for a different node, you can update the ``NODE_NAME`` environment variable and run the command again.
+   $ kubectl get node <node-name> -o json | grep nvidia.com
 
 *Example Output:*
 

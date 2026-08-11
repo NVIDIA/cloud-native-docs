@@ -119,8 +119,7 @@ Relevant pages:
 
 * :doc:`Reference Architecture <overview>`: understand the software components and how they fit together.
 * :doc:`Prerequisites <prerequisites>`: prepare worker nodes and the Kubernetes cluster.
-* :doc:`Quickstart Install <install-quickstart>`: minimal steps to install Kata Containers and the GPU Operator.
-* :doc:`Detailed Install Guide <confidential-containers-deploy>`: install with per-node labeling and additional configuration options.
+* :doc:`Install Confidential Containers <confidential-containers-deploy>`: install with recommended defaults for all GPU workers or select individual nodes.
 * :doc:`Run a Sample Workload <run-sample-workload>`: confirm the deployment was successful.
 * :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`: change the CC mode on GPUs at the cluster or node level as needed.
 * :doc:`Troubleshooting <troubleshooting>`: resolve install and deploy failures (for example :ref:`Insufficient nvidia.com/pgpu <coco-pending-pod>`).

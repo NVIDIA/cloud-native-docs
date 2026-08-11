@@ -28,7 +28,7 @@ As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-adm
 
 Verify your Confidential Container setup by running a basic single-GPU sample workload inside a Confidential Container.
 
-This page assumes that you have completed :doc:`Prerequisites <prerequisites>` and either :doc:`Quickstart Install <install-quickstart>` or :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+This page assumes that you have completed :doc:`Prerequisites <prerequisites>` and :doc:`Install Confidential Containers <confidential-containers-deploy>`.
 Your cluster should have ``kata-qemu-nvidia-gpu-snp`` and ``kata-qemu-nvidia-gpu-tdx`` runtime classes installed, and GPU Operator operands (including the Confidential Computing Manager, Kata Sandbox Device Plugin, and VFIO Manager) running on your nodes.
 
 This page intentionally uses the simplest possible manifest so that you can confirm the deployment end-to-end.

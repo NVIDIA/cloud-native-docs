@@ -36,8 +36,8 @@ three ways:
 * For NVSwitch-based HGX systems, it requests every GPU and NVSwitch on the node together so
   that all devices reside inside the same Confidential Container virtual machine.
 
-**Before this page:** Complete the :doc:`Detailed Install Guide <confidential-containers-deploy>` and verify the cluster with :doc:`Run a Sample Workload <run-sample-workload>` (``Test PASSED`` in pod logs).
-For install steps, refer to :doc:`Prerequisites <prerequisites>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+**Before this page:** Complete :doc:`Install Confidential Containers <confidential-containers-deploy>` and verify the cluster with :doc:`Run a Sample Workload <run-sample-workload>` (``Test PASSED`` in pod logs).
+For installation requirements, refer to :doc:`Prerequisites <prerequisites>`.
 
 This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.

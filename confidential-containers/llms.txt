@@ -28,8 +28,7 @@ Scope notes for agents and readers:
 - [Prerequisites](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/prerequisites.html): Required starting state — Kubernetes cluster, containerd, BIOS (hardware virtualization, ACS, IOMMU), host OS/kernel, and feature gates (e.g. KubeletPodResourcesGet) — before installing Kata and the GPU Operator.
 
 ## Install
-- [Quickstart Install](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/install-quickstart.html): Minimal Helm steps to install Kata Containers and the NVIDIA GPU Operator and create the CC RuntimeClasses.
-- [Detailed Install Guide](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/confidential-containers-deploy.html): Full install with per-node configuration, labeling, and verification.
+- [Install Confidential Containers](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/confidential-containers-deploy.html): Install Kata Containers and the NVIDIA GPU Operator with recommended defaults for all GPU workers or with per-node selection.
 
 ## Run & configure
 - [Run a Sample Workload](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/run-sample-workload.html): Deploy cuda-vectoradd-kata.yaml on the CC RuntimeClass; success = `Test PASSED` in the pod logs.

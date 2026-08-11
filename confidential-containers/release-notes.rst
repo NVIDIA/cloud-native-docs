@@ -53,7 +53,6 @@ New Features
 Docs Changelog
 --------------
 
-The :ref:`coco-install-kata-chart` procedure was updated for this release.
 Changes include:
 
 * Installs ``kata-deploy`` with a values file instead of inline ``--set`` flags.

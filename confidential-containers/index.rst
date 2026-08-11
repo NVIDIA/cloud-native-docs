@@ -36,8 +36,7 @@ NVIDIA Confidential Containers
    :titlesonly:
 
    Prerequisites <prerequisites.rst>
-   Quickstart Install <install-quickstart.rst>
-   Detailed Install Guide <confidential-containers-deploy.rst>
+   Install Confidential Containers <confidential-containers-deploy.rst>
    Run a Sample Workload <run-sample-workload.rst>
 
 .. toctree::
@@ -95,14 +94,14 @@ Core Components
 
 This documentation focuses on the components you install, configure, and operate to run workloads in a Confidential Containers runtime on Kubernetes.
 The :doc:`Reference Architecture <overview>` describes the full stack. 
-The install guides cover Kata Containers and the NVIDIA GPU Operator end to end.
+The installation procedure covers Kata Containers and the NVIDIA GPU Operator end to end.
 
 * Kata Containers: Runs pods inside TEE-protected virtual machines instead of on the shared host kernel.
-  Install Kata Deploy and TEE-specific runtime shims in :doc:`Quickstart Install <install-quickstart>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+  Install Kata Deploy and TEE-specific runtime shims in :doc:`Install Confidential Containers <confidential-containers-deploy>`.
   Schedule workloads with a TEE-aware ``RuntimeClass`` in :doc:`Configuring Workloads <configure-workloads>`.
 
 * NVIDIA GPU Operator: Automates GPU Confidential Computing on eligible nodes, including CC mode, VFIO passthrough, and GPU allocation for Kata pods.
-  Configure the Operator and node labels in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+  Configure the Operator and node labels in :doc:`Install Confidential Containers <confidential-containers-deploy>`.
   Manage CC mode in :doc:`Managing the Confidential Computing Mode <configure-cc-mode>`.
 
   For Confidential Containers, the Operator deploys:
@@ -161,17 +160,11 @@ Install
 
       Hardware, BIOS, and Kubernetes cluster requirements.
 
-   .. grid-item-card:: :octicon:`zap;1.5em;sd-mr-1` Quickstart Install
-      :link: install-quickstart
-      :link-type: doc
-
-      Minimal steps to install Kata Containers and the GPU Operator.
-
-   .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Detailed Install Guide
+   .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Install Confidential Containers
       :link: confidential-containers-deploy
       :link-type: doc
 
-      Install with per-node labeling, configuration options, and troubleshooting.
+      Use recommended defaults for all GPU workers or configure individual nodes.
 
    .. grid-item-card:: :octicon:`play;1.5em;sd-mr-1` Run a Sample Workload
       :link: run-sample-workload

@@ -399,7 +399,7 @@ Set the ``NODE_NAME`` environment variable to the affected node so you can copy-
       $ kubectl label node $NODE_NAME nvidia.com/gpu.workload.config=vm-passthrough
 
    If you set the cluster-wide default during installation instead of per-node labeling, confirm ``sandboxWorkloads.defaultWorkload`` is ``vm-passthrough``.
-   Refer to :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+   Refer to :ref:`Common GPU Operator Configuration Settings <coco-configuration-settings>` in :doc:`Install Confidential Containers <confidential-containers-deploy>`.
 
 #. Check ``nvidia.com/pgpu`` capacity on the node:
 
@@ -449,7 +449,7 @@ Set the ``NODE_NAME`` environment variable to the affected node so you can copy-
 
    Wait for a workload to complete or free capacity before retrying.
 
-Refer to the optional VFIO validation step in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+Refer to the optional VFIO validation step in :doc:`Install Confidential Containers <confidential-containers-deploy>`.
 
 
 .. _coco-getting-help:

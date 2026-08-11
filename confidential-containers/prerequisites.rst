@@ -157,7 +157,7 @@ Ensure No Host NVIDIA GPU Drivers Are Present
 
 Confidential Containers pass GPUs to the confidential virtual machine through VFIO.
 Host-installed NVIDIA drivers prevent VFIO from binding the devices and must not be present on those hosts.
-In this architecture, the NVIDIA GPU Operator handles GPU driver installation and lifecycle management when you follow the :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+In this architecture, the NVIDIA GPU Operator handles GPU driver installation and lifecycle management when you follow :doc:`Install Confidential Containers <confidential-containers-deploy>`.
 
 #. On each host, check whether NVIDIA GPU drivers are loaded:
 
@@ -301,4 +301,4 @@ Apply these settings as follows:
 Next Steps
 **********
 
-After completing the prerequisites, proceed to :doc:`Quickstart Install <install-quickstart>` for a minimal install, or :doc:`Detailed Install Guide <confidential-containers-deploy>` for full configuration details.
+After completing the prerequisites, proceed to :doc:`Install Confidential Containers <confidential-containers-deploy>`.

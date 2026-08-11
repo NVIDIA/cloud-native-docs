@@ -198,7 +198,7 @@ Consider the following example where node A is configured to run traditional con
        * NVIDIA VFIO Manager
        * Node Feature Discovery
 
-This configuration can be controlled through node labelling, as described in :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+This configuration can be controlled through node labeling, as described in :doc:`Install Confidential Containers <confidential-containers-deploy>`.
 
 *******************************************
 Supported Features and Deployment Scenarios
@@ -293,7 +293,7 @@ To deploy on your cluster, start with the **Install** section:
 
       Prepare worker nodes and the Kubernetes cluster.
 
-   .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Detailed Install Guide
+   .. grid-item-card:: :octicon:`rocket;1.5em;sd-mr-1` Install Confidential Containers
       :link: confidential-containers-deploy
       :link-type: doc
 
@@ -306,4 +306,3 @@ To deploy on your cluster, start with the **Install** section:
       Verify the deployment; success is ``Test PASSED`` in pod logs.
 
 After installation, refer to the **Configuration** section for workload configuration, CC mode management, and attestation.
-
