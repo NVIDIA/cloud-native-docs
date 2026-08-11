@@ -439,15 +439,16 @@ You need an existing Kubernetes cluster with supported GPU worker nodes, cluster
 <section id="procedure">
 <h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">#</a></h2>
 <ol class="arabic">
-<li><p>Configure the target nodes.</p>
-<p>Decide whether to configure every GPU worker node or only specific GPU worker nodes to run Confidential Containers.</p>
+<li><p>Label the target nodes.
+Decide whether to configure all GPU worker nodes or only specific nodes to run Confidential Containers.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" data-sync-group="tab" data-sync-id="all-gpu-workers" for="sd-tab-item-0">
 All GPU worker nodes</label><div class="sd-tab-content docutils">
-<p>NVIDIA recommendeds this option for evaluation, dedicated Confidential Containers clusters, and simplicity.
-You do not label nodes at all.
-The GPU Operator installation in step 4 sets <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> as the default workload for every GPU worker node.</p>
+<p>NVIDIA recommendeds this option for evaluation, dedicated Confidential Containers clusters, and simplicity.</p>
+<p>This option requires no action.
+You do not label nodes at all.</p>
+<p>The GPU Operator installation in step 4 sets <code class="docutils literal notranslate"><span class="pre">vm-passthrough</span></code> as the default workload for every GPU worker node.</p>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" data-sync-group="tab" data-sync-id="selected-gpu-workers" for="sd-tab-item-1">
@@ -616,7 +617,7 @@ It can take a 2-3 minutes to return more output.</p>
 Wait a few additional minutes if the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is not yet running.</p>
 </div>
 </li>
-<li><p>Verify that Kata is installed.</p>
+<li><p>Verify that Kata is installed and runtime classes are available.</p>
 <p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
 </pre></div>
