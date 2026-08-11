@@ -183,7 +183,7 @@ The NRI Plugin requires the following:
 
 - One of the following container runtimes:
 
-  - containerd v1.7.30, v2.1.x, or v2.2.x.
+  - containerd v1.7.30, v2.1.x, v2.2.x, or v2.3.x.
   - cri-o v1.34 or later.
 
   If you are not using the latest containerd runtime version, check that both CDI and NRI are enabled in the runtime's configuration file before deploying GPU Operator.

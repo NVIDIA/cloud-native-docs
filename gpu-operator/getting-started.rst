@@ -374,8 +374,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - When set to ``true``, the Node Resource Interface (NRI) Plugin will be used for injecting GPUs into workload containers.
 
        In NRI Plugin mode, the NVIDIA Container Toolkit will no longer modify the runtime config. 
-       This feature requires containerd v1.7.30, v2.1.x, or v2.2.x, or cri-o v1.34 or later.
+       This feature requires containerd v1.7.30, v2.1.x, v2.2.x, or v2.3.x or later, or cri-o v1.34 or later.
        Refer to the :doc:`cdi` page for more information.
+
+       The NRI Plugin is not yet GA, and not recommended for production use.
      - ``false``
 
    * - ``cdi.default`` (Deprecated)
@@ -744,12 +746,6 @@ support for such custom configurations.
 Specifying Configuration Options for containerd
 ***********************************************
 
-.. note::
-
- It's recommended that you enable the NRI Plugin to configure the container runtime by setting ``cdi.nriPluginEnabled=true``. 
- When enabled, you do not need to specify the ``toolkit.env`` options and injecting GPUs into workload containers is handled by the NRI Plugin.
- Refer to the :ref:`NRI Plugin <nri-plugin>` documentation, for more information.
-
 When you use containerd as the container runtime, the following configuration
 options are used with the container-toolkit deployed with GPU Operator:
 
@@ -817,15 +813,6 @@ Rancher Kubernetes Engine 2
 For Rancher Kubernetes Engine 2 (RKE2), refer to
 `Deploy NVIDIA Operator <https://docs.rke2.io/add-ons/gpu_operators#deploy-nvidia-operator>`__
 in the RKE2 documentation.
-
-The NRI Plugin is available for use on RKE2. With CDI (the default) and the NRI Plugin both enabled, you do not need to set ``runtimeClassName: nvidia`` in your pod specification, and you do not need to configure the ``CONTAINERD_CONFIG``, ``CONTAINERD_SOCKET``, or ``RUNTIME_CONFIG_SOURCE`` environment variables.
-
-.. note::
-
-   The containerd project has not yet released a general availability (GA) version of the NRI Plugin. The implementation might change before the GA release.
-   Refer to the `containerd NRI repository <https://github.com/containerd/nri#api-stability>`_ for details on project details.
-
-Refer to the :ref:`v24.9.0-known-limitations`.
 
 .. _microk8s-install-procedure:
 
