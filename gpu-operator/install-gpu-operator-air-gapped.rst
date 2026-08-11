@@ -92,11 +92,16 @@ Before proceeding to the next sections, get the ``values.yaml`` file used for GP
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+  $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+      && helm repo update
+
+.. code-block:: console
+
+  $ helm show values nvidia/gpu-operator --version=${version} > values.yaml
 
 .. note::
 
-   Replace ``v1.7.0`` in the above command with the version you want to use.
+   Replace ``${version}`` in the above command with the GPU Operator chart version you want to use.
 
 
 ********************
@@ -161,85 +166,134 @@ Finally, push the images to the local registry:
    $ docker push <local-registry>/<local-path>/gpu-operator:${version}
    $ docker push <local-registry>/<local-path>/driver:${recommended}-ubuntu22.04
 
-Update ``values.yaml`` with local registry information in the repository field.
+Update ``values.yaml`` with local registry information in the repository field for each image that you mirror.
+The image names and versions change between GPU Operator releases, so start with the ``values.yaml`` file for your chart
+version and keep the image and version values from that file.
 
 .. note::
 
    Replace <repo.example.com:port> below with your local image registry URL and port.
 
-Sample of ``values.yaml`` for GPU Operator v1.9.0:
+Sample ``values.yaml`` override pattern:
 
 .. code-block:: yaml
 
    operator:
      repository: <repo.example.com:port>
      image: gpu-operator
-     version: 1.9.0
      imagePullSecrets: []
-     initContainer:
-       image: cuda
+
+   validator:
+     repository: <repo.example.com:port>
+     image: gpu-operator
+     imagePullSecrets: []
+
+   driver:
+     repository: <repo.example.com:port>
+     image: driver
+     version: <driver-version>
+     imagePullSecrets: []
+
+   toolkit:
+     repository: <repo.example.com:port>
+     image: container-toolkit
+     version: <toolkit-version>
+     imagePullSecrets: []
+
+   devicePlugin:
+     repository: <repo.example.com:port>
+     image: k8s-device-plugin
+     version: <device-plugin-version>
+     imagePullSecrets: []
+
+   dcgm:
+     repository: <repo.example.com:port>
+     image: dcgm
+     version: <dcgm-version>
+
+   dcgmExporter:
+     repository: <repo.example.com:port>
+     image: dcgm-exporter
+     version: <dcgm-exporter-version>
+
+   gfd:
+     repository: <repo.example.com:port>
+     image: k8s-device-plugin
+     version: <gfd-version>
+     imagePullSecrets: []
+
+   migManager:
+     repository: <repo.example.com:port>
+     image: k8s-mig-manager
+     version: <mig-manager-version>
+     imagePullSecrets: []
+
+   nodeStatusExporter:
+     repository: <repo.example.com:port>
+     image: gpu-operator
+     imagePullSecrets: []
+
+   gds:
+     repository: <repo.example.com:port>
+     image: nvidia-fs
+     version: <gds-version>
+     imagePullSecrets: []
+
+   gdrcopy:
+     repository: <repo.example.com:port>
+     image: gdrdrv
+     version: <gdrcopy-version>
+     imagePullSecrets: []
+
+   vgpuManager:
+     repository: <repo.example.com:port>
+     image: vgpu-manager
+     version: <vgpu-manager-version>
+     imagePullSecrets: []
+     driverManager:
        repository: <repo.example.com:port>
-       version: 11.4.2-base-ubi8
+       image: k8s-driver-manager
+       version: <driver-manager-version>
 
-    validator:
-      image: gpu-operator-validator
-      repository: <repo.example.com:port>
-      version: 1.9.0
-      imagePullSecrets: []
+   vgpuDeviceManager:
+     repository: <repo.example.com:port>
+     image: vgpu-device-manager
+     version: <vgpu-device-manager-version>
+     imagePullSecrets: []
 
-    driver:
-      repository: <repo.example.com:port>
-      image: driver
-      version: "470.82.01"
-      imagePullSecrets: []
-      manager:
-        image: k8s-driver-manager
-        repository: <repo.example.com:port>
-        version: v0.2.0
+   vfioManager:
+     repository: <repo.example.com:port>
+     image: k8s-driver-manager
+     version: <driver-manager-version>
+     imagePullSecrets: []
+     driverManager:
+       repository: <repo.example.com:port>
+       image: k8s-driver-manager
+       version: <driver-manager-version>
 
-    toolkit:
-      repository: <repo.example.com:port>
-      image: container-toolkit
-      version: 1.7.2-ubuntu18.04
-      imagePullSecrets: []
+   sandboxDevicePlugin:
+     repository: <repo.example.com:port>
+     image: kubevirt-gpu-device-plugin
+     version: <sandbox-device-plugin-version>
+     imagePullSecrets: []
 
-    devicePlugin:
-      repository: <repo.example.com:port>
-      image: k8s-device-plugin
-      version: v0.10.0-ubi8
-      imagePullSecrets: []
+   kataSandboxDevicePlugin:
+     repository: <repo.example.com:port>
+     image: nvidia-sandbox-device-plugin
+     version: <kata-sandbox-device-plugin-version>
+     imagePullSecrets: []
 
-    dcgmExporter:
-      repository: <repo.example.com:port>
-      image: dcgm-exporter
-      version: 2.3.1-2.6.0-ubuntu20.04
-      imagePullSecrets: []
+   ccManager:
+     repository: <repo.example.com:port>
+     image: k8s-cc-manager
+     version: <cc-manager-version>
+     imagePullSecrets: []
 
-    gfd:
-      repository: <repo.example.com:port>
-      image: gpu-feature-discovery
-      version: v0.4.1
-      imagePullSecrets: []
-
-    nodeStatusExporter:
-      enabled: false
-      repository: <repo.example.com:port>
-      image: gpu-operator-validator
-      version: "1.9.0"
-
-    migManager:
-      enabled: true
-      repository: <repo.example.com:port>
-      image: k8s-mig-manager
-      version: v0.2.0-ubuntu20.04
-
-    node-feature-discovery:
-      image:
-        repository: <repo.example.com:port>
-        pullPolicy: IfNotPresent
-        # tag, if defined will use the given image tag, else Chart.AppVersion will be used
-        # tag:
-      imagePullSecrets: []
+   node-feature-discovery:
+     image:
+       repository: <repo.example.com:port>
+       pullPolicy: IfNotPresent
+     imagePullSecrets: []
 
 
 ************************
