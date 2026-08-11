@@ -26,6 +26,44 @@ This document describes the new features and known issues for the NVIDIA Confide
 
 ----
 
+.. _coco-v1.1.0:
+
+1.1.0
+=====
+
+This release expands hardware coverage and updates the validated software stack.
+
+New Features
+------------
+
+* Added support for the NVIDIA HGX B300 platform with both single-GPU and multi-GPU passthrough.
+
+* Added support for Ubuntu 26.04 as a host operating system.
+
+* Added support for the following software components:
+
+  * Kata Containers ${kata_version}
+  * Kata Lifecycle Manager 0.1.8
+  * containerd 2.3.x
+
+* This release has General Availability support for most platforms running Red Hat OpenShift Sandboxed Containers 1.13.
+  Refer to `Confidential containers: feature availability by OpenShift Container Platform version <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13/html/deploying_confidential_containers_on_bare-metal_servers/cc-discover_metal-cc#idm140411685844384>`__.
+
+
+Docs Changelog
+--------------
+
+The :ref:`coco-install-kata-chart` procedure was updated for this release.
+Changes include:
+
+* Installs ``kata-deploy`` with a values file instead of inline ``--set`` flags.
+
+* Includes a new sample values file, :file:`samples/kata-nvidia-gpu-values.yaml`, that configures the ``kata-deploy`` Helm chart for the NVIDIA Confidential Containers reference architecture (NVIDIA GPU shims only, NFD disabled, ``nydus`` snapshotter, and per-shim runtime class node selectors).
+
+* Adds a readiness verification step using ``kubectl rollout status ds/kata-deploy``. This step relies on the readiness reporting in Kata Containers and lets you confirm that ``kata-deploy`` has finished extracting artifacts and restarting containerd on every node before continuing.
+
+----
+
 .. _coco-v1.0.0:
 
 *****
@@ -48,7 +86,7 @@ Key Features
   - NVIDIA H200 Protected PCIe (multi-GPU passthrough)
   - NVIDIA B200 (single-GPU and multi-GPU passthrough)
   - NVIDIA RTX Pro 6000 BSE (single-GPU passthrough)
-  - AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP 
+  - AMD Genoa / Milan CPUs with Ubuntu 25.10 (kernel 6.17+) for SEV-SNP
   - Intel Emerald Rapids / Granite Rapids CPUs with Ubuntu 25.10 (kernel 6.17+) for TDX
 
 * This release supports the following software components:

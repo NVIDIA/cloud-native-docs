@@ -27,19 +27,18 @@ As a :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-adm
 You perform most steps in this section.
 If you do not have access to host firmware, coordinate with your :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` or :ref:`Host OS Administrator <coco-persona-host-os-administrator>` to confirm or implement hardware prerequisites.
 
-For validated hardware and software versions, refer to :doc:`Supported Platforms <supported-platforms>`.
-Use the checklists below for an at-a-glance summary, then follow each linked section for verification steps.
+Use the following checklists as at-a-glance summary and supplement to the :doc:`Supported Platforms <supported-platforms>` page.
 
-**Hardware prerequisites**
+**Hardware Configuration Requirements**
+
+For validated hardware, refer to :doc:`Supported Platforms <supported-platforms>`.
 
 .. list-table::
    :header-rows: 1
    :widths: 30 70
 
-   * - Prerequisite
+   * - Configuration Requirement
      - Details
-   * - :ref:`Use a supported platform <coco-prereq-supported-platform>`
-     - CPU, GPU, and host OS match :doc:`Supported Platforms <supported-platforms>`
    * - :ref:`Hardware virtualization and ACS enabled <coco-prereq-hw-virtualization>`
      - Hardware virtualization and ACS enabled in host BIOS
    * - :ref:`IOMMU enabled <coco-prereq-iommu>`
@@ -47,26 +46,26 @@ Use the checklists below for an at-a-glance summary, then follow each linked sec
    * - :ref:`No host NVIDIA GPU drivers <coco-prereq-no-host-drivers>`
      - No NVIDIA GPU drivers installed or loaded on worker hosts.
 
-**Cluster prerequisites**
+**Cluster Configuration Requirements**
+
+For validated software components, refer to :doc:`Supported Platforms <supported-platforms>`.
 
 .. list-table::
    :header-rows: 1
    :widths: 30 70
 
-   * - Prerequisite
+   * - Configuration Requirement
      - Details
    * - :ref:`A Kubernetes cluster and cluster administrator access <coco-prereq-cluster-admin>`
-     - Cluster administrator access to a Kubernetes cluster running a supported version (refer to :ref:`Supported Software Components <coco-supported-software-components>`)
-   * - :ref:`containerd 2.2.2 installed <coco-prereq-containerd>`
-     - containerd 2.2.2 installed on each GPU worker node
+     - Cluster administrator access to a Kubernetes cluster running a supported version.
    * - :ref:`Helm installed <coco-prereq-helm>`
      - Helm installed on your cluster administration system
    * - :ref:`Kubelet configured <coco-prereq-kubelet>`
      - Enable ``KubeletPodResourcesGet`` (required before Kubernetes v1.34) and ``RuntimeClassInImageCriApi`` feature gates; set ``runtimeRequestTimeout: 20m`` on GPU worker nodes
 
-*****************
-Hardware and BIOS
-*****************
+********************************************
+Hardware and BIOS Configuration Requirements
+********************************************
 
 .. _coco-prereq-supported-platform:
 
@@ -172,9 +171,9 @@ In this architecture, the NVIDIA GPU Operator handles GPU driver installation an
 
    Refer to `Removing the Driver <https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/removing-the-driver.html>`_ in the NVIDIA Driver Installation Guide.
 
-******************
-Kubernetes Cluster
-******************
+*********************************************
+Kubernetes Cluster Configuration Requirements
+*********************************************
 
 The following sections describe requirements for worker nodes and for the system you use for cluster administration.
 
@@ -185,26 +184,6 @@ Kubernetes Cluster and Cluster Administrator Access
 
 You must have cluster administrator access to a Kubernetes cluster running a supported Kubernetes version.
 Refer to the :ref:`Supported Software Components <coco-supported-software-components>` section in :doc:`Supported Platforms <supported-platforms>` for supported Kubernetes and component versions.
-
-.. _coco-prereq-containerd:
-
-containerd 2.2.2
-================
-
-Verify the installed version on each GPU worker node:
-
-.. code-block:: console
-
-  $ containerd --version
-
-*Example Output:*
-
-.. code-block:: output
-
-  containerd containerd.io 2.2.2 ...
-
-Your actual output may vary, but the reported version must be ``2.2.2``.
-If you are running a different version on any worker node, refer to the `containerd Getting Started guide <https://containerd.io/docs/2.2/getting-started/>`_ for installation instructions.
 
 .. _coco-prereq-helm:
 
@@ -256,7 +235,7 @@ Apply these settings as follows:
 #. Open the kubelet configuration file:
 
    .. code-block:: console
-      
+
       $ sudo nano /var/lib/kubelet/config.yaml
 
    This is typically located at ``/var/lib/kubelet/config.yaml``, but your configuration file may be in a different location.
