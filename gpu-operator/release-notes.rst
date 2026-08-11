@@ -98,6 +98,10 @@ Known Issues
         value: "true"
 
 
+Post-Release Updates
+--------------------
+
+* The :ref:`Supported Container Runtimes` table is updated from containerd versions 1.7 - 2.1 to 1.7 - 2.2.
 
 .. _v25.10.0:
 
