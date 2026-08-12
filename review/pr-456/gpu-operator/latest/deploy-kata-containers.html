@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 07, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -699,10 +699,10 @@ Refer to the <a class="reference internal" href="#kata-containers-cluster-topolo
 <h3>Install the Kata Containers Helm Chart<a class="headerlink" href="#install-the-kata-containers-helm-chart" title="Permalink to this headline">#</a></h3>
 <p>Install Kata Containers using the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart.
 The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart installs all required components from the Kata Containers project including the Kata Containers runtime binary, runtime configuration, UVM kernel, and images that NVIDIA uses for Kata Containers.</p>
-<p>The minimum required version is 3.29.0.</p>
+<p>The minimum required version is 4.0.0.</p>
 <ol class="arabic">
 <li><p>Set the chart version and registry path:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;3.29.0&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">VERSION</span><span class="o">=</span><span class="s2">&quot;4.0.0&quot;</span>
 <span class="gp">$ </span><span class="nb">export</span> <span class="nv">CHART</span><span class="o">=</span><span class="s2">&quot;oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy&quot;</span>
 </pre></div>
 </div>
@@ -711,10 +711,12 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install kata-deploy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHART</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
    --namespace kata-system --create-namespace <span class="se">\</span>
    --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-   --wait --timeout 10m <span class="se">\</span>
+   -f kata-nvidia-gpu-values.yaml <span class="se">\</span>
    --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
+<p>The sample <cite>kata-nvidia-gpu-values.yaml</cite> file is included in the GitHub repository at
+<a class="github reference external" href="https://github.com/NVIDIA/cloud-native-docs/blob/main/confidential-containers/samples/kata-nvidia-gpu-values.yaml">NVIDIA/cloud-native-docs</a>.</p>
 <p><em>Example Output:</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">LAST DEPLOYED: Wed Apr  1 17:03:00 2026</span>
 <span class="go">NAMESPACE: kata-system</span>
@@ -726,25 +728,33 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">--wait</span></code> flag in the install command instructs Helm to wait until the release is deployed before returning.
-It can take a few minutes to return output.</p>
-<p>There is a <a class="reference external" href="https://github.com/helm/helm/issues/8660">known Helm issue</a> on single node clusters, that may result in the Helm command finishing before all deployed pods are finished initializing.
-If you are deploying to a single node cluster, you may need to wait for an additional few minutes after the Helm command completes for the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod to be in the Running state.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator deploy Node Feature Discovery (NFD) by default.
 The install command includes <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nfd.enabled=false</span></code> to prevent <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> from deploying NFD.
 The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> DaemonSet then takes several minutes per node to extract artifacts, restart containerd, and label the node before its pods report ready.
+You can use either of the optional verification steps below to confirm readiness before continuing.</p>
+</div>
 </li>
-<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
+<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> DaemonSet has finished rolling out on every node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl -n kata-system rollout status ds/kata-deploy --timeout<span class="o">=</span>20m
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                    READY   STATUS    RESTARTS      AGE</span>
-<span class="go">kata-deploy-b2lzs       1/1     Running   0             6m37s</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Waiting for daemon set &quot;kata-deploy&quot; rollout to finish: 0 of 1 updated pods are available...</span>
+<span class="go">daemon set &quot;kata-deploy&quot; successfully rolled out</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pods are running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system
+</pre></div>
+</div>
+<p><em>Example Output:</em></p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                READY   STATUS    RESTARTS   AGE</span>
+<span class="go">kata-deploy-b2lzs   1/1     Running   0          6m37s</span>
 </pre></div>
 </div>
 </li>

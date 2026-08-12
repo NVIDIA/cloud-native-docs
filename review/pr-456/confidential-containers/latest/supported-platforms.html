@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.1.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 07, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -466,7 +466,10 @@
 <tr class="row-even"><td><p>NVIDIA B200</p></td>
 <td><p>Single-GPU, Multi-GPU</p></td>
 </tr>
-<tr class="row-odd"><td><p>NVIDIA RTX Pro 6000 BSE</p></td>
+<tr class="row-odd"><td><p>NVIDIA HGX B300</p></td>
+<td><p>Single-GPU, Multi-GPU</p></td>
+</tr>
+<tr class="row-even"><td><p>NVIDIA RTX Pro 6000 BSE</p></td>
 <td><p>Single-GPU</p></td>
 </tr>
 </tbody>
@@ -502,12 +505,12 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <tbody>
 <tr class="row-even"><td><p>AMD Genoa / Milan</p></td>
 <td><p>AMD SEV-SNP</p></td>
-<td><p>Ubuntu 25.10</p></td>
+<td><p>Ubuntu 25.10 or 26.04</p></td>
 <td><p>6.17+</p></td>
 </tr>
 <tr class="row-odd"><td><p>Intel Emerald Rapids (ER) /  Granite Rapids (GR)</p></td>
 <td><p>Intel TDX</p></td>
-<td><p>Ubuntu 25.10</p></td>
+<td><p>Ubuntu 25.10 or 26.04</p></td>
 <td><p>6.17+</p></td>
 </tr>
 </tbody>
@@ -519,7 +522,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <li><p>Hardware selection and initial hardware configuration, such as BIOS settings.</p></li>
 <li><p>Host operating system selection, initial configuration, and validation.</p></li>
 </ul>
-<p>When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 as the host OS with its default kernel version and configuration.</p>
+<p>When following the cloud-native sections in the deployment guide linked above, use Ubuntu 25.10 or 26.04 as the host OS with its default kernel version and configuration.</p>
 <p>For additional resources on machine setup:</p>
 <ul class="simple">
 <li><p>Refer to the <a class="reference external" href="https://docs.nvidia.com/nvtrust/index.html">NVIDIA Trusted Computing Solutions website</a>.</p></li>
@@ -553,7 +556,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <td><p>10.1 + Patches</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://github.com/containerd/containerd">Containerd</a></p></td>
-<td><p>2.2.2</p></td>
+<td><p>2.3.x</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a></p></td>
 <td><p>1.32 +</p></td>
@@ -564,18 +567,18 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 <td><p>v26.3.1 and higher</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://katacontainers.io/">Kata Containers</a></p></td>
-<td><p>3.29 (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></td>
+<td><p>4.0.0 (installed with <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart)</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Key Broker Service (KBS) protocol</a></p></td>
 <td><p>0.4.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a></p></td>
-<td><p>0.1.4</p></td>
+<td><p>0.1.8</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Users may leverage <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.12">Red Hat OpenShift Sandboxed Containers</a> to deploy Confidential Containers, however, Confidential GPU features are currently classified as Technology Preview by the downstream provider.</p>
+<p>Users may leverage <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13">Red Hat OpenShift Sandboxed Containers</a> to deploy Confidential Containers.</p>
 </section>
 </section>
 
