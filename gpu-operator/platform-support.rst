@@ -534,7 +534,7 @@ Supported Container Runtimes
 The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.7 - 2.2   | CRI-O          |
+| Operating System           | Containerd 1.7 - 2.3   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 22.04 LTS           | Yes                    | Yes            |
 +----------------------------+------------------------+----------------+
@@ -549,7 +549,7 @@ The GPU Operator has been validated for the following container runtimes:
 
 .. note::
 
- If you are planning to use the NRI Plugin, you must use containerd v1.7.30+, v2.1.x, or v2.2.x, or CRI-O v1.34 or later.
+ If you are planning to use the NRI Plugin, refer to :ref:`Enabling the NRI Plugin`.
 
 *************************************************
 Support for KubeVirt and OpenShift Virtualization
