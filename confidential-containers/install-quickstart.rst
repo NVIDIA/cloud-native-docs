@@ -58,13 +58,18 @@ Install the Kata Containers Helm Chart
       $ export VERSION="${kata_version}"
       $ export CHART="oci://ghcr.io/kata-containers/kata-deploy-charts/kata-deploy"
 
-#. Install the ``kata-deploy`` Helm chart:
+#. Create a values file, such as ``kata-nvidia-gpu-values.yaml``, to configure the ``kata-deploy`` chart for NVIDIA Confidential Containers:
+
+   .. literalinclude:: ./samples/kata-nvidia-gpu-values.yaml
+      :language: yaml
+
+#. Install the ``kata-deploy`` Helm chart with the values file:
 
    .. code-block:: console
 
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
-         --set nfd.enabled=false \
+         -f kata-nvidia-gpu-values.yaml \
          --wait --timeout 10m \
          --version "${VERSION}"
 
