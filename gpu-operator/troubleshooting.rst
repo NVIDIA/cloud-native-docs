@@ -640,24 +640,6 @@ The ``nvidia-smi`` command should return a success code (return code 0) for the 
 
 Replace the faulty GPU.
 
-EFI + Secure Boot
-=================
-
-.. rubric:: Issue
-   :class: h4
-
-GPU Driver pod fails to deploy.
-
-.. rubric:: Root Cause
-   :class: h4
-
-EFI Secure Boot is currently not supported with the GPU Operator
-
-.. rubric:: Action
-   :class: h4
-
-Disable EFI Secure Boot on the server.
-
 ***************************************************************************************
 GPU Operator pods in ``Init:RunContainerError`` or ``Init:CreateContainerError`` state
 ***************************************************************************************
