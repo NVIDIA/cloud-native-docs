@@ -161,6 +161,59 @@ directly:
 $ sudo nvidia-ctk cdi generate --output=/var/run/cdi/nvidia.yaml
 ```
 
+## JIT-CDI Mode
+
+Just-in-time CDI (JIT-CDI) mode generates an in-memory CDI specification for the
+NVIDIA devices that a container requests. The NVIDIA Container Runtime uses this
+specification to update the container configuration. JIT-CDI mode does not write
+a persistent specification to `/var/run/cdi` or `/etc/cdi`.
+
+When `nvidia-container-runtime.mode` is set to `auto`, the runtime selects JIT-CDI
+mode on systems that use the NVIDIA Management Library (NVML) or Windows
+Subsystem for Linux 2 (WSL2). Native CDI-enabled runtimes still use the
+persistent specifications described in
+[Automatic CDI Specification Generation](#automatic-cdi-specification-generation).
+
+### Disabling Hooks in JIT-CDI Mode
+
+You can prevent JIT-CDI mode from adding specific hooks to an in-memory specification.
+The supported hook names are `create-symlinks`,
+`disable-device-node-modification`, `enable-cuda-compat`,
+`update-application-profile`, and `update-ldcache`.
+Use `all` to disable every hook.
+
+The following command disables the update-application-profile and update-ldcache
+hooks. Separate multiple values with a colon:
+
+```console
+$ sudo nvidia-ctk config --in-place \
+    --set nvidia-container-runtime.modes.jit-cdi.nvcdi-disable-hooks=update-application-profile:update-ldcache
+```
+
+The resulting configuration contains the following settings:
+
+```toml
+[nvidia-container-runtime.modes.jit-cdi]
+nvcdi-disable-hooks = ["update-application-profile", "update-ldcache"]
+```
+
+```{warning}
+Disable only the hook that conflicts with your environment. Hooks configure
+libraries, links, device behavior, and GPU visibility in the container. Disabling
+a required hook can prevent an application from starting or can expose more GPUs
+to EGL and Vulkan applications than the container requested.
+```
+
+For a persistent specification, pass `--disable-hook` once for each hook when you
+[generate the CDI specification manually](#manual-cdi-specification-generation):
+
+```console
+$ sudo nvidia-ctk cdi generate \
+    --disable-hook update-application-profile \
+    --disable-hook update-ldcache \
+    --output=/var/run/cdi/nvidia.yaml
+```
+
 ## Running a Workload with CDI
 
 Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container Runtime hook.
@@ -190,6 +243,13 @@ $ podman run --rm \
 
 The preceding sample command requests the full GPU with index 0 and the first MIG device on GPU 1.
 The output should show only the UUIDs of the requested devices.
+
+### IMEX Channels
+
+Containers can request specific NVIDIA IMEX channels with the
+`NVIDIA_IMEX_CHANNELS` environment variable. For supported values, an example,
+and validation errors, refer to
+[Requesting IMEX Channels](docker-specialized.md#requesting-imex-channels).
 
 ## Using CDI with Non-CDI-Enabled Runtimes
 

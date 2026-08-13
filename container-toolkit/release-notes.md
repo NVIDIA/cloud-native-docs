@@ -8,6 +8,75 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.20.0
+
+This release of the NVIDIA Container Toolkit `v1.20.0` is a feature release.
+
+### Fixes and Features
+
+- CDI specifications can now include an application-profile hook that limits EGL and Vulkan visibility to the GPUs assigned to the container.
+  Graphics applications no longer see unassigned host GPUs through these APIs.
+  For more information, refer to [issue #1899](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1899) and [PR #1939](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1939).
+- CUDA compatibility handling now uses `libcuda.so` ELF metadata whenever it is available.
+  This improves CUDA minor-version compatibility by selecting the container's compatibility libraries only when they are appropriate for the installed driver.
+- Driver file discovery now supports libraries spread across multiple directories, as occurs on distributions such as Debian, and matches graphics libraries against the exact installed driver version.
+  This fix avoids both missing required libraries and injecting libraries from another installed driver version.
+  For information about multiple-directory discovery, refer to [issue #1559](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1559) and [PR #1820](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1820). For information about exact-version matching, refer to [PR #1948](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1948).
+- CDI specifications now include the NVIDIA OpenCL ICD file and the legacy `libnvidia-nvvm70.so` library when present.
+  OpenCL loaders can locate the NVIDIA implementation, and workloads that depend on the legacy NVVM library receive it automatically.
+  For information about OpenCL support, refer to [issue #682](https://github.com/NVIDIA/nvidia-container-toolkit/issues/682) and [PR #1893](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1893). For information about legacy NVVM support, refer to [issue #1875](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1875) and [PR #1876](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1876).
+- On WSL2, CDI discovery now includes additional `.so`, `.bin`, and `.dll` files from the NVIDIA driver store instead of relying only on a fixed file list.
+  This fix enables containers to receive driver components introduced by newer Windows driver releases without waiting for a toolkit-specific allowlist update.
+  For more information, refer to [issue #1864](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1864) and [PR #1890](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1890).
+- IMEX channel requests in CDI and JIT-CDI mode are now validated for both the supported ID range and the presence of the corresponding host device.
+  Invalid requests fail with a clear error.
+  For more information, refer to [issue #1309](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1309) and [PR #1913](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1913).
+- JIT-CDI mode now honors the `nvidia-container-runtime.modes.jit-cdi.nvcdi-disable-hooks` configuration option.
+  You can disable individual CDI hooks for environments where a generated hook is unnecessary or incompatible.
+- Updating `config.toml` no longer reverts previously modified options to their defaults.
+- CDI generation no longer adds an `update-ldcache` hook when it discovers no driver libraries.
+  This fix prevents containers from running an unnecessary hook and avoids failures on systems or modes that do not inject libraries.
+  For more information, refer to [issue #373](https://github.com/NVIDIA/nvidia-container-toolkit/issues/373) and [PR #1894](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1894).
+- Fixed an issue where NVIDIA runtime handlers in a generated containerd
+  drop-in configuration could omit `runtime_type` when the base configuration
+  did not define it.
+  The affected containers failed to start with a
+  `container.Runtime.Name must be set` error.
+  The toolkit now sets the default runtime type when the field is missing or empty.
+  For more information, refer to
+  [issue #1956](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1956)
+  and [PR #1969](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1969).
+
+### Packaging Changes
+
+- RPMs rebuilt by the toolkit packaging image now use XZ payload compression instead of zstd.
+  The resulting packages can be installed on older Linux distributions that do not support zstd compression, such as Amazon Linux 2.
+- Source package builds can use Podman by setting `DOCKER=podman`.
+  The build handles Podman's local image naming, SELinux volume labeling, and artifact-directory creation automatically.
+
+#### Enhancements to container-toolkit Container Images
+
+- The `container-toolkit` image now uses the non-development distroless base and includes a static BusyBox shell.
+  Init-container wrappers and lifecycle hooks retain the shell commands they need without depending on the development image.
+- The NRI plugin can inject ordinary workload CDI devices outside the toolkit namespace.
+  For management devices, you can authorize additional namespaces with the `--nri-management-cdi-device-namespaces` option or the `NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES` environment variable, enabling centralized management workloads without granting access cluster-wide.
+- The toolkit installer now installs `nvidia-cdi-hook` instead of wrapping it with a shell script.
+  NRI-based deployments can invoke the hook on hosts that do not provide a shell.
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.20.0`
+- `nvidia-container-toolkit-base 1.20.0`
+- `libnvidia-container-tools 1.20.0`
+- `libnvidia-container1 1.20.0`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.0`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.0-packaging`
+
 ## NVIDIA Container Toolkit 1.19.1
 
 This release of the NVIDIA Container Toolkit `v1.19.1` is a bugfix release.
@@ -49,7 +118,7 @@ v0.7.0 of the CDI spec schema. The container runtime support for v0.7.0 of the C
 - podman >= 5.1.0 - [containers/podman@a40cf31](https://github.com/containers/podman/commit/a40cf3195acb6ac5fea5ab4617afb99006a3bed7)
 - crio >= 1.30.0 - [cri-o/cri-o@fd9aa76](https://github.com/cri-o/cri-o/commit/fd9aa76250fe05625d8c968b922cd1a0ae88eb1b)
 
-If you are using a container runtime version that does not support v0.7.0 of the CDI spec schema, 
+If you are using a container runtime version that does not support v0.7.0 of the CDI spec schema,
 it is recommended to set the `no-additional-gids-for-device-nodes` CDI feature flag
 so that an older version of the CDI spec schema is used for spec file generation:
 

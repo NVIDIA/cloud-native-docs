@@ -111,6 +111,34 @@ The following examples show common usage:
         nvidia/cuda nvidia-smi
    ```
 
+(requesting-imex-channels)=
+
+### Requesting IMEX Channels
+
+Use the `NVIDIA_IMEX_CHANNELS` environment variable to request NVIDIA IMEX
+channels for a container. Specify one or more numeric channel IDs as a
+comma-separated list.
+
+The following command requests channels 0 and 1:
+
+```console
+$ docker run --rm --runtime=nvidia \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_IMEX_CHANNELS=0,1 \
+    <image> <command>
+```
+
+In CDI and JIT-CDI mode, each channel ID must meet both requirements:
+
+- The ID is in the range from 0 through 1,048,575.
+- The corresponding `/dev/nvidia-caps-imex-channels/channel<ID>` device exists
+  on the host.
+
+If either requirement is not met, container creation fails with an error that
+identifies the invalid or missing channel. Inspect
+`/dev/nvidia-caps-imex-channels/` on the host and request only the channel IDs
+that are present.
+
 ### Driver Capabilities
 
 The `NVIDIA_DRIVER_CAPABILITIES` variable controls which driver libraries and binaries are mounted inside the container.
@@ -146,13 +174,14 @@ The following table describes the supported driver capabilities:
       - Description
 
     * - ``compute``
-      - required for CUDA and OpenCL applications.
+      - Required for CUDA and OpenCL applications. When present on the host,
+        the NVIDIA OpenCL ICD file is also available in the container.
 
     * - ``compat32``
       - required for running 32-bit applications.
 
     * - ``graphics``
-      - required for running OpenGL and Vulkan applications.
+      - Required for running OpenGL, EGL, and Vulkan applications.
 
     * - ``utility``
       - required for using ``nvidia-smi`` and NVML.
@@ -177,6 +206,26 @@ For example, to allow usage of CUDA and NVML, specify the `compute` and `utility
 > $ docker run --rm --gpus 'all,"capabilities=compute,utility"' \
 >     nvidia/cuda:12.5.0-base-ubuntu22.04 nvidia-smi
 > ```
+
+To run an OpenGL, EGL, or Vulkan application on a selected GPU, include the
+`graphics` capability. The following command makes GPU 0 and the graphics and
+utility driver components available to the container:
+
+```console
+$ docker run --rm --runtime=nvidia \
+    -e NVIDIA_VISIBLE_DEVICES=0 \
+    -e NVIDIA_DRIVER_CAPABILITIES=graphics,utility \
+    <image> <command>
+```
+
+Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
+a container when the `graphics` or `display` driver capability is enabled.
+The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
+`update-application-profile` hook. This change provides feature parity across
+the modes.
+
+If the application-profile hook conflicts with an application, refer to
+[Disabling Hooks in JIT-CDI Mode](cdi-support.md#disabling-hooks-in-jit-cdi-mode).
 
 ### Constraints
 
