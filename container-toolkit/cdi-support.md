@@ -182,7 +182,7 @@ The supported hook names are `create-symlinks`,
 `update-application-profile`, and `update-ldcache`.
 Use `all` to disable every hook.
 
-The following command disables the application-profile and dynamic-linker cache
+The following command disables the update-application-profile and update-ldcache
 hooks. Separate multiple values with a colon:
 
 ```console
